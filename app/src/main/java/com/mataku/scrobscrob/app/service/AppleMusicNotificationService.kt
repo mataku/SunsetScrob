@@ -37,11 +37,11 @@ class AppleMusicNotificationService : NotificationListenerService() {
 
         val extra = sbn.notification.extras
 
-        // song title
+        // song name
         // Format: android.title=songName
         val name = extra.get("android.title").toString()
 
-        // songName and artistName
+        // artist name and album name
         // Format: android.text=artistName - albumName
         // e.g. PassCode — VIRTUAL
         val albumInfo = extra.get("android.text")
