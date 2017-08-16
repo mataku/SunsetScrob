@@ -65,6 +65,11 @@ class MainActivity : AppCompatActivity(), MainViewCallback {
         startActivity(intent)
     }
 
+    private fun showSettings() {
+        val intent = Intent(applicationContext, SettingsActivity::class.java)
+        startActivity(intent)
+    }
+
     private fun isEnabledReadNotification(): Boolean {
         val contentResolver = contentResolver
         val rawListeners = Settings.Secure.getString(contentResolver,
