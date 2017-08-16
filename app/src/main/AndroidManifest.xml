@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.mataku.scrobscrob">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -15,13 +17,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".app.ui.LoginActivity"
+            android:label="@string/login_to_last_fm">
+
+        </activity>
+        <activity android:name=".app.ui.SettingsActivity">
+
+        </activity>
 
         <service
             android:name=".app.service.AppleMusicNotificationService"
-            android:label="AppleMusicNotificationService"
-            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
             android:enabled="true"
-            android:exported="true">
+            android:exported="true"
+            android:label="AppleMusicNotificationService"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
             <intent-filter>
                 <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>
