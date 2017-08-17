@@ -82,11 +82,9 @@ class MainActivity : AppCompatActivity(), MainViewCallback {
             return false
         } else {
             val listeners = rawListeners.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-            for (listener in listeners) {
-                if (listener.startsWith(packageName)) {
-                    return true
-                }
-            }
+            listeners
+                    .filter { it.startsWith(packageName) }
+                    .forEach { return true }
         }
         return false
     }
