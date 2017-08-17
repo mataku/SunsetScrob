@@ -44,7 +44,7 @@ class LoginPresenterTest {
             fail()
         }
 
-        override fun setSessionKey(sessionKey: String) {
+        override fun setSessionInfo(sessionKey: String, userName: String) {
             fail()
         }
 
