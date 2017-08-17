@@ -14,6 +14,14 @@ workflows:
         run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
     - git-clone@3.5.1: {}
     - cache-pull@1.0.0: {}
+    - script@1.1.4:
+        inputs:
+        - content: "#!/bin/bash\n# fail if any commands fails\nset -e\n# debug log\nset
+            -x\n\nGRADLE_PROPERTIES=$HOME\"/.gradle/gradle.properties\"\nexport GRADLE_PROPERTIES\necho
+            \"Gradle Properties should exist at $GRADLE_PROPERTIES\"\n  \necho \"Writing
+            keys to gradle.properties...\"\necho \"API_KEY=\\\"$API_KEY\\\"\" >> $GRADLE_PROPERTIES\necho
+            \"SHARED_SECRET=\\\"$SHARED_SECRET\\\"\" >> $GRADLE_PROPERTIES"
+        title: Set Secret Environments
     - install-missing-android-tools: {}
     - gradle-runner@1.7.6:
         inputs:
