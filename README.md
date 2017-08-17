@@ -1,1 +1,1 @@
-Last.fm scrobber
+Last.fm scrobbler
