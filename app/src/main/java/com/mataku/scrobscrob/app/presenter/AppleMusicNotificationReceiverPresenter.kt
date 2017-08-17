@@ -1,5 +1,6 @@
 package com.mataku.scrobscrob.app.presenter
 
+import android.content.Intent
 import android.util.Log
 import com.mataku.scrobscrob.BuildConfig
 import com.mataku.scrobscrob.app.model.Track
@@ -16,12 +17,26 @@ class AppleMusicNotificationReceiverPresenter {
     private val sharedSecret = BuildConfig.SHARED_SECRET
     private val method = "track.updateNowPlaying"
 
-    fun setNowPlaying(track: Track, sessionKey: String) {
+    fun setNowPlayingIfDifferentTrack(track: Track?, intent: Intent, sessionKey: String) {
+        val newTrackName = intent.getStringExtra("trackName")
+
+        if (track == null) {
+            val newTrack = createTrack(intent)
+            setNowPlaying(newTrack, sessionKey)
+        } else if (track.name != newTrackName) {
+            val newTrack = createTrack(intent)
+            setNowPlaying(newTrack, sessionKey)
+        } else {
+            // Do nothing
+        }
+    }
+
+    private fun setNowPlaying(track: Track, sessionKey: String) {
         val apiSig = generateApiSig(sessionKey, track)
         val client = Retrofit2LastFmClient.createService()
         val call = client.updateNowPlaying(
                 track.artistName,
-                track.trackName,
+                track.name,
                 track.albumName,
                 apiKey,
                 apiSig,
@@ -46,7 +61,7 @@ class AppleMusicNotificationReceiverPresenter {
     }
 
     private fun generateApiSig(sessionKey: String, track: Track): String {
-        val str = "api_key${apiKey}method${method}sk${sessionKey}track${track.trackName}artist${track.artistName}album${track.albumName}${sharedSecret}"
+        val str = "api_key${apiKey}method${method}sk${sessionKey}track${track.name}artist${track.artistName}album${track.albumName}${sharedSecret}"
         var md5Str = ""
         try {
             var strBytes: ByteArray = str.toByteArray(charset("UTF-8"))
@@ -58,5 +73,13 @@ class AppleMusicNotificationReceiverPresenter {
             e.printStackTrace()
         }
         return md5Str
+    }
+
+    private fun createTrack(intent: Intent): Track {
+        val artistName = intent.getStringExtra("artistName")
+        val trackName = intent.getStringExtra("trackName")
+        val albumName = intent.getStringExtra("albumName")
+        val playingTime = intent.getLongExtra("playingTime", 0)
+        return Track(artistName, trackName, albumName, playingTime)
     }
 }
