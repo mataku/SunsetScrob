@@ -11,16 +11,22 @@ class LoginPresenterTest {
     @Throws(Exception::class)
     fun backToSettingsWhenLoggedIn_success() {
         val showSuccessMessageCalled = AtomicBoolean()
+        val backToSettingsActivityCalled = AtomicBoolean()
 
         class MockView : MockLoginView() {
             override fun showSuccessMessage() {
                 showSuccessMessageCalled.set(true)
+            }
+
+            override fun backToSettingsActivity() {
+                backToSettingsActivityCalled.set(true)
             }
         }
 
         val presenter = LoginPresenter(MockView())
         presenter.backToSettingsWhenLoggedIn(true, "someKey")
         assertTrue(showSuccessMessageCalled.get())
+        assertTrue(backToSettingsActivityCalled.get())
     }
 
     @Test
@@ -49,6 +55,10 @@ class LoginPresenterTest {
         }
 
         override fun focusOnPasswordView() {
+            fail()
+        }
+
+        override fun backToSettingsActivity() {
             fail()
         }
     }
