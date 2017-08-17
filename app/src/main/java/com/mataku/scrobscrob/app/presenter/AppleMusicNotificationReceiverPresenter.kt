@@ -6,13 +6,14 @@ import com.mataku.scrobscrob.BuildConfig
 import com.mataku.scrobscrob.app.model.Track
 import com.mataku.scrobscrob.app.model.api.Retrofit2LastFmClient
 import com.mataku.scrobscrob.app.model.entity.NowPlayingApiResponse
+import com.mataku.scrobscrob.app.ui.view.NotificationInterface
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.math.BigInteger
 import java.security.MessageDigest
 
-class AppleMusicNotificationReceiverPresenter {
+class AppleMusicNotificationReceiverPresenter(var notificationInterface: NotificationInterface) {
     private val apiKey = BuildConfig.API_KEY
     private val sharedSecret = BuildConfig.SHARED_SECRET
     private val method = "track.updateNowPlaying"
@@ -23,9 +24,13 @@ class AppleMusicNotificationReceiverPresenter {
         if (track == null) {
             val newTrack = createTrack(intent)
             setNowPlaying(newTrack, sessionKey)
+            notificationInterface.updateCurrentTrack(intent)
+            Log.i("NowPlaying", "Sent!")
         } else if (track.name != newTrackName) {
             val newTrack = createTrack(intent)
             setNowPlaying(newTrack, sessionKey)
+            notificationInterface.updateCurrentTrack(intent)
+            Log.i("NowPlaying", "Sent!")
         } else {
             // Do nothing
         }
@@ -79,7 +84,7 @@ class AppleMusicNotificationReceiverPresenter {
         val artistName = intent.getStringExtra("artistName")
         val trackName = intent.getStringExtra("trackName")
         val albumName = intent.getStringExtra("albumName")
-        val playingTime = intent.getLongExtra("playingTime", 0)
+        val playingTime = intent.getLongExtra("playingTime", 0.toLong())
         return Track(artistName, trackName, albumName, playingTime)
     }
 }
