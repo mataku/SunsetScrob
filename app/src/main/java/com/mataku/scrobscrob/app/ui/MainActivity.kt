@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity(), MainViewCallback {
 
     //    メニューボタンのクリックイベントを定義
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.getItemId()) {
+        when (item.itemId) {
             R.id.overflow_options -> {
                 showSettings()
                 return true
