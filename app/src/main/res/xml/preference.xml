@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/preference_title">
+        <Preference
+            android:key="login"
+            android:title="@string/login_to_last_fm"
+            android:summary="" />
+        <Preference
+            android:key="notification"
+            android:title="@string/enable_notification_access"
+            android:summary="@string/enable_notification_access_summary" />
+    </PreferenceCategory>
+</PreferenceScreen>
