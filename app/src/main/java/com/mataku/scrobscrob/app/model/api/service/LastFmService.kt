@@ -13,4 +13,13 @@ interface LastFmService {
             @Query("api_sig") apiSig: String,
             @Query("format") format: String
     ): Call<MobileSessionApiResponse>
+
+    @retrofit2.http.POST("/2.0/?method=track.updateNowPlaying&format=json")
+    fun updateNowPlaying(
+            @Query("artist") artist: String,
+            @Query("track") trackName: String,
+            @Query("album") albumName: String,
+            @Query("api_key") apiKey: String,
+            @Query("api_sig") apiSig: String
+    )
 }
