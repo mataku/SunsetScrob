@@ -1,33 +1,61 @@
 package com.mataku.scrobscrob.app.ui
 
+import android.app.AlertDialog
+import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.preference.Preference
 import android.preference.PreferenceActivity
 import android.provider.Settings
 import com.mataku.scrobscrob.R
+import com.mataku.scrobscrob.app.presenter.SettingsPresenter
+import com.mataku.scrobscrob.app.ui.view.SettingsViewCallback
 
-class SettingsActivity : PreferenceActivity() {
+class SettingsActivity : PreferenceActivity(), SettingsViewCallback {
 
-    lateinit var loginPreference: Preference
-    lateinit var notificationPreference: Preference
+    private lateinit var loginPreference: Preference
+    private lateinit var notificationPreference: Preference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         addPreferencesFromResource(R.xml.preference)
 
+        var sharedPreferences = getSharedPreferences("DATA", Context.MODE_PRIVATE)
+        val userName = sharedPreferences.getString("UserName", "")
+
+        val presenter = SettingsPresenter(this)
+        presenter.setMessageAccordingToUserStatus(userName)
+        presenter.setDestinationAccordingToUserStatus(userName)
+    }
+
+    override fun setMessageToLogIn() {
+        loginPreference = findPreference("login")
+        loginPreference.title = "Last.fm へログイン"
+        loginPreference.summary = ""
+    }
+
+    override fun setMessageToLogOut(loggedInUserName: String) {
+        loginPreference = findPreference("login")
+        loginPreference.title = "ログアウト"
+        loginPreference.summary = "${loggedInUserName} でログインしています"
+    }
+
+    override fun setDestinationToMenuToLogIn() {
         loginPreference = findPreference("login")
         loginPreference.onPreferenceClickListener = object : Preference.OnPreferenceClickListener {
             override fun onPreferenceClick(preference: Preference): Boolean {
-                showSettings()
+                showSettingsActivity()
                 return true
             }
         }
+    }
 
-        notificationPreference = findPreference("notification")
-        notificationPreference.onPreferenceClickListener = object : Preference.OnPreferenceClickListener {
+    override fun setDestinationToMenuToLogOut() {
+        loginPreference = findPreference("login")
+        loginPreference.onPreferenceClickListener = object : Preference.OnPreferenceClickListener {
             override fun onPreferenceClick(preference: Preference): Boolean {
-                showNotificationAccessSettingMenu()
+                showAlert()
                 return true
             }
         }
@@ -39,8 +67,38 @@ class SettingsActivity : PreferenceActivity() {
         startActivity(intent)
     }
 
-    private fun showSettings() {
-        val intent = Intent(applicationContext, SettingsActivity::class.java)
+    private fun showSettingsActivity() {
+        val intent = Intent(applicationContext, LoginActivity::class.java)
         startActivity(intent)
+    }
+
+    private fun showAlert() {
+        val alertDIalog: AlertDialog.Builder = AlertDialog.Builder(this)
+        alertDIalog.setTitle("ログアウト")
+        alertDIalog.setMessage("ログアウトしますか？")
+        alertDIalog.setPositiveButton(
+                "OK",
+                object : DialogInterface.OnClickListener {
+                    override fun onClick(dialog: DialogInterface, which: Int) {
+                        removeSession()
+                    }
+                }
+        )
+
+        alertDIalog.setNegativeButton(
+                "Cancel",
+                object : DialogInterface.OnClickListener {
+                    override fun onClick(dialog: DialogInterface, which: Int) {
+
+                    }
+                }
+        )
+
+        alertDIalog.create().show()
+    }
+
+    private fun removeSession() {
+        val sharedPreferences = getSharedPreferences("DATA", Context.MODE_PRIVATE)
+        sharedPreferences.edit().clear().apply()
     }
 }
