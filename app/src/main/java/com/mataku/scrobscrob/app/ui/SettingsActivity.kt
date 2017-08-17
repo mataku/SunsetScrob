@@ -74,10 +74,10 @@ class SettingsActivity : PreferenceActivity(), SettingsViewCallback {
     }
 
     private fun showAlert() {
-        val alertDIalog: AlertDialog.Builder = AlertDialog.Builder(this)
-        alertDIalog.setTitle("ログアウト")
-        alertDIalog.setMessage("ログアウトしますか？")
-        alertDIalog.setPositiveButton(
+        val alertDialog: AlertDialog.Builder = AlertDialog.Builder(this)
+        alertDialog.setTitle("ログアウト")
+        alertDialog.setMessage("ログアウトしますか？")
+        alertDialog.setPositiveButton(
                 "OK",
                 object : DialogInterface.OnClickListener {
                     override fun onClick(dialog: DialogInterface, which: Int) {
@@ -88,7 +88,7 @@ class SettingsActivity : PreferenceActivity(), SettingsViewCallback {
                 }
         )
 
-        alertDIalog.setNegativeButton(
+        alertDialog.setNegativeButton(
                 "Cancel",
                 object : DialogInterface.OnClickListener {
                     override fun onClick(dialog: DialogInterface, which: Int) {
@@ -97,7 +97,7 @@ class SettingsActivity : PreferenceActivity(), SettingsViewCallback {
                 }
         )
 
-        alertDIalog.create().show()
+        alertDialog.create().show()
     }
 
     private fun removeSession() {
