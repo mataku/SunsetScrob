@@ -277,10 +277,11 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, LoginViewCal
         }
     }
 
-    override fun setSessionKey(sessionKey: String) {
+    override fun setSessionInfo(sessionKey: String, userName: String) {
         val data = getSharedPreferences("DATA", Context.MODE_PRIVATE)
         val editor: SharedPreferences.Editor = data.edit()
         editor.putString("SessionKey", sessionKey)
+        editor.putString("UserName", userName)
         editor.apply()
     }
 
