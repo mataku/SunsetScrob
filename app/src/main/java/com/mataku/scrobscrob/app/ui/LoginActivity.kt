@@ -268,13 +268,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, LoginViewCal
             showProgress(false)
 
             val sessionKey = getSessionKey()
-            if (success!! && sessionKey.isNotEmpty()) {
-                showSuccessMessage()
-                finish()
-            } else {
-                passwordView!!.error = getString(R.string.error_incorrect_password)
-                passwordView!!.requestFocus()
-            }
+            loginPresenter.backToSettingsWhenLoggedIn(success, sessionKey)
         }
 
         override fun onCancelled() {
@@ -290,8 +284,14 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, LoginViewCal
         editor.apply()
     }
 
-    private fun showSuccessMessage() {
+    override fun showSuccessMessage() {
         Toast.makeText(this, "ログインしました", Toast.LENGTH_LONG).show()
+        finish()
+    }
+
+    override fun focusOnPasswordView() {
+        passwordView!!.error = getString(R.string.error_incorrect_password)
+        passwordView!!.requestFocus()
     }
 
     private fun getSessionKey(): String {

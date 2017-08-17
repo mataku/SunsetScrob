@@ -25,6 +25,14 @@ class LoginPresenter(var view: LoginViewCallback) {
         }
     }
 
+    fun backToSettingsWhenLoggedIn(success: Boolean?, sessionKey: String) {
+        if (success!! && sessionKey.isNotEmpty()) {
+            view.showSuccessMessage()
+        } else {
+            view.focusOnPasswordView()
+        }
+    }
+
     private fun generateApiSig(userName: String, password: String): String {
         val str = "api_key${apiKey}method${method}password${password}username${userName}${sharedSecret}"
         var md5Str = ""
