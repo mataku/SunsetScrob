@@ -2,6 +2,7 @@ package com.mataku.scrobscrob.app.ui
 
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.provider.Settings
@@ -27,9 +28,9 @@ class MainActivity : AppCompatActivity(), MainViewCallback {
 //        mainPresenter = MainPresenter(this)
 //        mainPresenter.showPreparationMenuIfNeeded(isEnabledReadNotification())
 //        setContentView(R.layout.activity_main)
-//        val filter: IntentFilter = IntentFilter()
-//        filter.addAction("AppleMusic")
-//        registerReceiver(receiver, filter)
+        val filter = IntentFilter()
+        filter.addAction("AppleMusic")
+        registerReceiver(receiver, filter)
     }
 
     override fun onDestroy() {
