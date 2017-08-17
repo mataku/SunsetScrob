@@ -43,7 +43,7 @@ dependencies {
     compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
 
     testCompile 'junit:junit:4.12'
-    testCompile 'com.google.guava:guava:18.0'
+    testCompile 'com.google.guava:guava:20.0'
     testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
 }
 repositories {
