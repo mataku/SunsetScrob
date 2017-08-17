@@ -1,1 +1,1 @@
-Last.fm scrobbler
+Last.fm scrobbler for Apple Music on Android
