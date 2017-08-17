@@ -254,14 +254,12 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, LoginViewCal
 
         override fun doInBackground(vararg params: Void): Boolean? {
             try {
-                // Simulate network access.
                 loginPresenter.authenticate(userName, password)
 
             } catch (e: InterruptedException) {
                 return false
             }
 
-            // TODO: register the new account here.
             return true
         }
 
@@ -269,7 +267,9 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, LoginViewCal
             authTask = null
             showProgress(false)
 
-            if (success!!) {
+            val sessionKey = getSessionKey()
+            if (success!! && sessionKey.isNotEmpty()) {
+                showSuccessMessage()
                 finish()
             } else {
                 passwordView!!.error = getString(R.string.error_incorrect_password)
@@ -288,6 +288,15 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, LoginViewCal
         val editor: SharedPreferences.Editor = data.edit()
         editor.putString("SessionKey", sessionKey)
         editor.apply()
+    }
+
+    private fun showSuccessMessage() {
+        Toast.makeText(this, "ログインしました", Toast.LENGTH_LONG).show()
+    }
+
+    private fun getSessionKey(): String {
+        val data = getSharedPreferences("DATA", Context.MODE_PRIVATE)
+        return data.getString("SessionKey", "")
     }
 
     companion object {
