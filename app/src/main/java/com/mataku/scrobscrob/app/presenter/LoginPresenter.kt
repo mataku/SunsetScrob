@@ -28,6 +28,7 @@ class LoginPresenter(var view: LoginViewCallback) {
     fun backToSettingsWhenLoggedIn(success: Boolean?, sessionKey: String) {
         if (success!! && sessionKey.isNotEmpty()) {
             view.showSuccessMessage()
+            view.backToSettingsActivity()
         } else {
             view.focusOnPasswordView()
         }

@@ -5,10 +5,7 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.annotation.TargetApi
 import android.app.LoaderManager.LoaderCallbacks
-import android.content.Context
-import android.content.CursorLoader
-import android.content.Loader
-import android.content.SharedPreferences
+import android.content.*
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.net.Uri
@@ -287,7 +284,12 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, LoginViewCal
 
     override fun showSuccessMessage() {
         Toast.makeText(this, "ログインしました", Toast.LENGTH_LONG).show()
+    }
+
+    override fun backToSettingsActivity() {
         finish()
+        var intent = Intent(applicationContext, SettingsActivity::class.java)
+        startActivity(intent)
     }
 
     override fun focusOnPasswordView() {
