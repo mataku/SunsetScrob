@@ -24,8 +24,8 @@ class MainActivity : AppCompatActivity(), MainViewCallback {
             sharedPreferences.edit().clear().apply()
         }
         super.onCreate(savedInstanceState)
-        mainPresenter = MainPresenter(this)
-        mainPresenter.showPreparationMenuIfNeeded(isEnabledReadNotification())
+//        mainPresenter = MainPresenter(this)
+//        mainPresenter.showPreparationMenuIfNeeded(isEnabledReadNotification())
 //        setContentView(R.layout.activity_main)
 //        val filter: IntentFilter = IntentFilter()
 //        filter.addAction("AppleMusic")
