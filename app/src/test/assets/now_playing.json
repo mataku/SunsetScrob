@@ -1,0 +1,24 @@
+{
+  "nowplaying": {
+    "artist": {
+      "corrected": "0",
+      "#text": "PassCode"
+    },
+    "ignoredMessage": {
+      "code": "0",
+      "#text": ""
+    },
+    "album": {
+      "corrected": "0",
+      "#text": "MISS UNLIMITED - EP"
+    },
+    "albumArtist": {
+      "corrected": "0",
+      "#text": ""
+    },
+    "track": {
+      "corrected": "0",
+      "#text": "TRACE"
+    }
+  }
+}
