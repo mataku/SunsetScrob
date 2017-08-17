@@ -5,7 +5,6 @@ import android.content.pm.PackageManager
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.util.Log
-import com.mataku.scrobscrob.app.model.Track
 
 
 class AppleMusicNotificationService : NotificationListenerService() {
@@ -37,9 +36,9 @@ class AppleMusicNotificationService : NotificationListenerService() {
 
         val extra = sbn.notification.extras
 
-        // song name
+        // track name
         // Format: android.title=songName
-        val name = extra.get("android.title").toString()
+        val trackName = extra.get("android.title").toString()
 
         // artist name and album name
         // Format: android.text=artistName - albumName
@@ -50,10 +49,13 @@ class AppleMusicNotificationService : NotificationListenerService() {
         val array = albumInfo.toString().split("—".toRegex(), 2).dropLastWhile { it.isEmpty() }.toTypedArray()
         val artistName = array[0].trim()
         val albumName = array[1].trim()
-        val track = Track(artistName, name, albumName)
 
         var intent: Intent = Intent("AppleMusic")
-        intent.putExtra("message", "Yes!!!")
+        intent.putExtra("artistName", artistName)
+        intent.putExtra("trackName", trackName)
+        intent.putExtra("albumName", albumName)
+        // TODO: track.getInfo
+        intent.putExtra("playingTime", 300000)
         sendBroadcast(intent)
     }
 
@@ -62,7 +64,6 @@ class AppleMusicNotificationService : NotificationListenerService() {
         super.onNotificationRemoved(sbn)
 
         var intent: Intent = Intent("AppleMusic")
-        intent.putExtra("message", "Yes!!!")
         sendBroadcast(intent)
     }
 }
