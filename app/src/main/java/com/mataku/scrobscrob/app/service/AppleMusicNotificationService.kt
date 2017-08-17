@@ -55,7 +55,7 @@ class AppleMusicNotificationService : NotificationListenerService() {
         intent.putExtra("trackName", trackName)
         intent.putExtra("albumName", albumName)
         // TODO: track.getInfo
-        intent.putExtra("playingTime", 300000)
+        intent.putExtra("playingTime", 300000.toLong())
         sendBroadcast(intent)
     }
 
