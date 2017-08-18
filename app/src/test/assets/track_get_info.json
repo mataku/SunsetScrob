@@ -1,0 +1,20 @@
+{
+  "track": {
+    "name": "Insanity",
+    "url": "https://www.last.fm/music/PassCode/_/Insanity",
+    "duration": "209000",
+    "streamable": {
+      "#text": "0",
+      "fulltrack": "0"
+    },
+    "listeners": "86",
+    "playcount": "451",
+    "artist": {
+      "name": "PassCode",
+      "url": "https://www.last.fm/music/PassCode"
+    },
+    "toptags": {
+      "tag": []
+    }
+  }
+}
