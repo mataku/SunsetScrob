@@ -1,4 +1,4 @@
-package com.mataku.scrobscrob.app.service
+package com.mataku.scrobscrob.app.receiver
 
 import android.content.BroadcastReceiver
 import android.content.Context
