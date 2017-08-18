@@ -1,6 +1,5 @@
 package com.mataku.scrobscrob.app.presenter
 
-import android.util.Log
 import com.mataku.scrobscrob.app.model.Track
 import com.mataku.scrobscrob.app.model.api.Retrofit2LastFmClient
 import com.mataku.scrobscrob.app.model.entity.TrackInfoApiResponse
@@ -18,7 +17,6 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
 
     fun getTrackInfo(track: Track) {
         if (trackName == track.name) {
-            Log.i("Notification", "Same track!")
             return
         }
         val client = Retrofit2LastFmClient.createService()
@@ -37,18 +35,16 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
                         val playingTime = body?.trackInfo?.duration!!.toLong()
                         track.playingTime = playingTime
                         notificationServiceInterface.sendTrackInfoToReceiver(track)
-                        println(track.playingTime)
                     } else {
-                        Log.i("TrackInfoApi", "No such song!")
                         notificationServiceInterface.sendTrackInfoToReceiver(track)
                     }
                 } else {
-                    Log.i("Notification", "Failed to get track info")
+
                 }
             }
 
             override fun onFailure(call: Call<TrackInfoApiResponse>?, t: Throwable?) {
-                Log.i("Notification", "Failure")
+
             }
         })
     }

@@ -2,7 +2,6 @@ package com.mataku.scrobscrob.app.presenter
 
 import android.content.Intent
 import android.util.Log
-import com.mataku.scrobscrob.BuildConfig
 import com.mataku.scrobscrob.app.model.Track
 import com.mataku.scrobscrob.app.model.api.Retrofit2LastFmClient
 import com.mataku.scrobscrob.app.model.entity.NowPlayingApiResponse
@@ -25,12 +24,10 @@ class AppleMusicNotificationReceiverPresenter(var notificationInterface: Notific
             val newTrack = createTrack(intent)
             setNowPlaying(newTrack, sessionKey)
             notificationInterface.updateCurrentTrack(intent)
-            Log.i("NowPlaying", "Sent!")
         } else if (track.name != newTrackName) {
             val newTrack = createTrack(intent)
             setNowPlaying(newTrack, sessionKey)
             notificationInterface.updateCurrentTrack(intent)
-            Log.i("NowPlaying", "Sent!")
         } else {
             // Do nothing
         }
