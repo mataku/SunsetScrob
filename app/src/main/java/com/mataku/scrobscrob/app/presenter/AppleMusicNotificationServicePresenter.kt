@@ -14,14 +14,20 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
 
     private val settings = Settings()
     private val apiKey = settings.apiKey
+    private var trackName: String? = null
 
     fun getTrackInfo(track: Track) {
+        if (trackName == track.name) {
+            Log.i("Notification", "Same track!")
+            return
+        }
         val client = Retrofit2LastFmClient.createService()
         val call = client.getTrackInfo(
                 track.artistName,
                 track.name,
                 apiKey
         )
+        trackName = track.name
 
         call.enqueue(object : Callback<TrackInfoApiResponse> {
             override fun onResponse(call: Call<TrackInfoApiResponse>?, response: Response<TrackInfoApiResponse>?) {
