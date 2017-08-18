@@ -34,12 +34,10 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
                         val body = response.body()
                         val playingTime = body?.trackInfo?.duration!!.toLong()
                         track.playingTime = playingTime
-                        notificationServiceInterface.sendTrackInfoToReceiver(track)
-                    } else {
-                        notificationServiceInterface.sendTrackInfoToReceiver(track)
                     }
+                    notificationServiceInterface.sendTrackInfoToReceiver(track)
                 } else {
-
+                    // Do nothing
                 }
             }
 
