@@ -27,7 +27,6 @@ local.properties
 .idea/vcs.xml
 *.iml
 .env
-gradle.properties
 
 # OS-specific files
 .DS_Store
