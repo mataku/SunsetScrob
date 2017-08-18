@@ -12,7 +12,7 @@ import android.view.MenuItem
 import com.mataku.scrobscrob.BuildConfig
 import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.app.presenter.MainPresenter
-import com.mataku.scrobscrob.app.service.AppleMusicNotificationReceiver
+import com.mataku.scrobscrob.app.receiver.AppleMusicNotificationReceiver
 import com.mataku.scrobscrob.app.ui.view.MainViewCallback
 
 class MainActivity : AppCompatActivity(), MainViewCallback {
