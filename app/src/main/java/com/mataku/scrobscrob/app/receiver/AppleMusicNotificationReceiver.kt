@@ -3,19 +3,23 @@ package com.mataku.scrobscrob.app.receiver
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import com.mataku.scrobscrob.app.model.Track
 import com.mataku.scrobscrob.app.presenter.AppleMusicNotificationReceiverPresenter
 import com.mataku.scrobscrob.app.ui.view.NotificationInterface
+import com.mataku.scrobscrob.app.util.Settings
 
 class AppleMusicNotificationReceiver : BroadcastReceiver(), NotificationInterface {
     var track: Track? = null
+    var appSettings = Settings()
 
     override fun onReceive(context: Context, intent: Intent) {
         val presenter = AppleMusicNotificationReceiverPresenter(this)
         val sharedPreferences = context.getSharedPreferences("DATA", Context.MODE_PRIVATE)
         val sessionKey = sharedPreferences.getString("SessionKey", "")
 
-        if (sessionKey.isEmpty()) {
+        if (!(!sessionKey.isEmpty() && intent.action == "AppleMusic")) {
+            Log.i("Notification", "Not Apple music notification")
             return
         }
 
@@ -26,8 +30,9 @@ class AppleMusicNotificationReceiver : BroadcastReceiver(), NotificationInterfac
         val artistName = intent.getStringExtra("artistName")
         val trackName = intent.getStringExtra("trackName")
         val albumName = intent.getStringExtra("albumName")
-        // TODO: track.getInfo
-        val playingTime = intent.getLongExtra("playingTime", 0.toLong())
-        track = Track(artistName, trackName, albumName, playingTime)
+        val playingTime = intent.getLongExtra("playingTime", appSettings.defaultPlayingTime)
+        val timeStamp = intent.getLongExtra("timeStamp", System.currentTimeMillis())
+
+        track = Track(artistName, trackName, albumName, playingTime, timeStamp)
     }
 }
