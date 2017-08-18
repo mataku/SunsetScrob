@@ -135,7 +135,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, LoginViewCal
             focusView = userNameView
             cancel = true
         } else if (!isUserNameValid(email)) {
-            userNameView!!.error = getString(R.string.error_invalid_email)
+            userNameView!!.error = getString(R.string.error_invalid_user_name)
             focusView = userNameView
             cancel = true
         }

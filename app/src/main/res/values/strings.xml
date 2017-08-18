@@ -1,17 +1,17 @@
 <resources>
     <string name="app_name">ScrobScrob</string>
-    <string name="login_to_last_fm">Last.fm へログイン</string>
+    <string name="login_to_last_fm">Log in to Last.fm</string>
     <string name="preference_title">Preferences</string>
     <string name="activity_login_title">Log in to Last.fm</string>
     <string name="enable_notification_access">Enable Notification Access</string>
-    <string name="enable_notification_access_summary">Apple Music の曲情報取得のため、通知へのアクセスが必要です</string>
+    <string name="enable_notification_access_summary">Required for scrobbling from Apple Music</string>
 
     <!-- Strings related to login -->
-    <string name="prompt_email">User Name</string>
+    <string name="prompt_user_name">User Name</string>
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in</string>
     <string name="action_sign_in_short">Sign in</string>
-    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_user_name">This user name is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
