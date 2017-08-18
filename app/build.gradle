@@ -11,8 +11,10 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        buildConfigField 'String', 'API_KEY', project.API_KEY
-        buildConfigField 'String', 'SHARED_SECRET', project.SHARED_SECRET
+        def properties = new Properties()
+        properties.load(project.rootProject.file('local.properties').newDataInputStream())
+        buildConfigField 'String', 'API_KEY', properties.API_KEY
+        buildConfigField 'String', 'SHARED_SECRET', properties.SHARED_SECRET
     }
     buildTypes {
         release {
