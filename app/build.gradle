@@ -40,7 +40,8 @@ dependencies {
     compile 'com.android.support:design:24.2.1'
     compile 'com.jakewharton:butterknife:8.8.1'
     compile 'com.google.code.gson:gson:2.7'
-    compile 'com.squareup.okhttp3:logging-interceptor:3.3.1'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
+    compile 'com.squareup.okhttp3:okhttp:3.4.1'
     compile 'io.reactivex.rxjava2:rxjava:2.1.2'
     compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
 
