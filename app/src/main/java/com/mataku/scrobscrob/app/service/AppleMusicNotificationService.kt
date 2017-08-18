@@ -1,5 +1,6 @@
 package com.mataku.scrobscrob.app.service
 
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.service.notification.NotificationListenerService
@@ -8,11 +9,13 @@ import android.util.Log
 import com.mataku.scrobscrob.app.model.Track
 import com.mataku.scrobscrob.app.presenter.AppleMusicNotificationServicePresenter
 import com.mataku.scrobscrob.app.ui.view.NotificationServiceInterface
+import com.mataku.scrobscrob.app.util.Settings
 
 
 class AppleMusicNotificationService : NotificationListenerService(), NotificationServiceInterface {
     private val APPLE_MUSIC_PACKAGE_NAME = "com.apple.android.music"
     private val presenter = AppleMusicNotificationServicePresenter(this)
+    private val appSettings = Settings()
 
     override fun onCreate() {
         super.onCreate()
@@ -31,10 +34,17 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
     // ステータスバーに通知が更新される
     override fun onNotificationPosted(sbn: StatusBarNotification) {
         super.onNotificationPosted(sbn)
+        val sharedPreferences = getSharedPreferences("DATA", Context.MODE_PRIVATE)
+        val sessionKey = sharedPreferences.getString("SessionKey", "")
 
         // Ignore if not Apple Music APP
         if (sbn.packageName != APPLE_MUSIC_PACKAGE_NAME) {
             Log.i("Notification", "Not apple music notification")
+            return
+        }
+
+        // Do not request when not logged in
+        if (sessionKey.isEmpty()) {
             return
         }
 
@@ -55,12 +65,13 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
         val array = albumInfo.toString().split("—".toRegex(), 2).dropLastWhile { it.isEmpty() }.toTypedArray()
         val artistName = array[0].trim()
         val albumName = array[1].trim()
-        val playingTime = 300000.toLong()
+        val timeStamp = System.currentTimeMillis()
         val track = Track(
                 artistName,
                 trackName,
                 albumName,
-                playingTime
+                appSettings.defaultPlayingTime,
+                timeStamp
         )
         presenter.getTrackInfo(track)
     }
@@ -79,6 +90,7 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
         intent.putExtra("trackName", track.name)
         intent.putExtra("albumName", track.albumName)
         intent.putExtra("playingTime", track.playingTime)
+        intent.putExtra("timeStamp", track.timeStamp)
         sendBroadcast(intent)
     }
 }
