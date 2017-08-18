@@ -1,0 +1,31 @@
+{
+  "scrobbles": {
+    "@attr": {
+      "accepted": 1,
+      "ignored": 0
+    },
+    "scrobble": {
+      "artist": {
+        "corrected": "0",
+        "#text": "Power Music Workout"
+      },
+      "ignoredMessage": {
+        "code": "0",
+        "#text": ""
+      },
+      "albumArtist": {
+        "corrected": "0",
+        "#text": ""
+      },
+      "timestamp": "1502971625",
+      "album": {
+        "corrected": "0",
+        "#text": "55 Smash Hits! - Running Remixes, Vol. 3"
+      },
+      "track": {
+        "corrected": "0",
+        "#text": "See You Again (Workout Mix)"
+      }
+    }
+  }
+}
