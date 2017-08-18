@@ -5,10 +5,14 @@ import android.content.pm.PackageManager
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.util.Log
+import com.mataku.scrobscrob.app.model.Track
+import com.mataku.scrobscrob.app.presenter.AppleMusicNotificationServicePresenter
+import com.mataku.scrobscrob.app.ui.view.NotificationServiceInterface
 
 
-class AppleMusicNotificationService : NotificationListenerService() {
+class AppleMusicNotificationService : NotificationListenerService(), NotificationServiceInterface {
     private val APPLE_MUSIC_PACKAGE_NAME = "com.apple.android.music"
+    private val presenter = AppleMusicNotificationServicePresenter(this)
 
     override fun onCreate() {
         super.onCreate()
@@ -38,7 +42,9 @@ class AppleMusicNotificationService : NotificationListenerService() {
 
         // track name
         // Format: android.title=songName
-        val trackName = extra.get("android.title").toString()
+        val extraTitle = extra.get("android.title")
+        extraTitle ?: return
+        val trackName = extraTitle.toString()
 
         // artist name and album name
         // Format: android.text=artistName - albumName
@@ -49,21 +55,30 @@ class AppleMusicNotificationService : NotificationListenerService() {
         val array = albumInfo.toString().split("—".toRegex(), 2).dropLastWhile { it.isEmpty() }.toTypedArray()
         val artistName = array[0].trim()
         val albumName = array[1].trim()
-
-        var intent: Intent = Intent("AppleMusic")
-        intent.putExtra("artistName", artistName)
-        intent.putExtra("trackName", trackName)
-        intent.putExtra("albumName", albumName)
-        // TODO: track.getInfo
-        intent.putExtra("playingTime", 300000.toLong())
-        sendBroadcast(intent)
+        val playingTime = 300000.toLong()
+        val track = Track(
+                artistName,
+                trackName,
+                albumName,
+                playingTime
+        )
+        presenter.getTrackInfo(track)
     }
 
     // ステータスバーから通知が消去される
     override fun onNotificationRemoved(sbn: StatusBarNotification) {
         super.onNotificationRemoved(sbn)
 
-        var intent: Intent = Intent("AppleMusic")
+        val intent = Intent("AppleMusic")
+        sendBroadcast(intent)
+    }
+
+    override fun sendTrackInfoToReceiver(track: Track) {
+        val intent = Intent("AppleMusic")
+        intent.putExtra("artistName", track.artistName)
+        intent.putExtra("trackName", track.name)
+        intent.putExtra("albumName", track.albumName)
+        intent.putExtra("playingTime", track.playingTime)
         sendBroadcast(intent)
     }
 }

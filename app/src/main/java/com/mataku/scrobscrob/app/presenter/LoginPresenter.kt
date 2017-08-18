@@ -1,21 +1,20 @@
 package com.mataku.scrobscrob.app.presenter
 
-import com.mataku.scrobscrob.BuildConfig
 import com.mataku.scrobscrob.app.model.api.Retrofit2LastFmClient
 import com.mataku.scrobscrob.app.ui.view.LoginViewCallback
+import com.mataku.scrobscrob.app.util.Settings
 import java.math.BigInteger
 import java.security.MessageDigest
 
 class LoginPresenter(var view: LoginViewCallback) {
-    private val apiKey = BuildConfig.API_KEY
-    private val sharedSecret = BuildConfig.SHARED_SECRET
+    private val appSettings = Settings()
     private val method = "auth.getMobileSession"
     private val format = "json"
 
     fun authenticate(userName: String, password: String) {
         val apiSig: String = generateApiSig(userName, password)
         val client = Retrofit2LastFmClient.createService()
-        val call = client.authenticate(userName, password, apiKey, apiSig, format)
+        val call = client.authenticate(userName, password, appSettings.apiKey, apiSig, format)
         try {
             val response = call.execute()
             val mobileSession = response?.body()?.mobileSession
@@ -35,7 +34,7 @@ class LoginPresenter(var view: LoginViewCallback) {
     }
 
     private fun generateApiSig(userName: String, password: String): String {
-        val str = "api_key${apiKey}method${method}password${password}username${userName}${sharedSecret}"
+        val str = "api_key${appSettings.apiKey}method${method}password${password}username${userName}${appSettings.sharedSecret}"
         var md5Str = ""
         try {
             var strBytes: ByteArray = str.toByteArray(charset("UTF-8"))

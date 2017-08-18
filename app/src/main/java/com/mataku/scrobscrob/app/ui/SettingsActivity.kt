@@ -28,6 +28,15 @@ class SettingsActivity : PreferenceActivity(), SettingsViewCallback {
         val presenter = SettingsPresenter(this)
         presenter.setMessageAccordingToUserStatus(userName)
         presenter.setDestinationAccordingToUserStatus(userName)
+        notificationPreference = findPreference("notification")
+        notificationPreference.onPreferenceClickListener = object : Preference.OnPreferenceClickListener {
+            override fun onPreferenceClick(preference: Preference): Boolean {
+                val intent = Intent()
+                intent.action = Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS
+                startActivity(intent)
+                return true
+            }
+        }
     }
 
     override fun setMessageToLogIn() {
@@ -46,6 +55,7 @@ class SettingsActivity : PreferenceActivity(), SettingsViewCallback {
         loginPreference = findPreference("login")
         loginPreference.onPreferenceClickListener = object : Preference.OnPreferenceClickListener {
             override fun onPreferenceClick(preference: Preference): Boolean {
+                finish()
                 showSettingsActivity()
                 return true
             }

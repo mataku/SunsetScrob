@@ -2,6 +2,7 @@ package com.mataku.scrobscrob.app.model.api.service
 
 import com.mataku.scrobscrob.app.model.entity.MobileSessionApiResponse
 import com.mataku.scrobscrob.app.model.entity.NowPlayingApiResponse
+import com.mataku.scrobscrob.app.model.entity.TrackInfoApiResponse
 import retrofit2.Call
 import retrofit2.http.Query
 
@@ -24,4 +25,11 @@ interface LastFmService {
             @Query("api_sig") apiSig: String,
             @Query("sk") sessionKey: String
     ): Call<NowPlayingApiResponse>
+
+    @retrofit2.http.GET("/2.0/?method=track.getInfo&format=json")
+    fun getTrackInfo(
+            @Query("artist") artist: String,
+            @Query("track") track: String,
+            @Query("api_key") api_key: String
+    ): Call<TrackInfoApiResponse>
 }

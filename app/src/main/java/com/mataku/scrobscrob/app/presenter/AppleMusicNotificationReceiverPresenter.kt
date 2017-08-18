@@ -2,11 +2,11 @@ package com.mataku.scrobscrob.app.presenter
 
 import android.content.Intent
 import android.util.Log
-import com.mataku.scrobscrob.BuildConfig
 import com.mataku.scrobscrob.app.model.Track
 import com.mataku.scrobscrob.app.model.api.Retrofit2LastFmClient
 import com.mataku.scrobscrob.app.model.entity.NowPlayingApiResponse
 import com.mataku.scrobscrob.app.ui.view.NotificationInterface
+import com.mataku.scrobscrob.app.util.Settings
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -14,8 +14,7 @@ import java.math.BigInteger
 import java.security.MessageDigest
 
 class AppleMusicNotificationReceiverPresenter(var notificationInterface: NotificationInterface) {
-    private val apiKey = BuildConfig.API_KEY
-    private val sharedSecret = BuildConfig.SHARED_SECRET
+    private val appSettings = Settings()
     private val method = "track.updateNowPlaying"
 
     fun setNowPlayingIfDifferentTrack(track: Track?, intent: Intent, sessionKey: String) {
@@ -25,12 +24,10 @@ class AppleMusicNotificationReceiverPresenter(var notificationInterface: Notific
             val newTrack = createTrack(intent)
             setNowPlaying(newTrack, sessionKey)
             notificationInterface.updateCurrentTrack(intent)
-            Log.i("NowPlaying", "Sent!")
         } else if (track.name != newTrackName) {
             val newTrack = createTrack(intent)
             setNowPlaying(newTrack, sessionKey)
             notificationInterface.updateCurrentTrack(intent)
-            Log.i("NowPlaying", "Sent!")
         } else {
             // Do nothing
         }
@@ -43,7 +40,7 @@ class AppleMusicNotificationReceiverPresenter(var notificationInterface: Notific
                 track.artistName,
                 track.name,
                 track.albumName,
-                apiKey,
+                appSettings.apiKey,
                 apiSig,
                 sessionKey
         )
@@ -66,7 +63,7 @@ class AppleMusicNotificationReceiverPresenter(var notificationInterface: Notific
     }
 
     private fun generateApiSig(sessionKey: String, track: Track): String {
-        val str = "api_key${apiKey}method${method}sk${sessionKey}track${track.name}artist${track.artistName}album${track.albumName}${sharedSecret}"
+        val str = "api_key${appSettings.apiKey}method${method}sk${sessionKey}track${track.name}artist${track.artistName}album${track.albumName}${appSettings.sharedSecret}"
         var md5Str = ""
         try {
             var strBytes: ByteArray = str.toByteArray(charset("UTF-8"))
