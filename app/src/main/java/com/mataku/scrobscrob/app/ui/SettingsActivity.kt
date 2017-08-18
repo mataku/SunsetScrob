@@ -55,6 +55,7 @@ class SettingsActivity : PreferenceActivity(), SettingsViewCallback {
         loginPreference = findPreference("login")
         loginPreference.onPreferenceClickListener = object : Preference.OnPreferenceClickListener {
             override fun onPreferenceClick(preference: Preference): Boolean {
+                finish()
                 showSettingsActivity()
                 return true
             }
