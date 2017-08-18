@@ -42,7 +42,9 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
 
         // track name
         // Format: android.title=songName
-        val trackName = extra.get("android.title").toString()
+        val extraTitle = extra.get("android.title")
+        extraTitle ?: return
+        val trackName = extraTitle.toString()
 
         // artist name and album name
         // Format: android.text=artistName - albumName
