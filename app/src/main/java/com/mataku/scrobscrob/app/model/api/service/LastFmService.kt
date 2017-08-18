@@ -2,8 +2,12 @@ package com.mataku.scrobscrob.app.model.api.service
 
 import com.mataku.scrobscrob.app.model.entity.MobileSessionApiResponse
 import com.mataku.scrobscrob.app.model.entity.NowPlayingApiResponse
+import com.mataku.scrobscrob.app.model.entity.ScrobblesApiResponse
 import com.mataku.scrobscrob.app.model.entity.TrackInfoApiResponse
 import retrofit2.Call
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
+import retrofit2.http.POST
 import retrofit2.http.Query
 
 interface LastFmService {
@@ -16,14 +20,15 @@ interface LastFmService {
             @Query("format") format: String
     ): Call<MobileSessionApiResponse>
 
-    @retrofit2.http.POST("/2.0/?method=track.updateNowPlaying&format=json")
+    @FormUrlEncoded
+    @POST("/2.0/?method=track.updateNowPlaying&format=json")
     fun updateNowPlaying(
-            @Query("artist") artist: String,
-            @Query("track") trackName: String,
-            @Query("album") albumName: String,
-            @Query("api_key") apiKey: String,
-            @Query("api_sig") apiSig: String,
-            @Query("sk") sessionKey: String
+            @Field("artist") artist: String,
+            @Field("track") trackName: String,
+            @Field("album") albumName: String,
+            @Field("api_key") apiKey: String,
+            @Field("api_sig") apiSig: String,
+            @Field("sk") sessionKey: String
     ): Call<NowPlayingApiResponse>
 
     @retrofit2.http.GET("/2.0/?method=track.getInfo&format=json")
@@ -32,4 +37,16 @@ interface LastFmService {
             @Query("track") track: String,
             @Query("api_key") api_key: String
     ): Call<TrackInfoApiResponse>
+
+    // TODO: multi track scrobbling
+    @retrofit2.http.POST("/2.0/?method=track.scrobble&format=json")
+    fun scrobble(
+            @Query("artist[0]") artist: String,
+            @Query("track[0]") track: String,
+            @Query("timestamp[0]") timeStamp: Long,
+            @Query("album[0]") albumName: String,
+            @Query("api_key") apiKey: String,
+            @Query("api_sig") apiSig: String,
+            @Query("sk") sessionKey: String
+    ): Call<ScrobblesApiResponse>
 }
