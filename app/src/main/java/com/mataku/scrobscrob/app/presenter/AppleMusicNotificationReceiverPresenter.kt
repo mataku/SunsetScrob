@@ -52,8 +52,6 @@ class AppleMusicNotificationReceiverPresenter(var notificationInterface: Notific
         call.enqueue(object : Callback<NowPlayingApiResponse> {
             override fun onResponse(call: Call<NowPlayingApiResponse>?, response: Response<NowPlayingApiResponse>?) {
                 if (response!!.isSuccessful) {
-                    val body = response.body()
-                    System.out.println(body)
                     Log.i("NowPlayingApi", "Success to update NowPlaying")
                 } else {
                     Log.i("NowPlayingApi", "Something wrong")
@@ -82,11 +80,10 @@ class AppleMusicNotificationReceiverPresenter(var notificationInterface: Notific
 
         call.enqueue(object : Callback<ScrobblesApiResponse> {
             override fun onResponse(call: Call<ScrobblesApiResponse>?, response: Response<ScrobblesApiResponse>?) {
-                if (response!!.isSuccessful) {
+                if (response!!.isSuccessful && response.body() != null && response.body()!!.scrobbles.attr.accepted == 1) {
                     Log.i("ScrobblingApi", "Success")
                 } else {
                     Log.i("ScrobblingApi", "Something went wrong")
-                    println(response.errorBody()?.string())
                 }
             }
 
