@@ -5,5 +5,6 @@ data class Track(
         var name: String,
         var albumName: String,
         var playingTime: Long,
-        var timeStamp: Long
+        var timeStamp: Long,
+        var albumArtWork: String
 )
