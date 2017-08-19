@@ -88,5 +88,9 @@ class AppleMusicNotificationReceiverPresenter(var notificationInterface: Notific
         return Track(artistName, trackName, albumName, playingTime, timeStamp)
     }
 
-
+    private fun overScrobblingPoint(timeStamp: Long, playingTime: Long): Boolean {
+        val now = System.currentTimeMillis()
+        val scrobblingPoint = playingTime / 2
+        return (now - timeStamp) > scrobblingPoint
+    }
 }
