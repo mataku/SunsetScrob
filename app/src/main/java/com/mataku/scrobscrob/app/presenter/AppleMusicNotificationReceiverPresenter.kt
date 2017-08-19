@@ -5,6 +5,7 @@ import android.util.Log
 import com.mataku.scrobscrob.app.model.Track
 import com.mataku.scrobscrob.app.model.api.Retrofit2LastFmClient
 import com.mataku.scrobscrob.app.model.entity.NowPlayingApiResponse
+import com.mataku.scrobscrob.app.model.entity.ScrobblesApiResponse
 import com.mataku.scrobscrob.app.ui.view.NotificationInterface
 import com.mataku.scrobscrob.app.util.Settings
 import retrofit2.Call
@@ -15,6 +16,7 @@ import java.security.MessageDigest
 class AppleMusicNotificationReceiverPresenter(var notificationInterface: NotificationInterface) {
     private val appSettings = Settings()
     private val nowPlayingMethod = "track.updateNowPlaying"
+    private val scrobbleMethod = "track.scrobble"
 
     fun setNowPlayingIfDifferentTrack(track: Track?, intent: Intent, sessionKey: String) {
         val newTrackName = intent.getStringExtra("trackName")
@@ -27,6 +29,9 @@ class AppleMusicNotificationReceiverPresenter(var notificationInterface: Notific
             val newTrack = createTrack(intent)
             setNowPlaying(newTrack, sessionKey)
             notificationInterface.updateCurrentTrack(intent)
+            if (overScrobblingPoint(track.timeStamp, track.playingTime)) {
+                scrobble(track, sessionKey)
+            }
         } else {
             // Do nothing
         }
@@ -62,9 +67,62 @@ class AppleMusicNotificationReceiverPresenter(var notificationInterface: Notific
         })
     }
 
+    private fun scrobble(track: Track, sessionKey: String) {
+        val apiSig = generateScrobblingApiSig(sessionKey, track)
+        val client = Retrofit2LastFmClient.createService()
+        val call = client.scrobble(
+                track.artistName,
+                track.name,
+                track.timeStamp,
+                track.albumName,
+                appSettings.apiKey,
+                apiSig,
+                sessionKey
+        )
+
+        call.enqueue(object : Callback<ScrobblesApiResponse> {
+            override fun onResponse(call: Call<ScrobblesApiResponse>?, response: Response<ScrobblesApiResponse>?) {
+                if (response!!.isSuccessful) {
+                    Log.i("ScrobblingApi", "Success")
+                } else {
+                    Log.i("ScrobblingApi", "Something went wrong")
+                    println(response.errorBody()?.string())
+                }
+            }
+
+            override fun onFailure(call: Call<ScrobblesApiResponse>?, t: Throwable?) {
+                Log.i("ScrobblingApi", "Failure")
+            }
+        })
+    }
+
     private fun generateApiSig(sessionKey: String, track: Track): String {
         var str = "album${track.albumName}api_key${appSettings.apiKey}artist${track.artistName}method${nowPlayingMethod}"
         str += "sk${sessionKey}track${track.name}${appSettings.sharedSecret}"
+        val md = MessageDigest.getInstance("MD5")
+        val data = str.toByteArray()
+        md.update(data)
+        val digest = md.digest()
+        val stringBuilder = StringBuilder()
+        digest.indices.forEach { i ->
+            val b = (0xFF and digest[i].toInt())
+            if (b < 16)
+                stringBuilder.append("0")
+            stringBuilder.append(Integer.toHexString(b))
+        }
+        return stringBuilder.toString()
+    }
+
+    private fun generateScrobblingApiSig(sessionKey: String, track: Track): String {
+        var str = "album[0]${track.albumName}"
+        str += "api_key${appSettings.apiKey}"
+        str += "artist[0]${track.artistName}"
+        str += "method${scrobbleMethod}"
+        str += "sk${sessionKey}"
+        str += "timestamp[0]${track.timeStamp}"
+        str += "track[0]${track.name}"
+        str += appSettings.sharedSecret
+
         val md = MessageDigest.getInstance("MD5")
         val data = str.toByteArray()
         md.update(data)
@@ -84,12 +142,12 @@ class AppleMusicNotificationReceiverPresenter(var notificationInterface: Notific
         val trackName = intent.getStringExtra("trackName")
         val albumName = intent.getStringExtra("albumName")
         val playingTime = intent.getLongExtra("playingTime", appSettings.defaultPlayingTime)
-        val timeStamp = intent.getLongExtra("timeStamp", System.currentTimeMillis())
+        val timeStamp = intent.getLongExtra("timeStamp", System.currentTimeMillis() / 1000L)
         return Track(artistName, trackName, albumName, playingTime, timeStamp)
     }
 
     private fun overScrobblingPoint(timeStamp: Long, playingTime: Long): Boolean {
-        val now = System.currentTimeMillis()
+        val now = System.currentTimeMillis() / 1000L
         val scrobblingPoint = playingTime / 2
         return (now - timeStamp) > scrobblingPoint
     }
