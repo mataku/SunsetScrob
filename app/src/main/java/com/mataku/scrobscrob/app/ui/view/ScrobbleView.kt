@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
+import com.bumptech.glide.Glide
 import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.app.model.Scrobble
 
@@ -43,14 +44,14 @@ class ScrobbleView : FrameLayout {
     }
 
     init {
-        LayoutInflater.from(context).inflate(R.layout.view_scrob, this)
+        LayoutInflater.from(context).inflate(R.layout.view_scrobble, this)
     }
 
     fun setScrobble(scrobble: Scrobble) {
         trackArtistView?.text = scrobble.artistName
         trackNameView?.text = scrobble.trackName
         if (scrobble.artwork != null) {
-
+            Glide.with(context).load(scrobble.artwork).into(artWorkView)
         }
     }
 }
