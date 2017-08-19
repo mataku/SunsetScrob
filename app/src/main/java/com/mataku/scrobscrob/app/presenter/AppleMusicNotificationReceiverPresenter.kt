@@ -2,12 +2,15 @@ package com.mataku.scrobscrob.app.presenter
 
 import android.content.Intent
 import android.util.Log
+import com.mataku.scrobscrob.app.model.Scrobble
 import com.mataku.scrobscrob.app.model.Track
 import com.mataku.scrobscrob.app.model.api.Retrofit2LastFmClient
+import com.mataku.scrobscrob.app.model.entity.AlbumInfoApiResponse
 import com.mataku.scrobscrob.app.model.entity.NowPlayingApiResponse
 import com.mataku.scrobscrob.app.model.entity.ScrobblesApiResponse
 import com.mataku.scrobscrob.app.ui.view.NotificationInterface
 import com.mataku.scrobscrob.app.util.Settings
+import io.realm.Realm
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -52,7 +55,7 @@ class AppleMusicNotificationReceiverPresenter(var notificationInterface: Notific
         call.enqueue(object : Callback<NowPlayingApiResponse> {
             override fun onResponse(call: Call<NowPlayingApiResponse>?, response: Response<NowPlayingApiResponse>?) {
                 if (response!!.isSuccessful) {
-                    Log.i("NowPlayingApi", "Success to update NowPlaying")
+
                 } else {
                     Log.i("NowPlayingApi", "Something wrong")
                     println(response.errorBody()?.string())
@@ -81,7 +84,16 @@ class AppleMusicNotificationReceiverPresenter(var notificationInterface: Notific
         call.enqueue(object : Callback<ScrobblesApiResponse> {
             override fun onResponse(call: Call<ScrobblesApiResponse>?, response: Response<ScrobblesApiResponse>?) {
                 if (response!!.isSuccessful && response.body() != null && response.body()!!.scrobbles.attr.accepted == 1) {
-                    Log.i("ScrobblingApi", "Success")
+                    var realm = Realm.getDefaultInstance();
+                    realm.executeTransaction {
+                        var scrobble = realm.createObject(Scrobble::class.java, Scrobble().count() + 1)
+                        scrobble.albumName = track.albumName
+                        scrobble.artistName = track.artistName
+                        scrobble.artwork = track.albumArtWork
+                        scrobble.timeStamp = track.timeStamp
+                        scrobble.trackName = track.name
+                    }
+
                 } else {
                     Log.i("ScrobblingApi", "Something went wrong")
                 }
@@ -91,6 +103,33 @@ class AppleMusicNotificationReceiverPresenter(var notificationInterface: Notific
                 Log.i("ScrobblingApi", "Failure")
             }
         })
+    }
+
+    fun getAlbumInfo(albumName: String, artistName: String, trackName: String): String {
+        val client = Retrofit2LastFmClient.createService()
+        val call = client.getAlbumInfo(
+                albumName,
+                artistName,
+                trackName,
+                appSettings.apiKey
+        )
+
+        var mediumSizeUrl = ""
+
+        call.enqueue(object : Callback<AlbumInfoApiResponse> {
+            override fun onResponse(call: Call<AlbumInfoApiResponse>?, response: Response<AlbumInfoApiResponse>?) {
+                if (response!!.isSuccessful && response.body() != null) {
+                    mediumSizeUrl = response.body()!!.albumInfo.imageList[1].imageUrl
+                } else {
+                    Log.i("AlbumInfoApi", "Something went wrong")
+                }
+            }
+
+            override fun onFailure(call: Call<AlbumInfoApiResponse>?, t: Throwable?) {
+                Log.i("AlbumInfoApi", "Failure")
+            }
+        })
+        return mediumSizeUrl
     }
 
     private fun generateApiSig(sessionKey: String, track: Track): String {
@@ -140,7 +179,8 @@ class AppleMusicNotificationReceiverPresenter(var notificationInterface: Notific
         val albumName = intent.getStringExtra("albumName")
         val playingTime = intent.getLongExtra("playingTime", appSettings.defaultPlayingTime)
         val timeStamp = intent.getLongExtra("timeStamp", System.currentTimeMillis() / 1000L)
-        return Track(artistName, trackName, albumName, playingTime, timeStamp)
+        val albumArtWork = getAlbumInfo(albumName, artistName, trackName)
+        return Track(artistName, trackName, albumName, playingTime, timeStamp, albumArtWork)
     }
 
     private fun overScrobblingPoint(timeStamp: Long, playingTime: Long): Boolean {
