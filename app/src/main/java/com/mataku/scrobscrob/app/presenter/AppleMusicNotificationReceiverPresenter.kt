@@ -69,14 +69,14 @@ class AppleMusicNotificationReceiverPresenter(var notificationInterface: Notific
         val data = str.toByteArray()
         md.update(data)
         val digest = md.digest()
-        val sb = StringBuilder()
+        val stringBuilder = StringBuilder()
         digest.indices.forEach { i ->
             val b = (0xFF and digest[i].toInt())
             if (b < 16)
-                sb.append("0")
-            sb.append(Integer.toHexString(b))
+                stringBuilder.append("0")
+            stringBuilder.append(Integer.toHexString(b))
         }
-        return sb.toString()
+        return stringBuilder.toString()
     }
 
     private fun createTrack(intent: Intent): Track {
