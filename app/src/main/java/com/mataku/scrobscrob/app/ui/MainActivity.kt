@@ -100,6 +100,7 @@ class MainActivity : AppCompatActivity(), MainViewCallback {
         return false
     }
 
+    // TODO: あとで消す
     private fun dummyScrobbles(): List<Scrobble> {
         var list = ArrayList<Scrobble>()
 
