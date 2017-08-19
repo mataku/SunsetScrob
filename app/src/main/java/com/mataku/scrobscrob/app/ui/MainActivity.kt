@@ -9,7 +9,6 @@ import android.provider.Settings
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import com.mataku.scrobscrob.BuildConfig
 import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.app.presenter.MainPresenter
 import com.mataku.scrobscrob.app.receiver.AppleMusicNotificationReceiver
@@ -21,9 +20,9 @@ class MainActivity : AppCompatActivity(), MainViewCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val sharedPreferences: SharedPreferences = getSharedPreferences("DATA", Context.MODE_PRIVATE)
-        if (BuildConfig.DEBUG) {
-            sharedPreferences.edit().clear().apply()
-        }
+//        if (BuildConfig.DEBUG) {
+//            sharedPreferences.edit().clear().apply()
+//        }
         super.onCreate(savedInstanceState)
 //        mainPresenter = MainPresenter(this)
 //        mainPresenter.showPreparationMenuIfNeeded(isEnabledReadNotification())
