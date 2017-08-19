@@ -31,7 +31,7 @@ class AppleMusicNotificationReceiver : BroadcastReceiver(), NotificationInterfac
         val trackName = intent.getStringExtra("trackName")
         val albumName = intent.getStringExtra("albumName")
         val playingTime = intent.getLongExtra("playingTime", appSettings.defaultPlayingTime)
-        val timeStamp = intent.getLongExtra("timeStamp", System.currentTimeMillis())
+        val timeStamp = intent.getLongExtra("timeStamp", System.currentTimeMillis() / 1000L)
 
         track = Track(artistName, trackName, albumName, playingTime, timeStamp)
     }
