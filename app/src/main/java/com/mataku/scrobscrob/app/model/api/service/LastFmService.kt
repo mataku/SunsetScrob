@@ -39,14 +39,15 @@ interface LastFmService {
     ): Call<TrackInfoApiResponse>
 
     // TODO: multi track scrobbling
+    @FormUrlEncoded
     @retrofit2.http.POST("/2.0/?method=track.scrobble&format=json")
     fun scrobble(
-            @Query("artist[0]") artist: String,
-            @Query("track[0]") track: String,
-            @Query("timestamp[0]") timeStamp: Long,
-            @Query("album[0]") albumName: String,
-            @Query("api_key") apiKey: String,
-            @Query("api_sig") apiSig: String,
-            @Query("sk") sessionKey: String
+            @Field("artist[0]") artist: String,
+            @Field("track[0]") track: String,
+            @Field("timestamp[0]") timeStamp: Long,
+            @Field("album[0]") albumName: String,
+            @Field("api_key") apiKey: String,
+            @Field("api_sig") apiSig: String,
+            @Field("sk") sessionKey: String
     ): Call<ScrobblesApiResponse>
 }
