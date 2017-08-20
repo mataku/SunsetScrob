@@ -18,4 +18,5 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="allow_notification_service_message">Allow AppleMusicNotificationService to access notification</string>
 </resources>

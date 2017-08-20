@@ -18,4 +18,5 @@
         completions."
     </string>
     <string name="error_invalid_user_name">ユーザ名が空です</string>
+    <string name="allow_notification_service_message">AppleMusicNotificationService に通知バーへのアクセスを許可してください</string>
 </resources>
