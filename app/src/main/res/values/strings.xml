@@ -18,6 +18,5 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-    <string name="activity_main_title">Latest 20 scrobbles</string>
     <string name="allow_notification_service_message">Allow AppleMusicNotificationService to access notification</string>
 </resources>

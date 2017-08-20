@@ -121,6 +121,6 @@ class SettingsActivity : PreferenceActivity(), SettingsViewCallback {
     }
 
     private fun showAllowServiceMessage() {
-        Toast.makeText(this, R.string.allow_notification_service_message, Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, R.string.allow_notification_service_message, Toast.LENGTH_LONG).show()
     }
 }
