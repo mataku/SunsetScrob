@@ -9,12 +9,11 @@ import java.security.MessageDigest
 class LoginPresenter(var view: LoginViewCallback) {
     private val appSettings = Settings()
     private val method = "auth.getMobileSession"
-    private val format = "json"
 
     fun authenticate(userName: String, password: String) {
         val apiSig: String = generateApiSig(userName, password)
         val client = Retrofit2LastFmClient.createService()
-        val call = client.authenticate(userName, password, appSettings.apiKey, apiSig, format)
+        val call = client.authenticate(userName, password, appSettings.apiKey, apiSig)
         try {
             val response = call.execute()
             val mobileSession = response?.body()?.mobileSession
