@@ -3,8 +3,6 @@ package com.mataku.scrobscrob.app.presenter
 import com.mataku.scrobscrob.app.model.api.Retrofit2LastFmClient
 import com.mataku.scrobscrob.app.ui.view.LoginViewCallback
 import com.mataku.scrobscrob.app.util.AppUtil
-import java.math.BigInteger
-import java.security.MessageDigest
 
 class LoginPresenter(var view: LoginViewCallback) {
     private val appUtil = AppUtil()
@@ -15,6 +13,7 @@ class LoginPresenter(var view: LoginViewCallback) {
         params["username"] = userName
         params["password"] = password
         params["method"] = method
+        params["api_key"] = appUtil.apiKey
 
         val apiSig: String = appUtil.generateApiSig(params)
         val client = Retrofit2LastFmClient.createService()

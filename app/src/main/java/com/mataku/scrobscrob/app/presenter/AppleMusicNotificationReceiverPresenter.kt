@@ -46,6 +46,8 @@ class AppleMusicNotificationReceiverPresenter(var notificationInterface: Notific
         params["album"] = track.albumName
         params["method"] = nowPlayingMethod
         params["sk"] = sessionKey
+        params["api_key"] = appUtil.apiKey
+
         val apiSig = appUtil.generateApiSig(params)
         val client = Retrofit2LastFmClient.createService()
         val call = client.updateNowPlaying(
@@ -81,6 +83,7 @@ class AppleMusicNotificationReceiverPresenter(var notificationInterface: Notific
         params["album[0]"] = track.albumName
         params["method"] = scrobbleMethod
         params["sk"] = sessionKey
+        params["api_key"] = appUtil.apiKey
 
         val apiSig = appUtil.generateApiSig(params)
         val client = Retrofit2LastFmClient.createService()
