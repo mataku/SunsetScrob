@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ListView
+import com.mataku.scrobscrob.BuildConfig
 import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.app.model.Scrobble
 import com.mataku.scrobscrob.app.presenter.MainPresenter
@@ -25,11 +26,14 @@ class MainActivity : AppCompatActivity(), MainViewCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val sharedPreferences: SharedPreferences = getSharedPreferences("DATA", Context.MODE_PRIVATE)
-//        if (BuildConfig.DEBUG) {
-//            sharedPreferences.edit().clear().apply()
-//        }
         super.onCreate(savedInstanceState)
         Realm.init(this)
+//        if (BuildConfig.DEBUG) {
+//            val realm = Realm.getDefaultInstance()
+//            realm.executeTransaction {
+//                realm.deleteAll()
+//            }
+//        }
         setContentView(R.layout.activity_main)
 //        mainPresenter = MainPresenter(this)
 //        mainPresenter.showPreparationMenuIfNeeded(isEnabledReadNotification())
