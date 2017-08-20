@@ -2,9 +2,10 @@ package com.mataku.scrobscrob.app.model.entity
 
 import com.google.gson.annotations.SerializedName
 
-data class Album(
-        val corrected: String,
-
+data class Image(
         @SerializedName("#text")
-        val text: String
+        val imageUrl: String,
+
+        @SerializedName("size")
+        val size: String
 )
