@@ -3,13 +3,13 @@ package com.mataku.scrobscrob.app.util
 import com.mataku.scrobscrob.BuildConfig
 import java.security.MessageDigest
 
-class AppSettings {
+class AppUtil {
     val apiKey = BuildConfig.API_KEY
     val sharedSecret = BuildConfig.SHARED_SECRET
     val defaultPlayingTime = 180.toLong()
     val latestCcrobbleCountToDisplay = 20
 
-    fun generateApiSig(sessionKey: String, params: MutableMap<String, String>): String {
+    fun generateApiSig(params: MutableMap<String, String>): String {
         var str = ""
         params["api_key"] = apiKey
         params.toSortedMap().forEach { k, v ->
