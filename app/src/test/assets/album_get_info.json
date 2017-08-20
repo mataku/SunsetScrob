@@ -1,0 +1,62 @@
+{
+  "album": {
+    "name": "Miss Unlimited",
+    "artist": "PassCode",
+    "url": "https://www.last.fm/music/PassCode/Miss+Unlimited",
+    "image": [
+      {
+        "#text": "https://lastfm-img2.akamaized.net/i/u/34s/41e155fd7471c04b59c2dab697b6827d.png",
+        "size": "small"
+      },
+      {
+        "#text": "https://lastfm-img2.akamaized.net/i/u/64s/41e155fd7471c04b59c2dab697b6827d.png",
+        "size": "medium"
+      },
+      {
+        "#text": "https://lastfm-img2.akamaized.net/i/u/174s/41e155fd7471c04b59c2dab697b6827d.png",
+        "size": "large"
+      },
+      {
+        "#text": "https://lastfm-img2.akamaized.net/i/u/300x300/41e155fd7471c04b59c2dab697b6827d.png",
+        "size": "extralarge"
+      },
+      {
+        "#text": "https://lastfm-img2.akamaized.net/i/u/41e155fd7471c04b59c2dab697b6827d.png",
+        "size": "mega"
+      },
+      {
+        "#text": "https://lastfm-img2.akamaized.net/i/u/arQ/41e155fd7471c04b59c2dab697b6827d.png",
+        "size": ""
+      }
+    ],
+    "listeners": "493",
+    "playcount": "11813",
+    "tracks": {
+      "track": []
+    },
+    "tags": {
+      "tag": [
+        {
+          "name": "metal",
+          "url": "https://www.last.fm/tag/metal"
+        },
+        {
+          "name": "japanese",
+          "url": "https://www.last.fm/tag/japanese"
+        },
+        {
+          "name": "girls",
+          "url": "https://www.last.fm/tag/girls"
+        },
+        {
+          "name": "JPop",
+          "url": "https://www.last.fm/tag/JPop"
+        },
+        {
+          "name": "Asian",
+          "url": "https://www.last.fm/tag/Asian"
+        }
+      ]
+    }
+  }
+}
