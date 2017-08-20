@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity(), MainViewCallback {
         val sharedPreferences: SharedPreferences = getSharedPreferences("DATA", Context.MODE_PRIVATE)
         super.onCreate(savedInstanceState)
         Realm.init(this)
+        this.title = "Latest 20 scrobbles"
 //        if (BuildConfig.DEBUG) {
 //            val realm = Realm.getDefaultInstance()
 //            realm.executeTransaction {
