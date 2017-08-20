@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity(), MainViewCallback {
         registerReceiver(receiver, filter)
 
         val scrobbleListAdapter = ScrobbleListAdapter(applicationContext)
-        scrobbleListAdapter.scrobbles = Scrobble().getAll()
+        scrobbleListAdapter.scrobbles = Scrobble().getCurrentTracks()
         var scrobbleListView = findViewById(R.id.list_view) as ListView
         scrobbleListView.adapter = scrobbleListAdapter
     }
