@@ -8,7 +8,7 @@ import com.mataku.scrobscrob.app.model.Scrobble
 import com.mataku.scrobscrob.app.ui.view.ScrobbleView
 
 class ScrobbleListAdapter(private val context: Context) : BaseAdapter() {
-    var scrobbles = Scrobble().getAll()
+    lateinit var scrobbles: List<Scrobble>
 
     override fun getCount(): Int = scrobbles.size
 

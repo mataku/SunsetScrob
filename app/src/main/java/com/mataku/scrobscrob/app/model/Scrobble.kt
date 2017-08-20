@@ -14,7 +14,7 @@ open class Scrobble(
         open var timeStamp: Long = 0.toLong(),
         open var artwork: String = ""
 ) : RealmObject() {
-    fun getAll(): List<Scrobble> {
+    fun getCurrentTracks(): List<Scrobble> {
         var limit = 20
         var lowerLimit = 1
         val realm = Realm.getDefaultInstance()
