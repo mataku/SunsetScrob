@@ -21,7 +21,7 @@ open class Scrobble(
         val realm = Realm.getDefaultInstance()
         val scrobblesCount = realm.where(Scrobble::class.java).findAll().count()
         if (scrobblesCount < limit) {
-            var limit = scrobblesCount
+            limit = scrobblesCount
         } else {
             lowerLimit = scrobblesCount - limit + 1
         }
