@@ -9,15 +9,14 @@ import com.mataku.scrobscrob.app.model.entity.AlbumInfoApiResponse
 import com.mataku.scrobscrob.app.model.entity.NowPlayingApiResponse
 import com.mataku.scrobscrob.app.model.entity.ScrobblesApiResponse
 import com.mataku.scrobscrob.app.ui.view.NotificationInterface
-import com.mataku.scrobscrob.app.util.Settings
+import com.mataku.scrobscrob.app.util.AppUtil
 import io.realm.Realm
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.security.MessageDigest
 
 class AppleMusicNotificationReceiverPresenter(var notificationInterface: NotificationInterface) {
-    private val appSettings = Settings()
+    private val appUtil = AppUtil()
     private val nowPlayingMethod = "track.updateNowPlaying"
     private val scrobbleMethod = "track.scrobble"
 
@@ -41,13 +40,19 @@ class AppleMusicNotificationReceiverPresenter(var notificationInterface: Notific
     }
 
     private fun setNowPlaying(track: Track, sessionKey: String) {
-        val apiSig = generateApiSig(sessionKey, track)
+        var params: MutableMap<String, String> = mutableMapOf()
+        params["artist"] = track.artistName
+        params["track"] = track.name
+        params["album"] = track.albumName
+        params["method"] = nowPlayingMethod
+        params["sk"] = sessionKey
+        val apiSig = appUtil.generateApiSig(params)
         val client = Retrofit2LastFmClient.createService()
         val call = client.updateNowPlaying(
                 track.artistName,
                 track.name,
                 track.albumName,
-                appSettings.apiKey,
+                appUtil.apiKey,
                 apiSig,
                 sessionKey
         )
@@ -69,14 +74,22 @@ class AppleMusicNotificationReceiverPresenter(var notificationInterface: Notific
     }
 
     private fun scrobble(track: Track, sessionKey: String) {
-        val apiSig = generateScrobblingApiSig(sessionKey, track)
+        var params: MutableMap<String, String> = mutableMapOf()
+        params["artist[0]"] = track.artistName
+        params["track[0]"] = track.name
+        params["timestamp[0]"] = track.timeStamp.toString()
+        params["album[0]"] = track.albumName
+        params["method"] = scrobbleMethod
+        params["sk"] = sessionKey
+
+        val apiSig = appUtil.generateApiSig(params)
         val client = Retrofit2LastFmClient.createService()
         val call = client.scrobble(
                 track.artistName,
                 track.name,
                 track.timeStamp,
                 track.albumName,
-                appSettings.apiKey,
+                appUtil.apiKey,
                 apiSig,
                 sessionKey
         )
@@ -111,7 +124,7 @@ class AppleMusicNotificationReceiverPresenter(var notificationInterface: Notific
                 albumName,
                 artistName,
                 trackName,
-                appSettings.apiKey
+                appUtil.apiKey
         )
 
         var mediumSizeUrl = ""
@@ -132,52 +145,11 @@ class AppleMusicNotificationReceiverPresenter(var notificationInterface: Notific
         return mediumSizeUrl
     }
 
-    private fun generateApiSig(sessionKey: String, track: Track): String {
-        var str = "album${track.albumName}api_key${appSettings.apiKey}artist${track.artistName}method${nowPlayingMethod}"
-        str += "sk${sessionKey}track${track.name}${appSettings.sharedSecret}"
-        val md = MessageDigest.getInstance("MD5")
-        val data = str.toByteArray()
-        md.update(data)
-        val digest = md.digest()
-        val stringBuilder = StringBuilder()
-        digest.indices.forEach { i ->
-            val b = (0xFF and digest[i].toInt())
-            if (b < 16)
-                stringBuilder.append("0")
-            stringBuilder.append(Integer.toHexString(b))
-        }
-        return stringBuilder.toString()
-    }
-
-    private fun generateScrobblingApiSig(sessionKey: String, track: Track): String {
-        var str = "album[0]${track.albumName}"
-        str += "api_key${appSettings.apiKey}"
-        str += "artist[0]${track.artistName}"
-        str += "method${scrobbleMethod}"
-        str += "sk${sessionKey}"
-        str += "timestamp[0]${track.timeStamp}"
-        str += "track[0]${track.name}"
-        str += appSettings.sharedSecret
-
-        val md = MessageDigest.getInstance("MD5")
-        val data = str.toByteArray()
-        md.update(data)
-        val digest = md.digest()
-        val stringBuilder = StringBuilder()
-        digest.indices.forEach { i ->
-            val b = (0xFF and digest[i].toInt())
-            if (b < 16)
-                stringBuilder.append("0")
-            stringBuilder.append(Integer.toHexString(b))
-        }
-        return stringBuilder.toString()
-    }
-
     private fun createTrack(intent: Intent): Track {
         val artistName = intent.getStringExtra("artistName")
         val trackName = intent.getStringExtra("trackName")
         val albumName = intent.getStringExtra("albumName")
-        val playingTime = intent.getLongExtra("playingTime", appSettings.defaultPlayingTime)
+        val playingTime = intent.getLongExtra("playingTime", appUtil.defaultPlayingTime)
         val timeStamp = intent.getLongExtra("timeStamp", System.currentTimeMillis() / 1000L)
         val albumArtWork = getAlbumInfo(albumName, artistName, trackName)
         return Track(artistName, trackName, albumName, playingTime, timeStamp, albumArtWork)
