@@ -5,7 +5,6 @@ import android.util.Log
 import com.mataku.scrobscrob.app.model.Scrobble
 import com.mataku.scrobscrob.app.model.Track
 import com.mataku.scrobscrob.app.model.api.Retrofit2LastFmClient
-import com.mataku.scrobscrob.app.model.entity.AlbumInfoApiResponse
 import com.mataku.scrobscrob.app.model.entity.NowPlayingApiResponse
 import com.mataku.scrobscrob.app.model.entity.ScrobblesApiResponse
 import com.mataku.scrobscrob.app.ui.view.NotificationInterface
@@ -62,10 +61,9 @@ class AppleMusicNotificationReceiverPresenter(var notificationInterface: Notific
         call.enqueue(object : Callback<NowPlayingApiResponse> {
             override fun onResponse(call: Call<NowPlayingApiResponse>?, response: Response<NowPlayingApiResponse>?) {
                 if (response!!.isSuccessful) {
-
+                    Log.i("NowPlayingApi", "success")
                 } else {
                     Log.i("NowPlayingApi", "Something wrong")
-                    println(response.errorBody()?.string())
                 }
             }
 
@@ -109,7 +107,7 @@ class AppleMusicNotificationReceiverPresenter(var notificationInterface: Notific
                         scrobble.timeStamp = track.timeStamp
                         scrobble.trackName = track.name
                     }
-
+                    Log.i("scrobblingApi", "success")
                 } else {
                     Log.i("ScrobblingApi", "Something went wrong")
                 }
@@ -121,40 +119,13 @@ class AppleMusicNotificationReceiverPresenter(var notificationInterface: Notific
         })
     }
 
-    fun getAlbumInfo(albumName: String, artistName: String, trackName: String): String {
-        val client = Retrofit2LastFmClient.createService()
-        val call = client.getAlbumInfo(
-                albumName,
-                artistName,
-                trackName,
-                appUtil.apiKey
-        )
-
-        var mediumSizeUrl = ""
-
-        call.enqueue(object : Callback<AlbumInfoApiResponse> {
-            override fun onResponse(call: Call<AlbumInfoApiResponse>?, response: Response<AlbumInfoApiResponse>?) {
-                if (response!!.isSuccessful && response.body() != null) {
-                    mediumSizeUrl = response.body()!!.albumInfo.imageList[1].imageUrl
-                } else {
-                    Log.i("AlbumInfoApi", "Something went wrong")
-                }
-            }
-
-            override fun onFailure(call: Call<AlbumInfoApiResponse>?, t: Throwable?) {
-                Log.i("AlbumInfoApi", "Failure")
-            }
-        })
-        return mediumSizeUrl
-    }
-
     private fun createTrack(intent: Intent): Track {
         val artistName = intent.getStringExtra("artistName")
         val trackName = intent.getStringExtra("trackName")
         val albumName = intent.getStringExtra("albumName")
         val playingTime = intent.getLongExtra("playingTime", appUtil.defaultPlayingTime)
         val timeStamp = intent.getLongExtra("timeStamp", System.currentTimeMillis() / 1000L)
-        val albumArtWork = getAlbumInfo(albumName, artistName, trackName)
+        val albumArtWork = intent.getStringExtra("albumArtWork")
         return Track(artistName, trackName, albumName, playingTime, timeStamp, albumArtWork)
     }
 
