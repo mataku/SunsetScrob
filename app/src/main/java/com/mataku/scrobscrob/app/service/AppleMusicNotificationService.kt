@@ -68,7 +68,7 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
         val albumInfo = extra.get("android.text")
         albumInfo ?: return
 
-        val array = albumInfo.toString().split("—".toRegex(), 2).dropLastWhile { it.isEmpty() }.toTypedArray()
+        val array = albumInfo.toString().split(" — ".toRegex(), 2).dropLastWhile { it.isEmpty() }.toTypedArray()
         val artistName = array[0].trim()
         val albumName = array[1].trim()
         val timeStamp = System.currentTimeMillis() / 1000L
