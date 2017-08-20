@@ -34,6 +34,7 @@ class SettingsActivity : PreferenceActivity(), SettingsViewCallback {
                 val intent = Intent()
                 intent.action = Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS
                 startActivity(intent)
+                showAllowServiceMessage()
                 return true
             }
         }
@@ -117,5 +118,9 @@ class SettingsActivity : PreferenceActivity(), SettingsViewCallback {
 
     private fun showLogOutMessage() {
         Toast.makeText(this, "ログアウトしました", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showAllowServiceMessage() {
+        Toast.makeText(this, R.string.allow_notification_service_message, Toast.LENGTH_SHORT).show()
     }
 }
