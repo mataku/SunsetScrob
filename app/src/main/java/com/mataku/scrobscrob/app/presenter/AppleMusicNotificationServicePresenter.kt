@@ -64,15 +64,17 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
             override fun onResponse(call: Call<AlbumInfoApiResponse>?, response: Response<AlbumInfoApiResponse>?) {
                 if (response!!.isSuccessful && response.body() != null) {
                     largeSizeUrl = response.body()!!.albumInfo.imageList[2].imageUrl
+                    notificationServiceInterface.sendTrackInfoToReceiver(largeSizeUrl)
                 } else {
                     Log.i("AlbumInfoApi", "Something went wrong")
+                    notificationServiceInterface.sendTrackInfoToReceiver(largeSizeUrl)
                 }
             }
 
             override fun onFailure(call: Call<AlbumInfoApiResponse>?, t: Throwable?) {
                 Log.i("AlbumInfoApi", "Failure")
+                notificationServiceInterface.sendTrackInfoToReceiver(largeSizeUrl)
             }
         })
-        notificationServiceInterface.sendTrackInfoToReceiver(largeSizeUrl)
     }
 }
