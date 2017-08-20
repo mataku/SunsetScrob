@@ -17,6 +17,7 @@ import com.mataku.scrobscrob.app.receiver.AppleMusicNotificationReceiver
 import com.mataku.scrobscrob.app.ui.adapter.ScrobbleListAdapter
 import com.mataku.scrobscrob.app.ui.view.MainViewCallback
 import io.realm.Realm
+import io.realm.Sort
 
 class MainActivity : AppCompatActivity(), MainViewCallback {
     private var receiver = AppleMusicNotificationReceiver()
@@ -38,7 +39,7 @@ class MainActivity : AppCompatActivity(), MainViewCallback {
         registerReceiver(receiver, filter)
 
         val scrobbleListAdapter = ScrobbleListAdapter(applicationContext)
-        scrobbleListAdapter.scrobbles = dummyScrobbles()
+        scrobbleListAdapter.scrobbles = Scrobble().getAll()
         var scrobbleListView = findViewById(R.id.list_view) as ListView
         scrobbleListView.adapter = scrobbleListAdapter
     }
@@ -111,5 +112,20 @@ class MainActivity : AppCompatActivity(), MainViewCallback {
         list.add(scrobble)
         list.add(scrobble)
         return list
+    }
+
+    fun getAll(): List<Scrobble> {
+        var limit = 20
+        var lowerLimit = 0
+        val realm = Realm.getDefaultInstance()
+        val scrobblesCount = realm.where(Scrobble::class.java).findAll().count()
+        if (scrobblesCount < limit) {
+            var limit = scrobblesCount
+        } else {
+            lowerLimit = scrobblesCount - limit + 1
+        }
+
+        val result = realm.where(Scrobble::class.java).between("id", lowerLimit, limit).findAllSortedAsync("id", Sort.DESCENDING)
+        return result
     }
 }
