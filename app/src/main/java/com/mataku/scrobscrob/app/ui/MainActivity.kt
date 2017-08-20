@@ -25,11 +25,14 @@ class MainActivity : AppCompatActivity(), MainViewCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val sharedPreferences: SharedPreferences = getSharedPreferences("DATA", Context.MODE_PRIVATE)
-//        if (BuildConfig.DEBUG) {
-//            sharedPreferences.edit().clear().apply()
-//        }
         super.onCreate(savedInstanceState)
         Realm.init(this)
+//        if (BuildConfig.DEBUG) {
+//            val realm = Realm.getDefaultInstance()
+//            realm.executeTransaction {
+//                realm.deleteAll()
+//            }
+//        }
         setContentView(R.layout.activity_main)
 //        mainPresenter = MainPresenter(this)
 //        mainPresenter.showPreparationMenuIfNeeded(isEnabledReadNotification())

@@ -5,19 +5,17 @@ import android.util.Log
 import com.mataku.scrobscrob.app.model.Scrobble
 import com.mataku.scrobscrob.app.model.Track
 import com.mataku.scrobscrob.app.model.api.Retrofit2LastFmClient
-import com.mataku.scrobscrob.app.model.entity.AlbumInfoApiResponse
 import com.mataku.scrobscrob.app.model.entity.NowPlayingApiResponse
 import com.mataku.scrobscrob.app.model.entity.ScrobblesApiResponse
 import com.mataku.scrobscrob.app.ui.view.NotificationInterface
-import com.mataku.scrobscrob.app.util.Settings
+import com.mataku.scrobscrob.app.util.AppUtil
 import io.realm.Realm
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.security.MessageDigest
 
 class AppleMusicNotificationReceiverPresenter(var notificationInterface: NotificationInterface) {
-    private val appSettings = Settings()
+    private val appUtil = AppUtil()
     private val nowPlayingMethod = "track.updateNowPlaying"
     private val scrobbleMethod = "track.scrobble"
 
@@ -41,13 +39,21 @@ class AppleMusicNotificationReceiverPresenter(var notificationInterface: Notific
     }
 
     private fun setNowPlaying(track: Track, sessionKey: String) {
-        val apiSig = generateApiSig(sessionKey, track)
+        var params: MutableMap<String, String> = mutableMapOf()
+        params["artist"] = track.artistName
+        params["track"] = track.name
+        params["album"] = track.albumName
+        params["method"] = nowPlayingMethod
+        params["sk"] = sessionKey
+        params["api_key"] = appUtil.apiKey
+
+        val apiSig = appUtil.generateApiSig(params)
         val client = Retrofit2LastFmClient.createService()
         val call = client.updateNowPlaying(
                 track.artistName,
                 track.name,
                 track.albumName,
-                appSettings.apiKey,
+                appUtil.apiKey,
                 apiSig,
                 sessionKey
         )
@@ -55,10 +61,9 @@ class AppleMusicNotificationReceiverPresenter(var notificationInterface: Notific
         call.enqueue(object : Callback<NowPlayingApiResponse> {
             override fun onResponse(call: Call<NowPlayingApiResponse>?, response: Response<NowPlayingApiResponse>?) {
                 if (response!!.isSuccessful) {
-
+                    Log.i("NowPlayingApi", "success")
                 } else {
                     Log.i("NowPlayingApi", "Something wrong")
-                    println(response.errorBody()?.string())
                 }
             }
 
@@ -69,14 +74,23 @@ class AppleMusicNotificationReceiverPresenter(var notificationInterface: Notific
     }
 
     private fun scrobble(track: Track, sessionKey: String) {
-        val apiSig = generateScrobblingApiSig(sessionKey, track)
+        var params: MutableMap<String, String> = mutableMapOf()
+        params["artist[0]"] = track.artistName
+        params["track[0]"] = track.name
+        params["timestamp[0]"] = track.timeStamp.toString()
+        params["album[0]"] = track.albumName
+        params["method"] = scrobbleMethod
+        params["sk"] = sessionKey
+        params["api_key"] = appUtil.apiKey
+
+        val apiSig = appUtil.generateApiSig(params)
         val client = Retrofit2LastFmClient.createService()
         val call = client.scrobble(
                 track.artistName,
                 track.name,
                 track.timeStamp,
                 track.albumName,
-                appSettings.apiKey,
+                appUtil.apiKey,
                 apiSig,
                 sessionKey
         )
@@ -93,7 +107,7 @@ class AppleMusicNotificationReceiverPresenter(var notificationInterface: Notific
                         scrobble.timeStamp = track.timeStamp
                         scrobble.trackName = track.name
                     }
-
+                    Log.i("scrobblingApi", "success")
                 } else {
                     Log.i("ScrobblingApi", "Something went wrong")
                 }
@@ -105,81 +119,13 @@ class AppleMusicNotificationReceiverPresenter(var notificationInterface: Notific
         })
     }
 
-    fun getAlbumInfo(albumName: String, artistName: String, trackName: String): String {
-        val client = Retrofit2LastFmClient.createService()
-        val call = client.getAlbumInfo(
-                albumName,
-                artistName,
-                trackName,
-                appSettings.apiKey
-        )
-
-        var mediumSizeUrl = ""
-
-        call.enqueue(object : Callback<AlbumInfoApiResponse> {
-            override fun onResponse(call: Call<AlbumInfoApiResponse>?, response: Response<AlbumInfoApiResponse>?) {
-                if (response!!.isSuccessful && response.body() != null) {
-                    mediumSizeUrl = response.body()!!.albumInfo.imageList[1].imageUrl
-                } else {
-                    Log.i("AlbumInfoApi", "Something went wrong")
-                }
-            }
-
-            override fun onFailure(call: Call<AlbumInfoApiResponse>?, t: Throwable?) {
-                Log.i("AlbumInfoApi", "Failure")
-            }
-        })
-        return mediumSizeUrl
-    }
-
-    private fun generateApiSig(sessionKey: String, track: Track): String {
-        var str = "album${track.albumName}api_key${appSettings.apiKey}artist${track.artistName}method${nowPlayingMethod}"
-        str += "sk${sessionKey}track${track.name}${appSettings.sharedSecret}"
-        val md = MessageDigest.getInstance("MD5")
-        val data = str.toByteArray()
-        md.update(data)
-        val digest = md.digest()
-        val stringBuilder = StringBuilder()
-        digest.indices.forEach { i ->
-            val b = (0xFF and digest[i].toInt())
-            if (b < 16)
-                stringBuilder.append("0")
-            stringBuilder.append(Integer.toHexString(b))
-        }
-        return stringBuilder.toString()
-    }
-
-    private fun generateScrobblingApiSig(sessionKey: String, track: Track): String {
-        var str = "album[0]${track.albumName}"
-        str += "api_key${appSettings.apiKey}"
-        str += "artist[0]${track.artistName}"
-        str += "method${scrobbleMethod}"
-        str += "sk${sessionKey}"
-        str += "timestamp[0]${track.timeStamp}"
-        str += "track[0]${track.name}"
-        str += appSettings.sharedSecret
-
-        val md = MessageDigest.getInstance("MD5")
-        val data = str.toByteArray()
-        md.update(data)
-        val digest = md.digest()
-        val stringBuilder = StringBuilder()
-        digest.indices.forEach { i ->
-            val b = (0xFF and digest[i].toInt())
-            if (b < 16)
-                stringBuilder.append("0")
-            stringBuilder.append(Integer.toHexString(b))
-        }
-        return stringBuilder.toString()
-    }
-
     private fun createTrack(intent: Intent): Track {
         val artistName = intent.getStringExtra("artistName")
         val trackName = intent.getStringExtra("trackName")
         val albumName = intent.getStringExtra("albumName")
-        val playingTime = intent.getLongExtra("playingTime", appSettings.defaultPlayingTime)
+        val playingTime = intent.getLongExtra("playingTime", appUtil.defaultPlayingTime)
         val timeStamp = intent.getLongExtra("timeStamp", System.currentTimeMillis() / 1000L)
-        val albumArtWork = getAlbumInfo(albumName, artistName, trackName)
+        val albumArtWork = intent.getStringExtra("albumArtWork")
         return Track(artistName, trackName, albumName, playingTime, timeStamp, albumArtWork)
     }
 

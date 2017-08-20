@@ -5,15 +5,15 @@ import com.mataku.scrobscrob.app.model.api.Retrofit2LastFmClient
 import com.mataku.scrobscrob.app.model.entity.AlbumInfoApiResponse
 import com.mataku.scrobscrob.app.model.entity.TrackInfoApiResponse
 import com.mataku.scrobscrob.app.ui.view.NotificationServiceInterface
-import com.mataku.scrobscrob.app.util.Settings
+import com.mataku.scrobscrob.app.util.AppUtil
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class AppleMusicNotificationServicePresenter(var notificationServiceInterface: NotificationServiceInterface) {
 
-    private val settings = Settings()
-    private val apiKey = settings.apiKey
+    private val appUtil = AppUtil()
+    private val apiKey = appUtil.apiKey
 
     fun getTrackDuration(artistName: String, trackName: String): Long {
         val client = Retrofit2LastFmClient.createService()
@@ -23,7 +23,7 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
                 apiKey
         )
 
-        var trackDuration = settings.defaultPlayingTime
+        var trackDuration = appUtil.defaultPlayingTime
 
         call.enqueue(object : Callback<TrackInfoApiResponse> {
             override fun onResponse(call: Call<TrackInfoApiResponse>?, response: Response<TrackInfoApiResponse>?) {
@@ -33,7 +33,7 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
                         trackDuration = body?.trackInfo?.duration!!.toLong()
                         // Use default value if duration is 0
                         if (trackDuration == 0L) {
-                            trackDuration = settings.defaultPlayingTime
+                            trackDuration = appUtil.defaultPlayingTime
                         }
                     }
                 } else {
@@ -49,7 +49,7 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
         return trackDuration
     }
 
-    fun getAlbumArtWork(albumName: String, artistName: String, trackName: String): String {
+    fun getAlbumArtWork(albumName: String, artistName: String, trackName: String) {
         val client = Retrofit2LastFmClient.createService()
         val call = client.getAlbumInfo(
                 albumName,
@@ -58,21 +58,23 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
                 apiKey
         )
 
-        var mediumSizeUrl = ""
+        var largeSizeUrl = ""
 
         call.enqueue(object : Callback<AlbumInfoApiResponse> {
             override fun onResponse(call: Call<AlbumInfoApiResponse>?, response: Response<AlbumInfoApiResponse>?) {
                 if (response!!.isSuccessful && response.body() != null) {
-                    mediumSizeUrl = response.body()!!.albumInfo.imageList[1].imageUrl
+                    largeSizeUrl = response.body()!!.albumInfo.imageList[2].imageUrl
+                    notificationServiceInterface.sendTrackInfoToReceiver(largeSizeUrl)
                 } else {
                     Log.i("AlbumInfoApi", "Something went wrong")
+                    notificationServiceInterface.sendTrackInfoToReceiver(largeSizeUrl)
                 }
             }
 
             override fun onFailure(call: Call<AlbumInfoApiResponse>?, t: Throwable?) {
                 Log.i("AlbumInfoApi", "Failure")
+                notificationServiceInterface.sendTrackInfoToReceiver(largeSizeUrl)
             }
         })
-        return mediumSizeUrl
     }
 }
