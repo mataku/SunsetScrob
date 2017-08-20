@@ -6,4 +6,5 @@ class Settings {
     val apiKey = BuildConfig.API_KEY
     val sharedSecret = BuildConfig.SHARED_SECRET
     val defaultPlayingTime = 180.toLong()
+    val latestCcrobbleCountToDisplay = 20
 }
