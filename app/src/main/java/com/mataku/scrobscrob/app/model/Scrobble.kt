@@ -1,6 +1,6 @@
 package com.mataku.scrobscrob.app.model
 
-import com.mataku.scrobscrob.app.util.Settings
+import com.mataku.scrobscrob.app.util.AppUtil
 import io.realm.Realm
 import io.realm.RealmObject
 import io.realm.Sort
@@ -16,7 +16,7 @@ open class Scrobble(
         open var artwork: String = ""
 ) : RealmObject() {
     fun getCurrentTracks(): List<Scrobble> {
-        var limit = Settings().latestCcrobbleCountToDisplay
+        var limit = AppUtil().latestCcrobbleCountToDisplay
         var lowerLimit = 1
         val realm = Realm.getDefaultInstance()
         val scrobblesCount = realm.where(Scrobble::class.java).findAll().count()

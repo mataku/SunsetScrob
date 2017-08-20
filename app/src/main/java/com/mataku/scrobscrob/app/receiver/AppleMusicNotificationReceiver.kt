@@ -6,11 +6,11 @@ import android.content.Intent
 import com.mataku.scrobscrob.app.model.Track
 import com.mataku.scrobscrob.app.presenter.AppleMusicNotificationReceiverPresenter
 import com.mataku.scrobscrob.app.ui.view.NotificationInterface
-import com.mataku.scrobscrob.app.util.Settings
+import com.mataku.scrobscrob.app.util.AppUtil
 
 class AppleMusicNotificationReceiver : BroadcastReceiver(), NotificationInterface {
     var track: Track? = null
-    var appSettings = Settings()
+    var appSettings = AppUtil()
 
     override fun onReceive(context: Context, intent: Intent) {
         val sharedPreferences = context.getSharedPreferences("DATA", Context.MODE_PRIVATE)
