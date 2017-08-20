@@ -4,7 +4,7 @@ import com.google.gson.Gson
 import org.junit.Test
 import kotlin.test.assertNotNull
 
-class AlbumInfo {
+class AlbumInfoTest {
     @Test
     @Throws
     fun testParsingJson() {
