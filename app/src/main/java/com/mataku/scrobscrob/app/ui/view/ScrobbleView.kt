@@ -2,6 +2,7 @@ package com.mataku.scrobscrob.app.ui.view
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import android.widget.ImageView
@@ -50,8 +51,7 @@ class ScrobbleView : FrameLayout {
     fun setScrobble(scrobble: Scrobble) {
         trackArtistView?.text = scrobble.artistName
         trackNameView?.text = scrobble.trackName
-        if (scrobble.artwork.isNotEmpty()) {
-            Glide.with(context).load(scrobble.artwork).into(artWorkView)
-        }
+        Log.i("Notification", scrobble.)
+        Glide.with(context).load(scrobble.artwork).into(artWorkView)
     }
 }
