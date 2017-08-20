@@ -17,9 +17,7 @@ class NowPlayingTest {
         val nowPlaying = response.nowPlaying
         assertNotNull(nowPlaying.album)
         assertNotNull(nowPlaying.artist)
-        assertNotNull(nowPlaying.albumArtist)
         assertNotNull(nowPlaying.ignoredMessage)
         assertNotNull(nowPlaying.track)
-
     }
 }
