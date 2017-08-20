@@ -9,13 +9,12 @@ import android.util.Log
 import com.mataku.scrobscrob.app.model.Track
 import com.mataku.scrobscrob.app.presenter.AppleMusicNotificationServicePresenter
 import com.mataku.scrobscrob.app.ui.view.NotificationServiceInterface
-import com.mataku.scrobscrob.app.util.Settings
 
 
 class AppleMusicNotificationService : NotificationListenerService(), NotificationServiceInterface {
     private val APPLE_MUSIC_PACKAGE_NAME = "com.apple.android.music"
     private val presenter = AppleMusicNotificationServicePresenter(this)
-    private val appSettings = Settings()
+    private var previousTrackName: String = ""
 
     override fun onCreate() {
         super.onCreate()
@@ -70,10 +69,11 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
                 artistName,
                 trackName,
                 albumName,
-                appSettings.defaultPlayingTime,
-                timeStamp
+                presenter.getTrackDuration(artistName, trackName),
+                timeStamp,
+                presenter.getAlbumArtWork(albumName, artistName, trackName)
         )
-        presenter.getTrackInfo(track)
+        sendTrackInfoToReceiver(track)
     }
 
     // ステータスバーから通知が消去される
@@ -84,13 +84,19 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
         sendBroadcast(intent)
     }
 
-    override fun sendTrackInfoToReceiver(track: Track) {
+    private fun sendTrackInfoToReceiver(track: Track) {
+        if (previousTrackName == track.name) {
+            return
+        }
+
         val intent = Intent("AppleMusic")
         intent.putExtra("artistName", track.artistName)
         intent.putExtra("trackName", track.name)
         intent.putExtra("albumName", track.albumName)
         intent.putExtra("playingTime", track.playingTime)
         intent.putExtra("timeStamp", track.timeStamp)
+        intent.putExtra("albumArtWork", track.albumArtWork)
+        previousTrackName = track.name
         sendBroadcast(intent)
     }
 }
