@@ -50,7 +50,7 @@ class ScrobbleView : FrameLayout {
     fun setScrobble(scrobble: Scrobble) {
         trackArtistView?.text = scrobble.artistName
         trackNameView?.text = scrobble.trackName
-        if (scrobble.artwork != null) {
+        if (scrobble.artwork.isNotEmpty()) {
             Glide.with(context).load(scrobble.artwork).into(artWorkView)
         }
     }
