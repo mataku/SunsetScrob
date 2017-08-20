@@ -49,7 +49,7 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
         return trackDuration
     }
 
-    fun getAlbumArtWork(albumName: String, artistName: String, trackName: String): String {
+    fun getAlbumArtWork(albumName: String, artistName: String, trackName: String) {
         val client = Retrofit2LastFmClient.createService()
         val call = client.getAlbumInfo(
                 albumName,
@@ -58,12 +58,12 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
                 apiKey
         )
 
-        var mediumSizeUrl = ""
+        var largeSizeUrl = ""
 
         call.enqueue(object : Callback<AlbumInfoApiResponse> {
             override fun onResponse(call: Call<AlbumInfoApiResponse>?, response: Response<AlbumInfoApiResponse>?) {
                 if (response!!.isSuccessful && response.body() != null) {
-                    mediumSizeUrl = response.body()!!.albumInfo.imageList[1].imageUrl
+                    largeSizeUrl = response.body()!!.albumInfo.imageList[2].imageUrl
                 } else {
                     Log.i("AlbumInfoApi", "Something went wrong")
                 }
@@ -73,6 +73,6 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
                 Log.i("AlbumInfoApi", "Failure")
             }
         })
-        return mediumSizeUrl
+        notificationServiceInterface.sendTrackInfoToReceiver(largeSizeUrl)
     }
 }
