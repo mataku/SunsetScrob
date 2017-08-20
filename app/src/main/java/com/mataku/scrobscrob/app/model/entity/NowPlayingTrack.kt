@@ -2,9 +2,9 @@ package com.mataku.scrobscrob.app.model.entity
 
 import com.google.gson.annotations.SerializedName
 
-data class AlbumArtist(
-        var corrected: String,
+data class NowPlayingTrack(
+        val corrected: String,
 
         @SerializedName("#text")
-        var text: String
+        val text: String
 )

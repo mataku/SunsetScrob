@@ -1,10 +1,10 @@
 package com.mataku.scrobscrob.app.model.entity
 
 data class Scrobble(
-        val artist: Artist,
+        val artist: NowPlayingArtist,
         val ignoredMessage: IgnoredMessage,
-        val albumArtist: AlbumArtist,
+        val albumArtist: NowPlayingArtist,
         val timeStamp: String,
-        val album: Album,
-        val track: Track
+        val album: NowPlayingAlbum,
+        val track: NowPlayingTrack
 )

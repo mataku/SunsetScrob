@@ -1,9 +1,9 @@
 package com.mataku.scrobscrob.app.model.entity
 
 data class NowPlaying(
-        val artist: Artist,
+        val artist: NowPlayingArtist,
         val ignoredMessage: IgnoredMessage,
-        val album: Album,
-        val albumArtist: AlbumArtist,
-        val track: Track
+        val album: NowPlayingAlbum,
+        //        val albumArtist: NowPlayingArtist,
+        val track: NowPlayingTrack
 )
