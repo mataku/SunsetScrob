@@ -7,14 +7,15 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.provider.Settings
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.ListView
 import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.app.model.Scrobble
 import com.mataku.scrobscrob.app.presenter.MainPresenter
 import com.mataku.scrobscrob.app.receiver.AppleMusicNotificationReceiver
-import com.mataku.scrobscrob.app.ui.adapter.ScrobbleListAdapter
+import com.mataku.scrobscrob.app.ui.adapter.ScrobbleRecyclerViewAdapter
 import com.mataku.scrobscrob.app.ui.view.MainViewCallback
 import io.realm.Realm
 import io.realm.Sort
@@ -37,15 +38,15 @@ class MainActivity : AppCompatActivity(), MainViewCallback {
         setContentView(R.layout.activity_main)
 //        mainPresenter = MainPresenter(this)
 //        mainPresenter.showPreparationMenuIfNeeded(isEnabledReadNotification())
-//        setContentView(R.layout.activity_main)
         val filter = IntentFilter()
         filter.addAction("AppleMusic")
         registerReceiver(receiver, filter)
 
-        val scrobbleListAdapter = ScrobbleListAdapter(applicationContext)
-        scrobbleListAdapter.scrobbles = Scrobble().getCurrentTracks()
-        var scrobbleListView = findViewById(R.id.list_view) as ListView
-        scrobbleListView.adapter = scrobbleListAdapter
+        val scrobbleViewAdapter = ScrobbleRecyclerViewAdapter(applicationContext, dummyScrobbles())
+        val scrobbleRecyclerView = findViewById(R.id.scrobble_list_view) as RecyclerView
+        scrobbleRecyclerView.layoutManager = LinearLayoutManager(applicationContext)
+        scrobbleRecyclerView.hasFixedSize()
+        scrobbleRecyclerView.adapter = scrobbleViewAdapter
     }
 
     override fun onDestroy() {
@@ -113,6 +114,7 @@ class MainActivity : AppCompatActivity(), MainViewCallback {
         scrobble.artistName = "PassCode"
         scrobble.trackName = "insanity"
         scrobble.albumName = "ZENITH"
+        scrobble.artwork = "https://i0.wp.com/lh3.googleusercontent.com/-ruPaz8Mf6VE/VmRzdQDWxaI/AAAAAAAAMMM/szeLTfOEb6w/s0/maxresdefault.jpg"
         list.add(scrobble)
         list.add(scrobble)
         return list
