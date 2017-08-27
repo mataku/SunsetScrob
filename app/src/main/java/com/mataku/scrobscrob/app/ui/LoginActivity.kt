@@ -39,7 +39,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, LoginViewCal
     private var progressView: View? = null
     private var loginFormView: View? = null
 
-    private var loginPresenter = LoginPresenter(this)
+    private lateinit var loginPresenter: LoginPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,6 +62,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, LoginViewCal
 
         loginFormView = findViewById(R.id.login_form)
         progressView = findViewById(R.id.login_progress)
+        loginPresenter = LoginPresenter(applicationContext, this)
     }
 
     private fun populateAutoComplete() {
@@ -283,7 +284,11 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, LoginViewCal
     }
 
     override fun showSuccessMessage() {
-        Toast.makeText(this, "ログインしました", Toast.LENGTH_LONG).show()
+        Toast.makeText(this, "Success!", Toast.LENGTH_LONG).show()
+    }
+
+    override fun showMessageToAllowAccessToNotification() {
+        Toast.makeText(this, "Allow Notification access to AppleMusicNotificationService", Toast.LENGTH_LONG).show()
     }
 
     override fun backToSettingsActivity() {
