@@ -10,8 +10,9 @@ import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.app.model.Scrobble
+import io.realm.RealmResults
 
-class ScrobbleRecyclerViewAdapter(context: Context, scrobbles: List<Scrobble>) : RecyclerView.Adapter<ScrobbleRecyclerViewAdapter.ViewHolder>() {
+class ScrobbleRecyclerViewAdapter(context: Context, scrobbles: RealmResults<Scrobble>) : RecyclerView.Adapter<ScrobbleRecyclerViewAdapter.ViewHolder>() {
 
     private val layoutInflater: LayoutInflater = LayoutInflater.from(context)
     private val scrobbles = scrobbles
@@ -31,7 +32,6 @@ class ScrobbleRecyclerViewAdapter(context: Context, scrobbles: List<Scrobble>) :
         Glide.with(context).load(scrobble.artwork).into(holder.artWorkView)
     }
 
-
     class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         val artWorkView: ImageView by lazy {
             v.findViewById(R.id.art_work_view) as ImageView
@@ -45,6 +45,4 @@ class ScrobbleRecyclerViewAdapter(context: Context, scrobbles: List<Scrobble>) :
             v.findViewById(R.id.track_artist_view) as TextView
         }
     }
-
-
 }
