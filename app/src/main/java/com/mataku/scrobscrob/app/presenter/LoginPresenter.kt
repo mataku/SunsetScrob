@@ -4,7 +4,7 @@ import com.mataku.scrobscrob.app.model.api.Retrofit2LastFmClient
 import com.mataku.scrobscrob.app.ui.view.LoginViewCallback
 import com.mataku.scrobscrob.app.util.AppUtil
 
-class LoginPresenter(var view: LoginViewCallback) {
+class LoginPresenter(var accessable: Boolean, var view: LoginViewCallback) {
     private val appUtil = AppUtil()
     private val method = "auth.getMobileSession"
 
@@ -29,7 +29,12 @@ class LoginPresenter(var view: LoginViewCallback) {
 
     fun backToSettingsWhenLoggedIn(success: Boolean?, sessionKey: String) {
         if (success!! && sessionKey.isNotEmpty()) {
-            view.showSuccessMessage()
+            if (accessable) {
+                view.showSuccessMessage()
+            } else {
+                view.showSuccessMessage()
+                view.showMessageToAllowAccessToNotification()
+            }
             view.backToSettingsActivity()
         } else {
             view.focusOnPasswordView()

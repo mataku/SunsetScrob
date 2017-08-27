@@ -13,6 +13,7 @@ import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
 import android.provider.ContactsContract
+import android.provider.Settings
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
@@ -39,7 +40,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, LoginViewCal
     private var progressView: View? = null
     private var loginFormView: View? = null
 
-    private var loginPresenter = LoginPresenter(this)
+    private lateinit var loginPresenter: LoginPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,6 +63,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, LoginViewCal
 
         loginFormView = findViewById(R.id.login_form)
         progressView = findViewById(R.id.login_progress)
+        loginPresenter = LoginPresenter(isEnabledReadNotification(), this)
     }
 
     private fun populateAutoComplete() {
@@ -283,7 +285,11 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, LoginViewCal
     }
 
     override fun showSuccessMessage() {
-        Toast.makeText(this, "ログインしました", Toast.LENGTH_LONG).show()
+        Toast.makeText(this, "Success!", Toast.LENGTH_LONG).show()
+    }
+
+    override fun showMessageToAllowAccessToNotification() {
+        Toast.makeText(this, "Allow Notification access to AppleMusicNotificationService", Toast.LENGTH_LONG).show()
     }
 
     override fun backToSettingsActivity() {
@@ -300,6 +306,21 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, LoginViewCal
     private fun getSessionKey(): String {
         val data = getSharedPreferences("DATA", Context.MODE_PRIVATE)
         return data.getString("SessionKey", "")
+    }
+
+    private fun isEnabledReadNotification(): Boolean {
+        val contentResolver = contentResolver
+        val rawListeners = Settings.Secure.getString(contentResolver,
+                "enabled_notification_listeners")
+        if (rawListeners == null || rawListeners == "") {
+            return false
+        } else {
+            val listeners = rawListeners.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+            listeners
+                    .filter { it.startsWith(packageName) }
+                    .forEach { return true }
+        }
+        return false
     }
 
     companion object {

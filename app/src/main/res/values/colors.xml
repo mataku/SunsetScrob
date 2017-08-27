@@ -5,4 +5,5 @@
     <color name="colorAccent">#FF4081</color>
     <color name="titleTextColor">#bb0414</color>
     <color name="barBackgroundColor">#263238</color>
+    <color name="yellow">#ffff00</color>
 </resources>
