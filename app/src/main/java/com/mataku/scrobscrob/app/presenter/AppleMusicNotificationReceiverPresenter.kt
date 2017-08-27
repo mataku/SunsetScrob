@@ -62,6 +62,16 @@ class AppleMusicNotificationReceiverPresenter(var notificationInterface: Notific
             override fun onResponse(call: Call<NowPlayingApiResponse>?, response: Response<NowPlayingApiResponse>?) {
                 if (response!!.isSuccessful) {
                     Log.i("NowPlayingApi", "success")
+//                    var realm = Realm.getDefaultInstance();
+//                    realm.executeTransaction {
+//                        var scrobble = realm.createObject(Scrobble::class.java, Scrobble().count() + 1)
+//                        scrobble.albumName = track.albumName
+//                        scrobble.artistName = track.artistName
+//                        scrobble.artwork = track.albumArtWork
+//                        scrobble.timeStamp = track.timeStamp
+//                        scrobble.trackName = track.name
+//                }
+
                 } else {
                     Log.i("NowPlayingApi", "Something wrong")
                 }
