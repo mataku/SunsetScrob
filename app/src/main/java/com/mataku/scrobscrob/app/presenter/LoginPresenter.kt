@@ -1,12 +1,10 @@
 package com.mataku.scrobscrob.app.presenter
 
-import android.content.Context
-import android.provider.Settings
 import com.mataku.scrobscrob.app.model.api.Retrofit2LastFmClient
 import com.mataku.scrobscrob.app.ui.view.LoginViewCallback
 import com.mataku.scrobscrob.app.util.AppUtil
 
-class LoginPresenter(var context: Context, var view: LoginViewCallback) {
+class LoginPresenter(var accessable: Boolean, var view: LoginViewCallback) {
     private val appUtil = AppUtil()
     private val method = "auth.getMobileSession"
 
@@ -31,7 +29,7 @@ class LoginPresenter(var context: Context, var view: LoginViewCallback) {
 
     fun backToSettingsWhenLoggedIn(success: Boolean?, sessionKey: String) {
         if (success!! && sessionKey.isNotEmpty()) {
-            if (isEnabledReadNotification()) {
+            if (accessable) {
                 view.showSuccessMessage()
             } else {
                 view.showSuccessMessage()
@@ -41,20 +39,5 @@ class LoginPresenter(var context: Context, var view: LoginViewCallback) {
         } else {
             view.focusOnPasswordView()
         }
-    }
-
-    private fun isEnabledReadNotification(): Boolean {
-        val contentResolver = context.contentResolver
-        val rawListeners = Settings.Secure.getString(contentResolver,
-                "enabled_notification_listeners")
-        if (rawListeners == null || rawListeners == "") {
-            return false
-        } else {
-            val listeners = rawListeners.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-            listeners
-                    .filter { it.startsWith(context.packageName) }
-                    .forEach { return true }
-        }
-        return false
     }
 }

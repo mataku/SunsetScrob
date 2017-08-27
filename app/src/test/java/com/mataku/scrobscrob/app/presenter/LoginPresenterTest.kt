@@ -23,7 +23,7 @@ class LoginPresenterTest {
             }
         }
 
-        val presenter = LoginPresenter(MockView())
+        val presenter = LoginPresenter(true, MockView())
         presenter.backToSettingsWhenLoggedIn(true, "someKey")
         assertTrue(showSuccessMessageCalled.get())
         assertTrue(backToSettingsActivityCalled.get())
@@ -40,7 +40,7 @@ class LoginPresenterTest {
             }
         }
 
-        val presenter = LoginPresenter(MockView())
+        val presenter = LoginPresenter(true, MockView())
         presenter.backToSettingsWhenLoggedIn(true, "")
         assertTrue(focusOnPasswordViewCalled.get())
     }
@@ -59,6 +59,10 @@ class LoginPresenterTest {
         }
 
         override fun backToSettingsActivity() {
+            fail()
+        }
+
+        override fun showMessageToAllowAccessToNotification() {
             fail()
         }
     }
