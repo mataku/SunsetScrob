@@ -6,6 +6,7 @@ import android.content.IntentFilter
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.provider.Settings
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -18,11 +19,15 @@ import com.mataku.scrobscrob.app.receiver.AppleMusicNotificationReceiver
 import com.mataku.scrobscrob.app.ui.adapter.ScrobbleRecyclerViewAdapter
 import com.mataku.scrobscrob.app.ui.view.MainViewCallback
 import io.realm.Realm
-import io.realm.Sort
+import io.realm.RealmChangeListener
+import io.realm.RealmResults
 
-class MainActivity : AppCompatActivity(), MainViewCallback {
+class MainActivity : AppCompatActivity(), MainViewCallback, SwipeRefreshLayout.OnRefreshListener {
     private var receiver = AppleMusicNotificationReceiver()
     private lateinit var mainPresenter: MainPresenter
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
+    private lateinit var scrobbleRecyclerView: RecyclerView
+    private lateinit var scrobbleViewAdapter: ScrobbleRecyclerViewAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val sharedPreferences: SharedPreferences = getSharedPreferences("DATA", Context.MODE_PRIVATE)
@@ -42,11 +47,8 @@ class MainActivity : AppCompatActivity(), MainViewCallback {
         filter.addAction("AppleMusic")
         registerReceiver(receiver, filter)
 
-        val scrobbleViewAdapter = ScrobbleRecyclerViewAdapter(applicationContext, dummyScrobbles())
-        val scrobbleRecyclerView = findViewById(R.id.scrobble_list_view) as RecyclerView
-        scrobbleRecyclerView.layoutManager = LinearLayoutManager(applicationContext)
-        scrobbleRecyclerView.hasFixedSize()
-        scrobbleRecyclerView.adapter = scrobbleViewAdapter
+        setUpSwipeRefreshView()
+        setUpRecyclerView()
     }
 
     override fun onDestroy() {
@@ -86,6 +88,10 @@ class MainActivity : AppCompatActivity(), MainViewCallback {
         startActivity(intent)
     }
 
+    override fun onRefresh() {
+        swipeRefreshLayout.isRefreshing = false
+    }
+
     private fun showSettings() {
         val intent = Intent(applicationContext, SettingsActivity::class.java)
         startActivity(intent)
@@ -120,18 +126,39 @@ class MainActivity : AppCompatActivity(), MainViewCallback {
         return list
     }
 
-    fun getAll(): List<Scrobble> {
-        var limit = 20
-        var lowerLimit = 0
-        val realm = Realm.getDefaultInstance()
-        val scrobblesCount = realm.where(Scrobble::class.java).findAll().count()
-        if (scrobblesCount < limit) {
-            var limit = scrobblesCount
-        } else {
-            lowerLimit = scrobblesCount - limit + 1
-        }
+    private fun fetchCurrentScrobbles() {
+        var scrobbles = Scrobble().getCurrentTracks()
+        scrobbles.addChangeListener(object : RealmChangeListener<RealmResults<Scrobble>> {
+            override fun onChange(t: RealmResults<Scrobble>?) {
+                scrobbles.removeChangeListener(this)
+                notifyToAdapter(scrobbles)
+            }
+        })
+    }
 
-        val result = realm.where(Scrobble::class.java).between("id", lowerLimit, limit).findAllSortedAsync("id", Sort.DESCENDING)
-        return result
+    private fun notifyToAdapter(scrobble: RealmResults<Scrobble>) {
+        val scrobbleViewAdapter = ScrobbleRecyclerViewAdapter(applicationContext, scrobble)
+        val scrobbleRecyclerView = findViewById(R.id.scrobble_list_view) as RecyclerView
+        scrobbleRecyclerView.adapter = scrobbleViewAdapter
+    }
+
+    private fun setUpSwipeRefreshView() {
+        swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout) as SwipeRefreshLayout
+        swipeRefreshLayout.setColorSchemeColors(
+                R.color.colorAccent,
+                android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                R.color.yellow)
+        swipeRefreshLayout.setOnRefreshListener(this)
+    }
+
+    private fun setUpRecyclerView() {
+        var scrobbles = Scrobble().getCurrentTracks()
+        scrobbleViewAdapter = ScrobbleRecyclerViewAdapter(applicationContext, scrobbles)
+        scrobbleViewAdapter.notifyDataSetChanged()
+        scrobbleRecyclerView = findViewById(R.id.scrobble_list_view) as RecyclerView
+        scrobbleRecyclerView.layoutManager = LinearLayoutManager(applicationContext)
+        scrobbleRecyclerView.hasFixedSize()
+        scrobbleRecyclerView.adapter = scrobbleViewAdapter
     }
 }
