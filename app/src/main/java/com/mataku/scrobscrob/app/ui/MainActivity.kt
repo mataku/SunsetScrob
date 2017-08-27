@@ -97,21 +97,6 @@ class MainActivity : AppCompatActivity(), MainViewCallback, SwipeRefreshLayout.O
         startActivity(intent)
     }
 
-    private fun isEnabledReadNotification(): Boolean {
-        val contentResolver = contentResolver
-        val rawListeners = Settings.Secure.getString(contentResolver,
-                "enabled_notification_listeners")
-        if (rawListeners == null || rawListeners == "") {
-            return false
-        } else {
-            val listeners = rawListeners.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-            listeners
-                    .filter { it.startsWith(packageName) }
-                    .forEach { return true }
-        }
-        return false
-    }
-
     // TODO: あとで消す
     private fun dummyScrobbles(): List<Scrobble> {
         var list = ArrayList<Scrobble>()
