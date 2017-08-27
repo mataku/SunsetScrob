@@ -129,7 +129,7 @@ class MainActivity : AppCompatActivity(), MainViewCallback, SwipeRefreshLayout.O
 
     private fun setUpSwipeRefreshView() {
         swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout) as SwipeRefreshLayout
-        swipeRefreshLayout.setColorSchemeColors(
+        swipeRefreshLayout.setColorSchemeResources(
                 R.color.colorAccent,
                 android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light,
