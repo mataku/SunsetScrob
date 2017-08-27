@@ -69,6 +69,11 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
         albumInfo ?: return
 
         val array = albumInfo.toString().split(" — ".toRegex(), 2).dropLastWhile { it.isEmpty() }.toTypedArray()
+
+        // e.g. Track Downloading Notification
+        if (array.size == 1) {
+            return
+        }
         val artistName = array[0].trim()
         val albumName = array[1].trim()
         val timeStamp = System.currentTimeMillis() / 1000L
