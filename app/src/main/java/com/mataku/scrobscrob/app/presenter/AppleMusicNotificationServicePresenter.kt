@@ -28,7 +28,7 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
         call.enqueue(object : Callback<TrackInfoApiResponse> {
             override fun onResponse(call: Call<TrackInfoApiResponse>?, response: Response<TrackInfoApiResponse>?) {
                 if (response!!.isSuccessful) {
-                    if (response.body() != null) {
+                    if (response.body() != null && response.body()?.trackInfo != null) {
                         val body = response.body()
                         trackDuration = body?.trackInfo?.duration!!.toLong()
                         // Use default value if duration is 0
@@ -62,7 +62,7 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
 
         call.enqueue(object : Callback<AlbumInfoApiResponse> {
             override fun onResponse(call: Call<AlbumInfoApiResponse>?, response: Response<AlbumInfoApiResponse>?) {
-                if (response!!.isSuccessful && response.body() != null) {
+                if (response!!.isSuccessful && response.body() != null && response.body()?.albumInfo != null) {
                     largeSizeUrl = response.body()!!.albumInfo.imageList[2].imageUrl
                     notificationServiceInterface.sendTrackInfoToReceiver(largeSizeUrl)
                 } else {
