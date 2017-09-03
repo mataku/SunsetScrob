@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ScrobScrob</string>
+    <string name="app_name">SunsetScrob</string>
     <string name="login_to_last_fm">Last.fm へログイン</string>
     <string name="preference_title">Preferences</string>
     <string name="activity_login_title">Last.fm へログイン</string>
