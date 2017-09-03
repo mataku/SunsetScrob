@@ -29,7 +29,11 @@ class ScrobbleRecyclerViewAdapter(context: Context, scrobbles: RealmResults<Scro
         val scrobble = scrobbles[position]
         holder!!.trackArtistView.text = scrobble.artistName
         holder.trackNameView.text = scrobble.trackName
-        Glide.with(context).load(scrobble.artwork).into(holder.artWorkView)
+        if (scrobble.artwork == "") {
+            Glide.with(context).load(R.drawable.no_image).into(holder.artWorkView)
+        } else {
+            Glide.with(context).load(scrobble.artwork).into(holder.artWorkView)
+        }
     }
 
     class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
