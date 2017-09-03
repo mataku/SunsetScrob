@@ -2,6 +2,7 @@ package com.mataku.scrobscrob.app.presenter
 
 import android.content.Intent
 import android.util.Log
+import com.mataku.scrobscrob.BuildConfig
 import com.mataku.scrobscrob.app.model.Scrobble
 import com.mataku.scrobscrob.app.model.Track
 import com.mataku.scrobscrob.app.model.api.Retrofit2LastFmClient
@@ -61,24 +62,30 @@ class AppleMusicNotificationReceiverPresenter(var notificationInterface: Notific
         call.enqueue(object : Callback<NowPlayingApiResponse> {
             override fun onResponse(call: Call<NowPlayingApiResponse>?, response: Response<NowPlayingApiResponse>?) {
                 if (response!!.isSuccessful) {
-                    Log.i("NowPlayingApi", "success")
-//                    var realm = Realm.getDefaultInstance();
-//                    realm.executeTransaction {
-//                        var scrobble = realm.createObject(Scrobble::class.java, Scrobble().count() + 1)
-//                        scrobble.albumName = track.albumName
-//                        scrobble.artistName = track.artistName
-//                        scrobble.artwork = track.albumArtWork
-//                        scrobble.timeStamp = track.timeStamp
-//                        scrobble.trackName = track.name
-//                }
+                    if (com.mataku.scrobscrob.BuildConfig.DEBUG) {
+                        Log.i("NowPlayingApi", "success")
+//                        var realm = Realm.getDefaultInstance();
+//                        realm.executeTransaction {
+//                            var scrobble = realm.createObject(Scrobble::class.java, Scrobble().count() + 1)
+//                            scrobble.albumName = track.albumName
+//                            scrobble.artistName = track.artistName
+//                            scrobble.artwork = track.albumArtWork
+//                            scrobble.timeStamp = track.timeStamp
+//                            scrobble.trackName = track.name
+//                        }
+                    }
 
                 } else {
-                    Log.i("NowPlayingApi", "Something wrong")
+                    if (BuildConfig.DEBUG) {
+                        Log.i("NowPlayingApi", "Something wrong")
+                    }
                 }
             }
 
             override fun onFailure(call: Call<NowPlayingApiResponse>?, t: Throwable?) {
-                Log.i("NowPlayingApi", "Failure")
+                if (BuildConfig.DEBUG) {
+                    Log.i("NowPlayingApi", "Failure")
+                }
             }
         })
     }
