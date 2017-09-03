@@ -89,6 +89,7 @@ class MainActivity : AppCompatActivity(), MainViewCallback, SwipeRefreshLayout.O
     }
 
     override fun onRefresh() {
+        setUpRecyclerView()
         swipeRefreshLayout.isRefreshing = false
     }
 
