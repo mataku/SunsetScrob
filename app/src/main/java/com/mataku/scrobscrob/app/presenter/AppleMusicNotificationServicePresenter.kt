@@ -1,6 +1,7 @@
 package com.mataku.scrobscrob.app.presenter
 
 import android.util.Log
+import com.mataku.scrobscrob.BuildConfig
 import com.mataku.scrobscrob.app.model.api.Retrofit2LastFmClient
 import com.mataku.scrobscrob.app.model.entity.AlbumInfoApiResponse
 import com.mataku.scrobscrob.app.model.entity.TrackInfoApiResponse
@@ -66,13 +67,17 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
                     largeSizeUrl = response.body()!!.albumInfo.imageList[2].imageUrl
                     notificationServiceInterface.sendTrackInfoToReceiver(largeSizeUrl)
                 } else {
-                    Log.i("AlbumInfoApi", "Something went wrong")
+                    if (BuildConfig.DEBUG) {
+                        Log.i("AlbumInfoApi", "Something went wrong")
+                    }
                     notificationServiceInterface.sendTrackInfoToReceiver(largeSizeUrl)
                 }
             }
 
             override fun onFailure(call: Call<AlbumInfoApiResponse>?, t: Throwable?) {
-                Log.i("AlbumInfoApi", "Failure")
+                if (BuildConfig.DEBUG) {
+                    Log.i("AlbumInfoApi", "Failure")
+                }
                 notificationServiceInterface.sendTrackInfoToReceiver(largeSizeUrl)
             }
         })
