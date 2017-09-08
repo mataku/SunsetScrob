@@ -99,7 +99,6 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
     }
 
     override fun sendTrackInfoToReceiver(albumArtWork: String) {
-        Log.i("sendTrackInfo", "Called")
         val intent = Intent("AppleMusic")
         intent.putExtra("artistName", track!!.artistName)
         intent.putExtra("trackName", track!!.name)
@@ -107,7 +106,6 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
         intent.putExtra("playingTime", track!!.playingTime)
         intent.putExtra("timeStamp", track!!.timeStamp)
         intent.putExtra("albumArtWork", albumArtWork)
-        println("Updated: ${intent.getStringExtra("albumArtWork")}")
         sendBroadcast(intent)
     }
 
