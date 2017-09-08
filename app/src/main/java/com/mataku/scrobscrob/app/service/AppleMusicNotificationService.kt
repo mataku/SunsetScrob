@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.util.Log
+import com.mataku.scrobscrob.BuildConfig
 import com.mataku.scrobscrob.app.model.Track
 import com.mataku.scrobscrob.app.presenter.AppleMusicNotificationServicePresenter
 import com.mataku.scrobscrob.app.ui.view.NotificationServiceInterface
@@ -21,9 +22,13 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
         super.onCreate()
         try {
             val appleMusicPackageInfo = packageManager.getPackageInfo(APPLE_MUSIC_PACKAGE_NAME, 0)
-            Log.i("AppleMusicNotification", "Apple music is installed! (version: ${appleMusicPackageInfo.versionCode}")
+            if (BuildConfig.DEBUG) {
+                Log.i("AppleMusicNotification", "Apple music is installed! (version: ${appleMusicPackageInfo.versionCode}")
+            }
         } catch (e: PackageManager.NameNotFoundException) {
-            Log.i("AppleMusicNotification", "Apple music is NOT installed!")
+            if (BuildConfig.DEBUG) {
+                Log.i("AppleMusicNotification", "Apple music is NOT installed!")
+            }
         }
     }
 
