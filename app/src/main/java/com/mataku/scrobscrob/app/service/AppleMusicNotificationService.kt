@@ -76,7 +76,7 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
         val array = albumInfo.toString().split(" — ".toRegex(), 2).dropLastWhile { it.isEmpty() }.toTypedArray()
 
         // e.g. Track Downloading Notification
-        if (array.size == 1) {
+        if (array.size <= 1) {
             return
         }
         val artistName = array[0].trim()
