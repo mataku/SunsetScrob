@@ -124,14 +124,20 @@ class AppleMusicNotificationReceiverPresenter(var notificationInterface: Notific
                         scrobble.timeStamp = track.timeStamp
                         scrobble.trackName = track.name
                     }
-                    Log.i("scrobblingApi", "success")
+                    if (BuildConfig.DEBUG) {
+                        Log.i("scrobblingApi", "success")
+                    }
                 } else {
-                    Log.i("ScrobblingApi", "Something went wrong")
+                    if (BuildConfig.DEBUG) {
+                        Log.i("ScrobblingApi", "Something went wrong")
+                    }
                 }
             }
 
             override fun onFailure(call: Call<ScrobblesApiResponse>?, t: Throwable?) {
-                Log.i("ScrobblingApi", "Failure")
+                if (BuildConfig.DEBUG) {
+                    Log.i("ScrobblingApi", "Failure")
+                }
             }
         })
     }

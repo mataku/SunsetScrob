@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.util.Log
+import com.mataku.scrobscrob.BuildConfig
 import com.mataku.scrobscrob.app.model.Track
 import com.mataku.scrobscrob.app.presenter.AppleMusicNotificationServicePresenter
 import com.mataku.scrobscrob.app.ui.view.NotificationServiceInterface
@@ -21,9 +22,13 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
         super.onCreate()
         try {
             val appleMusicPackageInfo = packageManager.getPackageInfo(APPLE_MUSIC_PACKAGE_NAME, 0)
-            Log.i("AppleMusicNotification", "Apple music is installed! (version: ${appleMusicPackageInfo.versionCode}")
+            if (BuildConfig.DEBUG) {
+                Log.i("AppleMusicNotification", "Apple music is installed! (version: ${appleMusicPackageInfo.versionCode}")
+            }
         } catch (e: PackageManager.NameNotFoundException) {
-            Log.i("AppleMusicNotification", "Apple music is NOT installed!")
+            if (BuildConfig.DEBUG) {
+                Log.i("AppleMusicNotification", "Apple music is NOT installed!")
+            }
         }
     }
 
@@ -71,7 +76,7 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
         val array = albumInfo.toString().split(" — ".toRegex(), 2).dropLastWhile { it.isEmpty() }.toTypedArray()
 
         // e.g. Track Downloading Notification
-        if (array.size == 1) {
+        if (array.size <= 1) {
             return
         }
         val artistName = array[0].trim()
@@ -94,7 +99,6 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
     }
 
     override fun sendTrackInfoToReceiver(albumArtWork: String) {
-        Log.i("sendTrackInfo", "Called")
         val intent = Intent("AppleMusic")
         intent.putExtra("artistName", track!!.artistName)
         intent.putExtra("trackName", track!!.name)
@@ -102,7 +106,6 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
         intent.putExtra("playingTime", track!!.playingTime)
         intent.putExtra("timeStamp", track!!.timeStamp)
         intent.putExtra("albumArtWork", albumArtWork)
-        println("Updated: ${intent.getStringExtra("albumArtWork")}")
         sendBroadcast(intent)
     }
 
