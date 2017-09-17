@@ -23,6 +23,7 @@ import android.widget.*
 import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.app.presenter.LoginPresenter
 import com.mataku.scrobscrob.app.ui.view.LoginViewCallback
+import com.mataku.scrobscrob.app.util.SharedPreferencesHelper
 import java.util.*
 
 /**
@@ -265,9 +266,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, LoginViewCal
         override fun onPostExecute(success: Boolean?) {
             authTask = null
             showProgress(false)
-
-            val sessionKey = getSessionKey()
-            loginPresenter.backToSettingsWhenLoggedIn(success, sessionKey)
+            loginPresenter.backToSettingsWhenLoggedIn(success, getSessionKey())
         }
 
         override fun onCancelled() {
@@ -303,11 +302,6 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, LoginViewCal
         passwordView!!.requestFocus()
     }
 
-    private fun getSessionKey(): String {
-        val data = getSharedPreferences("DATA", Context.MODE_PRIVATE)
-        return data.getString("SessionKey", "")
-    }
-
     private fun isEnabledReadNotification(): Boolean {
         val contentResolver = contentResolver
         val rawListeners = Settings.Secure.getString(contentResolver,
@@ -321,6 +315,11 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, LoginViewCal
                     .forEach { return true }
         }
         return false
+    }
+
+    private fun getSessionKey(): String {
+        val sharedPreferencesHelper = SharedPreferencesHelper(this)
+        return sharedPreferencesHelper.getSessionKey()
     }
 
     companion object {
