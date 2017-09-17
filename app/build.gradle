@@ -35,11 +35,11 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-    compile 'com.android.support:appcompat-v7:24.2.1'
+    compile 'com.android.support:appcompat-v7:26.0.0-beta1'
     compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha9'
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'
-    compile 'com.android.support:design:24.2.1'
+    compile 'com.android.support:design:26.0.0-beta1'
     compile 'com.jakewharton:butterknife:8.8.1'
     compile 'com.google.code.gson:gson:2.7'
     compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
@@ -55,4 +55,7 @@ dependencies {
 }
 repositories {
     mavenCentral()
+    maven {
+        url 'https://maven.google.com'
+    }
 }
