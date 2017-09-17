@@ -38,15 +38,15 @@ class ScrobbleRecyclerViewAdapter(context: Context, scrobbles: RealmResults<Scro
 
     class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         val artWorkView: ImageView by lazy {
-            v.findViewById(R.id.art_work_view) as ImageView
+            v.findViewById<ImageView>(R.id.art_work_view)
         }
 
         val trackNameView: TextView by lazy {
-            v.findViewById(R.id.track_name_view) as TextView
+            v.findViewById<TextView>(R.id.track_name_view)
         }
 
         val trackArtistView: TextView by lazy {
-            v.findViewById(R.id.track_artist_view) as TextView
+            v.findViewById<TextView>(R.id.track_artist_view)
         }
     }
 }
