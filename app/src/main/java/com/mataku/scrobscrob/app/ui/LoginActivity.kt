@@ -46,11 +46,11 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, LoginViewCal
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         // Set up the login form.
-        userNameView = findViewById(R.id.user_name) as AutoCompleteTextView
+        userNameView = findViewById<AutoCompleteTextView>(R.id.user_name)
         populateAutoComplete()
 
-        passwordView = findViewById(R.id.password) as EditText
-        passwordView!!.setOnEditorActionListener(TextView.OnEditorActionListener { textView, id, keyEvent ->
+        passwordView = findViewById<EditText>(R.id.password)
+        passwordView!!.setOnEditorActionListener(TextView.OnEditorActionListener { _, id, _ ->
             if (id == R.id.login || id == EditorInfo.IME_NULL) {
                 attemptLogin()
                 return@OnEditorActionListener true
@@ -58,7 +58,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, LoginViewCal
             false
         })
 
-        val userNameSignInButton = findViewById(R.id.email_sign_in_button) as Button
+        val userNameSignInButton = findViewById<Button>(R.id.email_sign_in_button)
         userNameSignInButton.setOnClickListener { attemptLogin() }
 
         loginFormView = findViewById(R.id.login_form)

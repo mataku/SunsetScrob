@@ -1,9 +1,7 @@
 package com.mataku.scrobscrob.app.ui
 
-import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.provider.Settings
 import android.support.v4.widget.SwipeRefreshLayout
@@ -30,7 +28,6 @@ class MainActivity : AppCompatActivity(), MainViewCallback, SwipeRefreshLayout.O
     private lateinit var scrobbleViewAdapter: ScrobbleRecyclerViewAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val sharedPreferences: SharedPreferences = getSharedPreferences("DATA", Context.MODE_PRIVATE)
         super.onCreate(savedInstanceState)
         Realm.init(this)
         this.title = "Latest 20 scrobbles"
@@ -74,7 +71,6 @@ class MainActivity : AppCompatActivity(), MainViewCallback, SwipeRefreshLayout.O
                 return true
             }
         }
-        return super.onOptionsItemSelected(item)
     }
 
     override fun showNotificationAccessSettingMenu() {
@@ -124,12 +120,12 @@ class MainActivity : AppCompatActivity(), MainViewCallback, SwipeRefreshLayout.O
 
     private fun notifyToAdapter(scrobble: RealmResults<Scrobble>) {
         val scrobbleViewAdapter = ScrobbleRecyclerViewAdapter(applicationContext, scrobble)
-        val scrobbleRecyclerView = findViewById(R.id.scrobble_list_view) as RecyclerView
+        val scrobbleRecyclerView = findViewById<RecyclerView>(R.id.scrobble_list_view)
         scrobbleRecyclerView.adapter = scrobbleViewAdapter
     }
 
     private fun setUpSwipeRefreshView() {
-        swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout) as SwipeRefreshLayout
+        swipeRefreshLayout = findViewById<SwipeRefreshLayout>(R.id.swipe_refresh_layout)
         swipeRefreshLayout.setColorSchemeResources(
                 R.color.colorAccent,
                 android.R.color.holo_blue_bright,
@@ -142,7 +138,7 @@ class MainActivity : AppCompatActivity(), MainViewCallback, SwipeRefreshLayout.O
         var scrobbles = Scrobble().getCurrentTracks()
         scrobbleViewAdapter = ScrobbleRecyclerViewAdapter(applicationContext, scrobbles)
         scrobbleViewAdapter.notifyDataSetChanged()
-        scrobbleRecyclerView = findViewById(R.id.scrobble_list_view) as RecyclerView
+        scrobbleRecyclerView = findViewById<RecyclerView>(R.id.scrobble_list_view)
         scrobbleRecyclerView.layoutManager = LinearLayoutManager(applicationContext)
         scrobbleRecyclerView.hasFixedSize()
         scrobbleRecyclerView.adapter = scrobbleViewAdapter
