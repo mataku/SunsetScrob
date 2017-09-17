@@ -3,12 +3,13 @@ apply plugin: 'kotlin-android'
 apply plugin: 'realm-android'
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 26
+    buildToolsVersion "26.0.0"
     defaultConfig {
         applicationId "com.mataku.scrobscrob"
-        minSdkVersion 24
-        targetSdkVersion 24
+
+        minSdkVersion 23
+        targetSdkVersion 26
         versionCode 2
         versionName "0.0.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
