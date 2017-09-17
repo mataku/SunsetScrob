@@ -28,6 +28,9 @@ local.properties
 *.iml
 .env
 
+# Keystore files
+*.jks
+
 # OS-specific files
 .DS_Store
 .DS_Store?
