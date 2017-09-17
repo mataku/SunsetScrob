@@ -23,6 +23,7 @@ import android.widget.*
 import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.app.presenter.LoginPresenter
 import com.mataku.scrobscrob.app.ui.view.LoginViewCallback
+import com.mataku.scrobscrob.app.util.SharedPreferencesHelper
 import java.util.*
 
 /**
@@ -46,10 +47,10 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, LoginViewCal
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         // Set up the login form.
-        userNameView = findViewById(R.id.user_name) as AutoCompleteTextView
+        userNameView = findViewById<AutoCompleteTextView>(R.id.user_name)
         populateAutoComplete()
 
-        passwordView = findViewById(R.id.password) as EditText
+        passwordView = findViewById<EditText>(R.id.password) as EditText
         passwordView!!.setOnEditorActionListener(TextView.OnEditorActionListener { textView, id, keyEvent ->
             if (id == R.id.login || id == EditorInfo.IME_NULL) {
                 attemptLogin()
@@ -58,7 +59,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, LoginViewCal
             false
         })
 
-        val userNameSignInButton = findViewById(R.id.email_sign_in_button) as Button
+        val userNameSignInButton = findViewById<Button>(R.id.email_sign_in_button)
         userNameSignInButton.setOnClickListener { attemptLogin() }
 
         loginFormView = findViewById(R.id.login_form)
@@ -265,9 +266,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, LoginViewCal
         override fun onPostExecute(success: Boolean?) {
             authTask = null
             showProgress(false)
-
-            val sessionKey = getSessionKey()
-            loginPresenter.backToSettingsWhenLoggedIn(success, sessionKey)
+            loginPresenter.backToSettingsWhenLoggedIn(success, getSessionKey())
         }
 
         override fun onCancelled() {
@@ -303,11 +302,6 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, LoginViewCal
         passwordView!!.requestFocus()
     }
 
-    private fun getSessionKey(): String {
-        val data = getSharedPreferences("DATA", Context.MODE_PRIVATE)
-        return data.getString("SessionKey", "")
-    }
-
     private fun isEnabledReadNotification(): Boolean {
         val contentResolver = contentResolver
         val rawListeners = Settings.Secure.getString(contentResolver,
@@ -321,6 +315,11 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, LoginViewCal
                     .forEach { return true }
         }
         return false
+    }
+
+    private fun getSessionKey(): String {
+        val sharedPreferencesHelper = SharedPreferencesHelper(this)
+        return sharedPreferencesHelper.getSessionKey()
     }
 
     companion object {

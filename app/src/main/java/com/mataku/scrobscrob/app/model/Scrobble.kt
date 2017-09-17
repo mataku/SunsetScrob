@@ -13,7 +13,6 @@ open class Scrobble(
         open var artistName: String = "",
         open var trackName: String = "",
         open var albumName: String = "",
-        open var timeStamp: Long = 0.toLong(),
         open var artwork: String = ""
 ) : RealmObject() {
     fun getCurrentTracks(): RealmResults<Scrobble> {

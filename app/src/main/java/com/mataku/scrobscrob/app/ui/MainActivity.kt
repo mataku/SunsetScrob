@@ -15,7 +15,6 @@ import android.view.MenuItem
 import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.app.model.Scrobble
 import com.mataku.scrobscrob.app.presenter.MainPresenter
-import com.mataku.scrobscrob.app.receiver.AppleMusicNotificationReceiver
 import com.mataku.scrobscrob.app.ui.adapter.ScrobbleRecyclerViewAdapter
 import com.mataku.scrobscrob.app.ui.view.MainViewCallback
 import io.realm.Realm
@@ -23,7 +22,6 @@ import io.realm.RealmChangeListener
 import io.realm.RealmResults
 
 class MainActivity : AppCompatActivity(), MainViewCallback, SwipeRefreshLayout.OnRefreshListener {
-    private var receiver = AppleMusicNotificationReceiver()
     private lateinit var mainPresenter: MainPresenter
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var scrobbleRecyclerView: RecyclerView
@@ -45,7 +43,6 @@ class MainActivity : AppCompatActivity(), MainViewCallback, SwipeRefreshLayout.O
 //        mainPresenter.showPreparationMenuIfNeeded(isEnabledReadNotification())
         val filter = IntentFilter()
         filter.addAction("AppleMusic")
-        registerReceiver(receiver, filter)
 
         setUpSwipeRefreshView()
         setUpRecyclerView()
@@ -53,7 +50,6 @@ class MainActivity : AppCompatActivity(), MainViewCallback, SwipeRefreshLayout.O
 
     override fun onDestroy() {
         super.onDestroy()
-        unregisterReceiver(receiver)
     }
 
     //    右上のメニューボタン表示
@@ -124,12 +120,12 @@ class MainActivity : AppCompatActivity(), MainViewCallback, SwipeRefreshLayout.O
 
     private fun notifyToAdapter(scrobble: RealmResults<Scrobble>) {
         val scrobbleViewAdapter = ScrobbleRecyclerViewAdapter(applicationContext, scrobble)
-        val scrobbleRecyclerView = findViewById(R.id.scrobble_list_view) as RecyclerView
+        val scrobbleRecyclerView = findViewById<RecyclerView>(R.id.scrobble_list_view)
         scrobbleRecyclerView.adapter = scrobbleViewAdapter
     }
 
     private fun setUpSwipeRefreshView() {
-        swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout) as SwipeRefreshLayout
+        swipeRefreshLayout = findViewById<SwipeRefreshLayout>(R.id.swipe_refresh_layout)
         swipeRefreshLayout.setColorSchemeResources(
                 R.color.colorAccent,
                 android.R.color.holo_blue_bright,
@@ -142,7 +138,7 @@ class MainActivity : AppCompatActivity(), MainViewCallback, SwipeRefreshLayout.O
         var scrobbles = Scrobble().getCurrentTracks()
         scrobbleViewAdapter = ScrobbleRecyclerViewAdapter(applicationContext, scrobbles)
         scrobbleViewAdapter.notifyDataSetChanged()
-        scrobbleRecyclerView = findViewById(R.id.scrobble_list_view) as RecyclerView
+        scrobbleRecyclerView = findViewById<RecyclerView>(R.id.scrobble_list_view)
         scrobbleRecyclerView.layoutManager = LinearLayoutManager(applicationContext)
         scrobbleRecyclerView.hasFixedSize()
         scrobbleRecyclerView.adapter = scrobbleViewAdapter
