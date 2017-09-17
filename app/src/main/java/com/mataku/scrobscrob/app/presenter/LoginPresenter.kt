@@ -21,7 +21,7 @@ class LoginPresenter(var accessable: Boolean, var view: LoginViewCallback) {
         try {
             val response = call.execute()
             val mobileSession = response?.body()?.mobileSession
-            view.setSessionInfo(mobileSession!!.key, mobileSession!!.name)
+            view.setSessionInfo(mobileSession!!.key, mobileSession.name)
         } catch (e: Exception) {
             e.printStackTrace()
         }

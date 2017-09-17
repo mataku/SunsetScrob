@@ -1,9 +1,7 @@
 package com.mataku.scrobscrob.app.ui
 
-import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.provider.Settings
 import android.support.v4.widget.SwipeRefreshLayout
@@ -30,7 +28,6 @@ class MainActivity : AppCompatActivity(), MainViewCallback, SwipeRefreshLayout.O
     private lateinit var scrobbleViewAdapter: ScrobbleRecyclerViewAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val sharedPreferences: SharedPreferences = getSharedPreferences("DATA", Context.MODE_PRIVATE)
         super.onCreate(savedInstanceState)
         Realm.init(this)
         this.title = "Latest 20 scrobbles"
@@ -74,7 +71,6 @@ class MainActivity : AppCompatActivity(), MainViewCallback, SwipeRefreshLayout.O
                 return true
             }
         }
-        return super.onOptionsItemSelected(item)
     }
 
     override fun showNotificationAccessSettingMenu() {
