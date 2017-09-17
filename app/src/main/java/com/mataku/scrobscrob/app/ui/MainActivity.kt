@@ -124,12 +124,12 @@ class MainActivity : AppCompatActivity(), MainViewCallback, SwipeRefreshLayout.O
 
     private fun notifyToAdapter(scrobble: RealmResults<Scrobble>) {
         val scrobbleViewAdapter = ScrobbleRecyclerViewAdapter(applicationContext, scrobble)
-        val scrobbleRecyclerView = findViewById(R.id.scrobble_list_view) as RecyclerView
+        val scrobbleRecyclerView = findViewById<RecyclerView>(R.id.scrobble_list_view)
         scrobbleRecyclerView.adapter = scrobbleViewAdapter
     }
 
     private fun setUpSwipeRefreshView() {
-        swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout) as SwipeRefreshLayout
+        swipeRefreshLayout = findViewById<SwipeRefreshLayout>(R.id.swipe_refresh_layout)
         swipeRefreshLayout.setColorSchemeResources(
                 R.color.colorAccent,
                 android.R.color.holo_blue_bright,
@@ -142,7 +142,7 @@ class MainActivity : AppCompatActivity(), MainViewCallback, SwipeRefreshLayout.O
         var scrobbles = Scrobble().getCurrentTracks()
         scrobbleViewAdapter = ScrobbleRecyclerViewAdapter(applicationContext, scrobbles)
         scrobbleViewAdapter.notifyDataSetChanged()
-        scrobbleRecyclerView = findViewById(R.id.scrobble_list_view) as RecyclerView
+        scrobbleRecyclerView = findViewById<RecyclerView>(R.id.scrobble_list_view)
         scrobbleRecyclerView.layoutManager = LinearLayoutManager(applicationContext)
         scrobbleRecyclerView.hasFixedSize()
         scrobbleRecyclerView.adapter = scrobbleViewAdapter
