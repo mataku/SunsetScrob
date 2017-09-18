@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
 import com.mataku.scrobscrob.R
+import com.mataku.scrobscrob.app.data.Migration
 import com.mataku.scrobscrob.app.model.Scrobble
 import com.mataku.scrobscrob.app.presenter.MainPresenter
 import com.mataku.scrobscrob.app.receiver.AppleMusicNotificationReceiver
@@ -18,6 +19,7 @@ import com.mataku.scrobscrob.app.ui.adapter.ScrobbleRecyclerViewAdapter
 import com.mataku.scrobscrob.app.ui.view.MainViewCallback
 import io.realm.Realm
 import io.realm.RealmChangeListener
+import io.realm.RealmConfiguration
 import io.realm.RealmResults
 
 class MainActivity : AppCompatActivity(), MainViewCallback, SwipeRefreshLayout.OnRefreshListener {
@@ -30,6 +32,10 @@ class MainActivity : AppCompatActivity(), MainViewCallback, SwipeRefreshLayout.O
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Realm.init(this)
+        val builder = RealmConfiguration.Builder()
+        builder.schemaVersion(1L).migration(Migration())
+        val config = builder.build()
+        Realm.setDefaultConfiguration(config)
         this.title = "Latest 20 scrobbles"
 //        if (BuildConfig.DEBUG) {
 //            val realm = Realm.getDefaultInstance()
