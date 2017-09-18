@@ -10,9 +10,6 @@ class SharedPreferencesHelper(context: Context) {
     fun getTimeStamp(): Long =
             sharedPreferences.getLong("TimeStamp", System.currentTimeMillis() / 1000L)
 
-    fun getPreviousTrackName(): String =
-            sharedPreferences.getString("PreviousTrackName", "")
-
     fun getAlbumArtWork(): String =
             sharedPreferences.getString("AlbumArtwork", "")
 
@@ -38,12 +35,6 @@ class SharedPreferencesHelper(context: Context) {
         editor.apply()
     }
 
-    fun setPreviousTrackName(trackName: String) {
-        val editor: SharedPreferences.Editor = sharedPreferences.edit()
-        editor.putString("TrackName", trackName)
-        editor.apply()
-    }
-
     fun setSessionKey(sessionKey: String) {
         val editor: SharedPreferences.Editor = sharedPreferences.edit()
         editor.putString("SessionKey", sessionKey)
@@ -51,9 +42,6 @@ class SharedPreferencesHelper(context: Context) {
     }
 
     fun overScrobblingPoint(): Boolean {
-        if (getPreviousTrackName() == "") {
-            return false
-        }
         val now = System.currentTimeMillis() / 1000L
         val scrobblingPoint = getPlayingTime() / 2
         return now - getTimeStamp() > scrobblingPoint
