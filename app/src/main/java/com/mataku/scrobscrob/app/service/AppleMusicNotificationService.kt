@@ -8,15 +8,18 @@ import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.util.Log
 import com.mataku.scrobscrob.BuildConfig
+import com.mataku.scrobscrob.app.model.Scrobble
 import com.mataku.scrobscrob.app.model.Track
 import com.mataku.scrobscrob.app.presenter.AppleMusicNotificationServicePresenter
 import com.mataku.scrobscrob.app.ui.view.NotificationServiceInterface
+import com.mataku.scrobscrob.app.util.SharedPreferencesHelper
+import io.realm.Realm
 
 
 class AppleMusicNotificationService : NotificationListenerService(), NotificationServiceInterface {
     private val APPLE_MUSIC_PACKAGE_NAME = "com.apple.android.music"
     private val presenter = AppleMusicNotificationServicePresenter(this)
-    private var track: Track? = null
+    private lateinit var track: Track
 
     override fun onCreate() {
         super.onCreate()
@@ -42,6 +45,7 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
         val sharedPreferences = getSharedPreferences("DATA", Context.MODE_PRIVATE)
         val sessionKey = sharedPreferences.getString("SessionKey", "")
         val previousTrackName = sharedPreferences.getString("PreviousTrackName", "")
+        val sharedPreferencesHelper = SharedPreferencesHelper(this)
 
         // Ignore if not Apple Music APP
         if (sbn.packageName != APPLE_MUSIC_PACKAGE_NAME) {
@@ -66,7 +70,16 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
             return
         }
 
-        setPreviousTrackName(trackName)
+        sharedPreferencesHelper.setPreviousTrackName(trackName)
+
+        if (sharedPreferencesHelper.overScrobblingPoint()) {
+            presenter.scrobble(
+                    track,
+                    sessionKey,
+                    sharedPreferencesHelper.getTimeStamp()
+            )
+        }
+
         // artist name and album name
         // Format: android.text=artistName - albumName
         // e.g. PassCode — VIRTUAL
@@ -81,16 +94,15 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
         }
         val artistName = array[0].trim()
         val albumName = array[1].trim()
-        val timeStamp = System.currentTimeMillis() / 1000L
+        sharedPreferencesHelper.setTimeStamp()
         track = Track(
                 artistName,
                 trackName,
-                albumName,
-                presenter.getTrackDuration(artistName, trackName),
-                timeStamp,
-                ""
+                albumName
         )
-        presenter.getAlbumArtWork(albumName, artistName, trackName)
+        presenter.getTrackInfo(track, sessionKey)
+        val intent = Intent("AppleMusic")
+        sendBroadcast(intent)
     }
 
     // ステータスバーから通知が消去される
@@ -98,15 +110,22 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
         super.onNotificationRemoved(sbn)
     }
 
-    override fun sendTrackInfoToReceiver(albumArtWork: String) {
-        val intent = Intent("AppleMusic")
-        intent.putExtra("artistName", track!!.artistName)
-        intent.putExtra("trackName", track!!.name)
-        intent.putExtra("albumName", track!!.albumName)
-        intent.putExtra("playingTime", track!!.playingTime)
-        intent.putExtra("timeStamp", track!!.timeStamp)
-        intent.putExtra("albumArtWork", albumArtWork)
-        sendBroadcast(intent)
+    override fun setAlbumArtwork(albumArtWork: String) {
+        val sharedPreferencesHelper = SharedPreferencesHelper(this)
+        sharedPreferencesHelper.setAlbumArtwork(albumArtWork)
+    }
+
+    override fun saveScrobble(track: Track) {
+        val sharedPreferencesHelper = SharedPreferencesHelper(this)
+        var realm = Realm.getDefaultInstance();
+        
+        realm.executeTransaction {
+            var scrobble = realm.createObject(Scrobble::class.java, Scrobble().count() + 1)
+            scrobble.albumName = track.albumName
+            scrobble.artistName = track.artistName
+            scrobble.artwork = sharedPreferencesHelper.getAlbumArtWork()
+            scrobble.trackName = track.name
+        }
     }
 
     private fun setPreviousTrackName(trackName: String) {
