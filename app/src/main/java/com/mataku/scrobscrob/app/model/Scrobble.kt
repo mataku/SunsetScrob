@@ -27,14 +27,12 @@ open class Scrobble(
         }
 
         val result = realm.where(Scrobble::class.java).between("id", lowerLimit, limit).findAllSorted("id", Sort.DESCENDING)
-        realm.close()
         return result
     }
 
     fun count(): Int {
         val realm = Realm.getDefaultInstance()
         val size = realm.where(Scrobble::class.java).findAll().size
-        realm.close()
         return size
     }
 }
