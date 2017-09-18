@@ -2,7 +2,6 @@ package com.mataku.scrobscrob.app.service
 
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
@@ -20,12 +19,16 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
     private val APPLE_MUSIC_PACKAGE_NAME = "com.apple.android.music"
     private val presenter = AppleMusicNotificationServicePresenter(this)
     private lateinit var track: Track
+    private var previousTrackName: String = ""
 
     override fun onCreate() {
         super.onCreate()
+        val sharedPreferencesHelper = SharedPreferencesHelper(this)
         try {
             val appleMusicPackageInfo = packageManager.getPackageInfo(APPLE_MUSIC_PACKAGE_NAME, 0)
             if (BuildConfig.DEBUG) {
+                sharedPreferencesHelper.setPLayingTime(1000L)
+                sharedPreferencesHelper.setTimeStamp()
                 Log.i("AppleMusicNotification", "Apple music is installed! (version: ${appleMusicPackageInfo.versionCode}")
             }
         } catch (e: PackageManager.NameNotFoundException) {
@@ -44,7 +47,6 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
         super.onNotificationPosted(sbn)
         val sharedPreferences = getSharedPreferences("DATA", Context.MODE_PRIVATE)
         val sessionKey = sharedPreferences.getString("SessionKey", "")
-        val previousTrackName = sharedPreferences.getString("PreviousTrackName", "")
         val sharedPreferencesHelper = SharedPreferencesHelper(this)
 
         // Ignore if not Apple Music APP
@@ -68,17 +70,19 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
 
         if (previousTrackName == trackName) {
             return
+        } else {
+            if (sharedPreferencesHelper.overScrobblingPoint()) {
+                presenter.scrobble(
+                        track,
+                        sessionKey,
+                        sharedPreferencesHelper.getTimeStamp()
+                )
+            }
+            sharedPreferencesHelper.setPLayingTime(1000000L)
+            sharedPreferencesHelper.setTimeStamp()
         }
 
-        sharedPreferencesHelper.setPreviousTrackName(trackName)
-
-        if (sharedPreferencesHelper.overScrobblingPoint()) {
-            presenter.scrobble(
-                    track,
-                    sessionKey,
-                    sharedPreferencesHelper.getTimeStamp()
-            )
-        }
+        previousTrackName = trackName
 
         // artist name and album name
         // Format: android.text=artistName - albumName
@@ -118,7 +122,7 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
     override fun saveScrobble(track: Track) {
         val sharedPreferencesHelper = SharedPreferencesHelper(this)
         var realm = Realm.getDefaultInstance();
-        
+
         realm.executeTransaction {
             var scrobble = realm.createObject(Scrobble::class.java, Scrobble().count() + 1)
             scrobble.albumName = track.albumName
@@ -128,10 +132,8 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
         }
     }
 
-    private fun setPreviousTrackName(trackName: String) {
-        val data = getSharedPreferences("DATA", Context.MODE_PRIVATE)
-        val editor: SharedPreferences.Editor = data.edit()
-        editor.putString("PreviousTrackName", trackName)
-        editor.apply()
+    override fun setPlayingTime(playingTime: Long) {
+        val sharedPreferencesHelper = SharedPreferencesHelper(this)
+        sharedPreferencesHelper.setPLayingTime(playingTime)
     }
 }
