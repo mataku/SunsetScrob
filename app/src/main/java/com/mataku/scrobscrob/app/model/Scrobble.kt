@@ -16,7 +16,7 @@ open class Scrobble(
         open var artwork: String = ""
 ) : RealmObject() {
     fun getCurrentTracks(): RealmResults<Scrobble> {
-        var limit = AppUtil().latestCcrobbleCountToDisplay
+        var limit = AppUtil().latestScrobbleCountToDisplay
         var lowerLimit = 1
         val realm = Realm.getDefaultInstance()
         val scrobblesCount = realm.where(Scrobble::class.java).findAll().count()
