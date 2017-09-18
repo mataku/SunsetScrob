@@ -113,7 +113,7 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
         })
     }
 
-    fun getTrackDuration(artistName: String, trackName: String): Long {
+    fun getTrackDuration(artistName: String, trackName: String) {
         val client = Retrofit2LastFmClient.createService()
         val call = client.getTrackInfo(
                 artistName,
@@ -144,7 +144,7 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
             }
         })
 
-        return trackDuration
+        notificationServiceInterface.setPlayingTime(trackDuration)
     }
 
     fun getAlbumArtWork(albumName: String, artistName: String, trackName: String) {
