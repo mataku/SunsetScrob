@@ -32,31 +32,31 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
     def support_library_version="26.0.0-beta1"
     def okhttp3_version="3.4.1"
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-    compile "com.android.support:appcompat-v7:$support_library_version"
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.squareup.retrofit2:retrofit:2.3.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
-    compile "com.android.support:design:$support_library_version"
-    compile 'com.jakewharton:butterknife:8.8.1'
-    compile 'com.google.code.gson:gson:2.7'
-    compile "com.squareup.okhttp3:logging-interceptor:$okhttp3_version"
-    compile "com.squareup.okhttp3:okhttp:$okhttp3_version"
-    compile 'io.reactivex.rxjava2:rxjava:2.1.2'
-    compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
-    compile 'com.github.bumptech.glide:glide:3.7.0'
-    compile 'io.realm:android-adapters:2.1.0'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation "com.android.support:appcompat-v7:$support_library_version"
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+    implementation "com.android.support:design:$support_library_version"
+    implementation 'com.jakewharton:butterknife:8.8.1'
+    implementation 'com.google.code.gson:gson:2.7'
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp3_version"
+    implementation "com.squareup.okhttp3:okhttp:$okhttp3_version"
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.2'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+    implementation 'com.github.bumptech.glide:glide:3.7.0'
+    implementation 'io.realm:android-adapters:2.1.0'
 
-    testCompile 'junit:junit:4.12'
-    testCompile 'com.google.guava:guava:20.0'
-    testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'com.google.guava:guava:20.0'
+    testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
 }
 repositories {
     mavenCentral()
