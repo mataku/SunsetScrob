@@ -8,14 +8,10 @@ import com.mataku.scrobscrob.app.model.api.service.AlbumInfoService
 import com.mataku.scrobscrob.app.model.api.service.TrackInfoService
 import com.mataku.scrobscrob.app.model.api.service.TrackScrobbleService
 import com.mataku.scrobscrob.app.model.api.service.TrackUpdateNowPlayingService
-import com.mataku.scrobscrob.app.model.entity.ScrobblesApiResponse
 import com.mataku.scrobscrob.app.ui.view.NotificationServiceInterface
 import com.mataku.scrobscrob.app.util.AppUtil
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class AppleMusicNotificationServicePresenter(var notificationServiceInterface: NotificationServiceInterface) {
 
@@ -60,13 +56,11 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
                             Log.i("scrobblingApi", "success")
                         }
                     }
-                }, { _ ->
+                }, { error ->
                     if (BuildConfig.DEBUG) {
-                        Log.i("ScrobblingApi", "Something went wrong")
+                        Log.i("Scrobble API", error.message)
                     }
                 })
-
-        
     }
 
     private fun setNowPlaying(track: Track, sessionKey: String) {
@@ -116,7 +110,7 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ result ->
                     if (result.isSuccessful && result.body() != null) {
-                        trackDuration = result.body()!!.trackInfo.duration.toLong()
+                        trackDuration = result.body()!!.trackInfo.duration.toLong() / 1000L
                         // Use default value if duration is 0
                         if (trackDuration == 0L) {
                             trackDuration = appUtil.defaultPlayingTime
