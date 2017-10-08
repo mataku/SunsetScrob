@@ -4,6 +4,7 @@ import android.util.Log
 import com.mataku.scrobscrob.BuildConfig
 import com.mataku.scrobscrob.app.model.Track
 import com.mataku.scrobscrob.app.model.api.Retrofit2LastFmClient
+import com.mataku.scrobscrob.app.model.api.service.TrackUpdateNowPlayingService
 import com.mataku.scrobscrob.app.model.entity.AlbumInfoApiResponse
 import com.mataku.scrobscrob.app.model.entity.NowPlayingApiResponse
 import com.mataku.scrobscrob.app.model.entity.ScrobblesApiResponse
@@ -81,7 +82,7 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
         params["api_key"] = appUtil.apiKey
 
         val apiSig = appUtil.generateApiSig(params)
-        val client = Retrofit2LastFmClient.createService()
+        val client = Retrofit2LastFmClient.create(TrackUpdateNowPlayingService::class.java)
         val call = client.updateNowPlaying(
                 track.artistName,
                 track.name,
