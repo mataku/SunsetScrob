@@ -78,7 +78,7 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
                         sharedPreferencesHelper.getTimeStamp()
                 )
             }
-            sharedPreferencesHelper.setPLayingTime(1000000L)
+            sharedPreferencesHelper.setPLayingTime(1000L)
             sharedPreferencesHelper.setTimeStamp()
         }
 
