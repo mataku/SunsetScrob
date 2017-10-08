@@ -8,7 +8,6 @@ import com.mataku.scrobscrob.app.model.api.service.AlbumInfoService
 import com.mataku.scrobscrob.app.model.api.service.TrackInfoService
 import com.mataku.scrobscrob.app.model.api.service.TrackScrobbleService
 import com.mataku.scrobscrob.app.model.api.service.TrackUpdateNowPlayingService
-import com.mataku.scrobscrob.app.model.entity.NowPlayingApiResponse
 import com.mataku.scrobscrob.app.model.entity.ScrobblesApiResponse
 import com.mataku.scrobscrob.app.ui.view.NotificationServiceInterface
 import com.mataku.scrobscrob.app.util.AppUtil
@@ -86,7 +85,7 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
 
         val apiSig = appUtil.generateApiSig(params)
         val client = Retrofit2LastFmClient.create(TrackUpdateNowPlayingService::class.java)
-        val call = client.updateNowPlaying(
+        client.updateNowPlaying(
                 track.artistName,
                 track.name,
                 track.albumName,
@@ -94,27 +93,20 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
                 apiSig,
                 sessionKey
         )
-
-        call.enqueue(object : Callback<NowPlayingApiResponse> {
-            override fun onResponse(call: Call<NowPlayingApiResponse>?, response: Response<NowPlayingApiResponse>?) {
-                if (response!!.isSuccessful) {
-                    if (com.mataku.scrobscrob.BuildConfig.DEBUG) {
-                        Log.i("NowPlayingApi", "success")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ result ->
+                    if (result.isSuccessful) {
+                        if (com.mataku.scrobscrob.BuildConfig.DEBUG) {
+                            Log.i("NowPlayingApi", "success")
+                        }
                     }
-
-                } else {
+                }, { _ ->
                     if (BuildConfig.DEBUG) {
                         Log.i("NowPlayingApi", "Something wrong")
                     }
-                }
-            }
+                })
 
-            override fun onFailure(call: Call<NowPlayingApiResponse>?, t: Throwable?) {
-                if (BuildConfig.DEBUG) {
-                    Log.i("NowPlayingApi", "Failure")
-                }
-            }
-        })
     }
 
     private fun getTrackDuration(artistName: String, trackName: String) {
