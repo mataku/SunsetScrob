@@ -8,12 +8,13 @@ import com.mataku.scrobscrob.app.model.api.service.AlbumInfoService
 import com.mataku.scrobscrob.app.model.api.service.TrackInfoService
 import com.mataku.scrobscrob.app.model.api.service.TrackScrobbleService
 import com.mataku.scrobscrob.app.model.api.service.TrackUpdateNowPlayingService
-import com.mataku.scrobscrob.app.model.entity.AlbumInfoApiResponse
 import com.mataku.scrobscrob.app.model.entity.NowPlayingApiResponse
 import com.mataku.scrobscrob.app.model.entity.ScrobblesApiResponse
 import com.mataku.scrobscrob.app.model.entity.TrackInfoApiResponse
 import com.mataku.scrobscrob.app.ui.view.NotificationServiceInterface
 import com.mataku.scrobscrob.app.util.AppUtil
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -153,34 +154,22 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
 
     private fun getAlbumArtWork(albumName: String, artistName: String, trackName: String) {
         val client = Retrofit2LastFmClient.create(AlbumInfoService::class.java)
-        val call = client.getAlbumInfo(
+        var largeSizeUrl = ""
+        client.getAlbumInfo(
                 albumName,
                 artistName,
                 trackName,
-                apiKey
-        )
-
-        var largeSizeUrl = ""
-
-        call.enqueue(object : Callback<AlbumInfoApiResponse> {
-            override fun onResponse(call: Call<AlbumInfoApiResponse>?, response: Response<AlbumInfoApiResponse>?) {
-                if (response!!.isSuccessful && response.body() != null && response.body()?.albumInfo != null) {
-                    largeSizeUrl = response.body()!!.albumInfo.imageList[2].imageUrl
-                    notificationServiceInterface.setAlbumArtwork(largeSizeUrl)
-                } else {
-                    if (BuildConfig.DEBUG) {
-                        Log.i("AlbumInfoApi", "Something went wrong")
+                apiKey)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ result ->
+                    if (result.isSuccessful && result.body() != null) {
+                        largeSizeUrl = result.body()!!.albumInfo.imageList[2].imageUrl
+                        notificationServiceInterface.setAlbumArtwork(largeSizeUrl)
                     }
+                }, { _ ->
                     notificationServiceInterface.setAlbumArtwork(largeSizeUrl)
                 }
-            }
-
-            override fun onFailure(call: Call<AlbumInfoApiResponse>?, t: Throwable?) {
-                if (BuildConfig.DEBUG) {
-                    Log.i("AlbumInfoApi", "Failure")
-                }
-                notificationServiceInterface.setAlbumArtwork(largeSizeUrl)
-            }
-        })
+                )
     }
 }
