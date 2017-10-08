@@ -47,7 +47,7 @@ class SharedPreferencesHelper(context: Context) {
         return now - getTimeStamp() > scrobblingPoint
     }
 
-    private fun getPlayingTime(): Long =
+    fun getPlayingTime(): Long =
             sharedPreferences.getLong("PlayingTime", appUtil.defaultPlayingTime)
 
 }
