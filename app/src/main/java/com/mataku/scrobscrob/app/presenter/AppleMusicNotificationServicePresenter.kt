@@ -4,6 +4,9 @@ import android.util.Log
 import com.mataku.scrobscrob.BuildConfig
 import com.mataku.scrobscrob.app.model.Track
 import com.mataku.scrobscrob.app.model.api.Retrofit2LastFmClient
+import com.mataku.scrobscrob.app.model.api.service.AlbumInfoService
+import com.mataku.scrobscrob.app.model.api.service.TrackInfoService
+import com.mataku.scrobscrob.app.model.api.service.TrackScrobbleService
 import com.mataku.scrobscrob.app.model.api.service.TrackUpdateNowPlayingService
 import com.mataku.scrobscrob.app.model.entity.AlbumInfoApiResponse
 import com.mataku.scrobscrob.app.model.entity.NowPlayingApiResponse
@@ -39,7 +42,7 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
         params["api_key"] = appUtil.apiKey
 
         val apiSig = appUtil.generateApiSig(params)
-        val client = Retrofit2LastFmClient.createService()
+        val client = Retrofit2LastFmClient.create(TrackScrobbleService::class.java)
         val call = client.scrobble(
                 track.artistName,
                 track.name,
@@ -114,8 +117,8 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
         })
     }
 
-    fun getTrackDuration(artistName: String, trackName: String) {
-        val client = Retrofit2LastFmClient.createService()
+    private fun getTrackDuration(artistName: String, trackName: String) {
+        val client = Retrofit2LastFmClient.create(TrackInfoService::class.java)
         val call = client.getTrackInfo(
                 artistName,
                 trackName,
@@ -148,8 +151,8 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
         notificationServiceInterface.setPlayingTime(trackDuration)
     }
 
-    fun getAlbumArtWork(albumName: String, artistName: String, trackName: String) {
-        val client = Retrofit2LastFmClient.createService()
+    private fun getAlbumArtWork(albumName: String, artistName: String, trackName: String) {
+        val client = Retrofit2LastFmClient.create(AlbumInfoService::class.java)
         val call = client.getAlbumInfo(
                 albumName,
                 artistName,
