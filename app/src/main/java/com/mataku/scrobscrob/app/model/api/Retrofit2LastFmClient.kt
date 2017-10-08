@@ -13,20 +13,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class Retrofit2LastFmClient {
     companion object {
-        fun createService(): LastFmService {
-            val client = builderHttpClient()
-
-            val apiUrl = "https://ws.audioscrobbler.com/"
-            val gson = GsonBuilder().setLenient().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create()
-            val retrofit = Retrofit.Builder()
-                    .baseUrl(apiUrl)
-                    .addConverterFactory(GsonConverterFactory.create(gson))
-                    .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
-                    .client(client)
-                    .build()
-            return retrofit.create(LastFmService::class.java)
-        }
-
         fun <T> create(service: Class<T>): T {
             val client = builderHttpClient()
 
