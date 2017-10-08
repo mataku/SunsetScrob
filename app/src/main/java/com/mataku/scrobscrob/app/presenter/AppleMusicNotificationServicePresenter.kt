@@ -10,7 +10,6 @@ import com.mataku.scrobscrob.app.model.api.service.TrackScrobbleService
 import com.mataku.scrobscrob.app.model.api.service.TrackUpdateNowPlayingService
 import com.mataku.scrobscrob.app.model.entity.NowPlayingApiResponse
 import com.mataku.scrobscrob.app.model.entity.ScrobblesApiResponse
-import com.mataku.scrobscrob.app.model.entity.TrackInfoApiResponse
 import com.mataku.scrobscrob.app.ui.view.NotificationServiceInterface
 import com.mataku.scrobscrob.app.util.AppUtil
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -120,36 +119,27 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
 
     private fun getTrackDuration(artistName: String, trackName: String) {
         val client = Retrofit2LastFmClient.create(TrackInfoService::class.java)
-        val call = client.getTrackInfo(
+        var trackDuration = appUtil.defaultPlayingTime
+        client.getTrackInfo(
                 artistName,
                 trackName,
                 apiKey
         )
-
-        var trackDuration = appUtil.defaultPlayingTime
-
-        call.enqueue(object : Callback<TrackInfoApiResponse> {
-            override fun onResponse(call: Call<TrackInfoApiResponse>?, response: Response<TrackInfoApiResponse>?) {
-                if (response!!.isSuccessful) {
-                    if (response.body() != null && response.body()?.trackInfo != null) {
-                        val body = response.body()
-                        trackDuration = body?.trackInfo?.duration!!.toLong()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ result ->
+                    if (result.isSuccessful && result.body() != null) {
+                        trackDuration = result.body()!!.trackInfo.duration.toLong()
                         // Use default value if duration is 0
                         if (trackDuration == 0L) {
                             trackDuration = appUtil.defaultPlayingTime
                         }
                     }
-                } else {
-                    // Do nothing
-                }
-            }
+                    notificationServiceInterface.setPlayingTime(trackDuration)
+                }, { _ ->
+                    notificationServiceInterface.setPlayingTime(trackDuration)
+                })
 
-            override fun onFailure(call: Call<TrackInfoApiResponse>?, t: Throwable?) {
-
-            }
-        })
-
-        notificationServiceInterface.setPlayingTime(trackDuration)
     }
 
     private fun getAlbumArtWork(albumName: String, artistName: String, trackName: String) {
@@ -169,7 +159,6 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
                     }
                 }, { _ ->
                     notificationServiceInterface.setAlbumArtwork(largeSizeUrl)
-                }
-                )
+                })
     }
 }
