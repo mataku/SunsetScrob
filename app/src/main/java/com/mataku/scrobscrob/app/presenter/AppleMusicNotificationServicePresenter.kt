@@ -42,7 +42,7 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
 
         val apiSig = appUtil.generateApiSig(params)
         val client = Retrofit2LastFmClient.create(TrackScrobbleService::class.java)
-        val call = client.scrobble(
+        client.scrobble(
                 track.artistName,
                 track.name,
                 timeStamp,
@@ -51,27 +51,22 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
                 apiSig,
                 sessionKey
         )
-
-        call.enqueue(object : Callback<ScrobblesApiResponse> {
-            override fun onResponse(call: Call<ScrobblesApiResponse>?, response: Response<ScrobblesApiResponse>?) {
-                if (response!!.isSuccessful && response.body() != null && response.body()!!.scrobbles.attr.accepted == 1) {
-                    notificationServiceInterface.saveScrobble(track)
-                    if (BuildConfig.DEBUG) {
-                        Log.i("scrobblingApi", "success")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ result ->
+                    if (result.isSuccessful && result.body() != null && result.body()!!.scrobbles.attr.accepted == 1) {
+                        notificationServiceInterface.saveScrobble(track)
+                        if (BuildConfig.DEBUG) {
+                            Log.i("scrobblingApi", "success")
+                        }
                     }
-                } else {
+                }, { _ ->
                     if (BuildConfig.DEBUG) {
                         Log.i("ScrobblingApi", "Something went wrong")
                     }
-                }
-            }
+                })
 
-            override fun onFailure(call: Call<ScrobblesApiResponse>?, t: Throwable?) {
-                if (BuildConfig.DEBUG) {
-                    Log.i("ScrobblingApi", "Failure")
-                }
-            }
-        })
+        
     }
 
     private fun setNowPlaying(track: Track, sessionKey: String) {
@@ -97,7 +92,7 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ result ->
                     if (result.isSuccessful) {
-                        if (com.mataku.scrobscrob.BuildConfig.DEBUG) {
+                        if (BuildConfig.DEBUG) {
                             Log.i("NowPlayingApi", "success")
                         }
                     }
