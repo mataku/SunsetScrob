@@ -1,6 +1,7 @@
 package com.mataku.scrobscrob.app.presenter
 
 import com.mataku.scrobscrob.app.model.api.Retrofit2LastFmClient
+import com.mataku.scrobscrob.app.model.api.service.AuthMobileSessionService
 import com.mataku.scrobscrob.app.ui.view.LoginViewCallback
 import com.mataku.scrobscrob.app.util.AppUtil
 
@@ -16,7 +17,7 @@ class LoginPresenter(var accessable: Boolean, var view: LoginViewCallback) {
         params["api_key"] = appUtil.apiKey
 
         val apiSig: String = appUtil.generateApiSig(params)
-        val client = Retrofit2LastFmClient.createService()
+        val client = Retrofit2LastFmClient.create(AuthMobileSessionService::class.java)
         val call = client.authenticate(userName, password, appUtil.apiKey, apiSig)
         try {
             val response = call.execute()
