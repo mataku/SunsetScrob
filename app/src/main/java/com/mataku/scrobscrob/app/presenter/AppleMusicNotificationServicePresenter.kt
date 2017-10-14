@@ -98,6 +98,35 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
 
     }
 
+    private fun getTrackInfo(artistName: String, trackName: String) {
+        val client = Retrofit2LastFmClient.create(TrackInfoService::class.java)
+        var trackDuration = appUtil.defaultPlayingTime
+        var albumArtwork = ""
+        client.getTrackInfo(
+                artistName,
+                trackName,
+                apiKey
+        )
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ result ->
+                    if (result.isSuccessful && result.body() != null) {
+                        trackDuration = result.body()!!.trackInfo.duration.toLong() / 1000L
+                        albumArtwork = result.body()!!.trackInfo.album.imageList[1].imageUrl
+
+                        // Use default value if duration is 0
+                        if (trackDuration == 0L) {
+                            trackDuration = appUtil.defaultPlayingTime
+                        }
+                    }
+                    notificationServiceInterface.setCurrentTrackInfo(trackDuration, albumArtwork)
+                }, { _ ->
+                    notificationServiceInterface.setCurrentTrackInfo(trackDuration, albumArtwork)
+                })
+
+    }
+
+
     private fun getTrackDuration(artistName: String, trackName: String) {
         val client = Retrofit2LastFmClient.create(TrackInfoService::class.java)
         var trackDuration = appUtil.defaultPlayingTime

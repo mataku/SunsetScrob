@@ -132,8 +132,9 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
         }
     }
 
-    override fun setPlayingTime(playingTime: Long) {
+    override fun setCurrentTrackInfo(playingTime: Long, albumArtWork: String) {
         val sharedPreferencesHelper = SharedPreferencesHelper(this)
         sharedPreferencesHelper.setPLayingTime(playingTime)
+        sharedPreferencesHelper.setAlbumArtwork(albumArtWork)
     }
 }
