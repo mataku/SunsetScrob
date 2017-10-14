@@ -25,7 +25,7 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
     }
 
     fun scrobble(track: Track, sessionKey: String, timeStamp: Long) {
-        var params: MutableMap<String, String> = mutableMapOf()
+        val params: MutableMap<String, String> = mutableMapOf()
         params["artist[0]"] = track.artistName
         params["track[0]"] = track.name
         params["timestamp[0]"] = timeStamp.toString()
@@ -51,7 +51,7 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
                     if (result.isSuccessful && result.body() != null && result.body()!!.scrobbles.attr.accepted == 1) {
                         notificationServiceInterface.saveScrobble(track)
                         if (BuildConfig.DEBUG) {
-                            Log.i("scrobblingApi", "success")
+                            Log.i("scrobbleApi", "success")
                         }
                     }
                 }, { error ->
@@ -62,7 +62,7 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
     }
 
     private fun setNowPlaying(track: Track, sessionKey: String) {
-        var params: MutableMap<String, String> = mutableMapOf()
+        val params: MutableMap<String, String> = mutableMapOf()
         params["artist"] = track.artistName
         params["track"] = track.name
         params["album"] = track.albumName

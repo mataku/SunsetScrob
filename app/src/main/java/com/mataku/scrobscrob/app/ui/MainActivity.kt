@@ -99,37 +99,7 @@ class MainActivity : AppCompatActivity(), MainViewCallback, SwipeRefreshLayout.O
         val intent = Intent(applicationContext, SettingsActivity::class.java)
         startActivity(intent)
     }
-
-    // TODO: あとで消す
-    private fun dummyScrobbles(): List<Scrobble> {
-        var list = ArrayList<Scrobble>()
-
-        var scrobble = Scrobble()
-        scrobble.artistName = "PassCode"
-        scrobble.trackName = "insanity"
-        scrobble.albumName = "ZENITH"
-        scrobble.artwork = "https://i0.wp.com/lh3.googleusercontent.com/-ruPaz8Mf6VE/VmRzdQDWxaI/AAAAAAAAMMM/szeLTfOEb6w/s0/maxresdefault.jpg"
-        list.add(scrobble)
-        list.add(scrobble)
-        return list
-    }
-
-    private fun fetchCurrentScrobbles() {
-        var scrobbles = Scrobble().getCurrentTracks()
-        scrobbles.addChangeListener(object : RealmChangeListener<RealmResults<Scrobble>> {
-            override fun onChange(t: RealmResults<Scrobble>?) {
-                scrobbles.removeChangeListener(this)
-                notifyToAdapter(scrobbles)
-            }
-        })
-    }
-
-    private fun notifyToAdapter(scrobble: RealmResults<Scrobble>) {
-        val scrobbleViewAdapter = ScrobbleRecyclerViewAdapter(applicationContext, scrobble)
-        val scrobbleRecyclerView = findViewById<RecyclerView>(R.id.scrobble_list_view)
-        scrobbleRecyclerView.adapter = scrobbleViewAdapter
-    }
-
+    
     private fun setUpSwipeRefreshView() {
         swipeRefreshLayout = findViewById<SwipeRefreshLayout>(R.id.swipe_refresh_layout)
         swipeRefreshLayout.setColorSchemeResources(

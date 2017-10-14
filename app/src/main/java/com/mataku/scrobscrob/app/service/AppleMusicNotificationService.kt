@@ -51,7 +51,9 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
 
         // Ignore if not Apple Music APP
         if (sbn.packageName != APPLE_MUSIC_PACKAGE_NAME) {
-            Log.i("Notification", "Not apple music notification")
+            if (BuildConfig.DEBUG) {
+                Log.i("Notification", "Not apple music notification")
+            }
             return
         }
 
@@ -121,10 +123,10 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
 
     override fun saveScrobble(track: Track) {
         val sharedPreferencesHelper = SharedPreferencesHelper(this)
-        var realm = Realm.getDefaultInstance();
+        val realm = Realm.getDefaultInstance()
 
         realm.executeTransaction {
-            var scrobble = realm.createObject(Scrobble::class.java, Scrobble().count() + 1)
+            val scrobble = realm.createObject(Scrobble::class.java, Scrobble().count() + 1)
             scrobble.albumName = track.albumName
             scrobble.artistName = track.artistName
             scrobble.artwork = sharedPreferencesHelper.getAlbumArtWork()
