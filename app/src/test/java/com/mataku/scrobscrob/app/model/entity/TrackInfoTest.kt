@@ -16,5 +16,11 @@ class TrackInfoTest {
         assertNotNull(response.trackInfo)
         val trackInfo = response.trackInfo
         assertNotNull(trackInfo.duration)
+        val album = trackInfo.album
+        assertNotNull(album)
+        assertNotNull(album.imageList)
+        val smallImage = album.imageList[0]
+        assertNotNull(smallImage.imageUrl)
+        assertNotNull(smallImage.size)
     }
 }
