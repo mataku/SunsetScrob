@@ -4,7 +4,6 @@ import android.util.Log
 import com.mataku.scrobscrob.BuildConfig
 import com.mataku.scrobscrob.app.model.Track
 import com.mataku.scrobscrob.app.model.api.Retrofit2LastFmClient
-import com.mataku.scrobscrob.app.model.api.service.AlbumInfoService
 import com.mataku.scrobscrob.app.model.api.service.TrackInfoService
 import com.mataku.scrobscrob.app.model.api.service.TrackScrobbleService
 import com.mataku.scrobscrob.app.model.api.service.TrackUpdateNowPlayingService
@@ -22,12 +21,11 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
 
     fun getTrackInfo(track: Track, sessionKey: String) {
         setNowPlaying(track, sessionKey)
-        getTrackDuration(track.artistName, track.name)
-        getAlbumArtWork(track.albumName, track.artistName, track.name)
+        getTrackInfo(track.artistName, track.name)
     }
 
     fun scrobble(track: Track, sessionKey: String, timeStamp: Long) {
-        var params: MutableMap<String, String> = mutableMapOf()
+        val params: MutableMap<String, String> = mutableMapOf()
         params["artist[0]"] = track.artistName
         params["track[0]"] = track.name
         params["timestamp[0]"] = timeStamp.toString()
@@ -53,7 +51,7 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
                     if (result.isSuccessful && result.body() != null && result.body()!!.scrobbles.attr.accepted == 1) {
                         notificationServiceInterface.saveScrobble(track)
                         if (BuildConfig.DEBUG) {
-                            Log.i("scrobblingApi", "success")
+                            Log.i("scrobbleApi", "success")
                         }
                     }
                 }, { error ->
@@ -64,7 +62,7 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
     }
 
     private fun setNowPlaying(track: Track, sessionKey: String) {
-        var params: MutableMap<String, String> = mutableMapOf()
+        val params: MutableMap<String, String> = mutableMapOf()
         params["artist"] = track.artistName
         params["track"] = track.name
         params["album"] = track.albumName
@@ -98,9 +96,10 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
 
     }
 
-    private fun getTrackDuration(artistName: String, trackName: String) {
+    private fun getTrackInfo(artistName: String, trackName: String) {
         val client = Retrofit2LastFmClient.create(TrackInfoService::class.java)
         var trackDuration = appUtil.defaultPlayingTime
+        var albumArtwork = ""
         client.getTrackInfo(
                 artistName,
                 trackName,
@@ -111,35 +110,17 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
                 .subscribe({ result ->
                     if (result.isSuccessful && result.body() != null) {
                         trackDuration = result.body()!!.trackInfo.duration.toLong() / 1000L
+                        albumArtwork = result.body()!!.trackInfo.album.imageList[1].imageUrl
+
                         // Use default value if duration is 0
                         if (trackDuration == 0L) {
                             trackDuration = appUtil.defaultPlayingTime
                         }
                     }
-                    notificationServiceInterface.setPlayingTime(trackDuration)
+                    notificationServiceInterface.setCurrentTrackInfo(trackDuration, albumArtwork)
                 }, { _ ->
-                    notificationServiceInterface.setPlayingTime(trackDuration)
+                    notificationServiceInterface.setCurrentTrackInfo(trackDuration, albumArtwork)
                 })
 
-    }
-
-    private fun getAlbumArtWork(albumName: String, artistName: String, trackName: String) {
-        val client = Retrofit2LastFmClient.create(AlbumInfoService::class.java)
-        var largeSizeUrl = ""
-        client.getAlbumInfo(
-                albumName,
-                artistName,
-                trackName,
-                apiKey)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ result ->
-                    if (result.isSuccessful && result.body() != null) {
-                        largeSizeUrl = result.body()!!.albumInfo.imageList[2].imageUrl
-                        notificationServiceInterface.setAlbumArtwork(largeSizeUrl)
-                    }
-                }, { _ ->
-                    notificationServiceInterface.setAlbumArtwork(largeSizeUrl)
-                })
     }
 }
