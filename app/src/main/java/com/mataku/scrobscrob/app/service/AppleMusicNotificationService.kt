@@ -7,6 +7,7 @@ import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.util.Log
 import com.mataku.scrobscrob.BuildConfig
+import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.app.model.Scrobble
 import com.mataku.scrobscrob.app.model.Track
 import com.mataku.scrobscrob.app.model.entity.RxEventBus
@@ -85,6 +86,7 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
             }
             sharedPreferencesHelper.setPLayingTime(1000L)
             sharedPreferencesHelper.setTimeStamp()
+            RxEventBus.publish(UpdateNowPlayingEvent(dummyTrack()))
         }
 
         previousTrackName = trackName
@@ -145,5 +147,13 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
         val sharedPreferencesHelper = SharedPreferencesHelper(this)
         sharedPreferencesHelper.setPLayingTime(playingTime)
         sharedPreferencesHelper.setAlbumArtwork(albumArtWork)
+    }
+
+    private fun dummyTrack(): Track {
+        return Track(
+                getString(R.string.label_not_playing_message),
+                getString(R.string.label_not_playing),
+                ""
+        )
     }
 }
