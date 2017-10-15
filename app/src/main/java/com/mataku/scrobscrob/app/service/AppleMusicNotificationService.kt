@@ -9,6 +9,8 @@ import android.util.Log
 import com.mataku.scrobscrob.BuildConfig
 import com.mataku.scrobscrob.app.model.Scrobble
 import com.mataku.scrobscrob.app.model.Track
+import com.mataku.scrobscrob.app.model.entity.RxEventBus
+import com.mataku.scrobscrob.app.model.entity.UpdateNowPlayingEvent
 import com.mataku.scrobscrob.app.presenter.AppleMusicNotificationServicePresenter
 import com.mataku.scrobscrob.app.ui.view.NotificationServiceInterface
 import com.mataku.scrobscrob.app.util.SharedPreferencesHelper
@@ -24,6 +26,7 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
     override fun onCreate() {
         super.onCreate()
         val sharedPreferencesHelper = SharedPreferencesHelper(this)
+
         try {
             val appleMusicPackageInfo = packageManager.getPackageInfo(APPLE_MUSIC_PACKAGE_NAME, 0)
             if (BuildConfig.DEBUG) {
@@ -114,6 +117,10 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
     // ステータスバーから通知が消去される
     override fun onNotificationRemoved(sbn: StatusBarNotification) {
         super.onNotificationRemoved(sbn)
+    }
+
+    override fun notifyNowPlayingUpdated(track: Track) {
+        RxEventBus.publish(UpdateNowPlayingEvent(track))
     }
 
     override fun setAlbumArtwork(albumArtWork: String) {

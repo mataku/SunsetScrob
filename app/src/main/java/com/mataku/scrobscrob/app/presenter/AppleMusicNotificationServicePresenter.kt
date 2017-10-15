@@ -87,6 +87,7 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
                         if (BuildConfig.DEBUG) {
                             Log.i("NowPlayingApi", "success")
                         }
+                        notificationServiceInterface.notifyNowPlayingUpdated(track)
                     }
                 }, { _ ->
                     if (BuildConfig.DEBUG) {

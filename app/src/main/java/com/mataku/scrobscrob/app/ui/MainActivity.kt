@@ -16,6 +16,7 @@ import com.mataku.scrobscrob.app.data.Migration
 import com.mataku.scrobscrob.app.model.Scrobble
 import com.mataku.scrobscrob.app.model.Track
 import com.mataku.scrobscrob.app.model.entity.RxBus
+import com.mataku.scrobscrob.app.model.entity.RxEventBus
 import com.mataku.scrobscrob.app.model.entity.UpdateNowPlayingEvent
 import com.mataku.scrobscrob.app.presenter.MainPresenter
 import com.mataku.scrobscrob.app.receiver.AppleMusicNotificationReceiver
@@ -58,7 +59,7 @@ class MainActivity : AppCompatActivity(), MainViewCallback, SwipeRefreshLayout.O
 
         setUpSwipeRefreshView()
         setUpRecyclerView()
-        RxBus.listen(UpdateNowPlayingEvent::class.java).subscribe({
+        RxEventBus.create(UpdateNowPlayingEvent::class.java).hide().subscribe({
             setUpNowPlayingView(it.track)
         })
     }
