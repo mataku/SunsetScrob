@@ -15,6 +15,8 @@ import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.app.data.Migration
 import com.mataku.scrobscrob.app.model.Scrobble
 import com.mataku.scrobscrob.app.model.Track
+import com.mataku.scrobscrob.app.model.entity.RxBus
+import com.mataku.scrobscrob.app.model.entity.UpdateNowPlayingEvent
 import com.mataku.scrobscrob.app.presenter.MainPresenter
 import com.mataku.scrobscrob.app.receiver.AppleMusicNotificationReceiver
 import com.mataku.scrobscrob.app.ui.adapter.NowPlayingViewAdapter
@@ -56,7 +58,9 @@ class MainActivity : AppCompatActivity(), MainViewCallback, SwipeRefreshLayout.O
 
         setUpSwipeRefreshView()
         setUpRecyclerView()
-        setUpNowPlayingView()
+        RxBus.listen(UpdateNowPlayingEvent::class.java).subscribe({
+            setUpNowPlayingView(it.track)
+        })
     }
 
     override fun onDestroy() {
@@ -125,7 +129,7 @@ class MainActivity : AppCompatActivity(), MainViewCallback, SwipeRefreshLayout.O
         scrobbleRecyclerView.adapter = scrobbleViewAdapter
     }
 
-    private fun setUpNowPlayingView() {
+    private fun setUpNowPlayingView(track: Track) {
         val track = Track("PassCode", "Zenith", "Zenith")
         nowPlayingViewAdapter = NowPlayingViewAdapter(applicationContext, track)
         nowPlayingView = findViewById(R.id.now_playing_view)
