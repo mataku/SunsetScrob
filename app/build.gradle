@@ -59,6 +59,8 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     testImplementation 'com.google.guava:guava:22.0'
     testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+    testImplementation 'org.robolectric:robolectric:3.4.2'
+    testImplementation "com.squareup.okhttp3:mockwebserver:$okhttp3_version"
 }
 repositories {
     mavenCentral()
