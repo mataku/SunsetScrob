@@ -18,9 +18,7 @@ import com.mataku.scrobscrob.app.receiver.AppleMusicNotificationReceiver
 import com.mataku.scrobscrob.app.ui.adapter.ScrobbleRecyclerViewAdapter
 import com.mataku.scrobscrob.app.ui.view.MainViewCallback
 import io.realm.Realm
-import io.realm.RealmChangeListener
 import io.realm.RealmConfiguration
-import io.realm.RealmResults
 
 class MainActivity : AppCompatActivity(), MainViewCallback, SwipeRefreshLayout.OnRefreshListener {
     private var receiver = AppleMusicNotificationReceiver()
@@ -99,7 +97,7 @@ class MainActivity : AppCompatActivity(), MainViewCallback, SwipeRefreshLayout.O
         val intent = Intent(applicationContext, SettingsActivity::class.java)
         startActivity(intent)
     }
-    
+
     private fun setUpSwipeRefreshView() {
         swipeRefreshLayout = findViewById<SwipeRefreshLayout>(R.id.swipe_refresh_layout)
         swipeRefreshLayout.setColorSchemeResources(
@@ -111,7 +109,7 @@ class MainActivity : AppCompatActivity(), MainViewCallback, SwipeRefreshLayout.O
     }
 
     private fun setUpRecyclerView() {
-        var scrobbles = Scrobble().getCurrentTracks()
+        val scrobbles = Scrobble().getCurrentTracks()
         scrobbleViewAdapter = ScrobbleRecyclerViewAdapter(applicationContext, scrobbles)
         scrobbleViewAdapter.notifyDataSetChanged()
         scrobbleRecyclerView = findViewById<RecyclerView>(R.id.scrobble_list_view)
