@@ -5,6 +5,7 @@
     <string name="activity_login_title">Log in to Last.fm</string>
     <string name="enable_notification_access">Enable Notification Access</string>
     <string name="enable_notification_access_summary">Required for scrobbling from Apple Music</string>
+    <string name="label_now_playing">Now Playing</string>
 
     <!-- Strings related to login -->
     <string name="prompt_user_name">User Name</string>
