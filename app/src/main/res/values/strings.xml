@@ -5,8 +5,8 @@
     <string name="activity_login_title">Log in to Last.fm</string>
     <string name="enable_notification_access">Enable Notification Access</string>
     <string name="enable_notification_access_summary">Required for scrobbling from Apple Music</string>
-    <string name="label_now_playing">Now Playing</string>
-    <string name="label_not_playing">Not playing</string>
+    <string name="label_now_playing">Now Playing Track</string>
+    <string name="label_not_playing">Nothing!</string>
     <string name="label_not_playing_message">Let\'s play music on Apple Music App!</string>
 
     <!-- Strings related to login -->
