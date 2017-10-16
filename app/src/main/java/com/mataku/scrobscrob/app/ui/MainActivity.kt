@@ -58,6 +58,7 @@ class MainActivity : AppCompatActivity(), MainViewCallback, SwipeRefreshLayout.O
 
         setUpSwipeRefreshView()
         setUpRecyclerView()
+        setUpNowPlayingView(dummyTrack())
         RxEventBus.create(UpdateNowPlayingEvent::class.java).hide().subscribe({
             setUpNowPlayingView(it.track)
         })
@@ -130,7 +131,6 @@ class MainActivity : AppCompatActivity(), MainViewCallback, SwipeRefreshLayout.O
     }
 
     private fun setUpNowPlayingView(track: Track) {
-        val track = Track("PassCode", "Zenith", "Zenith")
         nowPlayingViewAdapter = NowPlayingViewAdapter(applicationContext, track)
         nowPlayingView = findViewById(R.id.now_playing_view)
         nowPlayingView.layoutManager = LinearLayoutManager(applicationContext)
@@ -149,5 +149,13 @@ class MainActivity : AppCompatActivity(), MainViewCallback, SwipeRefreshLayout.O
         override fun onTouchEvent(view: RecyclerView, event: MotionEvent) {}
 
         override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
+    }
+
+    private fun dummyTrack(): Track {
+        return Track(
+                getString(R.string.label_not_playing_message),
+                getString(R.string.label_now_playing),
+                getString(R.string.label_not_playing)
+        )
     }
 }
