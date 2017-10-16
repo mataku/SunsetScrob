@@ -152,8 +152,8 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
     private fun dummyTrack(): Track {
         return Track(
                 getString(R.string.label_not_playing_message),
-                getString(R.string.label_not_playing),
-                ""
+                getString(R.string.label_now_playing),
+                getString(R.string.label_not_playing)
         )
     }
 }
