@@ -6,13 +6,14 @@ import io.reactivex.subjects.PublishSubject
 // singleton instance
 object RxEventBus {
 
+    // subscriber and observer
     private val stream = PublishSubject.create<Any>()
 
     fun publish(event: Any) {
         stream.onNext(event)
     }
 
-    // Return "Observable"
+    // Return Observable
     // Using ofType method to filter only events specified
     fun <T> create(event: Class<T>): Observable<T> = stream.ofType(event)
 }
