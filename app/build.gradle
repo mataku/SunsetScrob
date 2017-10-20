@@ -19,6 +19,7 @@ android {
         properties.load(project.rootProject.file('local.properties').newDataInputStream())
         buildConfigField 'String', 'API_KEY', properties.API_KEY
         buildConfigField 'String', 'SHARED_SECRET', properties.SHARED_SECRET
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
@@ -58,6 +59,8 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     testImplementation 'com.google.guava:guava:22.0'
     testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+    testImplementation 'org.robolectric:robolectric:3.4.2'
+    testImplementation "com.squareup.okhttp3:mockwebserver:$okhttp3_version"
 }
 repositories {
     mavenCentral()

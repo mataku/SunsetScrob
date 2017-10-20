@@ -7,8 +7,11 @@ import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.util.Log
 import com.mataku.scrobscrob.BuildConfig
+import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.app.model.Scrobble
 import com.mataku.scrobscrob.app.model.Track
+import com.mataku.scrobscrob.app.model.entity.RxEventBus
+import com.mataku.scrobscrob.app.model.entity.UpdateNowPlayingEvent
 import com.mataku.scrobscrob.app.presenter.AppleMusicNotificationServicePresenter
 import com.mataku.scrobscrob.app.ui.view.NotificationServiceInterface
 import com.mataku.scrobscrob.app.util.SharedPreferencesHelper
@@ -24,6 +27,7 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
     override fun onCreate() {
         super.onCreate()
         val sharedPreferencesHelper = SharedPreferencesHelper(this)
+
         try {
             val appleMusicPackageInfo = packageManager.getPackageInfo(APPLE_MUSIC_PACKAGE_NAME, 0)
             if (BuildConfig.DEBUG) {
@@ -82,6 +86,7 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
             }
             sharedPreferencesHelper.setPLayingTime(1000L)
             sharedPreferencesHelper.setTimeStamp()
+            RxEventBus.publish(UpdateNowPlayingEvent(dummyTrack()))
         }
 
         previousTrackName = trackName
@@ -116,6 +121,10 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
         super.onNotificationRemoved(sbn)
     }
 
+    override fun notifyNowPlayingUpdated(track: Track) {
+        RxEventBus.publish(UpdateNowPlayingEvent(track))
+    }
+
     override fun setAlbumArtwork(albumArtWork: String) {
         val sharedPreferencesHelper = SharedPreferencesHelper(this)
         sharedPreferencesHelper.setAlbumArtwork(albumArtWork)
@@ -138,5 +147,13 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
         val sharedPreferencesHelper = SharedPreferencesHelper(this)
         sharedPreferencesHelper.setPLayingTime(playingTime)
         sharedPreferencesHelper.setAlbumArtwork(albumArtWork)
+    }
+
+    private fun dummyTrack(): Track {
+        return Track(
+                getString(R.string.label_not_playing_message),
+                getString(R.string.label_now_playing),
+                getString(R.string.label_not_playing)
+        )
     }
 }

@@ -87,6 +87,7 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
                         if (BuildConfig.DEBUG) {
                             Log.i("NowPlayingApi", "success")
                         }
+                        notificationServiceInterface.notifyNowPlayingUpdated(track)
                     }
                 }, { _ ->
                     if (BuildConfig.DEBUG) {
@@ -109,9 +110,14 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ result ->
                     if (result.isSuccessful && result.body() != null) {
-                        trackDuration = result.body()!!.trackInfo.duration.toLong() / 1000L
-                        albumArtwork = result.body()!!.trackInfo.album.imageList[1].imageUrl
+                        val response = result.body()
+                        trackDuration = response!!.trackInfo.duration.toLong() / 1000L
+                        try {
+                            val imageList = response.trackInfo.album.imageList
+                            albumArtwork = response.trackInfo.album.imageList[1].imageUrl
+                        } catch (e: NullPointerException) {
 
+                        }
                         // Use default value if duration is 0
                         if (trackDuration == 0L) {
                             trackDuration = appUtil.defaultPlayingTime

@@ -6,4 +6,5 @@ interface NotificationServiceInterface {
     fun setAlbumArtwork(albumArtWork: String)
     fun saveScrobble(track: Track)
     fun setCurrentTrackInfo(playingTime: Long, albumArtWork: String)
+    fun notifyNowPlayingUpdated(track: Track)
 }

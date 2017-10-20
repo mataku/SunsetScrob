@@ -5,7 +5,10 @@
     <string name="activity_login_title">Last.fm へログイン</string>
     <string name="enable_notification_access">Enable Notification Access</string>
     <string name="enable_notification_access_summary">Apple Music の曲情報取得のため、通知へのアクセスが必要です</string>
-
+    <string name="label_now_playing">Now Playing Track</string>
+    <string name="label_not_playing">Nothing!</string>
+    <string name="label_not_playing_message">Let\'s play music on Apple Music App!</string>
+    
     <!-- Strings related to login -->
     <string name="prompt_user_name">User Name</string>
     <string name="prompt_password">Password</string>

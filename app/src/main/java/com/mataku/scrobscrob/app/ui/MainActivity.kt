@@ -10,24 +10,30 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
+import android.view.MotionEvent
 import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.app.data.Migration
 import com.mataku.scrobscrob.app.model.Scrobble
+import com.mataku.scrobscrob.app.model.Track
+import com.mataku.scrobscrob.app.model.entity.RxEventBus
+import com.mataku.scrobscrob.app.model.entity.UpdateNowPlayingEvent
 import com.mataku.scrobscrob.app.presenter.MainPresenter
 import com.mataku.scrobscrob.app.receiver.AppleMusicNotificationReceiver
-import com.mataku.scrobscrob.app.ui.adapter.ScrobbleRecyclerViewAdapter
+import com.mataku.scrobscrob.app.ui.adapter.NowPlayingViewAdapter
+import com.mataku.scrobscrob.app.ui.adapter.ScrobbleViewAdapter
 import com.mataku.scrobscrob.app.ui.view.MainViewCallback
 import io.realm.Realm
-import io.realm.RealmChangeListener
 import io.realm.RealmConfiguration
-import io.realm.RealmResults
+
 
 class MainActivity : AppCompatActivity(), MainViewCallback, SwipeRefreshLayout.OnRefreshListener {
     private var receiver = AppleMusicNotificationReceiver()
     private lateinit var mainPresenter: MainPresenter
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var scrobbleRecyclerView: RecyclerView
-    private lateinit var scrobbleViewAdapter: ScrobbleRecyclerViewAdapter
+    private lateinit var nowPlayingView: RecyclerView
+    private lateinit var scrobbleViewAdapter: ScrobbleViewAdapter
+    private lateinit var nowPlayingViewAdapter: NowPlayingViewAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +58,10 @@ class MainActivity : AppCompatActivity(), MainViewCallback, SwipeRefreshLayout.O
 
         setUpSwipeRefreshView()
         setUpRecyclerView()
+        setUpNowPlayingView(dummyTrack())
+        RxEventBus.create(UpdateNowPlayingEvent::class.java).hide().subscribe({
+            setUpNowPlayingView(it.track)
+        })
     }
 
     override fun onDestroy() {
@@ -99,7 +109,7 @@ class MainActivity : AppCompatActivity(), MainViewCallback, SwipeRefreshLayout.O
         val intent = Intent(applicationContext, SettingsActivity::class.java)
         startActivity(intent)
     }
-    
+
     private fun setUpSwipeRefreshView() {
         swipeRefreshLayout = findViewById<SwipeRefreshLayout>(R.id.swipe_refresh_layout)
         swipeRefreshLayout.setColorSchemeResources(
@@ -111,12 +121,41 @@ class MainActivity : AppCompatActivity(), MainViewCallback, SwipeRefreshLayout.O
     }
 
     private fun setUpRecyclerView() {
-        var scrobbles = Scrobble().getCurrentTracks()
-        scrobbleViewAdapter = ScrobbleRecyclerViewAdapter(applicationContext, scrobbles)
+        val scrobbles = Scrobble().getCurrentTracks()
+        scrobbleViewAdapter = ScrobbleViewAdapter(applicationContext, scrobbles)
         scrobbleViewAdapter.notifyDataSetChanged()
         scrobbleRecyclerView = findViewById<RecyclerView>(R.id.scrobble_list_view)
         scrobbleRecyclerView.layoutManager = LinearLayoutManager(applicationContext)
         scrobbleRecyclerView.hasFixedSize()
         scrobbleRecyclerView.adapter = scrobbleViewAdapter
+    }
+
+    private fun setUpNowPlayingView(track: Track) {
+        nowPlayingViewAdapter = NowPlayingViewAdapter(applicationContext, track)
+        nowPlayingView = findViewById(R.id.now_playing_view)
+        nowPlayingView.layoutManager = LinearLayoutManager(applicationContext)
+        nowPlayingView.hasFixedSize()
+        nowPlayingView.addOnItemTouchListener(ScrollController())
+        nowPlayingView.adapter = nowPlayingViewAdapter
+    }
+
+
+    inner class ScrollController : RecyclerView.OnItemTouchListener {
+
+        override fun onInterceptTouchEvent(view: RecyclerView, event: MotionEvent): Boolean {
+            return true
+        }
+
+        override fun onTouchEvent(view: RecyclerView, event: MotionEvent) {}
+
+        override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
+    }
+
+    private fun dummyTrack(): Track {
+        return Track(
+                getString(R.string.label_not_playing_message),
+                getString(R.string.label_now_playing),
+                getString(R.string.label_not_playing)
+        )
     }
 }

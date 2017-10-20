@@ -12,13 +12,13 @@ import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.app.model.Scrobble
 import io.realm.RealmResults
 
-class ScrobbleRecyclerViewAdapter(context: Context, scrobbles: RealmResults<Scrobble>) : RecyclerView.Adapter<ScrobbleRecyclerViewAdapter.ViewHolder>() {
+class ScrobbleViewAdapter(context: Context, scrobbles: RealmResults<Scrobble>) : RecyclerView.Adapter<ScrobbleViewAdapter.ViewHolder>() {
 
     private val layoutInflater: LayoutInflater = LayoutInflater.from(context)
     private val scrobbles = scrobbles
     private val context = context
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ScrobbleRecyclerViewAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ScrobbleViewAdapter.ViewHolder {
         val v = layoutInflater.inflate(R.layout.view_scrobble, parent, false)
         return ViewHolder(v)
     }
