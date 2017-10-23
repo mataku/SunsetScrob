@@ -7,13 +7,13 @@ import io.reactivex.subjects.PublishSubject
 object RxEventBus {
 
     // subscriber and observer
-    private val stream = PublishSubject.create<Any>()
+    private val subject = PublishSubject.create<Any>()
 
     fun post(event: Any) {
-        stream.onNext(event)
+        subject.onNext(event)
     }
 
     // Return Observable
     // Using ofType method to filter only events specified
-    fun <T> stream(event: Class<T>): Observable<T> = stream.ofType(event)
+    fun <T> stream(event: Class<T>): Observable<T> = subject.hide().ofType(event)
 }

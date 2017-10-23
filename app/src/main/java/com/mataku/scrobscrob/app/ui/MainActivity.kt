@@ -22,6 +22,7 @@ import com.mataku.scrobscrob.app.receiver.AppleMusicNotificationReceiver
 import com.mataku.scrobscrob.app.ui.adapter.NowPlayingViewAdapter
 import com.mataku.scrobscrob.app.ui.adapter.ScrobbleViewAdapter
 import com.mataku.scrobscrob.app.ui.view.MainViewCallback
+import com.mataku.scrobscrob.app.util.SharedPreferencesHelper
 import io.realm.Realm
 import io.realm.RealmConfiguration
 
@@ -39,6 +40,7 @@ class MainActivity : AppCompatActivity(), MainViewCallback, SwipeRefreshLayout.O
         super.onCreate(savedInstanceState)
         Realm.init(this)
         val builder = RealmConfiguration.Builder()
+        val sharedPreferencesHelper = SharedPreferencesHelper(this)
         builder.schemaVersion(1L).migration(Migration())
         val config = builder.build()
         Realm.setDefaultConfiguration(config)
@@ -154,9 +156,9 @@ class MainActivity : AppCompatActivity(), MainViewCallback, SwipeRefreshLayout.O
 
     private fun dummyTrack(): Track {
         return Track(
-                getString(R.string.label_not_playing_message),
+                "Log in to Last.fm and play music on Apple Music App!",
                 getString(R.string.label_now_playing),
-                getString(R.string.label_not_playing)
+                "Not logged in!"
         )
     }
 }
