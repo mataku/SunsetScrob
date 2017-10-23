@@ -86,7 +86,7 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
             }
             sharedPreferencesHelper.setPLayingTime(1000L)
             sharedPreferencesHelper.setTimeStamp()
-            RxEventBus.publish(UpdateNowPlayingEvent(dummyTrack()))
+            RxEventBus.post(UpdateNowPlayingEvent(dummyTrack()))
         }
 
         previousTrackName = trackName
@@ -122,7 +122,7 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
     }
 
     override fun notifyNowPlayingUpdated(track: Track) {
-        RxEventBus.publish(UpdateNowPlayingEvent(track))
+        RxEventBus.post(UpdateNowPlayingEvent(track))
     }
 
     override fun setAlbumArtwork(albumArtWork: String) {

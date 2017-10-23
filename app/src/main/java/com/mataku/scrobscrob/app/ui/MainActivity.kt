@@ -59,13 +59,14 @@ class MainActivity : AppCompatActivity(), MainViewCallback, SwipeRefreshLayout.O
         setUpSwipeRefreshView()
         setUpRecyclerView()
         setUpNowPlayingView(dummyTrack())
-        RxEventBus.create(UpdateNowPlayingEvent::class.java).hide().subscribe({
+        RxEventBus.stream(UpdateNowPlayingEvent::class.java).subscribe({
             setUpNowPlayingView(it.track)
         })
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        RxEventBus.stream(UpdateNowPlayingEvent::class.java)
         unregisterReceiver(receiver)
     }
 
