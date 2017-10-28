@@ -68,7 +68,6 @@ class MainActivity : AppCompatActivity(), MainViewCallback, SwipeRefreshLayout.O
 
     override fun onDestroy() {
         super.onDestroy()
-        RxEventBus.stream(UpdateNowPlayingEvent::class.java)
         unregisterReceiver(receiver)
     }
 
