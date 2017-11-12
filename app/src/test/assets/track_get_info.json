@@ -2,17 +2,27 @@
   "track": {
     "name": "Insanity",
     "url": "https://www.last.fm/music/PassCode/_/Insanity",
+<<<<<<< HEAD
     "duration": "210000",
+=======
+    "duration": "209000",
+>>>>>>> master
     "streamable": {
       "#text": "0",
       "fulltrack": "0"
     },
+<<<<<<< HEAD
     "listeners": "219",
     "playcount": "1858",
+=======
+    "listeners": "86",
+    "playcount": "451",
+>>>>>>> master
     "artist": {
       "name": "PassCode",
       "url": "https://www.last.fm/music/PassCode"
     },
+<<<<<<< HEAD
     "album": {
       "artist": "PassCode",
       "title": "ZENITH",
@@ -59,6 +69,10 @@
           "url": "https://www.last.fm/tag/Asian"
         }
       ]
+=======
+    "toptags": {
+      "tag": []
+>>>>>>> master
     }
   }
 }
