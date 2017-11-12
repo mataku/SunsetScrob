@@ -26,7 +26,6 @@ import com.mataku.scrobscrob.app.util.SharedPreferencesHelper
 import io.realm.Realm
 import io.realm.RealmConfiguration
 
-
 class MainActivity : AppCompatActivity(), MainViewCallback, SwipeRefreshLayout.OnRefreshListener {
     private var receiver = AppleMusicNotificationReceiver()
     private lateinit var mainPresenter: MainPresenter

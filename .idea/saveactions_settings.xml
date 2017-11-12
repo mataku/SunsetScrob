@@ -14,5 +14,10 @@
         <option value="ScrobScrob/app/build.gradle" />
       </set>
     </option>
+    <option name="exclusions">
+      <set>
+        <option value="ScrobScrob/app/build.gradle" />
+      </set>
+    </option>
   </component>
 </project>
