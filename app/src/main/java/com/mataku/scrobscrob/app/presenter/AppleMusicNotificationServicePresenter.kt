@@ -114,7 +114,7 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
                         trackDuration = response!!.trackInfo.duration.toLong() / 1000L
                         try {
                             val imageList = response.trackInfo.album.imageList
-                            albumArtwork = response.trackInfo.album.imageList[1].imageUrl
+                            albumArtwork = imageList[1].imageUrl
                         } catch (e: NullPointerException) {
 
                         }
