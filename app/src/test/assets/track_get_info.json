@@ -2,19 +2,63 @@
   "track": {
     "name": "Insanity",
     "url": "https://www.last.fm/music/PassCode/_/Insanity",
-    "duration": "209000",
+    "duration": "210000",
     "streamable": {
       "#text": "0",
       "fulltrack": "0"
     },
-    "listeners": "86",
-    "playcount": "451",
+    "listeners": "219",
+    "playcount": "1858",
     "artist": {
       "name": "PassCode",
       "url": "https://www.last.fm/music/PassCode"
     },
+    "album": {
+      "artist": "PassCode",
+      "title": "ZENITH",
+      "url": "https://www.last.fm/music/PassCode/ZENITH",
+      "image": [
+        {
+          "#text": "https://lastfm-img2.akamaized.net/i/u/34s/580662fd9ffce7415f00c9130fc3d816.png",
+          "size": "small"
+        },
+        {
+          "#text": "https://lastfm-img2.akamaized.net/i/u/64s/580662fd9ffce7415f00c9130fc3d816.png",
+          "size": "medium"
+        },
+        {
+          "#text": "https://lastfm-img2.akamaized.net/i/u/174s/580662fd9ffce7415f00c9130fc3d816.png",
+          "size": "large"
+        },
+        {
+          "#text": "https://lastfm-img2.akamaized.net/i/u/300x300/580662fd9ffce7415f00c9130fc3d816.png",
+          "size": "extralarge"
+        }
+      ]
+    },
     "toptags": {
-      "tag": []
+      "tag": [
+        {
+          "name": "metal",
+          "url": "https://www.last.fm/tag/metal"
+        },
+        {
+          "name": "pop",
+          "url": "https://www.last.fm/tag/pop"
+        },
+        {
+          "name": "japanese",
+          "url": "https://www.last.fm/tag/japanese"
+        },
+        {
+          "name": "JPop",
+          "url": "https://www.last.fm/tag/JPop"
+        },
+        {
+          "name": "Asian",
+          "url": "https://www.last.fm/tag/Asian"
+        }
+      ]
     }
   }
 }

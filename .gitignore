@@ -25,6 +25,8 @@ local.properties
 .idea/modules.xml
 .idea/scopes/scope_settings.xml
 .idea/vcs.xml
+.idea/dictionaries/
+
 *.iml
 .env
 
@@ -39,3 +41,11 @@ local.properties
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# bundler
+vendor/
+.bundle
+
+# others
+*.p12
+app/app-publisher.json

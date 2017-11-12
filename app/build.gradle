@@ -2,64 +2,93 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'realm-android'
 apply plugin: 'deploygate'
+apply plugin: 'com.github.ben-manes.versions'
+apply plugin: 'com.github.triplet.play'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.1"
+    buildToolsVersion '26.0.2'
+    playAccountConfigs {
+        defaultAccountConfig {
+            jsonFile = file('app-publisher.json')
+        }
+    }
+    signingConfigs {
+        release {
+            storeFile file('../SunsetScrob.jks')
+            storePassword System.getenv('SUNSET_STORE_PASSWORD')
+            keyAlias "sunsetScrob"
+            keyPassword System.getenv('SUNSET_KEY_PASSWORD')
+        }
+    }
     defaultConfig {
         applicationId "com.mataku.scrobscrob"
 
         minSdkVersion 24
         targetSdkVersion 26
-        versionCode 2
-        versionName "0.0.2"
+        versionCode 3
+        versionName "0.0.3"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         def properties = new Properties()
         properties.load(project.rootProject.file('local.properties').newDataInputStream())
         buildConfigField 'String', 'API_KEY', properties.API_KEY
         buildConfigField 'String', 'SHARED_SECRET', properties.SHARED_SECRET
+        vectorDrawables.useSupportLibrary = true
+        playAccountConfig = playAccountConfigs.defaultAccountConfig
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
         debug {
 
         }
     }
+    lintOptions {
+        abortOnError false
+    }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
-    def support_library_version="26.0.0-beta1"
-    def okhttp3_version="3.4.1"
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-    compile "com.android.support:appcompat-v7:$support_library_version"
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.squareup.retrofit2:retrofit:2.3.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
-    compile "com.android.support:design:$support_library_version"
-    compile 'com.jakewharton:butterknife:8.8.1'
-    compile 'com.google.code.gson:gson:2.7'
-    compile "com.squareup.okhttp3:logging-interceptor:$okhttp3_version"
-    compile "com.squareup.okhttp3:okhttp:$okhttp3_version"
-    compile 'io.reactivex.rxjava2:rxjava:2.1.2'
-    compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
-    compile 'com.github.bumptech.glide:glide:3.7.0'
-    compile 'io.realm:android-adapters:2.1.0'
+    def support_library_version = "26.1.0"
+    def okhttp3_version = "3.4.1"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation "com.android.support:appcompat-v7:$support_library_version"
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+    implementation "com.android.support:design:$support_library_version"
+    implementation 'com.jakewharton:butterknife:8.8.1'
+    implementation 'com.google.code.gson:gson:2.8.0'
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp3_version"
+    implementation "com.squareup.okhttp3:okhttp:$okhttp3_version"
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.3'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+    implementation 'com.github.bumptech.glide:glide:3.7.0'
+    implementation 'io.realm:android-adapters:2.1.0'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
 
-    testCompile 'junit:junit:4.12'
-    testCompile 'com.google.guava:guava:20.0'
-    testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'com.google.guava:guava:22.0'
+    testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+    testImplementation 'org.robolectric:robolectric:3.4.2'
+    testImplementation "com.squareup.okhttp3:mockwebserver:$okhttp3_version"
 }
 repositories {
     mavenCentral()
     maven {
-      url 'https://maven.google.com'
+        url 'https://maven.google.com'
     }
+}
+play {
+    track = 'rollout'
+    userFraction = 0.2
+    uploadImages = true
 }

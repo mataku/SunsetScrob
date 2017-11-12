@@ -6,6 +6,12 @@
         <option value="activate" />
         <option value="organizeImports" />
         <option value="reformat" />
+        <option value="rearrange" />
+      </set>
+    </option>
+    <option name="exclusions">
+      <set>
+        <option value="ScrobScrob/app/build.gradle" />
       </set>
     </option>
     <option name="exclusions">
