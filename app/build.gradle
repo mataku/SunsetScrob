@@ -81,4 +81,5 @@ repositories {
 play {
     track = 'production'
     userFraction = 0.2
+    uploadImages = true
 }
