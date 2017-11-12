@@ -13,11 +13,10 @@ open class Scrobble(
         open var artistName: String = "",
         open var trackName: String = "",
         open var albumName: String = "",
-        open var timeStamp: Long = 0.toLong(),
         open var artwork: String = ""
 ) : RealmObject() {
     fun getCurrentTracks(): RealmResults<Scrobble> {
-        var limit = AppUtil().latestCcrobbleCountToDisplay
+        var limit = AppUtil().latestScrobbleCountToDisplay
         var lowerLimit = 1
         val realm = Realm.getDefaultInstance()
         val scrobblesCount = realm.where(Scrobble::class.java).findAll().count()
@@ -33,6 +32,7 @@ open class Scrobble(
 
     fun count(): Int {
         val realm = Realm.getDefaultInstance()
-        return realm.where(Scrobble::class.java).findAll().size
+        val size = realm.where(Scrobble::class.java).findAll().size
+        return size
     }
 }

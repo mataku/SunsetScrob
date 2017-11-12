@@ -1,6 +1,11 @@
 package com.mataku.scrobscrob.app.model.entity
 
+import com.google.gson.annotations.SerializedName
+
 data class TrackInfo(
-        // use duration only
-        val duration: String
+        @SerializedName("duration")
+        val duration: String,
+
+        @SerializedName("album")
+        val album: AlbumInfo
 )

@@ -21,6 +21,9 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
 import com.mataku.scrobscrob.R
+import com.mataku.scrobscrob.app.model.Track
+import com.mataku.scrobscrob.app.model.entity.RxEventBus
+import com.mataku.scrobscrob.app.model.entity.UpdateNowPlayingEvent
 import com.mataku.scrobscrob.app.presenter.LoginPresenter
 import com.mataku.scrobscrob.app.ui.view.LoginViewCallback
 import java.util.*
@@ -286,6 +289,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, LoginViewCal
 
     override fun showSuccessMessage() {
         Toast.makeText(this, "Success!", Toast.LENGTH_LONG).show()
+        RxEventBus.post(UpdateNowPlayingEvent(dummyTrack()))
     }
 
     override fun showMessageToAllowAccessToNotification() {
@@ -321,6 +325,14 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, LoginViewCal
                     .forEach { return true }
         }
         return false
+    }
+
+    private fun dummyTrack(): Track {
+        return Track(
+                getString(R.string.label_not_playing_message),
+                getString(R.string.label_now_playing),
+                getString(R.string.label_not_playing)
+        )
     }
 
     companion object {
