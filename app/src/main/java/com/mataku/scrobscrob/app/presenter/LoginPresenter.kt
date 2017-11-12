@@ -1,7 +1,6 @@
 package com.mataku.scrobscrob.app.presenter
 
 import com.mataku.scrobscrob.app.model.api.Retrofit2LastFmClient
-
 import com.mataku.scrobscrob.app.model.api.service.AuthMobileSessionService
 import com.mataku.scrobscrob.app.ui.view.LoginViewCallback
 import com.mataku.scrobscrob.app.util.AppUtil
