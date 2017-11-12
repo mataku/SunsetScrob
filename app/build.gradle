@@ -79,7 +79,7 @@ repositories {
     }
 }
 play {
-    track = 'production'
+    track = 'rollout'
     userFraction = 0.2
     uploadImages = true
 }
