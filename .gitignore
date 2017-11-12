@@ -41,3 +41,10 @@ local.properties
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# bundler
+vendor/
+.bundle
+
+# others
+*.p12

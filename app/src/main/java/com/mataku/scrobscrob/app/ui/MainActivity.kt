@@ -35,12 +35,13 @@ class MainActivity : AppCompatActivity(), MainViewCallback, SwipeRefreshLayout.O
     private lateinit var nowPlayingView: RecyclerView
     private lateinit var scrobbleViewAdapter: ScrobbleViewAdapter
     private lateinit var nowPlayingViewAdapter: NowPlayingViewAdapter
+    private lateinit var sharedPreferencesHelper: SharedPreferencesHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Realm.init(this)
         val builder = RealmConfiguration.Builder()
-        val sharedPreferencesHelper = SharedPreferencesHelper(this)
+        sharedPreferencesHelper = SharedPreferencesHelper(this)
         builder.schemaVersion(1L).migration(Migration())
         val config = builder.build()
         Realm.setDefaultConfiguration(config)
@@ -154,10 +155,18 @@ class MainActivity : AppCompatActivity(), MainViewCallback, SwipeRefreshLayout.O
     }
 
     private fun dummyTrack(): Track {
+        if (sharedPreferencesHelper.getSessionKey().isEmpty()) {
+            return Track(
+                    getString(R.string.label_message_to_log_in),
+                    getString(R.string.label_now_playing),
+                    getString(R.string.label_not_logged_in)
+            )
+        }
+
         return Track(
-                "Log in to Last.fm and play music on Apple Music App!",
+                getString(R.string.label_not_playing_message),
                 getString(R.string.label_now_playing),
-                "Not logged in!"
+                getString(R.string.label_not_playing)
         )
     }
 }

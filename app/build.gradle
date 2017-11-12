@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'realm-android'
 apply plugin: 'deploygate'
 apply plugin: 'com.github.ben-manes.versions'
+apply plugin: 'com.github.triplet.play'
 
 android {
     compileSdkVersion 26
@@ -29,6 +30,9 @@ android {
         debug {
 
         }
+    }
+    lintOptions {
+        abortOnError false
     }
 }
 
