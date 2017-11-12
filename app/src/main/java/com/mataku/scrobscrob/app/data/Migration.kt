@@ -19,4 +19,8 @@ class Migration : RealmMigration {
             scrobbleSchema.removeField("timeStamp")
         }
     }
+
+    override fun equals(other: Any?): Boolean {
+        return other is Migration
+    }
 }
