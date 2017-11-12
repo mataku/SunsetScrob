@@ -13,6 +13,14 @@ android {
             jsonFile = file('app-publisher.json')
         }
     }
+    signingConfigs {
+        release {
+            storeFile file('../SunsetScrob.jks')
+            storePassword System.getenv('SUNSET_STORE_PASSWORD')
+            keyAlias "sunsetScrob"
+            keyPassword System.getenv('SUNSET_KEY_PASSWORD')
+        }
+    }
     defaultConfig {
         applicationId "com.mataku.scrobscrob"
 
@@ -32,6 +40,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
         debug {
 
@@ -39,14 +48,6 @@ android {
     }
     lintOptions {
         abortOnError false
-    }
-    signingConfigs {
-        release {
-            storeFile file('../SunsetScrob.jks')
-            storePassword System.getenv('SUNSET_STORE_PASSWORD')
-            keyAlias "sunsetScrob"
-            keyPassword System.getenv('SUNSET_KEY_PASSWORD')
-        }
     }
 }
 
