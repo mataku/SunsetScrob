@@ -8,7 +8,8 @@
     <string name="label_now_playing">Now Playing Track</string>
     <string name="label_not_playing">Nothing!</string>
     <string name="label_not_playing_message">Let\'s play music on Apple Music App!</string>
-    
+    <string name="label_message_to_log_in">Log in to Last.fm and play music on Apple Music App!</string>
+
     <!-- Strings related to login -->
     <string name="prompt_user_name">User Name</string>
     <string name="prompt_password">Password</string>
@@ -22,4 +23,5 @@
     </string>
     <string name="error_invalid_user_name">ユーザ名が空です</string>
     <string name="allow_notification_service_message">AppleMusicNotificationService に通知バーへのアクセスを許可してください</string>
+    <string name="label_not_logged_in">ログインしていません</string>
 </resources>
