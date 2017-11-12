@@ -1,6 +1,5 @@
 package com.mataku.scrobscrob.app.ui
 
-
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle

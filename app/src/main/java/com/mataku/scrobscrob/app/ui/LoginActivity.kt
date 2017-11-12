@@ -21,7 +21,6 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
 import com.mataku.scrobscrob.R
-
 import com.mataku.scrobscrob.app.model.Track
 import com.mataku.scrobscrob.app.model.entity.RxEventBus
 import com.mataku.scrobscrob.app.model.entity.UpdateNowPlayingEvent
