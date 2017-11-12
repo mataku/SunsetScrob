@@ -2,7 +2,6 @@ package com.mataku.scrobscrob.app.service
 
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
@@ -156,12 +155,5 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
                 getString(R.string.label_now_playing),
                 getString(R.string.label_not_playing)
         )
-    }
-
-    private fun setPreviousTrackName(trackName: String) {
-        val data = getSharedPreferences("DATA", Context.MODE_PRIVATE)
-        val editor: SharedPreferences.Editor = data.edit()
-        editor.putString("PreviousTrackName", trackName)
-        editor.apply()
     }
 }
