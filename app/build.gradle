@@ -93,3 +93,8 @@ play {
     userFraction = 0.2
     uploadImages = true
 }
+kotlin {
+    experimental {
+        coroutines "enable"
+    }
+}
