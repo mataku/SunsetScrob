@@ -4,6 +4,7 @@ apply plugin: 'realm-android'
 apply plugin: 'deploygate'
 apply plugin: 'com.github.ben-manes.versions'
 apply plugin: 'com.github.triplet.play'
+apply from: 'lint-checks.gradle'
 
 android {
     compileSdkVersion 26
@@ -47,7 +48,9 @@ android {
         }
     }
     lintOptions {
+        checkReleaseBuilds false
         abortOnError false
+        check lintchecks
     }
 }
 
