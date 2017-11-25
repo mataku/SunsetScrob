@@ -4,6 +4,7 @@ apply plugin: 'realm-android'
 apply plugin: 'deploygate'
 apply plugin: 'com.github.ben-manes.versions'
 apply plugin: 'com.github.triplet.play'
+apply from: 'lint-checks.gradle'
 
 android {
     compileSdkVersion 26
@@ -47,7 +48,9 @@ android {
         }
     }
     lintOptions {
+        checkReleaseBuilds false
         abortOnError false
+        check lintchecks
     }
 }
 
@@ -74,6 +77,7 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:3.7.0'
     implementation 'io.realm:android-adapters:2.1.0'
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    implementation 'ru.gildor.coroutines:kotlin-coroutines-retrofit:0.8.2'
 
     testImplementation 'junit:junit:4.12'
     testImplementation 'com.google.guava:guava:22.0'
@@ -91,4 +95,9 @@ play {
     track = 'rollout'
     userFraction = 0.2
     uploadImages = true
+}
+kotlin {
+    experimental {
+        coroutines "enable"
+    }
 }
