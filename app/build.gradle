@@ -17,7 +17,7 @@ android {
         release {
             storeFile file('../SunsetScrob.jks')
             storePassword System.getenv('SUNSET_STORE_PASSWORD')
-            keyAlias "sunsetScrob"
+            keyAlias System.getenv('SUNSET_KEY_ALIAS')
             keyPassword System.getenv('SUNSET_KEY_PASSWORD')
         }
     }
@@ -26,8 +26,8 @@ android {
 
         minSdkVersion 24
         targetSdkVersion 26
-        versionCode 3
-        versionName "0.0.3"
+        versionCode 4
+        versionName "0.0.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         def properties = new Properties()
         properties.load(project.rootProject.file('local.properties').newDataInputStream())
