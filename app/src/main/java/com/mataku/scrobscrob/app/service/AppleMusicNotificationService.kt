@@ -12,6 +12,7 @@ import com.mataku.scrobscrob.app.model.Scrobble
 import com.mataku.scrobscrob.app.model.Track
 import com.mataku.scrobscrob.app.model.entity.RxEventBus
 import com.mataku.scrobscrob.app.model.entity.UpdateNowPlayingEvent
+import com.mataku.scrobscrob.app.model.entity.UpdateScrobbledListEvent
 import com.mataku.scrobscrob.app.presenter.AppleMusicNotificationServicePresenter
 import com.mataku.scrobscrob.app.ui.view.NotificationServiceInterface
 import com.mataku.scrobscrob.app.util.SharedPreferencesHelper
@@ -141,6 +142,7 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
             scrobble.artwork = sharedPreferencesHelper.getAlbumArtWork()
             scrobble.trackName = track.name
         }
+        RxEventBus.post(UpdateScrobbledListEvent())
     }
 
     override fun setCurrentTrackInfo(playingTime: Long, albumArtWork: String) {

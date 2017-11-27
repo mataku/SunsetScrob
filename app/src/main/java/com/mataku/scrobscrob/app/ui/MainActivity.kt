@@ -17,6 +17,7 @@ import com.mataku.scrobscrob.app.model.Scrobble
 import com.mataku.scrobscrob.app.model.Track
 import com.mataku.scrobscrob.app.model.entity.RxEventBus
 import com.mataku.scrobscrob.app.model.entity.UpdateNowPlayingEvent
+import com.mataku.scrobscrob.app.model.entity.UpdateScrobbledListEvent
 import com.mataku.scrobscrob.app.presenter.MainPresenter
 import com.mataku.scrobscrob.app.receiver.AppleMusicNotificationReceiver
 import com.mataku.scrobscrob.app.ui.adapter.NowPlayingViewAdapter
@@ -64,6 +65,9 @@ class MainActivity : AppCompatActivity(), MainViewCallback, SwipeRefreshLayout.O
         RxEventBus.stream(UpdateNowPlayingEvent::class.java).subscribe({
             setUpNowPlayingView(it.track)
         })
+        RxEventBus.stream(UpdateScrobbledListEvent::class.java).subscribe({
+            onRefresh()
+        })
     }
 
     override fun onDestroy() {
@@ -106,6 +110,7 @@ class MainActivity : AppCompatActivity(), MainViewCallback, SwipeRefreshLayout.O
         setUpRecyclerView()
         swipeRefreshLayout.isRefreshing = false
     }
+
 
     private fun showSettings() {
         val intent = Intent(applicationContext, SettingsActivity::class.java)
