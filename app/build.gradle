@@ -17,7 +17,7 @@ android {
         release {
             storeFile file('../SunsetScrob.jks')
             storePassword System.getenv('SUNSET_STORE_PASSWORD')
-            keyAlias "sunsetScrob"
+            keyAlias System.getenv('SUNSET_KEY_ALIAS')
             keyPassword System.getenv('SUNSET_KEY_PASSWORD')
         }
     }
