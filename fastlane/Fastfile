@@ -12,10 +12,18 @@ platform :android do
     gradle(task: "testDebug")
   end
 
+  lane :debugbuild do
+    gradle(task: 'clean')
+    gradle(task: 'assembleDebug')
+  end
+
   desc "Deploy a new version to the Google Play"
   lane :deploy do
+    gradle(task: 'clean')
     gradle(task: "assembleRelease")
-    supply
+    supply(
+      apk: ENV['BITRISE_APK_PATH']
+    )
   end
 
   error do |lane, exception|
