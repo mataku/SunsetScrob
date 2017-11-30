@@ -4,10 +4,16 @@ apply plugin: 'realm-android'
 apply plugin: 'deploygate'
 apply plugin: 'com.github.ben-manes.versions'
 apply plugin: 'com.github.triplet.play'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 26
     buildToolsVersion '26.0.2'
+
+    dataBinding {
+        enabled = true
+    }
+
     playAccountConfigs {
         defaultAccountConfig {
             jsonFile = file('app-publisher.json')
@@ -74,6 +80,7 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:3.7.0'
     implementation 'io.realm:android-adapters:2.1.0'
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    kapt 'com.android.databinding:compiler:3.0.1'
 
     testImplementation 'junit:junit:4.12'
     testImplementation 'com.google.guava:guava:22.0'
