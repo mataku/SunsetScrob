@@ -1,4 +1,4 @@
-fastlane_version "2.38.1"
+fastlane_version "2.67.0"
 
 default_platform :android
 
@@ -7,21 +7,35 @@ platform :android do
     # ENV["SLACK_URL"] = "https://hooks.slack.com/services/..."
   end
 
-  desc "Runs all the tests"
+  desc "Runs all the Debug tests"
   lane :test do
     gradle(task: "testDebug")
   end
 
+  lane :debugbuild do
+    gradle(task: 'clean')
+    gradle(task: 'assembleDebug')
+  end
+
+  lane :releasebuild do
+    gradle(task: 'clean')
+    gradle(task: 'assembleRelease')
+  end
+
+
   desc "Deploy a new version to the Google Play"
   lane :deploy do
+    gradle(task: 'clean')
     gradle(task: "assembleRelease")
-    supply
+    supply(
+      apk: ENV['BITRISE_APK_PATH']
+    )
+  end
+
+  error do |lane, exception|
+    # slack(
+    #   message: exception.message,
+    #   success: false
+    # )
   end
 end
-
-
-# More information about multiple platforms in fastlane: https://github.com/fastlane/fastlane/blob/master/fastlane/docs/Platforms.md
-# All available actions: https://docs.fastlane.tools/actions
-
-# fastlane reports which actions are used. No personal data is recorded. 
-# Learn more at https://github.com/fastlane/fastlane#metrics

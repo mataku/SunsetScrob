@@ -1,2 +1,2 @@
-json_key_file "app/app-publisher.json" # Path to the json secret file - Follow https://github.com/fastlane/supply#setup to get one
-package_name "com.mataku.scrobscrob" # e.g. com.krausefx.app
+json_key_file "app/app-publisher.json"
+package_name "com.mataku.scrobscrob"

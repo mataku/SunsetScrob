@@ -2,6 +2,7 @@ package com.mataku.scrobscrob.app.ui
 
 import android.content.Intent
 import android.content.IntentFilter
+import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.provider.Settings
 import android.support.v4.widget.SwipeRefreshLayout
@@ -24,6 +25,7 @@ import com.mataku.scrobscrob.app.ui.adapter.NowPlayingViewAdapter
 import com.mataku.scrobscrob.app.ui.adapter.ScrobbleViewAdapter
 import com.mataku.scrobscrob.app.ui.view.MainViewCallback
 import com.mataku.scrobscrob.app.util.SharedPreferencesHelper
+import com.mataku.scrobscrob.databinding.ActivityMainBinding
 import io.realm.Realm
 import io.realm.RealmConfiguration
 
@@ -36,6 +38,7 @@ class MainActivity : AppCompatActivity(), MainViewCallback, SwipeRefreshLayout.O
     private lateinit var scrobbleViewAdapter: ScrobbleViewAdapter
     private lateinit var nowPlayingViewAdapter: NowPlayingViewAdapter
     private lateinit var sharedPreferencesHelper: SharedPreferencesHelper
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +55,7 @@ class MainActivity : AppCompatActivity(), MainViewCallback, SwipeRefreshLayout.O
 //                realm.deleteAll()
 //            }
 //        }
-        setContentView(R.layout.activity_main)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 //        mainPresenter = MainPresenter(this)
 //        mainPresenter.showPreparationMenuIfNeeded(isEnabledReadNotification())
         val filter = IntentFilter()
@@ -118,7 +121,7 @@ class MainActivity : AppCompatActivity(), MainViewCallback, SwipeRefreshLayout.O
     }
 
     private fun setUpSwipeRefreshView() {
-        swipeRefreshLayout = findViewById<SwipeRefreshLayout>(R.id.swipe_refresh_layout)
+        swipeRefreshLayout = binding.swipeRefreshLayout
         swipeRefreshLayout.setColorSchemeResources(
                 R.color.colorAccent,
                 android.R.color.holo_blue_bright,
@@ -131,7 +134,7 @@ class MainActivity : AppCompatActivity(), MainViewCallback, SwipeRefreshLayout.O
         val scrobbles = Scrobble().getCurrentTracks()
         scrobbleViewAdapter = ScrobbleViewAdapter(applicationContext, scrobbles)
         scrobbleViewAdapter.notifyDataSetChanged()
-        scrobbleRecyclerView = findViewById<RecyclerView>(R.id.scrobble_list_view)
+        scrobbleRecyclerView = binding.scrobbleListView
         scrobbleRecyclerView.layoutManager = LinearLayoutManager(applicationContext)
         scrobbleRecyclerView.hasFixedSize()
         scrobbleRecyclerView.adapter = scrobbleViewAdapter
@@ -139,7 +142,7 @@ class MainActivity : AppCompatActivity(), MainViewCallback, SwipeRefreshLayout.O
 
     private fun setUpNowPlayingView(track: Track) {
         nowPlayingViewAdapter = NowPlayingViewAdapter(applicationContext, track)
-        nowPlayingView = findViewById(R.id.now_playing_view)
+        nowPlayingView = binding.nowPlayingView
         nowPlayingView.layoutManager = LinearLayoutManager(applicationContext)
         nowPlayingView.hasFixedSize()
         nowPlayingView.addOnItemTouchListener(ScrollController())
