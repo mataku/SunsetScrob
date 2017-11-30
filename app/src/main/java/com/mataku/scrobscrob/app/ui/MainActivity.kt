@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity(), MainViewCallback, SwipeRefreshLayout.O
     private lateinit var scrobbleViewAdapter: ScrobbleViewAdapter
     private lateinit var nowPlayingViewAdapter: NowPlayingViewAdapter
     private lateinit var sharedPreferencesHelper: SharedPreferencesHelper
-    private lateinit var binding: ActivityMainBinding;
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
