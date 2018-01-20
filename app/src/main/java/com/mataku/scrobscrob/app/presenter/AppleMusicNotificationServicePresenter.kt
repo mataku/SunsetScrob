@@ -15,7 +15,6 @@ import io.reactivex.schedulers.Schedulers
 class AppleMusicNotificationServicePresenter(var notificationServiceInterface: NotificationServiceInterface) {
 
     private val appUtil = AppUtil()
-    private val apiKey = appUtil.apiKey
     private val scrobbleMethod = "track.scrobble"
     private val nowPlayingMethod = "track.updateNowPlaying"
 
