@@ -15,7 +15,6 @@ import io.reactivex.schedulers.Schedulers
 class AppleMusicNotificationServicePresenter(var notificationServiceInterface: NotificationServiceInterface) {
 
     private val appUtil = AppUtil()
-    private val apiKey = appUtil.apiKey
     private val scrobbleMethod = "track.scrobble"
     private val nowPlayingMethod = "track.updateNowPlaying"
 
@@ -41,7 +40,6 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
                 track.name,
                 timeStamp,
                 track.albumName,
-                appUtil.apiKey,
                 apiSig,
                 sessionKey
         )
@@ -76,7 +74,6 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
                 track.artistName,
                 track.name,
                 track.albumName,
-                appUtil.apiKey,
                 apiSig,
                 sessionKey
         )
@@ -103,8 +100,7 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
         var albumArtwork = ""
         client.getTrackInfo(
                 artistName,
-                trackName,
-                apiKey
+                trackName
         )
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

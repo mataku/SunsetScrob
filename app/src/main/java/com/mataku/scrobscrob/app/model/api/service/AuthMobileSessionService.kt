@@ -9,7 +9,6 @@ interface AuthMobileSessionService {
     fun authenticate(
             @Query("username") userName: String,
             @Query("password") password: String,
-            @Query("api_key") apiKey: String,
             @Query("api_sig") apiSig: String
     ): Call<MobileSessionApiResponse>
 }

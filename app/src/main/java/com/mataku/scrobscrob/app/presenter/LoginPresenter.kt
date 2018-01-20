@@ -18,7 +18,7 @@ class LoginPresenter(var accessable: Boolean, var view: LoginViewCallback) {
 
         val apiSig: String = appUtil.generateApiSig(params)
         val client = Retrofit2LastFmClient.create(AuthMobileSessionService::class.java)
-        val call = client.authenticate(userName, password, appUtil.apiKey, apiSig)
+        val call = client.authenticate(userName, password, apiSig)
         try {
             val response = call.execute()
             val mobileSession = response?.body()?.mobileSession

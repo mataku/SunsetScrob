@@ -4,6 +4,7 @@ apply plugin: 'realm-android'
 apply plugin: 'deploygate'
 apply plugin: 'com.github.ben-manes.versions'
 apply plugin: 'kotlin-kapt'
+apply from: 'lint-checks.gradle'
 
 android {
     compileSdkVersion 26
@@ -46,6 +47,10 @@ android {
     }
     lintOptions {
         abortOnError false
+        textReport true
+        textOutput 'stdout'
+        xmlReport false
+        check lintchecks
     }
 }
 
