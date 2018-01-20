@@ -14,7 +14,6 @@ interface TrackUpdateNowPlayingService {
             @Field("artist") artist: String,
             @Field("track") trackName: String,
             @Field("album") albumName: String,
-            @Field("api_key") apiKey: String,
             @Field("api_sig") apiSig: String,
             @Field("sk") sessionKey: String
     ): Single<Response<NowPlayingApiResponse>>

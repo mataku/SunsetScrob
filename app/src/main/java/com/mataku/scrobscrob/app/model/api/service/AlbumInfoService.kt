@@ -11,7 +11,6 @@ interface AlbumInfoService {
     fun getAlbumInfo(
             @Query("album") album: String,
             @Query("artist") artist: String,
-            @Query("track") track: String,
-            @Query("api_key") api_key: String
+            @Query("track") track: String
     ): Single<Response<AlbumInfoApiResponse>>
 }
