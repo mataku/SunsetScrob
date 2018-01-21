@@ -29,20 +29,6 @@
 -keep interface android.support.v4.app.** { *; }
 -keepattributes *Annotation*
 
-# butterknife
--keep class butterknife.** { *; }
--dontwarn butterknife.internal.**
--keep class **$$ViewBinder { *; }
-
--keepclasseswithmembernames class * {
-    @butterknife.* <fields>;
-}
-
--keepclasseswithmembernames class * {
-    @butterknife.* <methods>;
-}
-
-
 # Retrofit 2.X
 ## https://square.github.io/retrofit/ ##
 
