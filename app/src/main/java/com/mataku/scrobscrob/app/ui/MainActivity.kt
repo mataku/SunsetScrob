@@ -132,7 +132,7 @@ class MainActivity : AppCompatActivity(), MainViewCallback, SwipeRefreshLayout.O
 
     private fun setUpRecyclerView() {
         val scrobbles = Scrobble().getCurrentTracks()
-        scrobbleViewAdapter = ScrobbleViewAdapter(applicationContext, scrobbles)
+        scrobbleViewAdapter = ScrobbleViewAdapter(scrobbles)
         scrobbleViewAdapter.notifyDataSetChanged()
         scrobbleRecyclerView = binding.scrobbleListView
         scrobbleRecyclerView.layoutManager = LinearLayoutManager(applicationContext)
@@ -141,7 +141,7 @@ class MainActivity : AppCompatActivity(), MainViewCallback, SwipeRefreshLayout.O
     }
 
     private fun setUpNowPlayingView(track: Track) {
-        nowPlayingViewAdapter = NowPlayingViewAdapter(applicationContext, track)
+        nowPlayingViewAdapter = NowPlayingViewAdapter(track)
         nowPlayingView = binding.nowPlayingView
         nowPlayingView.layoutManager = LinearLayoutManager(applicationContext)
         nowPlayingView.hasFixedSize()

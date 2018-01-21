@@ -11,6 +11,7 @@ class AppUtil {
 
     fun generateApiSig(params: MutableMap<String, String>): String {
         var str = ""
+        params["api_key"] = apiKey
         params.toSortedMap().forEach { k, v ->
             str += k + v
         }
