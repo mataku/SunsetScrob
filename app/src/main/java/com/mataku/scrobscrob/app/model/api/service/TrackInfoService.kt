@@ -1,8 +1,7 @@
 package com.mataku.scrobscrob.app.model.api.service
 
 import com.mataku.scrobscrob.app.model.entity.TrackInfoApiResponse
-import io.reactivex.Single
-import retrofit2.Response
+import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -11,5 +10,5 @@ interface TrackInfoService {
     fun getTrackInfo(
             @Query("artist") artist: String,
             @Query("track") track: String
-    ): Single<Response<TrackInfoApiResponse>>
+    ): Call<TrackInfoApiResponse>
 }
