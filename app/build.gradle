@@ -91,3 +91,9 @@ repositories {
         url 'https://maven.google.com'
     }
 }
+
+kotlin {
+    experimental {
+        coroutines "enable"
+    }
+}
