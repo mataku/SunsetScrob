@@ -31,7 +31,6 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
         params["album[0]"] = track.albumName
         params["method"] = scrobbleMethod
         params["sk"] = sessionKey
-        params["api_key"] = appUtil.apiKey
 
         val apiSig = appUtil.generateApiSig(params)
         val client = Retrofit2LastFmClient.create(TrackScrobbleService::class.java)
@@ -66,7 +65,6 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
         params["album"] = track.albumName
         params["method"] = nowPlayingMethod
         params["sk"] = sessionKey
-        params["api_key"] = appUtil.apiKey
 
         val apiSig = appUtil.generateApiSig(params)
         val client = Retrofit2LastFmClient.create(TrackUpdateNowPlayingService::class.java)
