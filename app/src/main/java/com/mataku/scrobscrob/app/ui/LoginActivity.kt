@@ -5,9 +5,14 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.annotation.TargetApi
 import android.app.LoaderManager.LoaderCallbacks
-import android.content.*
+import android.content.Context
+import android.content.CursorLoader
+import android.content.Intent
+import android.content.Loader
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.database.Cursor
+import android.databinding.DataBindingUtil
 import android.net.Uri
 import android.os.AsyncTask
 import android.os.Build
@@ -19,13 +24,18 @@ import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.widget.*
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
+import android.widget.EditText
+import android.widget.TextView
+import android.widget.Toast
 import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.app.model.Track
 import com.mataku.scrobscrob.app.model.entity.RxEventBus
 import com.mataku.scrobscrob.app.model.entity.UpdateNowPlayingEvent
 import com.mataku.scrobscrob.app.presenter.LoginPresenter
 import com.mataku.scrobscrob.app.ui.view.LoginViewCallback
+import com.mataku.scrobscrob.databinding.ActivityLoginBinding
 import java.util.*
 
 /**
@@ -38,22 +48,22 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, LoginViewCal
     private var authTask: UserLoginTask? = null
 
     // UI references.
-    private var userNameView: AutoCompleteTextView? = null
-    private var passwordView: EditText? = null
-    private var progressView: View? = null
-    private var loginFormView: View? = null
+    private lateinit var userNameView: AutoCompleteTextView
+    private lateinit var passwordView: EditText
+    private lateinit var progressView: View
+    private lateinit var loginFormView: View
 
     private lateinit var loginPresenter: LoginPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        val binding: ActivityLoginBinding = DataBindingUtil.setContentView(this, R.layout.activity_login)
         // Set up the login form.
-        userNameView = findViewById<AutoCompleteTextView>(R.id.user_name)
+        userNameView = binding.userName
         populateAutoComplete()
 
-        passwordView = findViewById<EditText>(R.id.password)
-        passwordView!!.setOnEditorActionListener(TextView.OnEditorActionListener { _, id, _ ->
+        passwordView = binding.password
+        binding.password.setOnEditorActionListener(TextView.OnEditorActionListener { _, id, _ ->
             if (id == R.id.login || id == EditorInfo.IME_NULL) {
                 attemptLogin()
                 return@OnEditorActionListener true
@@ -61,11 +71,11 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, LoginViewCal
             false
         })
 
-        val userNameSignInButton = findViewById<Button>(R.id.email_sign_in_button)
+        val userNameSignInButton = binding.emailSignInButton
         userNameSignInButton.setOnClickListener { attemptLogin() }
 
-        loginFormView = findViewById(R.id.login_form)
-        progressView = findViewById(R.id.login_progress)
+        loginFormView = binding.loginForm
+        progressView = binding.loginProgress
         loginPresenter = LoginPresenter(isEnabledReadNotification(), this)
     }
 
