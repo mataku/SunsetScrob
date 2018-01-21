@@ -3,7 +3,6 @@ package com.mataku.scrobscrob.app.ui
 import android.Manifest.permission.READ_CONTACTS
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
-import android.annotation.TargetApi
 import android.app.LoaderManager.LoaderCallbacks
 import android.content.Context
 import android.content.CursorLoader
@@ -15,7 +14,6 @@ import android.database.Cursor
 import android.databinding.DataBindingUtil
 import android.net.Uri
 import android.os.AsyncTask
-import android.os.Build
 import android.os.Bundle
 import android.provider.ContactsContract
 import android.provider.Settings
@@ -87,9 +85,6 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, LoginViewCal
     }
 
     private fun mayRequestContacts(): Boolean {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            return true
-        }
         if (checkSelfPermission(READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
             return true
         }
@@ -178,35 +173,24 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, LoginViewCal
     /**
      * Shows the progress UI and hides the login form.
      */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     private fun showProgress(show: Boolean) {
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            val shortAnimTime = resources.getInteger(android.R.integer.config_shortAnimTime)
+        val shortAnimTime = resources.getInteger(android.R.integer.config_shortAnimTime)
 
-            loginFormView.visibility = if (show) View.GONE else View.VISIBLE
-            loginFormView.animate().setDuration(shortAnimTime.toLong()).alpha(
-                    (if (show) 0 else 1).toFloat()).setListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator) {
-                    loginFormView.visibility = if (show) View.GONE else View.VISIBLE
-                }
-            })
+        loginFormView.visibility = if (show) View.GONE else View.VISIBLE
+        loginFormView.animate().setDuration(shortAnimTime.toLong()).alpha(
+                (if (show) 0 else 1).toFloat()).setListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: Animator) {
+                loginFormView.visibility = if (show) View.GONE else View.VISIBLE
+            }
+        })
 
-            progressView.visibility = if (show) View.VISIBLE else View.GONE
-            progressView.animate().setDuration(shortAnimTime.toLong()).alpha(
-                    (if (show) 1 else 0).toFloat()).setListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator) {
-                    progressView.visibility = if (show) View.VISIBLE else View.GONE
-                }
-            })
-        } else {
-            // The ViewPropertyAnimator APIs are not available, so simply show
-            // and hide the relevant UI components.
-            progressView.visibility = if (show) View.VISIBLE else View.GONE
-            loginFormView.visibility = if (show) View.GONE else View.VISIBLE
-        }
+        progressView.visibility = if (show) View.VISIBLE else View.GONE
+        progressView.animate().setDuration(shortAnimTime.toLong()).alpha(
+                (if (show) 1 else 0).toFloat()).setListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: Animator) {
+                progressView.visibility = if (show) View.VISIBLE else View.GONE
+            }
+        })
     }
 
     override fun onCreateLoader(i: Int, bundle: Bundle): Loader<Cursor> {
@@ -252,8 +236,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, LoginViewCal
         companion object {
             val PROJECTION = arrayOf(ContactsContract.CommonDataKinds.Email.ADDRESS, ContactsContract.CommonDataKinds.Email.IS_PRIMARY)
 
-            val ADDRESS = 0
-            val IS_PRIMARY = 1
+            const val ADDRESS = 0
         }
     }
 
@@ -349,7 +332,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, LoginViewCal
         /**
          * Id to identity READ_CONTACTS permission request.
          */
-        private val REQUEST_READ_CONTACTS = 0
+        private const val REQUEST_READ_CONTACTS = 0
 
     }
 }
