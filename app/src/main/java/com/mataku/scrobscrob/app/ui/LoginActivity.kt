@@ -36,7 +36,6 @@ import com.mataku.scrobscrob.app.model.entity.UpdateNowPlayingEvent
 import com.mataku.scrobscrob.app.presenter.LoginPresenter
 import com.mataku.scrobscrob.app.ui.view.LoginViewCallback
 import com.mataku.scrobscrob.databinding.ActivityLoginBinding
-import java.util.*
 
 /**
  * A login screen that offers login via email/password.
@@ -95,7 +94,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, LoginViewCal
             return true
         }
         if (shouldShowRequestPermissionRationale(READ_CONTACTS)) {
-            Snackbar.make(userNameView!!, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
+            Snackbar.make(userNameView, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
                     .setAction(android.R.string.ok) { requestPermissions(arrayOf(READ_CONTACTS), REQUEST_READ_CONTACTS) }
         } else {
             requestPermissions(arrayOf(READ_CONTACTS), REQUEST_READ_CONTACTS)
@@ -127,30 +126,30 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, LoginViewCal
         }
 
         // Reset errors.
-        userNameView!!.error = null
-        passwordView!!.error = null
+        userNameView.error = null
+        passwordView.error = null
 
         // Store values at the time of the login attempt.
-        val email = userNameView!!.text.toString()
-        val password = passwordView!!.text.toString()
+        val email = userNameView.text.toString()
+        val password = passwordView.text.toString()
 
         var cancel = false
         var focusView: View? = null
 
         // Check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            passwordView!!.error = getString(R.string.error_invalid_password)
+            passwordView.error = getString(R.string.error_invalid_password)
             focusView = passwordView
             cancel = true
         }
 
         // Check for a valid email address.
         if (TextUtils.isEmpty(email)) {
-            userNameView!!.error = getString(R.string.error_field_required)
+            userNameView.error = getString(R.string.error_field_required)
             focusView = userNameView
             cancel = true
         } else if (!isUserNameValid(email)) {
-            userNameView!!.error = getString(R.string.error_invalid_user_name)
+            userNameView.error = getString(R.string.error_invalid_user_name)
             focusView = userNameView
             cancel = true
         }
@@ -187,26 +186,26 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, LoginViewCal
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             val shortAnimTime = resources.getInteger(android.R.integer.config_shortAnimTime)
 
-            loginFormView!!.visibility = if (show) View.GONE else View.VISIBLE
-            loginFormView!!.animate().setDuration(shortAnimTime.toLong()).alpha(
+            loginFormView.visibility = if (show) View.GONE else View.VISIBLE
+            loginFormView.animate().setDuration(shortAnimTime.toLong()).alpha(
                     (if (show) 0 else 1).toFloat()).setListener(object : AnimatorListenerAdapter() {
                 override fun onAnimationEnd(animation: Animator) {
-                    loginFormView!!.visibility = if (show) View.GONE else View.VISIBLE
+                    loginFormView.visibility = if (show) View.GONE else View.VISIBLE
                 }
             })
 
-            progressView!!.visibility = if (show) View.VISIBLE else View.GONE
-            progressView!!.animate().setDuration(shortAnimTime.toLong()).alpha(
+            progressView.visibility = if (show) View.VISIBLE else View.GONE
+            progressView.animate().setDuration(shortAnimTime.toLong()).alpha(
                     (if (show) 1 else 0).toFloat()).setListener(object : AnimatorListenerAdapter() {
                 override fun onAnimationEnd(animation: Animator) {
-                    progressView!!.visibility = if (show) View.VISIBLE else View.GONE
+                    progressView.visibility = if (show) View.VISIBLE else View.GONE
                 }
             })
         } else {
             // The ViewPropertyAnimator APIs are not available, so simply show
             // and hide the relevant UI components.
-            progressView!!.visibility = if (show) View.VISIBLE else View.GONE
-            loginFormView!!.visibility = if (show) View.GONE else View.VISIBLE
+            progressView.visibility = if (show) View.VISIBLE else View.GONE
+            loginFormView.visibility = if (show) View.GONE else View.VISIBLE
         }
     }
 
@@ -245,7 +244,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, LoginViewCal
         val adapter = ArrayAdapter(this@LoginActivity,
                 android.R.layout.simple_dropdown_item_1line, emailAddressCollection)
 
-        userNameView!!.setAdapter(adapter)
+        userNameView.setAdapter(adapter)
     }
 
 
@@ -308,13 +307,13 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, LoginViewCal
 
     override fun backToSettingsActivity() {
         finish()
-        var intent = Intent(applicationContext, SettingsActivity::class.java)
+        val intent = Intent(applicationContext, SettingsActivity::class.java)
         startActivity(intent)
     }
 
     override fun focusOnPasswordView() {
-        passwordView!!.error = getString(R.string.error_incorrect_password)
-        passwordView!!.requestFocus()
+        passwordView.error = getString(R.string.error_incorrect_password)
+        passwordView.requestFocus()
     }
 
     private fun getSessionKey(): String {
@@ -352,11 +351,6 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, LoginViewCal
          */
         private val REQUEST_READ_CONTACTS = 0
 
-        /**
-         * A dummy authentication store containing known user names and passwords.
-         * TODO: remove after connecting to a real authentication system.
-         */
-        private val DUMMY_CREDENTIALS = arrayOf("foo@example.com:hello", "bar@example.com:world")
     }
 }
 
