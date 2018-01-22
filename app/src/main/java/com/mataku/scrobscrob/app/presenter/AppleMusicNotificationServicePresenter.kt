@@ -1,7 +1,5 @@
 package com.mataku.scrobscrob.app.presenter
 
-import android.util.Log
-import com.mataku.scrobscrob.BuildConfig
 import com.mataku.scrobscrob.app.model.Track
 import com.mataku.scrobscrob.app.model.api.Retrofit2LastFmClient
 import com.mataku.scrobscrob.app.model.api.service.TrackInfoService
@@ -12,7 +10,7 @@ import com.mataku.scrobscrob.app.util.AppUtil
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-class AppleMusicNotificationServicePresenter(var notificationServiceInterface: NotificationServiceInterface) {
+class AppleMusicNotificationServicePresenter(private var notificationServiceInterface: NotificationServiceInterface) {
 
     private val appUtil = AppUtil()
     private val apiKey = appUtil.apiKey
@@ -50,14 +48,12 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
                 .subscribe({ result ->
                     if (result.isSuccessful && result.body() != null && result.body()!!.scrobbles.attr.accepted == 1) {
                         notificationServiceInterface.saveScrobble(track)
-                        if (BuildConfig.DEBUG) {
-                            Log.i("scrobbleApi", "success")
-                        }
+
+                        appUtil.debugLog("scrobbleApi", "success")
+
                     }
                 }, { error ->
-                    if (BuildConfig.DEBUG) {
-                        Log.i("Scrobble API", error.message)
-                    }
+                    appUtil.debugLog("Scrobble API", error?.message)
                 })
     }
 
@@ -84,15 +80,14 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ result ->
                     if (result.isSuccessful) {
-                        if (BuildConfig.DEBUG) {
-                            Log.i("NowPlayingApi", "success")
-                        }
+
+                        appUtil.debugLog("NowPlayingApi", "success")
+
                         notificationServiceInterface.notifyNowPlayingUpdated(track)
                     }
                 }, { _ ->
-                    if (BuildConfig.DEBUG) {
-                        Log.i("NowPlayingApi", "Something wrong")
-                    }
+                    appUtil.debugLog("NowPlayingApi", "Something wrong")
+
                 })
 
     }
