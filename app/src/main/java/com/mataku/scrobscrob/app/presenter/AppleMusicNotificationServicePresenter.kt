@@ -13,7 +13,7 @@ import kotlinx.coroutines.experimental.runBlocking
 import ru.gildor.coroutines.retrofit.Result
 import ru.gildor.coroutines.retrofit.awaitResult
 
-class AppleMusicNotificationServicePresenter(var notificationServiceInterface: NotificationServiceInterface) {
+class AppleMusicNotificationServicePresenter(private var notificationServiceInterface: NotificationServiceInterface) {
 
     private val appUtil = AppUtil()
     private val scrobbleMethod = "track.scrobble"
