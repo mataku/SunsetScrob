@@ -33,6 +33,7 @@ class Retrofit2LastFmClient {
                 logging.level = HttpLoggingInterceptor.Level.BODY
                 client.addInterceptor(logging)
             }
+            client.addInterceptor(LastFmApiAuthInterceptor())
 
             return client.build()
         }

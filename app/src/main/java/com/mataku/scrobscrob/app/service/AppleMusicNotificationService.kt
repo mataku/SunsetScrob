@@ -5,8 +5,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
-import android.util.Log
-import com.mataku.scrobscrob.BuildConfig
 import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.app.model.Scrobble
 import com.mataku.scrobscrob.app.model.Track
@@ -15,6 +13,7 @@ import com.mataku.scrobscrob.app.model.entity.UpdateNowPlayingEvent
 import com.mataku.scrobscrob.app.model.entity.UpdateScrobbledListEvent
 import com.mataku.scrobscrob.app.presenter.AppleMusicNotificationServicePresenter
 import com.mataku.scrobscrob.app.ui.view.NotificationServiceInterface
+import com.mataku.scrobscrob.app.util.AppUtil
 import com.mataku.scrobscrob.app.util.SharedPreferencesHelper
 import io.realm.Realm
 
@@ -24,22 +23,17 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
     private val presenter = AppleMusicNotificationServicePresenter(this)
     private lateinit var track: Track
     private var previousTrackName: String = ""
+    private val appUtil = AppUtil()
 
     override fun onCreate() {
         super.onCreate()
-        val sharedPreferencesHelper = SharedPreferencesHelper(this)
+        RxEventBus.post(UpdateNowPlayingEvent(dummyTrack()))
 
         try {
             val appleMusicPackageInfo = packageManager.getPackageInfo(APPLE_MUSIC_PACKAGE_NAME, 0)
-            if (BuildConfig.DEBUG) {
-                sharedPreferencesHelper.setPLayingTime(1000L)
-                sharedPreferencesHelper.setTimeStamp()
-                Log.i("AppleMusicNotification", "Apple music is installed! (version: ${appleMusicPackageInfo.versionCode}")
-            }
+            appUtil.debugLog("AppleMusicNotification", "Apple music is installed! (version: ${appleMusicPackageInfo.versionCode}")
         } catch (e: PackageManager.NameNotFoundException) {
-            if (BuildConfig.DEBUG) {
-                Log.i("AppleMusicNotification", "Apple music is NOT installed!")
-            }
+            appUtil.debugLog("AppleMusicNotification", "Apple music is NOT installed!")
         }
     }
 
@@ -56,9 +50,7 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
 
         // Ignore if not Apple Music APP
         if (sbn.packageName != APPLE_MUSIC_PACKAGE_NAME) {
-            if (BuildConfig.DEBUG) {
-                Log.i("Notification", "Not apple music notification")
-            }
+            appUtil.debugLog("Notification", "Not apple music notification")
             return
         }
 
@@ -84,10 +76,10 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
                         sessionKey,
                         sharedPreferencesHelper.getTimeStamp()
                 )
+                appUtil.debugLog("ScrobbleApi", "called")
+            } else {
+                appUtil.debugLog("ScrobbleApi", "not called")
             }
-            sharedPreferencesHelper.setPLayingTime(1000L)
-            sharedPreferencesHelper.setTimeStamp()
-            RxEventBus.post(UpdateNowPlayingEvent(dummyTrack()))
         }
 
         previousTrackName = trackName
@@ -132,8 +124,8 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
     }
 
     override fun saveScrobble(track: Track) {
-        val sharedPreferencesHelper = SharedPreferencesHelper(this)
         val realm = Realm.getDefaultInstance()
+        val sharedPreferencesHelper = SharedPreferencesHelper(this)
 
         realm.executeTransaction {
             val scrobble = realm.createObject(Scrobble::class.java, Scrobble().count() + 1)

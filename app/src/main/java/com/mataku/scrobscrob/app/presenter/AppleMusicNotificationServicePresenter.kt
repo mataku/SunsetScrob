@@ -1,7 +1,5 @@
 package com.mataku.scrobscrob.app.presenter
 
-import android.util.Log
-import com.mataku.scrobscrob.BuildConfig
 import com.mataku.scrobscrob.app.model.Track
 import com.mataku.scrobscrob.app.model.api.Retrofit2LastFmClient
 import com.mataku.scrobscrob.app.model.api.service.TrackInfoService
@@ -12,10 +10,9 @@ import com.mataku.scrobscrob.app.util.AppUtil
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-class AppleMusicNotificationServicePresenter(var notificationServiceInterface: NotificationServiceInterface) {
+class AppleMusicNotificationServicePresenter(private var notificationServiceInterface: NotificationServiceInterface) {
 
     private val appUtil = AppUtil()
-    private val apiKey = appUtil.apiKey
     private val scrobbleMethod = "track.scrobble"
     private val nowPlayingMethod = "track.updateNowPlaying"
 
@@ -32,7 +29,6 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
         params["album[0]"] = track.albumName
         params["method"] = scrobbleMethod
         params["sk"] = sessionKey
-        params["api_key"] = appUtil.apiKey
 
         val apiSig = appUtil.generateApiSig(params)
         val client = Retrofit2LastFmClient.create(TrackScrobbleService::class.java)
@@ -41,7 +37,6 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
                 track.name,
                 timeStamp,
                 track.albumName,
-                appUtil.apiKey,
                 apiSig,
                 sessionKey
         )
@@ -52,16 +47,12 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
                         result.body()?.scrobbles?.attr?.accepted.let {
                             if (it == 1) {
                                 notificationServiceInterface.saveScrobble(track)
-                                if (BuildConfig.DEBUG) {
-                                    Log.i("Scrobble API", "success")
-                                }
+                                appUtil.debugLog("Scrobble API", "success")
                             }
                         }
                     }
                 }, { error ->
-                    if (BuildConfig.DEBUG) {
-                        Log.i("Scrobble API", error.message)
-                    }
+                    appUtil.debugLog("Scrobble API", error?.message)
                 })
     }
 
@@ -72,7 +63,6 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
         params["album"] = track.albumName
         params["method"] = nowPlayingMethod
         params["sk"] = sessionKey
-        params["api_key"] = appUtil.apiKey
 
         val apiSig = appUtil.generateApiSig(params)
         val client = Retrofit2LastFmClient.create(TrackUpdateNowPlayingService::class.java)
@@ -80,7 +70,6 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
                 track.artistName,
                 track.name,
                 track.albumName,
-                appUtil.apiKey,
                 apiSig,
                 sessionKey
         )
@@ -88,15 +77,11 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ result ->
                     if (result.isSuccessful) {
-                        if (BuildConfig.DEBUG) {
-                            Log.i("NowPlayingApi", "success")
-                        }
+                        appUtil.debugLog("NowPlayingApi", "success")
                         notificationServiceInterface.notifyNowPlayingUpdated(track)
                     }
                 }, { _ ->
-                    if (BuildConfig.DEBUG) {
-                        Log.i("NowPlayingApi", "Something wrong")
-                    }
+                    appUtil.debugLog("NowPlayingApi", "Something wrong")
                 })
 
     }
@@ -107,8 +92,7 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
         var albumArtwork = ""
         client.getTrackInfo(
                 artistName,
-                trackName,
-                apiKey
+                trackName
         )
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -124,8 +108,8 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
                                 }
                             }
                             try {
-                                val imageList = it.trackInfo?.album.imageList
-                                albumArtwork = imageList[1].imageUrl
+                                val imageList = it?.trackInfo?.album?.imageList
+                                albumArtwork = imageList!![1].imageUrl
                             } catch (e: NullPointerException) {
 
                             }
@@ -135,6 +119,5 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
                 }, { _ ->
                     notificationServiceInterface.setCurrentTrackInfo(trackDuration, albumArtwork)
                 })
-
     }
 }

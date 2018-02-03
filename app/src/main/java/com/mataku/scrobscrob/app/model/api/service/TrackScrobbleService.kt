@@ -15,7 +15,6 @@ interface TrackScrobbleService {
             @Field("track[0]") track: String,
             @Field("timestamp[0]") timeStamp: Long,
             @Field("album[0]") albumName: String,
-            @Field("api_key") apiKey: String,
             @Field("api_sig") apiSig: String,
             @Field("sk") sessionKey: String
     ): Single<Response<ScrobblesApiResponse>>

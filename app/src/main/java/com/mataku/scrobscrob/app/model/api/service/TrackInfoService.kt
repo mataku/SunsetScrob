@@ -10,7 +10,6 @@ interface TrackInfoService {
     @GET("/2.0/?method=track.getInfo&format=json")
     fun getTrackInfo(
             @Query("artist") artist: String,
-            @Query("track") track: String,
-            @Query("api_key") api_key: String
+            @Query("track") track: String
     ): Single<Response<TrackInfoApiResponse>>
 }

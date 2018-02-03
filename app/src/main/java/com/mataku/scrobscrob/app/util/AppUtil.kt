@@ -1,5 +1,6 @@
 package com.mataku.scrobscrob.app.util
 
+import android.util.Log
 import com.mataku.scrobscrob.BuildConfig
 import java.security.MessageDigest
 
@@ -11,6 +12,7 @@ class AppUtil {
 
     fun generateApiSig(params: MutableMap<String, String>): String {
         var str = ""
+        params["api_key"] = apiKey
         params.toSortedMap().forEach { k, v ->
             str += k + v
         }
@@ -28,5 +30,11 @@ class AppUtil {
             stringBuilder.append(Integer.toHexString(b))
         }
         return stringBuilder.toString()
+    }
+
+    fun debugLog(key: String, value: String?) {
+        if (BuildConfig.DEBUG) {
+            Log.d(key, value)
+        }
     }
 }
