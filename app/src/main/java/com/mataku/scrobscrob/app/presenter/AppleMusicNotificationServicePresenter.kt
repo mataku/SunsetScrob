@@ -99,12 +99,12 @@ class AppleMusicNotificationServicePresenter(private var notificationServiceInte
                 .subscribe({ result ->
                     if (result.isSuccessful) {
                         result?.body().let {
-                            trackDuration = it?.trackInfo?.duration.let { duration ->
-                                if (duration!!.toLong() == 0L) {
+                            trackDuration = it?.trackInfo?.duration.let {
+                                if (it!!.toLong() == 0L) {
                                     // Use default value if duration is 0
                                     appUtil.defaultPlayingTime
                                 } else {
-                                    duration.toLong() / 1000L
+                                    it.toLong() / 1000L
                                 }
                             }
                             try {
