@@ -37,10 +37,6 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-    }
-
     // ステータスバーに通知が更新される
     override fun onNotificationPosted(sbn: StatusBarNotification) {
         super.onNotificationPosted(sbn)

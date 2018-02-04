@@ -86,14 +86,14 @@ class MainActivity : AppCompatActivity(), MainViewCallback, SwipeRefreshLayout.O
 
     //    メニューボタンのクリックイベントを定義
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
+        return when (item.itemId) {
             R.id.overflow_options -> {
                 showSettings()
-                return true
+                true
             }
             else -> {
                 showSettings()
-                return true
+                true
             }
         }
     }
@@ -143,10 +143,12 @@ class MainActivity : AppCompatActivity(), MainViewCallback, SwipeRefreshLayout.O
     private fun setUpNowPlayingView(track: Track) {
         nowPlayingViewAdapter = NowPlayingViewAdapter(track)
         nowPlayingView = binding.nowPlayingView
-        nowPlayingView.layoutManager = LinearLayoutManager(applicationContext)
-        nowPlayingView.hasFixedSize()
-        nowPlayingView.addOnItemTouchListener(ScrollController())
-        nowPlayingView.adapter = nowPlayingViewAdapter
+        nowPlayingView.apply {
+            layoutManager = LinearLayoutManager(applicationContext)
+            hasFixedSize()
+            addOnItemTouchListener(ScrollController())
+            adapter = nowPlayingViewAdapter
+        }
     }
 
 

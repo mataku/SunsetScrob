@@ -43,11 +43,13 @@ class AppleMusicNotificationServicePresenter(private var notificationServiceInte
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ result ->
-                    if (result.isSuccessful && result.body() != null && result.body()!!.scrobbles.attr.accepted == 1) {
-                        notificationServiceInterface.saveScrobble(track)
-
-                        appUtil.debugLog("scrobbleApi", "success")
-
+                    if (result.isSuccessful && result?.body() != null) {
+                        result.body()?.scrobbles?.attr?.accepted.let {
+                            if (it == 1) {
+                                notificationServiceInterface.saveScrobble(track)
+                                appUtil.debugLog("Scrobble API", "success")
+                            }
+                        }
                     }
                 }, { error ->
                     appUtil.debugLog("Scrobble API", error?.message)
@@ -75,14 +77,11 @@ class AppleMusicNotificationServicePresenter(private var notificationServiceInte
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ result ->
                     if (result.isSuccessful) {
-
                         appUtil.debugLog("NowPlayingApi", "success")
-
                         notificationServiceInterface.notifyNowPlayingUpdated(track)
                     }
                 }, { _ ->
                     appUtil.debugLog("NowPlayingApi", "Something wrong")
-
                 })
 
     }
@@ -98,24 +97,27 @@ class AppleMusicNotificationServicePresenter(private var notificationServiceInte
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ result ->
-                    if (result.isSuccessful && result.body() != null) {
-                        val response = result.body()
-                        trackDuration = response!!.trackInfo.duration.toLong() / 1000L
-                        try {
-                            val imageList = response.trackInfo.album.imageList
-                            albumArtwork = imageList[1].imageUrl
-                        } catch (e: NullPointerException) {
+                    if (result.isSuccessful) {
+                        result?.body().let {
+                            trackDuration = it?.trackInfo?.duration.let {
+                                if (it!!.toLong() == 0L) {
+                                    // Use default value if duration is 0
+                                    appUtil.defaultPlayingTime
+                                } else {
+                                    it.toLong() / 1000L
+                                }
+                            }
+                            try {
+                                val imageList = it?.trackInfo?.album?.imageList
+                                albumArtwork = imageList!![1].imageUrl
+                            } catch (e: NullPointerException) {
 
-                        }
-                        // Use default value if duration is 0
-                        if (trackDuration == 0L) {
-                            trackDuration = appUtil.defaultPlayingTime
+                            }
                         }
                     }
                     notificationServiceInterface.setCurrentTrackInfo(trackDuration, albumArtwork)
                 }, { _ ->
                     notificationServiceInterface.setCurrentTrackInfo(trackDuration, albumArtwork)
                 })
-
     }
 }
