@@ -76,6 +76,12 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.6.1'
     implementation 'io.realm:android-adapters:2.1.1'
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+
+    def groupie_version = '2.0.3'
+    implementation "com.xwray:groupie:$groupie_version"
+    implementation "com.xwray:groupie-databinding:$groupie_version"
+    implementation "com.xwray:groupie-kotlin-android-extensions:$groupie_version"
+
     kapt 'com.android.databinding:compiler:3.0.1'
 
     testImplementation 'junit:junit:4.12'
