@@ -7,8 +7,8 @@ apply plugin: 'kotlin-kapt'
 apply from: 'lint-checks.gradle'
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion '26.0.2'
+    compileSdkVersion 27
+    buildToolsVersion '27.0.3'
 
     dataBinding {
         enabled = true
@@ -25,7 +25,7 @@ android {
         applicationId "com.mataku.scrobscrob"
 
         minSdkVersion 24
-        targetSdkVersion 26
+        targetSdkVersion 27
         versionCode 5
         versionName "0.0.5"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -60,7 +60,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
-    def support_library_version = "26.1.0"
+    def support_library_version = "27.0.2"
     def okhttp3_version = "3.4.1"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     implementation "com.android.support:appcompat-v7:$support_library_version"
