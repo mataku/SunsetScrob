@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:paddingBottom="8dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
@@ -14,7 +15,10 @@
             android:id="@+id/art_work_view"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_centerVertical="true" />
+            android:layout_centerVertical="true"
+            android:contentDescription="@null"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/track_name_view"
@@ -26,16 +30,21 @@
             android:maxLines="2"
             android:paddingTop="3dp"
             android:textColor="@android:color/black"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            app:layout_constraintLeft_toRightOf="@id/art_work_view"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="裸足でSummer" />
 
         <TextView
             android:id="@+id/track_artist_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/track_name_view"
-            android:layout_below="@+id/track_name_view"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="4dp"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            app:layout_constraintLeft_toRightOf="@id/art_work_view"
+            app:layout_constraintTop_toBottomOf="@id/track_name_view"
+            tools:text="乃木坂46" />
 
-    </RelativeLayout>
+    </android.support.constraint.ConstraintLayout>
 </layout>
