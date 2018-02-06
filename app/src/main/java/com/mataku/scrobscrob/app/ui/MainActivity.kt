@@ -23,9 +23,12 @@ import com.mataku.scrobscrob.app.presenter.MainPresenter
 import com.mataku.scrobscrob.app.receiver.AppleMusicNotificationReceiver
 import com.mataku.scrobscrob.app.ui.adapter.NowPlayingViewAdapter
 import com.mataku.scrobscrob.app.ui.adapter.ScrobbleViewAdapter
+import com.mataku.scrobscrob.app.ui.item.NowPlayingItem
 import com.mataku.scrobscrob.app.ui.view.MainViewCallback
 import com.mataku.scrobscrob.app.util.SharedPreferencesHelper
 import com.mataku.scrobscrob.databinding.ActivityMainBinding
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.ViewHolder
 import io.realm.Realm
 import io.realm.RealmConfiguration
 
@@ -141,12 +144,14 @@ class MainActivity : AppCompatActivity(), MainViewCallback, SwipeRefreshLayout.O
     }
 
     private fun setUpNowPlayingView(track: Track) {
-        nowPlayingViewAdapter = NowPlayingViewAdapter(track)
+        val adapter = GroupAdapter<ViewHolder>().apply {
+            add(NowPlayingItem(track))
+        }
         nowPlayingView = binding.nowPlayingView
         nowPlayingView.layoutManager = LinearLayoutManager(applicationContext)
         nowPlayingView.hasFixedSize()
         nowPlayingView.addOnItemTouchListener(ScrollController())
-        nowPlayingView.adapter = nowPlayingViewAdapter
+        nowPlayingView.adapter = adapter
     }
 
 
