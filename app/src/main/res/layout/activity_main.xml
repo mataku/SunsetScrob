@@ -1,30 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context="com.mataku.scrobscrob.app.ui.MainActivity">
 
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/swipe_refresh_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/scrobble_list_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:scrollbars="vertical" />
-
-        </android.support.v4.widget.SwipeRefreshLayout>
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/now_playing_view"
+        <android.support.design.widget.TabLayout
+            android:id="@+id/activity_main_tablayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom" />
+            app:layout_constraintBottom_toBottomOf="parent" />
 
-    </FrameLayout>
+        <android.support.v4.view.ViewPager
+            android:id="@+id/activity_main_viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/activity_main_tablayout" />
+
+    </android.support.constraint.ConstraintLayout>
 </layout>
