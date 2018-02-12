@@ -5,17 +5,13 @@ import android.content.IntentFilter
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.provider.Settings
-import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
 import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.app.data.Migration
-import com.mataku.scrobscrob.app.presenter.MainPresenter
 import com.mataku.scrobscrob.app.receiver.AppleMusicNotificationReceiver
-import com.mataku.scrobscrob.app.ui.adapter.NowPlayingViewAdapter
-import com.mataku.scrobscrob.app.ui.adapter.ScrobbleViewAdapter
+import com.mataku.scrobscrob.app.ui.adapter.ContentsAdapter
 import com.mataku.scrobscrob.app.ui.view.MainViewCallback
 import com.mataku.scrobscrob.app.util.SharedPreferencesHelper
 import com.mataku.scrobscrob.databinding.ActivityMainBinding
@@ -46,6 +42,7 @@ class MainActivity : AppCompatActivity(), MainViewCallback {
         val filter = IntentFilter()
         filter.addAction("AppleMusic")
         registerReceiver(receiver, filter)
+        setUpContentTab()
     }
 
     override fun onDestroy() {
@@ -87,5 +84,24 @@ class MainActivity : AppCompatActivity(), MainViewCallback {
     private fun showSettings() {
         val intent = Intent(applicationContext, SettingsActivity::class.java)
         startActivity(intent)
+    }
+
+    private fun setUpContentTab() {
+        val adapter = ContentsAdapter(this.supportFragmentManager)
+        val viewPager = binding.activityMainViewpager
+        viewPager.also {
+            it.adapter = adapter
+            it.addOnPageChangeListener(adapter)
+        }
+        val tabLayout = binding.activityMainTablayout
+        tabLayout.also {
+            it.setupWithViewPager(viewPager)
+            val leftTab = it.getTabAt(0)
+            leftTab?.setIcon(R.drawable.ic_last_fm_logo)
+
+            val rightTab = it.getTabAt(1)
+            rightTab?.setIcon(R.drawable.ic_account_circle_black)
+        }
+
     }
 }
