@@ -1,9 +1,10 @@
 apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'realm-android'
-apply plugin: 'deploygate'
 apply plugin: 'com.github.ben-manes.versions'
+apply plugin: 'deploygate'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'realm-android'
 apply from: 'lint-checks.gradle'
 
 android {
@@ -61,21 +62,37 @@ dependencies {
     })
 
     def support_library_version = "27.0.2"
-    def okhttp3_version = "3.4.1"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     implementation "com.android.support:appcompat-v7:$support_library_version"
-    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
     implementation "com.android.support:design:$support_library_version"
-    implementation 'com.google.code.gson:gson:2.8.2'
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+
+    def retrofit2_version = "2.3.0"
+    implementation "com.squareup.retrofit2:retrofit:$retrofit2_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit2_version"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit2_version"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit2_version"
+
+    def okhttp3_version = "3.4.1"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp3_version"
     implementation "com.squareup.okhttp3:okhttp:$okhttp3_version"
+
+    def groupie_version = "2.0.3"
+    implementation "com.xwray:groupie:$groupie_version"
+    implementation "com.xwray:groupie-kotlin-android-extensions:$groupie_version"
+    implementation "com.xwray:groupie-databinding:$groupie_version"
+
+    implementation 'com.google.code.gson:gson:2.8.2'
+
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp3_version"
+    implementation "com.squareup.okhttp3:okhttp:$okhttp3_version"
+
     implementation 'io.reactivex.rxjava2:rxjava:2.1.9'
-    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
     implementation 'com.github.bumptech.glide:glide:4.6.1'
+
     implementation 'io.realm:android-adapters:2.1.1'
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    
     kapt 'com.android.databinding:compiler:3.0.1'
 
     testImplementation 'junit:junit:4.12'
@@ -84,11 +101,16 @@ dependencies {
     testImplementation 'org.robolectric:robolectric:3.6.1'
     testImplementation "com.squareup.okhttp3:mockwebserver:$okhttp3_version"
 }
+
 repositories {
     mavenCentral()
     maven {
         url 'https://maven.google.com'
     }
+}
+
+androidExtensions {
+    experimental = true
 }
 
 dependencyUpdates.resolutionStrategy = {
