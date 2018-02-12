@@ -1,4 +1,4 @@
-package com.mataku.scrobscrob.app.ui
+package com.mataku.scrobscrob.app.ui.fragment
 
 import android.databinding.DataBindingUtil
 import android.os.Bundle
