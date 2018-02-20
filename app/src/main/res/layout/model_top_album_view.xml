@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/model_top_album_artwork"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="artwork"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_height="120dp"
+            tools:layout_width="120dp"
+            tools:src="@drawable/no_image" />
+
+        <TextView
+            android:id="@+id/model_top_album_track"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="@color/colorPrimary"
+            android:textSize="13sp"
+            app:layout_constraintTop_toBottomOf="@id/model_top_album_artwork"
+            tools:text="A State of Trance 2017" />
+
+        <TextView
+            android:id="@+id/model_top_album_artist"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textSize="12sp"
+            app:layout_constraintTop_toBottomOf="@id/model_top_album_track"
+            tools:text="Armin van Buuren" />
+
+    </android.support.constraint.ConstraintLayout>
+</layout>
