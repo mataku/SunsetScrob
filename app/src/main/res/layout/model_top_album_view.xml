@@ -3,6 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="album"
+            type="com.mataku.scrobscrob.app.model.entity.Album" />
+    </data>
+
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -13,6 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:contentDescription="artwork"
+            app:imageUrl="@{album.imageList.get(0).imageUrl}"
             app:layout_constraintTop_toTopOf="parent"
             tools:layout_height="120dp"
             tools:layout_width="120dp"
@@ -25,6 +33,7 @@
             android:layout_marginTop="8dp"
             android:ellipsize="end"
             android:singleLine="true"
+            android:text="@{album.name}"
             android:textColor="@color/colorPrimary"
             android:textSize="13sp"
             app:layout_constraintTop_toBottomOf="@id/model_top_album_artwork"
@@ -36,6 +45,7 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="1"
+            android:text="@{album.artist.name}"
             android:textSize="12sp"
             app:layout_constraintTop_toBottomOf="@id/model_top_album_track"
             tools:text="Armin van Buuren" />
