@@ -28,7 +28,7 @@ class ScrobbleFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val scrobbleView = inflater.inflate(R.layout.fragment_scrobble, container, false)
-        binding = DataBindingUtil.bind(scrobbleView)
+        binding = DataBindingUtil.bind(scrobbleView)!!
         setUpSwipeRefreshView()
         setUpRecyclerView()
         setUpNowPlayingView(dummyTrack())
