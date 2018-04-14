@@ -84,7 +84,7 @@ dependencies {
     implementation "com.airbnb.android:epoxy:$epoxy_version"
     implementation "com.airbnb.android:epoxy-databinding:${epoxy_version}"
     kapt "com.airbnb.android:epoxy-processor:$epoxy_version"
-    kapt 'com.android.databinding:compiler:3.0.1'
+    kapt 'com.android.databinding:compiler:3.1.1'
 
     testImplementation 'junit:junit:4.12'
     testImplementation 'com.google.guava:guava:22.0'
