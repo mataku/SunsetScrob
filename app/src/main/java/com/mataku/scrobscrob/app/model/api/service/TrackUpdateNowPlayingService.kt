@@ -1,8 +1,7 @@
 package com.mataku.scrobscrob.app.model.api.service
 
 import com.mataku.scrobscrob.app.model.entity.NowPlayingApiResponse
-import io.reactivex.Single
-import retrofit2.Response
+import retrofit2.Call
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
@@ -16,5 +15,5 @@ interface TrackUpdateNowPlayingService {
             @Field("album") albumName: String,
             @Field("api_sig") apiSig: String,
             @Field("sk") sessionKey: String
-    ): Single<Response<NowPlayingApiResponse>>
+    ): Call<NowPlayingApiResponse>
 }

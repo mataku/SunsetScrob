@@ -3,6 +3,7 @@ package com.mataku.scrobscrob.app.model.api
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.GsonBuilder
 import com.mataku.scrobscrob.BuildConfig
+import com.mataku.scrobscrob.app.model.api.okhttp3.LastFmApiAuthInterceptor
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

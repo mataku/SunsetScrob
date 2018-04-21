@@ -1,4 +1,4 @@
-package com.mataku.scrobscrob.app.model.api
+package com.mataku.scrobscrob.app.model.api.okhttp3
 
 import com.mataku.scrobscrob.app.util.AppUtil
 import okhttp3.Interceptor
