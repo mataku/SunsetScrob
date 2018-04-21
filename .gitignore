@@ -52,3 +52,4 @@ vendor/
 *.p12
 app/app-publisher.json
 .mainframer/config
+mainframer.sh
