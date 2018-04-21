@@ -208,6 +208,11 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, LoginViewCal
                 ContactsContract.Contacts.Data.IS_PRIMARY + " DESC")
     }
 
+    override fun onDestroy() {
+        loginPresenter.dispose()
+        super.onDestroy()
+    }
+
     override fun onLoadFinished(cursorLoader: Loader<Cursor>, cursor: Cursor) {
         val emails = ArrayList<String>()
         cursor.moveToFirst()
@@ -248,7 +253,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, LoginViewCal
 
         override fun doInBackground(vararg params: Void): Boolean? {
             try {
-                loginPresenter.authenticate(userName, password)
+                loginPresenter.auth(userName, password)
 
             } catch (e: InterruptedException) {
                 return false
