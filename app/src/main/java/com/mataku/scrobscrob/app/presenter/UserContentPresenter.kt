@@ -10,7 +10,6 @@ class UserContentPresenter {
 
         Retrofit2LastFmClient.create(UserTopAlbumsService::class.java)
                 .getTopAlbum(userName, "overall")
-                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ result ->
                     if (result.isSuccessful) {
