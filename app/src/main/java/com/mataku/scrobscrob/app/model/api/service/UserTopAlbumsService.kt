@@ -9,7 +9,9 @@ import retrofit2.http.Query
 interface UserTopAlbumsService {
     @GET("/2.0/?method=user.getTopAlbums&format=json")
     fun getTopAlbum(
-            @Query("user") user: String,
-            @Query("period") period: String
+            @Query("limit") limit: Int,
+            @Query("page") page: Int,
+            @Query("period") period: String,
+            @Query("user") user: String
     ): Deferred<Response<TopAlbumsApiResponse>>
 }
