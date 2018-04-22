@@ -38,6 +38,7 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
     }
 
     override fun onDestroy() {
+        presenter.dispose()
         super.onDestroy()
     }
 
