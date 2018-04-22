@@ -26,6 +26,8 @@ local.properties
 .idea/scopes/scope_settings.xml
 .idea/vcs.xml
 .idea/dictionaries/
+.idea/caches/
+!.idea/codeStyles/
 
 *.iml
 .env
@@ -49,3 +51,5 @@ vendor/
 # others
 *.p12
 app/app-publisher.json
+.mainframer/config
+mainframer.sh
