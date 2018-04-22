@@ -1,20 +1,24 @@
 package com.mataku.scrobscrob.app.presenter
 
-import com.mataku.scrobscrob.app.model.api.Retrofit2LastFmClient
+import com.mataku.scrobscrob.app.model.api.LastFmApiClient
 import com.mataku.scrobscrob.app.model.api.service.UserTopAlbumsService
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.experimental.Job
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.launch
 
 class UserContentPresenter {
+
+    private val job = Job()
+
     fun getTopAlbums(userName: String) {
+        launch(job + UI) {
+            requestTopAlbums(userName)
+        }
+    }
 
-        Retrofit2LastFmClient.create(UserTopAlbumsService::class.java)
-                .getTopAlbum(userName, "overall")
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ result ->
-                    if (result.isSuccessful) {
+    private suspend fun requestTopAlbums(userName: String) {
 
-                    }
-                })
+        val result = LastFmApiClient.create(UserTopAlbumsService::class.java)
+                .getTopAlbum(userName, "overall").await()
     }
 }
