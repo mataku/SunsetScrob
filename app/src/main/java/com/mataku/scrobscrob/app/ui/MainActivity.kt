@@ -23,6 +23,8 @@ class MainActivity : AppCompatActivity(), MainViewCallback {
     private lateinit var sharedPreferencesHelper: SharedPreferencesHelper
     private lateinit var binding: ActivityMainBinding
 
+    private val self = this
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Realm.init(this)
@@ -87,7 +89,21 @@ class MainActivity : AppCompatActivity(), MainViewCallback {
     }
 
     private fun setUpContentTab() {
-        val adapter = ContentsAdapter(this.supportFragmentManager)
+        val adapter = object : ContentsAdapter(this.supportFragmentManager) {
+            override fun onPageSelected(position: Int) {
+                when (position) {
+                    0 -> {
+//                        self.supportActionBar?.show()
+                        self.title = "Latest 20 scrobbles"
+                    }
+                    else -> {
+//                        self.supportActionBar?.hide()
+                        self.title = "Top Albums"
+                    }
+                }
+            }
+        }
+
         val viewPager = binding.activityMainViewpager
         viewPager.also {
             it.adapter = adapter
@@ -100,7 +116,7 @@ class MainActivity : AppCompatActivity(), MainViewCallback {
             leftTab?.setIcon(R.drawable.ic_last_fm_logo)
 
             val rightTab = it.getTabAt(1)
-            rightTab?.setIcon(R.drawable.ic_account_circle_black)
+            rightTab?.setIcon(R.drawable.ic_album_black_24px)
         }
 
     }
