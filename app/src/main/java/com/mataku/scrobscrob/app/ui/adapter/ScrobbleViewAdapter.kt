@@ -11,15 +11,14 @@ import io.realm.RealmResults
 
 class ScrobbleViewAdapter(private val scrobbles: RealmResults<Scrobble>) : RecyclerView.Adapter<ScrobbleViewAdapter.ViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ScrobbleViewAdapter.ViewHolder? {
-        parent ?: return null
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ScrobbleViewAdapter.ViewHolder {
         val binding = ViewScrobbleBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
     override fun getItemCount(): Int = scrobbles.size
 
-    override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val scrobble = scrobbles[position]
         holder?.setScrobble(scrobble)
     }
