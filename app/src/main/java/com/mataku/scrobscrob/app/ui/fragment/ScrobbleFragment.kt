@@ -5,9 +5,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import com.mataku.scrobscrob.R
@@ -16,7 +14,6 @@ import com.mataku.scrobscrob.app.model.Track
 import com.mataku.scrobscrob.app.model.entity.RxEventBus
 import com.mataku.scrobscrob.app.model.entity.UpdateNowPlayingEvent
 import com.mataku.scrobscrob.app.model.entity.UpdateScrobbledListEvent
-import com.mataku.scrobscrob.app.ui.adapter.NowPlayingViewAdapter
 import com.mataku.scrobscrob.app.ui.adapter.ScrobbleViewAdapter
 import com.mataku.scrobscrob.app.util.SharedPreferencesHelper
 import com.mataku.scrobscrob.databinding.FragmentScrobbleBinding
@@ -71,23 +68,8 @@ class ScrobbleFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     private fun setUpNowPlayingView(track: Track) {
-        val nowPlayingViewAdapter = NowPlayingViewAdapter(track)
-        val nowPlayingView = binding.nowPlayingView
-        nowPlayingView.layoutManager = LinearLayoutManager(context)
-        nowPlayingView.hasFixedSize()
-        nowPlayingView.addOnItemTouchListener(ScrollController())
-        nowPlayingView.adapter = nowPlayingViewAdapter
-    }
-
-    inner class ScrollController : RecyclerView.OnItemTouchListener {
-
-        override fun onInterceptTouchEvent(view: RecyclerView, event: MotionEvent): Boolean {
-            return true
-        }
-
-        override fun onTouchEvent(view: RecyclerView, event: MotionEvent) {}
-
-        override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
+        binding.viewNowPlayingTrack.text = track.name
+        binding.viewNowPlayingArtist.text = track.artistName
     }
 
     private fun dummyTrack(): Track {
@@ -109,6 +91,4 @@ class ScrobbleFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
                 getString(R.string.label_not_playing)
         )
     }
-
-
 }
