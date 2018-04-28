@@ -5,8 +5,9 @@ import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.ViewPager
 import com.mataku.scrobscrob.app.ui.fragment.ScrobbleFragment
+import com.mataku.scrobscrob.app.ui.fragment.UserContentFragment
 
-class ContentsAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager), ViewPager.OnPageChangeListener {
+open class ContentsAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager), ViewPager.OnPageChangeListener {
     override fun getCount(): Int = 2
 
     override fun getItem(position: Int): Fragment {
@@ -15,7 +16,7 @@ class ContentsAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapter(f
             ScrobbleFragment()
         } else {
             // user contents
-            Fragment()
+            UserContentFragment()
         }
     }
 
@@ -26,5 +27,6 @@ class ContentsAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapter(f
     }
 
     override fun onPageSelected(position: Int) {
+
     }
 }
