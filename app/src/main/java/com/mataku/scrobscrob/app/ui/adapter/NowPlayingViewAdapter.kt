@@ -8,13 +8,12 @@ import com.mataku.scrobscrob.databinding.ViewNowPlayingBinding
 
 class NowPlayingViewAdapter(private val track: Track) : RecyclerView.Adapter<NowPlayingViewAdapter.ViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): NowPlayingViewAdapter.ViewHolder? {
-        parent ?: return null
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NowPlayingViewAdapter.ViewHolder {
         val binding = ViewNowPlayingBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder?.setTrack(track)
     }
 
