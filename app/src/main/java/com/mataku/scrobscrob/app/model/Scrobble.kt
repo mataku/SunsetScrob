@@ -35,4 +35,11 @@ open class Scrobble(
         val size = realm.where(Scrobble::class.java).findAll().size
         return size
     }
+
+    fun deleteAll() {
+        val realm = Realm.getDefaultInstance()
+        realm.executeTransaction {
+            realm.where(Scrobble::class.java).findAll().deleteAllFromRealm()
+        }
+    }
 }
