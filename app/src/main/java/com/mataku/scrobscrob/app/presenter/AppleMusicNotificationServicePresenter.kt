@@ -23,10 +23,10 @@ class AppleMusicNotificationServicePresenter(private var notificationServiceInte
         job.cancel()
     }
 
-    fun getTrackInfo(track: Track, sessionKey: String) {
+    fun getTrackInfo(trackName: String, artistName: String, sessionKey: String) {
         launch(job + UI) {
-            setNowPlaying(track, sessionKey)
-            getTrackInfo(track.artistName, track.name)
+            setNowPlaying(trackName, artistName, sessionKey)
+            getTrackInfo(artistName, trackName)
         }
     }
 
@@ -73,27 +73,29 @@ class AppleMusicNotificationServicePresenter(private var notificationServiceInte
         }
     }
 
-    private suspend fun setNowPlaying(track: Track, sessionKey: String) {
+    private suspend fun setNowPlaying(trackName: String, artistName: String, sessionKey: String) {
         val params: MutableMap<String, String> = mutableMapOf()
-        params["artist"] = track.artistName
-        params["track"] = track.name
-        params["album"] = track.albumName
+        params["artist"] = artistName
+        params["track"] = trackName
+        params["album"] = ""
         params["method"] = nowPlayingMethod
         params["sk"] = sessionKey
 
         val apiSig = appUtil.generateApiSig(params)
         val client = LastFmApiClient.create(TrackUpdateNowPlayingService::class.java)
         val result = client.updateNowPlaying(
-                track.artistName,
-                track.name,
-                track.albumName,
+                artistName,
+                trackName,
+                "",
                 apiSig,
                 sessionKey
         ).await()
         when (result.code()) {
             200, 201 -> {
                 appUtil.debugLog("NowPlayingApi", "success")
-                notificationServiceInterface.notifyNowPlayingUpdated(track)
+                result.body()?.nowPlaying?.let {
+                    notificationServiceInterface.notifyNowPlayingUpdated(Track(it.artist.text, it.track.text, it.album.text))
+                }
             }
             else -> {
                 appUtil.debugLog("NowPlayingApi", "Something wrong")

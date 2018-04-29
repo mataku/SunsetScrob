@@ -84,6 +84,11 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, LoginViewCal
         loaderManager.initLoader(0, null, this)
     }
 
+    override fun showError() {
+        showProgress(false)
+        Toast.makeText(this, "Invalid UserName or password!", Toast.LENGTH_LONG).show()
+    }
+
     private fun mayRequestContacts(): Boolean {
         if (checkSelfPermission(READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
             return true
@@ -157,8 +162,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, LoginViewCal
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true)
-            authTask = UserLoginTask(email, password)
-            authTask!!.execute(null as Void?)
+            loginPresenter.auth(email, password)
         }
     }
 
@@ -282,6 +286,10 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, LoginViewCal
         editor.putString("SessionKey", sessionKey)
         editor.putString("UserName", userName)
         editor.apply()
+
+        showProgress(false)
+
+        loginPresenter.backToSettingsWhenLoggedIn(true, sessionKey)
     }
 
     override fun showSuccessMessage() {

@@ -42,6 +42,9 @@ class LoginPresenter(var accessable: Boolean, var view: LoginViewCallback) {
                     view.setSessionInfo(it.key, it.name)
                 }
             }
+            else -> {
+                view.showError()
+            }
         }
     }
 

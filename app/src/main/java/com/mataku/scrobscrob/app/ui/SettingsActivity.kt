@@ -11,6 +11,7 @@ import android.preference.PreferenceFragment
 import android.provider.Settings
 import android.widget.Toast
 import com.mataku.scrobscrob.R
+import com.mataku.scrobscrob.app.model.Scrobble
 import com.mataku.scrobscrob.app.presenter.SettingsPresenter
 import com.mataku.scrobscrob.app.ui.view.SettingsViewCallback
 
@@ -108,6 +109,7 @@ class SettingsActivity : Activity() {
                     object : DialogInterface.OnClickListener {
                         override fun onClick(dialog: DialogInterface, which: Int) {
                             removeSession()
+                            Scrobble().deleteAll()
                             fragmentManager.beginTransaction().replace(
                                     android.R.id.content,
                                     SettingsFragment()
@@ -133,6 +135,7 @@ class SettingsActivity : Activity() {
             val sharedPreferences = activity.getSharedPreferences("DATA", Context.MODE_PRIVATE)
             sharedPreferences.edit().clear().apply()
         }
+
 
         private fun showLogOutMessage() {
             Toast.makeText(this.activity, "ログアウトしました", Toast.LENGTH_SHORT).show()
