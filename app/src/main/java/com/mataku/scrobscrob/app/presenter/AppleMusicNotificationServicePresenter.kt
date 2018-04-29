@@ -1,30 +1,42 @@
 package com.mataku.scrobscrob.app.presenter
 
-import android.util.Log
-import com.mataku.scrobscrob.BuildConfig
 import com.mataku.scrobscrob.app.model.Track
-import com.mataku.scrobscrob.app.model.api.Retrofit2LastFmClient
+import com.mataku.scrobscrob.app.model.api.LastFmApiClient
 import com.mataku.scrobscrob.app.model.api.service.TrackInfoService
 import com.mataku.scrobscrob.app.model.api.service.TrackScrobbleService
 import com.mataku.scrobscrob.app.model.api.service.TrackUpdateNowPlayingService
 import com.mataku.scrobscrob.app.ui.view.NotificationServiceInterface
 import com.mataku.scrobscrob.app.util.AppUtil
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.experimental.Job
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.launch
 
-class AppleMusicNotificationServicePresenter(var notificationServiceInterface: NotificationServiceInterface) {
+class AppleMusicNotificationServicePresenter(private var notificationServiceInterface: NotificationServiceInterface) {
 
     private val appUtil = AppUtil()
-    private val apiKey = appUtil.apiKey
     private val scrobbleMethod = "track.scrobble"
     private val nowPlayingMethod = "track.updateNowPlaying"
 
-    fun getTrackInfo(track: Track, sessionKey: String) {
-        setNowPlaying(track, sessionKey)
-        getTrackInfo(track.artistName, track.name)
+    private val job = Job()
+
+    fun dispose() {
+        job.cancel()
+    }
+
+    fun getTrackInfo(trackName: String, artistName: String, sessionKey: String) {
+        launch(job + UI) {
+            setNowPlaying(trackName, artistName, sessionKey)
+            getTrackInfo(artistName, trackName)
+        }
     }
 
     fun scrobble(track: Track, sessionKey: String, timeStamp: Long) {
+        launch(job + UI) {
+            requestScrobble(track, sessionKey, timeStamp)
+        }
+    }
+
+    private suspend fun requestScrobble(track: Track, sessionKey: String, timeStamp: Long) {
         val params: MutableMap<String, String> = mutableMapOf()
         params["artist[0]"] = track.artistName
         params["track[0]"] = track.name
@@ -32,101 +44,96 @@ class AppleMusicNotificationServicePresenter(var notificationServiceInterface: N
         params["album[0]"] = track.albumName
         params["method"] = scrobbleMethod
         params["sk"] = sessionKey
-        params["api_key"] = appUtil.apiKey
 
         val apiSig = appUtil.generateApiSig(params)
-        val client = Retrofit2LastFmClient.create(TrackScrobbleService::class.java)
-        client.scrobble(
+        val client = LastFmApiClient.create(TrackScrobbleService::class.java)
+        val result = client.scrobble(
                 track.artistName,
                 track.name,
                 timeStamp,
                 track.albumName,
-                appUtil.apiKey,
                 apiSig,
                 sessionKey
-        )
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ result ->
-                    if (result.isSuccessful && result.body() != null && result.body()!!.scrobbles.attr.accepted == 1) {
+        ).await()
+        when (result.code()) {
+            200, 201 -> {
+                result.body()?.scrobbles.let {
+                    val accepted = it?.attr?.accepted
+                    if (accepted != null && accepted == 1) {
                         notificationServiceInterface.saveScrobble(track)
-                        if (BuildConfig.DEBUG) {
-                            Log.i("scrobbleApi", "success")
-                        }
+
+                        appUtil.debugLog("scrobbleApi", "success")
+
                     }
-                }, { error ->
-                    if (BuildConfig.DEBUG) {
-                        Log.i("Scrobble API", error.message)
-                    }
-                })
+                }
+            }
+            else -> {
+                appUtil.debugLog("Scrobble API", result.errorBody().toString())
+            }
+        }
     }
 
-    private fun setNowPlaying(track: Track, sessionKey: String) {
+    private suspend fun setNowPlaying(trackName: String, artistName: String, sessionKey: String) {
         val params: MutableMap<String, String> = mutableMapOf()
-        params["artist"] = track.artistName
-        params["track"] = track.name
-        params["album"] = track.albumName
+        params["artist"] = artistName
+        params["track"] = trackName
+        params["album"] = ""
         params["method"] = nowPlayingMethod
         params["sk"] = sessionKey
-        params["api_key"] = appUtil.apiKey
 
         val apiSig = appUtil.generateApiSig(params)
-        val client = Retrofit2LastFmClient.create(TrackUpdateNowPlayingService::class.java)
-        client.updateNowPlaying(
-                track.artistName,
-                track.name,
-                track.albumName,
-                appUtil.apiKey,
-                apiSig,
-                sessionKey
-        )
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ result ->
-                    if (result.isSuccessful) {
-                        if (BuildConfig.DEBUG) {
-                            Log.i("NowPlayingApi", "success")
-                        }
-                        notificationServiceInterface.notifyNowPlayingUpdated(track)
-                    }
-                }, { _ ->
-                    if (BuildConfig.DEBUG) {
-                        Log.i("NowPlayingApi", "Something wrong")
-                    }
-                })
-
-    }
-
-    private fun getTrackInfo(artistName: String, trackName: String) {
-        val client = Retrofit2LastFmClient.create(TrackInfoService::class.java)
-        var trackDuration = appUtil.defaultPlayingTime
-        var albumArtwork = ""
-        client.getTrackInfo(
+        val client = LastFmApiClient.create(TrackUpdateNowPlayingService::class.java)
+        val result = client.updateNowPlaying(
                 artistName,
                 trackName,
-                apiKey
-        )
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ result ->
-                    if (result.isSuccessful && result.body() != null) {
-                        val response = result.body()
-                        trackDuration = response!!.trackInfo.duration.toLong() / 1000L
-                        try {
-                            val imageList = response.trackInfo.album.imageList
-                            albumArtwork = imageList[1].imageUrl
-                        } catch (e: NullPointerException) {
+                "",
+                apiSig,
+                sessionKey
+        ).await()
+        when (result.code()) {
+            200, 201 -> {
+                appUtil.debugLog("NowPlayingApi", "success")
+                result.body()?.nowPlaying?.let {
+                    notificationServiceInterface.notifyNowPlayingUpdated(Track(it.artist.text, it.track.text, it.album.text))
+                }
+            }
+            else -> {
+                appUtil.debugLog("NowPlayingApi", "Something wrong")
+            }
+        }
+    }
 
-                        }
-                        // Use default value if duration is 0
-                        if (trackDuration == 0L) {
-                            trackDuration = appUtil.defaultPlayingTime
-                        }
+    private suspend fun getTrackInfo(artistName: String, trackName: String) {
+        val client = LastFmApiClient.create(TrackInfoService::class.java)
+        var trackDuration = appUtil.defaultPlayingTime
+        var albumArtwork = ""
+
+        val result = client.getTrackInfo(artistName, trackName).await()
+        when (result.code()) {
+            200, 201 -> {
+                val apiResponse = result.body()
+                apiResponse?.trackInfo.let {
+                    val duration = it?.duration
+                    if (duration != null) {
+                        trackDuration = duration.toLong() / 1000L
                     }
-                    notificationServiceInterface.setCurrentTrackInfo(trackDuration, albumArtwork)
-                }, { _ ->
-                    notificationServiceInterface.setCurrentTrackInfo(trackDuration, albumArtwork)
-                })
+                    try {
+                        val imageList = it?.album?.imageList
+                        albumArtwork = imageList!![1].imageUrl
+                    } catch (e: NullPointerException) {
 
+                    }
+                }
+                // Use default value if duration is 0
+                if (trackDuration == 0L) {
+                    trackDuration = appUtil.defaultPlayingTime
+                }
+
+                notificationServiceInterface.setCurrentTrackInfo(trackDuration, albumArtwork)
+            }
+            else -> {
+                notificationServiceInterface.setCurrentTrackInfo(trackDuration, albumArtwork)
+            }
+        }
     }
 }
