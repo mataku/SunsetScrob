@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.ViewPager
 import com.mataku.scrobscrob.app.ui.fragment.ScrobbleFragment
-import com.mataku.scrobscrob.app.ui.fragment.UserContentFragment
+import com.mataku.scrobscrob.app.ui.fragment.TopAlbumContentFragment
 
 open class ContentsAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager), ViewPager.OnPageChangeListener {
     override fun getCount(): Int = 2
@@ -15,8 +15,8 @@ open class ContentsAdapter(fragmentManager: FragmentManager) : FragmentPagerAdap
             // scrobble
             ScrobbleFragment()
         } else {
-            // user contents
-            UserContentFragment()
+            // top album contents
+            TopAlbumContentFragment()
         }
     }
 

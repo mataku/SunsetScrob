@@ -23,6 +23,12 @@ class SettingsActivity : Activity() {
         ).commit()
     }
 
+    override fun onBackPressed() {
+        val intent = Intent(this, MainActivity::class.java)
+        setResult(RESULT_OK, intent)
+        finish()
+    }
+
     class SettingsFragment : PreferenceFragment(), SettingsViewCallback {
         private lateinit var loginPreference: Preference
         private lateinit var notificationPreference: Preference
