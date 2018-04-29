@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity(), MainViewCallback {
         builder.schemaVersion(1L).migration(Migration())
         val config = builder.build()
         Realm.setDefaultConfiguration(config)
-        this.title = "Latest 20 scrobbles"
+        this.title = "Latest 20 scrobbles (Beta)"
 //        if (BuildConfig.DEBUG) {
 //            val realm = Realm.getDefaultInstance()
 //            realm.executeTransaction {
