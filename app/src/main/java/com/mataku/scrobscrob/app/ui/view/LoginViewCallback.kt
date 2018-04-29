@@ -6,4 +6,5 @@ interface LoginViewCallback {
     fun showMessageToAllowAccessToNotification()
     fun focusOnPasswordView()
     fun backToSettingsActivity()
+    fun showError()
 }
