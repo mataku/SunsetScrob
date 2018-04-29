@@ -1,5 +1,6 @@
 package com.mataku.scrobscrob.app.ui.fragment
 
+import android.content.Context
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -15,7 +16,7 @@ import com.mataku.scrobscrob.app.ui.controller.TopAlbumController
 import com.mataku.scrobscrob.app.ui.view.UserContentViewCallback
 import com.mataku.scrobscrob.databinding.FragmentUserContentBinding
 
-class UserContentFragment : Fragment(), UserContentViewCallback {
+class TopAlbumContentFragment : Fragment(), UserContentViewCallback {
 
     private lateinit var binding: FragmentUserContentBinding
     private val presenter = UserContentPresenter(this)
