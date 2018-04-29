@@ -106,7 +106,7 @@ class MainActivity : AppCompatActivity(), MainViewCallback {
                 when (position) {
                     0 -> {
 //                        self.supportActionBar?.show()
-                        self.title = "Latest 20 scrobbles"
+                        self.title = "Latest 20 scrobbles (Beta)"
                     }
                     else -> {
 //                        self.supportActionBar?.hide()
