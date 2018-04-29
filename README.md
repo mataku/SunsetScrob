@@ -8,6 +8,7 @@ Last.fm scrobbler for Apple Music on Android
 - Update NowPlaying
 - Scrobbling
 - Show latest scrobbles
+- Show top albums
 
 ## Download
 
