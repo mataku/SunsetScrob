@@ -25,6 +25,8 @@ class MainActivity : AppCompatActivity(), MainViewCallback {
 
     private val self = this
 
+    private val settingsRequestCode = 1001
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Realm.init(this)
@@ -58,6 +60,16 @@ class MainActivity : AppCompatActivity(), MainViewCallback {
         return true
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        when (requestCode) {
+            settingsRequestCode -> {
+                setUpContentTab()
+            }
+        }
+    }
+
     //    メニューボタンのクリックイベントを定義
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
@@ -85,7 +97,7 @@ class MainActivity : AppCompatActivity(), MainViewCallback {
 
     private fun showSettings() {
         val intent = Intent(applicationContext, SettingsActivity::class.java)
-        startActivity(intent)
+        startActivityForResult(intent, settingsRequestCode)
     }
 
     private fun setUpContentTab() {
