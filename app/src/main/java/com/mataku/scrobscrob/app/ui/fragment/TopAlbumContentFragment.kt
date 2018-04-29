@@ -29,7 +29,13 @@ class TopAlbumContentFragment : Fragment(), UserContentViewCallback {
         val view = inflater.inflate(R.layout.fragment_user_content, null, false)
         binding = DataBindingUtil.bind(view)!!
         binding.userTopAlbumView.setController(controller)
-        setUp()
+        val sharedPreferences = this.activity?.getSharedPreferences("DATA", Context.MODE_PRIVATE)
+        sharedPreferences?.let {
+            userName = it.getString("UserName", "")
+            if (userName.isNotEmpty()) {
+                setUp()
+            }
+        }
         return view
     }
 
@@ -39,14 +45,7 @@ class TopAlbumContentFragment : Fragment(), UserContentViewCallback {
     }
 
     private fun setUp() {
-        if (this.context == null) return
-
-        val sharedPreferences = this.activity?.getSharedPreferences("DATA", Context.MODE_PRIVATE)
-        sharedPreferences?.let {
-            userName = it.getString("UserName", "")
-
-            presenter.getTopAlbums(userName, currentPage)
-        }
+        presenter.getTopAlbums(userName, currentPage)
 
         binding.userTopAlbumView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
