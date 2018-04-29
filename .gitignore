@@ -27,6 +27,7 @@ local.properties
 .idea/vcs.xml
 .idea/dictionaries/
 .idea/caches/
+.idea/assetWizardSettings.xml
 !.idea/codeStyles/
 
 *.iml
