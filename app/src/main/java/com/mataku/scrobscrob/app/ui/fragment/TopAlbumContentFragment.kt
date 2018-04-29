@@ -46,7 +46,6 @@ class TopAlbumContentFragment : Fragment(), UserContentViewCallback {
 
     private fun setUp() {
         presenter.getTopAlbums(userName, currentPage)
-
         binding.userTopAlbumView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
