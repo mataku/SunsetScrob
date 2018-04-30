@@ -2,7 +2,10 @@ package com.mataku.scrobscrob.app.ui.widget
 
 import android.content.Context
 import android.databinding.DataBindingUtil
+import android.net.Uri
 import android.support.constraint.ConstraintLayout
+import android.support.customtabs.CustomTabsIntent
+import android.text.TextUtils
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.LayoutInflater
@@ -40,10 +43,10 @@ class UserTopArtistView : ConstraintLayout {
 
         val imageUrl = if (image == null) {
             null
-        } else if (image.size < 2) {
+        } else if (image.size < 3) {
             image.last().imageUrl
         } else {
-            image[2].imageUrl
+            image[3].imageUrl
         }
         binding.modelTopArtistName.text = artist.name
         val resources = context.resources
@@ -60,6 +63,12 @@ class UserTopArtistView : ConstraintLayout {
                 .error(R.drawable.no_image)
                 .into(binding.modelTopArtistArtwork)
 
+        if (!TextUtils.isEmpty(artist.url)) {
+            binding.modelTopArtistCard.setOnClickListener {
+                val customTabsIntent = CustomTabsIntent.Builder().build()
+                customTabsIntent.launchUrl(context, Uri.parse(artist.url))
+            }
+        }
     }
 
 
