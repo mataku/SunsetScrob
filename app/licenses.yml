@@ -1,0 +1,337 @@
+- artifact: com.squareup.retrofit2:retrofit:+
+  name: Retrofit
+  copyrightHolder: square
+  license: The Apache Software License, Version 2.0
+- artifact: com.android.support:support-core-utils:+
+  name: Android Support Library core utils
+  copyrightHolder: Google
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: http://developer.android.com/tools/extras/support-library.html
+- artifact: com.squareup.retrofit2:converter-gson:+
+  name: "Converter: Gson"
+  copyrightHolder: square
+  license: The Apache Software License, Version 2.0
+- artifact: android.arch.lifecycle:runtime:+
+  name: Android Lifecycle Runtime
+  copyrightHolder: Google
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://developer.android.com/topic/libraries/architecture/index.html
+- artifact: android.arch.core:runtime:+
+  name: Android Arch-Runtime
+  copyrightHolder: Google
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://developer.android.com/topic/libraries/architecture/index.html
+- artifact: com.jakewharton.retrofit:retrofit2-kotlin-coroutines-experimental-adapter:+
+  name: Retrofit 2 Kotlin Coroutine Adapter
+  copyrightHolder: Jake Wharton
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://github.com/JakeWharton/retrofit2-kotlin-coroutines-adapter/
+- artifact: com.github.bumptech.glide:glide:+
+  name: Glide
+  copyrightHolder: Google
+  license: Simplified BSD License
+  licenseUrl: http://www.opensource.org/licenses/bsd-license
+  url: https://github.com/bumptech/glide
+- artifact: android.arch.lifecycle:viewmodel:+
+  name: Android Lifecycle ViewModel
+  copyrightHolder: Google
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://developer.android.com/topic/libraries/architecture/index.html
+- artifact: org.jetbrains.kotlin:kotlin-stdlib:+
+  name: org.jetbrains.kotlin:kotlin-stdlib
+  copyrightHolder: JetBrains
+  license: The Apache License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://kotlinlang.org/
+- artifact: com.android.databinding:adapters:+
+  name: adapters
+  copyrightHolder: Google
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+- artifact: com.squareup.okhttp3:logging-interceptor:+
+  name: OkHttp Logging Interceptor
+  copyrightHolder: square
+  license: The Apache Software License, Version 2.0
+- artifact: io.realm:realm-android-library:+
+  name: realm-android-library
+  copyrightHolder: Realm
+  license: The Apache Software License, Version 2.0
+- artifact: android.arch.lifecycle:runtime:+
+  name: Android Lifecycle Runtime
+  copyrightHolder: Google
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://developer.android.com/topic/libraries/architecture/index.html
+- artifact: com.google.code.gson:gson:+
+  name: Gson
+  copyrightHolder: Google
+  license: The Apache Software License, Version 2.0
+- artifact: io.reactivex.rxjava2:rxjava:+
+  name: RxJava
+  copyrightHolder: RxJava Contributors
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://github.com/ReactiveX/RxJava
+- artifact: com.android.support:support-core-utils:+
+  name: Android Support Library core utils
+  copyrightHolder: Google
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: http://developer.android.com/tools/extras/support-library.html
+- artifact: com.android.support:support-media-compat:+
+  name: Android Support Library media compat
+  copyrightHolder: Google
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: http://developer.android.com/tools/extras/support-library.html
+- artifact: com.android.support:support-annotations:+
+  name: Android Support Library Annotations
+  copyrightHolder: Google
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: http://developer.android.com/tools/extras/support-library.html
+- artifact: org.jetbrains.kotlinx:kotlinx-coroutines-core:+
+  name: kotlinx-coroutines-core
+  copyrightHolder: JetBrains
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://github.com/Kotlin/kotlinx.coroutines
+- artifact: com.android.support:customtabs:+
+  name: Android Support Custom Tabs
+  copyrightHolder: Google
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: http://developer.android.com/tools/extras/support-library.html
+- artifact: jp.wasabeef:glide-transformations:+
+  name: glide-transformations
+  copyrightHolder: Wasabeef
+  license: The Apache Software License, Version 2.0
+- artifact: io.realm:android-adapters:+
+  name: android-adapters
+  copyrightHolder: Realm
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: http://realm.io
+- artifact: com.android.support:support-v4:+
+  name: Android Support Library v4
+  copyrightHolder: Google
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: http://developer.android.com/tools/extras/support-library.html
+- artifact: com.android.support:support-core-ui:+
+  name: Android Support Library core UI
+  copyrightHolder: Google
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: http://developer.android.com/tools/extras/support-library.html
+- artifact: com.android.support:appcompat-v7:+
+  name: Android AppCompat Library v7
+  copyrightHolder: Google
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: http://developer.android.com/tools/extras/support-library.html
+- artifact: android.arch.lifecycle:livedata-core:+
+  name: Android Lifecycle LiveData Core
+  copyrightHolder: Google
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://developer.android.com/topic/libraries/architecture/index.html
+- artifact: com.android.support:animated-vector-drawable:+
+  name: Android Support AnimatedVectorDrawable
+  copyrightHolder: Google
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: http://developer.android.com/tools/extras/support-library.html
+- artifact: com.android.support:cardview-v7:+
+  name: Android Support CardView v7
+  copyrightHolder: Google
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: http://developer.android.com/tools/extras/support-library.html
+- artifact: com.github.keithyokoma:RemoteViewsReader:+
+  name: RemoteViewsReader
+  copyrightHolder: KeithYokoma
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://github.com/KeithYokoma/RemoteViewsReader
+- artifact: com.android.support:support-vector-drawable:+
+  name: Android Support VectorDrawable
+  copyrightHolder: Google
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: http://developer.android.com/tools/extras/support-library.html
+- artifact: org.reactivestreams:reactive-streams:+
+  name: reactive-streams
+  copyrightHolder: reactive-streams
+  license: CC0
+  licenseUrl: http://creativecommons.org/publicdomain/zero/1.0/
+  url: http://www.reactive-streams.org/
+- artifact: android.arch.lifecycle:common:+
+  name: Android Lifecycle-Common
+  copyrightHolder: Google
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://developer.android.com/topic/libraries/architecture/index.html
+- artifact: android.arch.lifecycle:common:+
+  name: Android Lifecycle-Common
+  copyrightHolder: Google
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://developer.android.com/topic/libraries/architecture/index.html
+- artifact: com.android.support:support-annotations:+
+  name: Android Support Library Annotations
+  copyrightHolder: Google
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: http://developer.android.com/tools/extras/support-library.html
+- artifact: com.android.databinding:baseLibrary:+
+  name: Data Binding Base Library
+  copyrightHolder: Google
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: http://tools.android.com
+- artifact: org.jetbrains.kotlin:kotlin-stdlib-jdk7:+
+  name: org.jetbrains.kotlin:kotlin-stdlib-jdk7
+  copyrightHolder: JetBrains
+  license: The Apache License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://kotlinlang.org/
+- artifact: com.squareup.okhttp3:okhttp:+
+  name: OkHttp
+  copyrightHolder: square
+  license: The Apache Software License, Version 2.0
+- artifact: com.airbnb.android:epoxy-databinding:+
+  name: Epoxy Data Binding Support
+  copyrightHolder: Google
+  license: Apache License 2.0
+  licenseUrl: https://github.com/airbnb/epoxy/blob/master/LICENSE
+  url: https://github.com/airbnb/epoxy
+- artifact: com.android.support.constraint:constraint-layout:+
+  name: Android ConstraintLayout
+  copyrightHolder: Google
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: http://tools.android.com
+- artifact: com.android.support:support-compat:+
+  name: Android Support Library compat
+  copyrightHolder: Google
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: http://developer.android.com/tools/extras/support-library.html
+- artifact: com.android.support:recyclerview-v7:+
+  name: Android Support RecyclerView v7
+  copyrightHolder: Google
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: http://developer.android.com/tools/extras/support-library.html
+- artifact: com.getkeepsafe.relinker:relinker:+
+  name: ReLinker
+  copyrightHolder: Keepsafe Software Inc.
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://github.com/KeepSafe/ReLinker
+- artifact: com.github.bumptech.glide:disklrucache:+
+  name: Glide Disk LRU Cache Library
+  copyrightHolder: Google
+  license: Simplified BSD License
+  licenseUrl: http://www.opensource.org/licenses/bsd-license
+  url: https://github.com/bumptech/glide
+- artifact: com.android.support:support-compat:+
+  name: Android Support Library compat
+  copyrightHolder: Google
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: http://developer.android.com/tools/extras/support-library.html
+- artifact: com.airbnb.android:epoxy-annotations:+
+  name: Epoxy annotations
+  copyrightHolder: Airbnb, Inc.
+  license: Apache License 2.0
+  licenseUrl: https://github.com/airbnb/epoxy/blob/master/LICENSE
+  url: https://github.com/airbnb/epoxy
+- artifact: com.android.support:support-fragment:+
+  name: Android Support Library fragment
+  copyrightHolder: Airbnb, Inc.
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: http://developer.android.com/tools/extras/support-library.html
+- artifact: com.airbnb.android:epoxy:+
+  name: Epoxy
+  copyrightHolder: Airbnb, Inc.
+  license: Apache License 2.0
+  licenseUrl: https://github.com/airbnb/epoxy/blob/master/LICENSE
+  url: https://github.com/airbnb/epoxy
+- artifact: org.jetbrains:annotations:+
+  name: IntelliJ IDEA Annotations
+  copyrightHolder: JetBrains
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: http://www.jetbrains.org
+- artifact: com.android.support:transition:+
+  name: Android Transition Support Library
+  copyrightHolder: Google
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: http://developer.android.com/tools/extras/support-library.html
+- artifact: com.github.bumptech.glide:gifdecoder:+
+  name: Glide GIF Decoder Library
+  copyrightHolder: Google
+  license: Simplified BSD License
+  licenseUrl: http://www.opensource.org/licenses/bsd-license
+  url: https://github.com/bumptech/glide
+- artifact: com.squareup.okio:okio:+
+  name: Okio
+  copyrightHolder: square
+  license: The Apache Software License, Version 2.0
+- artifact: com.android.support:design:+
+  name: Android Design Support Library
+  copyrightHolder: Google
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: http://developer.android.com/tools/extras/support-library.html
+- artifact: com.github.bumptech.glide:annotations:+
+  name: Glide Annotations
+  copyrightHolder: Google
+  license: Simplified BSD License
+  licenseUrl: http://www.opensource.org/licenses/bsd-license
+  url: https://github.com/bumptech/glide
+- artifact: android.arch.core:common:+
+  name: Android Arch-Common
+  copyrightHolder: Google
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://developer.android.com/topic/libraries/architecture/index.html
+- artifact: android.arch.core:common:+
+  name: Android Arch-Common
+  copyrightHolder: Google
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://developer.android.com/topic/libraries/architecture/index.html
+- artifact: org.jetbrains.kotlinx:kotlinx-coroutines-android:+
+  name: kotlinx-coroutines-android
+  copyrightHolder: JetBrains
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://github.com/Kotlin/kotlinx.coroutines
+- artifact: io.realm:realm-annotations:+
+  name: realm-annotations
+  copyrightHolder: Realm
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: http://realm.io
+- artifact: com.android.databinding:library:+
+  name: library
+  copyrightHolder: Google
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+- artifact: com.android.support.constraint:constraint-layout-solver:+
+  name: Android ConstraintLayout Solver
+  copyrightHolder: Google
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: http://tools.android.com
+
