@@ -39,7 +39,7 @@ class UserTopArtistView : ConstraintLayout {
         binding.modelTopArtistName.text = artist.name
 
         GlideApp.with(context)
-                .load(artist.image?.last()?.imageUrl)
+                .load(artist.image?.get(2)?.imageUrl)
                 .error(R.drawable.no_image)
                 .into(binding.modelTopArtistArtwork)
     }

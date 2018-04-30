@@ -47,7 +47,7 @@ class UserTopAlbumView : ConstraintLayout {
     fun setAlbum(album: Album) {
         binding.modelTopAlbumArtist.text = album.artist.name
         binding.modelTopAlbumTrack.text = album.name
-        val image = album.imageList.last()
+        val image = album.imageList.get(2)
 
         GlideApp.with(context)
                 .load(image.imageUrl)
