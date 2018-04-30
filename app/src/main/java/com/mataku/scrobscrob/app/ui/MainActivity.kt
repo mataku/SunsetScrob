@@ -108,9 +108,12 @@ class MainActivity : AppCompatActivity(), MainViewCallback {
 //                        self.supportActionBar?.show()
                         self.title = "Latest 20 scrobbles (Beta)"
                     }
-                    else -> {
+                    1 -> {
 //                        self.supportActionBar?.hide()
                         self.title = "Top Albums"
+                    }
+                    else -> {
+                        self.title = "Top Artists"
                     }
                 }
             }
@@ -124,11 +127,14 @@ class MainActivity : AppCompatActivity(), MainViewCallback {
         val tabLayout = binding.activityMainTablayout
         tabLayout.also {
             it.setupWithViewPager(viewPager)
-            val leftTab = it.getTabAt(0)
-            leftTab?.setIcon(R.drawable.ic_last_fm_logo)
+            val scrobbleTab = it.getTabAt(0)
+            scrobbleTab?.setIcon(R.drawable.ic_last_fm_logo)
 
-            val rightTab = it.getTabAt(1)
-            rightTab?.setIcon(R.drawable.ic_album_black_24px)
+            val albumsTab = it.getTabAt(1)
+            albumsTab?.setIcon(R.drawable.ic_album_black_24px)
+
+            val artistsTab = it.getTabAt(2)
+            artistsTab?.setIcon(R.drawable.ic_account_circle_black)
         }
 
     }
