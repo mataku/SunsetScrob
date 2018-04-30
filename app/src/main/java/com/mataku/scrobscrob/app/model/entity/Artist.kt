@@ -13,5 +13,8 @@ data class Artist(
         val url: String,
 
         @SerializedName("image")
-        val image: List<Image>?
+        val image: List<Image>?,
+
+        @SerializedName("playcount")
+        val playcount: String?
 )
