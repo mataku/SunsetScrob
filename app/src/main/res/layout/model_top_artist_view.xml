@@ -50,7 +50,6 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:paddingBottom="8dp"
                     android:textColor="#ECEFF1"
                     android:textSize="14sp"
                     android:textStyle="bold"
@@ -59,6 +58,21 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/model_top_artist_artwork"
                     tools:text="Armin van Buuren" />
+
+                <TextView
+                    android:id="@+id/model_top_artist_playcount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:paddingBottom="8dp"
+                    android:textColor="#ECEFF1"
+                    android:textSize="12sp"
+                    android:visibility="visible"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/model_top_artist_name"
+                    tools:text="1000 times" />
 
 
             </android.support.constraint.ConstraintLayout>
