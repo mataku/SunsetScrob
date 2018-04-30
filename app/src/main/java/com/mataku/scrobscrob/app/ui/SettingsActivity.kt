@@ -69,14 +69,14 @@ class SettingsActivity : Activity() {
 
         override fun setMessageToLogIn() {
             loginPreference = findPreference("login")
-            loginPreference.title = "Last.fm へログイン"
+            loginPreference.title = "Login to Last.fm"
             loginPreference.summary = ""
         }
 
         override fun setMessageToLogOut(loggedInUserName: String) {
             loginPreference = findPreference("login")
-            loginPreference.title = "ログアウト"
-            loginPreference.summary = "${loggedInUserName} でログインしています"
+            loginPreference.title = "Logout"
+            loginPreference.summary = "Login as ${loggedInUserName}"
         }
 
         override fun setDestinationToMenuToLogIn() {
@@ -113,8 +113,8 @@ class SettingsActivity : Activity() {
 
         private fun showAlert() {
             val alertDialog: AlertDialog.Builder = AlertDialog.Builder(this.activity)
-            alertDialog.setTitle("ログアウト")
-            alertDialog.setMessage("ログアウトしますか？")
+            alertDialog.setTitle("Logout")
+            alertDialog.setMessage("Really?")
             alertDialog.setPositiveButton(
                     "OK",
                     object : DialogInterface.OnClickListener {
@@ -149,7 +149,7 @@ class SettingsActivity : Activity() {
 
 
         private fun showLogOutMessage() {
-            Toast.makeText(this.activity, "ログアウトしました", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this.activity, "Logged out", Toast.LENGTH_SHORT).show()
         }
 
         private fun showAllowServiceMessage() {
