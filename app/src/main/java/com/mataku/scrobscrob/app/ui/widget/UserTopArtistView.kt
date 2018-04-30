@@ -36,12 +36,30 @@ class UserTopArtistView : ConstraintLayout {
 
     @ModelProp
     fun setArtist(artist: Artist) {
-        binding.modelTopArtistName.text = artist.name
+        val image = artist.image
 
+        val imageUrl = if (image == null) {
+            null
+        } else if (image.size < 2) {
+            image.last().imageUrl
+        } else {
+            image[2].imageUrl
+        }
+        binding.modelTopArtistName.text = artist.name
+        val resources = context.resources
+        binding.modelTopArtistPlaycount.text =
+                when (artist.playcount) {
+                    null -> ""
+                    "1" -> resources.getString(R.string.playcount, "1")
+                    else -> {
+                        resources.getString(R.string.playcounts, artist.playcount)
+                    }
+                }
         GlideApp.with(context)
-                .load(artist.image?.get(2)?.imageUrl)
+                .load(imageUrl)
                 .error(R.drawable.no_image)
                 .into(binding.modelTopArtistArtwork)
+
     }
 
 

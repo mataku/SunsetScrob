@@ -47,10 +47,15 @@ class UserTopAlbumView : ConstraintLayout {
     fun setAlbum(album: Album) {
         binding.modelTopAlbumArtist.text = album.artist.name
         binding.modelTopAlbumTrack.text = album.name
-        val image = album.imageList.get(2)
+
+        val imageUrl = if (album.imageList.size < 2) {
+            album.imageList.last().imageUrl
+        } else {
+            album.imageList[2].imageUrl
+        }
 
         GlideApp.with(context)
-                .load(image.imageUrl)
+                .load(imageUrl)
                 .transform(RoundedCornersTransformation(45, 0, RoundedCornersTransformation.CornerType.BOTTOM))
                 .fitCenter()
                 .error(R.drawable.no_image)
