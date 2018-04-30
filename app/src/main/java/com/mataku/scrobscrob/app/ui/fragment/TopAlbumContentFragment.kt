@@ -14,11 +14,11 @@ import com.mataku.scrobscrob.app.model.entity.Album
 import com.mataku.scrobscrob.app.presenter.UserContentPresenter
 import com.mataku.scrobscrob.app.ui.controller.TopAlbumController
 import com.mataku.scrobscrob.app.ui.view.UserContentViewCallback
-import com.mataku.scrobscrob.databinding.FragmentUserContentBinding
+import com.mataku.scrobscrob.databinding.FragmentTopAlbumsBinding
 
 class TopAlbumContentFragment : Fragment(), UserContentViewCallback {
 
-    private lateinit var binding: FragmentUserContentBinding
+    private lateinit var binding: FragmentTopAlbumsBinding
     private val presenter = UserContentPresenter(this)
     private val controller = TopAlbumController()
     private val albums = mutableListOf<Album>()
@@ -26,9 +26,9 @@ class TopAlbumContentFragment : Fragment(), UserContentViewCallback {
     private lateinit var userName: String
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_user_content, null, false)
+        val view = inflater.inflate(R.layout.fragment_top_albums, null, false)
         binding = DataBindingUtil.bind(view)!!
-        binding.userTopAlbumView.setController(controller)
+        binding.topAlbumRecyclerView.setController(controller)
         val sharedPreferences = this.activity?.getSharedPreferences("DATA", Context.MODE_PRIVATE)
         sharedPreferences?.let {
             userName = it.getString("UserName", "")
@@ -46,11 +46,11 @@ class TopAlbumContentFragment : Fragment(), UserContentViewCallback {
 
     private fun setUp() {
         presenter.getTopAlbums(userName, currentPage)
-        binding.userTopAlbumView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        binding.topAlbumRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
 
-                val userContentRecyclerView = binding.userTopAlbumView
+                val userContentRecyclerView = binding.topAlbumRecyclerView
 
                 val totalCount = userContentRecyclerView.adapter.itemCount
                 val childCount = userContentRecyclerView.childCount

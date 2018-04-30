@@ -2,7 +2,7 @@ package com.mataku.scrobscrob.app.ui.controller
 
 import com.airbnb.epoxy.EpoxyController
 import com.mataku.scrobscrob.app.model.entity.Album
-import com.mataku.scrobscrob.app.ui.widget.UserTopAlbumViewModel_
+import com.mataku.scrobscrob.app.ui.widget.TopAlbumViewModel_
 
 class TopAlbumController : EpoxyController() {
 
@@ -14,7 +14,7 @@ class TopAlbumController : EpoxyController() {
 
     override fun buildModels() {
         albums.forEachIndexed { index, album ->
-            UserTopAlbumViewModel_()
+            TopAlbumViewModel_()
                     .id(index)
                     .album(album)
                     .spanSizeOverride({ _, _, _ -> 1 })

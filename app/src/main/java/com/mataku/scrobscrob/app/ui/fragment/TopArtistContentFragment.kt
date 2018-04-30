@@ -14,11 +14,11 @@ import com.mataku.scrobscrob.app.model.entity.Artist
 import com.mataku.scrobscrob.app.presenter.TopArtistsPresenter
 import com.mataku.scrobscrob.app.ui.controller.TopArtistController
 import com.mataku.scrobscrob.app.ui.view.TopArtistsContentViewCallback
-import com.mataku.scrobscrob.databinding.FragmentTopArtistsContentBinding
+import com.mataku.scrobscrob.databinding.FragmentTopArtistsBinding
 
 class TopArtistContentFragment : Fragment(), TopArtistsContentViewCallback {
 
-    private lateinit var binding: FragmentTopArtistsContentBinding
+    private lateinit var binding: FragmentTopArtistsBinding
     private val presenter = TopArtistsPresenter(this)
     private val controller = TopArtistController()
     private val artists = mutableListOf<Artist>()
@@ -26,9 +26,9 @@ class TopArtistContentFragment : Fragment(), TopArtistsContentViewCallback {
     private lateinit var userName: String
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_top_artists_content, null, false)
+        val view = inflater.inflate(R.layout.fragment_top_artists, null, false)
         binding = DataBindingUtil.bind(view)!!
-        binding.userTopArtistView.setController(controller)
+        binding.userTopArtistRecyclerView.setController(controller)
         val sharedPreferences = this.activity?.getSharedPreferences("DATA", Context.MODE_PRIVATE)
         sharedPreferences?.let {
             userName = it.getString("UserName", "")
@@ -46,11 +46,11 @@ class TopArtistContentFragment : Fragment(), TopArtistsContentViewCallback {
 
     private fun setUp() {
         presenter.getTopArtists(userName, currentPage)
-        binding.userTopArtistView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        binding.userTopArtistRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
 
-                val topArtistRecyclerView = binding.userTopArtistView
+                val topArtistRecyclerView = binding.userTopArtistRecyclerView
 
                 val totalCount = topArtistRecyclerView.adapter.itemCount
                 val childCount = topArtistRecyclerView.childCount

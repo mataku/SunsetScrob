@@ -10,6 +10,7 @@
     <string name="label_not_logged_in">Not logged in!</string>
     <string name="label_not_playing_message">Let\'s play music on Apple Music App!</string>
     <string name="label_message_to_log_in">Log in to Last.fm and play music on Apple Music App!</string>
+    <string name="label_open_source_licenses">Open Source Licenses</string>
     <string name="playcounts">%s times</string>
     <string name="playcount">%s time</string>
 

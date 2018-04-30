@@ -7,8 +7,8 @@
         android:layout_height="match_parent"
         android:background="#263238">
 
-        <com.mataku.scrobscrob.app.ui.widget.UserTopAlbumRecyclerView
-            android:id="@+id/user_top_album_view"
+        <com.mataku.scrobscrob.app.ui.widget.TopArtistsRecyclerView
+            android:id="@+id/user_top_artist_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="32dp"
