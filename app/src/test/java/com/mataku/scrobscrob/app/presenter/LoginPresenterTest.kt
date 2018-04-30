@@ -65,5 +65,9 @@ class LoginPresenterTest {
         override fun showMessageToAllowAccessToNotification() {
             fail()
         }
+
+        override fun showError() {
+            fail()
+        }
     }
 }

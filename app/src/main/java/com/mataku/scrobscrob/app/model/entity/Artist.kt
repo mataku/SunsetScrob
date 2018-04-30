@@ -2,7 +2,7 @@ package com.mataku.scrobscrob.app.model.entity
 
 import com.google.gson.annotations.SerializedName
 
-// for getTopAlbums, ignore mbid param
+// for getTopAlbums, getTopArtists, ignore mbid param
 // see: https://www.last.fm/api/show/user.getTopAlbums
 
 data class Artist(
@@ -10,5 +10,11 @@ data class Artist(
         val name: String,
 
         @SerializedName("url")
-        val url: String
+        val url: String,
+
+        @SerializedName("image")
+        val image: List<Image>?,
+
+        @SerializedName("playcount")
+        val playcount: String?
 )

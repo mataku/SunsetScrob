@@ -4,6 +4,7 @@ apply plugin: 'realm-android'
 apply plugin: 'deploygate'
 apply plugin: 'com.github.ben-manes.versions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'com.cookpad.android.licensetools'
 apply from: 'lint-checks.gradle'
 
 android {
@@ -26,8 +27,8 @@ android {
 
         minSdkVersion 24
         targetSdkVersion 27
-        versionCode 8
-        versionName "0.0.8"
+        versionCode 9
+        versionName "0.0.9"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         def properties = new Properties()
         properties.load(project.rootProject.file('local.properties').newDataInputStream())
@@ -70,6 +71,7 @@ dependencies {
     implementation "com.android.support:appcompat-v7:$support_library_version"
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
     implementation "com.android.support:cardview-v7:$support_library_version"
+    implementation "com.android.support:customtabs:$support_library_version"
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
     implementation "com.android.support:design:$support_library_version"
