@@ -18,7 +18,7 @@ import com.mataku.scrobscrob.databinding.ModelTopAlbumViewBinding
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 
 @ModelView(autoLayout = ModelView.Size.WRAP_WIDTH_WRAP_HEIGHT)
-class UserTopAlbumView : ConstraintLayout {
+class TopAlbumView : ConstraintLayout {
 
     private lateinit var binding: ModelTopAlbumViewBinding
 

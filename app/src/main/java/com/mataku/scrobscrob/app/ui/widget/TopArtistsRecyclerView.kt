@@ -9,7 +9,7 @@ import android.view.View
 import com.airbnb.epoxy.EpoxyRecyclerView
 import com.mataku.scrobscrob.R
 
-class UserTopArtistsRecyclerView : EpoxyRecyclerView {
+class TopArtistsRecyclerView : EpoxyRecyclerView {
     constructor(
             context: Context?
     ) : this(context, null)

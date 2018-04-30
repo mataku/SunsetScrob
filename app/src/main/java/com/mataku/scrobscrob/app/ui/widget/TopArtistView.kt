@@ -17,7 +17,7 @@ import com.mataku.scrobscrob.app.model.entity.Artist
 import com.mataku.scrobscrob.databinding.ModelTopArtistViewBinding
 
 @ModelView(autoLayout = ModelView.Size.WRAP_WIDTH_WRAP_HEIGHT)
-class UserTopArtistView : ConstraintLayout {
+class TopArtistView : ConstraintLayout {
 
     private lateinit var binding: ModelTopArtistViewBinding
 
