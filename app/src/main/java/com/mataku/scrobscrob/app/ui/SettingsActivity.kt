@@ -33,6 +33,8 @@ class SettingsActivity : Activity() {
     class SettingsFragment : PreferenceFragment(), SettingsViewCallback {
         private lateinit var loginPreference: Preference
         private lateinit var notificationPreference: Preference
+        private lateinit var licensesPreference: Preference
+
 
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
@@ -51,6 +53,15 @@ class SettingsActivity : Activity() {
                     intent.action = Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS
                     startActivity(intent)
                     showAllowServiceMessage()
+                    return true
+                }
+            }
+
+            licensesPreference = findPreference("licenses")
+            licensesPreference.onPreferenceClickListener = object : Preference.OnPreferenceClickListener {
+                override fun onPreferenceClick(preference: Preference?): Boolean {
+                    val intent = Intent(this@SettingsFragment.context, LicensesActivity::class.java)
+                    startActivity(intent)
                     return true
                 }
             }
