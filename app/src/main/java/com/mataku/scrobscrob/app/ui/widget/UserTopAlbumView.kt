@@ -2,7 +2,10 @@ package com.mataku.scrobscrob.app.ui.widget
 
 import android.content.Context
 import android.databinding.DataBindingUtil
+import android.net.Uri
 import android.support.constraint.ConstraintLayout
+import android.support.customtabs.CustomTabsIntent
+import android.text.TextUtils
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.LayoutInflater
@@ -47,14 +50,26 @@ class UserTopAlbumView : ConstraintLayout {
     fun setAlbum(album: Album) {
         binding.modelTopAlbumArtist.text = album.artist.name
         binding.modelTopAlbumTrack.text = album.name
-        val image = album.imageList.last()
+
+        val imageUrl = if (album.imageList.size < 3) {
+            album.imageList.last().imageUrl
+        } else {
+            album.imageList[3].imageUrl
+        }
 
         GlideApp.with(context)
-                .load(image.imageUrl)
+                .load(imageUrl)
                 .transform(RoundedCornersTransformation(45, 0, RoundedCornersTransformation.CornerType.BOTTOM))
                 .fitCenter()
                 .error(R.drawable.no_image)
                 .into(binding.modelTopAlbumArtwork)
+
+        if (!TextUtils.isEmpty(album.url)) {
+            binding.modelTopAlbumCard.setOnClickListener {
+                val customTabsIntent = CustomTabsIntent.Builder().build()
+                customTabsIntent.launchUrl(context, Uri.parse(album.url))
+            }
+        }
     }
 
     @ModelProp

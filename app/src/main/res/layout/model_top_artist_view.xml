@@ -6,8 +6,8 @@
     <data>
 
         <variable
-            name="album"
-            type="com.mataku.scrobscrob.app.model.entity.Album" />
+            name="artist"
+            type="com.mataku.scrobscrob.app.model.entity.Artist" />
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -17,7 +17,7 @@
         android:paddingTop="16dp">
 
         <android.support.v7.widget.CardView
-            android:id="@+id/model_top_album_card"
+            android:id="@+id/model_top_artist_card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:foreground="?android:attr/selectableItemBackground"
@@ -32,7 +32,7 @@
                 android:background="#263238">
 
                 <com.mataku.scrobscrob.app.ui.widget.SquareImageView
-                    android:id="@+id/model_top_album_artwork"
+                    android:id="@+id/model_top_artist_artwork"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:contentDescription="artwork"
@@ -46,22 +46,23 @@
                     tools:src="@drawable/no_image" />
 
                 <TextView
-                    android:id="@+id/model_top_album_track"
+                    android:id="@+id/model_top_artist_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
+                    android:maxLines="1"
                     android:paddingTop="4dp"
-                    android:singleLine="true"
                     android:textColor="#ECEFF1"
                     android:textSize="14sp"
                     android:textStyle="bold"
+                    android:visibility="visible"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/model_top_album_artwork"
-                    tools:text="A State of Trance 2017" />
+                    app:layout_constraintTop_toBottomOf="@id/model_top_artist_artwork"
+                    tools:text="Armin van Buuren" />
 
                 <TextView
-                    android:id="@+id/model_top_album_artist"
+                    android:id="@+id/model_top_artist_playcount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
@@ -72,8 +73,8 @@
                     android:visibility="visible"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/model_top_album_track"
-                    tools:text="Armin van Buuren" />
+                    app:layout_constraintTop_toBottomOf="@id/model_top_artist_name"
+                    tools:text="1000 times" />
 
 
             </android.support.constraint.ConstraintLayout>
