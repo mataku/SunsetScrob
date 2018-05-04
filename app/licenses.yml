@@ -8,10 +8,6 @@
   license: The Apache Software License, Version 2.0
   licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
   url: http://developer.android.com/tools/extras/support-library.html
-- artifact: com.squareup.retrofit2:converter-gson:+
-  name: "Converter: Gson"
-  copyrightHolder: square
-  license: The Apache Software License, Version 2.0
 - artifact: android.arch.lifecycle:runtime:+
   name: Android Lifecycle Runtime
   copyrightHolder: Google
@@ -334,4 +330,23 @@
   license: The Apache Software License, Version 2.0
   licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
   url: http://tools.android.com
-
+- artifact: com.squareup.moshi:moshi:+
+  name: Moshi
+  copyrightHolder: square
+  license: The Apache Software License, Version 2.0
+- artifact: com.squareup.retrofit2:converter-moshi:+
+  name: "Converter: Moshi"
+  copyrightHolder: square
+  license: The Apache Software License, Version 2.0
+- artifact: org.jetbrains.kotlin:kotlin-stdlib-jre7:+
+  name: org.jetbrains.kotlin:kotlin-stdlib-jre7
+  copyrightHolder: JetBrains
+  license: The Apache License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://kotlinlang.org/
+- artifact: se.ansman.kotshi:api:+
+  name: Kotshi API
+  copyrightHolder: Nicklas Ansman Giertz
+  license: The Apache Software License, Version 2.0
+  licenseUrl: https://github.com/ansman/kotshi/blob/master/LICENSE.txt
+  url: https://github.com/ansman/kotshi

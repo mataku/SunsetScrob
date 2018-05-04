@@ -1,24 +1,26 @@
 package com.mataku.scrobscrob.app.model.entity
 
-import com.google.gson.Gson
+import com.mataku.scrobscrob.app.model.api.ApplicationJsonAdapterFactory
+import com.squareup.moshi.Moshi
 import org.junit.Test
 import kotlin.test.assertNotNull
 
 class TopArtistsApiResponseTest {
+    private val moshi = Moshi.Builder().add(ApplicationJsonAdapterFactory.INSTANCE).build()
+
     @Test
     @Throws
     fun testParsingJson() {
-        val gson = Gson()
-        val response = gson.fromJson(
-                TestUtils.getAssetFileString("top_artists.json"),
-                TopArtistsApiResponse::class.java
+        val jsonAdapter = moshi.adapter<TopArtistsApiResponse>(TopArtistsApiResponse::class.java)
+        val response = jsonAdapter.fromJson(
+                TestUtils.getAssetFileString("top_artists.json")
         )
-        assertNotNull(response.topArtists)
-        val artists = response.topArtists.artists
+        assertNotNull(response?.topArtists)
+        val artists = response?.topArtists?.artists
         assertNotNull(artists)
-        val artist = artists[0]
-        assertNotNull(artist.name)
-        assertNotNull(artist.url)
-        assertNotNull(artist.image)
+        val artist = artists?.get(0)
+        assertNotNull(artist?.name)
+        assertNotNull(artist?.url)
+        assertNotNull(artist?.image)
     }
 }

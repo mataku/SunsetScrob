@@ -1,15 +1,18 @@
 package com.mataku.scrobscrob.app.model.entity
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import se.ansman.kotshi.JsonSerializable
 
-class TrackInfoApiResponse(@SerializedName("track")
+@JsonSerializable
+class TrackInfoApiResponse(@Json(name = "track")
                            val trackInfo: TrackInfo) {
 
+    @JsonSerializable
     data class TrackInfo(
-            @SerializedName("duration")
+            @Json(name = "duration")
             val duration: String,
 
-            @SerializedName("album")
+            @Json(name = "album")
             val album: AlbumInfo
     )
 }

@@ -1,11 +1,13 @@
 package com.mataku.scrobscrob.app.model.entity
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import se.ansman.kotshi.JsonSerializable
 
+@JsonSerializable
 data class Image(
-        @SerializedName("#text")
+        @Json(name = "#text")
         val imageUrl: String,
 
-        @SerializedName("size")
+        @Json(name = "size")
         val size: String
 )
