@@ -8,8 +8,8 @@ apply plugin: 'com.cookpad.android.licensetools'
 apply from: 'lint-checks.gradle'
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion '27.0.3'
+    compileSdkVersion buildConfig.compileSdk
+    buildToolsVersion buildConfig.buildTools
 
     dataBinding {
         enabled = true
@@ -25,8 +25,8 @@ android {
     defaultConfig {
         applicationId "com.mataku.scrobscrob"
 
-        minSdkVersion 24
-        targetSdkVersion 27
+        minSdkVersion buildConfig.targetSdk
+        targetSdkVersion buildConfig.targetSdk
         versionCode 9
         versionName "0.0.9"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -57,58 +57,46 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
+    implementation "com.android.support:appcompat-v7:$versions.supportLibrary"
+    implementation "com.android.support:cardview-v7:$versions.supportLibrary"
+    implementation "com.android.support:customtabs:$versions.supportLibrary"
+    implementation "com.android.support:design:$versions.supportLibrary"
 
-    def support_library_version = "27.1.1"
-    implementation "com.android.support:appcompat-v7:$support_library_version"
-    implementation "com.android.support:cardview-v7:$support_library_version"
-    implementation "com.android.support:customtabs:$support_library_version"
-    implementation "com.android.support:design:$support_library_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$versions.okhttp"
+    implementation "com.squareup.okhttp3:okhttp:$versions.okhttp"
 
-    def okhttp3_version = "3.4.1"
-    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp3_version"
-    implementation "com.squareup.okhttp3:okhttp:$okhttp3_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.kotlinCoroutines"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.kotlinCoroutines"
 
-    def kotlin_coroutines_version = '0.22.5'
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlin_coroutines_version"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_coroutines_version"
+    implementation "com.squareup.retrofit2:retrofit:$versions.retrofit"
+    implementation "com.squareup.retrofit2:converter-moshi:$versions.retrofit"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin"
 
-    def retrofit_version = '2.4.0'
-    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
-    implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "com.android.support.constraint:constraint-layout:$versions.constraintLayout"
+    implementation "io.reactivex.rxjava2:rxjava:$versions.rxjava"
+    implementation "com.github.keithyokoma:RemoteViewsReader:$versions.remoteViewsReader@aar"
 
-    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
-    implementation 'com.google.code.gson:gson:2.8.2'
-    implementation 'io.reactivex.rxjava2:rxjava:2.1.9'
-    implementation 'com.github.keithyokoma:RemoteViewsReader:1.2.0@aar'
-
-    def glide_version = '4.6.1'
-    implementation "com.github.bumptech.glide:glide:$glide_version"
-    kapt "com.github.bumptech.glide:compiler:$glide_version"
-    implementation('jp.wasabeef:glide-transformations:3.3.0') {
+    implementation "com.github.bumptech.glide:glide:$versions.glide"
+    kapt "com.github.bumptech.glide:compiler:$versions.glide"
+    implementation("jp.wasabeef:glide-transformations:$versions.glideTransformations") {
         exclude module: 'com.github.bumptech.glide'
     }
 
-    def epoxy_version = '2.12.0'
-    implementation "com.airbnb.android:epoxy:$epoxy_version"
-    implementation "com.airbnb.android:epoxy-databinding:${epoxy_version}"
-    kapt "com.airbnb.android:epoxy-processor:$epoxy_version"
+    implementation "com.airbnb.android:epoxy:$versions.epoxy"
+    implementation "com.airbnb.android:epoxy-databinding:$versions.epoxy"
+    kapt "com.airbnb.android:epoxy-processor:$versions.epoxy"
 
-    def kotshi_version = '1.0.3'
-    implementation "se.ansman.kotshi:api:$kotshi_version"
-    kapt "se.ansman.kotshi:compiler:$kotshi_version"
+    implementation "se.ansman.kotshi:api:$versions.kotshi"
+    kapt "se.ansman.kotshi:compiler:$versions.kotshi"
 
-    implementation 'io.realm:android-adapters:2.1.1'
-    implementation 'com.jakewharton.retrofit:retrofit2-kotlin-coroutines-experimental-adapter:1.0.0'
+    implementation "io.realm:android-adapters:$versions.realmAndroidAdapters"
+    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-experimental-adapter:$versions.retrofitKotlinCoroutinesAdapter"
 
-    testImplementation 'junit:junit:4.12'
-    testImplementation 'com.google.guava:guava:22.0'
-    testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
-    testImplementation 'org.robolectric:robolectric:3.6.1'
-    testImplementation "com.squareup.okhttp3:mockwebserver:$okhttp3_version"
+    testImplementation "junit:junit:$versions.junit"
+    testImplementation "com.google.guava:guava:$versions.guava"
+    testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$versions.kotlin"
+    testImplementation "org.robolectric:robolectric:$versions.robolectric"
+    testImplementation "com.squareup.okhttp3:mockwebserver:$versions.okhttp"
 }
 repositories {
     mavenCentral()
