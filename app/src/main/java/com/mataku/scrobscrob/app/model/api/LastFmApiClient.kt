@@ -1,7 +1,5 @@
 package com.mataku.scrobscrob.app.model.api
 
-import com.google.gson.FieldNamingPolicy
-import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.experimental.CoroutineCallAdapterFactory
 import com.mataku.scrobscrob.BuildConfig
 import com.mataku.scrobscrob.app.model.api.okhttp3.LastFmApiAuthInterceptor
