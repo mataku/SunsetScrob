@@ -1,10 +1,12 @@
 package com.mataku.scrobscrob.app.model.entity
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import se.ansman.kotshi.JsonSerializable
 
+@JsonSerializable
 data class NowPlayingArtist(
         var corrected: String,
 
-        @SerializedName("#text")
+        @Json(name = "#text")
         var text: String
 )

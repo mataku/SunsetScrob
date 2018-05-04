@@ -1,11 +1,14 @@
 package com.mataku.scrobscrob.app.model.entity
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import se.ansman.kotshi.JsonSerializable
 
-class TopAlbumsApiResponse(@SerializedName("topalbums") val topAlbums: TopAlbums) {
+@JsonSerializable
+class TopAlbumsApiResponse(@Json(name = "topalbums") val topAlbums: TopAlbums) {
 
+    @JsonSerializable
     data class TopAlbums(
-            @SerializedName("album")
+            @Json(name = "album")
             val albums: List<Album>
     )
 }

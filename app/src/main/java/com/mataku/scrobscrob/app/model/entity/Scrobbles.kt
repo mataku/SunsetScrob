@@ -1,10 +1,12 @@
 package com.mataku.scrobscrob.app.model.entity
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import se.ansman.kotshi.JsonSerializable
 
-class Scrobbles(@SerializedName("@attr")
+@JsonSerializable
+class Scrobbles(@Json(name = "@attr")
                 val attr: ScrobbleAttr,
-                @SerializedName("scrobble")
+                @Json(name = "scrobble")
                 val scrobble: Scrobble) {
 
     data class Scrobble(
