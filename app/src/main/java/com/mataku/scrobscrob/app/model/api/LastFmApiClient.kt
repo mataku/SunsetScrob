@@ -5,10 +5,11 @@ import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.experimental.CoroutineCallAdapterFactory
 import com.mataku.scrobscrob.BuildConfig
 import com.mataku.scrobscrob.app.model.api.okhttp3.LastFmApiAuthInterceptor
+import com.squareup.moshi.Moshi
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
 
 class LastFmApiClient {
     companion object {
@@ -16,10 +17,10 @@ class LastFmApiClient {
             val client = httpClientBuilder()
 
             val apiUrl = "https://ws.audioscrobbler.com/"
-            val gson = GsonBuilder().setLenient().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create()
+            val moshi = Moshi.Builder().add(ApplicationJsonAdapterFactory.INSTANCE).build()
             return Retrofit.Builder()
                     .baseUrl(apiUrl)
-                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .addConverterFactory(MoshiConverterFactory.create(moshi))
                     .addCallAdapterFactory(CoroutineCallAdapterFactory())
                     .client(client)
                     .build()
