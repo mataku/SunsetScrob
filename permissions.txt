@@ -1,0 +1,2 @@
+package: com.mataku.scrobscrob.dev
+uses-permission: name='android.permission.INTERNET'

@@ -1,3 +1,11 @@
+GIT
+  remote: git://github.com/mataku/danger-android_permissions_checker.git
+  revision: d00abe8597bc932331a9415ce1bbcf5ef206dcd2
+  specs:
+    danger-android_permissions_checker (0.0.1)
+      danger-plugin-api (~> 1.0)
+      diffy
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -38,6 +46,7 @@ GEM
       danger (> 2.0)
     declarative (0.0.10)
     declarative-option (0.1.0)
+    diffy (3.2.1)
     domain_name (0.5.20180417)
       unf (>= 0.0.5, < 1.0.0)
     dotenv (2.4.0)
@@ -191,7 +200,8 @@ PLATFORMS
 DEPENDENCIES
   danger
   danger-android_lint
+  danger-android_permissions_checker!
   fastlane
 
 BUNDLED WITH
-   1.16.1
+   1.16.2
