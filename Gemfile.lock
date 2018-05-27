@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/mataku/danger-android_permissions_checker.git
-  revision: 6ed66abdcf78dd5f7f6a443e7ce6a10d1daf85db
+  revision: a638300f353d148e487620538121c39ea0fd5a9b
   specs:
     danger-android_permissions_checker (0.0.1)
       danger-plugin-api (~> 1.0)
