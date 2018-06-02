@@ -1,10 +1,7 @@
 package com.mataku.scrobscrob.app.ui.widget
 
 import android.content.Context
-import android.databinding.DataBindingUtil
 import android.net.Uri
-import android.support.constraint.ConstraintLayout
-import android.support.customtabs.CustomTabsIntent
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.util.TypedValue
@@ -17,7 +14,7 @@ import com.mataku.scrobscrob.app.model.entity.Artist
 import com.mataku.scrobscrob.databinding.ModelTopArtistViewBinding
 
 @ModelView(autoLayout = ModelView.Size.WRAP_WIDTH_WRAP_HEIGHT)
-class TopArtistView : ConstraintLayout {
+class TopArtistView : androidx.constraintlayout.widget.ConstraintLayout {
 
     private lateinit var binding: ModelTopArtistViewBinding
 

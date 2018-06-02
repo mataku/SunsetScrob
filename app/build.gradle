@@ -29,7 +29,7 @@ android {
         targetSdkVersion buildConfig.targetSdk
         versionCode 9
         versionName "0.0.9"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         def properties = new Properties()
         properties.load(project.rootProject.file('local.properties').newDataInputStream())
         buildConfigField 'String', 'API_KEY', properties.API_KEY
@@ -57,10 +57,10 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "com.android.support:appcompat-v7:$versions.supportLibrary"
-    implementation "com.android.support:cardview-v7:$versions.supportLibrary"
-    implementation "com.android.support:customtabs:$versions.supportLibrary"
-    implementation "com.android.support:design:$versions.supportLibrary"
+    implementation 'androidx.appcompat:appcompat:1.0.0-alpha1'
+    implementation 'androidx.cardview:cardview:1.0.0-alpha1'
+    implementation 'androidx.browser:browser:1.0.0-alpha1'
+    implementation 'com.google.android.material:material:1.0.0-alpha1'
 
     implementation "com.squareup.okhttp3:logging-interceptor:$versions.okhttp"
     implementation "com.squareup.okhttp3:okhttp:$versions.okhttp"
@@ -72,7 +72,7 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-moshi:$versions.retrofit"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin"
 
-    implementation "com.android.support.constraint:constraint-layout:$versions.constraintLayout"
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.0'
     implementation "io.reactivex.rxjava2:rxjava:$versions.rxjava"
     implementation "com.github.keithyokoma:RemoteViewsReader:$versions.remoteViewsReader@aar"
 

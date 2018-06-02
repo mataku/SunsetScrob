@@ -1,10 +1,7 @@
 package com.mataku.scrobscrob.app.ui.widget
 
 import android.content.Context
-import android.databinding.DataBindingUtil
 import android.net.Uri
-import android.support.constraint.ConstraintLayout
-import android.support.customtabs.CustomTabsIntent
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.util.TypedValue
@@ -18,7 +15,7 @@ import com.mataku.scrobscrob.databinding.ModelTopAlbumViewBinding
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 
 @ModelView(autoLayout = ModelView.Size.WRAP_WIDTH_WRAP_HEIGHT)
-class TopAlbumView : ConstraintLayout {
+class TopAlbumView : androidx.constraintlayout.widget.ConstraintLayout {
 
     private lateinit var binding: ModelTopAlbumViewBinding
 

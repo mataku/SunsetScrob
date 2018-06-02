@@ -2,10 +2,8 @@ package com.mataku.scrobscrob.app.ui
 
 import android.content.Intent
 import android.content.IntentFilter
-import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.provider.Settings
-import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import com.mataku.scrobscrob.R

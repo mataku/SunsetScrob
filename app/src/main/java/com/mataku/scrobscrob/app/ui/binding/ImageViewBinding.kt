@@ -1,6 +1,5 @@
 package com.mataku.scrobscrob.app.ui.binding
 
-import android.databinding.BindingAdapter
 import android.widget.ImageView
 import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.app.model.GlideApp
