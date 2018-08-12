@@ -33,7 +33,7 @@ buildscript {
             'guava'                          : '22.0',
             'junit'                          : '4.12',
             'kotlin'                         : "$kotlinVersion",
-            'kotlinCoroutines'               : '0.22.5',
+            'kotlinCoroutines'               : '0.24.0',
             'kotshi'                         : '1.0.3',
             'okhttp'                         : '3.4.1',
             'realmAndroidAdapters'           : '2.1.1',
