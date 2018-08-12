@@ -1,13 +1,13 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    def kotlinVersion = '1.2.41'
+    def kotlinVersion = '1.2.60'
     repositories {
         jcenter()
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.2'
+        classpath 'com.android.tools.build:gradle:3.1.4'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
         classpath "io.realm:realm-gradle-plugin:3.5.0"
         classpath 'com.deploygate:gradle:1.1.4'
@@ -21,21 +21,21 @@ buildscript {
     ext.buildConfig = [
             'compileSdk': 27,
             'minSdk'    : 24,
-            'targetSdk' : 27,
+            'targetSdk' : 26,
             'buildTools': '27.0.3'
     ]
 
     ext.versions = [
-            'constraintLayout'               : '1.1.0',
-            'epoxy'                          : '2.12.0',
-            'glide'                          : '4.6.1',
+            'constraintLayout'               : '1.1.2',
+            'epoxy'                          : '2.14.0',
+            'glide'                          : '4.7.1',
             'glideTransformations'           : '3.3.0',
             'guava'                          : '22.0',
             'junit'                          : '4.12',
             'kotlin'                         : "$kotlinVersion",
-            'kotlinCoroutines'               : '0.22.5',
+            'kotlinCoroutines'               : '0.24.0',
             'kotshi'                         : '1.0.3',
-            'okhttp'                         : '3.4.1',
+            'okhttp'                         : '3.11.0',
             'realmAndroidAdapters'           : '2.1.1',
             'retrofitKotlinCoroutinesAdapter': '1.0.0',
             'remoteViewsReader'              : '1.2.0',

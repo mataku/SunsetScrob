@@ -346,3 +346,21 @@
   license: The Apache Software License, Version 2.0
   licenseUrl: https://github.com/ansman/kotshi/blob/master/LICENSE.txt
   url: https://github.com/ansman/kotshi
+- artifact: org.jetbrains.kotlin:kotlin-stdlib-common:+
+  name: org.jetbrains.kotlin:kotlin-stdlib-common
+  copyrightHolder: JetBrains
+  license: The Apache License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://kotlinlang.org/
+- artifact: org.jetbrains.kotlinx:atomicfu-common:+
+  name: atomicfu-common
+  copyrightHolder: JetBrains
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://github.com/Kotlin/atomicfu
+- artifact: org.jetbrains.kotlinx:kotlinx-coroutines-core-common:+
+  name: kotlinx-coroutines-core-common
+  copyrightHolder: JetBrains
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://github.com/Kotlin/kotlinx.coroutines
