@@ -3,6 +3,7 @@
 -keep interface com.google.**  { *; }
 
 # okhttp3
+-dontwarn okhttp3.internal.platform.*
 -keep class okhttp3.**  { *; }
 -keep interface okhttp3.**  { *; }
 -keep class okio.**  { *; }
@@ -43,10 +44,8 @@
 
 # other
 -keep class com.mataku.scrobscrob.app.model.** { *; }
--keep class kotlin.jvm.** { *; }
--keep interface kotlin.jvm.** { *; }
--keep class kotlin.reflect.** { *; }
--keep interface kotlin.reflect.** { *; }
+-keep class kotlin.** { *; }
+-keep interface kotlin.** { *; }
 
 -dontwarn sun.security.**
 -keep class sun.security.** { *; }
@@ -55,3 +54,25 @@
 -keep class org.codehaus.** { *; }
 -keep interface org.codehaus.** { *; }
 -dontwarn org.apache.tools.ant.**
+
+# Moshi
+-keep class com.squareup.moshi.** { *; }
+-keep interface com.squareup.moshi.** { *; }
+-dontwarn com.squareup.moshi.**
+
+# Kotlin Coroutines
+-keepclassmembernames class kotlinx.** {
+    volatile <fields>;
+}
+
+# Glide
+-keep class com.bumptech.glide.GeneratedAppGlideModuleImpl
+-keep class com.bumptech.glide.RequestManager
+-dontwarn com.bumptech.glide.load.resource.bitmap.VideoDecoder
+
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep public class * extends com.bumptech.glide.module.AppGlideModule
+-keep public enum com.bumptech.glide.load.ImageHeaderParser$** {
+  **[] $VALUES;
+  public *;
+}
