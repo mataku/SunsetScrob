@@ -34,4 +34,10 @@ open class ContentsAdapter(fragmentManager: FragmentManager) : FragmentPagerAdap
     override fun onPageSelected(position: Int) {
 
     }
+
+    companion object {
+        const val SCROBBLE_POSITION = 0
+        const val TOP_ALBUM_POSITION = 1
+        const val TOP_ARTISTS_POSITION = 2
+    }
 }

@@ -20,12 +20,13 @@ class TopArtistContentFragment : Fragment(), TopArtistsContentViewCallback {
 
     private lateinit var binding: FragmentTopArtistsBinding
     private val presenter = TopArtistsPresenter(this)
-    private val controller = TopArtistController()
+    private lateinit var controller: TopArtistController
     private val artists = mutableListOf<Artist>()
     private var currentPage = 1
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_top_artists, null, false)
+        controller = TopArtistController(context)
         binding = DataBindingUtil.bind(view)!!
         binding.userTopArtistRecyclerView.setController(controller)
         val sharedPreferences = this.activity?.getSharedPreferences("DATA", Context.MODE_PRIVATE)
