@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity(), MainViewCallback {
     private val self = this
 
     private val settingsRequestCode = 1001
-    
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Realm.init(this)
@@ -74,14 +74,14 @@ class MainActivity : AppCompatActivity(), MainViewCallback {
 
     //    メニューボタンのクリックイベントを定義
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
+        return when (item.itemId) {
             R.id.overflow_options -> {
                 showSettings()
-                return true
+                true
             }
             else -> {
                 showSettings()
-                return true
+                true
             }
         }
     }
