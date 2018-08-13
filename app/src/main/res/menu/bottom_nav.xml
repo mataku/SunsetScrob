@@ -2,17 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/scrobble"
+        android:id="@+id/menu_scrobble"
         android:icon="@drawable/ic_last_fm_logo"
         android:title="@string/menu_scrobble" />
 
     <item
-        android:id="@+id/albums"
+        android:id="@+id/menu_top_albums"
         android:icon="@drawable/ic_account_circle_black"
         android:title="@string/menu_top_albums" />
 
     <item
-        android:id="@+id/artists"
+        android:id="@+id/menu_top_artists"
         android:icon="@drawable/ic_album_black_24px"
         android:title="@string/menu_top_artists" />
 </menu>
