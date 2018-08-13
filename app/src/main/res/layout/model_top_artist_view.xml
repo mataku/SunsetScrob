@@ -11,14 +11,14 @@
     </data>
 
     <android.support.constraint.ConstraintLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#263238"
         android:paddingTop="16dp">
 
         <android.support.v7.widget.CardView
             android:id="@+id/model_top_artist_card"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:foreground="?android:attr/selectableItemBackground"
             app:cardCornerRadius="8dp"
@@ -47,7 +47,7 @@
 
                 <TextView
                     android:id="@+id/model_top_artist_name"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="1"
@@ -63,7 +63,7 @@
 
                 <TextView
                     android:id="@+id/model_top_artist_playcount"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="1"
