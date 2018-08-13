@@ -103,14 +103,14 @@ class MainActivity : AppCompatActivity(), MainViewCallback {
     }
 
     private fun setUpContentTab() {
-        val adapter = object : ContentsAdapter(this.supportFragmentManager) {
+        val adapter = object : ContentsAdapter(supportFragmentManager) {
             override fun onPageSelected(position: Int) {
                 when (position) {
-                    0 -> {
+                    ContentsAdapter.SCROBBLE_POSITION -> {
 //                        self.supportActionBar?.show()
                         self.title = "Latest 20 scrobbles (Beta)"
                     }
-                    1 -> {
+                    ContentsAdapter.TOP_ALBUM_POSITION -> {
 //                        self.supportActionBar?.hide()
                         self.title = "Top Albums"
                     }
@@ -129,17 +129,17 @@ class MainActivity : AppCompatActivity(), MainViewCallback {
         val navItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.menu_scrobble -> {
-                    viewPager.currentItem = 0
+                    viewPager.currentItem = ContentsAdapter.SCROBBLE_POSITION
                     return@OnNavigationItemSelectedListener true
                 }
 
                 R.id.menu_top_albums -> {
-                    viewPager.currentItem = 1
+                    viewPager.currentItem = ContentsAdapter.TOP_ALBUM_POSITION
                     return@OnNavigationItemSelectedListener true
                 }
 
                 R.id.menu_top_artists -> {
-                    viewPager.currentItem = 2
+                    viewPager.currentItem = ContentsAdapter.TOP_ARTISTS_POSITION
                     return@OnNavigationItemSelectedListener true
                 }
             }
