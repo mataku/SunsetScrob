@@ -1,39 +1,35 @@
 package com.mataku.scrobscrob.app.ui.controller
 
+import android.content.Context
 import com.airbnb.epoxy.EpoxyController
 import com.mataku.scrobscrob.app.model.entity.Album
 import com.mataku.scrobscrob.app.ui.widget.TopAlbumViewModel_
 
-class TopAlbumController : EpoxyController() {
+class TopAlbumController(val context: Context?) : EpoxyController() {
 
     private val albums: MutableList<Album> = mutableListOf()
 
-//    private val spanSizeList = listOf(6, 3, 3, 3, 3, 6, 4, 4, 4, 6, 3, 3, 3, 3, 6)
+    //    private val spanSizeList = listOf(6, 3, 3, 3, 3, 6, 4, 4, 4, 6, 3, 3, 3, 3, 6)
 
     private val spanSizeList = listOf(4, 4, 4, 4, 4, 4, 3, 3, 3, 3)
 
     override fun buildModels() {
-        albums.forEachIndexed { index, album ->
-            TopAlbumViewModel_()
-                    .id(index)
-                    .album(album)
-                    .spanSizeOverride({ _, _, _ -> 1 })
-                    .onBind { model, view, position ->
-                        run {
-                            //                            model.spanSizeOverride(object : EpoxyModel.SpanSizeOverrideCallback {
-//                                override fun getSpanSize(totalSpanCount: Int, position: Int, itemCount: Int): Int {
-//                                    return spanSizeList.get(index % 15)
-//                                }
-//                            })
-                            val displayMetrics = view.context.resources.displayMetrics
-                            val density = displayMetrics.density
-                            val leftSpace = 16 * density
+        context?.let {
+            val displayMetrics = it.resources.displayMetrics
+            val density = displayMetrics.density
+            val leftSpace = 16 * density
 //                            val spanCount = spanSizeList.get(index % 10)
-                            val halfWidth = displayMetrics.widthPixels / 2 - leftSpace
-                            view.setImageSize(halfWidth.toInt())
-                        }
-                    }
-                    .addTo(this)
+            val halfWidth = displayMetrics.widthPixels / 2 - leftSpace
+
+            albums.forEachIndexed { index, album ->
+                TopAlbumViewModel_()
+                        .id(index)
+                        .album(album)
+                        .spanSizeOverride { _, _, _ -> 1 }
+                        .imageSize(halfWidth.toInt())
+                        .addTo(this)
+            }
+
         }
     }
 

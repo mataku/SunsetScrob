@@ -20,13 +20,16 @@ class TopAlbumContentFragment : Fragment(), UserContentViewCallback {
 
     private lateinit var binding: FragmentTopAlbumsBinding
     private val presenter = UserContentPresenter(this)
-    private val controller = TopAlbumController()
     private val albums = mutableListOf<Album>()
     private var currentPage = 1
+
+    private lateinit var controller: TopAlbumController
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_top_albums, null, false)
         binding = DataBindingUtil.bind(view)!!
+        controller = TopAlbumController(this.context)
+
         binding.topAlbumRecyclerView.setController(controller)
         val sharedPreferences = this.activity?.getSharedPreferences("DATA", Context.MODE_PRIVATE)
         sharedPreferences?.let {
