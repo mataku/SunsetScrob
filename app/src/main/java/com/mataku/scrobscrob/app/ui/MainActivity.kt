@@ -28,24 +28,7 @@ class MainActivity : AppCompatActivity(), MainViewCallback {
     private val self = this
 
     private val settingsRequestCode = 1001
-
-    private val navItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
-        when (item.itemId) {
-            R.id.menu_scrobble -> {
-                return@OnNavigationItemSelectedListener true
-            }
-
-            R.id.menu_top_albums -> {
-                return@OnNavigationItemSelectedListener true
-            }
-
-            R.id.menu_top_artists -> {
-                return@OnNavigationItemSelectedListener true
-            }
-        }
-        false
-    }
-
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Realm.init(this)
