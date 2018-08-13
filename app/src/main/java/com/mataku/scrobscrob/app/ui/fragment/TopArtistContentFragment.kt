@@ -23,7 +23,6 @@ class TopArtistContentFragment : Fragment(), TopArtistsContentViewCallback {
     private val controller = TopArtistController()
     private val artists = mutableListOf<Artist>()
     private var currentPage = 1
-    private lateinit var userName: String
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_top_artists, null, false)
@@ -31,9 +30,12 @@ class TopArtistContentFragment : Fragment(), TopArtistsContentViewCallback {
         binding.userTopArtistRecyclerView.setController(controller)
         val sharedPreferences = this.activity?.getSharedPreferences("DATA", Context.MODE_PRIVATE)
         sharedPreferences?.let {
-            userName = it.getString("UserName", "")
-            if (userName.isNotEmpty()) {
-                setUp()
+
+            val userName = it.getString("UserName", "")
+            userName?.let { name ->
+                if (name.isNotEmpty()) {
+                    setUp(name)
+                }
             }
         }
         return view
@@ -44,22 +46,26 @@ class TopArtistContentFragment : Fragment(), TopArtistsContentViewCallback {
         controller.setArtists(this.artists)
     }
 
-    private fun setUp() {
+    private fun setUp(userName: String) {
         presenter.getTopArtists(userName, currentPage)
         binding.userTopArtistRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
 
                 val topArtistRecyclerView = binding.userTopArtistRecyclerView
 
-                val totalCount = topArtistRecyclerView.adapter.itemCount
-                val childCount = topArtistRecyclerView.childCount
+                val adapter = topArtistRecyclerView.adapter
 
-                val layoutManager = topArtistRecyclerView.layoutManager as GridLayoutManager
-                val firstPosition = layoutManager.findFirstVisibleItemPosition()
-                if (totalCount == childCount + firstPosition) {
-                    currentPage++
-                    presenter.getTopArtists(userName, currentPage)
+                adapter?.let {
+                    val totalCount = it.itemCount
+                    val childCount = topArtistRecyclerView.childCount
+
+                    val layoutManager = topArtistRecyclerView.layoutManager as GridLayoutManager
+                    val firstPosition = layoutManager.findFirstVisibleItemPosition()
+                    if (totalCount == childCount + firstPosition) {
+                        currentPage++
+                        presenter.getTopArtists(userName, currentPage)
+                    }
                 }
             }
         })

@@ -23,7 +23,6 @@ class TopAlbumContentFragment : Fragment(), UserContentViewCallback {
     private val controller = TopAlbumController()
     private val albums = mutableListOf<Album>()
     private var currentPage = 1
-    private lateinit var userName: String
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_top_albums, null, false)
@@ -31,9 +30,11 @@ class TopAlbumContentFragment : Fragment(), UserContentViewCallback {
         binding.topAlbumRecyclerView.setController(controller)
         val sharedPreferences = this.activity?.getSharedPreferences("DATA", Context.MODE_PRIVATE)
         sharedPreferences?.let {
-            userName = it.getString("UserName", "")
-            if (userName.isNotEmpty()) {
-                setUp()
+            val userName = it.getString("UserName", "")
+            userName?.let { name ->
+                if (name.isNotEmpty()) {
+                    setUp(name)
+                }
             }
         }
         return view
@@ -44,22 +45,26 @@ class TopAlbumContentFragment : Fragment(), UserContentViewCallback {
         controller.setAlbums(this.albums)
     }
 
-    private fun setUp() {
+    private fun setUp(userName: String) {
         presenter.getTopAlbums(userName, currentPage)
         binding.topAlbumRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
 
                 val userContentRecyclerView = binding.topAlbumRecyclerView
 
-                val totalCount = userContentRecyclerView.adapter.itemCount
-                val childCount = userContentRecyclerView.childCount
+                val adapter = userContentRecyclerView.adapter
+                adapter?.let {
+                    val totalCount = it.itemCount
+                    val childCount = userContentRecyclerView.childCount
 
-                val layoutManager = userContentRecyclerView.layoutManager as GridLayoutManager
-                val firstPosition = layoutManager.findFirstVisibleItemPosition()
-                if (totalCount == childCount + firstPosition) {
-                    currentPage++
-                    presenter.getTopAlbums(userName, currentPage)
+                    val layoutManager = userContentRecyclerView.layoutManager as GridLayoutManager
+                    val firstPosition = layoutManager.findFirstVisibleItemPosition()
+                    if (totalCount == childCount + firstPosition) {
+                        currentPage++
+                        presenter.getTopAlbums(userName, currentPage)
+                    }
+
                 }
             }
         })
