@@ -21,5 +21,5 @@ object TestUtils {
     @Throws(IOException::class)
     @JvmOverloads
     fun getAssetFileString(name: String, charset: Charset = Charset.defaultCharset()): String =
-            Files.toString(getAssetFile(name), charset)
+            Files.asCharSource(getAssetFile(name), charset).read()
 }

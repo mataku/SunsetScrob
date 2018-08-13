@@ -11,6 +11,7 @@ import android.preference.PreferenceFragment
 import android.provider.Settings
 import android.widget.Toast
 import com.mataku.scrobscrob.R
+import com.mataku.scrobscrob.app.model.Scrobble
 import com.mataku.scrobscrob.app.presenter.SettingsPresenter
 import com.mataku.scrobscrob.app.ui.view.SettingsViewCallback
 
@@ -23,9 +24,17 @@ class SettingsActivity : Activity() {
         ).commit()
     }
 
+    override fun onBackPressed() {
+        val intent = Intent(this, MainActivity::class.java)
+        setResult(RESULT_OK, intent)
+        finish()
+    }
+
     class SettingsFragment : PreferenceFragment(), SettingsViewCallback {
         private lateinit var loginPreference: Preference
         private lateinit var notificationPreference: Preference
+        private lateinit var licensesPreference: Preference
+
 
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
@@ -47,18 +56,27 @@ class SettingsActivity : Activity() {
                     return true
                 }
             }
+
+            licensesPreference = findPreference("licenses")
+            licensesPreference.onPreferenceClickListener = object : Preference.OnPreferenceClickListener {
+                override fun onPreferenceClick(preference: Preference?): Boolean {
+                    val intent = Intent(this@SettingsFragment.context, LicensesActivity::class.java)
+                    startActivity(intent)
+                    return true
+                }
+            }
         }
 
         override fun setMessageToLogIn() {
             loginPreference = findPreference("login")
-            loginPreference.title = "Last.fm へログイン"
+            loginPreference.title = "Login to Last.fm"
             loginPreference.summary = ""
         }
 
         override fun setMessageToLogOut(loggedInUserName: String) {
             loginPreference = findPreference("login")
-            loginPreference.title = "ログアウト"
-            loginPreference.summary = "${loggedInUserName} でログインしています"
+            loginPreference.title = "Logout"
+            loginPreference.summary = "Login as ${loggedInUserName}"
         }
 
         override fun setDestinationToMenuToLogIn() {
@@ -95,13 +113,14 @@ class SettingsActivity : Activity() {
 
         private fun showAlert() {
             val alertDialog: AlertDialog.Builder = AlertDialog.Builder(this.activity)
-            alertDialog.setTitle("ログアウト")
-            alertDialog.setMessage("ログアウトしますか？")
+            alertDialog.setTitle("Logout")
+            alertDialog.setMessage("Really?")
             alertDialog.setPositiveButton(
                     "OK",
                     object : DialogInterface.OnClickListener {
                         override fun onClick(dialog: DialogInterface, which: Int) {
                             removeSession()
+                            Scrobble().deleteAll()
                             fragmentManager.beginTransaction().replace(
                                     android.R.id.content,
                                     SettingsFragment()
@@ -128,8 +147,9 @@ class SettingsActivity : Activity() {
             sharedPreferences.edit().clear().apply()
         }
 
+
         private fun showLogOutMessage() {
-            Toast.makeText(this.activity, "ログアウトしました", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this.activity, "Logged out", Toast.LENGTH_SHORT).show()
         }
 
         private fun showAllowServiceMessage() {

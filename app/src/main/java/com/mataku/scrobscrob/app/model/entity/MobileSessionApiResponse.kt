@@ -1,10 +1,13 @@
 package com.mataku.scrobscrob.app.model.entity
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import se.ansman.kotshi.JsonSerializable
 
-class MobileSessionApiResponse(@SerializedName("session")
+@JsonSerializable
+class MobileSessionApiResponse(@Json(name = "session")
                                val mobileSession: MobileSession) {
 
+    @JsonSerializable
     data class MobileSession(
             val subscriber: Int,
             val name: String,

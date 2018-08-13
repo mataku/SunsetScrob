@@ -26,6 +26,8 @@
 
         </activity>
 
+        <activity android:name=".app.ui.LicensesActivity" />
+
         <service
             android:name=".app.service.AppleMusicNotificationService"
             android:enabled="true"

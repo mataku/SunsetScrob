@@ -1,5 +1,6 @@
 package com.mataku.scrobscrob.app.util
 
+import android.util.Log
 import com.mataku.scrobscrob.BuildConfig
 import java.security.MessageDigest
 
@@ -8,6 +9,7 @@ class AppUtil {
     val sharedSecret = BuildConfig.SHARED_SECRET
     val defaultPlayingTime = 180.toLong()
     val latestScrobbleCountToDisplay = 20
+    val topAlbumsCountPerPage = 20
 
     fun generateApiSig(params: MutableMap<String, String>): String {
         var str = ""
@@ -29,5 +31,11 @@ class AppUtil {
             stringBuilder.append(Integer.toHexString(b))
         }
         return stringBuilder.toString()
+    }
+
+    fun debugLog(key: String, value: String?) {
+        if (BuildConfig.DEBUG) {
+            Log.d(key, value)
+        }
     }
 }

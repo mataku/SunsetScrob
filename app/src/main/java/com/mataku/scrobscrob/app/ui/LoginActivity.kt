@@ -1,28 +1,17 @@
 package com.mataku.scrobscrob.app.ui
 
-import android.Manifest.permission.READ_CONTACTS
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
-import android.app.LoaderManager.LoaderCallbacks
 import android.content.Context
-import android.content.CursorLoader
 import android.content.Intent
-import android.content.Loader
 import android.content.SharedPreferences
-import android.content.pm.PackageManager
-import android.database.Cursor
 import android.databinding.DataBindingUtil
-import android.net.Uri
-import android.os.AsyncTask
 import android.os.Bundle
-import android.provider.ContactsContract
 import android.provider.Settings
-import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.EditText
 import android.widget.TextView
@@ -38,13 +27,8 @@ import com.mataku.scrobscrob.databinding.ActivityLoginBinding
 /**
  * A login screen that offers login via email/password.
  */
-class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, LoginViewCallback {
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
-    private var authTask: UserLoginTask? = null
+class LoginActivity : AppCompatActivity(), LoginViewCallback {
 
-    // UI references.
     private lateinit var userNameView: AutoCompleteTextView
     private lateinit var passwordView: EditText
     private lateinit var progressView: View
@@ -57,8 +41,6 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, LoginViewCal
         val binding: ActivityLoginBinding = DataBindingUtil.setContentView(this, R.layout.activity_login)
         // Set up the login form.
         userNameView = binding.userName
-        populateAutoComplete()
-
         passwordView = binding.password
         binding.password.setOnEditorActionListener(TextView.OnEditorActionListener { _, id, _ ->
             if (id == R.id.login || id == EditorInfo.IME_NULL) {
@@ -76,39 +58,10 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, LoginViewCal
         loginPresenter = LoginPresenter(isEnabledReadNotification(), this)
     }
 
-    private fun populateAutoComplete() {
-        if (!mayRequestContacts()) {
-            return
-        }
-
-        loaderManager.initLoader(0, null, this)
+    override fun showError() {
+        showProgress(false)
+        Toast.makeText(this, "Invalid UserName or password!", Toast.LENGTH_LONG).show()
     }
-
-    private fun mayRequestContacts(): Boolean {
-        if (checkSelfPermission(READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
-            return true
-        }
-        if (shouldShowRequestPermissionRationale(READ_CONTACTS)) {
-            Snackbar.make(userNameView, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
-                    .setAction(android.R.string.ok) { requestPermissions(arrayOf(READ_CONTACTS), REQUEST_READ_CONTACTS) }
-        } else {
-            requestPermissions(arrayOf(READ_CONTACTS), REQUEST_READ_CONTACTS)
-        }
-        return false
-    }
-
-    /**
-     * Callback received when a permissions request has been completed.
-     */
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>,
-                                            grantResults: IntArray) {
-        if (requestCode == REQUEST_READ_CONTACTS) {
-            if (grantResults.size == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                populateAutoComplete()
-            }
-        }
-    }
-
 
     /**
      * Attempts to sign in or register the account specified by the login form.
@@ -116,10 +69,6 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, LoginViewCal
      * errors are presented and no actual login attempt is made.
      */
     private fun attemptLogin() {
-        if (authTask != null) {
-            return
-        }
-
         // Reset errors.
         userNameView.error = null
         passwordView.error = null
@@ -130,6 +79,12 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, LoginViewCal
 
         var cancel = false
         var focusView: View? = null
+
+        if (TextUtils.isEmpty(password)) {
+            passwordView.error = getString(R.string.error_field_required)
+            focusView = passwordView
+            cancel = true
+        }
 
         // Check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
@@ -157,8 +112,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, LoginViewCal
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true)
-            authTask = UserLoginTask(email, password)
-            authTask!!.execute(null as Void?)
+            loginPresenter.auth(email, password)
         }
     }
 
@@ -193,82 +147,9 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, LoginViewCal
         })
     }
 
-    override fun onCreateLoader(i: Int, bundle: Bundle): Loader<Cursor> {
-        return CursorLoader(this,
-                // Retrieve data rows for the device user's 'profile' contact.
-                Uri.withAppendedPath(ContactsContract.Profile.CONTENT_URI,
-                        ContactsContract.Contacts.Data.CONTENT_DIRECTORY), ProfileQuery.PROJECTION,
-
-                // Select only email addresses.
-                ContactsContract.Contacts.Data.MIMETYPE + " = ?", arrayOf(ContactsContract.CommonDataKinds.Email
-                .CONTENT_ITEM_TYPE),
-
-                // Show primary email addresses first. Note that there won't be
-                // a primary email address if the user hasn't specified one.
-                ContactsContract.Contacts.Data.IS_PRIMARY + " DESC")
-    }
-
-    override fun onLoadFinished(cursorLoader: Loader<Cursor>, cursor: Cursor) {
-        val emails = ArrayList<String>()
-        cursor.moveToFirst()
-        while (!cursor.isAfterLast) {
-            emails.add(cursor.getString(ProfileQuery.ADDRESS))
-            cursor.moveToNext()
-        }
-
-        addEmailsToAutoComplete(emails)
-    }
-
-    override fun onLoaderReset(cursorLoader: Loader<Cursor>) {
-
-    }
-
-    private fun addEmailsToAutoComplete(emailAddressCollection: List<String>) {
-        //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
-        val adapter = ArrayAdapter(this@LoginActivity,
-                android.R.layout.simple_dropdown_item_1line, emailAddressCollection)
-
-        userNameView.setAdapter(adapter)
-    }
-
-
-    private interface ProfileQuery {
-        companion object {
-            val PROJECTION = arrayOf(ContactsContract.CommonDataKinds.Email.ADDRESS, ContactsContract.CommonDataKinds.Email.IS_PRIMARY)
-
-            const val ADDRESS = 0
-        }
-    }
-
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
-    inner class UserLoginTask internal constructor(private val userName: String, private val password: String) : AsyncTask<Void, Void, Boolean>() {
-
-        override fun doInBackground(vararg params: Void): Boolean? {
-            try {
-                loginPresenter.authenticate(userName, password)
-
-            } catch (e: InterruptedException) {
-                return false
-            }
-
-            return true
-        }
-
-        override fun onPostExecute(success: Boolean?) {
-            authTask = null
-            showProgress(false)
-
-            val sessionKey = getSessionKey()
-            loginPresenter.backToSettingsWhenLoggedIn(success, sessionKey)
-        }
-
-        override fun onCancelled() {
-            authTask = null
-            showProgress(false)
-        }
+    override fun onDestroy() {
+        loginPresenter.dispose()
+        super.onDestroy()
     }
 
     override fun setSessionInfo(sessionKey: String, userName: String) {
@@ -277,6 +158,10 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, LoginViewCal
         editor.putString("SessionKey", sessionKey)
         editor.putString("UserName", userName)
         editor.apply()
+
+        showProgress(false)
+
+        loginPresenter.backToSettingsWhenLoggedIn(true, sessionKey)
     }
 
     override fun showSuccessMessage() {
@@ -325,15 +210,6 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, LoginViewCal
                 getString(R.string.label_now_playing),
                 getString(R.string.label_not_playing)
         )
-    }
-
-    companion object {
-
-        /**
-         * Id to identity READ_CONTACTS permission request.
-         */
-        private const val REQUEST_READ_CONTACTS = 0
-
     }
 }
 

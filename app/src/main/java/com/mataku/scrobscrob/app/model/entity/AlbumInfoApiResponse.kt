@@ -1,8 +1,10 @@
 package com.mataku.scrobscrob.app.model.entity
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import se.ansman.kotshi.JsonSerializable
 
+@JsonSerializable
 data class AlbumInfoApiResponse(
-        @SerializedName("album")
+        @Json(name = "album")
         val albumInfo: AlbumInfo
 )
