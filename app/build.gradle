@@ -91,6 +91,7 @@ dependencies {
 
     implementation "io.realm:android-adapters:$versions.realmAndroidAdapters"
     implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-experimental-adapter:$versions.retrofitKotlinCoroutinesAdapter"
+    implementation 'com.google.android.material:material:1.0.0-rc01'
 
     testImplementation "junit:junit:$versions.junit"
     testImplementation "com.google.guava:guava:$versions.guava"
