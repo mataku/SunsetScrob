@@ -5,6 +5,7 @@ import android.content.IntentFilter
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.provider.Settings
+import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
@@ -27,6 +28,23 @@ class MainActivity : AppCompatActivity(), MainViewCallback {
     private val self = this
 
     private val settingsRequestCode = 1001
+
+    private val navItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
+        when (item.itemId) {
+            R.id.menu_scrobble -> {
+                return@OnNavigationItemSelectedListener true
+            }
+
+            R.id.menu_top_albums -> {
+                return@OnNavigationItemSelectedListener true
+            }
+
+            R.id.menu_top_artists -> {
+                return@OnNavigationItemSelectedListener true
+            }
+        }
+        false
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -125,9 +143,25 @@ class MainActivity : AppCompatActivity(), MainViewCallback {
             it.adapter = adapter
             it.addOnPageChangeListener(adapter)
         }
-        val tabLayout = binding.activityMainTablayout
-        tabLayout.also {
-        }
+        val navItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.menu_scrobble -> {
+                    viewPager.currentItem = 0
+                    return@OnNavigationItemSelectedListener true
+                }
 
+                R.id.menu_top_albums -> {
+                    viewPager.currentItem = 1
+                    return@OnNavigationItemSelectedListener true
+                }
+
+                R.id.menu_top_artists -> {
+                    viewPager.currentItem = 2
+                    return@OnNavigationItemSelectedListener true
+                }
+            }
+            false
+        }
+        binding.activityMainTablayout.setOnNavigationItemSelectedListener(navItemSelectedListener)
     }
 }
