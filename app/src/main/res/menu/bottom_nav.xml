@@ -8,11 +8,11 @@
 
     <item
         android:id="@+id/menu_top_albums"
-        android:icon="@drawable/ic_account_circle_black"
+        android:icon="@drawable/ic_album_black_24px"
         android:title="@string/menu_top_albums" />
 
     <item
         android:id="@+id/menu_top_artists"
-        android:icon="@drawable/ic_album_black_24px"
+        android:icon="@drawable/ic_account_circle_black"
         android:title="@string/menu_top_artists" />
 </menu>
