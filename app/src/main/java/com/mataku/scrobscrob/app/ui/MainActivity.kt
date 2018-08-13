@@ -27,8 +27,6 @@ class MainActivity : AppCompatActivity(), MainViewCallback {
 
     private val self = this
 
-    private val settingsRequestCode = 1001
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Realm.init(this)
@@ -66,7 +64,7 @@ class MainActivity : AppCompatActivity(), MainViewCallback {
         super.onActivityResult(requestCode, resultCode, data)
 
         when (requestCode) {
-            settingsRequestCode -> {
+            SETTINGS_REQUEST_CODE -> {
                 setUpContentTab()
             }
         }
@@ -99,7 +97,7 @@ class MainActivity : AppCompatActivity(), MainViewCallback {
 
     private fun showSettings() {
         val intent = Intent(applicationContext, SettingsActivity::class.java)
-        startActivityForResult(intent, settingsRequestCode)
+        startActivityForResult(intent, SETTINGS_REQUEST_CODE)
     }
 
     private fun setUpContentTab() {
@@ -146,5 +144,9 @@ class MainActivity : AppCompatActivity(), MainViewCallback {
             false
         }
         binding.activityMainTablayout.setOnNavigationItemSelectedListener(navItemSelectedListener)
+    }
+
+    companion object {
+        const val SETTINGS_REQUEST_CODE = 1001
     }
 }
