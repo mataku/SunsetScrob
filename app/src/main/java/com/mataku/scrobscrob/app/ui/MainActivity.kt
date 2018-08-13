@@ -18,6 +18,7 @@ import com.mataku.scrobscrob.databinding.ActivityMainBinding
 import io.realm.Realm
 import io.realm.RealmConfiguration
 
+
 class MainActivity : AppCompatActivity(), MainViewCallback {
     private var receiver = AppleMusicNotificationReceiver()
     private lateinit var sharedPreferencesHelper: SharedPreferencesHelper
@@ -126,15 +127,6 @@ class MainActivity : AppCompatActivity(), MainViewCallback {
         }
         val tabLayout = binding.activityMainTablayout
         tabLayout.also {
-            it.setupWithViewPager(viewPager)
-            val scrobbleTab = it.getTabAt(0)
-            scrobbleTab?.setIcon(R.drawable.ic_last_fm_logo)
-
-            val albumsTab = it.getTabAt(1)
-            albumsTab?.setIcon(R.drawable.ic_album_black_24px)
-
-            val artistsTab = it.getTabAt(2)
-            artistsTab?.setIcon(R.drawable.ic_account_circle_black)
         }
 
     }
