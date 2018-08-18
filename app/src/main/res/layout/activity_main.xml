@@ -12,6 +12,8 @@
             android:id="@+id/activity_main_tablayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:itemIconTint="@drawable/bottom_navigation_state"
+            app:itemTextColor="@drawable/bottom_navigation_state"
             app:layout_constraintBottom_toBottomOf="parent"
             app:menu="@menu/bottom_nav" />
 
