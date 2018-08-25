@@ -9,7 +9,6 @@ apply from: 'lint-checks.gradle'
 
 android {
     compileSdkVersion buildConfig.compileSdk
-    buildToolsVersion buildConfig.buildTools
 
     dataBinding {
         enabled = true

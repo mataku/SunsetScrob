@@ -7,7 +7,7 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.0-beta05'
+        classpath 'com.android.tools.build:gradle:3.2.0-rc02'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
         classpath "io.realm:realm-gradle-plugin:3.5.0"
         classpath 'com.deploygate:gradle:1.1.4'
@@ -22,7 +22,6 @@ buildscript {
             'compileSdk': 28,
             'minSdk'    : 24,
             'targetSdk' : 26,
-            'buildTools': '27.0.3'
     ]
 
     ext.versions = [
