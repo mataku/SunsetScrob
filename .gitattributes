@@ -1,1 +1,5 @@
-*.html linguist-documentation
+*.html       linguist-documentation
+Dangerfile   linguist-detectable=false
+fastfile/*   linguist-detectable=false
+Gemfile      linguist-detectable=false
+Gemfile.lock linguist-detectable=false
