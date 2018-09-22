@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
-import android.widget.RemoteViews
 import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.app.model.Scrobble
 import com.mataku.scrobscrob.app.model.Track
@@ -17,8 +16,6 @@ import com.mataku.scrobscrob.app.ui.view.NotificationServiceInterface
 import com.mataku.scrobscrob.app.util.AppUtil
 import com.mataku.scrobscrob.app.util.SharedPreferencesHelper
 import io.realm.Realm
-import jp.yokomark.remoteview.reader.RemoteViewsReader
-import jp.yokomark.remoteview.reader.action.ReflectionAction
 
 
 class AppleMusicNotificationService : NotificationListenerService(), NotificationServiceInterface {
@@ -51,8 +48,8 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
         val sharedPreferences = getSharedPreferences("DATA", Context.MODE_PRIVATE)
         val sessionKey = sharedPreferences.getString("SessionKey", "")
         val sharedPreferencesHelper = SharedPreferencesHelper(this)
-        var trackName = ""
-        var artistName = ""
+        var trackName: String?
+        var artistName: String?
 
         // Ignore if not Apple Music APP
         if (sbn.packageName != APPLE_MUSIC_PACKAGE_NAME) {
@@ -65,25 +62,15 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
             return
         }
 
-        val contentView = sbn.notification.bigContentView as RemoteViews
-        val info = RemoteViewsReader.read(this, contentView)
-        info.actions.forEachIndexed { index, action ->
-            if (action is ReflectionAction) {
-                when (index) {
-                    0 -> {
-                        trackName = action.value.toString().trim()
-                    }
-                    1 -> {
-                        artistName = action.value.toString().trim()
-                    }
-                }
-            }
-        }
+        val notification = sbn.notification
+        val bundle = notification?.extras ?: return
+
+        trackName = bundle.get("android.title")?.toString() ?: return
+        artistName = bundle.get("android.text")?.toString() ?: return
 
         if (previousTrackName == trackName) {
             return
         } else {
-
             if (sharedPreferencesHelper.overScrobblingPoint()) {
                 if (!this::track.isInitialized) {
                     return
