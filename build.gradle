@@ -33,7 +33,7 @@ buildscript {
             'junit'                          : '4.12',
             'kotlin'                         : "$kotlinVersion",
             'kotlinCoroutines'               : '0.24.0',
-            'kotshi'                         : '1.0.3',
+            'kotshi'                         : '1.0.5',
             'okhttp'                         : '3.11.0',
             'realmAndroidAdapters'           : '2.1.1',
             'retrofitKotlinCoroutinesAdapter': '1.0.0',
