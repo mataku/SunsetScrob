@@ -34,6 +34,8 @@ GEM
     danger-android_lint (0.0.6)
       danger-plugin-api (~> 1.0)
       oga
+    danger-android_permissions_checker (0.0.2)
+      danger-plugin-api (~> 1.0)
     danger-plugin-api (1.0.0)
       danger (> 2.0)
     declarative (0.0.10)
@@ -187,6 +189,7 @@ PLATFORMS
 DEPENDENCIES
   danger
   danger-android_lint
+  danger-android_permissions_checker
   fastlane
 
 BUNDLED WITH
