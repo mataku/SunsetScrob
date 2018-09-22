@@ -133,12 +133,6 @@
   license: The Apache Software License, Version 2.0
   licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
   url: http://developer.android.com/tools/extras/support-library.html
-- artifact: com.github.keithyokoma:RemoteViewsReader:+
-  name: RemoteViewsReader
-  copyrightHolder: KeithYokoma
-  license: The Apache Software License, Version 2.0
-  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
-  url: https://github.com/KeithYokoma/RemoteViewsReader
 - artifact: com.android.support:support-vector-drawable:+
   name: Android Support VectorDrawable
   copyrightHolder: Google
