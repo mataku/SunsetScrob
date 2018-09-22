@@ -2,12 +2,13 @@ package com.mataku.scrobscrob.app.ui
 
 import android.content.Intent
 import android.content.IntentFilter
-import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.provider.Settings
-import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.app.data.Migration
 import com.mataku.scrobscrob.app.receiver.AppleMusicNotificationReceiver
@@ -18,14 +19,13 @@ import com.mataku.scrobscrob.databinding.ActivityMainBinding
 import io.realm.Realm
 import io.realm.RealmConfiguration
 
+
 class MainActivity : AppCompatActivity(), MainViewCallback {
     private var receiver = AppleMusicNotificationReceiver()
     private lateinit var sharedPreferencesHelper: SharedPreferencesHelper
     private lateinit var binding: ActivityMainBinding
 
     private val self = this
-
-    private val settingsRequestCode = 1001
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity(), MainViewCallback {
         super.onActivityResult(requestCode, resultCode, data)
 
         when (requestCode) {
-            settingsRequestCode -> {
+            SETTINGS_REQUEST_CODE -> {
                 setUpContentTab()
             }
         }
@@ -72,14 +72,14 @@ class MainActivity : AppCompatActivity(), MainViewCallback {
 
     //    メニューボタンのクリックイベントを定義
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
+        return when (item.itemId) {
             R.id.overflow_options -> {
                 showSettings()
-                return true
+                true
             }
             else -> {
                 showSettings()
-                return true
+                true
             }
         }
     }
@@ -97,18 +97,18 @@ class MainActivity : AppCompatActivity(), MainViewCallback {
 
     private fun showSettings() {
         val intent = Intent(applicationContext, SettingsActivity::class.java)
-        startActivityForResult(intent, settingsRequestCode)
+        startActivityForResult(intent, SETTINGS_REQUEST_CODE)
     }
 
     private fun setUpContentTab() {
-        val adapter = object : ContentsAdapter(this.supportFragmentManager) {
+        val adapter = object : ContentsAdapter(supportFragmentManager) {
             override fun onPageSelected(position: Int) {
                 when (position) {
-                    0 -> {
+                    ContentsAdapter.SCROBBLE_POSITION -> {
 //                        self.supportActionBar?.show()
                         self.title = "Latest 20 scrobbles (Beta)"
                     }
-                    1 -> {
+                    ContentsAdapter.TOP_ALBUM_POSITION -> {
 //                        self.supportActionBar?.hide()
                         self.title = "Top Albums"
                     }
@@ -124,18 +124,29 @@ class MainActivity : AppCompatActivity(), MainViewCallback {
             it.adapter = adapter
             it.addOnPageChangeListener(adapter)
         }
-        val tabLayout = binding.activityMainTablayout
-        tabLayout.also {
-            it.setupWithViewPager(viewPager)
-            val scrobbleTab = it.getTabAt(0)
-            scrobbleTab?.setIcon(R.drawable.ic_last_fm_logo)
+        val navItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.menu_scrobble -> {
+                    viewPager.currentItem = ContentsAdapter.SCROBBLE_POSITION
+                    return@OnNavigationItemSelectedListener true
+                }
 
-            val albumsTab = it.getTabAt(1)
-            albumsTab?.setIcon(R.drawable.ic_album_black_24px)
+                R.id.menu_top_albums -> {
+                    viewPager.currentItem = ContentsAdapter.TOP_ALBUM_POSITION
+                    return@OnNavigationItemSelectedListener true
+                }
 
-            val artistsTab = it.getTabAt(2)
-            artistsTab?.setIcon(R.drawable.ic_account_circle_black)
+                R.id.menu_top_artists -> {
+                    viewPager.currentItem = ContentsAdapter.TOP_ARTISTS_POSITION
+                    return@OnNavigationItemSelectedListener true
+                }
+            }
+            false
         }
+        binding.activityMainTablayout.setOnNavigationItemSelectedListener(navItemSelectedListener)
+    }
 
+    companion object {
+        const val SETTINGS_REQUEST_CODE = 1001
     }
 }

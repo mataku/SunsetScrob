@@ -1,10 +1,13 @@
 package com.mataku.scrobscrob.app.model.entity
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import se.ansman.kotshi.JsonSerializable
 
-class NowPlayingApiResponse(@SerializedName("nowplaying")
+@JsonSerializable
+class NowPlayingApiResponse(@Json(name = "nowplaying")
                             val nowPlaying: NowPlaying) {
 
+    @JsonSerializable
     data class NowPlaying(
             val artist: NowPlayingArtist,
             val ignoredMessage: IgnoredMessage,

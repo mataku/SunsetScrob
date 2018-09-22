@@ -1,22 +1,23 @@
 package com.mataku.scrobscrob.app.model.entity
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import se.ansman.kotshi.JsonSerializable
 
 // uses getTopAlbums API
-
+@JsonSerializable
 data class Album(
-        @SerializedName("name")
+        @Json(name = "name")
         val name: String,
 
-        @SerializedName("playcount")
+        @Json(name = "playcount")
         val playCount: String,
 
-        @SerializedName("url")
+        @Json(name = "url")
         val url: String,
 
-        @SerializedName("artist")
+        @Json(name = "artist")
         val artist: Artist,
 
-        @SerializedName("image")
+        @Json(name = "image")
         val imageList: List<Image>
 )

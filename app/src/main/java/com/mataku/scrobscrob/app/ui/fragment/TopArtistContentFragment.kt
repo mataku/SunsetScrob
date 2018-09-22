@@ -1,14 +1,12 @@
 package com.mataku.scrobscrob.app.ui.fragment
 
 import android.content.Context
-import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.app.model.entity.Artist
 import com.mataku.scrobscrob.app.presenter.TopArtistsPresenter
@@ -20,20 +18,23 @@ class TopArtistContentFragment : Fragment(), TopArtistsContentViewCallback {
 
     private lateinit var binding: FragmentTopArtistsBinding
     private val presenter = TopArtistsPresenter(this)
-    private val controller = TopArtistController()
+    private lateinit var controller: TopArtistController
     private val artists = mutableListOf<Artist>()
     private var currentPage = 1
-    private lateinit var userName: String
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_top_artists, null, false)
+        controller = TopArtistController(context)
         binding = DataBindingUtil.bind(view)!!
         binding.userTopArtistRecyclerView.setController(controller)
         val sharedPreferences = this.activity?.getSharedPreferences("DATA", Context.MODE_PRIVATE)
         sharedPreferences?.let {
-            userName = it.getString("UserName", "")
-            if (userName.isNotEmpty()) {
-                setUp()
+
+            val userName = it.getString("UserName", "")
+            userName?.let { name ->
+                if (name.isNotEmpty()) {
+                    setUp(name)
+                }
             }
         }
         return view
@@ -44,22 +45,26 @@ class TopArtistContentFragment : Fragment(), TopArtistsContentViewCallback {
         controller.setArtists(this.artists)
     }
 
-    private fun setUp() {
+    private fun setUp(userName: String) {
         presenter.getTopArtists(userName, currentPage)
-        binding.userTopArtistRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+        binding.userTopArtistRecyclerView.addOnScrollListener(object : androidx.recyclerview.widget.RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: androidx.recyclerview.widget.RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
 
                 val topArtistRecyclerView = binding.userTopArtistRecyclerView
 
-                val totalCount = topArtistRecyclerView.adapter.itemCount
-                val childCount = topArtistRecyclerView.childCount
+                val adapter = topArtistRecyclerView.adapter
 
-                val layoutManager = topArtistRecyclerView.layoutManager as GridLayoutManager
-                val firstPosition = layoutManager.findFirstVisibleItemPosition()
-                if (totalCount == childCount + firstPosition) {
-                    currentPage++
-                    presenter.getTopArtists(userName, currentPage)
+                adapter?.let {
+                    val totalCount = it.itemCount
+                    val childCount = topArtistRecyclerView.childCount
+
+                    val layoutManager = topArtistRecyclerView.layoutManager as androidx.recyclerview.widget.GridLayoutManager
+                    val firstPosition = layoutManager.findFirstVisibleItemPosition()
+                    if (totalCount == childCount + firstPosition) {
+                        currentPage++
+                        presenter.getTopArtists(userName, currentPage)
+                    }
                 }
             }
         })

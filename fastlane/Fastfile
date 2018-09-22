@@ -32,6 +32,16 @@ platform :android do
     )
   end
 
+  desc "Deploy a new version to the Google Play internal stage"
+  lane :deploy_test do
+    gradle(task: 'clean')
+    gradle(task: "assembleRelease")
+    supply(
+      apk: 'app/build/outputs/apk/release/app-release.apk',
+      track: 'internal'
+    )
+  end
+
   error do |lane, exception|
     # slack(
     #   message: exception.message,

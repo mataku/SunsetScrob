@@ -1,8 +1,8 @@
 package com.mataku.scrobscrob.app.ui.adapter
 
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.app.model.Scrobble
@@ -20,7 +20,7 @@ class ScrobbleViewAdapter(private val scrobbles: RealmResults<Scrobble>) : Recyc
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val scrobble = scrobbles[position]
-        holder?.setScrobble(scrobble)
+        holder.setScrobble(scrobble)
     }
 
     class ViewHolder(private val binding: ViewScrobbleBinding) : RecyclerView.ViewHolder(binding.root) {

@@ -27,4 +27,8 @@
         completions."
     </string>
     <string name="allow_notification_service_message">Allow AppleMusicNotificationService to access notification</string>
+
+    <string name="menu_scrobble">Scrobble</string>
+    <string name="menu_top_artists">Top Artists</string>
+    <string name="menu_top_albums">Top Albums</string>
 </resources>
