@@ -34,7 +34,7 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
 
         try {
             val appleMusicPackageInfo = packageManager.getPackageInfo(APPLE_MUSIC_PACKAGE_NAME, 0)
-            appUtil.debugLog("AppleMusicNotification", "Apple music is installed! (version: ${appleMusicPackageInfo.versionCode}")
+            appUtil.debugLog("AppleMusicNotification", "Apple music is installed! (version: ${appleMusicPackageInfo.longVersionCode}")
         } catch (e: PackageManager.NameNotFoundException) {
             appUtil.debugLog("AppleMusicNotification", "Apple music is NOT installed!")
         }
