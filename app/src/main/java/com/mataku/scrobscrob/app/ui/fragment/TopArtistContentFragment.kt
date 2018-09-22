@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.app.model.entity.Artist
 import com.mataku.scrobscrob.app.presenter.TopArtistsPresenter
@@ -13,7 +14,7 @@ import com.mataku.scrobscrob.app.ui.controller.TopArtistController
 import com.mataku.scrobscrob.app.ui.view.TopArtistsContentViewCallback
 import com.mataku.scrobscrob.databinding.FragmentTopArtistsBinding
 
-class TopArtistContentFragment : androidx.fragment.app.Fragment(), TopArtistsContentViewCallback {
+class TopArtistContentFragment : Fragment(), TopArtistsContentViewCallback {
 
     private lateinit var binding: FragmentTopArtistsBinding
     private val presenter = TopArtistsPresenter(this)
