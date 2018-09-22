@@ -39,7 +39,7 @@ buildscript {
             'retrofitKotlinCoroutinesAdapter': '1.0.0',
             'remoteViewsReader'              : '1.2.0',
             'robolectric'                    : '3.6.1',
-            'rxjava'                         : '2.1.9',
+            'rxjava'                         : '2.2.2',
             'supportLibrary'                 : '28.0.0',
             'retrofit'                       : '2.4.0'
     ]
