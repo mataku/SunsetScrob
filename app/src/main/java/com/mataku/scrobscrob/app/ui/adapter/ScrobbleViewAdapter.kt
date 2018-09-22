@@ -2,13 +2,14 @@ package com.mataku.scrobscrob.app.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.app.model.Scrobble
 import com.mataku.scrobscrob.databinding.ViewScrobbleBinding
 import io.realm.RealmResults
 
-class ScrobbleViewAdapter(private val scrobbles: RealmResults<Scrobble>) : androidx.recyclerview.widget.RecyclerView.Adapter<ScrobbleViewAdapter.ViewHolder>() {
+class ScrobbleViewAdapter(private val scrobbles: RealmResults<Scrobble>) : RecyclerView.Adapter<ScrobbleViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ScrobbleViewAdapter.ViewHolder {
         val binding = ViewScrobbleBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -22,7 +23,7 @@ class ScrobbleViewAdapter(private val scrobbles: RealmResults<Scrobble>) : andro
         holder?.setScrobble(scrobble)
     }
 
-    class ViewHolder(private val binding: ViewScrobbleBinding) : androidx.recyclerview.widget.RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(private val binding: ViewScrobbleBinding) : RecyclerView.ViewHolder(binding.root) {
         fun setScrobble(scrobble: Scrobble) {
             binding.trackNameView.text = scrobble.trackName
             binding.trackArtistView.text = scrobble.artistName
