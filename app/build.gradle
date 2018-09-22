@@ -20,6 +20,9 @@ android {
             keyAlias System.getenv('SUNSET_KEY_ALIAS')
             keyPassword System.getenv('SUNSET_KEY_PASSWORD')
         }
+        debug {
+            storeFile file('../debug.keystore')
+        }
     }
     defaultConfig {
         applicationId "com.mataku.scrobscrob"
@@ -73,7 +76,6 @@ dependencies {
 
     implementation "com.android.support.constraint:constraint-layout:$versions.constraintLayout"
     implementation "io.reactivex.rxjava2:rxjava:$versions.rxjava"
-    implementation "com.github.keithyokoma:RemoteViewsReader:$versions.remoteViewsReader@aar"
 
     implementation "com.github.bumptech.glide:glide:$versions.glide"
     kapt "com.github.bumptech.glide:compiler:$versions.glide"

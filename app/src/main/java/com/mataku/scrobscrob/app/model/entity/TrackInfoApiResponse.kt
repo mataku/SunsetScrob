@@ -5,14 +5,14 @@ import se.ansman.kotshi.JsonSerializable
 
 @JsonSerializable
 class TrackInfoApiResponse(@Json(name = "track")
-                           val trackInfo: TrackInfo) {
+                           val trackInfo: TrackInfo?) {
 
     @JsonSerializable
     data class TrackInfo(
             @Json(name = "duration")
-            val duration: String,
+            val duration: String?,
 
             @Json(name = "album")
-            val album: AlbumInfo
+            val album: AlbumInfo?
     )
 }
