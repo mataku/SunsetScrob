@@ -29,8 +29,8 @@ android {
 
         minSdkVersion buildConfig.targetSdk
         targetSdkVersion buildConfig.targetSdk
-        versionCode 9
-        versionName "0.0.9"
+        versionCode 20
+        versionName "0.2.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         def properties = new Properties()
         properties.load(project.rootProject.file('local.properties').newDataInputStream())
