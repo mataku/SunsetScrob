@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
+import android.text.TextUtils
 import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.app.model.Scrobble
 import com.mataku.scrobscrob.app.model.Track
@@ -58,7 +59,7 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
         }
 
         // Do not request when not logged in
-        if (sessionKey.isEmpty()) {
+        if (TextUtils.isEmpty(sessionKey)) {
             return
         }
 
@@ -77,7 +78,7 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
                 }
                 presenter.scrobble(
                         track,
-                        sessionKey,
+                        sessionKey!!,
                         sharedPreferencesHelper.getTimeStamp()
                 )
                 appUtil.debugLog("ScrobbleApi", "called")
@@ -88,7 +89,7 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
 
         previousTrackName = trackName
         sharedPreferencesHelper.setTimeStamp()
-        presenter.getTrackInfo(trackName, artistName, sessionKey)
+        presenter.getTrackInfo(trackName, artistName, sessionKey!!)
         val intent = Intent("AppleMusic")
         sendBroadcast(intent)
     }

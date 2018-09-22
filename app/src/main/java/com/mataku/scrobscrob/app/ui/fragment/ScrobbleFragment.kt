@@ -1,13 +1,12 @@
 package com.mataku.scrobscrob.app.ui.fragment
 
-import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.app.model.Scrobble
 import com.mataku.scrobscrob.app.model.Track
@@ -21,7 +20,7 @@ import com.mataku.scrobscrob.databinding.FragmentScrobbleBinding
 class ScrobbleFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
     private lateinit var binding: FragmentScrobbleBinding
-    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
+    private lateinit var swipeRefreshLayout: androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val scrobbleView = inflater.inflate(R.layout.fragment_scrobble, container, false)
@@ -62,7 +61,7 @@ class ScrobbleFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         val scrobbleViewAdapter = ScrobbleViewAdapter(scrobbles)
         scrobbleViewAdapter.notifyDataSetChanged()
         val scrobbleRecyclerView = binding.scrobbleListView
-        scrobbleRecyclerView.layoutManager = LinearLayoutManager(context)
+        scrobbleRecyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
         scrobbleRecyclerView.hasFixedSize()
         scrobbleRecyclerView.adapter = scrobbleViewAdapter
     }
