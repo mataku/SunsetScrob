@@ -322,12 +322,6 @@
   name: "Converter: Moshi"
   copyrightHolder: square
   license: The Apache Software License, Version 2.0
-- artifact: org.jetbrains.kotlin:kotlin-stdlib-jre7:+
-  name: org.jetbrains.kotlin:kotlin-stdlib-jre7
-  copyrightHolder: JetBrains
-  license: The Apache License, Version 2.0
-  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
-  url: https://kotlinlang.org/
 - artifact: se.ansman.kotshi:api:+
   name: Kotshi API
   copyrightHolder: Nicklas Ansman Giertz
@@ -442,3 +436,329 @@
   license: The Apache Software License, Version 2.0
   licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
   url: http://developer.android.com/tools/extras/support-library.html
+- artifact: com.google.j2objc:j2objc-annotations:+
+  name: J2ObjC Annotations
+  copyrightHolder: Google
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://github.com/google/j2objc/
+- artifact: classworlds:classworlds:+
+  name: classworlds
+  copyrightHolder: Plexus
+  license: The Apache License, Version 2.0
+  url: http://classworlds.codehaus.org/
+- artifact: org.jetbrains.kotlin:kotlin-test-junit:+
+  name: org.jetbrains.kotlin:kotlin-test-junit
+  copyrightHolder: JetBrains
+  license: The Apache License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://kotlinlang.org/
+- artifact: org.robolectric:junit:+
+  name: junit
+  copyrightHolder: Xtreme Labs
+  license: The MIT License
+  licenseUrl: https://opensource.org/licenses/MIT
+  url: http://robolectric.org
+- artifact: junit:junit:+
+  name: JUnit
+  copyrightHolder: JUnit
+  license: Eclipse Public License 1.0
+  licenseUrl: http://www.eclipse.org/legal/epl-v10.html
+  url: http://junit.org
+- artifact: org.codehaus.plexus:plexus-interpolation:+
+  name: Plexus Interpolation API
+  copyrightHolder: Plexus
+  license: The Apache License, Version 2.0
+- artifact: backport-util-concurrent:backport-util-concurrent:+
+  name: Backport of JSR 166
+  copyrightHolder: #COPYRIGHT_HOLDER#
+  license: Public Domain
+  licenseUrl: http://creativecommons.org/licenses/publicdomain
+  url: http://backport-jsr166.sourceforge.net/
+- artifact: org.apache.maven.wagon:wagon-http-shared:+
+  name: Maven Wagon HTTP Shared Library
+  copyrightHolder: #COPYRIGHT_HOLDER#
+  license: #LICENSE#
+  skip: true
+- artifact: org.hamcrest:hamcrest-core:+
+  name: Hamcrest Core
+  copyrightHolder: #COPYRIGHT_HOLDER#
+  license: #LICENSE#
+  skip: true
+- artifact: org.codehaus.mojo:animal-sniffer-annotations:+
+  name: Animal Sniffer Annotations
+  copyrightHolder: #COPYRIGHT_HOLDER#
+  license: #LICENSE#
+  skip: true
+- artifact: com.ibm.icu:icu4j:+
+  name: ICU4J
+  copyrightHolder: #COPYRIGHT_HOLDER#
+  license: ICU License
+  licenseUrl: http://source.icu-project.org/repos/icu/icu/trunk/license.html
+  url: http://icu-project.org/
+  skip: true
+- artifact: org.apache.maven:maven-profile:+
+  name: Maven Profile Model
+  copyrightHolder: #COPYRIGHT_HOLDER#
+  license: #LICENSE#
+  skip: true
+- artifact: com.google.errorprone:error_prone_annotations:+
+  name: error-prone annotations
+  copyrightHolder: #COPYRIGHT_HOLDER#
+  license: #LICENSE#
+  skip: true
+- artifact: org.apache.maven:maven-artifact-manager:+
+  name: Maven Artifact Manager
+  copyrightHolder: #COPYRIGHT_HOLDER#
+  license: #LICENSE#
+  skip: true
+- artifact: org.codehaus.plexus:plexus-container-default:+
+  name: Default Plexus Container
+  copyrightHolder: #COPYRIGHT_HOLDER#
+  license: #LICENSE#
+  skip: true
+- artifact: org.apache.maven:maven-repository-metadata:+
+  name: Maven Repository Metadata Model
+  copyrightHolder: #COPYRIGHT_HOLDER#
+  license: #LICENSE#
+  skip: true
+- artifact: org.apache.maven.wagon:wagon-file:+
+  name: Maven Wagon File Provider
+  copyrightHolder: #COPYRIGHT_HOLDER#
+  license: #LICENSE#
+  skip: true
+- artifact: xmlpull:xmlpull:+
+  name: XML Pull Parsing API
+  copyrightHolder: #COPYRIGHT_HOLDER#
+  license: Public Domain
+  licenseUrl: http://www.xmlpull.org/v1/download/unpacked/LICENSE.txt
+  url: http://www.xmlpull.org
+  skip: true
+- artifact: org.codehaus.plexus:plexus-utils:+
+  name: Plexus Common Utilities
+  copyrightHolder: #COPYRIGHT_HOLDER#
+  license: #LICENSE#
+  url: http://plexus.codehaus.org/plexus-utils
+  skip: true
+- artifact: org.jetbrains.kotlin:kotlin-test:+
+  name: org.jetbrains.kotlin:kotlin-test-jvm
+  copyrightHolder: #COPYRIGHT_HOLDER#
+  license: The Apache License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://kotlinlang.org/
+  skip: true
+- artifact: com.google.android.apps.common.testing.accessibility.framework:accessibility-test-framework:+
+  name: Accessibility Test Framework
+  copyrightHolder: #COPYRIGHT_HOLDER#
+  license: Apache License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://github.com/google/Accessibility-Test-Framework-for-Android
+  skip: true
+- artifact: nekohtml:xercesMinimal:+
+  name: xercesMinimal
+  copyrightHolder: #COPYRIGHT_HOLDER#
+  license: #LICENSE#
+  skip: true
+- artifact: com.google.guava:guava:+
+  name: "Guava: Google Core Libraries for Java"
+  copyrightHolder: #COPYRIGHT_HOLDER#
+  license: #LICENSE#
+  skip: true
+- artifact: com.almworks.sqlite4java:sqlite4java:+
+  name: sqlite4java
+  copyrightHolder: #COPYRIGHT_HOLDER#
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: http://code.google.com/p/sqlite4java
+  skip: true
+- artifact: org.robolectric:sandbox:+
+  name: sandbox
+  copyrightHolder: #COPYRIGHT_HOLDER#
+  license: The MIT License
+  licenseUrl: https://opensource.org/licenses/MIT
+  url: http://robolectric.org
+  skip: true
+- artifact: org.robolectric:resources:+
+  name: resources
+  copyrightHolder: #COPYRIGHT_HOLDER#
+  license: The MIT License
+  licenseUrl: https://opensource.org/licenses/MIT
+  url: http://robolectric.org
+  skip: true
+- artifact: org.apache.maven:maven-error-diagnostics:+
+  name: Maven Error Diagnostics
+  copyrightHolder: #COPYRIGHT_HOLDER#
+  license: #LICENSE#
+  skip: true
+- artifact: org.robolectric:shadowapi:+
+  name: shadowapi
+  copyrightHolder: #COPYRIGHT_HOLDER#
+  license: The MIT License
+  licenseUrl: https://opensource.org/licenses/MIT
+  url: http://robolectric.org
+  skip: true
+- artifact: org.apache.maven:maven-artifact:+
+  name: Maven Artifact
+  copyrightHolder: #COPYRIGHT_HOLDER#
+  license: #LICENSE#
+  skip: true
+- artifact: xpp3:xpp3_min:+
+  name: "MXP1: Xml Pull Parser 3rd Edition (XPP3)"
+  copyrightHolder: #COPYRIGHT_HOLDER#
+  license: Indiana University Extreme! Lab Software License, vesion 1.1.1
+  licenseUrl: http://www.extreme.indiana.edu/viewcvs/~checkout~/XPP3/java/LICENSE.txt
+  url: http://www.extreme.indiana.edu/xgws/xsoap/xpp/mxp1/
+  skip: true
+- artifact: org.hamcrest:hamcrest-library:+
+  name: Hamcrest library
+  copyrightHolder: #COPYRIGHT_HOLDER#
+  license: #LICENSE#
+  skip: true
+- artifact: org.apache.ant:ant:+
+  name: org.apache.tools.ant
+  copyrightHolder: #COPYRIGHT_HOLDER#
+  license: #LICENSE#
+  skip: true
+- artifact: org.apache.ant:ant-launcher:+
+  name: ant-launcher
+  copyrightHolder: #COPYRIGHT_HOLDER#
+  license: #LICENSE#
+  skip: true
+- artifact: org.apache.maven:maven-settings:+
+  name: Maven Local Settings Model
+  copyrightHolder: #COPYRIGHT_HOLDER#
+  license: #LICENSE#
+  skip: true
+- artifact: org.apache.maven:maven-plugin-registry:+
+  name: Maven Plugin Registry Model
+  copyrightHolder: #COPYRIGHT_HOLDER#
+  license: #LICENSE#
+  skip: true
+- artifact: org.robolectric:robolectric:+
+  name: robolectric
+  copyrightHolder: #COPYRIGHT_HOLDER#
+  license: The MIT License
+  licenseUrl: https://opensource.org/licenses/MIT
+  url: http://robolectric.org
+  skip: true
+- artifact: org.apache.maven.wagon:wagon-provider-api:+
+  name: Maven Wagon API
+  copyrightHolder: #COPYRIGHT_HOLDER#
+  license: #LICENSE#
+  skip: true
+- artifact: com.thoughtworks.xstream:xstream:+
+  name: XStream Core
+  copyrightHolder: #COPYRIGHT_HOLDER#
+  license: #LICENSE#
+  skip: true
+- artifact: org.robolectric:utils:+
+  name: utils
+  copyrightHolder: #COPYRIGHT_HOLDER#
+  license: The MIT License
+  licenseUrl: https://opensource.org/licenses/MIT
+  url: http://robolectric.org
+  skip: true
+- artifact: android.arch.lifecycle:livedata:+
+  name: Android Lifecycle LiveData
+  copyrightHolder: #COPYRIGHT_HOLDER#
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://developer.android.com/topic/libraries/architecture/index.html
+  skip: true
+- artifact: com.squareup.okhttp3:mockwebserver:+
+  name: MockWebServer
+  copyrightHolder: #COPYRIGHT_HOLDER#
+  license: #LICENSE#
+  skip: true
+- artifact: org.robolectric:annotations:+
+  name: annotations
+  copyrightHolder: #COPYRIGHT_HOLDER#
+  license: The MIT License
+  licenseUrl: https://opensource.org/licenses/MIT
+  url: http://robolectric.org
+  skip: true
+- artifact: org.apache.maven:maven-project:+
+  name: Maven Project Builder
+  copyrightHolder: #COPYRIGHT_HOLDER#
+  license: #LICENSE#
+  skip: true
+- artifact: org.apache.maven:maven-model:+
+  name: Maven Model
+  copyrightHolder: #COPYRIGHT_HOLDER#
+  license: #LICENSE#
+  skip: true
+- artifact: org.apache.maven.wagon:wagon-http-lightweight:+
+  name: Maven Wagon Lightweight HTTP Provider
+  copyrightHolder: #COPYRIGHT_HOLDER#
+  license: #LICENSE#
+  skip: true
+- artifact: org.jetbrains.kotlin:kotlin-test-annotations-common:+
+  name: org.jetbrains.kotlin:kotlin-test-annotations-common
+  copyrightHolder: #COPYRIGHT_HOLDER#
+  license: The Apache License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://kotlinlang.org/
+  skip: true
+- artifact: org.bouncycastle:bcprov-jdk15on:+
+  name: Bouncy Castle Provider
+  copyrightHolder: #COPYRIGHT_HOLDER#
+  license: Bouncy Castle Licence
+  licenseUrl: http://www.bouncycastle.org/licence.html
+  url: http://www.bouncycastle.org/java.html
+  skip: true
+- artifact: nekohtml:nekohtml:+
+  name: Neko HTML
+  copyrightHolder: #COPYRIGHT_HOLDER#
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: http://nekohtml.sourceforge.net/
+  skip: true
+- artifact: org.ow2.asm:asm-commons:+
+  name: ASM Commons
+  copyrightHolder: #COPYRIGHT_HOLDER#
+  license: #LICENSE#
+  skip: true
+- artifact: com.google.code.findbugs:jsr305:+
+  name: FindBugs-jsr305
+  copyrightHolder: #COPYRIGHT_HOLDER#
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: http://findbugs.sourceforge.net/
+  skip: true
+- artifact: org.robolectric:shadows-framework:+
+  name: framework
+  copyrightHolder: #COPYRIGHT_HOLDER#
+  license: The MIT License
+  licenseUrl: https://opensource.org/licenses/MIT
+  url: http://robolectric.org
+  skip: true
+- artifact: org.ow2.asm:asm-tree:+
+  name: ASM Tree
+  copyrightHolder: #COPYRIGHT_HOLDER#
+  license: #LICENSE#
+  skip: true
+- artifact: org.ow2.asm:asm:+
+  name: ASM Core
+  copyrightHolder: #COPYRIGHT_HOLDER#
+  license: #LICENSE#
+  skip: true
+- artifact: org.apache.maven:maven-ant-tasks:+
+  name: Maven Ant Tasks
+  copyrightHolder: #COPYRIGHT_HOLDER#
+  license: #LICENSE#
+  url: http://maven.apache.org/ant-tasks/
+  skip: true
+- artifact: com.google.protobuf:protobuf-java:+
+  name: Protocol Buffer Java API
+  copyrightHolder: #COPYRIGHT_HOLDER#
+  license: New BSD license
+  licenseUrl: http://www.opensource.org/licenses/bsd-license.php
+  url: https://developers.google.com/protocol-buffers/
+  skip: true
+- artifact: org.jetbrains.kotlin:kotlin-test-common:+
+  name: org.jetbrains.kotlin:kotlin-test-common
+  copyrightHolder: #COPYRIGHT_HOLDER#
+  license: The Apache License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://kotlinlang.org/
+  skip: true
