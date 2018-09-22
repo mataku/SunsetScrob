@@ -1,5 +1,6 @@
-*.html       linguist-documentation
-Dangerfile   linguist-detectable=false
-fastfile/*   linguist-detectable=false
-Gemfile      linguist-detectable=false
-Gemfile.lock linguist-detectable=false
+*.html           linguist-documentation
+app/licenses.yml linguist-documentation
+Dangerfile       linguist-vendored
+fastfile/*       linguist-vendored
+Gemfile          linguist-vendored
+Gemfile.lock     linguist-vendored
