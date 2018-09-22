@@ -1,8 +1,8 @@
 package com.mataku.scrobscrob.app.ui
 
 import android.app.Activity
-import android.databinding.DataBindingUtil
 import android.os.Bundle
+import androidx.databinding.DataBindingUtil
 import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.databinding.ActivityLicensesBinding
 

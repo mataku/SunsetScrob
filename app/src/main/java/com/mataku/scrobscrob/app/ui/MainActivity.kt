@@ -2,13 +2,13 @@ package com.mataku.scrobscrob.app.ui
 
 import android.content.Intent
 import android.content.IntentFilter
-import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.provider.Settings
-import android.support.design.widget.BottomNavigationView
-import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.app.data.Migration
 import com.mataku.scrobscrob.app.receiver.AppleMusicNotificationReceiver

@@ -1,14 +1,14 @@
 package com.mataku.scrobscrob.app.ui.widget
 
 import android.content.Context
-import android.databinding.DataBindingUtil
 import android.net.Uri
-import android.support.constraint.ConstraintLayout
-import android.support.customtabs.CustomTabsIntent
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.LayoutInflater
+import androidx.browser.customtabs.CustomTabsIntent
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.databinding.DataBindingUtil
 import com.airbnb.epoxy.ModelProp
 import com.airbnb.epoxy.ModelView
 import com.mataku.scrobscrob.R

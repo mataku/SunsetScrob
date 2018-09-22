@@ -1,14 +1,11 @@
 package com.mataku.scrobscrob.app.ui.fragment
 
 import android.content.Context
-import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.app.model.entity.Album
 import com.mataku.scrobscrob.app.presenter.UserContentPresenter
@@ -16,7 +13,7 @@ import com.mataku.scrobscrob.app.ui.controller.TopAlbumController
 import com.mataku.scrobscrob.app.ui.view.UserContentViewCallback
 import com.mataku.scrobscrob.databinding.FragmentTopAlbumsBinding
 
-class TopAlbumContentFragment : Fragment(), UserContentViewCallback {
+class TopAlbumContentFragment : androidx.fragment.app.Fragment(), UserContentViewCallback {
 
     private lateinit var binding: FragmentTopAlbumsBinding
     private val presenter = UserContentPresenter(this)
@@ -50,8 +47,8 @@ class TopAlbumContentFragment : Fragment(), UserContentViewCallback {
 
     private fun setUp(userName: String) {
         presenter.getTopAlbums(userName, currentPage)
-        binding.topAlbumRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+        binding.topAlbumRecyclerView.addOnScrollListener(object : androidx.recyclerview.widget.RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: androidx.recyclerview.widget.RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
 
                 val userContentRecyclerView = binding.topAlbumRecyclerView
@@ -61,7 +58,7 @@ class TopAlbumContentFragment : Fragment(), UserContentViewCallback {
                     val totalCount = it.itemCount
                     val childCount = userContentRecyclerView.childCount
 
-                    val layoutManager = userContentRecyclerView.layoutManager as GridLayoutManager
+                    val layoutManager = userContentRecyclerView.layoutManager as androidx.recyclerview.widget.GridLayoutManager
                     val firstPosition = layoutManager.findFirstVisibleItemPosition()
                     if (totalCount == childCount + firstPosition) {
                         currentPage++
