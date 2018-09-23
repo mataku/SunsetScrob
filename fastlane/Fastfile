@@ -17,8 +17,8 @@ platform :android do
     gradle(task: 'assembleDebug')
   end
 
-  lane :releasebuild do
-    gradle(task: 'assembleRelease')
+  lane :bundle_release do
+    gradle(task: 'bundleRelease')
   end
 
 
