@@ -8,7 +8,7 @@ import kotlinx.coroutines.experimental.Job
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
 
-class LoginPresenter(var accessable: Boolean, var view: LoginViewCallback) {
+class LoginPresenter(private var accessible: Boolean, var view: LoginViewCallback) {
     private val appUtil = AppUtil()
     private val method = "auth.getMobileSession"
 
@@ -50,7 +50,7 @@ class LoginPresenter(var accessable: Boolean, var view: LoginViewCallback) {
 
     fun backToSettingsWhenLoggedIn(success: Boolean?, sessionKey: String) {
         if (success!! && sessionKey.isNotEmpty()) {
-            if (accessable) {
+            if (accessible) {
                 view.showSuccessMessage()
             } else {
                 view.showSuccessMessage()

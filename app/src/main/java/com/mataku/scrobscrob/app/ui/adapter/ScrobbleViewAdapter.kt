@@ -7,20 +7,30 @@ import com.bumptech.glide.Glide
 import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.app.model.Scrobble
 import com.mataku.scrobscrob.databinding.ViewScrobbleBinding
-import io.realm.RealmResults
 
-class ScrobbleViewAdapter(private val scrobbles: RealmResults<Scrobble>) : RecyclerView.Adapter<ScrobbleViewAdapter.ViewHolder>() {
+class ScrobbleViewAdapter() : RecyclerView.Adapter<ScrobbleViewAdapter.ViewHolder>() {
+
+    private var scrobbles: List<Scrobble> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ScrobbleViewAdapter.ViewHolder {
         val binding = ViewScrobbleBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
-    override fun getItemCount(): Int = scrobbles.size
+    fun setScrobbles(scrobbleList: List<Scrobble>) {
+        scrobbles = scrobbleList
+        notifyDataSetChanged()
+    }
+
+    override fun getItemCount(): Int {
+        return scrobbles.size
+    }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val scrobble = scrobbles[position]
-        holder.setScrobble(scrobble)
+        scrobble.let {
+            holder.setScrobble(it)
+        }
     }
 
     class ViewHolder(private val binding: ViewScrobbleBinding) : RecyclerView.ViewHolder(binding.root) {

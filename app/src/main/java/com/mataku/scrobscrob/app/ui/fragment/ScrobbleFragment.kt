@@ -58,12 +58,14 @@ class ScrobbleFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
     private fun setUpRecyclerView() {
         val scrobbles = Scrobble().getCurrentTracks()
-        val scrobbleViewAdapter = ScrobbleViewAdapter(scrobbles)
-        scrobbleViewAdapter.notifyDataSetChanged()
+        val scrobbleViewAdapter = ScrobbleViewAdapter()
         val scrobbleRecyclerView = binding.scrobbleListView
         scrobbleRecyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
         scrobbleRecyclerView.hasFixedSize()
-        scrobbleRecyclerView.adapter = scrobbleViewAdapter
+        if (scrobbleRecyclerView.adapter == null) {
+            scrobbleRecyclerView.adapter = scrobbleViewAdapter
+        }
+        scrobbleViewAdapter.setScrobbles(scrobbles)
     }
 
     private fun setUpNowPlayingView(track: Track) {
