@@ -184,11 +184,6 @@ class LoginActivity : AppCompatActivity(), LoginViewCallback {
         passwordView.requestFocus()
     }
 
-    private fun getSessionKey(): String {
-        val data = getSharedPreferences("DATA", Context.MODE_PRIVATE)
-        return data.getString("SessionKey", "")
-    }
-
     private fun isEnabledReadNotification(): Boolean {
         val contentResolver = contentResolver
         val rawListeners = Settings.Secure.getString(contentResolver,
