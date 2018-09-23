@@ -20,7 +20,9 @@ class ScrobbleViewAdapter(private val scrobbles: RealmResults<Scrobble>) : Recyc
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val scrobble = scrobbles[position]
-        holder.setScrobble(scrobble)
+        scrobble?.let {
+            holder.setScrobble(it)
+        }
     }
 
     class ViewHolder(private val binding: ViewScrobbleBinding) : RecyclerView.ViewHolder(binding.root) {
