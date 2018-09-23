@@ -1,24 +1,25 @@
 package com.mataku.scrobscrob.app.ui
 
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import android.preference.Preference
-import android.preference.PreferenceFragment
 import android.provider.Settings
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.preference.Preference
+import androidx.preference.PreferenceFragmentCompat
 import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.app.model.Scrobble
 import com.mataku.scrobscrob.app.presenter.SettingsPresenter
 import com.mataku.scrobscrob.app.ui.view.SettingsViewCallback
 
-class SettingsActivity : Activity() {
+class SettingsActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        fragmentManager.beginTransaction().replace(
+
+        supportFragmentManager.beginTransaction().replace(
                 android.R.id.content,
                 SettingsFragment()
         ).commit()
@@ -30,40 +31,40 @@ class SettingsActivity : Activity() {
         finish()
     }
 
-    class SettingsFragment : PreferenceFragment(), SettingsViewCallback {
+    class SettingsFragment : PreferenceFragmentCompat(), SettingsViewCallback {
         private lateinit var loginPreference: Preference
-        private lateinit var notificationPreference: Preference
         private lateinit var licensesPreference: Preference
+
+        override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        }
 
 
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
             addPreferencesFromResource(R.xml.preference)
-
-            var sharedPreferences = this.activity.getSharedPreferences("DATA", Context.MODE_PRIVATE)
-            val userName = sharedPreferences.getString("UserName", "")
-
             val presenter = SettingsPresenter(this)
-            presenter.setMessageAccordingToUserStatus(userName)
-            presenter.setDestinationAccordingToUserStatus(userName)
-            notificationPreference = findPreference("notification")
-            notificationPreference.onPreferenceClickListener = object : Preference.OnPreferenceClickListener {
-                override fun onPreferenceClick(preference: Preference): Boolean {
-                    val intent = Intent()
-                    intent.action = Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS
-                    startActivity(intent)
-                    showAllowServiceMessage()
-                    return true
-                }
+
+            val sharedPreferences = this.activity?.getSharedPreferences("DATA", Context.MODE_PRIVATE)
+            val userName = sharedPreferences?.getString("UserName", "")
+            userName?.let {
+                presenter.setMessageAccordingToUserStatus(it)
+                presenter.setDestinationAccordingToUserStatus(it)
+            }
+
+            val notificationPreference = findPreference("notification")
+            notificationPreference.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+                val intent = Intent()
+                intent.action = Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS
+                startActivity(intent)
+                showAllowServiceMessage()
+                true
             }
 
             licensesPreference = findPreference("licenses")
-            licensesPreference.onPreferenceClickListener = object : Preference.OnPreferenceClickListener {
-                override fun onPreferenceClick(preference: Preference?): Boolean {
-                    val intent = Intent(this@SettingsFragment.context, LicensesActivity::class.java)
-                    startActivity(intent)
-                    return true
-                }
+            licensesPreference.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+                val intent = Intent(this@SettingsFragment.context, LicensesActivity::class.java)
+                startActivity(intent)
+                true
             }
         }
 
@@ -76,39 +77,31 @@ class SettingsActivity : Activity() {
         override fun setMessageToLogOut(loggedInUserName: String) {
             loginPreference = findPreference("login")
             loginPreference.title = "Logout"
-            loginPreference.summary = "Login as ${loggedInUserName}"
+            loginPreference.summary = "Login as $loggedInUserName"
         }
 
         override fun setDestinationToMenuToLogIn() {
             loginPreference = findPreference("login")
-            loginPreference.onPreferenceClickListener = object : Preference.OnPreferenceClickListener {
-                override fun onPreferenceClick(preference: Preference): Boolean {
-                    activity.finish()
-                    showSettingsActivity()
-                    return true
-                }
+            loginPreference.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+                activity?.finish()
+                showSettingsActivity()
+                true
             }
         }
 
         override fun setDestinationToMenuToLogOut() {
             loginPreference = findPreference("login")
-            loginPreference.onPreferenceClickListener = object : Preference.OnPreferenceClickListener {
-                override fun onPreferenceClick(preference: Preference): Boolean {
-                    showAlert()
-                    return true
-                }
+            loginPreference.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+                showAlert()
+                true
             }
         }
 
-        private fun showNotificationAccessSettingMenu() {
-            val intent = Intent()
-            intent.action = Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS
-            startActivity(intent)
-        }
-
         private fun showSettingsActivity() {
-            val intent = Intent(activity.applicationContext, LoginActivity::class.java)
-            startActivity(intent)
+            activity?.let {
+                val intent = Intent(it.applicationContext, LoginActivity::class.java)
+                startActivity(intent)
+            }
         }
 
         private fun showAlert() {
@@ -116,35 +109,28 @@ class SettingsActivity : Activity() {
             alertDialog.setTitle("Logout")
             alertDialog.setMessage("Really?")
             alertDialog.setPositiveButton(
-                    "OK",
-                    object : DialogInterface.OnClickListener {
-                        override fun onClick(dialog: DialogInterface, which: Int) {
-                            removeSession()
-                            Scrobble().deleteAll()
-                            fragmentManager.beginTransaction().replace(
-                                    android.R.id.content,
-                                    SettingsFragment()
-                            ).commit()
-                            showLogOutMessage()
-                        }
-                    }
-            )
+                    "OK"
+            ) { _, _ ->
+                removeSession()
+                Scrobble().deleteAll()
+
+                fragmentManager?.beginTransaction()?.replace(
+                        android.R.id.content,
+                        SettingsFragment()
+                )?.commit()
+                showLogOutMessage()
+            }
 
             alertDialog.setNegativeButton(
-                    "Cancel",
-                    object : DialogInterface.OnClickListener {
-                        override fun onClick(dialog: DialogInterface, which: Int) {
-
-                        }
-                    }
-            )
+                    "Cancel"
+            ) { _, _ -> }
 
             alertDialog.create().show()
         }
 
         private fun removeSession() {
-            val sharedPreferences = activity.getSharedPreferences("DATA", Context.MODE_PRIVATE)
-            sharedPreferences.edit().clear().apply()
+            val sharedPreferences = activity?.getSharedPreferences("DATA", Context.MODE_PRIVATE)
+            sharedPreferences?.edit()?.clear()?.apply()
         }
 
 

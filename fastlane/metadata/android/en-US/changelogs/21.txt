@@ -1,0 +1,5 @@
+v0.2.1
+Fixed that the first element of the scrobbled list is not displayed
+
+v0.2.0
+Fixed crash when updated now playing
