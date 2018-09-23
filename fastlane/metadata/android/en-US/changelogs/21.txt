@@ -1,5 +1,5 @@
 v0.2.1
-Fixed crash when updated now playing
+Fixed that the first element of the scrobbled list is not displayed
 
-v0.0.9
-Added Your top artists content.
+v0.2.0
+Fixed crash when updated now playing
