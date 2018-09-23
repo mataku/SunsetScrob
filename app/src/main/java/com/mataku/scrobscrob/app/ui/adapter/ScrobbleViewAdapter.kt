@@ -28,7 +28,7 @@ class ScrobbleViewAdapter() : RecyclerView.Adapter<ScrobbleViewAdapter.ViewHolde
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val scrobble = scrobbles[position]
-        scrobble?.let {
+        scrobble.let {
             holder.setScrobble(it)
         }
     }
