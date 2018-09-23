@@ -28,16 +28,16 @@ platform :android do
     gradle(task: 'clean')
     gradle(task: "assembleRelease")
     supply(
-      apk: ENV['BITRISE_APK_PATH']
+      aab: ENV['BITRISE_APK_PATH']
     )
   end
 
   desc "Deploy a new version to the Google Play internal stage"
   lane :deploy_test do
     gradle(task: 'clean')
-    gradle(task: "assembleRelease")
+    gradle(task: "bundleRelease")
     supply(
-      apk: 'app/build/outputs/apk/release/app-release.apk',
+      aab: 'app/build/outputs/bundle/release/app.aab',
       track: 'internal'
     )
   end
