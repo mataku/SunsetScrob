@@ -97,12 +97,6 @@ class SettingsActivity : AppCompatActivity() {
             }
         }
 
-        private fun showNotificationAccessSettingMenu() {
-            val intent = Intent()
-            intent.action = Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS
-            startActivity(intent)
-        }
-
         private fun showSettingsActivity() {
             activity?.let {
                 val intent = Intent(it.applicationContext, LoginActivity::class.java)
@@ -129,7 +123,7 @@ class SettingsActivity : AppCompatActivity() {
 
             alertDialog.setNegativeButton(
                     "Cancel"
-            ) { dialog, which -> }
+            ) { _, _ -> }
 
             alertDialog.create().show()
         }
