@@ -63,6 +63,7 @@ dependencies {
     implementation "androidx.cardview:cardview:$versions.androidx"
     implementation "androidx.browser:browser:$versions.androidx"
     implementation "com.google.android.material:material:$versions.androidx"
+    implementation "androidx.preference:preference:$versions.androidx"
 
     implementation "com.squareup.okhttp3:logging-interceptor:$versions.okhttp"
     implementation "com.squareup.okhttp3:okhttp:$versions.okhttp"

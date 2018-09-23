@@ -9,7 +9,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.0-rc03'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-        classpath "io.realm:realm-gradle-plugin:3.5.0"
+        classpath "io.realm:realm-gradle-plugin:5.4.1"
         classpath 'com.deploygate:gradle:1.1.4'
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.17.0'
         classpath 'com.cookpad.android.licensetools:license-tools-plugin:1.2.0'
@@ -35,7 +35,7 @@ buildscript {
             'kotlinCoroutines'               : '0.24.0',
             'kotshi'                         : '1.0.5',
             'okhttp'                         : '3.11.0',
-            'realmAndroidAdapters'           : '2.1.1',
+            'realmAndroidAdapters'           : '3.0.0',
             'retrofitKotlinCoroutinesAdapter': '1.0.0',
             'robolectric'                    : '3.6.1',
             'rxjava'                         : '2.2.2',
