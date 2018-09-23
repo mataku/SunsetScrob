@@ -1,0 +1,5 @@
+v0.2.1
+Fixed crash when updated now playing
+
+v0.0.9
+Added Your top artists content.
