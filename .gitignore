@@ -55,3 +55,4 @@ app/app-publisher.json
 .mainframer/config
 mainframer.sh
 fastlane/report.xml
+fastlane/README.md
