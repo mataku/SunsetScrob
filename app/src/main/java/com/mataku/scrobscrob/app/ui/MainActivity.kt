@@ -129,6 +129,7 @@ class MainActivity : AppCompatActivity(), MainViewCallback {
         viewPager.also {
             it.adapter = adapter
             it.addOnPageChangeListener(adapter)
+            it.offscreenPageLimit = 2
         }
         val navItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
