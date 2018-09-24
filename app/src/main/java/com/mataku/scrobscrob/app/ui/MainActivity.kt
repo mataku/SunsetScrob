@@ -106,16 +106,22 @@ class MainActivity : AppCompatActivity(), MainViewCallback {
                 when (position) {
                     ContentsAdapter.SCROBBLE_POSITION -> {
 //                        self.supportActionBar?.show()
+                        binding.fab.hide()
                         self.title = "Latest 20 scrobbles (Beta)"
                     }
                     ContentsAdapter.TOP_ALBUM_POSITION -> {
 //                        self.supportActionBar?.hide()
+                        binding.fab.show()
                         self.title = "Top Albums"
                     }
                     else -> {
+                        binding.fab.show()
                         self.title = "Top Artists"
                     }
                 }
+            }
+
+            override fun onPageScrollStateChanged(state: Int) {
             }
         }
 
