@@ -111,11 +111,11 @@ class MainActivity : AppCompatActivity(), MainViewCallback {
                     }
                     ContentsAdapter.TOP_ALBUM_POSITION -> {
 //                        self.supportActionBar?.hide()
-                        binding.fab.show()
+                        binding.fab.hide()
                         self.title = "Top Albums"
                     }
                     else -> {
-                        binding.fab.show()
+                        binding.fab.hide()
                         self.title = "Top Artists"
                     }
                 }
