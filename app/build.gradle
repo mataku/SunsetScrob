@@ -123,8 +123,3 @@ dependencyUpdates.resolutionStrategy = {
         }
     }
 }
-kotlin {
-    experimental {
-        coroutines "enable"
-    }
-}
