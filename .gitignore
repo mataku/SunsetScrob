@@ -56,3 +56,4 @@ app/app-publisher.json
 mainframer.sh
 fastlane/report.xml
 fastlane/README.md
+google-services.json
