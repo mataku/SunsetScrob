@@ -38,7 +38,7 @@ buildscript {
             'realmAndroidAdapters'           : '3.0.0',
             'retrofitKotlinCoroutinesAdapter': '0.9.2',
             'robolectric'                    : '3.6.1',
-            'rxjava'                         : '2.2.2',
+            'rxjava'                         : '2.2.3',
             'androidx'                       : '1.0.0',
             'retrofit'                       : '2.4.0'
     ]
