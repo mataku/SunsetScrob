@@ -92,7 +92,6 @@ dependencies {
     implementation "se.ansman.kotshi:api:$versions.kotshi"
     kapt "se.ansman.kotshi:compiler:$versions.kotshi"
 
-    implementation "io.realm:android-adapters:$versions.realmAndroidAdapters"
     implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:$versions.retrofitKotlinCoroutinesAdapter"
     implementation "com.google.firebase:firebase-core:$versions.firebase"
     implementation "com.crashlytics.sdk.android:crashlytics:$versions.crashlytics"

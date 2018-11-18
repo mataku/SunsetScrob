@@ -12,7 +12,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-        classpath "io.realm:realm-gradle-plugin:5.4.1"
+        classpath "io.realm:realm-gradle-plugin:5.8.0"
         classpath 'com.deploygate:gradle:1.1.4'
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.17.0'
         classpath 'com.cookpad.android.licensetools:license-tools-plugin:1.2.0'
