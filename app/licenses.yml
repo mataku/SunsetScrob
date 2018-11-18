@@ -44,12 +44,6 @@
   name: glide-transformations
   copyrightHolder: Wasabeef
   license: The Apache Software License, Version 2.0
-- artifact: io.realm:android-adapters:+
-  name: android-adapters
-  copyrightHolder: Realm
-  license: The Apache Software License, Version 2.0
-  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
-  url: http://realm.io
 - artifact: org.reactivestreams:reactive-streams:+
   name: reactive-streams
   copyrightHolder: reactive-streams
@@ -760,3 +754,110 @@
   license: The Apache Software License, Version 2.0
   licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
   url: http://developer.android.com/tools/extras/support-library.html
+- artifact: com.google.firebase:firebase-iid:+
+  name: firebase-iid
+  copyrightHolder: Google
+  license: Android Software Development Kit License
+  licenseUrl: https://developer.android.com/studio/terms.html
+- artifact: com.google.android.gms:play-services-tasks:+
+  name: play-services-tasks
+  copyrightHolder: Google
+  license: Android Software Development Kit License
+  licenseUrl: https://developer.android.com/studio/terms.html
+- artifact: com.google.android.gms:play-services-stats:+
+  name: play-services-stats
+  copyrightHolder: Google
+  license: Android Software Development Kit License
+  licenseUrl: https://developer.android.com/studio/terms.html
+- artifact: com.google.firebase:firebase-measurement-connector:+
+  name: firebase-measurement-connector
+  copyrightHolder: Google
+  license: Android Software Development Kit License
+  licenseUrl: https://developer.android.com/studio/terms.html
+- artifact: com.google.android.gms:play-services-measurement-base:+
+  name: play-services-measurement-base
+  copyrightHolder: Google
+  license: Android Software Development Kit License
+  licenseUrl: https://developer.android.com/studio/terms.html
+- artifact: com.google.firebase:firebase-measurement-connector-impl:+
+  name: firebase-measurement-connector-impl
+  copyrightHolder: Google
+  license: Android Software Development Kit License
+  licenseUrl: https://developer.android.com/studio/terms.html
+- artifact: com.google.firebase:firebase-iid-interop:+
+  name: firebase-iid-interop
+  copyrightHolder: Google
+  license: Android Software Development Kit License
+  licenseUrl: https://developer.android.com/studio/terms.html
+- artifact: androidx.media:media:+
+  name: Android Support Library media compat
+  copyrightHolder: Google
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: http://developer.android.com/tools/extras/support-library.html
+- artifact: io.fabric.sdk.android:fabric:+
+  name: Android SDK Fabric
+  copyrightHolder: Fabric
+  license: Fabric Software and Services Agreement
+  licenseUrl: https://fabric.io/terms
+- artifact: com.crashlytics.sdk.android:beta:+
+  name: Android SDK for Beta
+  copyrightHolder: Crashlytics
+  license: Crashlytics Terms of Service
+  licenseUrl: http://try.crashlytics.com/terms/terms-of-service.pdf
+- artifact: com.google.firebase:firebase-common:+
+  name: firebase-common
+  copyrightHolder: Google
+  license: Android Software Development Kit License
+  licenseUrl: https://developer.android.com/studio/terms.html
+- artifact: com.crashlytics.sdk.android:crashlytics:+
+  name: Android SDK Crashlytics
+  copyrightHolder: Crashlytics
+  license: Crashlytics Terms of Service
+  licenseUrl: http://try.crashlytics.com/terms/terms-of-service.pdf
+- artifact: com.google.android.gms:play-services-base:+
+  name: play-services-base
+  copyrightHolder: Google
+  license: Android Software Development Kit License
+  licenseUrl: https://developer.android.com/studio/terms.html
+- artifact: com.google.android.gms:play-services-ads-identifier:+
+  name: play-services-ads-identifier
+  copyrightHolder: Google
+  license: Android Software Development Kit License
+  licenseUrl: https://developer.android.com/studio/terms.html
+- artifact: com.google.firebase:firebase-analytics-impl:+
+  name: firebase-analytics-impl
+  copyrightHolder: Google
+  license: Android Software Development Kit License
+  licenseUrl: https://developer.android.com/studio/terms.html
+- artifact: com.google.firebase:firebase-core:+
+  name: firebase-core
+  copyrightHolder: Google
+  license: Android Software Development Kit License
+  licenseUrl: https://developer.android.com/studio/terms.html
+- artifact: com.crashlytics.sdk.android:answers:+
+  name: Android SDK Answers
+  copyrightHolder: Crashlytics
+  license: Answers Terms of Service
+  licenseUrl: https://answers.io/terms
+- artifact: com.google.firebase:firebase-analytics:+
+  name: firebase-analytics
+  copyrightHolder: Google
+  license: Android Software Development Kit License
+  licenseUrl: https://developer.android.com/studio/terms.html
+- artifact: androidx.legacy:legacy-support-v4:+
+  name: Android Support Library v4
+  copyrightHolder: Google
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: http://developer.android.com/tools/extras/support-library.html
+- artifact: com.crashlytics.sdk.android:crashlytics-core:+
+  name: Android SDK Crashlytics Core
+  copyrightHolder: Crashlytics
+  license: Crashlytics Terms of Service
+  licenseUrl: http://try.crashlytics.com/terms/terms-of-service.pdf
+- artifact: com.google.android.gms:play-services-basement:+
+  name: play-services-basement
+  copyrightHolder: Google
+  license: Android Software Development Kit License
+  licenseUrl: https://developer.android.com/studio/terms.html
