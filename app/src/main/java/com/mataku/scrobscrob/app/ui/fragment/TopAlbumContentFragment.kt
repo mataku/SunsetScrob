@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.app.model.entity.Album
 import com.mataku.scrobscrob.app.presenter.UserContentPresenter
@@ -24,7 +23,7 @@ class TopAlbumContentFragment : androidx.fragment.app.Fragment(), UserContentVie
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_top_albums, null, false)
-        binding = DataBindingUtil.bind(view)!!
+        binding = FragmentTopAlbumsBinding.bind(view)
         controller = TopAlbumController(this.context)
 
         binding.topAlbumRecyclerView.setController(controller)
@@ -47,7 +46,8 @@ class TopAlbumContentFragment : androidx.fragment.app.Fragment(), UserContentVie
 
     private fun setUp(userName: String) {
         presenter.getTopAlbums(userName, currentPage)
-        binding.topAlbumRecyclerView.addOnScrollListener(object : androidx.recyclerview.widget.RecyclerView.OnScrollListener() {
+        binding.topAlbumRecyclerView.addOnScrollListener(object :
+            androidx.recyclerview.widget.RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: androidx.recyclerview.widget.RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
 
@@ -58,7 +58,8 @@ class TopAlbumContentFragment : androidx.fragment.app.Fragment(), UserContentVie
                     val totalCount = it.itemCount
                     val childCount = userContentRecyclerView.childCount
 
-                    val layoutManager = userContentRecyclerView.layoutManager as androidx.recyclerview.widget.GridLayoutManager
+                    val layoutManager =
+                        userContentRecyclerView.layoutManager as androidx.recyclerview.widget.GridLayoutManager
                     val firstPosition = layoutManager.findFirstVisibleItemPosition()
                     if (totalCount == childCount + firstPosition) {
                         currentPage++

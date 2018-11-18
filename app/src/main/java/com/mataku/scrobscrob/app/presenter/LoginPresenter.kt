@@ -50,8 +50,8 @@ class LoginPresenter(private var accessible: Boolean, var view: LoginViewCallbac
         }
     }
 
-    fun backToSettingsWhenLoggedIn(success: Boolean?, sessionKey: String) {
-        if (success!! && sessionKey.isNotEmpty()) {
+    fun backToSettingsWhenLoggedIn(success: Boolean, sessionKey: String) {
+        if (success && sessionKey.isNotEmpty()) {
             if (accessible) {
                 view.showSuccessMessage()
             } else {

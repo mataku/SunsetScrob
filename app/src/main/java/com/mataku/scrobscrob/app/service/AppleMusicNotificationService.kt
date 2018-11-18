@@ -3,6 +3,7 @@ package com.mataku.scrobscrob.app.service
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.text.TextUtils
@@ -16,7 +17,6 @@ import com.mataku.scrobscrob.app.presenter.AppleMusicNotificationServicePresente
 import com.mataku.scrobscrob.app.ui.view.NotificationServiceInterface
 import com.mataku.scrobscrob.app.util.AppUtil
 import com.mataku.scrobscrob.app.util.SharedPreferencesHelper
-import io.realm.Realm
 
 class AppleMusicNotificationService : NotificationListenerService(), NotificationServiceInterface {
     private val APPLE_MUSIC_PACKAGE_NAME = "com.apple.android.music"
@@ -31,7 +31,15 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
 
         try {
             val appleMusicPackageInfo = packageManager.getPackageInfo(APPLE_MUSIC_PACKAGE_NAME, 0)
-            appUtil.debugLog("AppleMusicNotification", "Apple music is installed! (version: ${appleMusicPackageInfo.longVersionCode}")
+            val versionCode: Any = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                appleMusicPackageInfo.longVersionCode
+            } else {
+                appleMusicPackageInfo.versionCode
+            }
+            appUtil.debugLog(
+                "AppleMusicNotification",
+                "Apple music is installed! (version: $versionCode)"
+            )
         } catch (e: PackageManager.NameNotFoundException) {
             appUtil.debugLog("AppleMusicNotification", "Apple music is NOT installed!")
         }
@@ -46,7 +54,11 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
     override fun onNotificationPosted(sbn: StatusBarNotification) {
         super.onNotificationPosted(sbn)
         val sharedPreferences = getSharedPreferences("DATA", Context.MODE_PRIVATE)
-        val sessionKey = sharedPreferences.getString("SessionKey", "")
+        val sessionKey = sharedPreferences.getString("SessionKey", "") ?: ""
+        if (sessionKey.isBlank()) {
+            return
+        }
+
         val sharedPreferencesHelper = SharedPreferencesHelper(this)
         var trackName: String?
         var artistName: String?
@@ -76,9 +88,9 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
                     return
                 }
                 presenter.scrobble(
-                        track,
-                        sessionKey!!,
-                        sharedPreferencesHelper.getTimeStamp()
+                    track,
+                    sessionKey,
+                    sharedPreferencesHelper.getTimeStamp()
                 )
                 appUtil.debugLog("ScrobbleApi", "called")
             } else {
@@ -88,7 +100,7 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
 
         previousTrackName = trackName
         sharedPreferencesHelper.setTimeStamp()
-        presenter.getTrackInfo(trackName, artistName, sessionKey!!)
+        presenter.getTrackInfo(trackName, artistName, sessionKey)
         val intent = Intent("AppleMusic")
         sendBroadcast(intent)
     }
@@ -130,9 +142,9 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
 
     private fun dummyTrack(): Track {
         return Track(
-                getString(R.string.label_not_playing_message),
-                getString(R.string.label_now_playing),
-                getString(R.string.label_not_playing)
+            getString(R.string.label_not_playing_message),
+            getString(R.string.label_now_playing),
+            getString(R.string.label_not_playing)
         )
     }
 }

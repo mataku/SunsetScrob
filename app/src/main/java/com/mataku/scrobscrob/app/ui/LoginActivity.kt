@@ -107,7 +107,7 @@ class LoginActivity : AppCompatActivity(), LoginViewCallback {
         if (cancel) {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
-            focusView!!.requestFocus()
+            focusView?.requestFocus()
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
@@ -132,7 +132,8 @@ class LoginActivity : AppCompatActivity(), LoginViewCallback {
 
         loginFormView.visibility = if (show) View.GONE else View.VISIBLE
         loginFormView.animate().setDuration(shortAnimTime.toLong()).alpha(
-                (if (show) 0 else 1).toFloat()).setListener(object : AnimatorListenerAdapter() {
+            (if (show) 0 else 1).toFloat()
+        ).setListener(object : AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: Animator) {
                 loginFormView.visibility = if (show) View.GONE else View.VISIBLE
             }
@@ -140,7 +141,8 @@ class LoginActivity : AppCompatActivity(), LoginViewCallback {
 
         progressView.visibility = if (show) View.VISIBLE else View.GONE
         progressView.animate().setDuration(shortAnimTime.toLong()).alpha(
-                (if (show) 1 else 0).toFloat()).setListener(object : AnimatorListenerAdapter() {
+            (if (show) 1 else 0).toFloat()
+        ).setListener(object : AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: Animator) {
                 progressView.visibility = if (show) View.VISIBLE else View.GONE
             }
@@ -186,24 +188,26 @@ class LoginActivity : AppCompatActivity(), LoginViewCallback {
 
     private fun isEnabledReadNotification(): Boolean {
         val contentResolver = contentResolver
-        val rawListeners = Settings.Secure.getString(contentResolver,
-                "enabled_notification_listeners")
+        val rawListeners = Settings.Secure.getString(
+            contentResolver,
+            "enabled_notification_listeners"
+        )
         if (rawListeners == null || rawListeners == "") {
             return false
         } else {
             val listeners = rawListeners.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
             listeners
-                    .filter { it.startsWith(packageName) }
-                    .forEach { return true }
+                .filter { it.startsWith(packageName) }
+                .forEach { return true }
         }
         return false
     }
 
     private fun dummyTrack(): Track {
         return Track(
-                getString(R.string.label_not_playing_message),
-                getString(R.string.label_now_playing),
-                getString(R.string.label_not_playing)
+            getString(R.string.label_not_playing_message),
+            getString(R.string.label_now_playing),
+            getString(R.string.label_not_playing)
         )
     }
 }

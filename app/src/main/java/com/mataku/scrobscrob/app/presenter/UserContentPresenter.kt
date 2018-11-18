@@ -29,8 +29,8 @@ class UserContentPresenter(var view: UserContentViewCallback) {
         when (result.code()) {
             200 -> {
                 result.body()?.topAlbums.let {
-                    it?.albums.let { albumList ->
-                        view.show(albumList!!)
+                    it?.albums?.let { albumList ->
+                        view.show(albumList)
                     }
                 }
             }

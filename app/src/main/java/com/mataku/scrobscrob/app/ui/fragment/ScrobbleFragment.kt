@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.mataku.scrobscrob.R
@@ -24,7 +23,7 @@ class ScrobbleFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val scrobbleView = inflater.inflate(R.layout.fragment_scrobble, container, false)
-        binding = DataBindingUtil.bind(scrobbleView)!!
+        binding = FragmentScrobbleBinding.bind(scrobbleView)
         setUpSwipeRefreshView()
         setUpRecyclerView()
         setUpNowPlayingView(dummyTrack())
@@ -48,10 +47,11 @@ class ScrobbleFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     private fun setUpSwipeRefreshView() {
         swipeRefreshLayout = binding.swipeRefreshLayout
         swipeRefreshLayout.setColorSchemeResources(
-                R.color.colorAccent,
-                android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light,
-                R.color.yellow)
+            R.color.colorAccent,
+            android.R.color.holo_blue_bright,
+            android.R.color.holo_green_light,
+            R.color.yellow
+        )
         swipeRefreshLayout.setOnRefreshListener(this)
     }
 
@@ -74,21 +74,26 @@ class ScrobbleFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
     private fun dummyTrack(): Track {
         val notLoggedInTrack = Track(
-                getString(R.string.label_message_to_log_in),
-                getString(R.string.label_now_playing),
-                getString(R.string.label_not_logged_in)
+            getString(R.string.label_message_to_log_in),
+            getString(R.string.label_now_playing),
+            getString(R.string.label_not_logged_in)
         )
 
-        context ?: return notLoggedInTrack
-        val sharedPreferencesHelper = SharedPreferencesHelper(context!!)
-        if (sharedPreferencesHelper.getSessionKey().isEmpty()) {
+        if (context == null) {
             return notLoggedInTrack
         }
 
+        context?.let {
+            val sharedPreferencesHelper = SharedPreferencesHelper(it)
+            if (sharedPreferencesHelper.getSessionKey().isEmpty()) {
+                return notLoggedInTrack
+            }
+        }
+
         return Track(
-                getString(R.string.label_not_playing_message),
-                getString(R.string.label_now_playing),
-                getString(R.string.label_not_playing)
+            getString(R.string.label_not_playing_message),
+            getString(R.string.label_now_playing),
+            getString(R.string.label_not_playing)
         )
     }
 }

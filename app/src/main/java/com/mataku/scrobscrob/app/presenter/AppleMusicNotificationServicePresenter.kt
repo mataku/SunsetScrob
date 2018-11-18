@@ -125,9 +125,10 @@ class AppleMusicNotificationServicePresenter(private var notificationServiceInte
                         trackDuration = duration.toLong() / 1000L
                     }
                     try {
-                        val imageList = it?.album?.imageList
-                        albumArtwork = imageList!![1].imageUrl
-                    } catch (e: NullPointerException) {
+                        it?.album?.imageList?.let { list ->
+                            albumArtwork = list[1].imageUrl
+                        }
+                    } catch (e: Exception) {
                     }
                 }
                 // Use default value if duration is 0

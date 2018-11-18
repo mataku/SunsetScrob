@@ -22,20 +22,27 @@ class TopArtistsRecyclerView : EpoxyRecyclerView {
         attrs: AttributeSet?,
         defStyleAttr: Int
     ) : super(context, attrs, defStyleAttr) {
-        val gridLayoutManager = androidx.recyclerview.widget.GridLayoutManager(context, 2)
-        this.addItemDecoration(ArtistItemDecoration.createDefaultDecoration(context!!))
+        context?.let {
+            val gridLayoutManager = androidx.recyclerview.widget.GridLayoutManager(it, 2)
+            this.addItemDecoration(ArtistItemDecoration.createDefaultDecoration(it))
 
 //        val staggeredLayoutManager = StaggeredGridLayoutManager(12, StaggeredGridLayoutManager.VERTICAL)
 //        staggeredLayoutManager.gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_NONE
 
 //        staggeredLayoutManager.gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_NONE
-        this.layoutManager = gridLayoutManager
+            this.layoutManager = gridLayoutManager
+        }
     }
 
     private class ArtistItemDecoration(space: Int) : androidx.recyclerview.widget.RecyclerView.ItemDecoration() {
         private var space: Int = space
 
-        override fun getItemOffsets(outRect: Rect, view: View, parent: androidx.recyclerview.widget.RecyclerView, state: androidx.recyclerview.widget.RecyclerView.State) {
+        override fun getItemOffsets(
+            outRect: Rect,
+            view: View,
+            parent: androidx.recyclerview.widget.RecyclerView,
+            state: androidx.recyclerview.widget.RecyclerView.State
+        ) {
             outRect.top = space
             outRect.left = space
             outRect.right = space

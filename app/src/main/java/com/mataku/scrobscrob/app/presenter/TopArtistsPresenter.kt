@@ -29,8 +29,8 @@ class TopArtistsPresenter(var view: TopArtistsContentViewCallback) {
         when (result.code()) {
             200 -> {
                 result.body()?.topArtists.let {
-                    it?.artists.let { artistList ->
-                        view.show(artistList!!)
+                    it?.artists?.let { artistList ->
+                        view.show(artistList)
                     }
                 }
             }
