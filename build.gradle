@@ -26,7 +26,7 @@ buildscript {
 
     ext.versions = [
             'constraintLayout'               : '1.1.3',
-            'epoxy'                          : '3.0.0-rc1',
+            'epoxy'                          : '3.0.0',
             'glide'                          : '4.8.0',
             'glideTransformations'           : '3.3.0',
             'guava'                          : '22.0',
