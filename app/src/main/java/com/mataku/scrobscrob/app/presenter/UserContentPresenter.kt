@@ -13,7 +13,9 @@ class UserContentPresenter(var view: UserContentViewCallback) {
 
     private val appUtil = AppUtil()
 
-    private val coroutineContext = Job() + Dispatchers.Main
+    private val job = Job()
+
+    private val coroutineContext = job + Dispatchers.Main
 
     fun getTopAlbums(userName: String, page: Int) {
         CoroutineScope(coroutineContext).launch {

@@ -13,8 +13,9 @@ import kotlinx.coroutines.launch
 class LoginPresenter(private var accessible: Boolean, var view: LoginViewCallback) {
     private val appUtil = AppUtil()
     private val method = "auth.getMobileSession"
+    private val job = Job()
 
-    private val coroutineContext = Job() + Dispatchers.Main
+    private val coroutineContext = job + Dispatchers.Main
 
     fun auth(userName: String, password: String) {
         CoroutineScope(coroutineContext).launch {

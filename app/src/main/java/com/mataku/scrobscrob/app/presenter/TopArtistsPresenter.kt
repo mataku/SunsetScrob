@@ -13,7 +13,9 @@ class TopArtistsPresenter(var view: TopArtistsContentViewCallback) {
 
     private val appUtil = AppUtil()
 
-    private val coroutineContext = Job() + Dispatchers.Main
+    private val job = Job()
+
+    private val coroutineContext = job + Dispatchers.Main
 
     fun getTopArtists(userName: String, page: Int) {
         CoroutineScope(coroutineContext).launch {
