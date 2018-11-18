@@ -4,7 +4,11 @@ import com.mataku.scrobscrob.app.model.api.LastFmApiClient
 import com.mataku.scrobscrob.app.model.api.service.AuthMobileSessionService
 import com.mataku.scrobscrob.app.ui.view.LoginViewCallback
 import com.mataku.scrobscrob.app.util.AppUtil
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 
 class LoginPresenter(private var accessible: Boolean, var view: LoginViewCallback) {
     private val appUtil = AppUtil()
@@ -30,7 +34,6 @@ class LoginPresenter(private var accessible: Boolean, var view: LoginViewCallbac
 
         val apiSig: String = appUtil.generateApiSig(params)
         val client = LastFmApiClient.create(AuthMobileSessionService::class.java)
-
 
         val result = client.auth(userName, password, apiSig).await()
         when (result.code()) {

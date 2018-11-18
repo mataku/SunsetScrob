@@ -22,15 +22,18 @@ class TopArtistView : ConstraintLayout {
     private lateinit var binding: ModelTopArtistViewBinding
 
     constructor(
-            context: Context?
+        context: Context?
     ) : this(context, null)
 
     constructor(
-            context: Context?, attrs: AttributeSet?
+        context: Context?,
+        attrs: AttributeSet?
     ) : this(context, attrs, 0)
 
     constructor(
-            context: Context?, attrs: AttributeSet?, defStyleAttr: Int
+        context: Context?,
+        attrs: AttributeSet?,
+        defStyleAttr: Int
     ) : super(context, attrs, defStyleAttr) {
         context ?: return
         val inflater = LayoutInflater.from(context)
@@ -70,7 +73,6 @@ class TopArtistView : ConstraintLayout {
             }
         }
     }
-
 
     @ModelProp
     fun setImageSize(size: Int) {

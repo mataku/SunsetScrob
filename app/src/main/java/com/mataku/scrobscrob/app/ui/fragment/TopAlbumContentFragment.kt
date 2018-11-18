@@ -64,7 +64,6 @@ class TopAlbumContentFragment : androidx.fragment.app.Fragment(), UserContentVie
                         currentPage++
                         presenter.getTopAlbums(userName, currentPage)
                     }
-
                 }
             }
         })

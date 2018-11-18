@@ -8,7 +8,7 @@ class TopArtistsApiResponse(@Json(name = "topartists") val topArtists: TopArtist
 
     @JsonSerializable
     data class TopArtists(
-            @Json(name = "artist")
-            val artists: List<Artist>
+        @Json(name = "artist")
+        val artists: List<Artist>
     )
 }

@@ -8,12 +8,12 @@ import io.realm.Sort
 import io.realm.annotations.PrimaryKey
 
 open class Scrobble(
-        @PrimaryKey
-        open var id: Long = 0,
-        open var artistName: String = "",
-        open var trackName: String = "",
-        open var albumName: String = "",
-        open var artwork: String = ""
+    @PrimaryKey
+    open var id: Long = 0,
+    open var artistName: String = "",
+    open var trackName: String = "",
+    open var albumName: String = "",
+    open var artwork: String = ""
 ) : RealmObject() {
     fun getCurrentTracks(): RealmResults<Scrobble> {
         var limit = AppUtil().latestScrobbleCountToDisplay

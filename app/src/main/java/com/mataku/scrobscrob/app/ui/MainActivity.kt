@@ -19,7 +19,6 @@ import com.mataku.scrobscrob.databinding.ActivityMainBinding
 import io.realm.Realm
 import io.realm.RealmConfiguration
 
-
 class MainActivity : AppCompatActivity(), MainViewCallback {
     private var receiver = AppleMusicNotificationReceiver()
     private lateinit var sharedPreferencesHelper: SharedPreferencesHelper

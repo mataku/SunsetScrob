@@ -38,7 +38,6 @@ class SettingsActivity : AppCompatActivity() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         }
 
-
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
             addPreferencesFromResource(R.xml.preference)
@@ -132,7 +131,6 @@ class SettingsActivity : AppCompatActivity() {
             val sharedPreferences = activity?.getSharedPreferences("DATA", Context.MODE_PRIVATE)
             sharedPreferences?.edit()?.clear()?.apply()
         }
-
 
         private fun showLogOutMessage() {
             Toast.makeText(this.activity, "Logged out", Toast.LENGTH_SHORT).show()

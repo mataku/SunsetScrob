@@ -13,5 +13,4 @@ interface AuthMobileSessionService {
         @Query("password") password: String,
         @Query("api_sig") apiSig: String
     ): Deferred<Response<MobileSessionApiResponse>>
-
 }

@@ -45,7 +45,6 @@ class ScrobbleFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         swipeRefreshLayout.isRefreshing = false
     }
 
-
     private fun setUpSwipeRefreshView() {
         swipeRefreshLayout = binding.swipeRefreshLayout
         swipeRefreshLayout.setColorSchemeResources(
