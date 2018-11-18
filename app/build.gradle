@@ -93,6 +93,7 @@ dependencies {
 
     implementation "io.realm:android-adapters:$versions.realmAndroidAdapters"
     implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:$versions.retrofitKotlinCoroutinesAdapter"
+    implementation "com.google.firebase:firebase-core:$versions.firebase"
 
     testImplementation "junit:junit:$versions.junit"
     testImplementation "com.google.guava:guava:$versions.guava"
@@ -100,10 +101,13 @@ dependencies {
     testImplementation "org.robolectric:robolectric:$versions.robolectric"
     testImplementation "com.squareup.okhttp3:mockwebserver:$versions.okhttp"
 }
+
 repositories {
+    google()
+    jcenter()
     mavenCentral()
     maven {
-        url 'https://maven.google.com'
+      url 'https://maven.google.com'
     }
 }
 
@@ -123,3 +127,5 @@ dependencyUpdates.resolutionStrategy = {
         }
     }
 }
+
+apply plugin: 'com.google.gms.google-services'
