@@ -9,8 +9,8 @@ import retrofit2.http.Query
 interface AlbumInfoService {
     @GET("/2.0/?method=album.getInfo&format=json")
     fun getAlbumInfo(
-            @Query("album") album: String,
-            @Query("artist") artist: String,
-            @Query("track") track: String
+        @Query("album") album: String,
+        @Query("artist") artist: String,
+        @Query("track") track: String
     ): Single<Response<AlbumInfoApiResponse>>
 }

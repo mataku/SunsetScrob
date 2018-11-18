@@ -5,8 +5,8 @@ import se.ansman.kotshi.JsonSerializable
 
 @JsonSerializable
 data class NowPlayingAlbum(
-        val corrected: String,
+    val corrected: String,
 
-        @Json(name = "#text")
-        val text: String
+    @Json(name = "#text")
+    val text: String
 )

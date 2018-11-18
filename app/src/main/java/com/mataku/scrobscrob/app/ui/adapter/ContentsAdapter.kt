@@ -32,7 +32,6 @@ open class ContentsAdapter(fragmentManager: FragmentManager) : FragmentPagerAdap
     }
 
     override fun onPageSelected(position: Int) {
-
     }
 
     companion object {

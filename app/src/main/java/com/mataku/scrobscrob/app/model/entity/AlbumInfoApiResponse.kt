@@ -5,6 +5,6 @@ import se.ansman.kotshi.JsonSerializable
 
 @JsonSerializable
 data class AlbumInfoApiResponse(
-        @Json(name = "album")
-        val albumInfo: AlbumInfo
+    @Json(name = "album")
+    val albumInfo: AlbumInfo
 )

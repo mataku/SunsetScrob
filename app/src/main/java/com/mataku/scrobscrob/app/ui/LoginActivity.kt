@@ -207,4 +207,3 @@ class LoginActivity : AppCompatActivity(), LoginViewCallback {
         )
     }
 }
-

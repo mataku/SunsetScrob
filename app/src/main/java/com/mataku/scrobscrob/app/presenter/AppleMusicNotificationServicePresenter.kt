@@ -7,7 +7,11 @@ import com.mataku.scrobscrob.app.model.api.service.TrackScrobbleService
 import com.mataku.scrobscrob.app.model.api.service.TrackUpdateNowPlayingService
 import com.mataku.scrobscrob.app.ui.view.NotificationServiceInterface
 import com.mataku.scrobscrob.app.util.AppUtil
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 
 class AppleMusicNotificationServicePresenter(private var notificationServiceInterface: NotificationServiceInterface) {
 
@@ -26,8 +30,6 @@ class AppleMusicNotificationServicePresenter(private var notificationServiceInte
             setNowPlaying(trackName, artistName, sessionKey)
             getTrackInfo(artistName, trackName)
         }
-
-
     }
 
     fun scrobble(track: Track, sessionKey: String, timeStamp: Long) {
@@ -63,7 +65,6 @@ class AppleMusicNotificationServicePresenter(private var notificationServiceInte
                         notificationServiceInterface.saveScrobble(track)
 
                         appUtil.debugLog("scrobbleApi", "success")
-
                     }
                 }
             }
@@ -127,7 +128,6 @@ class AppleMusicNotificationServicePresenter(private var notificationServiceInte
                         val imageList = it?.album?.imageList
                         albumArtwork = imageList!![1].imageUrl
                     } catch (e: NullPointerException) {
-
                     }
                 }
                 // Use default value if duration is 0

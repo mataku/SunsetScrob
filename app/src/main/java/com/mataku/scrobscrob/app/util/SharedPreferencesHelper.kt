@@ -51,5 +51,4 @@ class SharedPreferencesHelper(context: Context) {
 
     private fun getPlayingTime(): Long =
             sharedPreferences.getLong("PlayingTime", appUtil.defaultPlayingTime)
-
 }

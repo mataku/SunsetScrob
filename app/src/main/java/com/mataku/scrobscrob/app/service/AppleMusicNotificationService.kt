@@ -18,7 +18,6 @@ import com.mataku.scrobscrob.app.util.AppUtil
 import com.mataku.scrobscrob.app.util.SharedPreferencesHelper
 import io.realm.Realm
 
-
 class AppleMusicNotificationService : NotificationListenerService(), NotificationServiceInterface {
     private val APPLE_MUSIC_PACKAGE_NAME = "com.apple.android.music"
     private val presenter = AppleMusicNotificationServicePresenter(this)

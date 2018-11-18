@@ -5,6 +5,6 @@ import se.ansman.kotshi.JsonSerializable
 
 @JsonSerializable
 data class ScrobblesApiResponse(
-        @Json(name = "scrobbles")
-        val scrobbles: Scrobbles
+    @Json(name = "scrobbles")
+    val scrobbles: Scrobbles
 )

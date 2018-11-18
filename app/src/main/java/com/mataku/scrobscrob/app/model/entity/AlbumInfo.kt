@@ -5,6 +5,6 @@ import se.ansman.kotshi.JsonSerializable
 
 @JsonSerializable
 data class AlbumInfo(
-        @Json(name = "image")
-        val imageList: List<Image>
+    @Json(name = "image")
+    val imageList: List<Image>
 )

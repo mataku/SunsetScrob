@@ -7,15 +7,15 @@ import se.ansman.kotshi.JsonSerializable
 // see: https://www.last.fm/api/show/user.getTopAlbums
 @JsonSerializable
 data class Artist(
-        @Json(name = "name")
-        val name: String,
+    @Json(name = "name")
+    val name: String,
 
-        @Json(name = "url")
-        val url: String,
+    @Json(name = "url")
+    val url: String,
 
-        @Json(name = "image")
-        val image: List<Image>?,
+    @Json(name = "image")
+    val image: List<Image>?,
 
-        @Json(name = "playcount")
-        val playcount: String?
+    @Json(name = "playcount")
+    val playcount: String?
 )

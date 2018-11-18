@@ -5,8 +5,8 @@ import se.ansman.kotshi.JsonSerializable
 
 @JsonSerializable
 data class IgnoredMessage(
-        val code: String,
+    val code: String,
 
-        @Json(name = "#text")
-        val text: String
+    @Json(name = "#text")
+    val text: String
 )

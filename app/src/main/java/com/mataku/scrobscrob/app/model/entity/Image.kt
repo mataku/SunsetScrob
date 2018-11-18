@@ -5,9 +5,9 @@ import se.ansman.kotshi.JsonSerializable
 
 @JsonSerializable
 data class Image(
-        @Json(name = "#text")
-        val imageUrl: String,
+    @Json(name = "#text")
+    val imageUrl: String,
 
-        @Json(name = "size")
-        val size: String
+    @Json(name = "size")
+    val size: String
 )

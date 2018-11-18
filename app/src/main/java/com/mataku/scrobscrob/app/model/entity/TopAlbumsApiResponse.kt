@@ -8,7 +8,7 @@ class TopAlbumsApiResponse(@Json(name = "topalbums") val topAlbums: TopAlbums) {
 
     @JsonSerializable
     data class TopAlbums(
-            @Json(name = "album")
-            val albums: List<Album>
+        @Json(name = "album")
+        val albums: List<Album>
     )
 }

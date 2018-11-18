@@ -29,7 +29,6 @@ class TopAlbumController(val context: Context?) : EpoxyController() {
                         .imageSize(halfWidth)
                         .addTo(this)
             }
-
         }
     }
 
