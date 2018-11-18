@@ -5,6 +5,7 @@ apply plugin: 'deploygate'
 apply plugin: 'com.github.ben-manes.versions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.cookpad.android.licensetools'
+apply plugin: 'io.fabric'
 apply from: 'lint-checks.gradle'
 
 android {
@@ -94,6 +95,7 @@ dependencies {
     implementation "io.realm:android-adapters:$versions.realmAndroidAdapters"
     implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:$versions.retrofitKotlinCoroutinesAdapter"
     implementation "com.google.firebase:firebase-core:$versions.firebase"
+    implementation "com.crashlytics.sdk.android:crashlytics:$versions.crashlytics"
 
     testImplementation "junit:junit:$versions.junit"
     testImplementation "com.google.guava:guava:$versions.guava"
