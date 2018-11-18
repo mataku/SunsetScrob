@@ -7,9 +7,7 @@ import com.mataku.scrobscrob.app.model.api.service.TrackScrobbleService
 import com.mataku.scrobscrob.app.model.api.service.TrackUpdateNowPlayingService
 import com.mataku.scrobscrob.app.ui.view.NotificationServiceInterface
 import com.mataku.scrobscrob.app.util.AppUtil
-import kotlinx.coroutines.experimental.Job
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.*
 
 class AppleMusicNotificationServicePresenter(private var notificationServiceInterface: NotificationServiceInterface) {
 
@@ -17,21 +15,23 @@ class AppleMusicNotificationServicePresenter(private var notificationServiceInte
     private val scrobbleMethod = "track.scrobble"
     private val nowPlayingMethod = "track.updateNowPlaying"
 
-    private val job = Job()
+    private val coroutineContext = Job() + Dispatchers.Main
 
     fun dispose() {
-        job.cancel()
+        coroutineContext.cancel()
     }
 
     fun getTrackInfo(trackName: String, artistName: String, sessionKey: String) {
-        launch(job + UI) {
+        CoroutineScope(coroutineContext).launch {
             setNowPlaying(trackName, artistName, sessionKey)
             getTrackInfo(artistName, trackName)
         }
+
+
     }
 
     fun scrobble(track: Track, sessionKey: String, timeStamp: Long) {
-        launch(job + UI) {
+        CoroutineScope(coroutineContext).launch {
             requestScrobble(track, sessionKey, timeStamp)
         }
     }
@@ -48,12 +48,12 @@ class AppleMusicNotificationServicePresenter(private var notificationServiceInte
         val apiSig = appUtil.generateApiSig(params)
         val client = LastFmApiClient.create(TrackScrobbleService::class.java)
         val result = client.scrobble(
-                track.artistName,
-                track.name,
-                timeStamp,
-                track.albumName,
-                apiSig,
-                sessionKey
+            track.artistName,
+            track.name,
+            timeStamp,
+            track.albumName,
+            apiSig,
+            sessionKey
         ).await()
         when (result.code()) {
             200, 201 -> {
@@ -84,17 +84,23 @@ class AppleMusicNotificationServicePresenter(private var notificationServiceInte
         val apiSig = appUtil.generateApiSig(params)
         val client = LastFmApiClient.create(TrackUpdateNowPlayingService::class.java)
         val result = client.updateNowPlaying(
-                artistName,
-                trackName,
-                "",
-                apiSig,
-                sessionKey
+            artistName,
+            trackName,
+            "",
+            apiSig,
+            sessionKey
         ).await()
         when (result.code()) {
             200, 201 -> {
                 appUtil.debugLog("NowPlayingApi", "success")
                 result.body()?.nowPlaying?.let {
-                    notificationServiceInterface.notifyNowPlayingUpdated(Track(it.artist.text, it.track.text, it.album.text))
+                    notificationServiceInterface.notifyNowPlayingUpdated(
+                        Track(
+                            it.artist.text,
+                            it.track.text,
+                            it.album.text
+                        )
+                    )
                 }
             }
             else -> {

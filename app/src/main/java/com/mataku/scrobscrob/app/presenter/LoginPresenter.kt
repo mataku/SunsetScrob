@@ -4,24 +4,22 @@ import com.mataku.scrobscrob.app.model.api.LastFmApiClient
 import com.mataku.scrobscrob.app.model.api.service.AuthMobileSessionService
 import com.mataku.scrobscrob.app.ui.view.LoginViewCallback
 import com.mataku.scrobscrob.app.util.AppUtil
-import kotlinx.coroutines.experimental.Job
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.*
 
 class LoginPresenter(private var accessible: Boolean, var view: LoginViewCallback) {
     private val appUtil = AppUtil()
     private val method = "auth.getMobileSession"
 
-    private val job = Job()
+    private val coroutineContext = Job() + Dispatchers.Main
 
     fun auth(userName: String, password: String) {
-        launch(job + UI) {
+        CoroutineScope(coroutineContext).launch {
             authenticate(userName, password)
         }
     }
 
     fun dispose() {
-        job.cancel()
+        coroutineContext.cancel()
     }
 
     private suspend fun authenticate(userName: String, password: String) {

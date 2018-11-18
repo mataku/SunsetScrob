@@ -92,7 +92,7 @@ dependencies {
     kapt "se.ansman.kotshi:compiler:$versions.kotshi"
 
     implementation "io.realm:android-adapters:$versions.realmAndroidAdapters"
-    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-experimental-adapter:$versions.retrofitKotlinCoroutinesAdapter"
+    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:$versions.retrofitKotlinCoroutinesAdapter"
 
     testImplementation "junit:junit:$versions.junit"
     testImplementation "com.google.guava:guava:$versions.guava"
@@ -121,10 +121,5 @@ dependencyUpdates.resolutionStrategy = {
                 selection.reject('Release candidate')
             }
         }
-    }
-}
-kotlin {
-    experimental {
-        coroutines "enable"
     }
 }
