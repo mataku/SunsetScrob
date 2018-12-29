@@ -60,7 +60,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "androidx.appcompat:appcompat:$versions.androidx"
+    implementation "androidx.appcompat:appcompat:$versions.appcompat"
     implementation "androidx.cardview:cardview:$versions.androidx"
     implementation "androidx.browser:browser:$versions.androidx"
     implementation "com.google.android.material:material:$versions.androidx"
