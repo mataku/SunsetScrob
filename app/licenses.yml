@@ -893,3 +893,36 @@
   license: The Apache Software License, Version 2.0
   licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
   url: https://developer.android.com/testing
+- artifact: org.apiguardian:apiguardian-api:+
+  name: org.apiguardian:apiguardian-api
+  copyrightHolder: API Guardian
+  license: The Apache License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://github.com/apiguardian-team/apiguardian
+- artifact: org.junit.jupiter:junit-jupiter-api:+
+  name: JUnit Jupiter API
+  copyrightHolder: JUnit
+  license: Eclipse Public License v2.0
+  licenseUrl: http://www.eclipse.org/legal/epl-v20.html
+  url: http://junit.org/junit5/
+  skip: true
+- artifact: org.junit.jupiter:junit-jupiter-params:+
+  name: JUnit Jupiter Params
+  copyrightHolder: JUnit
+  license: Eclipse Public License v2.0
+  licenseUrl: http://www.eclipse.org/legal/epl-v20.html
+  url: http://junit.org/junit5/
+  skip: true
+- artifact: org.opentest4j:opentest4j:+
+  name: org.opentest4j:opentest4j
+  copyrightHolder: ota4j-team
+  license: The Apache License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://github.com/ota4j-team/opentest4j
+- artifact: org.junit.platform:junit-platform-commons:+
+  name: JUnit Platform Commons
+  copyrightHolder: JUnit
+  license: Eclipse Public License v2.0
+  licenseUrl: http://www.eclipse.org/legal/epl-v20.html
+  url: http://junit.org/junit5/
+  skip: true
