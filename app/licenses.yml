@@ -199,6 +199,7 @@
   license: Public Domain
   licenseUrl: http://creativecommons.org/licenses/publicdomain
   url: http://backport-jsr166.sourceforge.net/
+  skip: true
 - artifact: org.apache.maven.wagon:wagon-http-shared:+
   name: Maven Wagon HTTP Shared Library
   copyrightHolder: #COPYRIGHT_HOLDER#
@@ -759,36 +760,43 @@
   copyrightHolder: Google
   license: Android Software Development Kit License
   licenseUrl: https://developer.android.com/studio/terms.html
+  skip: true
 - artifact: com.google.android.gms:play-services-tasks:+
   name: play-services-tasks
   copyrightHolder: Google
   license: Android Software Development Kit License
   licenseUrl: https://developer.android.com/studio/terms.html
+  skip: true
 - artifact: com.google.android.gms:play-services-stats:+
   name: play-services-stats
   copyrightHolder: Google
   license: Android Software Development Kit License
   licenseUrl: https://developer.android.com/studio/terms.html
+  skip: true
 - artifact: com.google.firebase:firebase-measurement-connector:+
   name: firebase-measurement-connector
   copyrightHolder: Google
   license: Android Software Development Kit License
   licenseUrl: https://developer.android.com/studio/terms.html
+  skip: true
 - artifact: com.google.android.gms:play-services-measurement-base:+
   name: play-services-measurement-base
   copyrightHolder: Google
   license: Android Software Development Kit License
   licenseUrl: https://developer.android.com/studio/terms.html
+  skip: true
 - artifact: com.google.firebase:firebase-measurement-connector-impl:+
   name: firebase-measurement-connector-impl
   copyrightHolder: Google
   license: Android Software Development Kit License
   licenseUrl: https://developer.android.com/studio/terms.html
+  skip: true
 - artifact: com.google.firebase:firebase-iid-interop:+
   name: firebase-iid-interop
   copyrightHolder: Google
   license: Android Software Development Kit License
   licenseUrl: https://developer.android.com/studio/terms.html
+  skip: true
 - artifact: androidx.media:media:+
   name: Android Support Library media compat
   copyrightHolder: Google
@@ -800,51 +808,61 @@
   copyrightHolder: Fabric
   license: Fabric Software and Services Agreement
   licenseUrl: https://fabric.io/terms
+  skip: true
 - artifact: com.crashlytics.sdk.android:beta:+
   name: Android SDK for Beta
   copyrightHolder: Crashlytics
   license: Crashlytics Terms of Service
   licenseUrl: http://try.crashlytics.com/terms/terms-of-service.pdf
+  skip: true
 - artifact: com.google.firebase:firebase-common:+
   name: firebase-common
   copyrightHolder: Google
   license: Android Software Development Kit License
   licenseUrl: https://developer.android.com/studio/terms.html
+  skip: true
 - artifact: com.crashlytics.sdk.android:crashlytics:+
   name: Android SDK Crashlytics
   copyrightHolder: Crashlytics
   license: Crashlytics Terms of Service
   licenseUrl: http://try.crashlytics.com/terms/terms-of-service.pdf
+  skip: true
 - artifact: com.google.android.gms:play-services-base:+
   name: play-services-base
   copyrightHolder: Google
   license: Android Software Development Kit License
   licenseUrl: https://developer.android.com/studio/terms.html
+  skip: true
 - artifact: com.google.android.gms:play-services-ads-identifier:+
   name: play-services-ads-identifier
   copyrightHolder: Google
   license: Android Software Development Kit License
   licenseUrl: https://developer.android.com/studio/terms.html
+  skip: true
 - artifact: com.google.firebase:firebase-analytics-impl:+
   name: firebase-analytics-impl
   copyrightHolder: Google
   license: Android Software Development Kit License
   licenseUrl: https://developer.android.com/studio/terms.html
+  skip: true
 - artifact: com.google.firebase:firebase-core:+
   name: firebase-core
   copyrightHolder: Google
   license: Android Software Development Kit License
   licenseUrl: https://developer.android.com/studio/terms.html
+  skip: true
 - artifact: com.crashlytics.sdk.android:answers:+
   name: Android SDK Answers
   copyrightHolder: Crashlytics
   license: Answers Terms of Service
   licenseUrl: https://answers.io/terms
+  skip: true
 - artifact: com.google.firebase:firebase-analytics:+
   name: firebase-analytics
   copyrightHolder: Google
   license: Android Software Development Kit License
   licenseUrl: https://developer.android.com/studio/terms.html
+  skip: true
 - artifact: androidx.legacy:legacy-support-v4:+
   name: Android Support Library v4
   copyrightHolder: Google
@@ -856,8 +874,61 @@
   copyrightHolder: Crashlytics
   license: Crashlytics Terms of Service
   licenseUrl: http://try.crashlytics.com/terms/terms-of-service.pdf
+  skip: true
 - artifact: com.google.android.gms:play-services-basement:+
   name: play-services-basement
   copyrightHolder: Google
   license: Android Software Development Kit License
   licenseUrl: https://developer.android.com/studio/terms.html
+  skip: true
+- artifact: org.ow2.asm:asm-analysis:+
+  name: asm-analysis
+  copyrightHolder: INRIA, France Telecom
+  license: BSD
+  licenseUrl: http://asm.ow2.org/license.html
+  url: http://asm.ow2.org/
+- artifact: androidx.test:monitor:+
+  name: AndroidX Test Library
+  copyrightHolder: Google
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://developer.android.com/testing
+- artifact: org.apiguardian:apiguardian-api:+
+  name: org.apiguardian:apiguardian-api
+  copyrightHolder: API Guardian
+  license: The Apache License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://github.com/apiguardian-team/apiguardian
+- artifact: org.junit.jupiter:junit-jupiter-api:+
+  name: JUnit Jupiter API
+  copyrightHolder: JUnit
+  license: Eclipse Public License v2.0
+  licenseUrl: http://www.eclipse.org/legal/epl-v20.html
+  url: http://junit.org/junit5/
+  skip: true
+- artifact: org.junit.jupiter:junit-jupiter-params:+
+  name: JUnit Jupiter Params
+  copyrightHolder: JUnit
+  license: Eclipse Public License v2.0
+  licenseUrl: http://www.eclipse.org/legal/epl-v20.html
+  url: http://junit.org/junit5/
+  skip: true
+- artifact: org.opentest4j:opentest4j:+
+  name: org.opentest4j:opentest4j
+  copyrightHolder: ota4j-team
+  license: The Apache License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://github.com/ota4j-team/opentest4j
+- artifact: org.junit.platform:junit-platform-commons:+
+  name: JUnit Platform Commons
+  copyrightHolder: JUnit
+  license: Eclipse Public License v2.0
+  licenseUrl: http://www.eclipse.org/legal/epl-v20.html
+  url: http://junit.org/junit5/
+  skip: true
+- artifact: androidx.test:core:+
+  name: AndroidX Test Library
+  copyrightHolder: Google
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://developer.android.com/testing
