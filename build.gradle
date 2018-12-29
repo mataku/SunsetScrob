@@ -36,7 +36,7 @@ buildscript {
             'epoxy'                          : '3.0.0',
             'firebase'                       : '16.0.1',
             'glide'                          : '4.8.0',
-            'glideTransformations'           : '3.3.0',
+            'glideTransformations'           : '4.0.0',
             'guava'                          : '22.0',
             'junit'                          : '4.12',
             'kotlin'                         : "$kotlinVersion",
