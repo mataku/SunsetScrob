@@ -6,6 +6,7 @@ apply plugin: 'com.github.ben-manes.versions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.cookpad.android.licensetools'
 apply plugin: 'io.fabric'
+apply plugin: 'de.mannodermaus.android-junit5'
 apply from: 'lint-checks.gradle'
 
 android {
@@ -101,6 +102,13 @@ dependencies {
     testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$versions.kotlin"
     testImplementation "org.robolectric:robolectric:$versions.robolectric"
     testImplementation "com.squareup.okhttp3:mockwebserver:$versions.okhttp"
+
+    testImplementation "org.junit.jupiter:junit-jupiter-api:5.3.1"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.3.1"
+
+    testImplementation "org.junit.jupiter:junit-jupiter-params:5.3.1"
+
+    testImplementation "androidx.test:core:1.0.0"
 }
 
 repositories {
@@ -114,6 +122,12 @@ repositories {
 
 kapt {
     correctErrorTypes = true
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
+    }
 }
 
 dependencyUpdates.resolutionStrategy = {

@@ -926,3 +926,9 @@
   licenseUrl: http://www.eclipse.org/legal/epl-v20.html
   url: http://junit.org/junit5/
   skip: true
+- artifact: androidx.test:core:+
+  name: AndroidX Test Library
+  copyrightHolder: Google
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://developer.android.com/testing
