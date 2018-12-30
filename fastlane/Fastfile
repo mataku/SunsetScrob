@@ -27,7 +27,7 @@ platform :android do
     gradle(task: "bundleRelease")
     supply(
       aab: ENV['BITRISE_APK_PATH'],
-      check_superseded_tracks: true,
+      check_superseded_tracks: false,
       skip_upload_metadata: false,
       skip_upload_images: true,
       skip_upload_screenshots: true
