@@ -64,6 +64,7 @@ dependencies {
     implementation "androidx.appcompat:appcompat:$versions.appcompat"
     implementation "androidx.cardview:cardview:$versions.androidx"
     implementation "androidx.browser:browser:$versions.androidx"
+    implementation "androidx.lifecycle:lifecycle-extensions:$versions.lifecycle"
     implementation "com.google.android.material:material:$versions.androidx"
     implementation "androidx.preference:preference:$versions.androidx"
 
