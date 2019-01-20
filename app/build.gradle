@@ -98,6 +98,9 @@ dependencies {
     implementation "com.google.firebase:firebase-core:$versions.firebase"
     implementation "com.crashlytics.sdk.android:crashlytics:$versions.crashlytics"
 
+    implementation "androidx.room:room-runtime:$versions.room"
+    kapt "androidx.room:room-compiler:$versions.room"
+
     testImplementation "junit:junit:$versions.junit"
     testImplementation "com.google.guava:guava:$versions.guava"
     testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$versions.kotlin"
