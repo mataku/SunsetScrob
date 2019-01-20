@@ -38,7 +38,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.3.0-rc03'
+        classpath 'com.android.tools.build:gradle:3.3.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
         classpath "io.realm:realm-gradle-plugin:5.8.0"
         classpath 'com.deploygate:gradle:1.1.4'
