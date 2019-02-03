@@ -5,11 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.app.model.entity.Album
 import com.mataku.scrobscrob.databinding.FragmentTopAlbumsBinding
 
-class TopAlbumContentFragment : androidx.fragment.app.Fragment(),
+class TopAlbumContentFragment : Fragment(),
     TopAlbumContentViewCallback {
 
     private lateinit var binding: FragmentTopAlbumsBinding
@@ -18,6 +19,11 @@ class TopAlbumContentFragment : androidx.fragment.app.Fragment(),
     private var currentPage = 1
 
     private lateinit var controller: TopAlbumController
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_top_albums, null, false)
