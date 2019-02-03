@@ -1,4 +1,4 @@
-package com.mataku.scrobscrob.app.ui.view
+package com.mataku.scrobscrob.app.ui.settings
 
 interface SettingsViewCallback {
     fun setMessageToLogIn()

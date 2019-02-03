@@ -10,7 +10,7 @@
         android:paddingTop="@dimen/activity_vertical_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingBottom="@dimen/activity_vertical_margin"
-        tools:context="com.mataku.scrobscrob.app.ui.LoginActivity">
+        tools:context="com.mataku.scrobscrob.app.ui.login.LoginActivity">
 
         <!-- Login progress -->
         <ProgressBar
@@ -50,7 +50,7 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
-                    
+
                     <EditText
                         android:id="@+id/password"
                         android:layout_width="match_parent"

@@ -18,11 +18,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".app.ui.LoginActivity"
+            android:name=".app.ui.login.LoginActivity"
             android:label="@string/login_to_last_fm">
 
         </activity>
-        <activity android:name=".app.ui.SettingsActivity">
+        <activity android:name=".app.ui.settings.SettingsActivity">
 
         </activity>
 

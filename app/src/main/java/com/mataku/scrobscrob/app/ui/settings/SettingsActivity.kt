@@ -1,4 +1,4 @@
-package com.mataku.scrobscrob.app.ui
+package com.mataku.scrobscrob.app.ui.settings
 
 import android.app.AlertDialog
 import android.content.Context
@@ -12,7 +12,9 @@ import androidx.preference.PreferenceFragmentCompat
 import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.app.model.Scrobble
 import com.mataku.scrobscrob.app.presenter.SettingsPresenter
-import com.mataku.scrobscrob.app.ui.view.SettingsViewCallback
+import com.mataku.scrobscrob.app.ui.LicensesActivity
+import com.mataku.scrobscrob.app.ui.MainActivity
+import com.mataku.scrobscrob.app.ui.login.LoginActivity
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -20,8 +22,8 @@ class SettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         supportFragmentManager.beginTransaction().replace(
-                android.R.id.content,
-                SettingsFragment()
+            android.R.id.content,
+            SettingsFragment()
         ).commit()
     }
 
@@ -108,20 +110,20 @@ class SettingsActivity : AppCompatActivity() {
             alertDialog.setTitle("Logout")
             alertDialog.setMessage("Really?")
             alertDialog.setPositiveButton(
-                    "OK"
+                "OK"
             ) { _, _ ->
                 removeSession()
                 Scrobble().deleteAll()
 
                 fragmentManager?.beginTransaction()?.replace(
-                        android.R.id.content,
-                        SettingsFragment()
+                    android.R.id.content,
+                    SettingsFragment()
                 )?.commit()
                 showLogOutMessage()
             }
 
             alertDialog.setNegativeButton(
-                    "Cancel"
+                "Cancel"
             ) { _, _ -> }
 
             alertDialog.create().show()

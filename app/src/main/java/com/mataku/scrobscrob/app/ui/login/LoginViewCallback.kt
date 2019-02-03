@@ -1,4 +1,4 @@
-package com.mataku.scrobscrob.app.ui.view
+package com.mataku.scrobscrob.app.ui.login
 
 interface LoginViewCallback {
     fun setSessionInfo(sessionKey: String, userName: String)

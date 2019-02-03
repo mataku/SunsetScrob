@@ -1,4 +1,4 @@
-package com.mataku.scrobscrob.app.ui
+package com.mataku.scrobscrob.app.ui.login
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
@@ -21,7 +21,7 @@ import com.mataku.scrobscrob.app.model.Track
 import com.mataku.scrobscrob.app.model.entity.RxEventBus
 import com.mataku.scrobscrob.app.model.entity.UpdateNowPlayingEvent
 import com.mataku.scrobscrob.app.presenter.LoginPresenter
-import com.mataku.scrobscrob.app.ui.view.LoginViewCallback
+import com.mataku.scrobscrob.app.ui.settings.SettingsActivity
 import com.mataku.scrobscrob.databinding.ActivityLoginBinding
 
 /**
