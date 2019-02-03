@@ -1,6 +1,4 @@
-package com.mataku.scrobscrob.app.presenter
-
-import com.mataku.scrobscrob.app.ui.settings.SettingsViewCallback
+package com.mataku.scrobscrob.app.ui.settings
 
 class SettingsPresenter(var view: SettingsViewCallback) {
     fun setMessageAccordingToUserStatus(loggedInUserName: String) {

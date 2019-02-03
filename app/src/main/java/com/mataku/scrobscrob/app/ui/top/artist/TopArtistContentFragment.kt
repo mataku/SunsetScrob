@@ -1,4 +1,4 @@
-package com.mataku.scrobscrob.app.ui.fragment
+package com.mataku.scrobscrob.app.ui.top.artist
 
 import android.content.Context
 import android.os.Bundle
@@ -8,9 +8,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.app.model.entity.Artist
-import com.mataku.scrobscrob.app.presenter.TopArtistsPresenter
-import com.mataku.scrobscrob.app.ui.controller.TopArtistController
-import com.mataku.scrobscrob.app.ui.view.TopArtistsContentViewCallback
 import com.mataku.scrobscrob.databinding.FragmentTopArtistsBinding
 
 class TopArtistContentFragment : Fragment(), TopArtistsContentViewCallback {

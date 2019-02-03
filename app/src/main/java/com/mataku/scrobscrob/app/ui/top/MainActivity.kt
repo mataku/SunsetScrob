@@ -1,4 +1,4 @@
-package com.mataku.scrobscrob.app.ui
+package com.mataku.scrobscrob.app.ui.top
 
 import android.content.Intent
 import android.content.IntentFilter
@@ -12,10 +12,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.app.data.Migration
 import com.mataku.scrobscrob.app.receiver.AppleMusicNotificationReceiver
-import com.mataku.scrobscrob.app.ui.adapter.ContentsAdapter
 import com.mataku.scrobscrob.app.ui.login.LoginActivity
 import com.mataku.scrobscrob.app.ui.settings.SettingsActivity
-import com.mataku.scrobscrob.app.ui.view.MainViewCallback
 import com.mataku.scrobscrob.app.util.SharedPreferencesHelper
 import com.mataku.scrobscrob.databinding.ActivityMainBinding
 import io.realm.Realm

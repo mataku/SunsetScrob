@@ -20,7 +20,6 @@ import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.app.model.Track
 import com.mataku.scrobscrob.app.model.entity.RxEventBus
 import com.mataku.scrobscrob.app.model.entity.UpdateNowPlayingEvent
-import com.mataku.scrobscrob.app.presenter.LoginPresenter
 import com.mataku.scrobscrob.app.ui.settings.SettingsActivity
 import com.mataku.scrobscrob.databinding.ActivityLoginBinding
 

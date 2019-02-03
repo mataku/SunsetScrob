@@ -1,14 +1,15 @@
-package com.mataku.scrobscrob.app.ui.adapter
+package com.mataku.scrobscrob.app.ui.top
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
-import com.mataku.scrobscrob.app.ui.fragment.ScrobbleFragment
-import com.mataku.scrobscrob.app.ui.fragment.TopAlbumContentFragment
-import com.mataku.scrobscrob.app.ui.fragment.TopArtistContentFragment
+import com.mataku.scrobscrob.app.ui.top.album.TopAlbumContentFragment
+import com.mataku.scrobscrob.app.ui.top.artist.TopArtistContentFragment
+import com.mataku.scrobscrob.app.ui.top.scrobble.ScrobbleFragment
 
-open class ContentsAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager), ViewPager.OnPageChangeListener {
+open class ContentsAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager),
+    ViewPager.OnPageChangeListener {
     override fun getCount(): Int = 3
 
     override fun getItem(position: Int): Fragment {

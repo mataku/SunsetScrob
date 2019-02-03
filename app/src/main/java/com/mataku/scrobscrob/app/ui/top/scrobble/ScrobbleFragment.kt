@@ -1,4 +1,4 @@
-package com.mataku.scrobscrob.app.ui.fragment
+package com.mataku.scrobscrob.app.ui.top.scrobble
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,7 +12,6 @@ import com.mataku.scrobscrob.app.model.Track
 import com.mataku.scrobscrob.app.model.entity.RxEventBus
 import com.mataku.scrobscrob.app.model.entity.UpdateNowPlayingEvent
 import com.mataku.scrobscrob.app.model.entity.UpdateScrobbledListEvent
-import com.mataku.scrobscrob.app.ui.adapter.ScrobbleViewAdapter
 import com.mataku.scrobscrob.app.util.SharedPreferencesHelper
 import com.mataku.scrobscrob.databinding.FragmentScrobbleBinding
 

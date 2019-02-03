@@ -1,6 +1,4 @@
-package com.mataku.scrobscrob.app.presenter
-
-import com.mataku.scrobscrob.app.ui.view.MainViewCallback
+package com.mataku.scrobscrob.app.ui.top
 
 class MainPresenter(var view: MainViewCallback) {
     fun showPreparationMenuIfNeeded(isEnabledReadNotification: Boolean) {

@@ -1,4 +1,4 @@
-package com.mataku.scrobscrob.app.ui.controller
+package com.mataku.scrobscrob.app.ui.top.artist
 
 import android.content.Context
 import com.airbnb.epoxy.EpoxyController
@@ -17,11 +17,11 @@ class TopArtistController(val context: Context?) : EpoxyController() {
             val halfWidth = displayMetrics.widthPixels / 2
             artists.forEachIndexed { index, artist ->
                 TopArtistViewModel_()
-                        .id("artist$index")
-                        .artist(artist)
-                        .spanSizeOverride { _, _, _ -> 1 }
-                        .imageSize(halfWidth)
-                        .addTo(this)
+                    .id("artist$index")
+                    .artist(artist)
+                    .spanSizeOverride { _, _, _ -> 1 }
+                    .imageSize(halfWidth)
+                    .addTo(this)
             }
         }
     }

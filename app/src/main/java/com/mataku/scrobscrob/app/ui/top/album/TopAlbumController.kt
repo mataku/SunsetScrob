@@ -1,4 +1,4 @@
-package com.mataku.scrobscrob.app.ui.controller
+package com.mataku.scrobscrob.app.ui.top.album
 
 import android.content.Context
 import com.airbnb.epoxy.EpoxyController
@@ -23,11 +23,11 @@ class TopAlbumController(val context: Context?) : EpoxyController() {
 
             albums.forEachIndexed { index, album ->
                 TopAlbumViewModel_()
-                        .id(index)
-                        .album(album)
-                        .spanSizeOverride { _, _, _ -> 1 }
-                        .imageSize(halfWidth)
-                        .addTo(this)
+                    .id(index)
+                    .album(album)
+                    .spanSizeOverride { _, _, _ -> 1 }
+                    .imageSize(halfWidth)
+                    .addTo(this)
             }
         }
     }

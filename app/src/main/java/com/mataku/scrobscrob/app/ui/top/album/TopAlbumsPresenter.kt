@@ -1,15 +1,14 @@
-package com.mataku.scrobscrob.app.presenter
+package com.mataku.scrobscrob.app.ui.top.album
 
 import com.mataku.scrobscrob.app.model.api.LastFmApiClient
 import com.mataku.scrobscrob.app.model.api.service.UserTopAlbumsService
-import com.mataku.scrobscrob.app.ui.view.UserContentViewCallback
 import com.mataku.scrobscrob.app.util.AppUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class UserContentPresenter(var view: UserContentViewCallback) {
+class TopAlbumsPresenter(var view: TopAlbumContentViewCallback) {
 
     private val appUtil = AppUtil()
 

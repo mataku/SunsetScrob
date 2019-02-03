@@ -1,4 +1,4 @@
-package com.mataku.scrobscrob.app.ui.adapter
+package com.mataku.scrobscrob.app.ui.top.scrobble
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -12,7 +12,7 @@ class ScrobbleViewAdapter() : RecyclerView.Adapter<ScrobbleViewAdapter.ViewHolde
 
     private var scrobbles: List<Scrobble> = mutableListOf()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ScrobbleViewAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ViewScrobbleBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }

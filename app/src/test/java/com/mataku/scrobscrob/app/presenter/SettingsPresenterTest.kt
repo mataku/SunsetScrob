@@ -1,5 +1,6 @@
 package com.mataku.scrobscrob.app.presenter
 
+import com.mataku.scrobscrob.app.ui.settings.SettingsPresenter
 import com.mataku.scrobscrob.app.ui.settings.SettingsViewCallback
 import org.junit.Test
 import java.util.concurrent.atomic.AtomicBoolean

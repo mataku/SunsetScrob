@@ -1,8 +1,7 @@
-package com.mataku.scrobscrob.app.presenter
+package com.mataku.scrobscrob.app.ui.login
 
 import com.mataku.scrobscrob.app.model.api.LastFmApiClient
 import com.mataku.scrobscrob.app.model.api.service.AuthMobileSessionService
-import com.mataku.scrobscrob.app.ui.login.LoginViewCallback
 import com.mataku.scrobscrob.app.util.AppUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

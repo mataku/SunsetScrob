@@ -11,10 +11,9 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.app.model.Scrobble
-import com.mataku.scrobscrob.app.presenter.SettingsPresenter
 import com.mataku.scrobscrob.app.ui.LicensesActivity
-import com.mataku.scrobscrob.app.ui.MainActivity
 import com.mataku.scrobscrob.app.ui.login.LoginActivity
+import com.mataku.scrobscrob.app.ui.top.MainActivity
 
 class SettingsActivity : AppCompatActivity() {
 

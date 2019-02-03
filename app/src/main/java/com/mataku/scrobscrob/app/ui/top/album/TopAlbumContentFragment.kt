@@ -1,4 +1,4 @@
-package com.mataku.scrobscrob.app.ui.fragment
+package com.mataku.scrobscrob.app.ui.top.album
 
 import android.content.Context
 import android.os.Bundle
@@ -7,15 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.app.model.entity.Album
-import com.mataku.scrobscrob.app.presenter.UserContentPresenter
-import com.mataku.scrobscrob.app.ui.controller.TopAlbumController
-import com.mataku.scrobscrob.app.ui.view.UserContentViewCallback
 import com.mataku.scrobscrob.databinding.FragmentTopAlbumsBinding
 
-class TopAlbumContentFragment : androidx.fragment.app.Fragment(), UserContentViewCallback {
+class TopAlbumContentFragment : androidx.fragment.app.Fragment(),
+    TopAlbumContentViewCallback {
 
     private lateinit var binding: FragmentTopAlbumsBinding
-    private val presenter = UserContentPresenter(this)
+    private val presenter = TopAlbumsPresenter(this)
     private val albums = mutableListOf<Album>()
     private var currentPage = 1
 
