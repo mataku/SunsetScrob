@@ -101,6 +101,10 @@ dependencies {
     implementation "androidx.room:room-runtime:$versions.room"
     kapt "androidx.room:room-compiler:$versions.room"
 
+    implementation "org.koin:koin-android:$versions.koin"
+    implementation "org.koin:koin-androidx-scope:$versions.koin"
+    implementation "org.koin:koin-androidx-viewmodel:$versions.koin"
+
     testImplementation "junit:junit:$versions.junit"
     testImplementation "com.google.guava:guava:$versions.guava"
     testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$versions.kotlin"

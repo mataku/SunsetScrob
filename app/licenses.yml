@@ -974,3 +974,23 @@
   license: The Apache Software License, Version 2.0
   licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
   url: https://developer.android.com/topic/libraries/architecture/index.html
+- artifact: org.koin:koin-core-ext:+
+  name: koin-core-ext
+  copyrightHolder: insert-koin.io
+  license: The Apache Software License, Version 2.0
+- artifact: org.koin:koin-androidx-scope:+
+  name: koin-androidx-scope
+  copyrightHolder: insert-koin.io
+  license: The Apache Software License, Version 2.0
+- artifact: org.koin:koin-androidx-viewmodel:+
+  name: koin-androidx-viewmodel
+  copyrightHolder: insert-koin.io
+  license: The Apache Software License, Version 2.0
+- artifact: org.koin:koin-android:+
+  name: koin-android
+  copyrightHolder: insert-koin.io
+  license: The Apache Software License, Version 2.0
+- artifact: org.koin:koin-core:+
+  name: koin-core
+  copyrightHolder: insert-koin.io
+  license: The Apache Software License, Version 2.0
