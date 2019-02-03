@@ -18,11 +18,14 @@ import com.mataku.scrobscrob.app.util.SharedPreferencesHelper
 import com.mataku.scrobscrob.databinding.ActivityMainBinding
 import io.realm.Realm
 import io.realm.RealmConfiguration
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity(), MainViewCallback {
     private var receiver = AppleMusicNotificationReceiver()
     private lateinit var sharedPreferencesHelper: SharedPreferencesHelper
     private lateinit var binding: ActivityMainBinding
+
+    val topViewModel: TopViewModel by viewModel<TopViewModel>()
 
     private val self = this
 
