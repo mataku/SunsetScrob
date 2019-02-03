@@ -6,43 +6,46 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import com.mataku.scrobscrob.R
-import com.mataku.scrobscrob.app.model.entity.Artist
+import com.mataku.scrobscrob.app.model.entity.presentation.Result
+import com.mataku.scrobscrob.app.ui.top.TopViewModel
 import com.mataku.scrobscrob.databinding.FragmentTopArtistsBinding
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class TopArtistContentFragment : Fragment(), TopArtistsContentViewCallback {
+class TopArtistContentFragment : Fragment() {
 
     private lateinit var binding: FragmentTopArtistsBinding
-    private val presenter = TopArtistsPresenter(this)
     private lateinit var controller: TopArtistController
-    private val artists = mutableListOf<Artist>()
     private var currentPage = 1
+
+    val topViewModel: TopViewModel by sharedViewModel()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_top_artists, null, false)
-        controller = TopArtistController(context)
-        binding = FragmentTopArtistsBinding.bind(view)
-        binding.userTopArtistRecyclerView.setController(controller)
-        val sharedPreferences = this.activity?.getSharedPreferences("DATA", Context.MODE_PRIVATE)
-        sharedPreferences?.let {
+        context?.let {
+            binding = FragmentTopArtistsBinding.bind(view)
+            binding.lifecycleOwner = this
+            binding.userTopArtistRecyclerView.setController(controller)
+            val displayMetrics = it.resources.displayMetrics
+            val halfWidth = displayMetrics.widthPixels / 2
 
-            val userName = it.getString("UserName", "")
-            userName?.let { name ->
-                if (name.isNotEmpty()) {
-                    setUp(name)
+            controller = TopArtistController(halfWidth)
+
+            val sharedPreferences = this.activity?.getSharedPreferences("DATA", Context.MODE_PRIVATE)
+            sharedPreferences?.let { sharedPref ->
+                val userName = sharedPref.getString("UserName", "")
+                userName?.let { name ->
+                    if (name.isNotEmpty()) {
+                        setUp(name)
+                    }
                 }
             }
         }
         return view
     }
 
-    override fun show(artists: List<Artist>) {
-        this.artists.addAll(artists)
-        controller.setArtists(this.artists)
-    }
-
     private fun setUp(userName: String) {
-        presenter.getTopArtists(userName, currentPage)
         binding.userTopArtistRecyclerView.addOnScrollListener(object :
             androidx.recyclerview.widget.RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: androidx.recyclerview.widget.RecyclerView, dx: Int, dy: Int) {
@@ -61,10 +64,18 @@ class TopArtistContentFragment : Fragment(), TopArtistsContentViewCallback {
                     val firstPosition = layoutManager.findFirstVisibleItemPosition()
                     if (totalCount == childCount + firstPosition) {
                         currentPage++
-                        presenter.getTopArtists(userName, currentPage)
+                        topViewModel.loadArtists(currentPage, userName)
                     }
                 }
             }
         })
+        topViewModel.topArtistsResult.observe(this, Observer {
+            when (it) {
+                is Result.Success -> {
+                    controller.setArtists(it.data)
+                }
+            }
+        })
+        topViewModel.loadArtists(currentPage, userName)
     }
 }

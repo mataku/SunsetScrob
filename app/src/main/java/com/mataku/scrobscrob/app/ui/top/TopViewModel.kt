@@ -4,7 +4,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.mataku.scrobscrob.app.model.api.LastFmApiClient
 import com.mataku.scrobscrob.app.model.api.service.UserTopAlbumsService
+import com.mataku.scrobscrob.app.model.api.service.UserTopArtistsService
 import com.mataku.scrobscrob.app.model.entity.Album
+import com.mataku.scrobscrob.app.model.entity.Artist
 import com.mataku.scrobscrob.app.model.entity.presentation.Result
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -16,6 +18,7 @@ class TopViewModel : ViewModel(),
     CoroutineScope {
 
     val topAlbumsResult = MutableLiveData<Result<List<Album>>>()
+    val topArtistsResult = MutableLiveData<Result<List<Artist>>>()
 
     private val job = Job()
     private var isLastAlbum = false
@@ -45,7 +48,21 @@ class TopViewModel : ViewModel(),
         }
     }
 
-    fun loadArtists() {
+    fun loadArtists(page: Int, userName: String) {
+        launch(coroutineContext) {
+            // TODO: repository
+            val result = LastFmApiClient.create(UserTopArtistsService::class.java)
+                .getTopArtists(20, page, "overall", userName).await()
+            when (result.code()) {
+                200 -> {
+                    result.body()?.topArtists?.let {
+                        it.artists?.let { artistList ->
+                            topArtistsResult.postValue(Result.success(artistList))
+                        }
+                    }
+                }
+            }
+        }
 
     }
 

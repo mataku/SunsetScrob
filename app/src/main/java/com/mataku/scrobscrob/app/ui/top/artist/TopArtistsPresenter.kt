@@ -27,8 +27,8 @@ class TopArtistsPresenter(var view: TopArtistsContentViewCallback) {
             .getTopArtists(appUtil.topAlbumsCountPerPage, page, "overall", userName).await()
         when (result.code()) {
             200 -> {
-                result.body()?.topArtists.let {
-                    it?.artists?.let { artistList ->
+                result.body()?.topArtists?.let {
+                    it.artists?.let { artistList ->
                         view.show(artistList)
                     }
                 }
