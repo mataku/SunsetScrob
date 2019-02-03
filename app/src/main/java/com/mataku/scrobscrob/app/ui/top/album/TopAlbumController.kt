@@ -1,11 +1,10 @@
 package com.mataku.scrobscrob.app.ui.top.album
 
-import android.content.Context
 import com.airbnb.epoxy.EpoxyController
 import com.mataku.scrobscrob.app.model.entity.Album
 import com.mataku.scrobscrob.app.ui.widget.TopAlbumViewModel_
 
-class TopAlbumController(val context: Context?) : EpoxyController() {
+class TopAlbumController(private val halfWidth: Int) : EpoxyController() {
 
     private val albums: MutableList<Album> = mutableListOf()
 
@@ -14,26 +13,18 @@ class TopAlbumController(val context: Context?) : EpoxyController() {
     private val spanSizeList = listOf(4, 4, 4, 4, 4, 4, 3, 3, 3, 3)
 
     override fun buildModels() {
-        context?.let {
-            val displayMetrics = it.resources.displayMetrics
-//            val density = displayMetrics.density
-//            val leftSpace = 16 * density
-//                            val spanCount = spanSizeList.get(index % 10)
-            val halfWidth = displayMetrics.widthPixels / 2
-
-            albums.forEachIndexed { index, album ->
-                TopAlbumViewModel_()
-                    .id(index)
-                    .album(album)
-                    .spanSizeOverride { _, _, _ -> 1 }
-                    .imageSize(halfWidth)
-                    .addTo(this)
-            }
+        albums.distinct().forEachIndexed { index, album ->
+            TopAlbumViewModel_()
+                .id(index)
+                .album(album)
+                .spanSizeOverride { _, _, _ -> 1 }
+                .imageSize(halfWidth)
+                .addIf(albums.isNotEmpty(), this)
         }
     }
 
-    fun setAlbums(albums: List<Album>) {
-        this.albums.addAll(albums)
+    fun setAlbums(albumList: List<Album>) {
+        this.albums.addAll(albumList)
         requestModelBuild()
     }
 
