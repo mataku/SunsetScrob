@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.RecyclerView
 import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.app.model.entity.presentation.Result
 import com.mataku.scrobscrob.app.ui.top.TopViewModel
@@ -47,7 +48,7 @@ class TopArtistContentFragment : Fragment() {
 
     private fun setUp(userName: String) {
         binding.userTopArtistRecyclerView.addOnScrollListener(object :
-            androidx.recyclerview.widget.RecyclerView.OnScrollListener() {
+            RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: androidx.recyclerview.widget.RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
 
