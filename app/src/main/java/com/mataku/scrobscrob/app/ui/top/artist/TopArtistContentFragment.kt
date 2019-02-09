@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.app.model.entity.presentation.Result
+import com.mataku.scrobscrob.app.ui.extension.showToastAtCenter
 import com.mataku.scrobscrob.app.ui.top.TopViewModel
 import com.mataku.scrobscrob.databinding.FragmentTopArtistsBinding
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -25,13 +26,12 @@ class TopArtistContentFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_top_artists, null, false)
         context?.let {
+            val displayMetrics = it.resources.displayMetrics
+            val halfWidth = displayMetrics.widthPixels / 2
+            controller = TopArtistController(halfWidth)
             binding = FragmentTopArtistsBinding.bind(view)
             binding.lifecycleOwner = this
             binding.userTopArtistRecyclerView.setController(controller)
-            val displayMetrics = it.resources.displayMetrics
-            val halfWidth = displayMetrics.widthPixels / 2
-
-            controller = TopArtistController(halfWidth)
 
             val sharedPreferences = this.activity?.getSharedPreferences("DATA", Context.MODE_PRIVATE)
             sharedPreferences?.let { sharedPref ->
@@ -74,6 +74,9 @@ class TopArtistContentFragment : Fragment() {
             when (it) {
                 is Result.Success -> {
                     controller.setArtists(it.data)
+                }
+                is Result.Failure -> {
+                    context?.showToastAtCenter(it.errorMessageId)
                 }
             }
         })

@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.app.model.entity.presentation.Result
+import com.mataku.scrobscrob.app.ui.extension.showToastAtCenter
 import com.mataku.scrobscrob.app.ui.top.TopViewModel
 import com.mataku.scrobscrob.databinding.FragmentTopAlbumsBinding
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -29,7 +30,6 @@ class TopAlbumContentFragment : Fragment() {
         context?.let {
             val displayMetrics = it.resources.displayMetrics
             val halfWidth = displayMetrics.widthPixels / 2
-
             controller = TopAlbumController(halfWidth)
 
             binding.topAlbumRecyclerView.setController(controller)
@@ -73,6 +73,9 @@ class TopAlbumContentFragment : Fragment() {
             when (it) {
                 is Result.Success -> {
                     controller.setAlbums(it.data)
+                }
+                is Result.Failure -> {
+                    context?.showToastAtCenter(it.errorMessageId)
                 }
             }
         })
