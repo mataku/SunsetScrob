@@ -29,7 +29,6 @@ class TopAlbumContentFragment : Fragment() {
         context?.let {
             val displayMetrics = it.resources.displayMetrics
             val halfWidth = displayMetrics.widthPixels / 2
-
             controller = TopAlbumController(halfWidth)
 
             binding.topAlbumRecyclerView.setController(controller)
