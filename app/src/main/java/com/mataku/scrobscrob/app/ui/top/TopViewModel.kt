@@ -10,6 +10,8 @@ import com.mataku.scrobscrob.app.model.entity.presentation.Result
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
@@ -26,20 +28,26 @@ class TopViewModel(
         get() = Dispatchers.Main + job
 
     fun loadAlbums(page: Int, userName: String) {
+        val result = async {
+            topAlbumRepository.topAlbumsResponse(page, userName)
+        }
+
         launch(coroutineContext) {
-            topAlbumsResult.postValue(topAlbumRepository.topAlbumsResponse(page, userName))
+            topAlbumsResult.postValue(result.await())
         }
     }
 
     fun loadArtists(page: Int, userName: String) {
-        launch(coroutineContext) {
-            topArtistsResult.postValue(topArtistsRepository.topArtistsResponse(page, userName))
+        val result = async {
+            topArtistsRepository.topArtistsResponse(page, userName)
         }
-
+        launch(coroutineContext) {
+            topArtistsResult.postValue(result.await())
+        }
     }
 
     override fun onCleared() {
         super.onCleared()
-        job.cancel()
+        coroutineContext.cancel()
     }
 }
