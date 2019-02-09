@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.app.model.entity.presentation.Result
+import com.mataku.scrobscrob.app.ui.extension.showToastAtCenter
 import com.mataku.scrobscrob.app.ui.top.TopViewModel
 import com.mataku.scrobscrob.databinding.FragmentTopArtistsBinding
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -73,6 +74,9 @@ class TopArtistContentFragment : Fragment() {
             when (it) {
                 is Result.Success -> {
                     controller.setArtists(it.data)
+                }
+                is Result.Failure -> {
+                    context?.showToastAtCenter(it.errorMessageId)
                 }
             }
         })
