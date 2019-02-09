@@ -25,13 +25,12 @@ class TopArtistContentFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_top_artists, null, false)
         context?.let {
+            val displayMetrics = it.resources.displayMetrics
+            val halfWidth = displayMetrics.widthPixels / 2
+            controller = TopArtistController(halfWidth)
             binding = FragmentTopArtistsBinding.bind(view)
             binding.lifecycleOwner = this
             binding.userTopArtistRecyclerView.setController(controller)
-            val displayMetrics = it.resources.displayMetrics
-            val halfWidth = displayMetrics.widthPixels / 2
-
-            controller = TopArtistController(halfWidth)
 
             val sharedPreferences = this.activity?.getSharedPreferences("DATA", Context.MODE_PRIVATE)
             sharedPreferences?.let { sharedPref ->
