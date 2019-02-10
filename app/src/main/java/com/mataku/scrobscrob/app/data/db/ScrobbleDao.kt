@@ -11,8 +11,8 @@ interface ScrobbleDao {
     @Query("SELECT count(id) FROM scrobble")
     fun getCount(): Long
 
-    @Query("SELECT * FROM scrobble ORDER BY id DESC")
-    fun getScrobbles(): List<Scrobble>
+    @Query("SELECT * FROM scrobble ORDER BY id DESC LIMIT :limit OFFSET :offset")
+    fun getScrobbles(limit: Int, offset: Int): List<Scrobble>
 
     @Insert
     fun insert(scrobble: Scrobble)
