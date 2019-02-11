@@ -1,6 +1,6 @@
 package com.mataku.scrobscrob.app.model.api.service
 
-import com.mataku.scrobscrob.app.model.entity.AlbumInfoApiResponse
+import com.mataku.scrobscrob.core.entity.AlbumInfoApiResponse
 import io.reactivex.Single
 import retrofit2.Response
 import retrofit2.http.GET

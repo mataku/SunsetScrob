@@ -7,12 +7,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.mataku.scrobscrob.R
-import com.mataku.scrobscrob.app.model.Scrobble
-import com.mataku.scrobscrob.app.model.Track
-import com.mataku.scrobscrob.app.model.entity.RxEventBus
-import com.mataku.scrobscrob.app.model.entity.UpdateNowPlayingEvent
-import com.mataku.scrobscrob.app.model.entity.UpdateScrobbledListEvent
+import com.mataku.scrobscrob.app.model.RxEventBus
 import com.mataku.scrobscrob.app.util.SharedPreferencesHelper
+import com.mataku.scrobscrob.core.entity.Scrobble
+import com.mataku.scrobscrob.core.entity.Track
+import com.mataku.scrobscrob.core.entity.UpdateNowPlayingEvent
+import com.mataku.scrobscrob.core.entity.UpdateScrobbledListEvent
 import com.mataku.scrobscrob.databinding.FragmentScrobbleBinding
 
 class ScrobbleFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {

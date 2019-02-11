@@ -7,7 +7,7 @@
 
         <variable
             name="album"
-            type="com.mataku.scrobscrob.app.model.entity.Album" />
+            type="com.mataku.scrobscrob.core.entity.Album" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

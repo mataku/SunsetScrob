@@ -1,4 +1,4 @@
-package com.mataku.scrobscrob.app.model.entity
+package com.mataku.scrobscrob.app.model.db
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

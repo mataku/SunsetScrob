@@ -17,10 +17,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.mataku.scrobscrob.R
-import com.mataku.scrobscrob.app.model.Track
-import com.mataku.scrobscrob.app.model.entity.RxEventBus
-import com.mataku.scrobscrob.app.model.entity.UpdateNowPlayingEvent
+import com.mataku.scrobscrob.app.model.RxEventBus
 import com.mataku.scrobscrob.app.ui.settings.SettingsActivity
+import com.mataku.scrobscrob.core.entity.Track
+import com.mataku.scrobscrob.core.entity.UpdateNowPlayingEvent
 import com.mataku.scrobscrob.databinding.ActivityLoginBinding
 
 /**

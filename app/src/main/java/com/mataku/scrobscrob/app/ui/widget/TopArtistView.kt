@@ -12,8 +12,8 @@ import androidx.databinding.DataBindingUtil
 import com.airbnb.epoxy.ModelProp
 import com.airbnb.epoxy.ModelView
 import com.mataku.scrobscrob.R
-import com.mataku.scrobscrob.app.model.GlideApp
-import com.mataku.scrobscrob.app.model.entity.Artist
+import com.mataku.scrobscrob.core.GlideApp
+import com.mataku.scrobscrob.core.entity.Artist
 import com.mataku.scrobscrob.databinding.ModelTopArtistViewBinding
 
 @ModelView(autoLayout = ModelView.Size.WRAP_WIDTH_WRAP_HEIGHT)
@@ -54,17 +54,17 @@ class TopArtistView : ConstraintLayout {
         binding.modelTopArtistName.text = artist.name
         val resources = context.resources
         binding.modelTopArtistPlaycount.text =
-                when (artist.playcount) {
-                    null -> ""
-                    "1" -> resources.getString(R.string.playcount, "1")
-                    else -> {
-                        resources.getString(R.string.playcounts, artist.playcount)
-                    }
+            when (artist.playcount) {
+                null -> ""
+                "1" -> resources.getString(R.string.playcount, "1")
+                else -> {
+                    resources.getString(R.string.playcounts, artist.playcount)
                 }
+            }
         GlideApp.with(context)
-                .load(imageUrl)
-                .error(R.drawable.no_image)
-                .into(binding.modelTopArtistArtwork)
+            .load(imageUrl)
+            .error(R.drawable.no_image)
+            .into(binding.modelTopArtistArtwork)
 
         if (!TextUtils.isEmpty(artist.url)) {
             binding.modelTopArtistCard.setOnClickListener {

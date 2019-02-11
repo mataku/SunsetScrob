@@ -8,15 +8,15 @@ import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.text.TextUtils
 import com.mataku.scrobscrob.R
-import com.mataku.scrobscrob.app.model.Scrobble
-import com.mataku.scrobscrob.app.model.Track
-import com.mataku.scrobscrob.app.model.entity.RxEventBus
-import com.mataku.scrobscrob.app.model.entity.UpdateNowPlayingEvent
-import com.mataku.scrobscrob.app.model.entity.UpdateScrobbledListEvent
+import com.mataku.scrobscrob.app.model.RxEventBus
 import com.mataku.scrobscrob.app.presenter.AppleMusicNotificationServicePresenter
 import com.mataku.scrobscrob.app.ui.view.NotificationServiceInterface
 import com.mataku.scrobscrob.app.util.AppUtil
 import com.mataku.scrobscrob.app.util.SharedPreferencesHelper
+import com.mataku.scrobscrob.core.entity.Scrobble
+import com.mataku.scrobscrob.core.entity.Track
+import com.mataku.scrobscrob.core.entity.UpdateNowPlayingEvent
+import com.mataku.scrobscrob.core.entity.UpdateScrobbledListEvent
 import io.realm.Realm
 
 class AppleMusicNotificationService : NotificationListenerService(), NotificationServiceInterface {

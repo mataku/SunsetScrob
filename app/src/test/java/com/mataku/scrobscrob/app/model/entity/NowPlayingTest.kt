@@ -1,6 +1,7 @@
 package com.mataku.scrobscrob.app.model.entity
 
 import com.mataku.scrobscrob.app.model.api.ApplicationJsonAdapterFactory
+import com.mataku.scrobscrob.core.entity.NowPlayingApiResponse
 import com.squareup.moshi.Moshi
 import org.junit.Test
 import kotlin.test.assertNotNull
@@ -14,7 +15,7 @@ class NowPlayingTest {
     fun testParsingJson() {
         val jsonAdapter = moshi.adapter<NowPlayingApiResponse>(NowPlayingApiResponse::class.java)
         val response = jsonAdapter.fromJson(
-                TestUtils.getAssetFileString("now_playing.json")
+            TestUtils.getAssetFileString("now_playing.json")
         )
         assertNotNull(response?.nowPlaying)
         val nowPlaying = response?.nowPlaying

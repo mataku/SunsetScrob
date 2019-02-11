@@ -12,8 +12,8 @@ import androidx.databinding.DataBindingUtil
 import com.airbnb.epoxy.ModelProp
 import com.airbnb.epoxy.ModelView
 import com.mataku.scrobscrob.R
-import com.mataku.scrobscrob.app.model.GlideApp
-import com.mataku.scrobscrob.app.model.entity.Album
+import com.mataku.scrobscrob.core.GlideApp
+import com.mataku.scrobscrob.core.entity.Album
 import com.mataku.scrobscrob.databinding.ModelTopAlbumViewBinding
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 
@@ -61,11 +61,11 @@ class TopAlbumView : ConstraintLayout {
         }
 
         GlideApp.with(context)
-                .load(imageUrl)
-                .transform(RoundedCornersTransformation(45, 0, RoundedCornersTransformation.CornerType.BOTTOM))
-                .fitCenter()
-                .error(R.drawable.no_image)
-                .into(binding.modelTopAlbumArtwork)
+            .load(imageUrl)
+            .transform(RoundedCornersTransformation(45, 0, RoundedCornersTransformation.CornerType.BOTTOM))
+            .fitCenter()
+            .error(R.drawable.no_image)
+            .into(binding.modelTopAlbumArtwork)
 
         if (!TextUtils.isEmpty(album.url)) {
             binding.modelTopAlbumCard.setOnClickListener {

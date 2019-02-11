@@ -1,6 +1,6 @@
 package com.mataku.scrobscrob.app.model.api.service
 
-import com.mataku.scrobscrob.app.model.entity.MobileSessionApiResponse
+import com.mataku.scrobscrob.core.entity.MobileSessionApiResponse
 import kotlinx.coroutines.Deferred
 import retrofit2.Response
 import retrofit2.http.POST

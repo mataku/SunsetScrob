@@ -1,4 +1,4 @@
-package com.mataku.scrobscrob.app.model.entity
+package com.mataku.scrobscrob.app.model
 
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject

@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.mataku.scrobscrob.R
-import com.mataku.scrobscrob.app.model.Scrobble
+import com.mataku.scrobscrob.core.entity.Scrobble
 import com.mataku.scrobscrob.databinding.ViewScrobbleBinding
 
 class ScrobbleViewAdapter() : RecyclerView.Adapter<ScrobbleViewAdapter.ViewHolder>() {
