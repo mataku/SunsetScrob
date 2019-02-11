@@ -28,6 +28,8 @@ local.properties
 .idea/dictionaries/
 .idea/caches/
 .idea/assetWizardSettings.xml
+.idea/modules.xml
+.idea/gradle.xml
 !.idea/codeStyles/
 
 *.iml
