@@ -11,9 +11,8 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.app.model.Scrobble
-import com.mataku.scrobscrob.app.ui.LicensesActivity
 import com.mataku.scrobscrob.app.ui.login.LoginActivity
-import com.mataku.scrobscrob.app.ui.top.MainActivity
+import com.mataku.scrobscrob.licenses.ui.LicensesActivity
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -27,8 +26,6 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        val intent = Intent(this, MainActivity::class.java)
-        setResult(RESULT_OK, intent)
         finish()
     }
 
