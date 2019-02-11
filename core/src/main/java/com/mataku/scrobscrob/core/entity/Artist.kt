@@ -1,11 +1,9 @@
 package com.mataku.scrobscrob.core.entity
 
 import com.squareup.moshi.Json
-import se.ansman.kotshi.JsonSerializable
 
 // for getTopAlbums, getTopArtists, ignore mbid param
 // see: https://www.last.fm/api/show/user.getTopAlbums
-@JsonSerializable
 data class Artist(
     @Json(name = "name")
     val name: String,

@@ -91,8 +91,9 @@ dependencies {
     implementation "com.airbnb.android:epoxy-databinding:$versions.epoxy"
     kapt "com.airbnb.android:epoxy-processor:$versions.epoxy"
 
-    implementation "se.ansman.kotshi:api:$versions.kotshi"
-    kapt "se.ansman.kotshi:compiler:$versions.kotshi"
+    implementation "com.squareup.moshi:moshi:$versions.moshi"
+    implementation "com.squareup.moshi:moshi-kotlin:$versions.moshi"
+
 
     implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:$versions.retrofitKotlinCoroutinesAdapter"
     implementation "com.google.firebase:firebase-core:$versions.firebase"

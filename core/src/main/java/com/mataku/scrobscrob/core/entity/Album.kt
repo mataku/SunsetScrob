@@ -1,10 +1,8 @@
 package com.mataku.scrobscrob.core.entity
 
 import com.squareup.moshi.Json
-import se.ansman.kotshi.JsonSerializable
 
 // uses getTopAlbums API
-@JsonSerializable
 data class Album(
     @Json(name = "name")
     val name: String,
