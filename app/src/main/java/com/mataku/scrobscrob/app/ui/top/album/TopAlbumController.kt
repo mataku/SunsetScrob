@@ -19,7 +19,7 @@ class TopAlbumController(private val halfWidth: Int) : EpoxyController() {
                 .album(album)
                 .spanSizeOverride { _, _, _ -> 1 }
                 .imageSize(halfWidth)
-                .addIf(albums.isNotEmpty(), this)
+                .addTo(this)
         }
     }
 

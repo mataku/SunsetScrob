@@ -40,10 +40,6 @@
   license: The Apache Software License, Version 2.0
   licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
   url: https://github.com/Kotlin/kotlinx.coroutines
-- artifact: jp.wasabeef:glide-transformations:+
-  name: glide-transformations
-  copyrightHolder: Wasabeef
-  license: The Apache Software License, Version 2.0
 - artifact: org.reactivestreams:reactive-streams:+
   name: reactive-streams
   copyrightHolder: reactive-streams

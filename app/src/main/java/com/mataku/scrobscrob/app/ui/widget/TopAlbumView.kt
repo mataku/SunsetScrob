@@ -15,9 +15,8 @@ import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.core.GlideApp
 import com.mataku.scrobscrob.core.entity.Album
 import com.mataku.scrobscrob.databinding.ModelTopAlbumViewBinding
-import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 
-@ModelView(autoLayout = ModelView.Size.WRAP_WIDTH_WRAP_HEIGHT)
+@ModelView(autoLayout = ModelView.Size.MATCH_WIDTH_WRAP_HEIGHT)
 class TopAlbumView : ConstraintLayout {
 
     private lateinit var binding: ModelTopAlbumViewBinding
@@ -62,7 +61,6 @@ class TopAlbumView : ConstraintLayout {
 
         GlideApp.with(context)
             .load(imageUrl)
-            .transform(RoundedCornersTransformation(45, 0, RoundedCornersTransformation.CornerType.BOTTOM))
             .fitCenter()
             .error(R.drawable.no_image)
             .into(binding.modelTopAlbumArtwork)
