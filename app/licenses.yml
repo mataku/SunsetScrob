@@ -138,12 +138,6 @@
   name: "Converter: Moshi"
   copyrightHolder: square
   license: The Apache Software License, Version 2.0
-- artifact: se.ansman.kotshi:api:+
-  name: Kotshi API
-  copyrightHolder: Nicklas Ansman Giertz
-  license: The Apache Software License, Version 2.0
-  licenseUrl: https://github.com/ansman/kotshi/blob/master/LICENSE.txt
-  url: https://github.com/ansman/kotshi
 - artifact: org.jetbrains.kotlin:kotlin-stdlib-common:+
   name: org.jetbrains.kotlin:kotlin-stdlib-common
   copyrightHolder: JetBrains
@@ -990,3 +984,13 @@
   name: koin-core
   copyrightHolder: insert-koin.io
   license: The Apache Software License, Version 2.0
+- artifact: com.squareup.moshi:moshi-kotlin:+
+  name: moshi-kotlin
+  copyrightHolder: Square
+  license: The Apache Software License, Version 2.0
+- artifact: org.jetbrains.kotlin:kotlin-reflect:+
+  name: org.jetbrains.kotlin:kotlin-reflect
+  copyrightHolder: JetBrains
+  license: The Apache License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://kotlinlang.org/
