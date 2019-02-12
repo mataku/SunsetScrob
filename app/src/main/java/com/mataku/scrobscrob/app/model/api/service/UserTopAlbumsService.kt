@@ -1,6 +1,6 @@
 package com.mataku.scrobscrob.app.model.api.service
 
-import com.mataku.scrobscrob.app.model.entity.TopAlbumsApiResponse
+import com.mataku.scrobscrob.core.entity.TopAlbumsApiResponse
 import kotlinx.coroutines.Deferred
 import retrofit2.Response
 import retrofit2.http.GET

@@ -9,9 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.mataku.scrobscrob.R
-import com.mataku.scrobscrob.app.model.entity.presentation.Result
 import com.mataku.scrobscrob.app.ui.extension.showToastAtCenter
 import com.mataku.scrobscrob.app.ui.top.TopViewModel
+import com.mataku.scrobscrob.core.entity.presentation.Result
 import com.mataku.scrobscrob.databinding.FragmentTopArtistsBinding
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 

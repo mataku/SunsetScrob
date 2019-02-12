@@ -3,9 +3,9 @@ package com.mataku.scrobscrob.app.ui.top.scrobble
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.mataku.scrobscrob.R
-import com.mataku.scrobscrob.app.model.Scrobble
+import com.mataku.scrobscrob.core.GlideApp
+import com.mataku.scrobscrob.core.entity.Scrobble
 import com.mataku.scrobscrob.databinding.ViewScrobbleBinding
 
 class ScrobbleViewAdapter() : RecyclerView.Adapter<ScrobbleViewAdapter.ViewHolder>() {
@@ -38,8 +38,8 @@ class ScrobbleViewAdapter() : RecyclerView.Adapter<ScrobbleViewAdapter.ViewHolde
             binding.trackNameView.text = scrobble.trackName
             binding.trackArtistView.text = scrobble.artistName
             when (scrobble.artwork) {
-                "" -> Glide.with(binding.artWorkView.context).load(R.drawable.no_image).into(binding.artWorkView)
-                else -> Glide.with(binding.artWorkView.context).load(scrobble.artwork).into(binding.artWorkView)
+                "" -> GlideApp.with(binding.artWorkView.context).load(R.drawable.no_image).into(binding.artWorkView)
+                else -> GlideApp.with(binding.artWorkView.context).load(scrobble.artwork).into(binding.artWorkView)
             }
         }
     }

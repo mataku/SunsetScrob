@@ -1,6 +1,6 @@
 package com.mataku.scrobscrob.app.ui.view
 
-import com.mataku.scrobscrob.app.model.Track
+import com.mataku.scrobscrob.core.entity.Track
 
 interface NotificationServiceInterface {
     fun setAlbumArtwork(albumArtWork: String)

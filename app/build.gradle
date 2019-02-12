@@ -4,7 +4,6 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'realm-android'
 apply plugin: 'deploygate'
 apply plugin: 'com.github.ben-manes.versions'
-apply plugin: 'kotlin-kapt'
 apply plugin: 'com.cookpad.android.licensetools'
 apply plugin: 'io.fabric'
 apply plugin: 'de.mannodermaus.android-junit5'
@@ -62,6 +61,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(':core')
     implementation project(':feature:licenses')
 
     implementation "androidx.appcompat:appcompat:$versions.appcompat"
@@ -86,16 +86,14 @@ dependencies {
 
     implementation "com.github.bumptech.glide:glide:$versions.glide"
     kapt "com.github.bumptech.glide:compiler:$versions.glide"
-    implementation("jp.wasabeef:glide-transformations:$versions.glideTransformations") {
-        exclude module: 'com.github.bumptech.glide'
-    }
 
     implementation "com.airbnb.android:epoxy:$versions.epoxy"
     implementation "com.airbnb.android:epoxy-databinding:$versions.epoxy"
     kapt "com.airbnb.android:epoxy-processor:$versions.epoxy"
 
-    implementation "se.ansman.kotshi:api:$versions.kotshi"
-    kapt "se.ansman.kotshi:compiler:$versions.kotshi"
+    implementation "com.squareup.moshi:moshi:$versions.moshi"
+    implementation "com.squareup.moshi:moshi-kotlin:$versions.moshi"
+
 
     implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:$versions.retrofitKotlinCoroutinesAdapter"
     implementation "com.google.firebase:firebase-core:$versions.firebase"

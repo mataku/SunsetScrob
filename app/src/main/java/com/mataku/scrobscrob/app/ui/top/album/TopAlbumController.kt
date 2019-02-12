@@ -1,8 +1,8 @@
 package com.mataku.scrobscrob.app.ui.top.album
 
 import com.airbnb.epoxy.EpoxyController
-import com.mataku.scrobscrob.app.model.entity.Album
 import com.mataku.scrobscrob.app.ui.widget.TopAlbumViewModel_
+import com.mataku.scrobscrob.core.entity.Album
 
 class TopAlbumController(private val halfWidth: Int) : EpoxyController() {
 
@@ -19,7 +19,7 @@ class TopAlbumController(private val halfWidth: Int) : EpoxyController() {
                 .album(album)
                 .spanSizeOverride { _, _, _ -> 1 }
                 .imageSize(halfWidth)
-                .addIf(albums.isNotEmpty(), this)
+                .addTo(this)
         }
     }
 

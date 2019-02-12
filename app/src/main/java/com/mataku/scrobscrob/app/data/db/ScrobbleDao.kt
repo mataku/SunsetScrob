@@ -3,7 +3,7 @@ package com.mataku.scrobscrob.app.data.db
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import com.mataku.scrobscrob.app.model.entity.Scrobble
+import com.mataku.scrobscrob.app.model.db.Scrobble
 
 @Dao
 interface ScrobbleDao {

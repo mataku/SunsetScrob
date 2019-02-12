@@ -3,8 +3,8 @@ package com.mataku.scrobscrob.app.data.repository
 import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.app.model.api.LastFmApiClient
 import com.mataku.scrobscrob.app.model.api.service.UserTopAlbumsService
-import com.mataku.scrobscrob.app.model.entity.Album
-import com.mataku.scrobscrob.app.model.entity.presentation.Result
+import com.mataku.scrobscrob.core.entity.Album
+import com.mataku.scrobscrob.core.entity.presentation.Result
 import java.io.IOException
 import javax.net.ssl.HttpsURLConnection
 

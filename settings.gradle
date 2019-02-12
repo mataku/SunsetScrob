@@ -1,1 +1,1 @@
-include ':app', ':feature:licenses', ':feature:settings'
+include ':app', ':feature:licenses', ':feature:settings', ':core'
