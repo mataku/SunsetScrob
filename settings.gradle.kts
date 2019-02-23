@@ -1,0 +1,1 @@
+include(":app", ":feature:licenses", ":feature:settings", ":core")
