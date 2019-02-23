@@ -8,9 +8,10 @@ apply plugin: 'com.cookpad.android.licensetools'
 apply plugin: 'io.fabric'
 apply plugin: 'de.mannodermaus.android-junit5'
 apply from: 'lint-checks.gradle'
+apply from: '../core_dependencies.gradle'
 
 android {
-    compileSdkVersion buildConfig.compileSdk
+    compileSdkVersion Versions.compileSdkVersion
 
     dataBinding {
         enabled = true
@@ -29,8 +30,8 @@ android {
     defaultConfig {
         applicationId "com.mataku.scrobscrob"
 
-        minSdkVersion buildConfig.targetSdk
-        targetSdkVersion buildConfig.targetSdk
+        minSdkVersion Versions.minSdkVersion
+        targetSdkVersion Versions.targetSdkVersion
         versionCode 22
         versionName "0.2.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -64,53 +65,45 @@ dependencies {
     implementation project(':core')
     implementation project(':feature:licenses')
 
-    implementation "androidx.appcompat:appcompat:$versions.appcompat"
-    implementation "androidx.cardview:cardview:$versions.androidx"
-    implementation "androidx.browser:browser:$versions.androidx"
-    implementation "androidx.lifecycle:lifecycle-extensions:$versions.lifecycle"
-    implementation "com.google.android.material:material:$versions.androidx"
-    implementation "androidx.preference:preference:$versions.androidx"
+    implementation Deps.cardView
+    implementation Deps.lifecycleExtensions
+    implementation Deps.materialComponent
+    implementation Deps.preference
 
-    implementation "com.squareup.okhttp3:logging-interceptor:$versions.okhttp"
-    implementation "com.squareup.okhttp3:okhttp:$versions.okhttp"
+    implementation Deps.okhttp
+    implementation Deps.okhttpLoggingInterceptor
 
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.kotlinCoroutines"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.kotlinCoroutines"
+    implementation Deps.kotlinCoroutinesAndroid
+    implementation Deps.kotlinCoroutinesCore
 
-    implementation "com.squareup.retrofit2:retrofit:$versions.retrofit"
-    implementation "com.squareup.retrofit2:converter-moshi:$versions.retrofit"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin"
+    implementation Deps.retrofit
+    implementation Deps.retrofitMoshiConverter
 
-    implementation "androidx.constraintlayout:constraintlayout:$versions.constraintLayout"
-    implementation "io.reactivex.rxjava2:rxjava:$versions.rxjava"
+    implementation Deps.rxjava
 
-    implementation "com.github.bumptech.glide:glide:$versions.glide"
-    kapt "com.github.bumptech.glide:compiler:$versions.glide"
+    implementation Deps.epoxy
+    implementation Deps.epoxyDatabinding
+    kapt Deps.epoxyProcessor
 
-    implementation "com.airbnb.android:epoxy:$versions.epoxy"
-    implementation "com.airbnb.android:epoxy-databinding:$versions.epoxy"
-    kapt "com.airbnb.android:epoxy-processor:$versions.epoxy"
+    implementation Deps.moshi
+    implementation Deps.moshiKotlin
 
-    implementation "com.squareup.moshi:moshi:$versions.moshi"
-    implementation "com.squareup.moshi:moshi-kotlin:$versions.moshi"
+    implementation Deps.retrofitKotlinCoroutinesAdapter
+    implementation Deps.firebaseCore
+    implementation Deps.crashlytics
 
+    implementation Deps.roomRuntime
+    kapt Deps.roomCompiler
 
-    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:$versions.retrofitKotlinCoroutinesAdapter"
-    implementation "com.google.firebase:firebase-core:$versions.firebase"
-    implementation "com.crashlytics.sdk.android:crashlytics:$versions.crashlytics"
+    implementation Deps.koinAndroid
+    implementation Deps.koinAndroidXScope
+    implementation Deps.koinAndroidXViewModel
 
-    implementation "androidx.room:room-runtime:$versions.room"
-    kapt "androidx.room:room-compiler:$versions.room"
-
-    implementation "org.koin:koin-android:$versions.koin"
-    implementation "org.koin:koin-androidx-scope:$versions.koin"
-    implementation "org.koin:koin-androidx-viewmodel:$versions.koin"
-
-    testImplementation "junit:junit:$versions.junit"
-    testImplementation "com.google.guava:guava:$versions.guava"
-    testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$versions.kotlin"
-    testImplementation "org.robolectric:robolectric:$versions.robolectric"
-    testImplementation "com.squareup.okhttp3:mockwebserver:$versions.okhttp"
+    testImplementation Deps.junit
+    testImplementation Deps.guava
+    testImplementation Deps.kotlinTestJunit
+    testImplementation Deps.robolectric
+    testImplementation Deps.mockWebServer
 
     testImplementation "org.junit.jupiter:junit-jupiter-api:5.3.1"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.3.1"

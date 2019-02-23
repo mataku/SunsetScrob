@@ -30,6 +30,7 @@ local.properties
 .idea/assetWizardSettings.xml
 .idea/modules.xml
 .idea/gradle.xml
+.idea/kotlinScripting.xml
 !.idea/codeStyles/
 
 *.iml
