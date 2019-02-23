@@ -5,6 +5,10 @@ plugins {
     kotlin("kapt")
 }
 
+apply {
+    from("$rootDir/core_dependencies.gradle")
+}
+
 android {
     compileSdkVersion(Versions.compileSdkVersion)
 
