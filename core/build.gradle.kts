@@ -20,6 +20,13 @@ android {
             isMinifyEnabled = false
         }
     }
+
+    lintOptions {
+        isAbortOnError = false
+        textReport = true
+        textOutput("stdout")
+        xmlReport = false
+    }
 }
 
 dependencies {
