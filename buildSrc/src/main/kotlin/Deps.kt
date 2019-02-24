@@ -1,4 +1,6 @@
 object Deps {
+    val kotlinVersion = "1.3.21"
+
     val appCompat = "androidx.appcompat:appcompat:1.0.2"
     val browser = "androidx.browser:browser:1.0.0"
     val cardView = "androidx.cardview:cardview:1.0.0"
@@ -24,9 +26,9 @@ object Deps {
 
     val kotlinCoroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.0.1"
     val kotlinCoroutinesCore = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.0.1"
-    val kotlnGradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.21"
-    val kotlinStdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.21"
-    val kotlinTestJunit = "org.jetbrains.kotlin:kotlin-test-junit:1.3.21"
+    val kotlnGradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+    val kotlinStdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+    val kotlinTestJunit = "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
 
     val lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:2.0.0"
     val materialComponent = "com.google.android.material:material:1.0.0"
