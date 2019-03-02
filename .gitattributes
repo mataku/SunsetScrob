@@ -1,0 +1,6 @@
+*.html           linguist-documentation
+app/licenses.yml linguist-documentation
+Dangerfile       linguist-vendored
+fastfile/*       linguist-vendored
+Gemfile          linguist-vendored
+Gemfile.lock     linguist-vendored

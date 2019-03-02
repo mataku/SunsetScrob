@@ -1,19 +1,19 @@
 package com.mataku.scrobscrob.app.ui.widget
 
 import android.content.Context
-import android.databinding.DataBindingUtil
 import android.net.Uri
-import android.support.constraint.ConstraintLayout
-import android.support.customtabs.CustomTabsIntent
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.LayoutInflater
+import androidx.browser.customtabs.CustomTabsIntent
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.databinding.DataBindingUtil
 import com.airbnb.epoxy.ModelProp
 import com.airbnb.epoxy.ModelView
 import com.mataku.scrobscrob.R
-import com.mataku.scrobscrob.app.model.GlideApp
-import com.mataku.scrobscrob.app.model.entity.Artist
+import com.mataku.scrobscrob.core.GlideApp
+import com.mataku.scrobscrob.core.entity.Artist
 import com.mataku.scrobscrob.databinding.ModelTopArtistViewBinding
 
 @ModelView(autoLayout = ModelView.Size.WRAP_WIDTH_WRAP_HEIGHT)
@@ -22,15 +22,18 @@ class TopArtistView : ConstraintLayout {
     private lateinit var binding: ModelTopArtistViewBinding
 
     constructor(
-            context: Context?
+        context: Context?
     ) : this(context, null)
 
     constructor(
-            context: Context?, attrs: AttributeSet?
+        context: Context?,
+        attrs: AttributeSet?
     ) : this(context, attrs, 0)
 
     constructor(
-            context: Context?, attrs: AttributeSet?, defStyleAttr: Int
+        context: Context?,
+        attrs: AttributeSet?,
+        defStyleAttr: Int
     ) : super(context, attrs, defStyleAttr) {
         context ?: return
         val inflater = LayoutInflater.from(context)
@@ -51,17 +54,17 @@ class TopArtistView : ConstraintLayout {
         binding.modelTopArtistName.text = artist.name
         val resources = context.resources
         binding.modelTopArtistPlaycount.text =
-                when (artist.playcount) {
-                    null -> ""
-                    "1" -> resources.getString(R.string.playcount, "1")
-                    else -> {
-                        resources.getString(R.string.playcounts, artist.playcount)
-                    }
+            when (artist.playcount) {
+                null -> ""
+                "1" -> resources.getString(R.string.playcount, "1")
+                else -> {
+                    resources.getString(R.string.playcounts, artist.playcount)
                 }
+            }
         GlideApp.with(context)
-                .load(imageUrl)
-                .error(R.drawable.no_image)
-                .into(binding.modelTopArtistArtwork)
+            .load(imageUrl)
+            .error(R.drawable.no_image)
+            .into(binding.modelTopArtistArtwork)
 
         if (!TextUtils.isEmpty(artist.url)) {
             binding.modelTopArtistCard.setOnClickListener {
@@ -70,7 +73,6 @@ class TopArtistView : ConstraintLayout {
             }
         }
     }
-
 
     @ModelProp
     fun setImageSize(size: Int) {

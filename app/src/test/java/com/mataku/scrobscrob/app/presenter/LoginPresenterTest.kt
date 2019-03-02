@@ -1,6 +1,7 @@
 package com.mataku.scrobscrob.app.presenter
 
-import com.mataku.scrobscrob.app.ui.view.LoginViewCallback
+import com.mataku.scrobscrob.app.ui.login.LoginPresenter
+import com.mataku.scrobscrob.app.ui.login.LoginViewCallback
 import org.junit.Test
 import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.test.assertTrue

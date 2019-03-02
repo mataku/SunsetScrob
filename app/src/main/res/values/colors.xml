@@ -3,8 +3,11 @@
     <color name="colorPrimary">#37474F</color>
     <color name="colorPrimaryDark">#000</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="titleTextColor">#bb0414</color>
-    <color name="barBackgroundColor">#263238</color>
+    <color name="contentBackground">#263238</color>
+    <color name="lastFmColor">#bb0414</color>
+    <color name="barBackgroundColor">#607D8B</color>
+    <color name="transparent">#00000000</color>
     <color name="yellow">#ffff00</color>
     <color name="gray">#EEEEEE</color>
+    <color name="white">#FFF</color>
 </resources>

@@ -4,6 +4,7 @@ default_platform :android
 
 platform :android do
   before_all do
+    gradle(task: 'clean')
     # ENV["SLACK_URL"] = "https://hooks.slack.com/services/..."
   end
 
@@ -13,22 +14,32 @@ platform :android do
   end
 
   lane :debugbuild do
-    gradle(task: 'clean')
     gradle(task: 'assembleDebug')
   end
 
-  lane :releasebuild do
-    gradle(task: 'clean')
-    gradle(task: 'assembleRelease')
+  lane :bundle_release do
+    gradle(task: 'bundleRelease')
   end
 
 
   desc "Deploy a new version to the Google Play"
   lane :deploy do
-    gradle(task: 'clean')
-    gradle(task: "assembleRelease")
+    gradle(task: "bundleRelease")
     supply(
-      apk: ENV['BITRISE_APK_PATH']
+      aab: ENV['BITRISE_APK_PATH'],
+      check_superseded_tracks: false,
+      skip_upload_metadata: false,
+      skip_upload_images: true,
+      skip_upload_screenshots: true
+    )
+  end
+
+  desc "Deploy a new version to the Google Play internal stage"
+  lane :deploy_test do
+    gradle(task: "bundleRelease")
+    supply(
+      aab: 'app/build/outputs/bundle/release/app.aab',
+      track: 'internal'
     )
   end
 

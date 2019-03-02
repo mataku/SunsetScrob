@@ -6,15 +6,18 @@ import android.widget.ImageView
 
 class SquareImageView : ImageView {
     constructor(
-            context: Context?
+        context: Context?
     ) : super(context)
 
     constructor(
-            context: Context?, attrs: AttributeSet?
+        context: Context?,
+        attrs: AttributeSet?
     ) : super(context, attrs)
 
     constructor(
-            context: Context?, attrs: AttributeSet?, defStyleAttr: Int
+        context: Context?,
+        attrs: AttributeSet?,
+        defStyleAttr: Int
     ) : super(context, attrs, defStyleAttr)
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {

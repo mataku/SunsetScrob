@@ -1,0 +1,10 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.mataku.scrobscrob.licenses">
+
+    <application
+        android:supportsRtl="false"
+        tools:replace="android:supportsRtl">
+        <activity android:name=".ui.LicensesActivity" />
+    </application>
+</manifest>

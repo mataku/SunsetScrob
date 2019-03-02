@@ -4,17 +4,19 @@ import android.content.Context
 import android.content.SharedPreferences
 
 class SharedPreferencesHelper(context: Context) {
-    val sharedPreferences = context.getSharedPreferences("DATA", Context.MODE_PRIVATE)
+    private val sharedPreferences = context.getSharedPreferences("DATA", Context.MODE_PRIVATE)
     private val appUtil = AppUtil()
 
     fun getTimeStamp(): Long =
             sharedPreferences.getLong("TimeStamp", System.currentTimeMillis() / 1000L)
 
-    fun getAlbumArtWork(): String =
-            sharedPreferences.getString("AlbumArtwork", "")
+    fun getAlbumArtWork(): String {
+        return sharedPreferences.getString("AlbumArtwork", "") ?: return ""
+    }
 
-    fun getSessionKey(): String =
-            sharedPreferences.getString("SessionKey", "")
+    fun getSessionKey(): String {
+        return sharedPreferences.getString("SessionKey", "") ?: return ""
+    }
 
     fun setTimeStamp() {
         val timeStamp = System.currentTimeMillis() / 1000L
@@ -47,7 +49,6 @@ class SharedPreferencesHelper(context: Context) {
         return now - getTimeStamp() > scrobblingPoint
     }
 
-    fun getPlayingTime(): Long =
+    private fun getPlayingTime(): Long =
             sharedPreferences.getLong("PlayingTime", appUtil.defaultPlayingTime)
-
 }
