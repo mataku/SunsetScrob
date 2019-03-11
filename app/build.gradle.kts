@@ -123,6 +123,10 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.3.1")
 
     testImplementation("androidx.test:core:1.0.0")
+    testImplementation(Deps.spek)
+    testImplementation(Deps.spekJunitPlatformEngine)
+    testImplementation(Deps.kotlinReflect)
+    testImplementation("org.junit.platform:junit-platform-runner:1.1.0")
 }
 
 repositories {
