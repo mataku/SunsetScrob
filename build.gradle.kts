@@ -7,7 +7,7 @@ buildscript {
         maven("https://maven.fabric.io/public")
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:3.4.0-beta05")
+        classpath("com.android.tools.build:gradle:3.4.0-rc01")
         classpath(kotlin("gradle-plugin", version = Deps.kotlinVersion))
         classpath("io.realm:realm-gradle-plugin:5.8.0")
         classpath("com.deploygate:gradle:1.1.4")
@@ -16,6 +16,7 @@ buildscript {
         classpath("com.google.gms:google-services:4.2.0")
         classpath("io.fabric.tools:gradle:1.26.1")
         classpath("de.mannodermaus.gradle.plugins:android-junit5:1.3.1.1")
+        classpath("org.junit.platform:junit-platform-gradle-plugin:1.0.0")
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -27,6 +28,7 @@ allprojects {
         google()
         jcenter()
         maven("https://maven.google.com/")
+        maven("http://dl.bintray.com/jetbrains/spek")
     }
 }
 
