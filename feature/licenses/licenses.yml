@@ -179,6 +179,7 @@
   license: Eclipse Public License 1.0
   licenseUrl: http://www.eclipse.org/legal/epl-v10.html
   url: http://junit.org
+  skip: true
 - artifact: org.codehaus.plexus:plexus-interpolation:+
   name: Plexus Interpolation API
   copyrightHolder: Plexus
@@ -994,3 +995,43 @@
   license: The Apache License, Version 2.0
   licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
   url: https://kotlinlang.org/
+- artifact: org.junit.platform:junit-platform-suite-api:+
+  name: org.junit.platform:junit-platform-suite-api
+  copyrightHolder: Spek Core Team and Contributors
+  license: Eclipse Public License v2.0
+  licenseUrl: http://www.eclipse.org/legal/epl-v20.html
+  url: http://junit.org/junit5/
+  skip: true
+- artifact: org.jetbrains.spek:spek-api:+
+  name: Spek
+  copyrightHolder: Spek Core Team and Contributors
+  license: BSD New
+  licenseUrl: https://github.com/JetBrains/spek/blob/master/LICENSE.TXT
+  url: https://jetbrains.github.io/spek
+- artifact: org.junit.platform:junit-platform-engine:+
+  name: org.junit.platform:junit-platform-engine
+  copyrightHolder: Spek Core Team and Contributors
+  license: Eclipse Public License v2.0
+  licenseUrl: http://www.eclipse.org/legal/epl-v20.html
+  url: http://junit.org/junit5/
+  skip: true
+- artifact: org.jetbrains.spek:spek-junit-platform-engine:+
+  name: Spek JUnit Platform Engine
+  copyrightHolder: Spek Core Team and Contributors
+  license: BSD New
+  licenseUrl: https://github.com/JetBrains/spek/blob/master/LICENSE.TXT
+  url: https://jetbrains.github.io/spek
+- artifact: org.junit.platform:junit-platform-runner:+
+  name: org.junit.platform:junit-platform-runner
+  copyrightHolder: Junit
+  license: Eclipse Public License v2.0
+  licenseUrl: http://www.eclipse.org/legal/epl-v20.html
+  url: http://junit.org/junit5/
+  skip: true
+- artifact: org.junit.platform:junit-platform-launcher:+
+  name: org.junit.platform:junit-platform-launcher
+  copyrightHolder: JUnit
+  license: Eclipse Public License v2.0
+  licenseUrl: http://www.eclipse.org/legal/epl-v20.html
+  url: http://junit.org/junit5/
+  skip: true
