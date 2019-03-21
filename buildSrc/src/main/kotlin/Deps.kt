@@ -45,6 +45,11 @@ object Deps {
     val retrofitMoshiConverter = "com.squareup.retrofit2:converter-moshi:2.4.0"
     val robolectric = "org.robolectric:robolectric:4.0.2"
 
+    // For spek
+    val spek = "org.jetbrains.spek:spek-api:1.1.5"
+    val spekJunitPlatformEngine = "org.jetbrains.spek:spek-junit-platform-engine:1.1.5"
+    val kotlinReflect = "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
+
     val roomRuntime = "androidx.room:room-runtime:2.0.0"
     val roomCompiler = "androidx.room:room-compiler:2.0.0"
     val rxjava = "io.reactivex.rxjava2:rxjava:2.2.3"

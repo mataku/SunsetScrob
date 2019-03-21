@@ -13,7 +13,7 @@ class Scrobbles(
         val artist: NowPlayingArtist,
         val ignoredMessage: IgnoredMessage,
         val albumArtist: NowPlayingArtist,
-        val timeStamp: String,
+        val timestamp: String,
         val album: NowPlayingAlbum,
         val track: NowPlayingTrack
     )
