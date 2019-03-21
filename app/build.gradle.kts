@@ -1,5 +1,6 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import com.android.build.gradle.internal.dsl.TestOptions
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("com.android.application")
@@ -23,6 +24,13 @@ android {
     compileSdkVersion(Versions.compileSdkVersion)
 
     dataBinding.isEnabled = true
+
+    testOptions {
+        unitTests(closureOf<TestOptions.UnitTestOptions> {
+            isIncludeAndroidResources = true
+        })
+    }
+
 
     signingConfigs {
         getByName("debug") {
@@ -159,6 +167,11 @@ val dependencyUpdates by tasks.getting(DependencyUpdatesTask::class) {
             }
         }
     }
+}
+
+tasks.withType<Test> {
+    maxParallelForks = 2
+    failFast = true
 }
 
 apply(mapOf("plugin" to "com.google.gms.google-services"))
