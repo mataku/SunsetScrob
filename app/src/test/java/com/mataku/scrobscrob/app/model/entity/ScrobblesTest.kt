@@ -7,10 +7,8 @@ import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.context
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
-import org.junit.Test
 import org.junit.platform.runner.JUnitPlatform
 import org.junit.runner.RunWith
-import org.junit.runners.JUnit4
 import kotlin.test.assertNotNull
 import kotlin.test.fail
 
@@ -19,13 +17,13 @@ class ScrobblesTest : Spek({
 
     val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
 
-    describe("Model properties") {
+    describe("Scrobbles") {
         beforeGroup {
             Thread.currentThread().setUncaughtExceptionHandler { _, _ -> fail() }
         }
         afterGroup {}
-        context("current") {
-            it("way") {
+        context("successful request") {
+            it("Parse correctly") {
                 val jsonAdapter = moshi.adapter<ScrobblesApiResponse>(ScrobblesApiResponse::class.java)
                 val response = jsonAdapter.fromJson(
                     TestUtils.getAssetFileString("scrobbles.json")
