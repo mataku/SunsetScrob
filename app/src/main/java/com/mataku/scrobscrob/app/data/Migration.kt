@@ -7,7 +7,6 @@ class Migration : RealmMigration {
     override fun migrate(realm: DynamicRealm?, oldVersion: Long, newVersion: Long) {
         val schema = realm?.schema
         schema?.let {
-
         }
     }
 

@@ -1,0 +1,29 @@
+<component name="ProjectDictionaryState">
+  <dictionary name="mataku">
+    <words>
+      <w>airbnb</w>
+      <w>bumptech</w>
+      <w>cardview</w>
+      <w>constraintlayout</w>
+      <w>cookpad</w>
+      <w>coroutines</w>
+      <w>crashlytics</w>
+      <w>databinding</w>
+      <w>deploygate</w>
+      <w>firebase</w>
+      <w>jakewharton</w>
+      <w>kapt</w>
+      <w>koin</w>
+      <w>kotlinx</w>
+      <w>licensetools</w>
+      <w>mannodermaus</w>
+      <w>mockwebserver</w>
+      <w>moshi</w>
+      <w>okhttp</w>
+      <w>robolectric</w>
+      <w>rxjava</w>
+      <w>squareup</w>
+      <w>viewmodel</w>
+    </words>
+  </dictionary>
+</component>

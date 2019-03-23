@@ -3,26 +3,48 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context="com.mataku.scrobscrob.app.ui.MainActivity">
+        android:layout_height="match_parent">
 
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/activity_main_tablayout"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:itemIconTint="@drawable/bottom_navigation_state"
-            app:itemTextColor="@drawable/bottom_navigation_state"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:menu="@menu/bottom_nav" />
+            android:layout_height="match_parent"
+            tools:context="com.mataku.scrobscrob.app.ui.top.MainActivity">
 
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/activity_main_viewpager"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@id/activity_main_tablayout"
-            app:layout_constraintTop_toTopOf="parent" />
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/activity_main_tablayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:itemIconTint="@drawable/bottom_navigation_state"
+                app:itemTextColor="@drawable/bottom_navigation_state"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:menu="@menu/bottom_nav" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/activity_main_viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                app:layout_constraintBottom_toTopOf="@id/activity_main_tablayout"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:scaleType="center"
+                android:src="@drawable/filter_list_24px"
+                android:visibility="gone"
+                app:elevation="4dp"
+                app:fabSize="normal"
+                app:layout_constraintBottom_toTopOf="@id/activity_main_tablayout"
+                app:layout_constraintRight_toRightOf="parent"
+                tools:visibility="visible" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
 </layout>

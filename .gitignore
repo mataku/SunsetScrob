@@ -25,10 +25,13 @@ local.properties
 .idea/modules.xml
 .idea/scopes/scope_settings.xml
 .idea/vcs.xml
-.idea/dictionaries/
 .idea/caches/
 .idea/assetWizardSettings.xml
+.idea/modules.xml
+.idea/gradle.xml
+.idea/kotlinScripting.xml
 !.idea/codeStyles/
+!.idea/dictionaries/
 
 *.iml
 .env
@@ -55,3 +58,5 @@ app/app-publisher.json
 .mainframer/config
 mainframer.sh
 fastlane/report.xml
+fastlane/README.md
+google-services.json
