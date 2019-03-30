@@ -25,6 +25,18 @@ android {
 
     dataBinding.isEnabled = true
 
+    defaultConfig {
+        applicationId = "com.mataku.scrobscrob"
+        minSdkVersion(Versions.minSdkVersion)
+        targetSdkVersion(Versions.targetSdkVersion)
+        versionCode = 23
+        versionName = "0.2.3"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
+        buildConfigField("String", "API_KEY", "${rootProject.ext["API_KEY"]}")
+        buildConfigField("String", "SHARED_SECRET", "${rootProject.ext["SHARED_SECRET"]}")
+    }
+
     testOptions {
         unitTests(closureOf<TestOptions.UnitTestOptions> {
             isIncludeAndroidResources = true
@@ -42,18 +54,6 @@ android {
             keyAlias = System.getenv("SUNSET_KEY_ALIAS")
             keyPassword = System.getenv("SUNSET_KEY_PASSWORD")
         }
-    }
-    defaultConfig {
-        applicationId = "com.mataku.scrobscrob"
-
-        minSdkVersion(Versions.minSdkVersion)
-        targetSdkVersion(Versions.targetSdkVersion)
-        versionCode = 23
-        versionName = "0.2.3"
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables.useSupportLibrary = true
-        buildConfigField("String", "API_KEY", "${rootProject.ext["API_KEY"]}")
-        buildConfigField("String", "SHARED_SECRET", "${rootProject.ext["SHARED_SECRET"]}")
     }
     buildTypes {
         getByName("release") {
