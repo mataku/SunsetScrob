@@ -22,6 +22,8 @@
       <w>okhttp</w>
       <w>robolectric</w>
       <w>rxjava</w>
+      <w>scrobble</w>
+      <w>scrobbles</w>
       <w>squareup</w>
       <w>viewmodel</w>
     </words>
