@@ -27,13 +27,13 @@ class ScrobbleFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         setUpRecyclerView()
         setUpNowPlayingView(dummyTrack())
 
-        RxEventBus.stream(UpdateNowPlayingEvent::class.java).subscribe({
+        RxEventBus.stream(UpdateNowPlayingEvent::class.java).subscribe {
             setUpNowPlayingView(it.track)
-        })
+        }
 
-        RxEventBus.stream(UpdateScrobbledListEvent::class.java).subscribe({
+        RxEventBus.stream(UpdateScrobbledListEvent::class.java).subscribe {
             onRefresh()
-        })
+        }
 
         return scrobbleView
     }
