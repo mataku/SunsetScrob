@@ -1,5 +1,5 @@
+v0.3.0
+Fix bugs on scrobbling
+
 v0.2.2
 Performance improvements
-
-v0.2.1
-Fixed that the first element of the scrobbled list is not displayed
