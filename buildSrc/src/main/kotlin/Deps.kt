@@ -1,5 +1,6 @@
 object Deps {
     val kotlinVersion = "1.3.21"
+    val ktorVersion = "1.1.3"
 
     val appCompat = "androidx.appcompat:appcompat:1.0.2"
     val androidGradlePlugin = "com.android.tools.build:gradle:3.4.0-rc03"
@@ -30,6 +31,10 @@ object Deps {
     val kotlnGradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     val kotlinStdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
     val kotlinTestJunit = "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
+
+    val ktorClientAndroid = "io.ktor:ktor-client-android:$ktorVersion"
+    val ktorClientJsonJvm = "io.ktor:ktor-client-json-jvm:$ktorVersion"
+    val ktorClientLoggingJvm = "io.ktor:ktor-client-logging-jvm:$ktorVersion"
 
     val lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:2.0.0"
     val materialComponent = "com.google.android.material:material:1.0.0"
