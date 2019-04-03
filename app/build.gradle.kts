@@ -6,6 +6,7 @@ plugins {
     id("com.android.application")
     kotlin("android")
     kotlin("kapt")
+    id("kotlinx-serialization")
     id("realm-android")
     id("deploygate")
     id("com.github.ben-manes.versions")
