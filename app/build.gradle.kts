@@ -81,7 +81,7 @@ android {
     packagingOptions {
         exclude("META-INF/atomicfu.kotlin_module")
         exclude("META-INF/kotlinx-coroutines-io.kotlin_module")
-        exclude("META-INF/kotlinx-io.kotlin_module'")
+        exclude("META-INF/kotlinx-io.kotlin_module")
         exclude("META-INF/ktor-client-json.kotlin_module")
         exclude("META-INF/ktor-client-core.kotlin_module")
         exclude("META-INF/ktor-http.kotlin_module")
