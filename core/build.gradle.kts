@@ -34,6 +34,7 @@ dependencies {
     implementation(Deps.moshi)
     implementation(Deps.moshiKotlin)
     implementation(Deps.glide)
+    implementation(Deps.ktorClientAndroid)
     kapt(Deps.glideCompiler)
 
     testImplementation(Deps.junit)
