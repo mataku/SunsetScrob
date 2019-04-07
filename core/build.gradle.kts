@@ -35,6 +35,8 @@ dependencies {
     implementation(Deps.moshiKotlin)
     implementation(Deps.glide)
     implementation(Deps.ktorClientAndroid)
+    implementation(Deps.ktorClientJsonJvm)
+    implementation(Deps.ktorClientLoggingJvm)
     kapt(Deps.glideCompiler)
 
     testImplementation(Deps.junit)
@@ -45,6 +47,7 @@ repositories {
     jcenter()
     mavenCentral()
     maven("https://maven.google.com")
+    maven("https://kotlin.bintray.com/kotlinx")
 }
 
 kapt {
