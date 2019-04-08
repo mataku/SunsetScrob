@@ -38,8 +38,8 @@ object ApiClient {
             return HttpClient(Android).config(config)
         }
 
-    suspend inline fun <reified T> request(endpoint: Endpoint) {
-        client.request<T>(BASE_URL + endpoint.path) {
+    suspend inline fun <reified T> request(endpoint: Endpoint): T {
+        val response = client.request<T>(BASE_URL + endpoint.path) {
             method = endpoint.requestType
             if (endpoint.params.isNotEmpty()) {
                 endpoint.params.forEach { k, v ->
@@ -47,5 +47,7 @@ object ApiClient {
                 }
             }
         }
+        client.close()
+        return response
     }
 }
