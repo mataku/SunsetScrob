@@ -12,6 +12,7 @@ import io.ktor.client.features.logging.LogLevel
 import io.ktor.client.features.logging.Logger
 import io.ktor.client.features.logging.Logging
 import io.ktor.client.features.logging.SIMPLE
+import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.ktor.client.request.request
 import kotlinx.serialization.json.Json
@@ -25,6 +26,7 @@ object ApiClient {
                 install(JsonFeature) {
                     serializer = KotlinxSerializer(Json.nonstrict)
                 }
+
                 defaultRequest {
                     parameter("api_key", BuildConfig.API_KEY)
                 }
@@ -34,6 +36,9 @@ object ApiClient {
                         level = LogLevel.ALL
                     }
                 }
+                engine {
+                    response.defaultCharset = Charsets.UTF_8
+                }
             }
             return HttpClient(Android).config(config)
         }
@@ -41,6 +46,19 @@ object ApiClient {
     suspend inline fun <reified T> request(endpoint: Endpoint): T {
         val response = client.request<T>(BASE_URL + endpoint.path) {
             method = endpoint.requestType
+            if (endpoint.params.isNotEmpty()) {
+                endpoint.params.forEach { k, v ->
+                    parameter(key = k, value = v)
+                }
+            }
+        }
+        client.close()
+        return response
+    }
+
+    // charset=utf-8 になってない気がする
+    suspend inline fun <reified T> get(endpoint: Endpoint): T {
+        val response = client.get<T>(BASE_URL + endpoint.path) {
             if (endpoint.params.isNotEmpty()) {
                 endpoint.params.forEach { k, v ->
                     parameter(key = k, value = v)

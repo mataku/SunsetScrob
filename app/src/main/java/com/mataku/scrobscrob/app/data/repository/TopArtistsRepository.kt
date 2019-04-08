@@ -20,7 +20,7 @@ class TopArtistsRepository(val apiClient: ApiClient) {
         )
 
         return try {
-            val request = apiClient.request<TopArtistsApiResponse>(TopArtistsEndpoint(params = params))
+            val request = apiClient.get<TopArtistsApiResponse>(TopArtistsEndpoint(params = params))
             if (request.topArtists.artists.isNullOrEmpty()) {
                 Result.success(emptyList())
             } else {
