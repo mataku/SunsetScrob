@@ -102,7 +102,6 @@ dependencies {
     implementation(Deps.okhttpLoggingInterceptor)
 
     implementation(Deps.kotlinCoroutinesAndroid)
-    implementation(Deps.kotlinCoroutinesCore)
 
     implementation(Deps.retrofit)
     implementation(Deps.retrofitMoshiConverter)
