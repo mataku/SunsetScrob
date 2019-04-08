@@ -25,6 +25,7 @@
       <w>okhttp</w>
       <w>robolectric</w>
       <w>rxjava</w>
+      <w>spek</w>
       <w>squareup</w>
       <w>viewmodel</w>
     </words>

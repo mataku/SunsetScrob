@@ -19,6 +19,7 @@ plugins {
 apply {
     from("lint-checks.gradle")
     from("$rootDir/core_dependencies.gradle")
+    from("$rootDir/unittest_deps.gradle")
 }
 
 android {
@@ -132,23 +133,6 @@ dependencies {
 
     implementation(Deps.glide)
     kapt(Deps.glideCompiler)
-
-    testImplementation(Deps.junit)
-    testImplementation(Deps.guava)
-    testImplementation(Deps.kotlinTestJunit)
-    testImplementation(Deps.robolectric)
-    testImplementation(Deps.mockWebServer)
-
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.3.1")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.3.1")
-
-    testImplementation("org.junit.jupiter:junit-jupiter-params:5.3.1")
-
-    testImplementation("androidx.test:core:1.0.0")
-    testImplementation(Deps.spek)
-    testImplementation(Deps.spekJunitPlatformEngine)
-    testImplementation(Deps.kotlinReflect)
-    testImplementation("org.junit.platform:junit-platform-runner:1.1.0")
 }
 
 repositories {
