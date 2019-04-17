@@ -27,6 +27,7 @@ object Deps {
     val kotlnGradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     val kotlinStdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
 
+    val ktorClientOkhttp = "io.ktor:ktor-client-okhttp:$ktorVersion"
     val ktorClientAndroid = "io.ktor:ktor-client-android:$ktorVersion"
     val ktorClientJsonJvm = "io.ktor:ktor-client-json-jvm:$ktorVersion"
     val ktorClientLoggingJvm = "io.ktor:ktor-client-logging-jvm:$ktorVersion"
