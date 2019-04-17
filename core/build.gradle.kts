@@ -40,9 +40,10 @@ dependencies {
     implementation(Deps.moshi)
     implementation(Deps.moshiKotlin)
     implementation(Deps.glide)
-    implementation(Deps.ktorClientAndroid)
+    implementation(Deps.ktorClientOkhttp)
     implementation(Deps.ktorClientJsonJvm)
     implementation(Deps.ktorClientLoggingJvm)
+    implementation(Deps.okhttp)
     kapt(Deps.glideCompiler)
 }
 
