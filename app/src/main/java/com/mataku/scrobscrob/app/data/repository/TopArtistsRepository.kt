@@ -1,29 +1,33 @@
 package com.mataku.scrobscrob.app.data.repository
 
 import com.mataku.scrobscrob.R
-import com.mataku.scrobscrob.app.model.api.service.UserTopArtistsService
-import com.mataku.scrobscrob.core.entity.Artist
+import com.mataku.scrobscrob.core.api.ApiClient
+import com.mataku.scrobscrob.core.api.endpoint.Artist
+import com.mataku.scrobscrob.core.api.endpoint.TopArtistsApiResponse
+import com.mataku.scrobscrob.core.api.endpoint.TopArtistsEndpoint
 import com.mataku.scrobscrob.core.entity.presentation.Result
-import java.io.IOException
-import javax.net.ssl.HttpsURLConnection
 
-class TopArtistsRepository(val topArtistsService: UserTopArtistsService) {
-    suspend fun topArtistsResponse(page: Int, userName: String): Result<List<Artist>> {
+class TopArtistsRepository(val apiClient: ApiClient) {
+    suspend fun topArtistsResponse(
+        page: Int,
+        userName: String
+    ): Result<List<Artist>> {
+        val params = mapOf(
+            "limit" to 20,
+            "page" to page,
+            "period" to "overall",
+            "user" to userName
+        )
+
         return try {
-            val result = topArtistsService
-                .getTopArtists(20, page, "overall", userName).await()
-            when (result.code()) {
-                HttpsURLConnection.HTTP_OK -> {
-                    result.body()?.topArtists?.let {
-                        Result.success(it.artists)
-                    } ?: Result.success(emptyList())
-                }
-                else -> {
-                    Result.failure(R.string.error_message_fetch_top_artists)
-                }
+            val request = apiClient.get<TopArtistsApiResponse>(TopArtistsEndpoint(params = params))
+            if (request.topArtists.artists.isNullOrEmpty()) {
+                Result.success(emptyList())
+            } else {
+                Result.success(request.topArtists.artists)
             }
-        } catch (e: IOException) {
-            Result.failure(R.string.error_message_bad_network)
+        } catch (e: Exception) {
+            Result.failure(R.string.error_message_fetch_top_artists)
         }
     }
 }

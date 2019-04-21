@@ -13,7 +13,7 @@ import com.airbnb.epoxy.ModelProp
 import com.airbnb.epoxy.ModelView
 import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.core.GlideApp
-import com.mataku.scrobscrob.core.entity.Artist
+import com.mataku.scrobscrob.core.api.endpoint.Artist
 import com.mataku.scrobscrob.databinding.ModelTopArtistViewBinding
 
 @ModelView(autoLayout = ModelView.Size.WRAP_WIDTH_WRAP_HEIGHT)
@@ -42,14 +42,14 @@ class TopArtistView : ConstraintLayout {
 
     @ModelProp
     fun setArtist(artist: Artist) {
-        val image = artist.image
+        val imageList = artist.imageList
 
-        val imageUrl = if (image == null) {
+        val imageUrl = if (imageList == null) {
             null
-        } else if (image.size < 3) {
-            image.last().imageUrl
+        } else if (imageList.size < 3) {
+            imageList.last().imageUrl
         } else {
-            image[3].imageUrl
+            imageList[3].imageUrl
         }
         binding.modelTopArtistName.text = artist.name
         val resources = context.resources

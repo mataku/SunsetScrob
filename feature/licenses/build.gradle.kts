@@ -36,7 +36,6 @@ android {
 }
 
 dependencies {
-    testImplementation(Deps.junit)
 }
 
 repositories {

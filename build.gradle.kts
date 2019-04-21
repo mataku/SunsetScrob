@@ -8,7 +8,8 @@ buildscript {
     }
     dependencies {
         classpath(Deps.androidGradlePlugin)
-        classpath(kotlin("gradle-plugin", version = Deps.kotlinVersion))
+        classpath(kotlin("gradle-plugin", version = kotlinVersion))
+        classpath(kotlin("serialization", version = kotlinVersion))
         classpath("io.realm:realm-gradle-plugin:5.8.0")
         classpath("com.deploygate:gradle:1.1.4")
         classpath("com.github.ben-manes:gradle-versions-plugin:0.17.0")

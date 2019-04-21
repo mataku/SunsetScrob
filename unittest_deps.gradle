@@ -1,0 +1,12 @@
+dependencies {
+    testImplementation "${UnitTestDeps.androidxTestCore}"
+    testImplementation "${UnitTestDeps.spek}"
+    testImplementation "${UnitTestDeps.spekJunitPlatformEngine}"
+    testImplementation "${UnitTestDeps.kotlinReflect}"
+    testImplementation "${UnitTestDeps.junitPlatformRunner}"
+    testImplementation "${UnitTestDeps.kotlinTestJunit}"
+    testImplementation "${UnitTestDeps.robolectric}"
+    testImplementation "${UnitTestDeps.guava}"
+    testImplementation "${UnitTestDeps.junit}"
+    testImplementation "${UnitTestDeps.mockWebServer}"
+}

@@ -2,7 +2,7 @@ package com.mataku.scrobscrob.app.ui.top.artist
 
 import com.airbnb.epoxy.EpoxyController
 import com.mataku.scrobscrob.app.ui.widget.TopArtistViewModel_
-import com.mataku.scrobscrob.core.entity.Artist
+import com.mataku.scrobscrob.core.api.endpoint.Artist
 
 class TopArtistController(private val halfWidth: Int) : EpoxyController() {
 

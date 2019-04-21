@@ -3,7 +3,12 @@ plugins {
     kotlin("android")
     kotlin("android.extensions")
     kotlin("kapt")
+    id("kotlinx-serialization")
     id("realm-android")
+}
+
+apply {
+    from("$rootDir/unittest_deps.gradle")
 }
 
 android {
@@ -13,6 +18,8 @@ android {
         minSdkVersion(Versions.minSdkVersion)
         targetSdkVersion(Versions.targetSdkVersion)
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "API_KEY", "${rootProject.ext["API_KEY"]}")
+        buildConfigField("String", "SHARED_SECRET", "${rootProject.ext["SHARED_SECRET"]}")
     }
 
     buildTypes {
@@ -33,9 +40,11 @@ dependencies {
     implementation(Deps.moshi)
     implementation(Deps.moshiKotlin)
     implementation(Deps.glide)
+    implementation(Deps.ktorClientOkhttp)
+    implementation(Deps.ktorClientJsonJvm)
+    implementation(Deps.ktorClientLoggingJvm)
+    implementation(Deps.okhttp)
     kapt(Deps.glideCompiler)
-
-    testImplementation(Deps.junit)
 }
 
 repositories {
@@ -43,6 +52,7 @@ repositories {
     jcenter()
     mavenCentral()
     maven("https://maven.google.com")
+    maven("https://kotlin.bintray.com/kotlinx")
 }
 
 kapt {
