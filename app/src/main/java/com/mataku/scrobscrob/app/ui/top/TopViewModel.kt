@@ -4,8 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.mataku.scrobscrob.app.data.repository.TopAlbumsRepository
 import com.mataku.scrobscrob.app.data.repository.TopArtistsRepository
+import com.mataku.scrobscrob.core.api.endpoint.Artist
 import com.mataku.scrobscrob.core.entity.Album
-import com.mataku.scrobscrob.core.entity.Artist
 import com.mataku.scrobscrob.core.entity.presentation.Result
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

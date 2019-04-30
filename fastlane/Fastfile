@@ -30,7 +30,9 @@ platform :android do
       check_superseded_tracks: false,
       skip_upload_metadata: false,
       skip_upload_images: true,
-      skip_upload_screenshots: true
+      skip_upload_screenshots: true,
+      skip_upload_apk: true,
+      track: 'alpha'
     )
   end
 

@@ -2,10 +2,12 @@
   <dictionary name="mataku">
     <words>
       <w>airbnb</w>
+      <w>atomicfu</w>
       <w>bumptech</w>
       <w>cardview</w>
       <w>constraintlayout</w>
       <w>cookpad</w>
+      <w>coroutine</w>
       <w>coroutines</w>
       <w>crashlytics</w>
       <w>databinding</w>
@@ -15,6 +17,7 @@
       <w>kapt</w>
       <w>koin</w>
       <w>kotlinx</w>
+      <w>ktor</w>
       <w>licensetools</w>
       <w>mannodermaus</w>
       <w>mockwebserver</w>
@@ -24,6 +27,7 @@
       <w>rxjava</w>
       <w>scrobble</w>
       <w>scrobbles</w>
+      <w>spek</w>
       <w>squareup</w>
       <w>viewmodel</w>
     </words>

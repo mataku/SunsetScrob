@@ -6,6 +6,7 @@ plugins {
     id("com.android.application")
     kotlin("android")
     kotlin("kapt")
+    id("kotlinx-serialization")
     id("realm-android")
     id("deploygate")
     id("com.github.ben-manes.versions")
@@ -18,12 +19,25 @@ plugins {
 apply {
     from("lint-checks.gradle")
     from("$rootDir/core_dependencies.gradle")
+    from("$rootDir/unittest_deps.gradle")
 }
 
 android {
     compileSdkVersion(Versions.compileSdkVersion)
 
     dataBinding.isEnabled = true
+
+    defaultConfig {
+        applicationId = "com.mataku.scrobscrob"
+        minSdkVersion(Versions.minSdkVersion)
+        targetSdkVersion(Versions.targetSdkVersion)
+        versionCode = 30
+        versionName = "0.3.0"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
+        buildConfigField("String", "API_KEY", "${rootProject.ext["API_KEY"]}")
+        buildConfigField("String", "SHARED_SECRET", "${rootProject.ext["SHARED_SECRET"]}")
+    }
 
     testOptions {
         unitTests(closureOf<TestOptions.UnitTestOptions> {
@@ -42,18 +56,6 @@ android {
             keyAlias = System.getenv("SUNSET_KEY_ALIAS")
             keyPassword = System.getenv("SUNSET_KEY_PASSWORD")
         }
-    }
-    defaultConfig {
-        applicationId = "com.mataku.scrobscrob"
-
-        minSdkVersion(Versions.minSdkVersion)
-        targetSdkVersion(Versions.targetSdkVersion)
-        versionCode = 30
-        versionName = "0.3.0"
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables.useSupportLibrary = true
-        buildConfigField("String", "API_KEY", "${rootProject.ext["API_KEY"]}")
-        buildConfigField("String", "SHARED_SECRET", "${rootProject.ext["SHARED_SECRET"]}")
     }
     buildTypes {
         getByName("release") {
@@ -76,6 +78,16 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
+    packagingOptions {
+        exclude("META-INF/atomicfu.kotlin_module")
+        exclude("META-INF/kotlinx-coroutines-io.kotlin_module")
+        exclude("META-INF/kotlinx-io.kotlin_module")
+        exclude("META-INF/ktor-client-json.kotlin_module")
+        exclude("META-INF/ktor-client-core.kotlin_module")
+        exclude("META-INF/ktor-http.kotlin_module")
+        exclude("META-INF/ktor-utils.kotlin_module")
+    }
 }
 
 dependencies {
@@ -91,7 +103,6 @@ dependencies {
     implementation(Deps.okhttpLoggingInterceptor)
 
     implementation(Deps.kotlinCoroutinesAndroid)
-    implementation(Deps.kotlinCoroutinesCore)
 
     implementation(Deps.retrofit)
     implementation(Deps.retrofitMoshiConverter)
@@ -116,25 +127,12 @@ dependencies {
     implementation(Deps.koinAndroidXScope)
     implementation(Deps.koinAndroidXViewModel)
 
+    implementation(Deps.ktorClientAndroid)
+    implementation(Deps.ktorClientJsonJvm)
+    implementation(Deps.ktorClientLoggingJvm)
+
     implementation(Deps.glide)
     kapt(Deps.glideCompiler)
-
-    testImplementation(Deps.junit)
-    testImplementation(Deps.guava)
-    testImplementation(Deps.kotlinTestJunit)
-    testImplementation(Deps.robolectric)
-    testImplementation(Deps.mockWebServer)
-
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.3.1")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.3.1")
-
-    testImplementation("org.junit.jupiter:junit-jupiter-params:5.3.1")
-
-    testImplementation("androidx.test:core:1.0.0")
-    testImplementation(Deps.spek)
-    testImplementation(Deps.spekJunitPlatformEngine)
-    testImplementation(Deps.kotlinReflect)
-    testImplementation("org.junit.platform:junit-platform-runner:1.1.0")
 }
 
 repositories {
@@ -142,6 +140,7 @@ repositories {
     jcenter()
     mavenCentral()
     maven("https://maven.google.com")
+    maven("https://kotlin.bintray.com/kotlinx")
 }
 
 kapt {

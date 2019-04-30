@@ -8,13 +8,14 @@ buildscript {
     }
     dependencies {
         classpath(Deps.androidGradlePlugin)
-        classpath(kotlin("gradle-plugin", version = Deps.kotlinVersion))
+        classpath(kotlin("gradle-plugin", version = kotlinVersion))
+        classpath(kotlin("serialization", version = kotlinVersion))
         classpath("io.realm:realm-gradle-plugin:5.8.0")
-        classpath("com.deploygate:gradle:1.1.4")
+        classpath("com.deploygate:gradle:2.0.1")
         classpath("com.github.ben-manes:gradle-versions-plugin:0.17.0")
         classpath("com.cookpad.android.licensetools:license-tools-plugin:1.5.0")
         classpath("com.google.gms:google-services:4.2.0")
-        classpath("io.fabric.tools:gradle:1.26.1")
+        classpath("io.fabric.tools:gradle:1.28.1")
         classpath("de.mannodermaus.gradle.plugins:android-junit5:1.3.1.1")
         classpath("org.junit.platform:junit-platform-gradle-plugin:1.0.0")
 

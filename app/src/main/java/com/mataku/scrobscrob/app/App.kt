@@ -9,6 +9,7 @@ import com.mataku.scrobscrob.app.model.api.okhttp3.LastFmApiAuthInterceptor
 import com.mataku.scrobscrob.app.model.api.service.UserTopAlbumsService
 import com.mataku.scrobscrob.app.model.api.service.UserTopArtistsService
 import com.mataku.scrobscrob.app.ui.top.TopViewModel
+import com.mataku.scrobscrob.core.api.ApiClient
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
@@ -28,6 +29,7 @@ open class App : Application() {
         single { apiClient(get()).create(UserTopArtistsService::class.java) }
         single { TopArtistsRepository(get()) }
         single { TopAlbumsRepository(get()) }
+        single { ApiClient }
         viewModel { TopViewModel(get(), get()) }
     }
 
