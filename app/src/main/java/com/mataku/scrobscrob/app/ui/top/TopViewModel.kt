@@ -8,7 +8,6 @@ import com.mataku.scrobscrob.core.api.endpoint.Artist
 import com.mataku.scrobscrob.core.entity.Album
 import com.mataku.scrobscrob.core.entity.presentation.Result
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -23,7 +22,7 @@ class TopViewModel(
     val topArtistsResult = MutableLiveData<Result<List<Artist>>>()
 
     private val job = Job()
-    override val coroutineContext: CoroutineContext get() = job + Dispatchers.Main
+    override val coroutineContext: CoroutineContext get() = job
 
     fun loadAlbums(page: Int, userName: String) {
         launch(coroutineContext) {
