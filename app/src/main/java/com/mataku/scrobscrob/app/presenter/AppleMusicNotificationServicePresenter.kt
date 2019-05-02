@@ -1,25 +1,30 @@
 package com.mataku.scrobscrob.app.presenter
 
-import com.mataku.scrobscrob.app.model.api.LastFmApiClient
-import com.mataku.scrobscrob.app.model.api.service.TrackInfoService
-import com.mataku.scrobscrob.app.model.api.service.TrackScrobbleService
-import com.mataku.scrobscrob.app.model.api.service.TrackUpdateNowPlayingService
+import com.mataku.scrobscrob.app.data.repository.NowPlayingRepository
+import com.mataku.scrobscrob.app.data.repository.ScrobbleRepository
+import com.mataku.scrobscrob.app.data.repository.TrackRepository
 import com.mataku.scrobscrob.app.ui.view.NotificationServiceInterface
 import com.mataku.scrobscrob.app.util.AppUtil
 import com.mataku.scrobscrob.core.entity.Track
+import com.mataku.scrobscrob.core.entity.presentation.onFailure
+import com.mataku.scrobscrob.core.entity.presentation.onSuccess
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
-class AppleMusicNotificationServicePresenter(private var notificationServiceInterface: NotificationServiceInterface) {
+class AppleMusicNotificationServicePresenter(
+    private val notificationServiceInterface: NotificationServiceInterface,
+    private val nowPlayingRepository: NowPlayingRepository,
+    private val trackRepository: TrackRepository,
+    private val scrobbleRepository: ScrobbleRepository
+) {
 
-    private val appUtil = AppUtil()
-    private val scrobbleMethod = "track.scrobble"
-    private val nowPlayingMethod = "track.updateNowPlaying"
-
-    private val coroutineContext = Job() + Dispatchers.Main
+    companion object {
+        private val appUtil = AppUtil()
+        private val coroutineContext = Job() + Dispatchers.Main
+    }
 
     fun dispose() {
         coroutineContext.cancel()
@@ -39,97 +44,53 @@ class AppleMusicNotificationServicePresenter(private var notificationServiceInte
     }
 
     private suspend fun requestScrobble(track: Track, sessionKey: String, timeStamp: Long) {
-        val params: MutableMap<String, String> = mutableMapOf()
-        params["artist[0]"] = track.artistName
-        params["track[0]"] = track.name
-        params["timestamp[0]"] = timeStamp.toString()
-        params["album[0]"] = track.albumName
-        params["method"] = scrobbleMethod
-        params["sk"] = sessionKey
-
-        val apiSig = appUtil.generateApiSig(params)
-        val client = LastFmApiClient.create(TrackScrobbleService::class.java)
-        val result = client.scrobble(
-            track.artistName,
-            track.name,
-            timeStamp,
-            track.albumName,
-            apiSig,
-            sessionKey
-        ).await()
-        when (result.code()) {
-            200, 201 -> {
-                result.body()?.scrobbles.let {
-                    val accepted = it?.attr?.accepted
-                    if (accepted != null && accepted == 1) {
+        scrobbleRepository.scrobble(track, sessionKey, timeStamp)
+            .onSuccess { attr ->
+                val accepted = attr.accepted
+                accepted?.let {
+                    if (it == 1) {
                         notificationServiceInterface.saveScrobble(track)
-
                         appUtil.debugLog("scrobbleApi", "success")
                     }
                 }
             }
-            else -> {
-                appUtil.debugLog("Scrobble API", result.errorBody().toString())
+            .onFailure {
+                appUtil.debugLog("Scrobble API", it.localizedMessage.toString())
             }
-        }
     }
 
     private suspend fun setNowPlaying(trackName: String, artistName: String, sessionKey: String) {
-        val params: MutableMap<String, String> = mutableMapOf()
-        params["artist"] = artistName
-        params["track"] = trackName
-        params["album"] = ""
-        params["method"] = nowPlayingMethod
-        params["sk"] = sessionKey
-
-        val apiSig = appUtil.generateApiSig(params)
-        val client = LastFmApiClient.create(TrackUpdateNowPlayingService::class.java)
-        val result = client.updateNowPlaying(
-            artistName,
-            trackName,
-            "",
-            apiSig,
-            sessionKey
-        ).await()
-        when (result.code()) {
-            200, 201 -> {
-                appUtil.debugLog("NowPlayingApi", "success")
-                result.body()?.nowPlaying?.let {
-                    notificationServiceInterface.notifyNowPlayingUpdated(
-                        Track(
-                            it.artist.text,
-                            it.track.text,
-                            it.album.text
-                        )
+        nowPlayingRepository.update(trackName, artistName, sessionKey)
+            .onSuccess {
+                notificationServiceInterface.notifyNowPlayingUpdated(
+                    Track(
+                        it.artist.text,
+                        it.track.text,
+                        it.album.text
                     )
-                }
+                )
+
             }
-            else -> {
+            .onFailure {
                 appUtil.debugLog("NowPlayingApi", "Something wrong")
             }
-        }
     }
 
     private suspend fun getTrackInfo(artistName: String, trackName: String) {
-        val client = LastFmApiClient.create(TrackInfoService::class.java)
         var trackDuration = appUtil.defaultPlayingTime
         var albumArtwork = ""
 
-        val result = client.getTrackInfo(artistName, trackName).await()
-        when (result.code()) {
-            200, 201 -> {
-                val apiResponse = result.body()
-                apiResponse?.trackInfo.let {
-                    val duration = it?.duration
-                    if (duration != null) {
-                        trackDuration = duration.toLong() / 1000L
+        trackRepository.getInfo(artistName, trackName)
+            .onSuccess {
+                val duration = it.duration
+                if (duration != null) {
+                    trackDuration = duration.toLong() / 1000L
+                }
+                try {
+                    it.album?.imageList?.let { list ->
+                        albumArtwork = list[1].imageUrl
                     }
-                    try {
-                        it?.album?.imageList?.let { list ->
-                            albumArtwork = list[1].imageUrl
-                        }
-                    } catch (e: Exception) {
-                    }
+                } catch (e: Exception) {
                 }
                 // Use default value if duration is 0
                 if (trackDuration == 0L) {
@@ -138,9 +99,8 @@ class AppleMusicNotificationServicePresenter(private var notificationServiceInte
 
                 notificationServiceInterface.setCurrentTrackInfo(trackDuration, albumArtwork)
             }
-            else -> {
+            .onFailure {
                 notificationServiceInterface.setCurrentTrackInfo(trackDuration, albumArtwork)
             }
-        }
     }
 }
