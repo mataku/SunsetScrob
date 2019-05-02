@@ -1,25 +1,48 @@
 package com.mataku.scrobscrob.core.entity.presentation
 
-sealed class Result<T> {
-    data class Progress<T>(var loading: Boolean) : Result<T>()
-    data class Success<T>(var data: T) : Result<T>()
-    data class Failure<T>(val throwable: Throwable) : Result<T>()
+sealed class SunsetResult<T> {
+    data class Progress<T>(var loading: Boolean) : SunsetResult<T>()
+    data class Success<T>(var data: T) : SunsetResult<T>()
+    data class Failure<T>(val throwable: Throwable) : SunsetResult<T>()
 
     companion object {
-        fun <T> loading(isLoading: Boolean): Result<T> =
+        fun <T> loading(isLoading: Boolean): SunsetResult<T> =
             Progress(isLoading)
 
-        fun <T> success(data: T): Result<T> =
+        fun <T> success(data: T): SunsetResult<T> =
             Success(data)
 
-        fun <T> failure(throwable: Throwable): Result<T> =
+        fun <T> failure(throwable: Throwable): SunsetResult<T> =
             Failure(throwable)
+    }
+
+    fun getOrNull(): T? {
+        return if (this is Success) {
+            this.data
+        } else {
+            null
+        }
+    }
+
+    fun exceptionOrNull(): Throwable? {
+        return if (this is Failure) {
+            this.throwable
+        } else {
+            null
+        }
     }
 }
 
-inline fun <T> Result<T>.onSuccess(action: (value: T) -> Unit): Result<T> {
-    if (this is Result.Success) {
-        action(value as T)
+inline fun <T> SunsetResult<T>.onSuccess(action: (value: T) -> Unit): SunsetResult<T> {
+    if (this is SunsetResult.Success) {
+        action(this.data)
+    }
+    return this
+}
+
+inline fun <T> SunsetResult<T>.onFailure(action: (exception: Throwable) -> Unit): SunsetResult<T> {
+    exceptionOrNull()?.let {
+        action(it)
     }
     return this
 }
