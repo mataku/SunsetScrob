@@ -13,8 +13,11 @@ data class TopArtistsEndpoint(
 @Serializable
 @SerialName("artist")
 data class Artist(
+    @SerialName("name")
     val name: String,
+    @SerialName("url")
     val url: String,
+    @SerialName("playcount")
     val playcount: String?,
     @SerialName("image")
     val imageList: List<Image>?

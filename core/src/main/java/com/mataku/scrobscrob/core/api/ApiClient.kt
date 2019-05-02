@@ -26,6 +26,9 @@ object ApiClient {
             return HttpClient(OkHttp) {
                 engine {
                     addInterceptor(LastfmApiAuthInterceptor())
+                    response.apply {
+                        defaultCharset = Charsets.UTF_8
+                    }
                 }
                 install(JsonFeature) {
                     serializer = KotlinxSerializer(Json.nonstrict)

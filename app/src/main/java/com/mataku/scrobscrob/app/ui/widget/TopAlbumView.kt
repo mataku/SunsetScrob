@@ -13,7 +13,7 @@ import com.airbnb.epoxy.ModelProp
 import com.airbnb.epoxy.ModelView
 import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.core.GlideApp
-import com.mataku.scrobscrob.core.entity.Album
+import com.mataku.scrobscrob.core.api.endpoint.Album
 import com.mataku.scrobscrob.databinding.ModelTopAlbumViewBinding
 
 @ModelView(autoLayout = ModelView.Size.MATCH_WIDTH_WRAP_HEIGHT)
@@ -53,10 +53,14 @@ class TopAlbumView : ConstraintLayout {
         binding.modelTopAlbumArtist.text = album.artist.name
         binding.modelTopAlbumTrack.text = album.name
 
-        val imageUrl = if (album.imageList.size < 3) {
-            album.imageList.last().imageUrl
+        val list = album.imageList
+
+        val imageUrl = if (list == null) {
+            ""
+        } else if (list.size < 3) {
+            list.last().imageUrl
         } else {
-            album.imageList[3].imageUrl
+            list[3].imageUrl
         }
 
         GlideApp.with(context)

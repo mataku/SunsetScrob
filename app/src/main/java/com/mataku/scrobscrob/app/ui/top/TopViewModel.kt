@@ -4,10 +4,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.mataku.scrobscrob.app.data.repository.TopAlbumsRepository
 import com.mataku.scrobscrob.app.data.repository.TopArtistsRepository
+import com.mataku.scrobscrob.core.api.endpoint.Album
 import com.mataku.scrobscrob.core.api.endpoint.Artist
-import com.mataku.scrobscrob.core.entity.Album
-import com.mataku.scrobscrob.core.entity.presentation.Result
+import com.mataku.scrobscrob.core.entity.presentation.SunsetResult
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -18,11 +19,11 @@ class TopViewModel(
     private val topArtistsRepository: TopArtistsRepository
 ) : ViewModel(), CoroutineScope {
 
-    val topAlbumsResult = MutableLiveData<Result<List<Album>>>()
-    val topArtistsResult = MutableLiveData<Result<List<Artist>>>()
+    val topAlbumsResult = MutableLiveData<SunsetResult<List<Album>>>()
+    val topArtistsResult = MutableLiveData<SunsetResult<List<Artist>>>()
 
     private val job = Job()
-    override val coroutineContext: CoroutineContext get() = job
+    override val coroutineContext: CoroutineContext get() = job + Dispatchers.Main
 
     fun loadAlbums(page: Int, userName: String) {
         launch(coroutineContext) {
