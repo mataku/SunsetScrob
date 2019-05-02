@@ -17,8 +17,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.mataku.scrobscrob.R
+import com.mataku.scrobscrob.app.data.repository.MobileSessionRepository
 import com.mataku.scrobscrob.app.model.RxEventBus
 import com.mataku.scrobscrob.app.ui.settings.SettingsActivity
+import com.mataku.scrobscrob.core.api.ApiClient
 import com.mataku.scrobscrob.core.entity.Track
 import com.mataku.scrobscrob.core.entity.UpdateNowPlayingEvent
 import com.mataku.scrobscrob.databinding.ActivityLoginBinding
@@ -33,6 +35,7 @@ class LoginActivity : AppCompatActivity(), LoginViewCallback {
     private lateinit var progressView: View
     private lateinit var loginFormView: View
 
+    private val repository = MobileSessionRepository(ApiClient)
     private lateinit var loginPresenter: LoginPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,7 +57,7 @@ class LoginActivity : AppCompatActivity(), LoginViewCallback {
 
         loginFormView = binding.loginForm
         progressView = binding.loginProgress
-        loginPresenter = LoginPresenter(isEnabledReadNotification(), this)
+        loginPresenter = LoginPresenter(isEnabledReadNotification(), this, repository)
     }
 
     override fun showError() {
