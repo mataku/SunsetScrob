@@ -6,8 +6,6 @@ import com.mataku.scrobscrob.BuildConfig
 import com.mataku.scrobscrob.app.data.repository.TopAlbumsRepository
 import com.mataku.scrobscrob.app.data.repository.TopArtistsRepository
 import com.mataku.scrobscrob.app.model.api.okhttp3.LastFmApiAuthInterceptor
-import com.mataku.scrobscrob.app.model.api.service.UserTopAlbumsService
-import com.mataku.scrobscrob.app.model.api.service.UserTopArtistsService
 import com.mataku.scrobscrob.app.ui.top.TopViewModel
 import com.mataku.scrobscrob.core.api.ApiClient
 import com.squareup.moshi.Moshi
@@ -25,8 +23,6 @@ open class App : Application() {
     private val appModules = module {
         single { okHttpClient() }
         single { apiClient(get()) }
-        single { apiClient(get()).create(UserTopAlbumsService::class.java) }
-        single { apiClient(get()).create(UserTopArtistsService::class.java) }
         single { TopArtistsRepository(get()) }
         single { TopAlbumsRepository(get()) }
         single { ApiClient }
