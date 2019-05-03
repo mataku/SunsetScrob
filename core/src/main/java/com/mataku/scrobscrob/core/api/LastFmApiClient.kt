@@ -1,26 +1,20 @@
 package com.mataku.scrobscrob.core.api
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.mataku.scrobscrob.core.BuildConfig
 import com.mataku.scrobscrob.core.api.endpoint.Endpoint
 import com.mataku.scrobscrob.core.api.okhttp.LastfmApiAuthInterceptor
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.features.json.JsonFeature
-import io.ktor.client.features.json.defaultSerializer
 import io.ktor.client.features.json.serializer.KotlinxSerializer
-import io.ktor.client.features.logging.LogLevel
-import io.ktor.client.features.logging.Logger
-import io.ktor.client.features.logging.Logging
-import io.ktor.client.features.logging.SIMPLE
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.client.request.request
 import kotlinx.serialization.json.Json
+import okhttp3.logging.HttpLoggingInterceptor
 
-object ApiClient {
+object LastFmApiClient {
     const val BASE_URL = "https://ws.audioscrobbler.com"
 
     val client: HttpClient
@@ -31,16 +25,15 @@ object ApiClient {
                     response.apply {
                         defaultCharset = Charsets.UTF_8
                     }
+
+                    if (BuildConfig.DEBUG) {
+                        val logging = HttpLoggingInterceptor()
+                        logging.level = HttpLoggingInterceptor.Level.BODY
+                        addInterceptor(logging)
+                    }
                 }
                 install(JsonFeature) {
                     serializer = KotlinxSerializer(Json.nonstrict)
-                }
-
-                if (BuildConfig.DEBUG) {
-                    install(Logging) {
-                        logger = Logger.SIMPLE
-                        level = LogLevel.ALL
-                    }
                 }
             }
         }
@@ -58,7 +51,6 @@ object ApiClient {
         return response
     }
 
-    // charset=utf-8 になってない気がする
     suspend inline fun <reified T> get(endpoint: Endpoint): T {
         val response = client.get<T>(BASE_URL + endpoint.path) {
             if (endpoint.params.isNotEmpty()) {
@@ -71,27 +63,17 @@ object ApiClient {
         return response
     }
 
-    // charset=utf-8 になってない気がする
-    suspend inline fun <reified T> req(endpoint: Endpoint): LiveData<T> {
-        val liveData = MutableLiveData<T>()
-        val response = client.get<T>(BASE_URL + endpoint.path) {
-            if (endpoint.params.isNotEmpty()) {
-                endpoint.params.forEach { (k, v) ->
-                    parameter(key = k, value = v)
-                }
+    suspend inline fun <reified T> post(endpoint: Endpoint): T {
+        val response = client.post<T>(BASE_URL + endpoint.path) {
+            // Fix at ktor 1.2
+            // https://github.com/ktorio/ktor/issues/904
+            body = ""
+            endpoint.params.forEach { (k, v) ->
+                parameter(k, v)
             }
         }
-        client.close()
-        return liveData
-    }
 
-    suspend inline fun <reified T> post(endpoint: Endpoint): T {
-        val json = defaultSerializer()
-        val response = client.post<T>(BASE_URL + endpoint.path) {
-            body = json.write(endpoint.params)
-        }
         client.close()
         return response
     }
-
 }
