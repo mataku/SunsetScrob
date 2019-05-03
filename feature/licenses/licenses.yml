@@ -1,13 +1,3 @@
-- artifact: com.squareup.retrofit2:retrofit:+
-  name: Retrofit
-  copyrightHolder: square
-  license: The Apache Software License, Version 2.0
-- artifact: com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:+
-  name: Retrofit 2 Kotlin Coroutine Adapter
-  copyrightHolder: Jake Wharton
-  license: The Apache Software License, Version 2.0
-  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
-  url: https://github.com/JakeWharton/retrofit2-kotlin-coroutines-adapter/
 - artifact: com.github.bumptech.glide:glide:+
   name: Glide
   copyrightHolder: Google
@@ -132,10 +122,6 @@
   url: http://developer.android.com/tools/extras/support-library.html
 - artifact: com.squareup.moshi:moshi:+
   name: Moshi
-  copyrightHolder: square
-  license: The Apache Software License, Version 2.0
-- artifact: com.squareup.retrofit2:converter-moshi:+
-  name: "Converter: Moshi"
   copyrightHolder: square
   license: The Apache Software License, Version 2.0
 - artifact: org.jetbrains.kotlin:kotlin-stdlib-common:+
