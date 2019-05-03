@@ -44,6 +44,8 @@ dependencies {
     implementation(Deps.ktorClientJsonJvm)
     implementation(Deps.ktorClientLoggingJvm)
     implementation(Deps.okhttp)
+    implementation(Deps.okhttpLoggingInterceptor)
+
     kapt(Deps.glideCompiler)
 }
 

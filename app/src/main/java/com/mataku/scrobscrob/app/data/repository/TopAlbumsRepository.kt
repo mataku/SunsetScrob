@@ -1,29 +1,31 @@
 package com.mataku.scrobscrob.app.data.repository
 
-import com.mataku.scrobscrob.R
-import com.mataku.scrobscrob.app.model.api.service.UserTopAlbumsService
-import com.mataku.scrobscrob.core.entity.Album
-import com.mataku.scrobscrob.core.entity.presentation.Result
-import java.io.IOException
-import javax.net.ssl.HttpsURLConnection
+import com.mataku.scrobscrob.core.api.LastFmApiClient
+import com.mataku.scrobscrob.core.api.endpoint.Album
+import com.mataku.scrobscrob.core.api.endpoint.TopAlbumsApiResponse
+import com.mataku.scrobscrob.core.api.endpoint.TopAlbumsEndpoint
+import com.mataku.scrobscrob.core.entity.presentation.SunsetResult
 
-class TopAlbumsRepository(val topAlbumsService: UserTopAlbumsService) {
-    suspend fun topAlbumsResponse(page: Int, userName: String): Result<List<Album>> {
+class TopAlbumsRepository(private val apiClient: LastFmApiClient) {
+    suspend fun topAlbumsResponse(page: Int, userName: String): SunsetResult<List<Album>> {
+        val params = mapOf(
+            "limit" to 20,
+            "page" to page,
+            "period" to "overall",
+            "user" to userName
+        )
+
         return try {
-            val result = topAlbumsService
-                .getTopAlbum(20, page, "overall", userName).await()
-            when (result.code()) {
-                HttpsURLConnection.HTTP_OK -> {
-                    result.body()?.topAlbums?.let {
-                        Result.success(it.albums)
-                    } ?: Result.success(emptyList())
-                }
-                else -> {
-                    Result.failure(R.string.error_message_fetch_top_albums)
-                }
+            val request = apiClient.get<TopAlbumsApiResponse>(TopAlbumsEndpoint(params = params))
+            val albums = request.topAlbums.albums
+            if (request.topAlbums.albums.isNullOrEmpty()) {
+                SunsetResult.success(emptyList())
+            } else {
+                SunsetResult.success(albums)
             }
-        } catch (e: IOException) {
-            Result.failure(R.string.error_message_bad_network)
+        } catch (e: Throwable) {
+            SunsetResult.failure(e)
         }
+
     }
 }

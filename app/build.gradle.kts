@@ -104,9 +104,6 @@ dependencies {
 
     implementation(Deps.kotlinCoroutinesAndroid)
 
-    implementation(Deps.retrofit)
-    implementation(Deps.retrofitMoshiConverter)
-
     implementation(Deps.rxjava)
 
     implementation(Deps.epoxy)
@@ -116,7 +113,6 @@ dependencies {
     implementation(Deps.moshi)
     implementation(Deps.moshiKotlin)
 
-    implementation(Deps.retrofitKotlinCoroutinesAdapter)
     implementation(Deps.firebaseCore)
     implementation(Deps.crashlytics)
 

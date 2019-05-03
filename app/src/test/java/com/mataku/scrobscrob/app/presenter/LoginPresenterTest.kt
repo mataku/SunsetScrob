@@ -1,5 +1,6 @@
 package com.mataku.scrobscrob.app.presenter
 
+import com.mataku.scrobscrob.app.data.repository.MobileSessionRepository
 import com.mataku.scrobscrob.app.ui.login.LoginPresenter
 import com.mataku.scrobscrob.app.ui.login.LoginViewCallback
 import org.jetbrains.spek.api.Spek
@@ -8,6 +9,7 @@ import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
 import org.junit.platform.runner.JUnitPlatform
 import org.junit.runner.RunWith
+import org.mockito.Mockito
 import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.test.assertTrue
 import kotlin.test.fail
@@ -15,7 +17,10 @@ import kotlin.test.fail
 @RunWith(JUnitPlatform::class)
 class LoginPresenterTest : Spek({
 
+    val mockRepo = Mockito.mock(MobileSessionRepository::class.java)
+
     describe("backToSettingsWhenLoggedIn") {
+
         context("Logged in user") {
             it("Call successful callbacks") {
                 val showSuccessMessageCalled = AtomicBoolean()
@@ -31,7 +36,7 @@ class LoginPresenterTest : Spek({
                     }
                 }
 
-                val presenter = LoginPresenter(true, MockView())
+                val presenter = LoginPresenter(true, MockView(), mockRepo)
                 presenter.backToSettingsWhenLoggedIn(true, "someKey")
                 assertTrue(showSuccessMessageCalled.get())
                 assertTrue(backToSettingsActivityCalled.get())
@@ -48,7 +53,7 @@ class LoginPresenterTest : Spek({
                     }
                 }
 
-                val presenter = LoginPresenter(true, MockView())
+                val presenter = LoginPresenter(true, MockView(), mockRepo)
                 presenter.backToSettingsWhenLoggedIn(true, "")
                 assertTrue(focusOnPasswordViewCalled.get())
             }

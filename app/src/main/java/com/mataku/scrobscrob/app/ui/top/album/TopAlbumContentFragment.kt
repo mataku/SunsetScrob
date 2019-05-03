@@ -10,7 +10,8 @@ import androidx.lifecycle.Observer
 import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.app.ui.extension.showToastAtCenter
 import com.mataku.scrobscrob.app.ui.top.TopViewModel
-import com.mataku.scrobscrob.core.entity.presentation.Result
+import com.mataku.scrobscrob.core.entity.presentation.onFailure
+import com.mataku.scrobscrob.core.entity.presentation.onSuccess
 import com.mataku.scrobscrob.databinding.FragmentTopAlbumsBinding
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
@@ -69,15 +70,14 @@ class TopAlbumContentFragment : Fragment() {
                 }
             }
         })
-        topViewModel.topAlbumsResult.observe(this, Observer {
-            when (it) {
-                is Result.Success -> {
-                    controller.setAlbums(it.data)
+        topViewModel.topAlbumsResult.observe(this, Observer { result ->
+            result
+                .onSuccess {
+                    controller.setAlbums(it)
                 }
-                is Result.Failure -> {
-                    context?.showToastAtCenter(it.errorMessageId)
+                .onFailure {
+                    context?.showToastAtCenter(R.string.error_message_fetch_top_albums)
                 }
-            }
         })
         topViewModel.loadAlbums(currentPage, userName)
     }

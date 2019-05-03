@@ -11,7 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.app.ui.extension.showToastAtCenter
 import com.mataku.scrobscrob.app.ui.top.TopViewModel
-import com.mataku.scrobscrob.core.entity.presentation.Result
+import com.mataku.scrobscrob.core.entity.presentation.onFailure
+import com.mataku.scrobscrob.core.entity.presentation.onSuccess
 import com.mataku.scrobscrob.databinding.FragmentTopArtistsBinding
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
@@ -70,15 +71,14 @@ class TopArtistContentFragment : Fragment() {
                 }
             }
         })
-        topViewModel.topArtistsResult.observe(this, Observer {
-            when (it) {
-                is Result.Success -> {
-                    controller.setArtists(it.data)
+        topViewModel.topArtistsResult.observe(this, Observer { result ->
+            result
+                .onSuccess {
+                    controller.setArtists(it)
                 }
-                is Result.Failure -> {
-                    context?.showToastAtCenter(it.errorMessageId)
+                .onFailure {
+                    context?.showToastAtCenter(R.string.error_message_fetch_top_artists)
                 }
-            }
         })
         topViewModel.loadArtists(currentPage, userName)
     }
