@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 data class ScrobbleEndpoint(
     override val path: String = "/2.0/?method=track.scrobble&format=json",
     override val requestType: HttpMethod = HttpMethod.Post,
-    override val params: Map<String, Any>
+    override val params: Map<String, String>
 ) : Endpoint
 
 @Serializable
