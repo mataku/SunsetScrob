@@ -4,7 +4,6 @@ plugins {
     kotlin("android.extensions")
     kotlin("kapt")
     id("kotlinx-serialization")
-    id("realm-android")
 }
 
 apply {
@@ -37,8 +36,6 @@ android {
 }
 
 dependencies {
-    implementation(Deps.moshi)
-    implementation(Deps.moshiKotlin)
     implementation(Deps.glide)
     implementation(Deps.ktorClientOkhttp)
     implementation(Deps.ktorClientJsonJvm)

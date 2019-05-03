@@ -10,8 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.mataku.scrobscrob.R
+import com.mataku.scrobscrob.app.App
 import com.mataku.scrobscrob.app.ui.login.LoginActivity
-import com.mataku.scrobscrob.core.entity.Scrobble
 import com.mataku.scrobscrob.licenses.ui.LicensesActivity
 
 class SettingsActivity : AppCompatActivity() {
@@ -109,7 +109,7 @@ class SettingsActivity : AppCompatActivity() {
                 "OK"
             ) { _, _ ->
                 removeSession()
-                Scrobble().deleteAll()
+                App.database.clearAllTables()
 
                 fragmentManager?.beginTransaction()?.replace(
                     android.R.id.content,

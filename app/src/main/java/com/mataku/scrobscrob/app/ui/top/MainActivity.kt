@@ -10,14 +10,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.mataku.scrobscrob.R
-import com.mataku.scrobscrob.app.data.Migration
 import com.mataku.scrobscrob.app.receiver.AppleMusicNotificationReceiver
 import com.mataku.scrobscrob.app.ui.login.LoginActivity
 import com.mataku.scrobscrob.app.ui.settings.SettingsActivity
 import com.mataku.scrobscrob.app.util.SharedPreferencesHelper
 import com.mataku.scrobscrob.databinding.ActivityMainBinding
-import io.realm.Realm
-import io.realm.RealmConfiguration
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity(), MainViewCallback {
@@ -31,19 +28,8 @@ class MainActivity : AppCompatActivity(), MainViewCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Realm.init(this)
-        val builder = RealmConfiguration.Builder()
         sharedPreferencesHelper = SharedPreferencesHelper(this)
-        builder.schemaVersion(1L).migration(Migration())
-        val config = builder.build()
-        Realm.setDefaultConfiguration(config)
         this.title = "Latest 20 scrobbles (Beta)"
-//        if (BuildConfig.DEBUG) {
-//            val realm = Realm.getDefaultInstance()
-//            realm.executeTransaction {
-//                realm.deleteAll()
-//            }
-//        }
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         val filter = IntentFilter()
         filter.addAction("AppleMusic")

@@ -14,10 +14,6 @@
   name: OkHttp Logging Interceptor
   copyrightHolder: square
   license: The Apache Software License, Version 2.0
-- artifact: io.realm:realm-android-library:+
-  name: realm-android-library
-  copyrightHolder: Realm
-  license: The Apache Software License, Version 2.0
 - artifact: io.reactivex.rxjava2:rxjava:+
   name: RxJava
   copyrightHolder: RxJava Contributors
@@ -52,12 +48,6 @@
   license: Apache License 2.0
   licenseUrl: https://github.com/airbnb/epoxy/blob/master/LICENSE
   url: https://github.com/airbnb/epoxy
-- artifact: com.getkeepsafe.relinker:relinker:+
-  name: ReLinker
-  copyrightHolder: Keepsafe Software Inc.
-  license: The Apache Software License, Version 2.0
-  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
-  url: https://github.com/KeepSafe/ReLinker
 - artifact: com.github.bumptech.glide:disklrucache:+
   name: Glide Disk LRU Cache Library
   copyrightHolder: Google
@@ -104,26 +94,12 @@
   license: The Apache Software License, Version 2.0
   licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
   url: https://github.com/Kotlin/kotlinx.coroutines
-- artifact: io.realm:realm-annotations:+
-  name: realm-annotations
-  copyrightHolder: Realm
-  license: The Apache Software License, Version 2.0
-  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
-  url: http://realm.io
-- artifact: io.realm:realm-android-kotlin-extensions:+
-  name: realm-android-kotlin-extensions
-  copyrightHolder: Realm
-  license: The Apache Software License, Version 2.0
 - artifact: androidx.preference:preference:+
   name: Android Support Preference v7
   copyrightHolder: Google
   license: The Apache Software License, Version 2.0
   licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
   url: http://developer.android.com/tools/extras/support-library.html
-- artifact: com.squareup.moshi:moshi:+
-  name: Moshi
-  copyrightHolder: square
-  license: The Apache Software License, Version 2.0
 - artifact: org.jetbrains.kotlin:kotlin-stdlib-common:+
   name: org.jetbrains.kotlin:kotlin-stdlib-common
   copyrightHolder: JetBrains
@@ -971,10 +947,6 @@
   name: koin-core
   copyrightHolder: insert-koin.io
   license: The Apache Software License, Version 2.0
-- artifact: com.squareup.moshi:moshi-kotlin:+
-  name: moshi-kotlin
-  copyrightHolder: Square
-  license: The Apache Software License, Version 2.0
 - artifact: org.jetbrains.kotlin:kotlin-reflect:+
   name: org.jetbrains.kotlin:kotlin-reflect
   copyrightHolder: JetBrains
@@ -1021,3 +993,145 @@
   licenseUrl: http://www.eclipse.org/legal/epl-v20.html
   url: http://junit.org/junit5/
   skip: true
+- artifact: org.jetbrains.kotlinx:kotlinx-coroutines-io:+
+  name: kotlinx-coroutines-io
+  copyrightHolder: JetBrains
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://github.com/Kotlin/kotlinx-io
+- artifact: com.typesafe:config:+
+  name: config
+  copyrightHolder: Havoc Pennington
+  license: Apache License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0
+  url: https://github.com/typesafehub/config
+- artifact: net.bytebuddy:byte-buddy:+
+  name: Byte Buddy (without dependencies)
+  copyrightHolder: #COPYRIGHT_HOLDER#
+  license: #LICENSE#
+  skip: true
+- artifact: org.mockito:mockito-core:+
+  name: mockito-core
+  copyrightHolder: Mockito contributors
+  license: The MIT License
+  licenseUrl: https://github.com/mockito/mockito/blob/master/LICENSE
+  url: https://github.com/mockito/mockito
+- artifact: org.jetbrains.kotlinx:kotlinx-coroutines-io-jvm:+
+  name: kotlinx-coroutines-io
+  copyrightHolder: JetBrains
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://github.com/Kotlin/kotlinx-io
+- artifact: io.ktor:ktor-client-okhttp:+
+  name: ktor-client-okhttp
+  copyrightHolder: JetBrains
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://github.com/ktorio/ktor
+- artifact: io.ktor:ktor-network:+
+  name: ktor-network
+  copyrightHolder: JetBrains
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://github.com/ktorio/ktor
+- artifact: io.ktor:ktor-utils-jvm:+
+  name: ktor-utils
+  copyrightHolder: JetBrains
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://github.com/ktorio/ktor
+- artifact: org.jetbrains.kotlinx:atomicfu-common:+
+  name: atomicfu
+  copyrightHolder: JetBrains
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://github.com/Kotlin/atomicfu
+- artifact: net.bytebuddy:byte-buddy-agent:+
+  name: Byte Buddy Java agent
+  copyrightHolder: #COPYRIGHT_HOLDER#
+  license: #LICENSE#
+  skip: true
+- artifact: org.slf4j:slf4j-api:+
+  name: SLF4J API Module
+  copyrightHolder: #COPYRIGHT_HOLDER#
+  license: #LICENSE#
+  skip: true
+  url: http://www.slf4j.org
+- artifact: io.ktor:ktor-client-json-jvm:+
+  name: ktor-client-json
+  copyrightHolder: JetBrains
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://github.com/ktorio/ktor
+- artifact: org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:+
+  name: kotlinx-coroutines-jdk8
+  copyrightHolder: JetBrains
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://github.com/Kotlin/kotlinx.coroutines
+- artifact: org.objenesis:objenesis:+
+  name: Objenesis
+  copyrightHolder: #COPYRIGHT_HOLDER#
+  license: #LICENSE#
+  skip: true
+  url: http://objenesis.org
+- artifact: io.ktor:ktor-client-android:+
+  name: ktor-client-android
+  copyrightHolder: JetBrains
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://github.com/ktorio/ktor
+- artifact: org.jetbrains.kotlin:kotlin-stdlib-jdk8:+
+  name: org.jetbrains.kotlin:kotlin-stdlib-jdk8
+  copyrightHolder: JetBrains
+  license: The Apache License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://kotlinlang.org/
+- artifact: org.jetbrains.kotlinx:kotlinx-io-jvm:+
+  name: kotlinx-io
+  copyrightHolder: JetBrains
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://github.com/Kotlin/kotlinx-io
+- artifact: org.jetbrains.kotlinx:kotlinx-io:+
+  name: kotlinx-io
+  copyrightHolder: JetBrains
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://github.com/Kotlin/kotlinx-io
+- artifact: org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:+
+  name: kotlinx-serialization-runtime-common
+  copyrightHolder: JetBrains
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://github.com/Kotlin/kotlinx.serialization
+- artifact: io.ktor:ktor-http-jvm:+
+  name: ktor-http
+  copyrightHolder: JetBrains
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://github.com/ktorio/ktor
+- artifact: io.ktor:ktor-client-logging-jvm:+
+  name: ktor-client-logging
+  copyrightHolder: JetBrains
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://github.com/ktorio/ktor
+- artifact: org.jetbrains.kotlinx:atomicfu:+
+  name: atomicfu
+  copyrightHolder: JetBrains
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://github.com/Kotlin/atomicfu
+- artifact: org.jetbrains.kotlinx:kotlinx-serialization-runtime:+
+  name: kotlinx-serialization-runtime
+  copyrightHolder: JetBrains
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://github.com/Kotlin/kotlinx.serialization
+- artifact: io.ktor:ktor-client-core-jvm:+
+  name: ktor-client-core
+  copyrightHolder: JetBrains
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://github.com/ktorio/ktor

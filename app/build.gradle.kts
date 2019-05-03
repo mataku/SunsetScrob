@@ -7,7 +7,6 @@ plugins {
     kotlin("android")
     kotlin("kapt")
     id("kotlinx-serialization")
-    id("realm-android")
     id("deploygate")
     id("com.github.ben-manes.versions")
     id("io.fabric")
@@ -109,9 +108,6 @@ dependencies {
     implementation(Deps.epoxy)
     implementation(Deps.epoxyDatabinding)
     kapt(Deps.epoxyProcessor)
-
-    implementation(Deps.moshi)
-    implementation(Deps.moshiKotlin)
 
     implementation(Deps.firebaseCore)
     implementation(Deps.crashlytics)

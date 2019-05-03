@@ -8,20 +8,23 @@ import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.text.TextUtils
 import com.mataku.scrobscrob.R
+import com.mataku.scrobscrob.app.App
 import com.mataku.scrobscrob.app.data.repository.NowPlayingRepository
 import com.mataku.scrobscrob.app.data.repository.ScrobbleRepository
 import com.mataku.scrobscrob.app.data.repository.TrackRepository
 import com.mataku.scrobscrob.app.model.RxEventBus
+import com.mataku.scrobscrob.app.model.db.Scrobble
 import com.mataku.scrobscrob.app.presenter.AppleMusicNotificationServicePresenter
 import com.mataku.scrobscrob.app.ui.view.NotificationServiceInterface
 import com.mataku.scrobscrob.app.util.AppUtil
 import com.mataku.scrobscrob.app.util.SharedPreferencesHelper
 import com.mataku.scrobscrob.core.api.LastFmApiClient
-import com.mataku.scrobscrob.core.entity.Scrobble
 import com.mataku.scrobscrob.core.entity.Track
 import com.mataku.scrobscrob.core.entity.UpdateNowPlayingEvent
 import com.mataku.scrobscrob.core.entity.UpdateScrobbledListEvent
-import io.realm.Realm
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
 class AppleMusicNotificationService : NotificationListenerService(), NotificationServiceInterface {
     private val APPLE_MUSIC_PACKAGE_NAME = "com.apple.android.music"
@@ -130,17 +133,21 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
     }
 
     override fun saveScrobble(track: Track) {
-        val realm = Realm.getDefaultInstance()
         val sharedPreferencesHelper = SharedPreferencesHelper(this)
 
-        realm.executeTransaction {
-            val scrobble = realm.createObject(Scrobble::class.java, Scrobble().count() + 1)
-            scrobble.albumName = track.albumName
-            scrobble.artistName = track.artistName
-            scrobble.artwork = sharedPreferencesHelper.getAlbumArtWork()
-            scrobble.trackName = track.name
+        GlobalScope.launch {
+            async {
+                val dao = App.database.scrobbleDao
+                val scrobble = Scrobble(
+                    artistName = track.artistName,
+                    trackName = track.name,
+                    albumName = track.albumName,
+                    artwork = sharedPreferencesHelper.getAlbumArtWork()
+                )
+                dao.insert(scrobble)
+                RxEventBus.post(UpdateScrobbledListEvent())
+            }
         }
-        RxEventBus.post(UpdateScrobbledListEvent())
     }
 
     override fun setCurrentTrackInfo(playingTime: Long, albumArtWork: String) {

@@ -16,4 +16,5 @@ interface ScrobbleDao {
 
     @Insert
     fun insert(scrobble: Scrobble)
+
 }
