@@ -16,7 +16,7 @@ import com.mataku.scrobscrob.app.presenter.AppleMusicNotificationServicePresente
 import com.mataku.scrobscrob.app.ui.view.NotificationServiceInterface
 import com.mataku.scrobscrob.app.util.AppUtil
 import com.mataku.scrobscrob.app.util.SharedPreferencesHelper
-import com.mataku.scrobscrob.core.api.ApiClient
+import com.mataku.scrobscrob.core.api.LastFmApiClient
 import com.mataku.scrobscrob.core.entity.Scrobble
 import com.mataku.scrobscrob.core.entity.Track
 import com.mataku.scrobscrob.core.entity.UpdateNowPlayingEvent
@@ -25,9 +25,9 @@ import io.realm.Realm
 
 class AppleMusicNotificationService : NotificationListenerService(), NotificationServiceInterface {
     private val APPLE_MUSIC_PACKAGE_NAME = "com.apple.android.music"
-    private val nowPlayingRepository = NowPlayingRepository(ApiClient)
-    private val trackRepository: TrackRepository = TrackRepository(ApiClient)
-    private val scrobbleRepository = ScrobbleRepository(ApiClient)
+    private val nowPlayingRepository = NowPlayingRepository(LastFmApiClient)
+    private val trackRepository: TrackRepository = TrackRepository(LastFmApiClient)
+    private val scrobbleRepository = ScrobbleRepository(LastFmApiClient)
     private val presenter =
         AppleMusicNotificationServicePresenter(this, nowPlayingRepository, trackRepository, scrobbleRepository)
     private lateinit var track: Track

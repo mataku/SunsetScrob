@@ -1,12 +1,12 @@
 package com.mataku.scrobscrob.app.data.repository
 
-import com.mataku.scrobscrob.core.api.ApiClient
+import com.mataku.scrobscrob.core.api.LastFmApiClient
 import com.mataku.scrobscrob.core.api.endpoint.Artist
 import com.mataku.scrobscrob.core.api.endpoint.TopArtistsApiResponse
 import com.mataku.scrobscrob.core.api.endpoint.TopArtistsEndpoint
 import com.mataku.scrobscrob.core.entity.presentation.SunsetResult
 
-class TopArtistsRepository(private val apiClient: ApiClient) {
+class TopArtistsRepository(private val apiClient: LastFmApiClient) {
     suspend fun topArtistsResponse(
         page: Int,
         userName: String

@@ -4,7 +4,7 @@ import android.app.Application
 import com.mataku.scrobscrob.app.data.repository.TopAlbumsRepository
 import com.mataku.scrobscrob.app.data.repository.TopArtistsRepository
 import com.mataku.scrobscrob.app.ui.top.TopViewModel
-import com.mataku.scrobscrob.core.api.ApiClient
+import com.mataku.scrobscrob.core.api.LastFmApiClient
 import org.koin.android.ext.android.startKoin
 import org.koin.androidx.viewmodel.ext.koin.viewModel
 import org.koin.dsl.module.module
@@ -14,7 +14,7 @@ open class App : Application() {
     private val appModules = module {
         single { TopArtistsRepository(get()) }
         single { TopAlbumsRepository(get()) }
-        single { ApiClient }
+        single { LastFmApiClient }
         viewModel { TopViewModel(get(), get()) }
     }
 
