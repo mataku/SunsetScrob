@@ -67,4 +67,5 @@ object UnitTestDeps {
     val guava = "com.google.guava:guava:22.0"
     val junit = "junit:junit:4.12"
     val mockWebServer = "com.squareup.okhttp3:mockwebserver:3.12.0"
+    val mockito = "org.mockito:mockito-core:2.27.0"
 }
