@@ -10,7 +10,6 @@ buildscript {
         classpath(Deps.androidGradlePlugin)
         classpath(kotlin("gradle-plugin", version = kotlinVersion))
         classpath(kotlin("serialization", version = kotlinVersion))
-        classpath("io.realm:realm-gradle-plugin:5.8.0")
         classpath("com.deploygate:gradle:2.0.1")
         classpath("com.github.ben-manes:gradle-versions-plugin:0.17.0")
         classpath("com.cookpad.android.licensetools:license-tools-plugin:1.5.0")
