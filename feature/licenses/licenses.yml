@@ -120,10 +120,6 @@
   license: The Apache Software License, Version 2.0
   licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
   url: http://developer.android.com/tools/extras/support-library.html
-- artifact: com.squareup.moshi:moshi:+
-  name: Moshi
-  copyrightHolder: square
-  license: The Apache Software License, Version 2.0
 - artifact: org.jetbrains.kotlin:kotlin-stdlib-common:+
   name: org.jetbrains.kotlin:kotlin-stdlib-common
   copyrightHolder: JetBrains
@@ -970,10 +966,6 @@
 - artifact: org.koin:koin-core:+
   name: koin-core
   copyrightHolder: insert-koin.io
-  license: The Apache Software License, Version 2.0
-- artifact: com.squareup.moshi:moshi-kotlin:+
-  name: moshi-kotlin
-  copyrightHolder: Square
   license: The Apache Software License, Version 2.0
 - artifact: org.jetbrains.kotlin:kotlin-reflect:+
   name: org.jetbrains.kotlin:kotlin-reflect

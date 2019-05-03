@@ -35,9 +35,6 @@ object Deps {
     const val lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:2.0.0"
     const val materialComponent = "com.google.android.material:material:1.0.0"
 
-    const val moshi = "com.squareup.moshi:moshi:1.8.0"
-    const val moshiKotlin = "com.squareup.moshi:moshi-kotlin:1.8.0"
-
     const val okhttp = "com.squareup.okhttp3:okhttp:3.12.0"
     const val okhttpLoggingInterceptor = "com.squareup.okhttp3:logging-interceptor:3.12.0"
 

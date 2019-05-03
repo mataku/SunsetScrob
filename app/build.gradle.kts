@@ -110,9 +110,6 @@ dependencies {
     implementation(Deps.epoxyDatabinding)
     kapt(Deps.epoxyProcessor)
 
-    implementation(Deps.moshi)
-    implementation(Deps.moshiKotlin)
-
     implementation(Deps.firebaseCore)
     implementation(Deps.crashlytics)
 
