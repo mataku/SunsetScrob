@@ -18,7 +18,7 @@ plugins {
 apply {
     from("lint-checks.gradle")
     from("$rootDir/core_dependencies.gradle")
-    from("$rootDir/unittest_deps.gradle")
+    from("$rootDir/test_dependencies.gradle")
 }
 
 android {

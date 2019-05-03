@@ -7,7 +7,7 @@ plugins {
 }
 
 apply {
-    from("$rootDir/unittest_deps.gradle")
+    from("$rootDir/test_dependencies.gradle")
 }
 
 android {
