@@ -1,7 +1,7 @@
-package com.mataku.scrobscrob.app.util
+package com.mataku.scrobscrob.core.util
 
 import android.util.Log
-import com.mataku.scrobscrob.BuildConfig
+import com.mataku.scrobscrob.core.BuildConfig
 import java.security.MessageDigest
 
 class AppUtil {
