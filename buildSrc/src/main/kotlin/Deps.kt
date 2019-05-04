@@ -29,7 +29,6 @@ object Deps {
 
     const val ktorClientOkhttp = "io.ktor:ktor-client-okhttp:$ktorVersion"
     const val ktorClientJsonJvm = "io.ktor:ktor-client-json-jvm:$ktorVersion"
-    const val ktorClientLoggingJvm = "io.ktor:ktor-client-logging-jvm:$ktorVersion"
 
     const val lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:2.0.0"
     const val materialComponent = "com.google.android.material:material:1.0.0"
