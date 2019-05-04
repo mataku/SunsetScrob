@@ -98,9 +98,6 @@ dependencies {
     implementation(Deps.materialComponent)
     implementation(Deps.preference)
 
-    implementation(Deps.okhttp)
-    implementation(Deps.okhttpLoggingInterceptor)
-
     implementation(Deps.kotlinCoroutinesAndroid)
 
     implementation(Deps.rxjava)
@@ -118,10 +115,6 @@ dependencies {
     implementation(Deps.koinAndroid)
     implementation(Deps.koinAndroidXScope)
     implementation(Deps.koinAndroidXViewModel)
-
-    implementation(Deps.ktorClientAndroid)
-    implementation(Deps.ktorClientJsonJvm)
-    implementation(Deps.ktorClientLoggingJvm)
 
     implementation(Deps.glide)
     kapt(Deps.glideCompiler)
