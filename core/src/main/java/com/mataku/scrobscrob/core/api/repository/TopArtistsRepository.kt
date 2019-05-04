@@ -1,6 +1,5 @@
 package com.mataku.scrobscrob.core.api.repository
 
-import android.util.Log
 import com.mataku.scrobscrob.core.api.LastFmApiClient
 import com.mataku.scrobscrob.core.api.endpoint.Artist
 import com.mataku.scrobscrob.core.api.endpoint.TopArtistsApiResponse
@@ -27,8 +26,6 @@ class TopArtistsRepository(private val apiClient: LastFmApiClient) {
                 SunsetResult.success(request.topArtists.artists)
             }
         } catch (e: Exception) {
-            Log.i("MATAKUDEBUG", e.javaClass.toString())
-            Log.i("MATAKUDEBUG", e.localizedMessage)
             SunsetResult.failure(e)
         }
     }

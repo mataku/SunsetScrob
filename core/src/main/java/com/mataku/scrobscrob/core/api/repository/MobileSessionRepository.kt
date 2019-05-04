@@ -1,6 +1,5 @@
 package com.mataku.scrobscrob.core.api.repository
 
-import android.util.Log
 import com.mataku.scrobscrob.core.api.LastFmApiClient
 import com.mataku.scrobscrob.core.api.endpoint.AuthMobileSessionApiResponse
 import com.mataku.scrobscrob.core.api.endpoint.AuthMobileSessionEndpoint
@@ -25,8 +24,6 @@ class MobileSessionRepository(private val apiClient: LastFmApiClient) {
                 SunsetResult.success(it)
             } ?: SunsetResult.failure(Throwable())
         } catch (e: Exception) {
-            Log.i("MATAKUDEBUG", e.javaClass.toString())
-            Log.i("MATAKUDEBUG", e.localizedMessage)
             SunsetResult.failure(e)
         }
     }
