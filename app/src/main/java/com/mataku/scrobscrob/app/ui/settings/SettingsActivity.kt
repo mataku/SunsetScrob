@@ -13,8 +13,16 @@ import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.app.App
 import com.mataku.scrobscrob.app.ui.login.LoginActivity
 import com.mataku.scrobscrob.licenses.ui.LicensesActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
 class SettingsActivity : AppCompatActivity() {
+
+    companion object {
+        private val job = Job()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -109,8 +117,11 @@ class SettingsActivity : AppCompatActivity() {
                 "OK"
             ) { _, _ ->
                 removeSession()
-                App.database.clearAllTables()
-
+                CoroutineScope(job).launch {
+                    async {
+                        App.database.clearAllTables()
+                    }
+                }
                 fragmentManager?.beginTransaction()?.replace(
                     android.R.id.content,
                     SettingsFragment()
