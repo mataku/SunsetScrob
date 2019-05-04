@@ -1,8 +1,8 @@
 package com.mataku.scrobscrob.app.presenter
 
-import com.mataku.scrobscrob.app.data.repository.MobileSessionRepository
 import com.mataku.scrobscrob.app.ui.login.LoginPresenter
 import com.mataku.scrobscrob.app.ui.login.LoginViewCallback
+import com.mataku.scrobscrob.core.api.repository.MobileSessionRepository
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.context
 import org.jetbrains.spek.api.dsl.describe

@@ -1,6 +1,6 @@
 package com.mataku.scrobscrob.app.ui.login
 
-import com.mataku.scrobscrob.app.data.repository.MobileSessionRepository
+import com.mataku.scrobscrob.core.api.repository.MobileSessionRepository
 import com.mataku.scrobscrob.core.entity.presentation.onFailure
 import com.mataku.scrobscrob.core.entity.presentation.onSuccess
 import kotlinx.coroutines.CoroutineScope

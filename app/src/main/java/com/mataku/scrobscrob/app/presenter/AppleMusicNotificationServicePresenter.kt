@@ -1,13 +1,13 @@
 package com.mataku.scrobscrob.app.presenter
 
-import com.mataku.scrobscrob.app.data.repository.NowPlayingRepository
-import com.mataku.scrobscrob.app.data.repository.ScrobbleRepository
-import com.mataku.scrobscrob.app.data.repository.TrackRepository
 import com.mataku.scrobscrob.app.ui.view.NotificationServiceInterface
-import com.mataku.scrobscrob.app.util.AppUtil
+import com.mataku.scrobscrob.core.api.repository.NowPlayingRepository
+import com.mataku.scrobscrob.core.api.repository.ScrobbleRepository
+import com.mataku.scrobscrob.core.api.repository.TrackRepository
 import com.mataku.scrobscrob.core.entity.Track
 import com.mataku.scrobscrob.core.entity.presentation.onFailure
 import com.mataku.scrobscrob.core.entity.presentation.onSuccess
+import com.mataku.scrobscrob.core.util.AppUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

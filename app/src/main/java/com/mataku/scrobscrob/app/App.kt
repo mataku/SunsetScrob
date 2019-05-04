@@ -2,11 +2,11 @@ package com.mataku.scrobscrob.app
 
 import android.app.Application
 import androidx.room.Room
-import com.mataku.scrobscrob.app.data.repository.TopAlbumsRepository
-import com.mataku.scrobscrob.app.data.repository.TopArtistsRepository
 import com.mataku.scrobscrob.app.model.db.AppDatabase
 import com.mataku.scrobscrob.app.ui.top.TopViewModel
 import com.mataku.scrobscrob.core.api.LastFmApiClient
+import com.mataku.scrobscrob.core.api.repository.TopAlbumsRepository
+import com.mataku.scrobscrob.core.api.repository.TopArtistsRepository
 import org.koin.android.ext.android.startKoin
 import org.koin.androidx.viewmodel.ext.koin.viewModel
 import org.koin.dsl.module.module
