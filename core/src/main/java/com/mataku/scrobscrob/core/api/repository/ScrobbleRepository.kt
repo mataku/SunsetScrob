@@ -1,12 +1,12 @@
-package com.mataku.scrobscrob.app.data.repository
+package com.mataku.scrobscrob.core.api.repository
 
-import com.mataku.scrobscrob.app.util.AppUtil
 import com.mataku.scrobscrob.core.api.LastFmApiClient
 import com.mataku.scrobscrob.core.api.endpoint.ScrobbleApiResponse
 import com.mataku.scrobscrob.core.api.endpoint.ScrobbleAttr
 import com.mataku.scrobscrob.core.api.endpoint.ScrobbleEndpoint
 import com.mataku.scrobscrob.core.entity.Track
 import com.mataku.scrobscrob.core.entity.presentation.SunsetResult
+import com.mataku.scrobscrob.core.util.AppUtil
 
 class ScrobbleRepository(private val apiClient: LastFmApiClient) {
     suspend fun scrobble(track: Track, sessionKey: String, timeStamp: Long): SunsetResult<ScrobbleAttr> {
