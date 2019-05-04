@@ -20,13 +20,16 @@
       <w>ktor</w>
       <w>licensetools</w>
       <w>mannodermaus</w>
+      <w>mataku</w>
       <w>mockwebserver</w>
       <w>moshi</w>
       <w>okhttp</w>
       <w>robolectric</w>
       <w>rxjava</w>
+      <w>scrob</w>
       <w>scrobble</w>
       <w>scrobbles</w>
+      <w>scrobscrob</w>
       <w>spek</w>
       <w>squareup</w>
       <w>viewmodel</w>
