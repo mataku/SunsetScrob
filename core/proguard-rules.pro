@@ -1,21 +1,38 @@
-# Add project specific ProGuard rules here.
-# You can control the set of applied configuration files using the
-# proguardFiles setting in build.gradle.
-#
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
+-keepattributes *Annotation*, InnerClasses
+-keepattributes SourceFile,LineNumberTable
+-keepattributes Signature, Exception
+-keepnames class ** { *; }
+-keep class com.mataku.scrobscrob.core.api.endpoint.** { *; }
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+-keep class kotlinx.** { *; }
+-keep interface kotlinx.** { *; }
+-keep class kotlin.** { *; }
+-keep interface kotlin.** { *; }
 
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+# Kotlin serialization
+-dontnote kotlinx.serialization.SerializationKt
+-keep,includedescriptorclasses class com.mataku.scrobscrob.core.**$$serializer { *; }
+-keepclassmembers class com.mataku.scrobscrob.core.** {
+    *** Companion;
+}
+-keepclasseswithmembers class com.mataku.scrobscrob.core.** {
+    kotlinx.serialization.KSerializer serializer(...);
+}
 
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
+# Okhttp
+-dontwarn okio.**
+-dontwarn com.squareup.okhttp.**
+
+-keep class com.squareup.okhttp.** { *; }
+-keep interface com.squareup.okhttp.* { *; }
+
+# Ktor
+-keep class io.ktor.** { *; }
+-dontwarn kotlinx.atomicfu.**
+-dontwarn io.netty.**
+-dontwarn com.typesafe.**
+-dontwarn org.slf4j.**
+
+# Glide
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-dontwarn com.bumptech.glide.load.resource.bitmap.VideoDecoder
