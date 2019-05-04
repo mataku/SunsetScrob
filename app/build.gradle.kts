@@ -35,6 +35,7 @@ android {
         vectorDrawables.useSupportLibrary = true
         buildConfigField("String", "API_KEY", "${rootProject.ext["API_KEY"]}")
         buildConfigField("String", "SHARED_SECRET", "${rootProject.ext["SHARED_SECRET"]}")
+        proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
     }
 
     testOptions {
@@ -58,10 +59,10 @@ android {
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
             signingConfig = signingConfigs.getByName("release")
         }
         getByName("debug") {
+            isMinifyEnabled = true
             applicationIdSuffix = ".dev"
             signingConfig = signingConfigs.getByName("debug")
         }
