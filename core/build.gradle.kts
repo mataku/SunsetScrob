@@ -19,15 +19,12 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "API_KEY", "${rootProject.ext["API_KEY"]}")
         buildConfigField("String", "SHARED_SECRET", "${rootProject.ext["SHARED_SECRET"]}")
-        proguardFiles(getDefaultProguardFile("proguard-android.txt"), file("proguard-rules.pro"))
     }
 
     buildTypes {
         getByName("release") {
-            isMinifyEnabled = false
         }
         getByName("debug") {
-            isMinifyEnabled = true
         }
 
     }
