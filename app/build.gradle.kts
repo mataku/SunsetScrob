@@ -9,7 +9,6 @@ plugins {
     id("deploygate")
     id("com.github.ben-manes.versions")
     id("io.fabric")
-    id("de.mannodermaus.android-junit5")
     // Apply at the bottom
     id("com.google.gms.google-services") apply false
 }
@@ -58,7 +57,7 @@ android {
     }
     buildTypes {
         getByName("release") {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             signingConfig = signingConfigs.getByName("release")
         }
         getByName("debug") {

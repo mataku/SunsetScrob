@@ -3,8 +3,6 @@
 -keepattributes Signature, Exception
 -keepnames class ** { *; }
 
--keep class kotlinx.** { *; }
--keep interface kotlinx.** { *; }
 -keep class kotlin.reflect.** { *; }
 -keep interface kotlin.reflect.** { *; }
 
