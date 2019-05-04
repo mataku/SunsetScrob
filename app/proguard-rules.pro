@@ -5,8 +5,8 @@
 
 -keep class kotlinx.** { *; }
 -keep interface kotlinx.** { *; }
--keep class kotlin.** { *; }
--keep interface kotlin.** { *; }
+-keep class kotlin.reflect.** { *; }
+-keep interface kotlin.reflect.** { *; }
 
 # Kotlin serialization
 -dontnote kotlinx.serialization.SerializationKt
@@ -31,6 +31,20 @@
 
 # RxJava
 -dontwarn rx.**
+
+# Okhttp
+-dontwarn okio.**
+-dontwarn com.squareup.okhttp.**
+
+-keep class com.squareup.okhttp.** { *; }
+-keep interface com.squareup.okhttp.* { *; }
+
+# Ktor
+-keep class io.ktor.** { *; }
+-dontwarn kotlinx.atomicfu.**
+-dontwarn io.netty.**
+-dontwarn com.typesafe.**
+-dontwarn org.slf4j.**
 
 # Glide
 -keep public class * implements com.bumptech.glide.module.GlideModule
