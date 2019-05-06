@@ -1,11 +1,11 @@
-package com.mataku.scrobscrob.app.data.repository
+package com.mataku.scrobscrob.core.api.repository
 
-import com.mataku.scrobscrob.app.util.AppUtil
 import com.mataku.scrobscrob.core.api.LastFmApiClient
 import com.mataku.scrobscrob.core.api.endpoint.NowPlaying
 import com.mataku.scrobscrob.core.api.endpoint.NowPlayingApiResponse
 import com.mataku.scrobscrob.core.api.endpoint.UpdateNowPlayingEndpoint
 import com.mataku.scrobscrob.core.entity.presentation.SunsetResult
+import com.mataku.scrobscrob.core.util.AppUtil
 
 class NowPlayingRepository(private val apiClient: LastFmApiClient) {
     suspend fun update(trackName: String, artistName: String, sessionKey: String): SunsetResult<NowPlaying> {

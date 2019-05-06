@@ -2,10 +2,10 @@ package com.mataku.scrobscrob.app.ui.top
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.mataku.scrobscrob.app.data.repository.TopAlbumsRepository
-import com.mataku.scrobscrob.app.data.repository.TopArtistsRepository
 import com.mataku.scrobscrob.core.api.endpoint.Album
 import com.mataku.scrobscrob.core.api.endpoint.Artist
+import com.mataku.scrobscrob.core.api.repository.TopAlbumsRepository
+import com.mataku.scrobscrob.core.api.repository.TopArtistsRepository
 import com.mataku.scrobscrob.core.entity.presentation.SunsetResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

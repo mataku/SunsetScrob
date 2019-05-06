@@ -2,13 +2,14 @@ package com.mataku.scrobscrob.app.util
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.mataku.scrobscrob.core.util.AppUtil
 
 class SharedPreferencesHelper(context: Context) {
     private val sharedPreferences = context.getSharedPreferences("DATA", Context.MODE_PRIVATE)
     private val appUtil = AppUtil()
 
     fun getTimeStamp(): Long =
-            sharedPreferences.getLong("TimeStamp", System.currentTimeMillis() / 1000L)
+        sharedPreferences.getLong("TimeStamp", System.currentTimeMillis() / 1000L)
 
     fun getAlbumArtWork(): String {
         return sharedPreferences.getString("AlbumArtwork", "") ?: return ""
@@ -50,5 +51,5 @@ class SharedPreferencesHelper(context: Context) {
     }
 
     private fun getPlayingTime(): Long =
-            sharedPreferences.getLong("PlayingTime", appUtil.defaultPlayingTime)
+        sharedPreferences.getLong("PlayingTime", appUtil.defaultPlayingTime)
 }

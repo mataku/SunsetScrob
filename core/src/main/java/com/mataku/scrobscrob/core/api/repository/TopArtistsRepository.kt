@@ -1,4 +1,4 @@
-package com.mataku.scrobscrob.app.data.repository
+package com.mataku.scrobscrob.core.api.repository
 
 import com.mataku.scrobscrob.core.api.LastFmApiClient
 import com.mataku.scrobscrob.core.api.endpoint.Artist

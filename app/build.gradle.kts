@@ -6,11 +6,9 @@ plugins {
     id("com.android.application")
     kotlin("android")
     kotlin("kapt")
-    id("kotlinx-serialization")
     id("deploygate")
     id("com.github.ben-manes.versions")
     id("io.fabric")
-    id("de.mannodermaus.android-junit5")
     // Apply at the bottom
     id("com.google.gms.google-services") apply false
 }
@@ -36,6 +34,7 @@ android {
         vectorDrawables.useSupportLibrary = true
         buildConfigField("String", "API_KEY", "${rootProject.ext["API_KEY"]}")
         buildConfigField("String", "SHARED_SECRET", "${rootProject.ext["SHARED_SECRET"]}")
+        proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
     }
 
     testOptions {
@@ -58,11 +57,11 @@ android {
     }
     buildTypes {
         getByName("release") {
-            isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+            isMinifyEnabled = true
             signingConfig = signingConfigs.getByName("release")
         }
         getByName("debug") {
+            isMinifyEnabled = true
             applicationIdSuffix = ".dev"
             signingConfig = signingConfigs.getByName("debug")
         }
@@ -98,9 +97,6 @@ dependencies {
     implementation(Deps.materialComponent)
     implementation(Deps.preference)
 
-    implementation(Deps.okhttp)
-    implementation(Deps.okhttpLoggingInterceptor)
-
     implementation(Deps.kotlinCoroutinesAndroid)
 
     implementation(Deps.rxjava)
@@ -118,10 +114,6 @@ dependencies {
     implementation(Deps.koinAndroid)
     implementation(Deps.koinAndroidXScope)
     implementation(Deps.koinAndroidXViewModel)
-
-    implementation(Deps.ktorClientAndroid)
-    implementation(Deps.ktorClientJsonJvm)
-    implementation(Deps.ktorClientLoggingJvm)
 
     implementation(Deps.glide)
     kapt(Deps.glideCompiler)

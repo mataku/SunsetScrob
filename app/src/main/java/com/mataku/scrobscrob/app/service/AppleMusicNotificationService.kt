@@ -9,19 +9,19 @@ import android.service.notification.StatusBarNotification
 import android.text.TextUtils
 import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.app.App
-import com.mataku.scrobscrob.app.data.repository.NowPlayingRepository
-import com.mataku.scrobscrob.app.data.repository.ScrobbleRepository
-import com.mataku.scrobscrob.app.data.repository.TrackRepository
 import com.mataku.scrobscrob.app.model.RxEventBus
 import com.mataku.scrobscrob.app.model.db.Scrobble
 import com.mataku.scrobscrob.app.presenter.AppleMusicNotificationServicePresenter
 import com.mataku.scrobscrob.app.ui.view.NotificationServiceInterface
-import com.mataku.scrobscrob.app.util.AppUtil
 import com.mataku.scrobscrob.app.util.SharedPreferencesHelper
 import com.mataku.scrobscrob.core.api.LastFmApiClient
+import com.mataku.scrobscrob.core.api.repository.NowPlayingRepository
+import com.mataku.scrobscrob.core.api.repository.ScrobbleRepository
+import com.mataku.scrobscrob.core.api.repository.TrackRepository
 import com.mataku.scrobscrob.core.entity.Track
 import com.mataku.scrobscrob.core.entity.UpdateNowPlayingEvent
 import com.mataku.scrobscrob.core.entity.UpdateScrobbledListEvent
+import com.mataku.scrobscrob.core.util.AppUtil
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -29,7 +29,8 @@ import kotlinx.coroutines.launch
 class AppleMusicNotificationService : NotificationListenerService(), NotificationServiceInterface {
     private val APPLE_MUSIC_PACKAGE_NAME = "com.apple.android.music"
     private val nowPlayingRepository = NowPlayingRepository(LastFmApiClient)
-    private val trackRepository: TrackRepository = TrackRepository(LastFmApiClient)
+    private val trackRepository: TrackRepository =
+        TrackRepository(LastFmApiClient)
     private val scrobbleRepository = ScrobbleRepository(LastFmApiClient)
     private val presenter =
         AppleMusicNotificationServicePresenter(this, nowPlayingRepository, trackRepository, scrobbleRepository)

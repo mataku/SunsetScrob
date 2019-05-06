@@ -23,8 +23,10 @@ android {
 
     buildTypes {
         getByName("release") {
-            isMinifyEnabled = false
         }
+        getByName("debug") {
+        }
+
     }
 
     lintOptions {
@@ -39,7 +41,6 @@ dependencies {
     implementation(Deps.glide)
     implementation(Deps.ktorClientOkhttp)
     implementation(Deps.ktorClientJsonJvm)
-    implementation(Deps.ktorClientLoggingJvm)
     implementation(Deps.okhttp)
     implementation(Deps.okhttpLoggingInterceptor)
 

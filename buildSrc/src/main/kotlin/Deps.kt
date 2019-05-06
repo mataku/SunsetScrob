@@ -1,4 +1,4 @@
-const val kotlinVersion = "1.3.21"
+const val kotlinVersion = "1.3.30"
 
 object Deps {
     const val ktorVersion = "1.1.3"
@@ -28,9 +28,7 @@ object Deps {
     const val kotlinStdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
 
     const val ktorClientOkhttp = "io.ktor:ktor-client-okhttp:$ktorVersion"
-    const val ktorClientAndroid = "io.ktor:ktor-client-android:$ktorVersion"
     const val ktorClientJsonJvm = "io.ktor:ktor-client-json-jvm:$ktorVersion"
-    const val ktorClientLoggingJvm = "io.ktor:ktor-client-logging-jvm:$ktorVersion"
 
     const val lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:2.0.0"
     const val materialComponent = "com.google.android.material:material:1.0.0"

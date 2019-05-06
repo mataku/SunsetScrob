@@ -38,6 +38,5 @@ data class TopArtists(
 @Serializable
 data class Image(
     @SerialName("#text")
-    val imageUrl: String,
-    val size: String
+    val imageUrl: String
 )
