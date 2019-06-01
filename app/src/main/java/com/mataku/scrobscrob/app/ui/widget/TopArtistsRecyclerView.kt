@@ -11,20 +11,20 @@ import com.mataku.scrobscrob.R
 
 class TopArtistsRecyclerView : EpoxyRecyclerView {
     constructor(
-        context: Context?
+        context: Context
     ) : this(context, null)
 
     constructor(
-        context: Context?,
+        context: Context,
         attrs: AttributeSet?
     ) : this(context, attrs, 0)
 
     constructor(
-        context: Context?,
+        context: Context,
         attrs: AttributeSet?,
         defStyleAttr: Int
     ) : super(context, attrs, defStyleAttr) {
-        context?.let {
+        context.let {
             val gridLayoutManager = GridLayoutManager(it, 2)
             this.addItemDecoration(ArtistItemDecoration.createDefaultDecoration(it))
 

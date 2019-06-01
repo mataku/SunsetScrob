@@ -19,9 +19,9 @@ object Deps {
     const val glide = "com.github.bumptech.glide:glide:4.8.0"
     const val glideCompiler = "com.github.bumptech.glide:compiler:4.8.0"
 
-    const val koinAndroid = "org.koin:koin-android:1.0.2"
-    const val koinAndroidXScope = "org.koin:koin-androidx-scope:1.0.2"
-    const val koinAndroidXViewModel = "org.koin:koin-androidx-viewmodel:1.0.2"
+    const val koinAndroid = "org.koin:koin-android:2.0.1"
+    const val koinAndroidXScope = "org.koin:koin-androidx-scope:2.0.1"
+    const val koinAndroidXViewModel = "org.koin:koin-androidx-viewmodel:2.0.1"
 
     const val kotlinCoroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.1.1"
     const val kotlnGradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
