@@ -8,7 +8,7 @@ object Deps {
     const val browser = "androidx.browser:browser:1.0.0"
     const val cardView = "androidx.cardview:cardview:1.0.0"
     const val constraintLayout = "androidx.constraintlayout:constraintlayout:1.1.3"
-    const val crashlytics = "com.crashlytics.sdk.android:crashlytics:2.9.5"
+    const val crashlytics = "com.crashlytics.sdk.android:crashlytics:2.10.1"
 
     const val epoxy = "com.airbnb.android:epoxy:3.5.0"
     const val epoxyDatabinding = "com.airbnb.android:epoxy-databinding:3.5.0"
