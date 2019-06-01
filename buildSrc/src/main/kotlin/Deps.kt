@@ -10,9 +10,9 @@ object Deps {
     const val constraintLayout = "androidx.constraintlayout:constraintlayout:1.1.3"
     const val crashlytics = "com.crashlytics.sdk.android:crashlytics:2.9.5"
 
-    const val epoxy = "com.airbnb.android:epoxy:3.0.0"
-    const val epoxyDatabinding = "com.airbnb.android:epoxy-databinding:3.0.0"
-    const val epoxyProcessor = "com.airbnb.android:epoxy-processor:3.0.0"
+    const val epoxy = "com.airbnb.android:epoxy:3.5.0"
+    const val epoxyDatabinding = "com.airbnb.android:epoxy-databinding:3.5.0"
+    const val epoxyProcessor = "com.airbnb.android:epoxy-processor:3.5.0"
 
     const val firebaseCore = "com.google.firebase:firebase-core:16.0.1"
 
@@ -33,8 +33,8 @@ object Deps {
     const val lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:2.0.0"
     const val materialComponent = "com.google.android.material:material:1.0.0"
 
-    const val okhttp = "com.squareup.okhttp3:okhttp:3.12.0"
-    const val okhttpLoggingInterceptor = "com.squareup.okhttp3:logging-interceptor:3.12.0"
+    const val okhttp = "com.squareup.okhttp3:okhttp:3.14.2"
+    const val okhttpLoggingInterceptor = "com.squareup.okhttp3:logging-interceptor:3.14.2"
 
     const val preference = "androidx.preference:preference:1.0.0"
 
