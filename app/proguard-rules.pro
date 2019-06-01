@@ -27,9 +27,6 @@
 -keepclassmembers class androidx.** { *; }
 -keep interface androidx.* { *; }
 
-# RxJava
--dontwarn rx.**
-
 # Okhttp
 -dontwarn okio.**
 -dontwarn com.squareup.okhttp.**

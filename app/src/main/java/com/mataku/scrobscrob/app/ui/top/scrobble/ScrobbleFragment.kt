@@ -16,8 +16,10 @@ import com.mataku.scrobscrob.core.entity.UpdateScrobbledListEvent
 import com.mataku.scrobscrob.databinding.FragmentScrobbleBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
+import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -35,12 +37,14 @@ class ScrobbleFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         setUpRecyclerView()
         setUpNowPlayingView(dummyTrack())
 
-        RxEventBus.stream(UpdateNowPlayingEvent::class.java).subscribe {
-            setUpNowPlayingView(it.track)
-        }
+        GlobalScope.launch(Dispatchers.Main) {
+            RxEventBus.asChannel<UpdateNowPlayingEvent>().consumeEach {
+                setUpNowPlayingView(it.track)
+            }
 
-        RxEventBus.stream(UpdateScrobbledListEvent::class.java).subscribe {
-            onRefresh()
+            RxEventBus.asChannel<UpdateScrobbledListEvent>().consumeEach {
+                onRefresh()
+            }
         }
 
         return scrobbleView

@@ -1,19 +1,28 @@
 package com.mataku.scrobscrob.app.model
 
-import io.reactivex.Observable
-import io.reactivex.subjects.PublishSubject
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.ObsoleteCoroutinesApi
+import kotlinx.coroutines.channels.ConflatedBroadcastChannel
+import kotlinx.coroutines.channels.ReceiveChannel
+import kotlinx.coroutines.channels.filter
+import kotlinx.coroutines.channels.map
+import kotlinx.coroutines.launch
 
 // singleton instance
+@ExperimentalCoroutinesApi
 object RxEventBus {
 
-    // subscriber and observer
-    private val subject = PublishSubject.create<Any>()
+    val bus = ConflatedBroadcastChannel<Any>()
 
-    fun post(event: Any) {
-        subject.onNext(event)
+    fun send(o: Any) {
+        GlobalScope.launch {
+            bus.send(0)
+        }
     }
 
-    // Return Observable
-    // Using ofType method to filter only events specified
-    fun <T> stream(event: Class<T>): Observable<T> = subject.hide().ofType(event)
+    @ObsoleteCoroutinesApi
+    inline fun <reified T> asChannel(): ReceiveChannel<T> {
+        return bus.openSubscription().filter { it is T }.map { it as T }
+    }
 }

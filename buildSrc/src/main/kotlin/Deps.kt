@@ -25,7 +25,7 @@ object Deps {
 
     const val kotlinCoroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.1.1"
     const val kotlnGradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-    const val kotlinStdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+    const val kotlinStdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
 
     const val ktorClientOkhttp = "io.ktor:ktor-client-okhttp:$ktorVersion"
     const val ktorClientJsonJvm = "io.ktor:ktor-client-json-jvm:$ktorVersion"
@@ -45,7 +45,6 @@ object Deps {
 
     const val roomRuntime = "androidx.room:room-runtime:2.0.0"
     const val roomCompiler = "androidx.room:room-compiler:2.0.0"
-    const val rxjava = "io.reactivex.rxjava2:rxjava:2.2.3"
 }
 
 object UnitTestDeps {

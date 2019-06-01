@@ -43,7 +43,6 @@ class TopAlbumRecyclerView : EpoxyRecyclerView {
             parent: androidx.recyclerview.widget.RecyclerView,
             state: androidx.recyclerview.widget.RecyclerView.State
         ) {
-            outRect.top = space
             outRect.left = space
             outRect.right = space
             outRect.bottom = space

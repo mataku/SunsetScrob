@@ -40,7 +40,7 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
 
     override fun onCreate() {
         super.onCreate()
-        RxEventBus.post(UpdateNowPlayingEvent(dummyTrack()))
+        RxEventBus.send(UpdateNowPlayingEvent(dummyTrack()))
 
         try {
             val appleMusicPackageInfo = packageManager.getPackageInfo(APPLE_MUSIC_PACKAGE_NAME, 0)
@@ -125,7 +125,7 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
 
     override fun notifyNowPlayingUpdated(track: Track) {
         this.track = track
-        RxEventBus.post(UpdateNowPlayingEvent(track))
+        RxEventBus.send(UpdateNowPlayingEvent(track))
     }
 
     override fun setAlbumArtwork(albumArtWork: String) {
@@ -146,7 +146,7 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
                     artwork = sharedPreferencesHelper.getAlbumArtWork()
                 )
                 dao.insert(scrobble)
-                RxEventBus.post(UpdateScrobbledListEvent())
+                RxEventBus.send(UpdateScrobbledListEvent())
             }
         }
     }

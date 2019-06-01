@@ -170,7 +170,7 @@ class LoginActivity : AppCompatActivity(), LoginViewCallback {
 
     override fun showSuccessMessage() {
         Toast.makeText(this, "Success!", Toast.LENGTH_LONG).show()
-        RxEventBus.post(UpdateNowPlayingEvent(dummyTrack()))
+        RxEventBus.send(UpdateNowPlayingEvent(dummyTrack()))
     }
 
     override fun showMessageToAllowAccessToNotification() {

@@ -99,8 +99,6 @@ dependencies {
 
     implementation(Deps.kotlinCoroutinesAndroid)
 
-    implementation(Deps.rxjava)
-
     implementation(Deps.epoxy)
     implementation(Deps.epoxyDatabinding)
     kapt(Deps.epoxyProcessor)
