@@ -1,7 +1,7 @@
 const val kotlinVersion = "1.3.40"
 
 object Deps {
-    const val ktorVersion = "1.2.2"
+    private const val ktorVersion = "1.2.2"
 
     const val appCompat = "androidx.appcompat:appcompat:1.0.2"
     const val androidGradlePlugin = "com.android.tools.build:gradle:3.4.0-rc03"
@@ -29,7 +29,7 @@ object Deps {
     const val kotlinStdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
 
     const val ktorClientOkhttp = "io.ktor:ktor-client-okhttp:$ktorVersion"
-    const val ktorClientJsonJvm = "io.ktor:ktor-client-json-jvm:$ktorVersion"
+    const val ktorClientJsonJvm = "io.ktor:ktor-client-serialization-jvm:$ktorVersion"
 
     const val lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:2.0.0"
     const val materialComponent = "com.google.android.material:material:1.0.0"

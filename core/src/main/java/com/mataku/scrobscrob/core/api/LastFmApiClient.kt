@@ -23,7 +23,7 @@ object LastFmApiClient {
                 engine {
                     addInterceptor(LastfmApiAuthInterceptor())
                     response.apply {
-                        defaultCharset = Charsets.UTF_8
+                        charset("UTF_8")
                     }
 
                     if (BuildConfig.DEBUG) {
