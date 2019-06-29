@@ -43,6 +43,7 @@ dependencies {
     implementation(Deps.ktorClientJsonJvm)
     implementation(Deps.okhttp)
     implementation(Deps.okhttpLoggingInterceptor)
+    implementation(Deps.kotlinSerializationRuntime)
 
     kapt(Deps.glideCompiler)
 }

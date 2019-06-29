@@ -24,7 +24,8 @@ object Deps {
     const val koinAndroidXViewModel = "org.koin:koin-androidx-viewmodel:2.0.1"
 
     const val kotlinCoroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.0-M2"
-    const val kotlinGradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+    const val kotlinSerializationRuntime =
+        "org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.11.1"
     const val kotlinStdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
 
     const val ktorClientOkhttp = "io.ktor:ktor-client-okhttp:$ktorVersion"
