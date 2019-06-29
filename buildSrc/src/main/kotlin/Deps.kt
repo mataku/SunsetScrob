@@ -1,7 +1,7 @@
-const val kotlinVersion = "1.3.30"
+const val kotlinVersion = "1.3.40"
 
 object Deps {
-    const val ktorVersion = "1.1.3"
+    const val ktorVersion = "1.2.2"
 
     const val appCompat = "androidx.appcompat:appcompat:1.0.2"
     const val androidGradlePlugin = "com.android.tools.build:gradle:3.4.0-rc03"
@@ -14,17 +14,17 @@ object Deps {
     const val epoxyDatabinding = "com.airbnb.android:epoxy-databinding:3.5.0"
     const val epoxyProcessor = "com.airbnb.android:epoxy-processor:3.5.0"
 
-    const val firebaseCore = "com.google.firebase:firebase-core:16.0.1"
+    const val firebaseCore = "com.google.firebase:firebase-core:17.0.0"
 
-    const val glide = "com.github.bumptech.glide:glide:4.8.0"
-    const val glideCompiler = "com.github.bumptech.glide:compiler:4.8.0"
+    const val glide = "com.github.bumptech.glide:glide:4.9.0"
+    const val glideCompiler = "com.github.bumptech.glide:compiler:4.9.0"
 
     const val koinAndroid = "org.koin:koin-android:2.0.1"
     const val koinAndroidXScope = "org.koin:koin-androidx-scope:2.0.1"
     const val koinAndroidXViewModel = "org.koin:koin-androidx-viewmodel:2.0.1"
 
-    const val kotlinCoroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.1.1"
-    const val kotlnGradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+    const val kotlinCoroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.0-M2"
+    const val kotlinGradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     const val kotlinStdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
 
     const val ktorClientOkhttp = "io.ktor:ktor-client-okhttp:$ktorVersion"
