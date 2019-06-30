@@ -11,9 +11,13 @@ import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.client.request.request
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.serialization.json.Json
 import okhttp3.logging.HttpLoggingInterceptor
 
+@ExperimentalCoroutinesApi
 object LastFmApiClient {
     const val BASE_URL = "https://ws.audioscrobbler.com"
 
@@ -59,6 +63,18 @@ object LastFmApiClient {
                 }
             }
         }
+        client.close()
+        return response
+    }
+
+    suspend inline fun <reified T> getAsFlow(endpoint: Endpoint): Flow<T> {
+        val response = flowOf(client.get<T>(BASE_URL + endpoint.path) {
+            if (endpoint.params.isNotEmpty()) {
+                endpoint.params.forEach { (k, v) ->
+                    parameter(key = k, value = v)
+                }
+            }
+        })
         client.close()
         return response
     }

@@ -5,9 +5,14 @@ import com.mataku.scrobscrob.core.api.endpoint.Album
 import com.mataku.scrobscrob.core.api.endpoint.TopAlbumsApiResponse
 import com.mataku.scrobscrob.core.api.endpoint.TopAlbumsEndpoint
 import com.mataku.scrobscrob.core.entity.presentation.SunsetResult
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.map
 
+@ExperimentalCoroutinesApi
 class TopAlbumsRepository(private val apiClient: LastFmApiClient) {
-    suspend fun topAlbumsResponse(page: Int, userName: String): SunsetResult<List<Album>> {
+    suspend fun topAlbumsResponse(page: Int, userName: String): Flow<SunsetResult<List<Album>>> {
         val params = mapOf(
             "limit" to 20,
             "page" to page,
@@ -15,17 +20,17 @@ class TopAlbumsRepository(private val apiClient: LastFmApiClient) {
             "user" to userName
         )
 
-        return try {
-            val request = apiClient.get<TopAlbumsApiResponse>(TopAlbumsEndpoint(params = params))
-            val albums = request.topAlbums.albums
-            if (request.topAlbums.albums.isNullOrEmpty()) {
-                SunsetResult.success(emptyList())
-            } else {
-                SunsetResult.success(albums)
+        return apiClient.getAsFlow<TopAlbumsApiResponse>(TopAlbumsEndpoint(params = params))
+            .map {
+                val response = it.topAlbums.albums
+                if (response.isNullOrEmpty()) {
+                    SunsetResult.success(emptyList())
+                } else {
+                    SunsetResult.success(response)
+                }
             }
-        } catch (e: Throwable) {
-            SunsetResult.failure(e)
-        }
-
+            .catch {
+                SunsetResult.failure<List<Album>>(it)
+            }
     }
 }

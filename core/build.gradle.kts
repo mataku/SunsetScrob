@@ -44,6 +44,7 @@ dependencies {
     implementation(Deps.okhttp)
     implementation(Deps.okhttpLoggingInterceptor)
     implementation(Deps.kotlinSerializationRuntime)
+    implementation(Deps.kotlinCoroutinesAndroid)
 
     kapt(Deps.glideCompiler)
 }

@@ -13,18 +13,24 @@ import com.mataku.scrobscrob.app.ui.top.TopViewModel
 import com.mataku.scrobscrob.core.entity.presentation.onFailure
 import com.mataku.scrobscrob.core.entity.presentation.onSuccess
 import com.mataku.scrobscrob.databinding.FragmentTopAlbumsBinding
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
+@ExperimentalCoroutinesApi
 class TopAlbumContentFragment : Fragment() {
 
     private lateinit var binding: FragmentTopAlbumsBinding
     private var currentPage = 1
 
-    val topViewModel: TopViewModel by sharedViewModel()
+    val topViewModel: TopViewModel by viewModel()
 
     private lateinit var controller: TopAlbumController
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val view = inflater.inflate(R.layout.fragment_top_albums, null, false)
         binding = FragmentTopAlbumsBinding.bind(view)
         binding.lifecycleOwner = this
@@ -34,7 +40,8 @@ class TopAlbumContentFragment : Fragment() {
             controller = TopAlbumController(halfWidth)
 
             binding.topAlbumRecyclerView.setController(controller)
-            val sharedPreferences = this.activity?.getSharedPreferences("DATA", Context.MODE_PRIVATE)
+            val sharedPreferences =
+                this.activity?.getSharedPreferences("DATA", Context.MODE_PRIVATE)
             sharedPreferences?.let { sharedPref ->
                 val userName = sharedPref.getString("UserName", "")
                 userName?.let { name ->
@@ -50,7 +57,11 @@ class TopAlbumContentFragment : Fragment() {
     private fun setUp(userName: String) {
         binding.topAlbumRecyclerView.addOnScrollListener(object :
             androidx.recyclerview.widget.RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: androidx.recyclerview.widget.RecyclerView, dx: Int, dy: Int) {
+            override fun onScrolled(
+                recyclerView: androidx.recyclerview.widget.RecyclerView,
+                dx: Int,
+                dy: Int
+            ) {
                 super.onScrolled(recyclerView, dx, dy)
 
                 val userContentRecyclerView = binding.topAlbumRecyclerView
