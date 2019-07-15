@@ -1,4 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:dist="http://schemas.android.com/apk/distribution"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.mataku.scrobscrob.licenses">
 
@@ -7,4 +8,8 @@
         tools:replace="android:supportsRtl">
         <activity android:name=".ui.LicensesActivity" />
     </application>
+
+    <dist:module
+        dist:onDemand="false"
+        dist:title="@string/license_module_name" />
 </manifest>

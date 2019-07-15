@@ -88,11 +88,12 @@ android {
         exclude("META-INF/kotlinx-coroutines-core.kotlin_module")
         exclude("META-INF/kotlinx-serialization-runtime.kotlin_module")
     }
+
+    dynamicFeatures = mutableSetOf(":feature:licenses")
 }
 
 dependencies {
     implementation(project(":core"))
-    implementation(project(":feature:licenses"))
 
     implementation(Deps.cardView)
     implementation(Deps.lifecycleExtensions)
