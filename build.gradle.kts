@@ -5,16 +5,16 @@ buildscript {
         google()
         jcenter()
         maven("https://maven.fabric.io/public")
+        maven("https://jitpack.io")
     }
     dependencies {
         classpath(Deps.androidGradlePlugin)
         classpath(kotlin("gradle-plugin", version = kotlinVersion))
         classpath(kotlin("serialization", version = kotlinVersion))
-        classpath("com.deploygate:gradle:2.0.1")
-        classpath("com.github.ben-manes:gradle-versions-plugin:0.17.0")
+        classpath("com.github.deploygate:gradle-deploygate-plugin:as_3_6_beta-SNAPSHOT")
         classpath("com.cookpad.android.licensetools:license-tools-plugin:1.5.0")
         classpath("com.google.gms:google-services:4.2.0")
-        classpath("io.fabric.tools:gradle:1.28.1")
+        classpath("io.fabric.tools:gradle:1.31.2")
         classpath("de.mannodermaus.gradle.plugins:android-junit5:1.3.1.1")
         classpath("org.junit.platform:junit-platform-gradle-plugin:1.0.0")
 
