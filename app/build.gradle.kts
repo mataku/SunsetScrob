@@ -1,5 +1,4 @@
 import com.android.build.gradle.internal.dsl.TestOptions
-import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -7,7 +6,6 @@ plugins {
     kotlin("android")
     kotlin("kapt")
     id("deploygate")
-    id("com.github.ben-manes.versions")
     id("io.fabric")
     // Apply at the bottom
     id("com.google.gms.google-services") apply false
@@ -135,21 +133,6 @@ kapt {
 tasks.withType<KotlinCompile>().configureEach {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
-    }
-}
-
-val dependencyUpdates by tasks.getting(DependencyUpdatesTask::class) {
-    val rejectPatterns = listOf("alpha", "beta", "rc", "cr", "m").map { qualifier ->
-        Regex("(?i).*[.-]$qualifier[.\\d-]*")
-    }
-    resolutionStrategy = closureOf<ResolutionStrategy> {
-        componentSelection {
-            all {
-                if (rejectPatterns.any { it.matches(this.candidate.version) }) {
-                    this.reject("Release candidate")
-                }
-            }
-        }
     }
 }
 
