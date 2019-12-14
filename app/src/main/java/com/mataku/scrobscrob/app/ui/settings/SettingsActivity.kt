@@ -12,7 +12,6 @@ import androidx.preference.PreferenceFragmentCompat
 import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.app.App
 import com.mataku.scrobscrob.app.ui.login.LoginActivity
-import com.mataku.scrobscrob.licenses.ui.LicensesActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
@@ -49,7 +48,8 @@ class SettingsActivity : AppCompatActivity() {
             addPreferencesFromResource(R.xml.preference)
             val presenter = SettingsPresenter(this)
 
-            val sharedPreferences = this.activity?.getSharedPreferences("DATA", Context.MODE_PRIVATE)
+            val sharedPreferences =
+                this.activity?.getSharedPreferences("DATA", Context.MODE_PRIVATE)
             val userName = sharedPreferences?.getString("UserName", "")
             userName?.let {
                 presenter.setMessageAccordingToUserStatus(it)
@@ -57,18 +57,20 @@ class SettingsActivity : AppCompatActivity() {
             }
 
             val notificationPreference = findPreference("notification")
-            notificationPreference.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-                val intent = Intent()
-                intent.action = Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS
-                startActivity(intent)
-                showAllowServiceMessage()
-                true
-            }
+            notificationPreference.onPreferenceClickListener =
+                Preference.OnPreferenceClickListener {
+                    val intent = Intent()
+                    intent.action = Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS
+                    startActivity(intent)
+                    showAllowServiceMessage()
+                    true
+                }
 
             licensesPreference = findPreference("licenses")
             licensesPreference.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-                val intent = Intent(this@SettingsFragment.context, LicensesActivity::class.java)
-                startActivity(intent)
+                // TODO 名前解決する
+                //                val intent = Intent(this@SettingsFragment.context, LicensesActivity::class.java)
+//                startActivity(intent)
                 true
             }
         }
@@ -146,7 +148,11 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         private fun showAllowServiceMessage() {
-            Toast.makeText(this.activity, R.string.allow_notification_service_message, Toast.LENGTH_LONG).show()
+            Toast.makeText(
+                this.activity,
+                R.string.allow_notification_service_message,
+                Toast.LENGTH_LONG
+            ).show()
         }
     }
 }
