@@ -11,5 +11,7 @@
 
     <dist:module
         dist:onDemand="false"
-        dist:title="@string/license_module_name" />
+        dist:title="@string/license_module_name">
+        <dist:fusing dist:include="true" />
+    </dist:module>
 </manifest>
