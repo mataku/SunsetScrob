@@ -4,7 +4,7 @@ object Deps {
     private const val ktorVersion = "1.2.2"
 
     const val appCompat = "androidx.appcompat:appcompat:1.0.2"
-    const val androidGradlePlugin = "com.android.tools.build:gradle:4.0.0-alpha06"
+    const val androidGradlePlugin = "com.android.tools.build:gradle:4.0.0-alpha08"
     const val browser = "androidx.browser:browser:1.0.0"
     const val cardView = "androidx.cardview:cardview:1.0.0"
     const val constraintLayout = "androidx.constraintlayout:constraintlayout:1.1.3"
