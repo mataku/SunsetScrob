@@ -6,6 +6,7 @@ plugins {
     kotlin("android")
     kotlin("kapt")
     id("io.fabric")
+    id("com.github.ben-manes.versions")
     // Apply at the bottom
     id("com.google.gms.google-services") apply false
 }

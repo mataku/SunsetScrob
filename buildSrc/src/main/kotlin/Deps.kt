@@ -19,6 +19,8 @@ object Deps {
     const val glide = "com.github.bumptech.glide:glide:4.9.0"
     const val glideCompiler = "com.github.bumptech.glide:compiler:4.9.0"
 
+    const val gradleVersionsPlugin = "com.github.ben-manes:gradle-versions-plugin:0.27.0"
+
     const val koinAndroid = "org.koin:koin-android:2.0.1"
     const val koinAndroidXScope = "org.koin:koin-androidx-scope:2.0.1"
     const val koinAndroidXViewModel = "org.koin:koin-androidx-viewmodel:2.0.1"
