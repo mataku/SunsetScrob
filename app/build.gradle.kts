@@ -5,7 +5,6 @@ plugins {
     id("com.android.application")
     kotlin("android")
     kotlin("kapt")
-    id("deploygate")
     id("io.fabric")
     // Apply at the bottom
     id("com.google.gms.google-services") apply false
