@@ -30,6 +30,7 @@ local.properties
 .idea/modules.xml
 .idea/gradle.xml
 .idea/kotlinScripting.xml
+.idea/jarRepositories.xml
 !.idea/codeStyles/
 !.idea/dictionaries/
 
