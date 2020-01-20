@@ -3,21 +3,21 @@ const val kotlinVersion = "1.3.61"
 object Deps {
     private const val ktorVersion = "1.2.2"
 
-    const val appCompat = "androidx.appcompat:appcompat:1.0.2"
+    const val appCompat = "androidx.appcompat:appcompat:1.1.0"
     const val androidGradlePlugin = "com.android.tools.build:gradle:4.0.0-alpha08"
     const val browser = "androidx.browser:browser:1.0.0"
     const val cardView = "androidx.cardview:cardview:1.0.0"
     const val constraintLayout = "androidx.constraintlayout:constraintlayout:1.1.3"
     const val crashlytics = "com.crashlytics.sdk.android:crashlytics:2.10.1"
 
-    const val epoxy = "com.airbnb.android:epoxy:3.5.0"
-    const val epoxyDatabinding = "com.airbnb.android:epoxy-databinding:3.5.0"
-    const val epoxyProcessor = "com.airbnb.android:epoxy-processor:3.5.0"
+    const val epoxy = "com.airbnb.android:epoxy:3.9.0"
+    const val epoxyDatabinding = "com.airbnb.android:epoxy-databinding:3.9.0"
+    const val epoxyProcessor = "com.airbnb.android:epoxy-processor:3.9.0"
 
     const val firebaseCore = "com.google.firebase:firebase-core:17.0.0"
 
-    const val glide = "com.github.bumptech.glide:glide:4.9.0"
-    const val glideCompiler = "com.github.bumptech.glide:compiler:4.9.0"
+    const val glide = "com.github.bumptech.glide:glide:4.11.0"
+    const val glideCompiler = "com.github.bumptech.glide:compiler:4.11.0"
 
     const val gradleVersionsPlugin = "com.github.ben-manes:gradle-versions-plugin:0.27.0"
 
