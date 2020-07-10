@@ -23,7 +23,7 @@ jobs:
       env:
         LAST_FM_API_KEY: ${{ secrets.LAST_FM_API_KEY }}
         LAST_FM_SHARED_SECRET: ${{ secrets.LAST_FM_SHARED_SECRET }}
-        GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
+        GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON_DEV }}
       run: |
         echo "API_KEY=\"$LAST_FM_API_KEY\"" >> local.properties
         echo "SHARED_SECRET=\"$LAST_FM_SHARED_SECRET\"" >> local.properties
