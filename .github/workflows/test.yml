@@ -24,7 +24,7 @@ jobs:
         LAST_FM_API_KEY: ${{ secrets.LAST_FM_API_KEY }}
         LAST_FM_SHARED_SECRET: ${{ secrets.LAST_FM_SHARED_SECRET }}
       run: |
-        echo $LAST_FM_API_KEY >> local.properties
-        echo $LAST_FM_SHARED_SECRET >> local.properties
+        echo "API_KEY=\"$LAST_FM_API_KEY\"" >> local.properties
+        echo "SHARED_SECRET=\"$LAST_FM_SHARED_SECRET\"" >> local.properties
         ./gradlew bundleDebug
         ./gradlew testDebugUnitTest
