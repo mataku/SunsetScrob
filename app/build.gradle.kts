@@ -34,12 +34,11 @@ android {
         proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
     }
 
-    testOptions {
-        unitTests(closureOf<TestOptions.UnitTestOptions> {
-            isIncludeAndroidResources = true
-        })
-    }
-
+//    testOptions {
+//        unitTests(closureOf<TestOptions.UnitTestOptions> {
+//            isIncludeAndroidResources = true
+//        })
+//    }
 
     signingConfigs {
         getByName("debug") {
