@@ -1,4 +1,3 @@
-import com.android.build.gradle.internal.dsl.TestOptions
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -34,13 +33,7 @@ android {
         buildConfigField("String", "SHARED_SECRET", "${rootProject.ext["SHARED_SECRET"]}")
         proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
     }
-
-//    testOptions {
-//        unitTests(closureOf<TestOptions.UnitTestOptions> {
-//            isIncludeAndroidResources = true
-//        })
-//    }
-
+    
     signingConfigs {
         getByName("debug") {
             storeFile = file("../debug.keystore")
