@@ -1,0 +1,11 @@
+android {
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+
+            all {
+                maxParallelForks 2
+            }
+        }
+    }
+}

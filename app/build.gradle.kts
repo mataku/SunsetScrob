@@ -1,11 +1,9 @@
-import com.android.build.gradle.internal.dsl.TestOptions
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("com.android.application")
     kotlin("android")
     kotlin("kapt")
-    id("io.fabric")
     id("com.github.ben-manes.versions")
     // Apply at the bottom
     id("com.google.gms.google-services") apply false
@@ -15,6 +13,7 @@ apply {
     from("lint-checks.gradle")
     from("$rootDir/core_dependencies.gradle")
     from("$rootDir/test_dependencies.gradle")
+    from("$rootDir/test_options.gradle")
 }
 
 android {
@@ -34,14 +33,7 @@ android {
         buildConfigField("String", "SHARED_SECRET", "${rootProject.ext["SHARED_SECRET"]}")
         proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
     }
-
-    testOptions {
-        unitTests(closureOf<TestOptions.UnitTestOptions> {
-            isIncludeAndroidResources = true
-        })
-    }
-
-
+    
     signingConfigs {
         getByName("debug") {
             storeFile = file("../debug.keystore")
@@ -105,7 +97,6 @@ dependencies {
     kapt(Deps.epoxyProcessor)
 
     implementation(Deps.firebaseCore)
-    implementation(Deps.crashlytics)
 
     implementation(Deps.roomRuntime)
     kapt(Deps.roomCompiler)
