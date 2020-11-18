@@ -1,4 +1,3 @@
-import com.android.build.gradle.internal.dsl.TestOptions
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -114,6 +113,12 @@ dependencies {
 
     implementation(Deps.glide)
     kapt(Deps.glideCompiler)
+
+    debugImplementation("com.facebook.flipper:flipper:0.66.0")
+    debugImplementation("com.facebook.soloader:soloader:0.9.0")
+    debugImplementation("com.facebook.flipper:flipper-network-plugin:0.66.0")
+
+    releaseImplementation("com.facebook.flipper:flipper-noop:0.66.0")
 }
 
 repositories {
