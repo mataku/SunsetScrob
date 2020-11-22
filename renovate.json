@@ -1,5 +1,13 @@
 {
   "extends": [
     "config:base"
+  ],
+  "regexManagers": [
+    {
+      "fileMatch": ["^Deps.kt$"],
+      "matchStrings": ["^ +const val [a-zA-Z]+ = (?<currentValue>.*?)"],
+      "datasourceTemplate": "maven",
+      "depNameTemplate": "gradle"
+    }
   ]
 }
