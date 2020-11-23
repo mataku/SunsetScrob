@@ -5,7 +5,7 @@
   "regexManagers": [
     {
       "fileMatch": ["^Deps.kt$"],
-      "matchStrings": ["^ +const val [a-zA-Z]+ = (?<currentValue>.*?)"],
+      "matchStrings": ["^ +const val [a-zA-Z]+ = \"(?<depName>.*?):(?<currentValue>.*?)\"\n$"],
       "datasourceTemplate": "maven",
       "depNameTemplate": "gradle"
     }
