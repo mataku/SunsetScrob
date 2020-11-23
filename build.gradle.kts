@@ -36,4 +36,4 @@ task("clean", Delete::class) {
 }
 
 //  Use user-defined values in local.properties as ${rootProject.ext["KEY"]}"
-loadProperties("$rootDir/local.properties", ext)
+// loadProperties("$rootDir/local.properties", ext)
