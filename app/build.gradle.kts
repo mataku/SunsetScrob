@@ -29,8 +29,6 @@ android {
         versionName = "0.3.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
-        buildConfigField("String", "API_KEY", "${System.getenv["API_KEY"]}")
-        buildConfigField("String", "SHARED_SECRET", "${System.getenv["SHARED_SECRET"]}")
         proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
     }
     

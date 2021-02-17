@@ -17,8 +17,8 @@ android {
         minSdkVersion(Versions.minSdkVersion)
         targetSdkVersion(Versions.targetSdkVersion)
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "API_KEY", "${rootProject.ext["API_KEY"]}")
-        buildConfigField("String", "SHARED_SECRET", "${rootProject.ext["SHARED_SECRET"]}")
+        buildConfigField("String", "API_KEY", "${System.getenv("LAST_FM_API_KEY")}")
+        buildConfigField("String", "SHARED_SECRET", "${System.getenv("LAST_FM_SHARED_SECRET")}")
     }
 
     buildTypes {
