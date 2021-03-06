@@ -14,7 +14,6 @@ import io.ktor.client.request.request
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.serialization.json.Json
 import okhttp3.logging.HttpLoggingInterceptor
 
 @ExperimentalCoroutinesApi
@@ -26,10 +25,7 @@ object LastFmApiClient {
             return HttpClient(OkHttp) {
                 engine {
                     addInterceptor(LastfmApiAuthInterceptor())
-                    response.apply {
-                        charset("UTF_8")
-                    }
-
+                    
                     if (BuildConfig.DEBUG) {
                         val logging = HttpLoggingInterceptor()
                         logging.level = HttpLoggingInterceptor.Level.BODY
@@ -37,7 +33,7 @@ object LastFmApiClient {
                     }
                 }
                 install(JsonFeature) {
-                    serializer = KotlinxSerializer(Json.nonstrict)
+                    serializer = KotlinxSerializer()
                 }
             }
         }

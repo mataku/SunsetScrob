@@ -19,7 +19,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
-import kotlinx.coroutines.channels.consumeEach
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -38,11 +38,11 @@ class ScrobbleFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         setUpNowPlayingView(dummyTrack())
 
         GlobalScope.launch(Dispatchers.Main) {
-            RxEventBus.asChannel<UpdateNowPlayingEvent>().consumeEach {
+            RxEventBus.asChannel<UpdateNowPlayingEvent>().onEach {
                 setUpNowPlayingView(it.track)
             }
 
-            RxEventBus.asChannel<UpdateScrobbledListEvent>().consumeEach {
+            RxEventBus.asChannel<UpdateScrobbledListEvent>().onEach {
                 onRefresh()
             }
         }
