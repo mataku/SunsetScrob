@@ -14,6 +14,7 @@
     <option name="configurationPath" value="" />
     <option name="exclusions">
       <set>
+        <option value=".*\.xml" />
         <option value="app/build.gradle" />
       </set>
     </option>

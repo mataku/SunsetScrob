@@ -5,8 +5,8 @@ plugins {
     kotlin("android")
     kotlin("kapt")
     id("com.github.ben-manes.versions")
-    // Apply at the bottom
-    id("com.google.gms.google-services") apply false
+    id("com.google.firebase.crashlytics")
+    id("com.google.gms.google-services")
 }
 
 apply {
@@ -95,7 +95,7 @@ dependencies {
     implementation(Deps.epoxy)
     kapt(Deps.epoxyProcessor)
 
-    implementation(Deps.firebaseCore)
+    implementation(Deps.firebaseCrashlytics)
 
     implementation(Deps.roomRuntime)
     kapt(Deps.roomCompiler)
@@ -106,6 +106,7 @@ dependencies {
 
     implementation(Deps.glide)
     kapt(Deps.glideCompiler)
+
 }
 
 repositories {
@@ -133,5 +134,3 @@ tasks.withType<Test> {
     maxParallelForks = 2
     failFast = true
 }
-
-apply(mapOf("plugin" to "com.google.gms.google-services"))

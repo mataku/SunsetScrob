@@ -23,11 +23,8 @@ object LastFmApiClient {
             return HttpClient(OkHttp) {
                 engine {
                     addInterceptor(LastfmApiAuthInterceptor())
-
                     if (BuildConfig.DEBUG) {
-                        val logging = HttpLoggingInterceptor()
-                        logging.level = HttpLoggingInterceptor.Level.BODY
-                        addInterceptor(logging)
+                        addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
                     }
                 }
                 install(JsonFeature) {

@@ -13,7 +13,10 @@ object Deps {
     const val epoxy = "com.airbnb.android:epoxy:3.11.0"
     const val epoxyProcessor = "com.airbnb.android:epoxy-processor:3.11.0"
 
-    const val firebaseCore = "com.google.firebase:firebase-core:17.0.0"
+    const val firebaseCore = "com.google.firebase:firebase-core:17.1.1"
+    const val firebaseCrashlytics = "com.google.firebase:firebase-crashlytics:17.3.1"
+    const val firebaseCrashlyticsGradlePlugin =
+        "com.google.firebase:firebase-crashlytics-gradle:2.2.0"
 
     const val glide = "com.github.bumptech.glide:glide:4.11.0"
     const val glideCompiler = "com.github.bumptech.glide:compiler:4.11.0"
@@ -31,12 +34,13 @@ object Deps {
 
     const val ktorClientOkhttp = "io.ktor:ktor-client-okhttp:$ktorVersion"
     const val ktorClientJsonJvm = "io.ktor:ktor-client-serialization-jvm:$ktorVersion"
+    const val ktorClientLogging = "io.ktor:ktor-client-logging:$ktorVersion"
 
     const val lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:2.0.0"
-    const val materialComponent = "com.google.android.material:material:1.0.0"
+    const val materialComponent = "com.google.android.material:material:1.1.0"
 
-    const val okhttp = "com.squareup.okhttp3:okhttp:3.14.2"
-    const val okhttpLoggingInterceptor = "com.squareup.okhttp3:logging-interceptor:3.14.2"
+    const val okhttp = "com.squareup.okhttp3:okhttp:4.9.1"
+    const val okhttpLoggingInterceptor = "com.squareup.okhttp3:logging-interceptor:4.9.1"
 
     const val preference = "androidx.preference:preference:1.0.0"
 
