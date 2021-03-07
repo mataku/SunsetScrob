@@ -16,7 +16,7 @@ class TopArtistsEndpointTest : Spek({
     describe("TopArtistsApiResponse") {
         context("200") {
             it("Parse correctly") {
-                val data = Json.nonstrict.parse(
+                val data = Json { ignoreUnknownKeys = true }.decodeFromString(
                     TopArtistsApiResponse.serializer(),
                     JsonTestHelper.getAssetFileString("top_artists.json")
                 )

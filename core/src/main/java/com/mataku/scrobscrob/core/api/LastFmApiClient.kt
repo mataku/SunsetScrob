@@ -11,13 +11,10 @@ import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.client.request.request
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.serialization.json.Json
 import okhttp3.logging.HttpLoggingInterceptor
 
-@ExperimentalCoroutinesApi
 object LastFmApiClient {
     const val BASE_URL = "https://ws.audioscrobbler.com"
 
@@ -26,9 +23,6 @@ object LastFmApiClient {
             return HttpClient(OkHttp) {
                 engine {
                     addInterceptor(LastfmApiAuthInterceptor())
-                    response.apply {
-                        charset("UTF_8")
-                    }
 
                     if (BuildConfig.DEBUG) {
                         val logging = HttpLoggingInterceptor()
@@ -37,7 +31,9 @@ object LastFmApiClient {
                     }
                 }
                 install(JsonFeature) {
-                    serializer = KotlinxSerializer(Json.nonstrict)
+                    serializer = KotlinxSerializer(kotlinx.serialization.json.Json {
+                        ignoreUnknownKeys = true
+                    })
                 }
             }
         }

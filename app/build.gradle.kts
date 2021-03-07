@@ -33,7 +33,7 @@ android {
         buildConfigField("String", "SHARED_SECRET", "${rootProject.ext["SHARED_SECRET"]}")
         proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
     }
-    
+
     signingConfigs {
         getByName("debug") {
             storeFile = file("../debug.keystore")
@@ -93,7 +93,6 @@ dependencies {
     implementation(Deps.kotlinCoroutinesAndroid)
 
     implementation(Deps.epoxy)
-    implementation(Deps.epoxyDatabinding)
     kapt(Deps.epoxyProcessor)
 
     implementation(Deps.firebaseCore)
@@ -119,6 +118,9 @@ repositories {
 
 kapt {
     correctErrorTypes = true
+    javacOptions {
+        option("-Xmaxerrs", 1000)
+    }
 }
 
 tasks.withType<KotlinCompile>().configureEach {

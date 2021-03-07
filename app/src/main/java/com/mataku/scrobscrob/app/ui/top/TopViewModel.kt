@@ -9,7 +9,6 @@ import com.mataku.scrobscrob.core.api.repository.TopArtistsRepository
 import com.mataku.scrobscrob.core.entity.presentation.SunsetResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.flowOn
@@ -18,7 +17,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
-@ExperimentalCoroutinesApi
 class TopViewModel(
     private val topAlbumRepository: TopAlbumsRepository,
     private val topArtistsRepository: TopArtistsRepository

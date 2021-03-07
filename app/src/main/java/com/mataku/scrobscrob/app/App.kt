@@ -7,12 +7,10 @@ import com.mataku.scrobscrob.app.ui.top.TopViewModel
 import com.mataku.scrobscrob.core.api.LastFmApiClient
 import com.mataku.scrobscrob.core.api.repository.TopAlbumsRepository
 import com.mataku.scrobscrob.core.api.repository.TopArtistsRepository
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
 
-@ExperimentalCoroutinesApi
 open class App : Application() {
 
     companion object {

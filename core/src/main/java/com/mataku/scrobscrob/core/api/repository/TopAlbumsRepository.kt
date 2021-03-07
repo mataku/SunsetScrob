@@ -5,12 +5,10 @@ import com.mataku.scrobscrob.core.api.endpoint.Album
 import com.mataku.scrobscrob.core.api.endpoint.TopAlbumsApiResponse
 import com.mataku.scrobscrob.core.api.endpoint.TopAlbumsEndpoint
 import com.mataku.scrobscrob.core.entity.presentation.SunsetResult
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 
-@ExperimentalCoroutinesApi
 class TopAlbumsRepository(private val apiClient: LastFmApiClient) {
     suspend fun topAlbumsResponse(page: Int, userName: String): Flow<SunsetResult<List<Album>>> {
         val params = mapOf(
