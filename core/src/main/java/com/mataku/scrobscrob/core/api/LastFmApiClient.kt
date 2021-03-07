@@ -11,12 +11,10 @@ import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.client.request.request
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import okhttp3.logging.HttpLoggingInterceptor
 
-@ExperimentalCoroutinesApi
 object LastFmApiClient {
     const val BASE_URL = "https://ws.audioscrobbler.com"
 
@@ -25,7 +23,7 @@ object LastFmApiClient {
             return HttpClient(OkHttp) {
                 engine {
                     addInterceptor(LastfmApiAuthInterceptor())
-                    
+
                     if (BuildConfig.DEBUG) {
                         val logging = HttpLoggingInterceptor()
                         logging.level = HttpLoggingInterceptor.Level.BODY
