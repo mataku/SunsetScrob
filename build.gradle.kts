@@ -14,6 +14,7 @@ buildscript {
         classpath("com.cookpad.android.licensetools:license-tools-plugin:1.7.0")
         classpath("com.google.gms:google-services:4.2.0")
         classpath(Deps.gradleVersionsPlugin)
+        classpath(Deps.firebaseCrashlyticsGradlePlugin)
         classpath("de.mannodermaus.gradle.plugins:android-junit5:1.3.1.1")
         classpath("org.junit.platform:junit-platform-gradle-plugin:1.0.0")
 
