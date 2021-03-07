@@ -31,7 +31,9 @@ object LastFmApiClient {
                     }
                 }
                 install(JsonFeature) {
-                    serializer = KotlinxSerializer()
+                    serializer = KotlinxSerializer(kotlinx.serialization.json.Json {
+                        ignoreUnknownKeys = true
+                    })
                 }
             }
         }
