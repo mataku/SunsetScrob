@@ -33,7 +33,7 @@ object Deps {
     const val ktorClientJsonJvm = "io.ktor:ktor-client-serialization-jvm:$ktorVersion"
 
     const val lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:2.0.0"
-    const val materialComponent = "com.google.android.material:material:1.0.0"
+    const val materialComponent = "com.google.android.material:material:1.1.0"
 
     const val okhttp = "com.squareup.okhttp3:okhttp:3.14.2"
     const val okhttpLoggingInterceptor = "com.squareup.okhttp3:logging-interceptor:3.14.2"
