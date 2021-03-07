@@ -9,10 +9,7 @@ import android.os.Bundle
 import android.provider.Settings
 import android.text.TextUtils
 import android.view.View
-import android.view.inputmethod.EditorInfo
-import android.widget.AutoCompleteTextView
 import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -30,7 +27,7 @@ import com.mataku.scrobscrob.databinding.ActivityLoginBinding
  */
 class LoginActivity : AppCompatActivity(), LoginViewCallback {
 
-    private lateinit var userNameView: AutoCompleteTextView
+    private lateinit var userNameView: EditText
     private lateinit var passwordView: EditText
     private lateinit var progressView: View
     private lateinit var loginFormView: View
@@ -40,17 +37,11 @@ class LoginActivity : AppCompatActivity(), LoginViewCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding: ActivityLoginBinding = DataBindingUtil.setContentView(this, R.layout.activity_login)
+        val binding: ActivityLoginBinding =
+            DataBindingUtil.setContentView(this, R.layout.activity_login)
         // Set up the login form.
         userNameView = binding.userName
         passwordView = binding.password
-        binding.password.setOnEditorActionListener(TextView.OnEditorActionListener { _, id, _ ->
-            if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                attemptLogin()
-                return@OnEditorActionListener true
-            }
-            false
-        })
 
         val userNameSignInButton = binding.emailSignInButton
         userNameSignInButton.setOnClickListener { attemptLogin() }
@@ -174,7 +165,11 @@ class LoginActivity : AppCompatActivity(), LoginViewCallback {
     }
 
     override fun showMessageToAllowAccessToNotification() {
-        Toast.makeText(this, "Allow Notification access to AppleMusicNotificationService", Toast.LENGTH_LONG).show()
+        Toast.makeText(
+            this,
+            "Allow Notification access to AppleMusicNotificationService",
+            Toast.LENGTH_LONG
+        ).show()
     }
 
     override fun backToSettingsActivity() {
@@ -197,7 +192,8 @@ class LoginActivity : AppCompatActivity(), LoginViewCallback {
         if (rawListeners == null || rawListeners == "") {
             return false
         } else {
-            val listeners = rawListeners.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+            val listeners =
+                rawListeners.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
             listeners
                 .filter { it.startsWith(packageName) }
                 .forEach { return true }
