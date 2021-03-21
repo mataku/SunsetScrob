@@ -10,8 +10,9 @@ class LicensesActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val binding: ActivityLicensesBinding = DataBindingUtil.setContentView(this, R.layout.activity_licenses)
-        val webView = binding.licenses
+        val binding: ActivityLicensesBinding =
+            DataBindingUtil.setContentView(this, R.layout.activity_licenses)
+        val webView = binding.activityLicensesWebview
         webView.loadUrl("file:///android_asset/licenses.html")
     }
 }

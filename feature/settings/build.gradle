@@ -5,8 +5,6 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
 apply from: "$project.rootDir/core_dependencies.gradle"
-apply from: "$project.rootDir/test_dependencies.gradle"
-apply from: "$project.rootDir/test_options.gradle"
 
 android {
     compileSdkVersion Versions.compileSdkVersion
@@ -18,7 +16,6 @@ android {
         minSdkVersion Versions.minSdkVersion
         targetSdkVersion Versions.targetSdkVersion
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
-        vectorDrawables.useSupportLibrary = true
     }
 
     buildTypes {
