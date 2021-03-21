@@ -6,7 +6,6 @@ object Deps {
     private const val ktorVersion = "1.5.1"
 
     const val appCompat = "androidx.appcompat:appcompat:1.1.0"
-    const val androidGradlePlugin = "com.android.tools.build:gradle:7.0.0-alpha10"
     const val browser = "androidx.browser:browser:1.0.0"
     const val cardView = "androidx.cardview:cardview:1.0.0"
     const val constraintLayout = "androidx.constraintlayout:constraintlayout:1.1.3"
@@ -17,25 +16,18 @@ object Deps {
 
     const val firebaseCore = "com.google.firebase:firebase-core:17.1.1"
     const val firebaseCrashlytics = "com.google.firebase:firebase-crashlytics:17.3.1"
-    const val firebaseCrashlyticsGradlePlugin =
-        "com.google.firebase:firebase-crashlytics-gradle:2.2.0"
 
     const val glide = "com.github.bumptech.glide:glide:4.11.0"
     const val glideCompiler = "com.github.bumptech.glide:compiler:4.11.0"
-
-    const val gradleVersionsPlugin = "com.github.ben-manes:gradle-versions-plugin:0.27.0"
 
     const val koinAndroid = "org.koin:koin-android:2.0.1"
     const val koinAndroidXScope = "org.koin:koin-androidx-scope:2.0.1"
     const val koinAndroidXViewModel = "org.koin:koin-androidx-viewmodel:2.0.1"
 
-    const val kotlinSerializationGradlePlugin =
-        "org.jetbrains.kotlin:kotlin-serialization:$kotlinVersion"
     const val kotlinCoroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.3"
     const val kotlinSerializationRuntime =
         "org.jetbrains.kotlinx:kotlinx-serialization-json:1.1.0"
     const val kotlinStdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
-    const val kotlinGradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
 
     const val ktorClientOkhttp = "io.ktor:ktor-client-okhttp:$ktorVersion"
     const val ktorClientJsonJvm = "io.ktor:ktor-client-serialization-jvm:$ktorVersion"
@@ -56,6 +48,20 @@ object Deps {
 
     const val roomRuntime = "androidx.room:room-runtime:2.2.6"
     const val roomCompiler = "androidx.room:room-compiler:2.2.6"
+
+    object GradlePlugin {
+        const val android = "com.android.tools.build:gradle:7.0.0-alpha10"
+        const val androidJunit5 = "de.mannodermaus.gradle.plugins:android-junit5:1.3.1.1"
+        const val licenseTools = "com.cookpad.android.licensetools:license-tools-plugin:1.7.0"
+        const val firebaseCrashlyticsGradlePlugin =
+            "com.google.firebase:firebase-crashlytics-gradle:2.2.0"
+        const val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        const val gradleVersionsPlugin = "com.github.ben-manes:gradle-versions-plugin:0.27.0"
+        const val googleServices = "com.google.gms:google-services:4.2.0"
+        const val junitPlatform = "org.junit.platform:junit-platform-gradle-plugin:1.0.0"
+        const val kotlinSerialization =
+            "org.jetbrains.kotlin:kotlin-serialization:$kotlinVersion"
+    }
 }
 
 object UnitTestDeps {

@@ -9,15 +9,15 @@ buildscript {
         }
     }
     dependencies {
-        classpath(Deps.androidGradlePlugin)
-        classpath(Deps.kotlinGradlePlugin)
-        classpath(Deps.kotlinSerializationGradlePlugin)
-        classpath("com.cookpad.android.licensetools:license-tools-plugin:1.7.0")
-        classpath("com.google.gms:google-services:4.2.0")
-        classpath(Deps.gradleVersionsPlugin)
-        classpath(Deps.firebaseCrashlyticsGradlePlugin)
-        classpath("de.mannodermaus.gradle.plugins:android-junit5:1.3.1.1")
-        classpath("org.junit.platform:junit-platform-gradle-plugin:1.0.0")
+        classpath(Deps.GradlePlugin.android)
+        classpath(Deps.GradlePlugin.kotlin)
+        classpath(Deps.GradlePlugin.kotlinSerialization)
+        classpath(Deps.GradlePlugin.firebaseCrashlyticsGradlePlugin)
+        classpath(Deps.GradlePlugin.licenseTools)
+        classpath(Deps.GradlePlugin.gradleVersionsPlugin)
+        classpath(Deps.GradlePlugin.googleServices)
+        classpath(Deps.GradlePlugin.junitPlatform)
+        classpath(Deps.GradlePlugin.androidJunit5)
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
