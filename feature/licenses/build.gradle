@@ -1,0 +1,64 @@
+import dependency.Versions
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
+apply plugin: 'com.android.dynamic-feature'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'com.cookpad.android.licensetools'
+
+apply from: "$project.rootDir/core_dependencies.gradle"
+
+android {
+    compileSdkVersion Versions.compileSdkVersion
+    buildFeatures {
+        dataBinding = true
+    }
+
+    defaultConfig {
+        minSdkVersion Versions.minSdkVersion
+        targetSdkVersion Versions.targetSdkVersion
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+    }
+
+    buildTypes {
+        debug {
+        }
+        release {
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+        textReport true
+        textOutput "stdout"
+        xmlReport false
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation(project(":app"))
+}
+
+repositories {
+    google()
+    jcenter()
+    mavenCentral()
+    maven {
+        url "https://maven.google.com"
+    }
+}
+
+kapt {
+    correctErrorTypes true
+}
+
+tasks.withType(KotlinCompile).all {
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
+    }
+}

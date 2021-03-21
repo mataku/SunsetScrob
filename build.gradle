@@ -1,0 +1,36 @@
+import dependency.Deps
+
+buildscript {
+    repositories {
+        google()
+        jcenter()
+        maven {
+            url "https://jitpack.io"
+        }
+    }
+    dependencies {
+        classpath(Deps.GradlePlugin.android)
+        classpath(Deps.GradlePlugin.kotlin)
+        classpath(Deps.GradlePlugin.kotlinSerialization)
+        classpath(Deps.GradlePlugin.firebaseCrashlyticsGradlePlugin)
+        classpath(Deps.GradlePlugin.licenseTools)
+        classpath(Deps.GradlePlugin.gradleVersionsPlugin)
+        classpath(Deps.GradlePlugin.googleServices)
+        classpath(Deps.GradlePlugin.junitPlatform)
+        classpath(Deps.GradlePlugin.androidJunit5)
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        jcenter()
+        maven {
+            url "http://dl.bintray.com/jetbrains/spek"
+        }
+    }
+}

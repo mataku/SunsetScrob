@@ -12,7 +12,6 @@ import androidx.preference.PreferenceFragmentCompat
 import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.app.App
 import com.mataku.scrobscrob.app.ui.login.LoginActivity
-import com.mataku.scrobscrob.core.BuildConfig
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
@@ -39,7 +38,7 @@ class SettingsActivity : AppCompatActivity() {
 
     class SettingsFragment : PreferenceFragmentCompat(), SettingsViewCallback {
         private lateinit var loginPreference: Preference
-        private lateinit var licensesPreference: Preference
+//        private lateinit var licensesPreference: Preference
 
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         }
@@ -67,18 +66,18 @@ class SettingsActivity : AppCompatActivity() {
                     true
                 }
 
-            licensesPreference = findPreference("licenses")
-            licensesPreference.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-                val basePackageName = "com.mataku.scrobscrob"
-                val packageName =
-                    if (BuildConfig.DEBUG) "$basePackageName.dev" else basePackageName
-                val intent = Intent(Intent.ACTION_VIEW).setClassName(
-                    packageName,
-                    "$basePackageName.licenses.ui.LicensesActivity"
-                )
-                startActivity(intent)
-                true
-            }
+//            licensesPreference = findPreference("licenses")
+//            licensesPreference.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+//                val basePackageName = "com.mataku.scrobscrob"
+//                val packageName =
+//                    if (BuildConfig.DEBUG) "$basePackageName.dev" else basePackageName
+//                val intent = Intent(Intent.ACTION_VIEW).setClassName(
+//                    packageName,
+//                    "$basePackageName.licenses.ui.LicensesActivity"
+//                )
+//                startActivity(intent)
+//                true
+//            }
         }
 
         override fun setMessageToLogIn() {

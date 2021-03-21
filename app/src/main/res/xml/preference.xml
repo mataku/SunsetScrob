@@ -10,8 +10,8 @@
             android:summary="@string/enable_notification_access_summary"
             android:title="@string/enable_notification_access" />
 
-        <Preference
-            android:key="licenses"
-            android:title="@string/label_open_source_licenses" />
+<!--        <Preference-->
+<!--            android:key="licenses"-->
+<!--            android:title="@string/label_open_source_licenses" />-->
     </PreferenceCategory>
 </PreferenceScreen>
