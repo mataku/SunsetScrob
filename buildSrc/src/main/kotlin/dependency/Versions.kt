@@ -1,3 +1,5 @@
+package dependency
+
 object Versions {
     const val compileSdkVersion = 29
     const val minSdkVersion = 24

@@ -1,0 +1,119 @@
+import dependency.Deps
+import dependency.Versions
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+apply plugin: 'com.github.ben-manes.versions'
+apply plugin: 'com.google.firebase.crashlytics'
+apply plugin: 'com.google.gms.google-services'
+
+apply from: "lint-checks.gradle"
+apply from: "$project.rootDir/core_dependencies.gradle"
+apply from: "$project.rootDir/test_dependencies.gradle"
+apply from: "$project.rootDir/test_options.gradle"
+
+android {
+    compileSdkVersion Versions.compileSdkVersion
+    buildFeatures {
+        dataBinding = true
+    }
+
+    defaultConfig {
+        applicationId 'com.mataku.scrobscrob'
+        minSdkVersion Versions.minSdkVersion
+        targetSdkVersion Versions.targetSdkVersion
+        versionCode 30
+        versionName '0.3.0'
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        vectorDrawables.useSupportLibrary = true
+        proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+    }
+
+    signingConfigs {
+        debug {
+            storeFile file('../debug.keystore')
+        }
+        release {
+            storeFile file("../SunsetScrob.jks")
+            storePassword System.getenv("SUNSET_STORE_PASSWORD")
+            keyAlias System.getenv("SUNSET_KEY_ALIAS")
+            keyPassword System.getenv("SUNSET_KEY_PASSWORD")
+        }
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled true
+            applicationIdSuffix '.dev'
+            signingConfig signingConfigs.debug
+        }
+        release {
+            minifyEnabled true
+            signingConfig signingConfigs.release
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+        textReport true
+        textOutput "stdout"
+        xmlReport false
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    packagingOptions {
+        exclude("META-INF/atomicfu.kotlin_module")
+        exclude("META-INF/kotlinx-coroutines-io.kotlin_module")
+        exclude("META-INF/kotlinx-io.kotlin_module")
+        exclude("META-INF/ktor-client-json.kotlin_module")
+        exclude("META-INF/ktor-client-core.kotlin_module")
+        exclude("META-INF/ktor-http.kotlin_module")
+        exclude("META-INF/ktor-utils.kotlin_module")
+        exclude("META-INF/kotlinx-coroutines-core.kotlin_module")
+        exclude("META-INF/kotlinx-serialization-runtime.kotlin_module")
+    }
+
+    dynamicFeatures [':featuyre:licenses']
+}
+
+dependencies {
+    implementation(project(":core"))
+
+    implementation(Deps.cardView)
+    implementation(Deps.lifecycleExtensions)
+    implementation(Deps.materialComponent)
+    implementation(Deps.preference)
+
+    implementation(Deps.kotlinCoroutinesAndroid)
+
+    implementation(Deps.epoxy)
+    kapt(Deps.epoxyProcessor)
+
+    implementation(Deps.firebaseCrashlytics)
+
+    implementation(Deps.roomRuntime)
+    kapt(Deps.roomCompiler)
+
+    implementation(Deps.koinAndroid)
+    implementation(Deps.koinAndroidXScope)
+    implementation(Deps.koinAndroidXViewModel)
+
+    implementation(Deps.glide)
+    kapt(Deps.glideCompiler)
+}
+
+kapt {
+    correctErrorTypes true
+}
+
+tasks.withType(KotlinCompile).all {
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
+    }
+}

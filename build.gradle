@@ -1,16 +1,17 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+import dependency.Deps
 
 buildscript {
     repositories {
         google()
         jcenter()
-        maven("https://maven.fabric.io/public")
-        maven("https://jitpack.io")
+        maven {
+            url "https://jitpack.io"
+        }
     }
     dependencies {
         classpath(Deps.androidGradlePlugin)
-        classpath(kotlin("gradle-plugin", version = kotlinVersion))
-        classpath(kotlin("serialization", version = kotlinVersion))
+        classpath(Deps.kotlinGradlePlugin)
+        classpath(Deps.kotlinSerializationGradlePlugin)
         classpath("com.cookpad.android.licensetools:license-tools-plugin:1.7.0")
         classpath("com.google.gms:google-services:4.2.0")
         classpath(Deps.gradleVersionsPlugin)
@@ -26,15 +27,10 @@ buildscript {
 allprojects {
     repositories {
         google()
+        mavenCentral()
         jcenter()
-        maven("https://maven.google.com/")
-        maven("http://dl.bintray.com/jetbrains/spek")
+        maven {
+            url "http://dl.bintray.com/jetbrains/spek"
+        }
     }
 }
-
-task("clean", Delete::class) {
-    delete = setOf(rootProject.buildDir)
-}
-
-//  Use user-defined values in local.properties as ${rootProject.ext["KEY"]}"
-loadProperties("$rootDir/local.properties", ext)
