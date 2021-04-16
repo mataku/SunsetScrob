@@ -2,7 +2,12 @@
   "extends": [
     "config:base"
   ],
-  "gradle": {
-    "fileMatch": ["^buildSrc/src/main/kotlin/Deps\\.kt$"]
-  }
+  "regexManagers": [
+    {
+      "fileMatch": ["^buildSrc/src/main/kotlin/Deps\\.kt$"],
+      "matchStrings": ["^ +const val [a-zA-Z]+ = \"(?<groupName>.*?):(?<depName>.*?):(?<currentValue>.*?)\"\n$"],
+      "datasourceTemplate": "maven",
+      "depNameTemplate": "gradle"
+    }
+  ]
 }
