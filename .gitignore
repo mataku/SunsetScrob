@@ -54,6 +54,9 @@ Thumbs.db
 vendor/
 .bundle
 
+# direnv
+.envrc
+
 # others
 *.p12
 app/app-publisher.json
