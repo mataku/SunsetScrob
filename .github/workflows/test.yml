@@ -11,6 +11,7 @@ jobs:
     - name: set up JDK
       uses: actions/setup-java@v2
       with:
+        distribution: 'adopt'
         java-version: 11
     - uses: ruby/setup-ruby@v1
       with:
