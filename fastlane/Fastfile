@@ -4,7 +4,7 @@ default_platform :android
 
 platform :android do
   before_all do
-    gradle(task: 'clean')
+    # gradle(task: 'clean')
     # ENV["SLACK_URL"] = "https://hooks.slack.com/services/..."
   end
 
