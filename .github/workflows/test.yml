@@ -9,9 +9,13 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: set up JDK
-      uses: actions/setup-java@v1
+      uses: actions/setup-java@v2
       with:
         java-version: 11
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 3.0.1
+        bundler-cache: true
     - name: Cache gradle dir
       uses: actions/cache@v2
       with:
@@ -25,8 +29,5 @@ jobs:
         LAST_FM_SHARED_SECRET: ${{ secrets.LAST_FM_SHARED_SECRET }}
         GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON_DEV }}
       run: |
-        echo "API_KEY=\"$LAST_FM_API_KEY\"" >> local.properties
-        echo "SHARED_SECRET=\"$LAST_FM_SHARED_SECRET\"" >> local.properties
-        echo $GOOGLE_SERVICES_JSON > app/google-services.json
-        ./gradlew bundleDebug
-        ./gradlew testDebugUnitTest
+        bundle exec fastlane android setup_for_ci
+        bundle exec fastlane android build_and_test

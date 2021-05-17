@@ -8,9 +8,16 @@ platform :android do
     # ENV["SLACK_URL"] = "https://hooks.slack.com/services/..."
   end
 
-  desc "Runs all the Debug tests"
-  lane :test do
-    gradle(task: "testDebug")
+  lane :setup_for_ci do
+    sh('echo "API_KEY=\"$LAST_FM_API_KEY\"" >> local.properties')
+    sh('echo "SHARED_SECRET=\"$LAST_FM_SHARED_SECRET\"" >> local.properties')
+    sh('echo $GOOGLE_SERVICES_JSON > app/google-services.json')
+  end
+
+  desc "Build an aab and run unit tests"
+  lane :build_and_test do
+    gradle(task: "bundleDebug")
+    gradle(task: "testDebugUnitTest")
   end
 
   lane :debugbuild do
