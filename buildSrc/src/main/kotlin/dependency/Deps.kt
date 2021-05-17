@@ -50,14 +50,14 @@ object Deps {
     const val roomCompiler = "androidx.room:room-compiler:2.2.6"
 
     object GradlePlugin {
-        const val android = "com.android.tools.build:gradle:7.0.0-alpha10"
+        const val android = "com.android.tools.build:gradle:7.0.0-alpha15"
         const val androidJunit5 = "de.mannodermaus.gradle.plugins:android-junit5:1.3.1.1"
         const val licenseTools = "com.cookpad.android.licensetools:license-tools-plugin:1.7.0"
         const val firebaseCrashlyticsGradlePlugin =
             "com.google.firebase:firebase-crashlytics-gradle:2.2.0"
         const val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
         const val gradleVersionsPlugin = "com.github.ben-manes:gradle-versions-plugin:0.27.0"
-        const val googleServices = "com.google.gms:google-services:4.2.0"
+        const val googleServices = "com.google.gms:google-services:4.3.8"
         const val junitPlatform = "org.junit.platform:junit-platform-gradle-plugin:1.0.0"
         const val kotlinSerialization =
             "org.jetbrains.kotlin:kotlin-serialization:$kotlinVersion"
