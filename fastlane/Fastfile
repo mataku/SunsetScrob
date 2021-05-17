@@ -9,9 +9,11 @@ platform :android do
   end
 
   lane :setup_for_ci do
-    sh('echo "API_KEY=\"$LAST_FM_API_KEY\"" >> local.properties')
-    sh('echo "SHARED_SECRET=\"$LAST_FM_SHARED_SECRET\"" >> local.properties')
-    sh('echo $GOOGLE_SERVICES_JSON > app/google-services.json')
+    Dir.chdir('..') do
+      sh('echo "API_KEY=\"$LAST_FM_API_KEY\"" >> local.properties')
+      sh('echo "SHARED_SECRET=\"$LAST_FM_SHARED_SECRET\"" >> local.properties')
+      sh('echo $GOOGLE_SERVICES_JSON > app/google-services.json')
+    end
   end
 
   desc "Build an aab and run unit tests"
