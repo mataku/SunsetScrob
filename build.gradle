@@ -30,7 +30,7 @@ allprojects {
         mavenCentral()
         jcenter()
         maven {
-            url "http://dl.bintray.com/jetbrains/spek"
+            url "https://dl.bintray.com/spekframework/spek-dev/"
         }
     }
 }
