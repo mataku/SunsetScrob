@@ -5,6 +5,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'dagger.hilt.android.plugin'
 
 apply plugin: 'com.github.ben-manes.versions'
 apply plugin: 'com.google.firebase.crashlytics'
@@ -83,29 +84,32 @@ android {
 }
 
 dependencies {
-    implementation(project(":core"))
+    implementation project(":core")
 
-    implementation(Deps.cardView)
-    implementation(Deps.lifecycleExtensions)
-    implementation(Deps.materialComponent)
-    implementation(Deps.preference)
+    implementation Deps.cardView
+    implementation Deps.lifecycleExtensions
+    implementation Deps.materialComponent
+    implementation Deps.preference
 
-    implementation(Deps.kotlinCoroutinesAndroid)
+    implementation Deps.kotlinCoroutinesAndroid
 
-    implementation(Deps.epoxy)
-    kapt(Deps.epoxyProcessor)
+    implementation Deps.epoxy
+    kapt Deps.epoxyProcessor
 
-    implementation(Deps.firebaseCrashlytics)
+    implementation Deps.firebaseCrashlytics
 
-    implementation(Deps.roomRuntime)
-    kapt(Deps.roomCompiler)
+    implementation Deps.roomRuntime
+    kapt Deps.roomCompiler
 
-    implementation(Deps.koinAndroid)
-    implementation(Deps.koinAndroidXScope)
-    implementation(Deps.koinAndroidXViewModel)
+    implementation Deps.koinAndroid
+    implementation Deps.koinAndroidXScope
+    implementation Deps.koinAndroidXViewModel
 
-    implementation(Deps.glide)
-    kapt(Deps.glideCompiler)
+    implementation Deps.glide
+    kapt Deps.glideCompiler
+
+    implementation Deps.hilt
+    kapt Deps.hiltCompiler
 }
 
 kapt {

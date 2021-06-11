@@ -4,6 +4,7 @@ const val kotlinVersion = "1.4.31"
 
 object Deps {
     private const val ktorVersion = "1.5.1"
+    private const val hiltVersion = "2.37"
 
     const val appCompat = "androidx.appcompat:appcompat:1.1.0"
     const val browser = "androidx.browser:browser:1.0.0"
@@ -19,6 +20,9 @@ object Deps {
 
     const val glide = "com.github.bumptech.glide:glide:4.11.0"
     const val glideCompiler = "com.github.bumptech.glide:compiler:4.11.0"
+
+    const val hilt = "com.google.dagger:hilt-android:$hiltVersion"
+    const val hiltCompiler = "com.google.dagger:hilt-android-compiler:$hiltVersion"
 
     const val koinAndroid = "org.koin:koin-android:2.0.1"
     const val koinAndroidXScope = "org.koin:koin-androidx-scope:2.0.1"
@@ -55,6 +59,7 @@ object Deps {
         const val licenseTools = "com.cookpad.android.licensetools:license-tools-plugin:1.7.0"
         const val firebaseCrashlyticsGradlePlugin =
             "com.google.firebase:firebase-crashlytics-gradle:2.2.0"
+        const val hilt = "com.google.dagger:hilt-android-gradle-plugin:$hiltVersion"
         const val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
         const val gradleVersionsPlugin = "com.github.ben-manes:gradle-versions-plugin:0.27.0"
         const val googleServices = "com.google.gms:google-services:4.3.8"
