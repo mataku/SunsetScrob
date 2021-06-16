@@ -35,8 +35,7 @@ platform :android do
   lane :deploy do
     gradle(task: "bundleRelease")
     supply(
-      aab: ENV['BITRISE_APK_PATH'],
-      check_superseded_tracks: false,
+      aab: 'app/build/outputs/bundle/release/app-release.aab',
       skip_upload_metadata: false,
       skip_upload_images: true,
       skip_upload_screenshots: true,
@@ -46,11 +45,15 @@ platform :android do
   end
 
   desc "Deploy a new version to the Google Play internal stage"
-  lane :deploy_test do
+  lane :deploy_internal do
     gradle(task: "bundleRelease")
     supply(
-      aab: 'app/build/outputs/bundle/release/app.aab',
-      track: 'internal'
+      aab: 'app/build/outputs/bundle/release/app-release.aab',
+      track: 'internal',
+      skip_upload_metadata: false,
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+      skip_upload_apk: true
     )
   end
 
