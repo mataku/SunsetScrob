@@ -13,6 +13,7 @@ import org.koin.dsl.module
 
 open class App : Application() {
 
+
     companion object {
         lateinit var database: AppDatabase
     }
