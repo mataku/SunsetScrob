@@ -1,18 +1,19 @@
 package com.mataku.scrobscrob.licenses.ui
 
 import android.os.Bundle
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
-import com.mataku.scrobscrob.licenses.R
-import com.mataku.scrobscrob.licenses.databinding.ActivityLicensesBinding
+import com.mataku.scrobscrob.ui_common.template.WebViewScreen
 
 class LicensesActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContent {
+            WebViewScreen(url = LICENSES_HTML_FILEPATH)
+        }
+    }
 
-        val binding: ActivityLicensesBinding =
-            DataBindingUtil.setContentView(this, R.layout.activity_licenses)
-        val webView = binding.activityLicensesWebview
-        webView.loadUrl("file:///android_asset/licenses.html")
+    companion object {
+        private const val LICENSES_HTML_FILEPATH = "file:///android_asset/licenses.html"
     }
 }
