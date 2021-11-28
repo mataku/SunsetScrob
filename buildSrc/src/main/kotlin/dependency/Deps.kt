@@ -1,10 +1,27 @@
 package dependency
 
-const val kotlinVersion = "1.4.31"
+const val kotlinVersion = "1.5.31"
 
 object Deps {
     private const val ktorVersion = "1.5.1"
     private const val hiltVersion = "2.37"
+
+    object Compose {
+        // Integration with activities
+        const val activity = "androidx.activity:activity-compose:1.3.1"
+
+        // Compose Material Design
+        const val material = "androidx.compose.material:material:1.0.5"
+
+        // Animations
+        const val animation = "androidx.compose.animation:animation:1.0.5"
+
+        // Tooling support (Previews, etc.)
+        const val uiTooling = "androidx.compose.ui:ui-tooling:1.0.5"
+
+        // Integration with ViewModels
+        const val viewModel = "androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha07"
+    }
 
     const val appCompat = "androidx.appcompat:appcompat:1.1.0"
     const val browser = "androidx.browser:browser:1.0.0"
@@ -54,7 +71,7 @@ object Deps {
     const val roomCompiler = "androidx.room:room-compiler:2.2.6"
 
     object GradlePlugin {
-        const val android = "com.android.tools.build:gradle:7.0.0-beta03"
+        const val android = "com.android.tools.build:gradle:7.0.3"
         const val androidJunit5 = "de.mannodermaus.gradle.plugins:android-junit5:1.3.1.1"
         const val licenseTools = "com.cookpad.android.licensetools:license-tools-plugin:1.7.0"
         const val firebaseCrashlyticsGradlePlugin =
