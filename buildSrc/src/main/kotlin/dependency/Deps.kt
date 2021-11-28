@@ -4,7 +4,7 @@ const val kotlinVersion = "1.5.31"
 
 object Deps {
     private const val ktorVersion = "1.5.1"
-    private const val hiltVersion = "2.37"
+    private const val hiltVersion = "2.40.2"
 
     object Compose {
         // Integration with activities
@@ -23,11 +23,13 @@ object Deps {
         const val viewModel = "androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha07"
     }
 
-    const val appCompat = "androidx.appcompat:appcompat:1.1.0"
+    const val appCompat = "androidx.appcompat:appcompat:1.3.1"
     const val browser = "androidx.browser:browser:1.0.0"
     const val cardView = "androidx.cardview:cardview:1.0.0"
     const val constraintLayout = "androidx.constraintlayout:constraintlayout:1.1.3"
     const val crashlytics = "com.crashlytics.sdk.android:crashlytics:2.10.1"
+
+    const val datastorePreferences = "androidx.datastore:datastore-preferences:1.0.0"
 
     const val epoxy = "com.airbnb.android:epoxy:3.11.0"
     const val epoxyProcessor = "com.airbnb.android:epoxy-processor:3.11.0"
