@@ -29,7 +29,7 @@ class AppUtil {
         return stringBuilder.toString()
     }
 
-    fun debugLog(key: String, value: String?) {
+    fun debugLog(key: String, value: String) {
         if (BuildConfig.DEBUG) {
             Log.d(key, value)
         }
