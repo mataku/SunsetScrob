@@ -1,0 +1,61 @@
+import dependency.Deps
+import dependency.Versions
+
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+}
+
+android {
+    compileSdk Versions.compileSdkVersion
+    defaultConfig {
+        minSdk Versions.minSdkVersion
+        targetSdk Versions.targetSdkVersion
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        def properties = new Properties()
+        properties.load(file("$project.rootDir/local.properties").newDataInputStream())
+        def apiKey = properties.getProperty("API_KEY")
+        def sharedSecret = properties.getProperty("SHARED_SECRET")
+        buildConfigField("String", "API_KEY", "$apiKey")
+        buildConfigField("String", "SHARED_SECRET", "$sharedSecret")
+    }
+
+    buildTypes {
+        debug {
+        }
+        release {
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+        textReport true
+        textOutput "stdout"
+        xmlReport false
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation(project(":core"))
+
+    implementation(Deps.hilt)
+    implementation(Deps.hiltCompiler)
+    implementation(Deps.kotlinCoroutinesAndroid)
+    implementation(Deps.kotlinSerializationRuntime)
+    implementation(Deps.kotlinStdlib)
+    implementation(Deps.okhttp)
+    implementation(Deps.okhttpLoggingInterceptor)
+    implementation(Deps.ktorClientJsonJvm)
+    implementation(Deps.ktorClientLogging)
+    implementation(Deps.ktorClientOkhttp)
+    implementation(Deps.roomRuntime)
+    implementation(Deps.roomCompiler)
+
+    implementation(Deps.datastorePreferences)
+}

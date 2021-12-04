@@ -78,6 +78,7 @@ android {
         exclude("META-INF/ktor-utils.kotlin_module")
         exclude("META-INF/kotlinx-coroutines-core.kotlin_module")
         exclude("META-INF/kotlinx-serialization-runtime.kotlin_module")
+        exclude("META-INF/gradle/incremental.annotation.processors")
     }
 
 //    dynamicFeatures [':feature:licenses']
@@ -85,6 +86,7 @@ android {
 
 dependencies {
     implementation project(":core")
+    implementation project(":data")
 
     implementation Deps.cardView
     implementation Deps.lifecycleExtensions

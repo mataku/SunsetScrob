@@ -1,1 +1,1 @@
-include ':app', ':feature:settings', ':core', ':feature:licenses', ':ui_common'
+include ':app', ':feature:settings', ':core', ':feature:licenses', ':ui_common', ':data'
