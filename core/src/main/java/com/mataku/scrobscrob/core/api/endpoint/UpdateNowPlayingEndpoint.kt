@@ -13,7 +13,7 @@ data class UpdateNowPlayingEndpoint(
 @Serializable
 data class NowPlayingApiResponse(
     @SerialName("nowplaying")
-    val nowPlaying: NowPlaying?
+    val nowPlaying: NowPlaying
 )
 
 @Serializable

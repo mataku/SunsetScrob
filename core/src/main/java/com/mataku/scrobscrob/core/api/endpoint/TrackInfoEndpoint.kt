@@ -13,7 +13,7 @@ data class TrackInfoEndpoint(
 @Serializable
 data class TrackInfoApiResponse(
     @SerialName("track")
-    val trackInfo: TrackInfo?
+    val trackInfo: TrackInfo
 )
 
 @Serializable

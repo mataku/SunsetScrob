@@ -13,7 +13,7 @@ data class AuthMobileSessionEndpoint(
 @Serializable
 data class AuthMobileSessionApiResponse(
     @SerialName("session")
-    val mobileSession: MobileSession?
+    val mobileSession: MobileSession
 )
 
 @Serializable

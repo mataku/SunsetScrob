@@ -9,7 +9,11 @@ import com.mataku.scrobscrob.core.entity.presentation.SunsetResult
 import com.mataku.scrobscrob.core.util.AppUtil
 
 class ScrobbleRepository(private val apiClient: LastFmApiClient) {
-    suspend fun scrobble(track: Track, sessionKey: String, timeStamp: Long): SunsetResult<ScrobbleAttr> {
+    suspend fun scrobble(
+        track: Track,
+        sessionKey: String,
+        timeStamp: Long
+    ): SunsetResult<ScrobbleAttr> {
         val params = mutableMapOf(
             "artist[0]" to track.artistName,
             "track[0]" to track.name,
