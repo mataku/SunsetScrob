@@ -4,7 +4,8 @@ const val kotlinVersion = "1.5.31"
 
 object Deps {
     private const val ktorVersion = "1.5.1"
-    private const val hiltVersion = "2.40.2"
+    private const val hiltVersion = "2.40.4"
+    const val kotlinCompilerExtensionVersion = "1.0.5"
 
     object Compose {
         // Integration with activities
@@ -23,6 +24,7 @@ object Deps {
         const val viewModel = "androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha07"
     }
 
+    const val activityKtx = "androidx.activity:activity-ktx:1.4.0"
     const val appCompat = "androidx.appcompat:appcompat:1.3.1"
     const val browser = "androidx.browser:browser:1.0.0"
     const val cardView = "androidx.cardview:cardview:1.0.0"
@@ -43,6 +45,9 @@ object Deps {
     const val hilt = "com.google.dagger:hilt-android:$hiltVersion"
     const val hiltCompiler = "com.google.dagger:hilt-android-compiler:$hiltVersion"
 
+    const val hiltLifecycleViewmodel = "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0"
+    const val hiltAndroidXCompiler = "androidx.hilt:hilt-compiler:1.0.0"
+
     const val koinAndroid = "org.koin:koin-android:2.0.1"
     const val koinAndroidXScope = "org.koin:koin-androidx-scope:2.0.1"
     const val koinAndroidXViewModel = "org.koin:koin-androidx-viewmodel:2.0.1"
@@ -50,13 +55,14 @@ object Deps {
     const val kotlinCoroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.3"
     const val kotlinSerializationRuntime =
         "org.jetbrains.kotlinx:kotlinx-serialization-json:1.1.0"
-    const val kotlinStdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
 
     const val ktorClientOkhttp = "io.ktor:ktor-client-okhttp:$ktorVersion"
     const val ktorClientJsonJvm = "io.ktor:ktor-client-serialization-jvm:$ktorVersion"
     const val ktorClientLogging = "io.ktor:ktor-client-logging:$ktorVersion"
+    const val ktorClientCore = "io.ktor:ktor-client-core:$ktorVersion"
 
     const val lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:2.0.0"
+    const val lifecycleViewmodelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0"
     const val materialComponent = "com.google.android.material:material:1.1.0"
 
     const val okhttp = "com.squareup.okhttp3:okhttp:4.9.1"
@@ -69,8 +75,8 @@ object Deps {
     const val kotlinReflect = "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
     const val junitPlatformRunner = "org.junit.platform:junit-platform-runner:1.1.0"
 
-    const val roomRuntime = "androidx.room:room-runtime:2.2.6"
-    const val roomCompiler = "androidx.room:room-compiler:2.2.6"
+    const val roomRuntime = "androidx.room:room-runtime:2.4.0-rc01"
+    const val roomCompiler = "androidx.room:room-compiler:2.4.0-rc01"
 
     object GradlePlugin {
         const val android = "com.android.tools.build:gradle:7.0.3"

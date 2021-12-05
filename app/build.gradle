@@ -20,6 +20,7 @@ android {
     compileSdkVersion Versions.compileSdkVersion
     buildFeatures {
         dataBinding = true
+        compose = true
     }
 
     defaultConfig {
@@ -68,6 +69,10 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    composeOptions {
+        kotlinCompilerExtensionVersion Deps.kotlinCompilerExtensionVersion
+    }
+
     packagingOptions {
         exclude("META-INF/atomicfu.kotlin_module")
         exclude("META-INF/kotlinx-coroutines-io.kotlin_module")
@@ -86,10 +91,12 @@ android {
 
 dependencies {
     implementation project(":core")
-    implementation project(":data")
+    implementation project(":data:repository")
 
+    implementation Deps.activityKtx
     implementation Deps.cardView
     implementation Deps.lifecycleExtensions
+    implementation Deps.lifecycleViewmodelKtx
     implementation Deps.materialComponent
     implementation Deps.preference
 
@@ -112,6 +119,14 @@ dependencies {
 
     implementation Deps.hilt
     kapt Deps.hiltCompiler
+    kapt Deps.hiltAndroidXCompiler
+
+    implementation(project(":ui_common"))
+    implementation(Deps.Compose.activity)
+    implementation(Deps.Compose.uiTooling)
+    implementation(Deps.Compose.animation)
+    implementation(Deps.Compose.material)
+
 }
 
 kapt {
