@@ -4,6 +4,8 @@ sealed class SunsetResult<T> {
     data class Progress<T>(var loading: Boolean) : SunsetResult<T>()
     data class Success<T>(var data: T) : SunsetResult<T>()
     data class Failure<T>(val throwable: Throwable) : SunsetResult<T>()
+    object Initialized : SunsetResult<Nothing>()
+    class Initialize<T>() : SunsetResult<T>()
 
     companion object {
         fun <T> loading(isLoading: Boolean): SunsetResult<T> =
@@ -14,6 +16,8 @@ sealed class SunsetResult<T> {
 
         fun <T> failure(throwable: Throwable): SunsetResult<T> =
             Failure(throwable)
+
+        fun <T> initialized(): SunsetResult<T> = Initialize()
     }
 
     fun getOrNull(): T? {
@@ -46,3 +50,5 @@ inline fun <T> SunsetResult<T>.onFailure(action: (exception: Throwable) -> Unit)
     }
     return this
 }
+
+fun <T> Throwable.toResult(): SunsetResult<T> = SunsetResult.failure<T>(this)
