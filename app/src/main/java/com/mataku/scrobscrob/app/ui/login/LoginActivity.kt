@@ -11,20 +11,24 @@ import android.text.TextUtils
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.app.model.RxEventBus
 import com.mataku.scrobscrob.app.ui.settings.SettingsActivity
+import com.mataku.scrobscrob.app.ui.viewmodel.LoginViewModel
 import com.mataku.scrobscrob.core.api.LastFmApiClient
 import com.mataku.scrobscrob.core.api.repository.MobileSessionRepository
 import com.mataku.scrobscrob.core.entity.Track
 import com.mataku.scrobscrob.core.entity.UpdateNowPlayingEvent
 import com.mataku.scrobscrob.databinding.ActivityLoginBinding
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * A login screen that offers login via email/password.
  */
+@AndroidEntryPoint
 class LoginActivity : AppCompatActivity(), LoginViewCallback {
 
     private lateinit var userNameView: EditText
@@ -34,6 +38,8 @@ class LoginActivity : AppCompatActivity(), LoginViewCallback {
 
     private val repository = MobileSessionRepository(LastFmApiClient)
     private lateinit var loginPresenter: LoginPresenter
+
+    private val viewmodel: LoginViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +54,7 @@ class LoginActivity : AppCompatActivity(), LoginViewCallback {
 
         loginFormView = binding.loginForm
         progressView = binding.loginProgress
+
         loginPresenter = LoginPresenter(isEnabledReadNotification(), this, repository)
     }
 
