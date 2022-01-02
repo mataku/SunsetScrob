@@ -33,6 +33,8 @@ object Deps {
     const val constraintLayout = "androidx.constraintlayout:constraintlayout:1.1.3"
     const val crashlytics = "com.crashlytics.sdk.android:crashlytics:2.10.1"
 
+    const val coil = "io.coil-kt:coil-compose:1.4.0"
+
     const val datastorePreferences = "androidx.datastore:datastore-preferences:1.0.0"
 
     const val epoxy = "com.airbnb.android:epoxy:3.11.0"

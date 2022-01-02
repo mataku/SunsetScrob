@@ -127,6 +127,7 @@ dependencies {
     implementation(Deps.Compose.animation)
     implementation(Deps.Compose.material)
     implementation(Deps.Compose.navigation)
+    implementation(Deps.coil)
 
 }
 
