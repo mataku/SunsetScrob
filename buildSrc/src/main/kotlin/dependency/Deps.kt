@@ -22,6 +22,8 @@ object Deps {
 
         // Integration with ViewModels
         const val viewModel = "androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha07"
+
+        const val navigation = "androidx.navigation:navigation-compose:2.4.0-rc01"
     }
 
     const val activityKtx = "androidx.activity:activity-ktx:1.4.0"

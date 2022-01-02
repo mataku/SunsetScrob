@@ -126,6 +126,7 @@ dependencies {
     implementation(Deps.Compose.uiTooling)
     implementation(Deps.Compose.animation)
     implementation(Deps.Compose.material)
+    implementation(Deps.Compose.navigation)
 
 }
 
