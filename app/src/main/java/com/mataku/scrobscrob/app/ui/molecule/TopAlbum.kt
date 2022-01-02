@@ -25,9 +25,8 @@ import com.mataku.scrobscrob.core.api.endpoint.Album
 fun TopAlbum(album: Album, imageSize: Dp) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.padding(8.dp),
-
-        ) {
+        modifier = Modifier.padding(8.dp)
+    ) {
         val url = album.imageList?.first()?.imageUrl
         val painter = if (url == null || url.isBlank()) {
             painterResource(R.drawable.no_image)

@@ -2,6 +2,7 @@ package com.mataku.scrobscrob.app.ui.screen
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
@@ -36,6 +37,7 @@ fun TopAlbumsContent(albums: List<Album>, imageSize: Dp) {
         },
         modifier = Modifier
             .background(Colors.ContentBackground)
-            .fillMaxHeight()
+            .fillMaxHeight(),
+        contentPadding = PaddingValues(start = 8.dp, end = 8.dp)
     )
 }
