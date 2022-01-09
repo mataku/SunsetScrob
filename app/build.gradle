@@ -128,7 +128,7 @@ dependencies {
     implementation(Deps.Compose.material)
     implementation(Deps.Compose.navigation)
     implementation(Deps.coil)
-
+    implementation(Deps.Accompanist.navigationAnimation)
 }
 
 kapt {
