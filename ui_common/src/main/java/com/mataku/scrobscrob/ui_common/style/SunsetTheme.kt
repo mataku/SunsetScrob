@@ -1,7 +1,7 @@
 package com.mataku.scrobscrob.ui_common.style
 
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.lightColors
+import androidx.compose.material.darkColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
@@ -15,7 +15,7 @@ fun SunsetTheme(
     )
 }
 
-private val LightColors = lightColors(
+private val LightColors = darkColors(
     primary = Color(0xff37474F),
     primaryVariant = Color(0xff000000),
     secondary = Color(0xffFF4081)
