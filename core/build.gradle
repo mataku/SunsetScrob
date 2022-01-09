@@ -47,7 +47,7 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
 
         kotlinOptions {
-            freeCompilerArgs += "-Xopt-in=kotlin.RequireOptIn"
+            freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
         }
     }
 }
