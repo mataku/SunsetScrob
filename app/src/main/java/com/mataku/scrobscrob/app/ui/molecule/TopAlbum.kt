@@ -1,6 +1,7 @@
 package com.mataku.scrobscrob.app.ui.molecule
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -22,10 +23,14 @@ import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.core.api.endpoint.Album
 
 @Composable
-fun TopAlbum(album: Album, imageSize: Dp) {
+fun TopAlbum(album: Album, imageSize: Dp, onAlbumTap: () -> Unit) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.padding(8.dp)
+        modifier = Modifier
+            .padding(8.dp)
+            .clickable {
+                onAlbumTap()
+            },
     ) {
         val url = album.imageList?.first()?.imageUrl
         val painter = if (url == null || url.isBlank()) {
