@@ -8,25 +8,19 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: set up JDK 1.8
-      uses: actions/setup-java@v1
+    - name: set up Ruby
+      uses: ruby/setup-ruby@v1
       with:
-        java-version: 1.8
-    - name: Cache gradle dir
-      uses: actions/cache@v2
-      with:
-        path: ~/.gradle/caches
-        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-        restore-keys: |
-          ${{ runner.os }}-gradle-
+        ruby-version: 3.0
+        bundler-cache: true
     - name: Build with Gradle
       env:
         LAST_FM_API_KEY: ${{ secrets.LAST_FM_API_KEY }}
         LAST_FM_SHARED_SECRET: ${{ secrets.LAST_FM_SHARED_SECRET }}
         GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON_DEV }}
+        DANGER_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        echo "API_KEY=\"$LAST_FM_API_KEY\"" >> local.properties
-        echo "SHARED_SECRET=\"$LAST_FM_SHARED_SECRET\"" >> local.properties
-        echo $GOOGLE_SERVICES_JSON > app/google-services.json
-        ./gradlew bundleDebug
-        ./gradlew testDebugUnitTest
+        curl -sSLO https://github.com/pinterest/ktlint/releases/download/0.43.1/ktlint
+        mv ktlint /usr/local/bin/
+        chmod a+x /usr/local/bin/ktlint
+        bundle exec danger
