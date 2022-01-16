@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">SunsetScrob</string>
-    <string name="login_to_last_fm">Log in to Last.fm</string>
+    <string name="login_to_last_fm">Login to Last.fm</string>
     <string name="preference_title">Preferences</string>
     <string name="activity_login_title">Log in to Last.fm</string>
     <string name="enable_notification_access">Enable Notification Access</string>
