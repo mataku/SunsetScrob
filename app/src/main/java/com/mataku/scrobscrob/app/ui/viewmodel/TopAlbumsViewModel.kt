@@ -35,8 +35,6 @@ class TopAlbumsViewModel @Inject constructor(
                 isLoading = false,
                 hasNext = false
             )
-        } else {
-            fetchAlbums()
         }
     }
 
