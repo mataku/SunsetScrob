@@ -11,7 +11,6 @@ import com.mataku.scrobscrob.data.repository.UsernameRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
@@ -20,31 +19,32 @@ import javax.inject.Inject
 @HiltViewModel
 class TopAlbumsViewModel @Inject constructor(
     private val topAlbumsRepository: TopAlbumsRepository,
-    private val usernameRepository: UsernameRepository
+    usernameRepository: UsernameRepository
 ) : ViewModel() {
 
     var uiState by mutableStateOf(UiState.initialized())
         private set
 
-    private var username: String = ""
+    private val username: String = usernameRepository.username() ?: ""
 
     private var page = 1
 
     init {
-        viewModelScope.launch {
-            usernameRepository.username()
-                .map {
-                    if (it != null) {
-                        username = it
-                    }
-                }
-                .catch {
-
-                }
+        if (username.isBlank()) {
+            uiState = uiState.copy(
+                isLoading = false,
+                hasNext = false
+            )
+        } else {
+            fetchAlbums()
         }
     }
 
     fun fetchAlbums() {
+        if (uiState.isLoading) {
+            return
+        }
+
         viewModelScope.launch {
             topAlbumsRepository.fetchTopAlbums(page = page, username = username)
                 .onStart {
@@ -55,6 +55,11 @@ class TopAlbumsViewModel @Inject constructor(
                 .onCompletion {
                     uiState = uiState.copy(
                         isLoading = false
+                    )
+                }
+                .catch {
+                    uiState = uiState.copy(
+                        hasNext = false
                     )
                 }
                 .collect { albums ->
@@ -82,7 +87,7 @@ class TopAlbumsViewModel @Inject constructor(
         companion object {
             fun initialized(): UiState =
                 UiState(
-                    isLoading = true,
+                    isLoading = false,
                     topAlbums = emptyList(),
                     hasNext = true
                 )
