@@ -8,9 +8,7 @@ import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.text.TextUtils
 import com.mataku.scrobscrob.R
-import com.mataku.scrobscrob.app.App
 import com.mataku.scrobscrob.app.model.RxEventBus
-import com.mataku.scrobscrob.app.model.db.Scrobble
 import com.mataku.scrobscrob.app.presenter.AppleMusicNotificationServicePresenter
 import com.mataku.scrobscrob.app.ui.view.NotificationServiceInterface
 import com.mataku.scrobscrob.app.util.SharedPreferencesHelper
@@ -20,11 +18,7 @@ import com.mataku.scrobscrob.core.api.repository.ScrobbleRepository
 import com.mataku.scrobscrob.core.api.repository.TrackRepository
 import com.mataku.scrobscrob.core.entity.Track
 import com.mataku.scrobscrob.core.entity.UpdateNowPlayingEvent
-import com.mataku.scrobscrob.core.entity.UpdateScrobbledListEvent
 import com.mataku.scrobscrob.core.util.AppUtil
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 
 class AppleMusicNotificationService : NotificationListenerService(), NotificationServiceInterface {
     private val APPLE_MUSIC_PACKAGE_NAME = "com.apple.android.music"
@@ -33,7 +27,12 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
         TrackRepository(LastFmApiClient)
     private val scrobbleRepository = ScrobbleRepository(LastFmApiClient)
     private val presenter =
-        AppleMusicNotificationServicePresenter(this, nowPlayingRepository, trackRepository, scrobbleRepository)
+        AppleMusicNotificationServicePresenter(
+            this,
+            nowPlayingRepository,
+            trackRepository,
+            scrobbleRepository
+        )
     private lateinit var track: Track
     private var previousTrackName: String = ""
     private val appUtil = AppUtil()
@@ -136,19 +135,19 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
     override fun saveScrobble(track: Track) {
         val sharedPreferencesHelper = SharedPreferencesHelper(this)
 
-        GlobalScope.launch {
-            async {
-                val dao = App.database.scrobbleDao
-                val scrobble = Scrobble(
-                    artistName = track.artistName,
-                    trackName = track.name,
-                    albumName = track.albumName,
-                    artwork = sharedPreferencesHelper.getAlbumArtWork()
-                )
-                dao.insert(scrobble)
-                RxEventBus.send(UpdateScrobbledListEvent())
-            }
-        }
+//        GlobalScope.launch {
+//            async {
+//                val dao = App.database.scrobbleDao
+//                val scrobble = Scrobble(
+//                    artistName = track.artistName,
+//                    trackName = track.name,
+//                    albumName = track.albumName,
+//                    artwork = sharedPreferencesHelper.getAlbumArtWork()
+//                )
+//                dao.insert(scrobble)
+//                RxEventBus.send(UpdateScrobbledListEvent())
+//            }
+//        }
     }
 
     override fun setCurrentTrackInfo(playingTime: Long, albumArtWork: String) {

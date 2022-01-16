@@ -60,10 +60,6 @@ object Deps {
     const val hiltLifecycleViewmodel = "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0"
     const val hiltAndroidXCompiler = "androidx.hilt:hilt-compiler:1.0.0"
 
-    const val koinAndroid = "org.koin:koin-android:2.0.1"
-    const val koinAndroidXScope = "org.koin:koin-androidx-scope:2.0.1"
-    const val koinAndroidXViewModel = "org.koin:koin-androidx-viewmodel:2.0.1"
-
     const val kotlinCoroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.3"
     const val kotlinSerializationRuntime =
         "org.jetbrains.kotlinx:kotlinx-serialization-json:1.1.0"
