@@ -15,26 +15,25 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
 import com.mataku.scrobscrob.R
-import com.mataku.scrobscrob.core.api.endpoint.Album
+import com.mataku.scrobscrob.core.api.endpoint.Artist
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 
 @Composable
-fun TopAlbum(album: Album, imageSize: Dp, onAlbumTap: () -> Unit) {
+fun TopArtist(artist: Artist, imageSize: Dp, onArtistTap: () -> Unit) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .padding(8.dp)
             .clickable {
-                onAlbumTap()
-            },
+                onArtistTap()
+            }
     ) {
-        val imageList = album.imageList
+        val imageList = artist.imageList
         val url = imageList?.last()?.imageUrl ?: ""
         val painter = if (url.isBlank()) {
             painterResource(R.drawable.no_image)
@@ -43,11 +42,11 @@ fun TopAlbum(album: Album, imageSize: Dp, onAlbumTap: () -> Unit) {
         }
         Image(
             painter = painter,
-            contentDescription = album.name,
+            contentDescription = artist.name,
             modifier = Modifier.size(imageSize)
         )
         Text(
-            album.name,
+            artist.name,
             fontSize = 16.sp,
             modifier = Modifier
                 .wrapContentSize(),
@@ -56,52 +55,15 @@ fun TopAlbum(album: Album, imageSize: Dp, onAlbumTap: () -> Unit) {
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
-        Text(
-            album.artist.name,
-            fontSize = 14.sp,
-            color = Color.White,
-            modifier = Modifier
-                .wrapContentSize(),
-            maxLines = 1
-        )
-        val playCountResource = if (album.playcount == "1") {
+        val playCountResource = if (artist.playcount == "1") {
             R.string.playcount
         } else {
             R.string.playcounts
         }
         Text(
-            stringResource(playCountResource, album.playcount),
+            stringResource(playCountResource, artist.playcount),
             style = SunsetTextStyle.caption,
             maxLines = 1
         )
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun TopAlbumPreview() {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.padding(8.dp)
-    ) {
-        Image(
-            painter = painterResource(R.drawable.no_image),
-            contentDescription = null,
-            modifier = Modifier
-                .size(128.dp)
-        )
-        Text(
-            "生まれてから初めて見た夢",
-            fontSize = 16.sp,
-            modifier = Modifier
-                .wrapContentSize()
-        )
-        Text(
-            "乃木坂46",
-            fontSize = 14.sp,
-            modifier = Modifier
-                .wrapContentSize()
-        )
-    }
-
 }

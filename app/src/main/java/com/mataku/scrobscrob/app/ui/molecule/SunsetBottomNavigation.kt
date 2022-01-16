@@ -44,7 +44,7 @@ fun SunsetBottomNavigation(navController: NavController) {
                         restoreState = true
                     }
                 },
-                selectedContentColor = Colors.LastFmColor,
+                selectedContentColor = Colors.Lime,
                 unselectedContentColor = Color.LightGray.copy(alpha = 0.4F)
             )
         }

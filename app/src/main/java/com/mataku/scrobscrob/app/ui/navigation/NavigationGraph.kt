@@ -13,6 +13,7 @@ import com.mataku.scrobscrob.app.ui.screen.ScrobbleScreen
 import com.mataku.scrobscrob.app.ui.screen.TopAlbumsScreen
 import com.mataku.scrobscrob.app.ui.screen.TopArtistsScreen
 import com.mataku.scrobscrob.app.ui.viewmodel.TopAlbumsViewModel
+import com.mataku.scrobscrob.app.ui.viewmodel.TopArtistsViewModel
 import com.mataku.scrobscrob.ui_common.template.WebViewScreen
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -45,7 +46,8 @@ fun NavigationGraph(navController: NavHostController) {
             TopAlbumsScreen(navController, topAlbumsViewModel)
         }
         composable(SunsetBottomNavItem.TOP_ARTISTS.screenRoute) {
-            TopArtistsScreen()
+            val topArtistsViewModel = hiltViewModel<TopArtistsViewModel>()
+            TopArtistsScreen(navController, topArtistsViewModel)
         }
         composable(
             "webview?url={url}",

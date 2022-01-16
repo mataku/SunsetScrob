@@ -7,6 +7,8 @@ import com.mataku.scrobscrob.data.repository.MobileSessionRepository
 import com.mataku.scrobscrob.data.repository.MobileSessionRepositoryImpl
 import com.mataku.scrobscrob.data.repository.TopAlbumsRepository
 import com.mataku.scrobscrob.data.repository.TopAlbumsRepositoryImpl
+import com.mataku.scrobscrob.data.repository.TopArtistsRepository
+import com.mataku.scrobscrob.data.repository.TopArtistsRepositoryImpl
 import com.mataku.scrobscrob.data.repository.UsernameRepository
 import com.mataku.scrobscrob.data.repository.UsernameRepositoryImpl
 import dagger.Module
@@ -39,6 +41,12 @@ class RepositoryModule {
     @Singleton
     @Provides
     fun provideTopAlbumsRepository(repository: TopAlbumsRepositoryImpl): TopAlbumsRepository {
+        return repository
+    }
+
+    @Singleton
+    @Provides
+    fun provideTopArtistsRepository(repository: TopArtistsRepositoryImpl): TopArtistsRepository {
         return repository
     }
 }
