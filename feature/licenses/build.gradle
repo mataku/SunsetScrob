@@ -5,7 +5,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 apply plugin: 'com.android.dynamic-feature'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'com.cookpad.android.licensetools'
+apply plugin: 'com.cookpad.android.plugin.license-tools'
 
 apply from: "$project.rootDir/core_dependencies.gradle"
 

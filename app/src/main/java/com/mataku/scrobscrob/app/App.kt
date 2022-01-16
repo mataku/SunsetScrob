@@ -9,6 +9,7 @@ import com.mataku.scrobscrob.core.api.repository.TopAlbumsRepository
 import com.mataku.scrobscrob.core.api.repository.TopArtistsRepository
 import dagger.hilt.android.HiltAndroidApp
 import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.context.startKoin
 import org.koin.dsl.module
 
 @HiltAndroidApp
@@ -29,8 +30,8 @@ open class App : Application() {
         super.onCreate()
         database =
             Room.databaseBuilder(applicationContext, AppDatabase::class.java, "sunset_db").build()
-//        startKoin {
-//            modules(appModules)
-//        }
+        startKoin {
+            modules(appModules)
+        }
     }
 }

@@ -48,7 +48,7 @@ android {
 
     buildTypes {
         debug {
-            minifyEnabled true
+            minifyEnabled false
             applicationIdSuffix '.dev'
             signingConfig signingConfigs.debug
         }
@@ -126,7 +126,10 @@ dependencies {
     implementation(Deps.Compose.uiTooling)
     implementation(Deps.Compose.animation)
     implementation(Deps.Compose.material)
-
+    implementation(Deps.Compose.navigation)
+    implementation(Deps.coil)
+    implementation(Deps.Accompanist.navigationAnimation)
+    implementation(Deps.Compose.hiltNavigationCompose)
 }
 
 kapt {

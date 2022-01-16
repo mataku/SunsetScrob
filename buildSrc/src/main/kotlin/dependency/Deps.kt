@@ -22,14 +22,26 @@ object Deps {
 
         // Integration with ViewModels
         const val viewModel = "androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha07"
+
+        const val navigation = "androidx.navigation:navigation-compose:2.4.0-rc01"
+
+        const val hiltNavigationCompose = "androidx.hilt:hilt-navigation-compose:1.0.0-beta01"
+    }
+
+    object Accompanist {
+        const val navigationAnimation =
+            "com.google.accompanist:accompanist-navigation-animation:0.22.0-rc"
     }
 
     const val activityKtx = "androidx.activity:activity-ktx:1.4.0"
+
     const val appCompat = "androidx.appcompat:appcompat:1.3.1"
     const val browser = "androidx.browser:browser:1.0.0"
     const val cardView = "androidx.cardview:cardview:1.0.0"
     const val constraintLayout = "androidx.constraintlayout:constraintlayout:1.1.3"
     const val crashlytics = "com.crashlytics.sdk.android:crashlytics:2.10.1"
+
+    const val coil = "io.coil-kt:coil-compose:1.4.0"
 
     const val datastorePreferences = "androidx.datastore:datastore-preferences:1.0.0"
 
@@ -70,25 +82,19 @@ object Deps {
 
     const val preference = "androidx.preference:preference:1.0.0"
 
-    const val spek = "org.jetbrains.spek:spek-api:1.1.5"
-    const val spekJunitPlatformEngine = "org.jetbrains.spek:spek-junit-platform-engine:1.1.5"
-    const val kotlinReflect = "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
-    const val junitPlatformRunner = "org.junit.platform:junit-platform-runner:1.1.0"
-
     const val roomRuntime = "androidx.room:room-runtime:2.4.0-rc01"
     const val roomCompiler = "androidx.room:room-compiler:2.4.0-rc01"
 
     object GradlePlugin {
         const val android = "com.android.tools.build:gradle:7.0.3"
         const val androidJunit5 = "de.mannodermaus.gradle.plugins:android-junit5:1.3.1.1"
-        const val licenseTools = "com.cookpad.android.licensetools:license-tools-plugin:1.7.0"
+        const val licenseTools = "gradle.plugin.com.cookpad.android.plugin:plugin:1.2.8"
         const val firebaseCrashlyticsGradlePlugin =
             "com.google.firebase:firebase-crashlytics-gradle:2.2.0"
         const val hilt = "com.google.dagger:hilt-android-gradle-plugin:$hiltVersion"
         const val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
         const val gradleVersionsPlugin = "com.github.ben-manes:gradle-versions-plugin:0.27.0"
         const val googleServices = "com.google.gms:google-services:4.3.8"
-        const val junitPlatform = "org.junit.platform:junit-platform-gradle-plugin:1.0.0"
         const val kotlinSerialization =
             "org.jetbrains.kotlin:kotlin-serialization:$kotlinVersion"
     }
@@ -96,10 +102,6 @@ object Deps {
 
 object UnitTestDeps {
     const val androidxTestCore = "androidx.test:core:1.1.0"
-    const val spek = "org.jetbrains.spek:spek-api:1.1.5"
-    const val spekJunitPlatformEngine = "org.jetbrains.spek:spek-junit-platform-engine:1.1.5"
-    const val kotlinReflect = "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
-    const val junitPlatformRunner = "org.junit.platform:junit-platform-runner:1.1.0"
     const val kotlinTestJunit = "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
     const val robolectric = "org.robolectric:robolectric:4.0.2"
     const val guava = "com.google.guava:guava:22.0"
