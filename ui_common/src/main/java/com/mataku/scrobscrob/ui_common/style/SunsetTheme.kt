@@ -10,13 +10,14 @@ fun SunsetTheme(
     content: @Composable () -> Unit
 ) {
     MaterialTheme(
-        colors = LightColors,
+        colors = darkColors,
         content = content
     )
 }
 
-private val LightColors = darkColors(
+private val darkColors = darkColors(
     primary = Color(0xff37474F),
     primaryVariant = Color(0xff000000),
-    secondary = Color(0xffFF4081)
+    secondary = Color(0xffFF4081),
+    onSecondary = Color.White
 )
