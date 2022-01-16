@@ -48,7 +48,7 @@ android {
 
     buildTypes {
         debug {
-            minifyEnabled true
+            minifyEnabled false
             applicationIdSuffix '.dev'
             signingConfig signingConfigs.debug
         }
