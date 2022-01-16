@@ -4,15 +4,19 @@ import androidx.annotation.DrawableRes
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.ui_common.style.Colors
+import com.mataku.scrobscrob.ui_common.style.SunsetTheme
 
 @Composable
 fun SunsetBottomNavigation(navController: NavController) {
@@ -41,7 +45,7 @@ fun SunsetBottomNavigation(navController: NavController) {
                     }
                 },
                 selectedContentColor = Colors.LastFmColor,
-                unselectedContentColor = Color.Black.copy(0.4f)
+                unselectedContentColor = Color.LightGray.copy(alpha = 0.4F)
             )
         }
     }
@@ -67,4 +71,14 @@ enum class SunsetBottomNavItem(
         "Top Artists",
         "top_artists"
     )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun SunsetBottomNavPreview() {
+    SunsetTheme {
+        Surface() {
+            SunsetBottomNavigation(navController = NavController(LocalContext.current))
+        }
+    }
 }
