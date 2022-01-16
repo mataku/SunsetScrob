@@ -16,7 +16,8 @@ object DummyAlbums {
                     imageUrl = "https://lastfm.freetls.fastly.net/i/u/300x300/115974ea870713fc196e5597626098b6.jpg"
                 )
             ),
-            url = "https://last.fm"
+            url = "https://last.fm",
+            playcount = "10"
         ),
         Album(
             name = "生まれてから初めて見た夢",
@@ -28,7 +29,8 @@ object DummyAlbums {
                     imageUrl = "https://lastfm.freetls.fastly.net/i/u/300x300/115974ea870713fc196e5597626098b6.jpg"
                 )
             ),
-            url = "https://www.last.fm/music/PassCode"
+            url = "https://www.last.fm/music/PassCode",
+            playcount = "9"
         ),
         Album(
             name = "生まれてから初めて見た夢",
@@ -40,7 +42,8 @@ object DummyAlbums {
                     imageUrl = "https://lastfm.freetls.fastly.net/i/u/300x300/115974ea870713fc196e5597626098b6.jpg"
                 )
             ),
-            url = "https://last.fm"
+            url = "https://last.fm",
+            playcount = "8"
         )
     )
 

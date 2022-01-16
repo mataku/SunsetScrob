@@ -20,7 +20,9 @@ data class Album(
     @SerialName("artist")
     val artist: AlbumArtist,
     @SerialName("image")
-    val imageList: List<Image>?
+    val imageList: List<Image>?,
+    @SerialName("playcount")
+    val playcount: String
 )
 
 @Serializable
