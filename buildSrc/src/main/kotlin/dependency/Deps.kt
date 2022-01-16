@@ -24,6 +24,8 @@ object Deps {
         const val viewModel = "androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha07"
 
         const val navigation = "androidx.navigation:navigation-compose:2.4.0-rc01"
+
+        const val hiltNavigationCompose = "androidx.hilt:hilt-navigation-compose:1.0.0-beta01"
     }
 
     object Accompanist {
