@@ -3,6 +3,7 @@ package com.mataku.scrobscrob.app.ui.navigation
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.navArgument
 import com.google.accompanist.navigation.animation.AnimatedNavHost
@@ -11,6 +12,7 @@ import com.mataku.scrobscrob.app.ui.molecule.SunsetBottomNavItem
 import com.mataku.scrobscrob.app.ui.screen.ScrobbleScreen
 import com.mataku.scrobscrob.app.ui.screen.TopAlbumsScreen
 import com.mataku.scrobscrob.app.ui.screen.TopArtistsScreen
+import com.mataku.scrobscrob.app.ui.viewmodel.TopAlbumsViewModel
 import com.mataku.scrobscrob.ui_common.template.WebViewScreen
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -39,7 +41,8 @@ fun NavigationGraph(navController: NavHostController) {
         composable(
             SunsetBottomNavItem.TOP_ALBUMS.screenRoute
         ) {
-            TopAlbumsScreen(navController)
+            val topAlbumsViewModel = hiltViewModel<TopAlbumsViewModel>()
+            TopAlbumsScreen(navController, topAlbumsViewModel)
         }
         composable(SunsetBottomNavItem.TOP_ARTISTS.screenRoute) {
             TopArtistsScreen()

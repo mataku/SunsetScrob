@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.mataku.scrobscrob.data.db.AppDatabase
 import com.mataku.scrobscrob.data.db.ScrobbleDao
 import com.mataku.scrobscrob.data.db.SessionKeyDataStore
+import com.mataku.scrobscrob.data.db.UsernameDataStore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,6 +21,12 @@ class DatabaseModule {
     @Provides
     fun provideSessionKeyStore(@ApplicationContext context: Context): SessionKeyDataStore {
         return SessionKeyDataStore(context)
+    }
+
+    @Singleton
+    @Provides
+    fun provideUsernameStore(@ApplicationContext context: Context): UsernameDataStore {
+        return UsernameDataStore(context)
     }
 
     @Singleton
