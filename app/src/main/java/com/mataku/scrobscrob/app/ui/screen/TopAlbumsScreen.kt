@@ -4,16 +4,12 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.GridItemSpan
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Dp
@@ -22,6 +18,7 @@ import androidx.navigation.NavController
 import com.mataku.scrobscrob.app.ui.molecule.TopAlbum
 import com.mataku.scrobscrob.app.ui.viewmodel.TopAlbumsViewModel
 import com.mataku.scrobscrob.core.api.endpoint.Album
+import com.mataku.scrobscrob.ui_common.organism.InfiniteLoadingIndicator
 import com.mataku.scrobscrob.ui_common.style.Colors
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -67,7 +64,7 @@ fun TopAlbumsContent(
             }
             if (hasNext) {
                 item(span = { GridItemSpan(2) }) {
-                    LoadingIndicator(
+                    InfiniteLoadingIndicator(
                         onScrollEnd = onScrollEnd,
                         padding = padding
                     )
@@ -81,17 +78,4 @@ fun TopAlbumsContent(
             )
             .fillMaxHeight()
     )
-}
-
-@Composable
-private fun LoadingIndicator(onScrollEnd: () -> Unit, padding: Dp) {
-    CircularProgressIndicator(
-        modifier = Modifier
-            .size(40.dp)
-            .padding(horizontal = padding, vertical = 16.dp),
-    )
-
-    LaunchedEffect(key1 = true, block = {
-        onScrollEnd()
-    })
 }
