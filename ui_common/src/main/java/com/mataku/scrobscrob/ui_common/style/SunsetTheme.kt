@@ -16,7 +16,7 @@ fun SunsetTheme(
 }
 
 private val darkColors = darkColors(
-    primary = Color(0xff37474F),
+    primary = Color(0xff4c626d),
     primaryVariant = Color(0xff000000),
     secondary = Color(0xffFF4081),
     onSecondary = Color.White
