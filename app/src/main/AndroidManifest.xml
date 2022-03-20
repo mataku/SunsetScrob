@@ -20,14 +20,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".app.ui.login.LoginActivity"
-            android:label="@string/login_to_last_fm">
-
-        </activity>
-        <activity android:name=".app.ui.settings.SettingsActivity">
-
-        </activity>
 
         <service
             android:name=".app.service.AppleMusicNotificationService"
