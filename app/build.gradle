@@ -110,10 +110,6 @@ dependencies {
     implementation Deps.roomRuntime
     kapt Deps.roomCompiler
 
-    implementation Deps.koinAndroid
-    implementation Deps.koinAndroidXScope
-    implementation Deps.koinAndroidXViewModel
-
     implementation Deps.glide
     kapt Deps.glideCompiler
 

@@ -6,6 +6,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import com.mataku.scrobscrob.app.ui.molecule.ScrobbleTopBar
+import com.mataku.scrobscrob.app.ui.molecule.SunsetBottomNavItem
 import com.mataku.scrobscrob.app.ui.molecule.SunsetBottomNavigation
 import com.mataku.scrobscrob.app.ui.navigation.NavigationGraph
 
@@ -16,8 +18,14 @@ fun MainScreen() {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
     Scaffold(
+        topBar = {
+            if (currentRoute == SunsetBottomNavItem.SCROBBLE.screenRoute) {
+                ScrobbleTopBar(navController)
+            }
+        },
+
         bottomBar = {
-            if (currentRoute?.startsWith("webview?url") == false) {
+            if (SunsetBottomNavItem.values().map { it.screenRoute }.contains(currentRoute)) {
                 SunsetBottomNavigation(navController = navController)
             }
         }

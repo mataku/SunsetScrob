@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.mataku.scrobscrob.R
-import com.mataku.scrobscrob.app.App
 import com.mataku.scrobscrob.app.model.RxEventBus
 import com.mataku.scrobscrob.app.util.SharedPreferencesHelper
 import com.mataku.scrobscrob.core.entity.Track
@@ -18,10 +17,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class ScrobbleFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
@@ -30,7 +27,11 @@ class ScrobbleFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     private val job = Job()
     private val coroutineContext = job
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val scrobbleView = inflater.inflate(R.layout.fragment_scrobble, container, false)
         binding = FragmentScrobbleBinding.bind(scrobbleView)
         setUpSwipeRefreshView()
@@ -69,19 +70,19 @@ class ScrobbleFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     private fun setUpRecyclerView() {
         val scrobbleViewAdapter = ScrobbleViewAdapter()
         CoroutineScope(coroutineContext).launch {
-            val result = async {
-                val scrobbleRecyclerView = binding.scrobbleListView
-                scrobbleRecyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
-                scrobbleRecyclerView.hasFixedSize()
-                if (scrobbleRecyclerView.adapter == null) {
-                    scrobbleRecyclerView.adapter = scrobbleViewAdapter
-                }
-                val dao = App.database.scrobbleDao
-                dao.getScrobbles(20, 0)
-            }.await()
-            withContext(Dispatchers.Main) {
-                scrobbleViewAdapter.setScrobbles(result)
-            }
+//            val result = async {
+//                val scrobbleRecyclerView = binding.scrobbleListView
+//                scrobbleRecyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
+//                scrobbleRecyclerView.hasFixedSize()
+//                if (scrobbleRecyclerView.adapter == null) {
+//                    scrobbleRecyclerView.adapter = scrobbleViewAdapter
+//                }
+//                val dao = App.database.scrobbleDao
+//                dao.getScrobbles(20, 0)
+//            }.await()
+//            withContext(Dispatchers.Main) {
+//                scrobbleViewAdapter.setScrobbles(result)
+//            }
         }
     }
 

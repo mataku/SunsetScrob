@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.mataku.scrobscrob.R
-import com.mataku.scrobscrob.app.App
 import com.mataku.scrobscrob.app.ui.login.LoginActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -126,7 +125,7 @@ class SettingsActivity : AppCompatActivity() {
                 removeSession()
                 CoroutineScope(job).launch {
                     async {
-                        App.database.clearAllTables()
+//                        App.database.clearAllTables()
                     }
                 }
                 fragmentManager?.beginTransaction()?.replace(

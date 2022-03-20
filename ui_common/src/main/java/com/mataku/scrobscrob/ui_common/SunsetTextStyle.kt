@@ -9,4 +9,13 @@ object SunsetTextStyle {
         fontSize = 12.sp,
         color = Colors.textSecondary
     )
+
+    val body1 = TextStyle(
+        fontSize = 16.sp
+    )
+
+    val body2 = TextStyle(
+        fontSize = 14.sp
+    )
+
 }

@@ -9,9 +9,11 @@ import androidx.navigation.navArgument
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.mataku.scrobscrob.app.ui.molecule.SunsetBottomNavItem
+import com.mataku.scrobscrob.app.ui.screen.LoginScreen
 import com.mataku.scrobscrob.app.ui.screen.ScrobbleScreen
 import com.mataku.scrobscrob.app.ui.screen.TopAlbumsScreen
 import com.mataku.scrobscrob.app.ui.screen.TopArtistsScreen
+import com.mataku.scrobscrob.app.ui.viewmodel.LoginViewModel
 import com.mataku.scrobscrob.app.ui.viewmodel.TopAlbumsViewModel
 import com.mataku.scrobscrob.app.ui.viewmodel.TopArtistsViewModel
 import com.mataku.scrobscrob.ui_common.template.WebViewScreen
@@ -62,6 +64,10 @@ fun NavigationGraph(navController: NavHostController) {
             }
         ) {
             WebViewScreen(navController = navController, url = it.arguments?.getString("url")!!)
+        }
+        composable("login") {
+            val loginViewModel = hiltViewModel<LoginViewModel>()
+            LoginScreen(navController = navController, viewModel = loginViewModel)
         }
     }
 }
