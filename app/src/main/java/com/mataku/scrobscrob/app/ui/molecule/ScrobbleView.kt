@@ -2,6 +2,7 @@ package com.mataku.scrobscrob.app.ui.molecule
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -26,11 +26,12 @@ import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.core.api.endpoint.RecentTrack
 
 @Composable
-fun ScrobbleView(recentTrack: RecentTrack) {
+fun ScrobbleView(recentTrack: RecentTrack, onScrobbleTap: () -> Unit) {
     ScrobbleViewContent(
         imageUrl = recentTrack.largeImageUrl(),
         trackName = recentTrack.name,
-        artistName = recentTrack.artist.name
+        artistName = recentTrack.artist.name,
+        onScrobbleTap = onScrobbleTap
     )
 }
 
@@ -38,16 +39,19 @@ fun ScrobbleView(recentTrack: RecentTrack) {
 private fun ScrobbleViewContent(
     imageUrl: String?,
     trackName: String,
-    artistName: String
+    artistName: String,
+    onScrobbleTap: () -> Unit
 ) {
     Row(
         modifier = Modifier
+            .fillMaxWidth()
+            .clickable {
+                onScrobbleTap()
+            }
             .padding(
                 horizontal = 16.dp,
                 vertical = 8.dp
             )
-            .fillMaxWidth()
-            .wrapContentHeight()
     ) {
         val painter = if (imageUrl == null) {
             painterResource(R.drawable.no_image)
@@ -96,6 +100,7 @@ fun ScrobbleViewPreview() {
     ScrobbleViewContent(
         imageUrl = null,
         trackName = "裸足でSummer",
-        artistName = "乃木坂46"
+        artistName = "乃木坂46",
+        onScrobbleTap = {}
     )
 }
