@@ -29,7 +29,7 @@ fun ScrobbleTopBar(navController: NavController) {
 
     TopAppBar(
         title = {
-            Text("Latest 20 scrobbles (Beta)")
+            Text("Scrobbles")
         },
         actions = {
             IconButton(onClick = {
