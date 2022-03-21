@@ -1,5 +1,7 @@
 package com.mataku.scrobscrob.app.ui.molecule
 
+import android.content.Intent
+import android.provider.Settings
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Icon
@@ -13,6 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import com.mataku.scrobscrob.R
@@ -22,6 +25,8 @@ fun ScrobbleTopBar(navController: NavController) {
     var showMenu by remember {
         mutableStateOf(false)
     }
+
+    val context = LocalContext.current
 
     TopAppBar(
         title = {
@@ -50,7 +55,11 @@ fun ScrobbleTopBar(navController: NavController) {
                 }
 
                 DropdownMenuItem(
-                    onClick = {}
+                    onClick = {
+                        val intent = Intent()
+                        intent.action = Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS
+                        context.startActivity(intent)
+                    }
                 ) {
                     Text(text = stringResource(id = R.string.enable_notification_access))
                 }

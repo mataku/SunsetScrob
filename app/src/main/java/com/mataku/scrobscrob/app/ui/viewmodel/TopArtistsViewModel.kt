@@ -35,6 +35,8 @@ class TopArtistsViewModel @Inject constructor(
                 isLoading = false,
                 hasNext = false
             )
+        } else {
+            fetchTopArtists()
         }
     }
 
