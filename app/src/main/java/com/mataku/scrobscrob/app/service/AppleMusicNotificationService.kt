@@ -11,24 +11,35 @@ import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.app.model.RxEventBus
 import com.mataku.scrobscrob.app.presenter.AppleMusicNotificationServicePresenter
 import com.mataku.scrobscrob.app.ui.view.NotificationServiceInterface
-import com.mataku.scrobscrob.app.util.AppUtil
 import com.mataku.scrobscrob.app.util.SharedPreferencesHelper
-import com.mataku.scrobscrob.core.entity.Scrobble
+import com.mataku.scrobscrob.core.api.LastFmApiClient
+import com.mataku.scrobscrob.core.api.repository.NowPlayingRepository
+import com.mataku.scrobscrob.core.api.repository.ScrobbleRepository
+import com.mataku.scrobscrob.core.api.repository.TrackRepository
 import com.mataku.scrobscrob.core.entity.Track
 import com.mataku.scrobscrob.core.entity.UpdateNowPlayingEvent
-import com.mataku.scrobscrob.core.entity.UpdateScrobbledListEvent
-import io.realm.Realm
+import com.mataku.scrobscrob.core.util.AppUtil
 
 class AppleMusicNotificationService : NotificationListenerService(), NotificationServiceInterface {
     private val APPLE_MUSIC_PACKAGE_NAME = "com.apple.android.music"
-    private val presenter = AppleMusicNotificationServicePresenter(this)
+    private val nowPlayingRepository = NowPlayingRepository(LastFmApiClient)
+    private val trackRepository: TrackRepository =
+        TrackRepository(LastFmApiClient)
+    private val scrobbleRepository = ScrobbleRepository(LastFmApiClient)
+    private val presenter =
+        AppleMusicNotificationServicePresenter(
+            this,
+            nowPlayingRepository,
+            trackRepository,
+            scrobbleRepository
+        )
     private lateinit var track: Track
     private var previousTrackName: String = ""
     private val appUtil = AppUtil()
 
     override fun onCreate() {
         super.onCreate()
-        RxEventBus.post(UpdateNowPlayingEvent(dummyTrack()))
+        RxEventBus.send(UpdateNowPlayingEvent(dummyTrack()))
 
         try {
             val appleMusicPackageInfo = packageManager.getPackageInfo(APPLE_MUSIC_PACKAGE_NAME, 0)
@@ -113,7 +124,7 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
 
     override fun notifyNowPlayingUpdated(track: Track) {
         this.track = track
-        RxEventBus.post(UpdateNowPlayingEvent(track))
+        RxEventBus.send(UpdateNowPlayingEvent(track))
     }
 
     override fun setAlbumArtwork(albumArtWork: String) {
@@ -122,17 +133,21 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
     }
 
     override fun saveScrobble(track: Track) {
-        val realm = Realm.getDefaultInstance()
         val sharedPreferencesHelper = SharedPreferencesHelper(this)
 
-        realm.executeTransaction {
-            val scrobble = realm.createObject(Scrobble::class.java, Scrobble().count() + 1)
-            scrobble.albumName = track.albumName
-            scrobble.artistName = track.artistName
-            scrobble.artwork = sharedPreferencesHelper.getAlbumArtWork()
-            scrobble.trackName = track.name
-        }
-        RxEventBus.post(UpdateScrobbledListEvent())
+//        GlobalScope.launch {
+//            async {
+//                val dao = App.database.scrobbleDao
+//                val scrobble = Scrobble(
+//                    artistName = track.artistName,
+//                    trackName = track.name,
+//                    albumName = track.albumName,
+//                    artwork = sharedPreferencesHelper.getAlbumArtWork()
+//                )
+//                dao.insert(scrobble)
+//                RxEventBus.send(UpdateScrobbledListEvent())
+//            }
+//        }
     }
 
     override fun setCurrentTrackInfo(playingTime: Long, albumArtWork: String) {

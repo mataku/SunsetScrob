@@ -1,0 +1,60 @@
+import dependency.Deps
+import dependency.Versions
+
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+apply from: "$project.rootDir/core_dependencies.gradle"
+
+android {
+    compileSdkVersion Versions.compileSdkVersion
+    buildFeatures {
+        dataBinding = true
+        compose = true
+    }
+
+    defaultConfig {
+        minSdkVersion Versions.minSdkVersion
+        targetSdkVersion Versions.targetSdkVersion
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+    }
+
+    buildTypes {
+        debug {
+        }
+        release {
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+        textReport true
+        textOutput "stdout"
+        xmlReport false
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion Deps.kotlinCompilerExtensionVersion
+    }
+}
+
+dependencies {
+}
+
+repositories {
+    google()
+    mavenCentral()
+    maven {
+        url "https://maven.google.com"
+    }
+}
+
+kapt {
+    correctErrorTypes true
+}

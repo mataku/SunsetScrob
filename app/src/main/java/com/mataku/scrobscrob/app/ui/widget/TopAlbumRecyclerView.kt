@@ -9,20 +9,20 @@ import com.mataku.scrobscrob.R
 
 class TopAlbumRecyclerView : EpoxyRecyclerView {
     constructor(
-        context: Context?
+        context: Context
     ) : this(context, null)
 
     constructor(
-        context: Context?,
+        context: Context,
         attrs: AttributeSet?
     ) : this(context, attrs, 0)
 
     constructor(
-        context: Context?,
+        context: Context,
         attrs: AttributeSet?,
         defStyleAttr: Int
     ) : super(context, attrs, defStyleAttr) {
-        context?.let {
+        context.let {
             val gridLayoutManager = androidx.recyclerview.widget.GridLayoutManager(it, 2)
             this.addItemDecoration(AlbumItemDecoration.createDefaultDecoration(it))
 
@@ -43,7 +43,6 @@ class TopAlbumRecyclerView : EpoxyRecyclerView {
             parent: androidx.recyclerview.widget.RecyclerView,
             state: androidx.recyclerview.widget.RecyclerView.State
         ) {
-            outRect.top = space
             outRect.left = space
             outRect.right = space
             outRect.bottom = space

@@ -2,7 +2,7 @@ package com.mataku.scrobscrob.app.ui.top.album
 
 import com.airbnb.epoxy.EpoxyController
 import com.mataku.scrobscrob.app.ui.widget.TopAlbumViewModel_
-import com.mataku.scrobscrob.core.entity.Album
+import com.mataku.scrobscrob.core.api.endpoint.Album
 
 class TopAlbumController(private val halfWidth: Int) : EpoxyController() {
 

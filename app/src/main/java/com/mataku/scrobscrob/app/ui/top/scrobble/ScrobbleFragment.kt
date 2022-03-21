@@ -9,30 +9,43 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.app.model.RxEventBus
 import com.mataku.scrobscrob.app.util.SharedPreferencesHelper
-import com.mataku.scrobscrob.core.entity.Scrobble
 import com.mataku.scrobscrob.core.entity.Track
 import com.mataku.scrobscrob.core.entity.UpdateNowPlayingEvent
 import com.mataku.scrobscrob.core.entity.UpdateScrobbledListEvent
 import com.mataku.scrobscrob.databinding.FragmentScrobbleBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 class ScrobbleFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
     private lateinit var binding: FragmentScrobbleBinding
     private lateinit var swipeRefreshLayout: androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    private val job = Job()
+    private val coroutineContext = job
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val scrobbleView = inflater.inflate(R.layout.fragment_scrobble, container, false)
         binding = FragmentScrobbleBinding.bind(scrobbleView)
         setUpSwipeRefreshView()
         setUpRecyclerView()
         setUpNowPlayingView(dummyTrack())
 
-        RxEventBus.stream(UpdateNowPlayingEvent::class.java).subscribe {
-            setUpNowPlayingView(it.track)
-        }
+        GlobalScope.launch(Dispatchers.Main) {
+            RxEventBus.asChannel<UpdateNowPlayingEvent>().onEach {
+                setUpNowPlayingView(it.track)
+            }
 
-        RxEventBus.stream(UpdateScrobbledListEvent::class.java).subscribe {
-            onRefresh()
+            RxEventBus.asChannel<UpdateScrobbledListEvent>().onEach {
+                onRefresh()
+            }
         }
 
         return scrobbleView
@@ -55,15 +68,22 @@ class ScrobbleFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     private fun setUpRecyclerView() {
-        val scrobbles = Scrobble().getCurrentTracks()
         val scrobbleViewAdapter = ScrobbleViewAdapter()
-        val scrobbleRecyclerView = binding.scrobbleListView
-        scrobbleRecyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
-        scrobbleRecyclerView.hasFixedSize()
-        if (scrobbleRecyclerView.adapter == null) {
-            scrobbleRecyclerView.adapter = scrobbleViewAdapter
+        CoroutineScope(coroutineContext).launch {
+//            val result = async {
+//                val scrobbleRecyclerView = binding.scrobbleListView
+//                scrobbleRecyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
+//                scrobbleRecyclerView.hasFixedSize()
+//                if (scrobbleRecyclerView.adapter == null) {
+//                    scrobbleRecyclerView.adapter = scrobbleViewAdapter
+//                }
+//                val dao = App.database.scrobbleDao
+//                dao.getScrobbles(20, 0)
+//            }.await()
+//            withContext(Dispatchers.Main) {
+//                scrobbleViewAdapter.setScrobbles(result)
+//            }
         }
-        scrobbleViewAdapter.setScrobbles(scrobbles)
     }
 
     private fun setUpNowPlayingView(track: Track) {

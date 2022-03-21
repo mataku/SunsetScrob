@@ -1,5 +1,6 @@
 # Built application files
 build/
+*.apks
 
 # Crashlytics configuations
 com_crashlytics_export_strings.xml
@@ -30,6 +31,7 @@ local.properties
 .idea/modules.xml
 .idea/gradle.xml
 .idea/kotlinScripting.xml
+.idea/jarRepositories.xml
 !.idea/codeStyles/
 !.idea/dictionaries/
 
@@ -51,6 +53,9 @@ Thumbs.db
 # bundler
 vendor/
 .bundle
+
+# direnv
+.envrc
 
 # others
 *.p12

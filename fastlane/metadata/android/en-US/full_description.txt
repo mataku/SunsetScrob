@@ -1,8 +1,1 @@
-Last.fm Scrobbler for Apple Music
-
-
-## NOTE
-- Scrobble to last.fm after the song is over
-
-- When using this app, please play music in the background (make sure Apple Music application icon is on the notification bar)
-- Please allow this app to access the notification bar from upper right button.
+Last.fm client app

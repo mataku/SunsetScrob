@@ -1,0 +1,74 @@
+import dependency.Deps
+import dependency.Versions
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
+apply plugin: 'com.android.dynamic-feature'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'com.cookpad.android.plugin.license-tools'
+
+apply from: "$project.rootDir/core_dependencies.gradle"
+
+android {
+    compileSdkVersion Versions.compileSdkVersion
+    buildFeatures {
+        dataBinding = true
+        compose = true
+    }
+
+    defaultConfig {
+        minSdkVersion Versions.minSdkVersion
+        targetSdkVersion Versions.targetSdkVersion
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        vectorDrawables.useSupportLibrary = true
+    }
+
+    buildTypes {
+        debug {
+        }
+        release {
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+        textReport true
+        textOutput "stdout"
+        xmlReport false
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion Deps.kotlinCompilerExtensionVersion
+    }
+}
+
+dependencies {
+    implementation(project(":app"))
+    implementation(project(":ui_common"))
+    implementation(Deps.Compose.activity)
+    implementation(Deps.Compose.uiTooling)
+    implementation(Deps.Compose.animation)
+    implementation(Deps.Compose.material)
+}
+
+repositories {
+    google()
+    mavenCentral()
+    maven {
+        url "https://maven.google.com"
+    }
+}
+
+kapt {
+    correctErrorTypes true
+}
+
+tasks.withType(KotlinCompile).all {
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
+    }
+}

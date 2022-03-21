@@ -1,0 +1,56 @@
+import dependency.Deps
+import dependency.Versions
+
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+}
+
+android {
+    compileSdkVersion Versions.compileSdkVersion
+    buildFeatures {
+        compose = true
+    }
+
+    defaultConfig {
+        minSdkVersion Versions.minSdkVersion
+        targetSdkVersion Versions.targetSdkVersion
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+    }
+
+    buildTypes {
+        debug {
+        }
+        release {
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+        textReport true
+        textOutput "stdout"
+        xmlReport false
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion Deps.kotlinCompilerExtensionVersion
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+    implementation(Deps.Compose.activity)
+    implementation(Deps.Compose.uiTooling)
+    implementation(Deps.Compose.animation)
+    implementation(Deps.Compose.material)
+    implementation(Deps.Compose.navigation)
+    implementation(Deps.Accompanist.navigationAnimation)
+}

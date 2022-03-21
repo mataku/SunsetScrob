@@ -1,25 +1,46 @@
-# Add project specific ProGuard rules here.
-# By default, the flags in this file are appended to flags specified
-# in /Users/rhythnn/Library/Android/sdk/tools/proguard/proguard-android.txt
-# You can edit the include path and order by changing the proguardFiles
-# directive in build.gradle.
-#
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
+-keepattributes SourceFile,LineNumberTable
+-keepattributes *Annotation*, InnerClasses
+-keepattributes Signature, Exception
+-keepnames class ** { *; }
 
-# Add any project specific keep options here:
+-keep class kotlin.reflect.** { *; }
+-keep interface kotlin.reflect.** { *; }
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+# Kotlin serialization
+-dontnote kotlinx.serialization.SerializationKt
+-dontnote kotlinx.serialization.Serialization
+-keep,includedescriptorclasses class com.mataku.scrobscrob.**$$serializer { *; }
+-keepclassmembers class com.mataku.scrobscrob.** {
+    *** Companion;
+}
+-keepclasseswithmembers class com.mataku.scrobscrob.** {
+    kotlinx.serialization.KSerializer serializer(...);
+}
 
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+# Material components
+-dontwarn com.google.android.material.**
+-keep class com.google.android.material.** { *; }
 
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
+# AndroidX
+-dontwarn androidx.**
+-keep class androidx.** { *; }
+-keepclassmembers class androidx.** { *; }
+-keep interface androidx.* { *; }
+
+# Okhttp
+-dontwarn okio.**
+-dontwarn com.squareup.okhttp.**
+
+-keep class com.squareup.okhttp.** { *; }
+-keep interface com.squareup.okhttp.* { *; }
+
+# Ktor
+-keep class io.ktor.** { *; }
+-dontwarn kotlinx.atomicfu.**
+-dontwarn io.netty.**
+-dontwarn com.typesafe.**
+-dontwarn org.slf4j.**
+
+# Glide
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-dontwarn com.bumptech.glide.load.resource.bitmap.VideoDecoder
