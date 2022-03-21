@@ -37,7 +37,11 @@ fun TopAlbum(album: Album, imageSize: Dp, onAlbumTap: () -> Unit) {
             },
     ) {
         val imageList = album.imageList
-        val url = imageList?.last()?.imageUrl ?: ""
+        val url = if (imageList == null || imageList.isEmpty()) {
+            ""
+        } else {
+            imageList.last().imageUrl
+        }
         val painter = if (url.isBlank()) {
             painterResource(R.drawable.no_image)
         } else {
