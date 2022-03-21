@@ -12,7 +12,7 @@ import com.mataku.scrobscrob.app.ui.navigation.NavigationGraph
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun MainScreen() {
+fun MainScreen(username: String?) {
     val navController = rememberAnimatedNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
@@ -24,6 +24,6 @@ fun MainScreen() {
             }
         }
     ) {
-        NavigationGraph(navController)
+        NavigationGraph(navController, isLoggedIn = username != null)
     }
 }

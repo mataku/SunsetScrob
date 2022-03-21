@@ -6,9 +6,11 @@ import androidx.appcompat.app.AppCompatActivity
 import com.mataku.scrobscrob.app.receiver.AppleMusicNotificationReceiver
 import com.mataku.scrobscrob.app.ui.screen.MainScreen
 import com.mataku.scrobscrob.app.util.SharedPreferencesHelper
+import com.mataku.scrobscrob.data.repository.UsernameRepository
 import com.mataku.scrobscrob.databinding.ActivityMainBinding
 import com.mataku.scrobscrob.ui_common.style.SunsetTheme
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -18,11 +20,16 @@ class MainActivity : AppCompatActivity() {
 
     private val self = this
 
+    @Inject
+    lateinit var usernameRepository: UsernameRepository
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             SunsetTheme {
-                MainScreen()
+                MainScreen(
+                    usernameRepository.username()
+                )
             }
         }
 //        sharedPreferencesHelper = SharedPreferencesHelper(this)

@@ -38,6 +38,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.app.ui.molecule.SunsetBottomNavItem
 import com.mataku.scrobscrob.app.ui.viewmodel.LoginViewModel
@@ -51,10 +52,16 @@ fun LoginScreen(
 ) {
     val uiState = viewModel.uiState
     uiState.loginEvent?.let {
-        navController.popBackStack(
-            SunsetBottomNavItem.SCROBBLE.screenRoute,
-            inclusive = false
-        )
+        navController.navigate(
+            SunsetBottomNavItem.SCROBBLE.screenRoute
+        ) {
+            launchSingleTop = true
+            popUpTo(
+                navController.graph.findStartDestination().id
+            ) {
+                inclusive = true
+            }
+        }
     }
     LoginContent(
         isLoading = uiState.isLoading,

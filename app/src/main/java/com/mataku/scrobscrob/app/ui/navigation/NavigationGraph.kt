@@ -20,15 +20,14 @@ import com.mataku.scrobscrob.app.ui.viewmodel.LogoutViewModel
 import com.mataku.scrobscrob.app.ui.viewmodel.ScrobbleViewModel
 import com.mataku.scrobscrob.app.ui.viewmodel.TopAlbumsViewModel
 import com.mataku.scrobscrob.app.ui.viewmodel.TopArtistsViewModel
-import com.mataku.scrobscrob.app.ui.viewmodel.TopBarViewModel
 import com.mataku.scrobscrob.ui_common.template.WebViewScreen
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun NavigationGraph(navController: NavHostController) {
+fun NavigationGraph(navController: NavHostController, isLoggedIn: Boolean) {
     NavHost(
         navController = navController,
-        startDestination = SunsetBottomNavItem.SCROBBLE.screenRoute
+        startDestination = if (isLoggedIn) SunsetBottomNavItem.SCROBBLE.screenRoute else "login"
 //        enterTransition = {
 //            slideInHorizontally(initialOffsetX = { 1000 })
 //        },
@@ -45,15 +44,11 @@ fun NavigationGraph(navController: NavHostController) {
             SunsetBottomNavItem.SCROBBLE.screenRoute
         ) {
             val scrobbleViewModel = hiltViewModel<ScrobbleViewModel>()
-            val topBarViewModel = hiltViewModel<TopBarViewModel>()
             ScrobbleScreen(
                 navController,
                 scrobbleViewModel
             ) {
-                ScrobbleTopBar(
-                    navController = navController,
-                    topBarViewModel = topBarViewModel
-                )
+                ScrobbleTopBar(navController = navController)
             }
         }
         composable(

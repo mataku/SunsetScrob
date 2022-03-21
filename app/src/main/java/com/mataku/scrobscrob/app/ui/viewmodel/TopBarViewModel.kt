@@ -7,8 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mataku.scrobscrob.data.repository.UsernameRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,17 +21,6 @@ class TopBarViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             usernameRepository.username()
-                .catch {
-                    uiState = uiState.copy(
-                        isLoggedIn = false
-                    )
-                }
-                .collect {
-                    uiState = uiState.copy(
-                        isLoggedIn = it != null
-                    )
-                }
-
         }
     }
 

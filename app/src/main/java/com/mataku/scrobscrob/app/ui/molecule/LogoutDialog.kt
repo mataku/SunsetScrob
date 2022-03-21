@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.mataku.scrobscrob.app.ui.viewmodel.LogoutViewModel
 
 @Composable
@@ -20,7 +21,14 @@ fun LogoutDialog(
     val uiState = viewModel.uiState
     if (uiState.logoutEvent != null) {
         openStatus.value = false
-        navController.navigate(SunsetBottomNavItem.SCROBBLE.screenRoute)
+        navController.navigate("login") {
+            launchSingleTop = true
+            popUpTo(
+                navController.graph.findStartDestination().id
+            ) {
+                inclusive = true
+            }
+        }
     }
     if (openStatus.value) {
         AlertDialog(

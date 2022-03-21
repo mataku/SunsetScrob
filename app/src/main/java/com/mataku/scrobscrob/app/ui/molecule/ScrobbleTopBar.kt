@@ -16,18 +16,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import com.mataku.scrobscrob.R
-import com.mataku.scrobscrob.app.ui.viewmodel.TopBarViewModel
 
 @Composable
-fun ScrobbleTopBar(
-    navController: NavController,
-    topBarViewModel: TopBarViewModel
-) {
+fun ScrobbleTopBar(navController: NavController) {
     var showMenu by remember {
         mutableStateOf(false)
     }
-
-    val uiState = topBarViewModel.uiState
 
     TopAppBar(
         title = {
@@ -45,20 +39,12 @@ fun ScrobbleTopBar(
             ) {
                 DropdownMenuItem(
                     onClick = {
-                        if (uiState.isLoggedIn) {
-                            navController.navigate("logout")
-                        } else {
-                            navController.navigate("login")
-                        }
+                        navController.navigate("logout")
                     }
                 ) {
                     Text(
                         text = stringResource(
-                            id = if (uiState.isLoggedIn) {
-                                R.string.logout
-                            } else {
-                                R.string.login_to_last_fm
-                            }
+                            id = R.string.logout
                         )
                     )
                 }
