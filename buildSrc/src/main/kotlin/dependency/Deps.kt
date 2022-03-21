@@ -26,6 +26,8 @@ object Deps {
         const val navigation = "androidx.navigation:navigation-compose:2.4.0-rc01"
 
         const val hiltNavigationCompose = "androidx.hilt:hilt-navigation-compose:1.0.0-beta01"
+
+        const val materialIconsExtended = "androidx.compose.material:material-icons-extended:1.1.1"
     }
 
     object Accompanist {

@@ -126,6 +126,7 @@ dependencies {
     implementation(Deps.coil)
     implementation(Deps.Accompanist.navigationAnimation)
     implementation(Deps.Compose.hiltNavigationCompose)
+    implementation Deps.Compose.materialIconsExtended
 }
 
 kapt {

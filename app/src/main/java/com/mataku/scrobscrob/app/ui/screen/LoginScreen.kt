@@ -13,9 +13,14 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -27,11 +32,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.mataku.scrobscrob.R
+import com.mataku.scrobscrob.app.ui.molecule.SunsetBottomNavItem
 import com.mataku.scrobscrob.app.ui.viewmodel.LoginViewModel
 import com.mataku.scrobscrob.ui_common.style.Colors
 import com.mataku.scrobscrob.ui_common.style.SunsetTheme
@@ -42,6 +50,12 @@ fun LoginScreen(
     viewModel: LoginViewModel
 ) {
     val uiState = viewModel.uiState
+    uiState.loginEvent?.let {
+        navController.popBackStack(
+            SunsetBottomNavItem.SCROBBLE.screenRoute,
+            inclusive = false
+        )
+    }
     LoginContent(
         isLoading = uiState.isLoading,
         onLoginButtonTap = { id, password ->
@@ -57,6 +71,9 @@ fun LoginContent(
 ) {
     var idText by remember { mutableStateOf("") }
     var passwordText by remember { mutableStateOf("") }
+    var passwordVisible by remember {
+        mutableStateOf(false)
+    }
 
     Column(
         modifier = Modifier
@@ -100,7 +117,21 @@ fun LoginContent(
                 imeAction = ImeAction.Done
             ),
             label = { Text(text = "Password") },
-            modifier = Modifier.align(Alignment.CenterHorizontally)
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+            singleLine = true,
+            visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+            trailingIcon = {
+                val icon = if (passwordVisible) {
+                    Icons.Filled.Visibility
+                } else {
+                    Icons.Filled.VisibilityOff
+                }
+                IconButton(onClick = {
+                    passwordVisible = !passwordVisible
+                }) {
+                    Icon(imageVector = icon, "password visibility toggle")
+                }
+            }
         )
 
         Spacer(modifier = Modifier.height(48.dp))
