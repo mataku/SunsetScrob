@@ -11,7 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
-import com.mataku.scrobscrob.app.ui.molecule.ScrobbleTopBar
 import com.mataku.scrobscrob.app.ui.molecule.ScrobbleView
 import com.mataku.scrobscrob.app.ui.viewmodel.ScrobbleViewModel
 import com.mataku.scrobscrob.core.api.endpoint.RecentTrack
@@ -21,13 +20,12 @@ import com.mataku.scrobscrob.ui_common.style.Colors
 @Composable
 fun ScrobbleScreen(
     navController: NavController,
-    viewModel: ScrobbleViewModel
+    viewModel: ScrobbleViewModel,
+    topBar: @Composable () -> Unit
 ) {
     val uiState = viewModel.uiState
     Scaffold(
-        topBar = {
-            ScrobbleTopBar(navController = navController)
-        },
+        topBar = topBar,
         bottomBar = {
 
         }

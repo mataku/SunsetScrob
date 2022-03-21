@@ -4,7 +4,6 @@ import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
@@ -14,18 +13,21 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import com.mataku.scrobscrob.R
-import com.mataku.scrobscrob.ui_common.style.SunsetTheme
+import com.mataku.scrobscrob.app.ui.viewmodel.TopBarViewModel
 
 @Composable
-fun ScrobbleTopBar(navController: NavController) {
+fun ScrobbleTopBar(
+    navController: NavController,
+    topBarViewModel: TopBarViewModel
+) {
     var showMenu by remember {
         mutableStateOf(false)
     }
+
+    val uiState = topBarViewModel.uiState
 
     TopAppBar(
         title = {
@@ -43,10 +45,22 @@ fun ScrobbleTopBar(navController: NavController) {
             ) {
                 DropdownMenuItem(
                     onClick = {
-                        navController.navigate("login")
+                        if (uiState.isLoggedIn) {
+                            navController.navigate("logout")
+                        } else {
+                            navController.navigate("login")
+                        }
                     }
                 ) {
-                    Text(text = stringResource(id = R.string.login_to_last_fm))
+                    Text(
+                        text = stringResource(
+                            id = if (uiState.isLoggedIn) {
+                                R.string.logout
+                            } else {
+                                R.string.login_to_last_fm
+                            }
+                        )
+                    )
                 }
 
                 DropdownMenuItem(
@@ -57,14 +71,4 @@ fun ScrobbleTopBar(navController: NavController) {
             }
         }
     )
-}
-
-@Preview
-@Composable
-fun ScrobbleTopBarPreview() {
-    SunsetTheme {
-        Surface {
-            ScrobbleTopBar(NavController(LocalContext.current))
-        }
-    }
 }
