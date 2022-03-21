@@ -18,7 +18,7 @@ data class Artist(
     @SerialName("url")
     val url: String,
     @SerialName("playcount")
-    val playcount: String?,
+    val playcount: String,
     @SerialName("image")
     val imageList: List<Image>?
 )

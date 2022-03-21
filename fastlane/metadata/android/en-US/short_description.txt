@@ -1,1 +1,1 @@
-Last.fm Scrobbler for Apple Music
+Unofficial Last.fm client app

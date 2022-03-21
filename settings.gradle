@@ -1,4 +1,4 @@
-include ':app', ':feature:settings', ':core', ':feature:licenses', ':ui_common'
+include ':app', ':feature:settings', ':core', ':ui_common'
 include ':data:api'
 include ':data:repository'
 include ':data:db'

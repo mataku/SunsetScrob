@@ -48,7 +48,7 @@ android {
 
     buildTypes {
         debug {
-            minifyEnabled true
+            minifyEnabled false
             applicationIdSuffix '.dev'
             signingConfig signingConfigs.debug
         }
@@ -110,10 +110,6 @@ dependencies {
     implementation Deps.roomRuntime
     kapt Deps.roomCompiler
 
-    implementation Deps.koinAndroid
-    implementation Deps.koinAndroidXScope
-    implementation Deps.koinAndroidXViewModel
-
     implementation Deps.glide
     kapt Deps.glideCompiler
 
@@ -126,7 +122,11 @@ dependencies {
     implementation(Deps.Compose.uiTooling)
     implementation(Deps.Compose.animation)
     implementation(Deps.Compose.material)
-
+    implementation(Deps.Compose.navigation)
+    implementation(Deps.coil)
+    implementation(Deps.Accompanist.navigationAnimation)
+    implementation(Deps.Compose.hiltNavigationCompose)
+    implementation Deps.Compose.materialIconsExtended
 }
 
 kapt {
