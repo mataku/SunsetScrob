@@ -10,7 +10,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun InfiniteLoadingIndicator(onScrollEnd: () -> Unit, padding: Dp) {
+fun InfiniteLoadingIndicator(onScrollEnd: () -> Unit, padding: Dp = 0.dp) {
     CircularProgressIndicator(
         modifier = Modifier
             .size(40.dp)

@@ -2,8 +2,10 @@ package com.mataku.scrobscrob.app.ui.screen
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.GridItemSpan
 import androidx.compose.foundation.lazy.LazyVerticalGrid
@@ -30,20 +32,28 @@ fun TopArtistsScreen(
     val fullWidth = displayMetrics.widthPixels / displayMetrics.density
     val halfWidth = fullWidth / 2
     val uiState = viewModel.uiState
-    TopArtistsContent(
-        artists = uiState.topArtists,
-        hasNext = uiState.hasNext,
-        imageSize = halfWidth.dp,
-        padding = halfWidth.dp - 20.dp,
-        onUrlTap = {
-            navController.navigate(
-                "webview?url=$it"
-            )
-        },
-        onScrollEnd = {
-            viewModel.fetchTopArtists()
-        }
-    )
+    if (uiState.topArtists.isEmpty()) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Colors.ContentBackground)
+        )
+    } else {
+        TopArtistsContent(
+            artists = uiState.topArtists,
+            hasNext = uiState.hasNext,
+            imageSize = halfWidth.dp,
+            padding = halfWidth.dp - 20.dp,
+            onUrlTap = {
+                navController.navigate(
+                    "webview?url=$it"
+                )
+            },
+            onScrollEnd = {
+                viewModel.fetchTopArtists()
+            }
+        )
+    }
 }
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)

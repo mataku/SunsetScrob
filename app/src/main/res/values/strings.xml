@@ -34,4 +34,6 @@
     <string name="menu_scrobble">Scrobble</string>
     <string name="menu_top_artists">Top Artists</string>
     <string name="menu_top_albums">Top Albums</string>
+
+    <string name="logout">Logout</string>
 </resources>

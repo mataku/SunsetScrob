@@ -42,6 +42,15 @@ class SessionKeyDataStore(
             .map { Unit }
     }
 
+    suspend fun remove(): Flow<Unit> {
+        return flowOf(
+            context.sessionKeyDataStore.edit {
+                it.clear()
+            }
+        ).flowOn(Dispatchers.IO)
+            .map { }
+    }
+
     companion object {
         private val SESSION_KEY = stringPreferencesKey("session_key")
     }

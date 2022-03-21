@@ -6,30 +6,24 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
-import com.mataku.scrobscrob.app.ui.molecule.ScrobbleTopBar
 import com.mataku.scrobscrob.app.ui.molecule.SunsetBottomNavItem
 import com.mataku.scrobscrob.app.ui.molecule.SunsetBottomNavigation
 import com.mataku.scrobscrob.app.ui.navigation.NavigationGraph
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun MainScreen() {
+fun MainScreen(username: String?) {
     val navController = rememberAnimatedNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
     Scaffold(
-        topBar = {
-            if (currentRoute == SunsetBottomNavItem.SCROBBLE.screenRoute) {
-                ScrobbleTopBar(navController)
-            }
-        },
-
+        topBar = {},
         bottomBar = {
             if (SunsetBottomNavItem.values().map { it.screenRoute }.contains(currentRoute)) {
                 SunsetBottomNavigation(navController = navController)
             }
         }
     ) {
-        NavigationGraph(navController)
+        NavigationGraph(navController, isLoggedIn = username != null)
     }
 }

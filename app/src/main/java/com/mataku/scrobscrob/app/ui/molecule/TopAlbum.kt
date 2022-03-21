@@ -3,6 +3,8 @@ package com.mataku.scrobscrob.app.ui.molecule
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
@@ -64,6 +66,7 @@ fun TopAlbum(album: Album, imageSize: Dp, onAlbumTap: () -> Unit) {
                 .wrapContentSize(),
             maxLines = 1
         )
+        Spacer(modifier = Modifier.height(2.dp))
         val playCountResource = if (album.playcount == "1") {
             R.string.playcount
         } else {

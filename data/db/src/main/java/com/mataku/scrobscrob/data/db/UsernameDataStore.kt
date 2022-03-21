@@ -4,7 +4,7 @@ import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Singleton
 
-//private val Context.dataStore by preferencesDataStore("DATA")
+//private val Context.dataStore by preferencesDataStore("USERNAME")
 
 @Singleton
 class UsernameDataStore(
@@ -39,6 +39,10 @@ class UsernameDataStore(
 
     fun setUsername(username: String) {
         sharedPref.edit().putString(USERNAME_KEY, username).apply()
+    }
+
+    fun remove() {
+        sharedPref.edit().clear().apply()
     }
 
 //    private companion object {

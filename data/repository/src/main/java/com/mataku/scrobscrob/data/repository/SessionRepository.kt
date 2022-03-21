@@ -13,17 +13,18 @@ import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 import javax.inject.Singleton
 
-interface MobileSessionRepository {
+interface SessionRepository {
     suspend fun authorize(userName: String, password: String): Flow<MobileSession>
+    suspend fun logout(): Flow<Unit>
 }
 
 @Singleton
-class MobileSessionRepositoryImpl @Inject constructor(
+class SessionRepositoryImpl @Inject constructor(
     private val lastFmService: LastFmService,
     private val sessionKeyDataStore: SessionKeyDataStore,
     private val usernameDataStore: UsernameDataStore
 ) :
-    MobileSessionRepository {
+    SessionRepository {
     override suspend fun authorize(userName: String, password: String): Flow<MobileSession> = flow {
         val params = mutableMapOf(
             "username" to userName,
@@ -41,6 +42,12 @@ class MobileSessionRepositoryImpl @Inject constructor(
         usernameDataStore.setUsername(result.name)
         emit(result)
     }.flowOn(Dispatchers.IO)
+
+    override suspend fun logout(): Flow<Unit> = flow {
+        sessionKeyDataStore.remove()
+        usernameDataStore.remove()
+        emit(Unit)
+    }
 
     companion object {
         private const val METHOD = "auth.getMobileSession"
