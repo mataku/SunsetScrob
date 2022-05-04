@@ -19,7 +19,6 @@ import com.mataku.scrobscrob.app.ui.viewmodel.LoginViewModel
 import com.mataku.scrobscrob.app.ui.viewmodel.LogoutViewModel
 import com.mataku.scrobscrob.app.ui.viewmodel.ScrobbleViewModel
 import com.mataku.scrobscrob.app.ui.viewmodel.TopAlbumsViewModel
-import com.mataku.scrobscrob.app.ui.viewmodel.TopArtistsViewModel
 import com.mataku.scrobscrob.ui_common.template.WebViewScreen
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -58,8 +57,7 @@ fun NavigationGraph(navController: NavHostController, isLoggedIn: Boolean) {
             TopAlbumsScreen(navController, topAlbumsViewModel)
         }
         composable(SunsetBottomNavItem.TOP_ARTISTS.screenRoute) {
-            val topArtistsViewModel = hiltViewModel<TopArtistsViewModel>()
-            TopArtistsScreen(navController, topArtistsViewModel)
+            TopArtistsScreen()
         }
         composable(
             "webview?url={url}",
