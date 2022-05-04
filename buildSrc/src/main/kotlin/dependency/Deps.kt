@@ -53,8 +53,8 @@ object Deps {
     const val firebaseCore = "com.google.firebase:firebase-core:17.1.1"
     const val firebaseCrashlytics = "com.google.firebase:firebase-crashlytics:17.3.1"
 
-    const val glide = "com.github.bumptech.glide:glide:4.11.0"
-    const val glideCompiler = "com.github.bumptech.glide:compiler:4.11.0"
+    const val glide = "com.github.bumptech.glide:glide:4.13.1"
+    const val glideCompiler = "com.github.bumptech.glide:compiler:4.13.1"
 
     const val hilt = "com.google.dagger:hilt-android:$hiltVersion"
     const val hiltCompiler = "com.google.dagger:hilt-android-compiler:$hiltVersion"
@@ -99,7 +99,7 @@ object Deps {
 }
 
 object UnitTestDeps {
-    const val androidxTestCore = "androidx.test:core:1.1.0"
+    const val androidxTestCore = "androidx.test:core:1.4.0"
     const val kotlinTestJunit = "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
     const val robolectric = "org.robolectric:robolectric:4.0.2"
     const val guava = "com.google.guava:guava:22.0"
