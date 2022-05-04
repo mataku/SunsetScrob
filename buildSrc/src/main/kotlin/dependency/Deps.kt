@@ -99,7 +99,7 @@ object Deps {
 }
 
 object UnitTestDeps {
-    const val androidxTestCore = "androidx.test:core:1.1.0"
+    const val androidxTestCore = "androidx.test:core:1.4.0"
     const val kotlinTestJunit = "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
     const val robolectric = "org.robolectric:robolectric:4.0.2"
     const val guava = "com.google.guava:guava:22.0"
