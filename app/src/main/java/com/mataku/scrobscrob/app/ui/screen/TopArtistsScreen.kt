@@ -12,7 +12,6 @@ import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.mataku.scrobscrob.app.ui.molecule.TopArtist
@@ -26,9 +25,7 @@ import com.mataku.scrobscrob.ui_common.style.Colors
 fun TopArtistsScreen(
     state: TopArtistsScreenState = rememberTopArtistsScreenState()
 ) {
-    val displayMetrics = LocalContext.current.resources.displayMetrics
-    val fullWidth = displayMetrics.widthPixels / displayMetrics.density
-    val halfWidth = fullWidth / 2
+    val contentWidth = state.contentWidth
     val uiState = state.uiState
     if (uiState.topArtists.isEmpty()) {
         Box(
@@ -40,8 +37,8 @@ fun TopArtistsScreen(
         TopArtistsContent(
             artists = uiState.topArtists,
             hasNext = uiState.hasNext,
-            imageSize = halfWidth.dp,
-            padding = halfWidth.dp - 20.dp,
+            imageSize = contentWidth.dp,
+            padding = contentWidth.dp - 20.dp,
             onUrlTap = {
                 state.onTapArtist(it)
             },

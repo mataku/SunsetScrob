@@ -7,11 +7,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.mataku.scrobscrob.app.ui.viewmodel.TopArtistsViewModel
+import com.mataku.scrobscrob.app.ui.viewmodel.TopAlbumsViewModel
 
-class TopArtistsScreenState(
+class TopAlbumsScreenState(
     val navController: NavController,
-    val viewModel: TopArtistsViewModel,
+    val viewModel: TopAlbumsViewModel,
     val context: Context
 ) {
     val uiState = viewModel.uiState
@@ -20,23 +20,23 @@ class TopArtistsScreenState(
     private val fullWidth = displayMetrics.widthPixels / displayMetrics.density
     val contentWidth = fullWidth / 2
 
-    fun onTapArtist(url: String) {
+    fun onTapAlbum(url: String) {
         navController.navigate("webview?url=$url")
     }
 
     fun onScrollEnd() {
-        viewModel.fetchTopArtists()
+        viewModel.fetchAlbums()
     }
 }
 
 @Composable
-fun rememberTopArtistsScreenState(
-    viewModel: TopArtistsViewModel = hiltViewModel(),
+fun rememberTopAlbumsScreenState(
+    viewModel: TopAlbumsViewModel = hiltViewModel(),
     navController: NavController = rememberNavController(),
     context: Context = LocalContext.current
-): TopArtistsScreenState {
+): TopAlbumsScreenState {
     return remember {
-        TopArtistsScreenState(
+        TopAlbumsScreenState(
             navController = navController,
             viewModel = viewModel,
             context = context
