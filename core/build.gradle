@@ -11,15 +11,11 @@ apply from: "$project.rootDir/test_options.gradle"
 
 android {
     compileSdkVersion Versions.compileSdkVersion
-    buildFeatures {
-        dataBinding = true
-    }
 
     defaultConfig {
         minSdkVersion Versions.minSdkVersion
         targetSdkVersion Versions.targetSdkVersion
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
-        vectorDrawables.useSupportLibrary = true
         def properties = new Properties()
         properties.load(file("$project.rootDir/local.properties").newDataInputStream())
         def apiKey = properties.getProperty("API_KEY")
@@ -67,7 +63,6 @@ dependencies {
 
 repositories {
     google()
-    jcenter()
     mavenCentral()
     maven {
         url "https://maven.google.com"
