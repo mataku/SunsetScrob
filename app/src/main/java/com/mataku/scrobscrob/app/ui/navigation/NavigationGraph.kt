@@ -9,7 +9,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
 import androidx.navigation.navArgument
 import com.mataku.scrobscrob.app.ui.molecule.LogoutDialog
-import com.mataku.scrobscrob.app.ui.molecule.ScrobbleTopBar
 import com.mataku.scrobscrob.app.ui.molecule.SunsetBottomNavItem
 import com.mataku.scrobscrob.app.ui.screen.LoginScreen
 import com.mataku.scrobscrob.app.ui.screen.ScrobbleScreen
@@ -17,8 +16,6 @@ import com.mataku.scrobscrob.app.ui.screen.TopAlbumsScreen
 import com.mataku.scrobscrob.app.ui.screen.TopArtistsScreen
 import com.mataku.scrobscrob.app.ui.viewmodel.LoginViewModel
 import com.mataku.scrobscrob.app.ui.viewmodel.LogoutViewModel
-import com.mataku.scrobscrob.app.ui.viewmodel.ScrobbleViewModel
-import com.mataku.scrobscrob.app.ui.viewmodel.TopAlbumsViewModel
 import com.mataku.scrobscrob.ui_common.template.WebViewScreen
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -42,19 +39,12 @@ fun NavigationGraph(navController: NavHostController, isLoggedIn: Boolean) {
         composable(
             SunsetBottomNavItem.SCROBBLE.screenRoute
         ) {
-            val scrobbleViewModel = hiltViewModel<ScrobbleViewModel>()
-            ScrobbleScreen(
-                navController,
-                scrobbleViewModel
-            ) {
-                ScrobbleTopBar(navController = navController)
-            }
+            ScrobbleScreen()
         }
         composable(
             SunsetBottomNavItem.TOP_ALBUMS.screenRoute
         ) {
-            val topAlbumsViewModel = hiltViewModel<TopAlbumsViewModel>()
-            TopAlbumsScreen(navController, topAlbumsViewModel)
+            TopAlbumsScreen()
         }
         composable(SunsetBottomNavItem.TOP_ARTISTS.screenRoute) {
             TopArtistsScreen()
