@@ -1,0 +1,7 @@
+[versions]
+hilt = "2.40.4"
+
+[libraries]
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
+hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
+datastore-preferences = { module = "androidx.datastore:datastore-preferences", version = "1.0.0" }

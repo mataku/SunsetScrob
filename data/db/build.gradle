@@ -48,5 +48,5 @@ dependencies {
     implementation(Deps.roomRuntime)
     kapt(Deps.roomCompiler)
 
-    implementation(Deps.datastorePreferences)
+    implementation libs.datastore.preferences
 }
