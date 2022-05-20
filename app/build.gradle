@@ -94,24 +94,15 @@ dependencies {
     implementation project(":data:repository")
 
     implementation Deps.activityKtx
-    implementation Deps.cardView
-    implementation Deps.lifecycleExtensions
-    implementation Deps.lifecycleViewmodelKtx
     implementation Deps.materialComponent
     implementation Deps.preference
 
     implementation Deps.kotlinCoroutinesAndroid
 
-    implementation Deps.epoxy
-    kapt Deps.epoxyProcessor
-
     implementation Deps.firebaseCrashlytics
 
     implementation Deps.roomRuntime
     kapt Deps.roomCompiler
-
-    implementation Deps.glide
-    kapt Deps.glideCompiler
 
     implementation Deps.hilt
     kapt Deps.hiltCompiler

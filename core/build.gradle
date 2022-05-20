@@ -49,7 +49,6 @@ android {
 }
 
 dependencies {
-    implementation(Deps.glide)
     implementation(Deps.ktorClientOkhttp)
     implementation(Deps.ktorClientJsonJvm)
     implementation(Deps.ktorClientLogging)
@@ -57,8 +56,6 @@ dependencies {
     implementation(Deps.okhttpLoggingInterceptor)
     implementation(Deps.kotlinSerializationRuntime)
     implementation(Deps.kotlinCoroutinesAndroid)
-
-    kapt(Deps.glideCompiler)
 }
 
 repositories {
