@@ -7,8 +7,6 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.cookpad.android.plugin.license-tools'
 
-apply from: "$project.rootDir/core_dependencies.gradle"
-
 android {
     compileSdkVersion Versions.compileSdkVersion
     buildFeatures {
@@ -49,10 +47,10 @@ android {
 dependencies {
     implementation(project(":app"))
     implementation(project(":ui_common"))
-    implementation(Deps.Compose.activity)
-    implementation(Deps.Compose.uiTooling)
-    implementation(Deps.Compose.animation)
-    implementation(Deps.Compose.material)
+    implementation libs.activity.compose
+    implementation libs.compose.ui.tooling
+    implementation libs.compose.animation
+    implementation libs.compose.material
 }
 
 repositories {

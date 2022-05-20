@@ -5,8 +5,6 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
-apply from: "$project.rootDir/core_dependencies.gradle"
-
 android {
     compileSdkVersion Versions.compileSdkVersion
     buildFeatures {

@@ -12,7 +12,6 @@ apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'com.google.gms.google-services'
 
 apply from: "lint-checks.gradle"
-apply from: "$project.rootDir/core_dependencies.gradle"
 apply from: "$project.rootDir/test_dependencies.gradle"
 apply from: "$project.rootDir/test_options.gradle"
 
@@ -93,35 +92,36 @@ dependencies {
     implementation project(":core")
     implementation project(":data:repository")
 
-    implementation Deps.activityKtx
-    implementation Deps.materialComponent
-    implementation Deps.preference
+    implementation libs.activity.ktx
+    implementation libs.material
+    implementation libs.coroutines
 
-    implementation Deps.kotlinCoroutinesAndroid
+    implementation libs.firebase.crashlytics
 
-    implementation Deps.firebaseCrashlytics
+    implementation libs.room.runtime
+    kapt libs.room.compiler
 
-    implementation Deps.roomRuntime
-    kapt Deps.roomCompiler
-
-    implementation Deps.hilt
-    kapt Deps.hiltCompiler
-    kapt Deps.hiltAndroidXCompiler
+    implementation libs.hilt.android
+    kapt libs.hilt.compiler
+    kapt libs.hilt.android.compiler
 
     implementation(project(":ui_common"))
-    implementation(Deps.Compose.activity)
-    implementation(Deps.Compose.uiTooling)
-    implementation(Deps.Compose.animation)
-    implementation(Deps.Compose.material)
-    implementation(Deps.Compose.navigation)
-    implementation(Deps.coil)
-    implementation(Deps.Accompanist.navigationAnimation)
-    implementation(Deps.Compose.hiltNavigationCompose)
-    implementation Deps.Compose.materialIconsExtended
+    implementation libs.activity.compose
+    implementation libs.compose.ui.tooling
+    implementation libs.compose.animation
+    implementation libs.compose.material
+    implementation libs.compose.navigation
+    implementation libs.coil.compose
+    implementation libs.accompanist.navigation.animation
+    implementation libs.hilt.navigation.compose
+    implementation libs.compose.material.icons.extended
 }
 
 kapt {
     correctErrorTypes true
+    javacOptions {
+        option("-Xmaxerrs", 1000)
+    }
 }
 
 tasks.withType(KotlinCompile).all {

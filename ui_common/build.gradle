@@ -47,10 +47,10 @@ android {
 }
 
 dependencies {
-    implementation(Deps.Compose.activity)
-    implementation(Deps.Compose.uiTooling)
-    implementation(Deps.Compose.animation)
-    implementation(Deps.Compose.material)
-    implementation(Deps.Compose.navigation)
-    implementation(Deps.Accompanist.navigationAnimation)
+    implementation libs.activity.compose
+    implementation libs.compose.ui.tooling
+    implementation libs.compose.animation
+    implementation libs.compose.material
+    implementation libs.compose.navigation
+    implementation libs.accompanist.navigation.animation
 }

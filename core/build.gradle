@@ -1,4 +1,3 @@
-import dependency.Deps
 import dependency.Versions
 
 apply plugin: 'com.android.library'
@@ -49,13 +48,14 @@ android {
 }
 
 dependencies {
-    implementation(Deps.ktorClientOkhttp)
-    implementation(Deps.ktorClientJsonJvm)
-    implementation(Deps.ktorClientLogging)
-    implementation(Deps.okhttp)
-    implementation(Deps.okhttpLoggingInterceptor)
-    implementation(Deps.kotlinSerializationRuntime)
-    implementation(Deps.kotlinCoroutinesAndroid)
+    implementation libs.ktor.client.okhttp
+    implementation libs.ktor.client.serialization
+    implementation libs.ktor.client.logging
+    implementation platform(libs.okhttp.bom)
+    implementation libs.okhttp
+    implementation libs.okhttp.logging.interceptor
+    implementation libs.serialization.json
+    implementation libs.coroutines
 }
 
 repositories {
@@ -71,4 +71,8 @@ repositories {
 
 kapt {
     correctErrorTypes true
+
+    javacOptions {
+        option("-Xmaxerrs", 1000)
+    }
 }
