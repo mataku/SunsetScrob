@@ -10,9 +10,9 @@ import androidx.navigation.compose.rememberNavController
 import com.mataku.scrobscrob.app.ui.viewmodel.TopAlbumsViewModel
 
 class TopAlbumsScreenState(
-    val navController: NavController,
-    val viewModel: TopAlbumsViewModel,
-    val context: Context
+    private val navController: NavController,
+    private val viewModel: TopAlbumsViewModel,
+    context: Context
 ) {
     val uiState = viewModel.uiState
 
