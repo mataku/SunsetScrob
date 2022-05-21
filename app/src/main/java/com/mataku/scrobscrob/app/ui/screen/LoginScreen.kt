@@ -37,36 +37,24 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.mataku.scrobscrob.R
-import com.mataku.scrobscrob.app.ui.molecule.SunsetBottomNavItem
-import com.mataku.scrobscrob.app.ui.viewmodel.LoginViewModel
+import com.mataku.scrobscrob.app.ui.state.LoginScreenState
+import com.mataku.scrobscrob.app.ui.state.rememberLoginScreenState
 import com.mataku.scrobscrob.ui_common.style.Colors
 import com.mataku.scrobscrob.ui_common.style.SunsetTheme
 
 @Composable
 fun LoginScreen(
-    navController: NavController,
-    viewModel: LoginViewModel
+    stateHolder: LoginScreenState = rememberLoginScreenState()
 ) {
-    val uiState = viewModel.uiState
+    val uiState = stateHolder.uiState
     uiState.loginEvent?.let {
-        navController.navigate(
-            SunsetBottomNavItem.SCROBBLE.screenRoute
-        ) {
-            launchSingleTop = true
-            popUpTo(
-                navController.graph.findStartDestination().id
-            ) {
-                inclusive = true
-            }
-        }
+        stateHolder.navigateToTop()
     }
     LoginContent(
         isLoading = uiState.isLoading,
         onLoginButtonTap = { id, password ->
-            viewModel.authorize(id, password)
+            stateHolder.login(id, password)
         }
     )
 }
