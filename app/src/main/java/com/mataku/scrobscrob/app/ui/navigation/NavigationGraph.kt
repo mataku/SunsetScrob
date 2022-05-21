@@ -1,6 +1,5 @@
 package com.mataku.scrobscrob.app.ui.navigation
 
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -15,7 +14,7 @@ import com.mataku.scrobscrob.app.ui.screen.TopAlbumsScreen
 import com.mataku.scrobscrob.app.ui.screen.TopArtistsScreen
 import com.mataku.scrobscrob.ui_common.template.WebViewScreen
 
-@OptIn(ExperimentalAnimationApi::class)
+// @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun NavigationGraph(navController: NavHostController, isLoggedIn: Boolean) {
     NavHost(
