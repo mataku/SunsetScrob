@@ -1,6 +1,6 @@
 package com.mataku.scrobscrob.auth.ui.state
 
-import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.mataku.scrobscrob.auth.ui.viewmodel.LoginViewModel
 import com.mataku.scrobscrob.ui_common.SunsetBottomNavItem
 import io.kotest.core.spec.style.DescribeSpec
@@ -9,16 +9,19 @@ import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import kotlinx.coroutines.flow.MutableStateFlow
 
 class LoginScreenStateSpec : DescribeSpec({
-    val navController = mockk<NavController>()
+    val navController = mockk<NavHostController>()
     val viewModel = mockk<LoginViewModel>()
     beforeContainer {
         every {
             viewModel.uiState
         }.returns(
-            LoginViewModel.UiState(
-                isLoading = false
+            MutableStateFlow(
+                LoginViewModel.UiState(
+                    isLoading = false
+                )
             )
         )
     }

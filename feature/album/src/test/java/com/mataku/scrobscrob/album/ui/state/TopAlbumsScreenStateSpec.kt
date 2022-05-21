@@ -3,7 +3,7 @@ package com.mataku.scrobscrob.album.ui.state
 import android.content.Context
 import android.content.res.Resources
 import android.util.DisplayMetrics
-import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.mataku.scrobscrob.album.ui.viewmodel.TopAlbumsViewModel
 import io.kotest.core.spec.style.DescribeSpec
 import io.mockk.coEvery
@@ -11,9 +11,10 @@ import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import kotlinx.coroutines.flow.MutableStateFlow
 
 class TopAlbumsScreenStateSpec : DescribeSpec({
-    val navController = mockk<NavController>()
+    val navController = mockk<NavHostController>()
     val viewModel = mockk<TopAlbumsViewModel>()
     val context = mockk<Context>()
     val resources = mockk<Resources>()
@@ -23,10 +24,12 @@ class TopAlbumsScreenStateSpec : DescribeSpec({
         every {
             viewModel.uiState
         }.returns(
-            TopAlbumsViewModel.UiState(
-                isLoading = false,
-                topAlbums = emptyList(),
-                hasNext = false
+            MutableStateFlow(
+                TopAlbumsViewModel.UiState(
+                    isLoading = false,
+                    topAlbums = emptyList(),
+                    hasNext = false
+                )
             )
         )
         every {
