@@ -93,6 +93,7 @@ dependencies {
     implementation project(":feature:album")
     implementation project(":feature:artist")
     implementation project(':feature:auth')
+    implementation project(':feature:scrobble')
 
     implementation libs.activity.ktx
     implementation libs.material
