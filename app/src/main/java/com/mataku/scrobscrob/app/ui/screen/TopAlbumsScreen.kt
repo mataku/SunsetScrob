@@ -13,23 +13,21 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.mataku.scrobscrob.app.ui.molecule.TopAlbum
-import com.mataku.scrobscrob.app.ui.viewmodel.TopAlbumsViewModel
+import com.mataku.scrobscrob.app.ui.state.TopAlbumsScreenState
+import com.mataku.scrobscrob.app.ui.state.rememberTopAlbumsScreenState
 import com.mataku.scrobscrob.core.api.endpoint.Album
 import com.mataku.scrobscrob.ui_common.organism.InfiniteLoadingIndicator
 import com.mataku.scrobscrob.ui_common.style.Colors
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun TopAlbumsScreen(navController: NavController, viewModel: TopAlbumsViewModel) {
-    val displayMetrics = LocalContext.current.resources.displayMetrics
-    val fullWidth = displayMetrics.widthPixels / displayMetrics.density
-    val halfWidth = fullWidth / 2
-    val uiState = viewModel.uiState
+fun TopAlbumsScreen(
+    state: TopAlbumsScreenState = rememberTopAlbumsScreenState()
+) {
+    val uiState = state.uiState
 
     if (uiState.topAlbums.isEmpty()) {
         Box(
@@ -38,18 +36,17 @@ fun TopAlbumsScreen(navController: NavController, viewModel: TopAlbumsViewModel)
                 .background(Colors.ContentBackground)
         )
     } else {
+        val contentWidth = state.contentWidth
         TopAlbumsContent(
             albums = uiState.topAlbums,
             hasNext = uiState.hasNext,
-            imageSize = halfWidth.dp,
-            padding = halfWidth.dp - 20.dp,
+            imageSize = contentWidth.dp,
+            padding = contentWidth.dp - 20.dp,
             onUrlTap = {
-                navController.navigate(
-                    "webview?url=$it"
-                )
+                state.onTapAlbum(it)
             },
             onScrollEnd = {
-                viewModel.fetchAlbums()
+                state.onScrollEnd()
             }
         )
     }

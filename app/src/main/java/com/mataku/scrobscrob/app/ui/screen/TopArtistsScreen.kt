@@ -10,28 +10,23 @@ import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.GridItemSpan
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.mataku.scrobscrob.app.ui.molecule.TopArtist
-import com.mataku.scrobscrob.app.ui.viewmodel.TopArtistsViewModel
+import com.mataku.scrobscrob.app.ui.state.TopArtistsScreenState
+import com.mataku.scrobscrob.app.ui.state.rememberTopArtistsScreenState
 import com.mataku.scrobscrob.core.api.endpoint.Artist
 import com.mataku.scrobscrob.ui_common.organism.InfiniteLoadingIndicator
 import com.mataku.scrobscrob.ui_common.style.Colors
 
 @Composable
 fun TopArtistsScreen(
-    navController: NavController,
-    viewModel: TopArtistsViewModel
+    state: TopArtistsScreenState = rememberTopArtistsScreenState()
 ) {
-    val displayMetrics = LocalContext.current.resources.displayMetrics
-    val fullWidth = displayMetrics.widthPixels / displayMetrics.density
-    val halfWidth = fullWidth / 2
-    val uiState = viewModel.uiState
+    val contentWidth = state.contentWidth
+    val uiState = state.uiState
     if (uiState.topArtists.isEmpty()) {
         Box(
             modifier = Modifier
@@ -42,21 +37,19 @@ fun TopArtistsScreen(
         TopArtistsContent(
             artists = uiState.topArtists,
             hasNext = uiState.hasNext,
-            imageSize = halfWidth.dp,
-            padding = halfWidth.dp - 20.dp,
+            imageSize = contentWidth.dp,
+            padding = contentWidth.dp - 20.dp,
             onUrlTap = {
-                navController.navigate(
-                    "webview?url=$it"
-                )
+                state.onTapArtist(it)
             },
             onScrollEnd = {
-                viewModel.fetchTopArtists()
+                state.onScrollEnd()
             }
         )
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun TopArtistsContent(
     artists: List<Artist>,

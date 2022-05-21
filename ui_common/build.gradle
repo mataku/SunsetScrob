@@ -37,7 +37,7 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
     composeOptions {
-        kotlinCompilerExtensionVersion libs.kotlin.compiler.extension.get()
+        kotlinCompilerExtensionVersion libs.versions.kotlin.compiler.extension.get()
     }
 
     kotlinOptions {
