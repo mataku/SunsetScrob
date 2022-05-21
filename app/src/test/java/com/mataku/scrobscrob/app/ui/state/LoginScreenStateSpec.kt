@@ -1,10 +1,6 @@
 package com.mataku.scrobscrob.app.ui.state
 
 import androidx.navigation.NavController
-import androidx.navigation.NavDestination
-import androidx.navigation.NavGraph
-import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.NavOptionsBuilder
 import com.mataku.scrobscrob.app.ui.molecule.SunsetBottomNavItem
 import com.mataku.scrobscrob.app.ui.viewmodel.LoginViewModel
 import io.kotest.core.spec.style.DescribeSpec
@@ -52,18 +48,6 @@ class LoginScreenStateSpec : DescribeSpec({
             viewModel = viewModel
         )
         it("calls NavController.navigate") {
-            val navGraph = mockk<NavGraph>()
-            every {
-                navController.graph
-            }.returns(navGraph)
-            val navDestination = mockk<NavDestination>()
-            every {
-                navGraph.findStartDestination()
-            }.returns(navDestination)
-            every {
-                navDestination.id
-            }.returns(1)
-            val builder = mockk<NavOptionsBuilder>()
             every {
                 navController.navigate(
                     SunsetBottomNavItem.SCROBBLE.screenRoute,
