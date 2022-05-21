@@ -11,7 +11,7 @@ import com.mataku.scrobscrob.app.ui.molecule.LogoutConfirmationDialog
 import com.mataku.scrobscrob.app.ui.molecule.SunsetBottomNavItem
 import com.mataku.scrobscrob.app.ui.screen.LoginScreen
 import com.mataku.scrobscrob.app.ui.screen.ScrobbleScreen
-import com.mataku.scrobscrob.app.ui.screen.TopArtistsScreen
+import com.mataku.scrobscrob.artist.ui.screen.TopArtistsScreen
 import com.mataku.scrobscrob.ui_common.template.WebViewScreen
 
 // @OptIn(ExperimentalAnimationApi::class)
