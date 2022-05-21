@@ -62,6 +62,8 @@ gradle-versions-plugin = { module = "com.github.ben-manes:gradle-versions-plugin
 google-services-plugin = { module = "com.google.gms:google-services", version = "4.3.10" }
 serialization-plugin = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin" }
 
+timber = { module = "com.jakewharton.timber:timber", version = "5.0.1" }
+
 androidx-test-core = { module = "androidx.test:core", version = "1.4.0" }
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
 robolectric = { module = "org.robolectric:robolectric", version = "4.0.2" }
