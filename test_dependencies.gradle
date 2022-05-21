@@ -3,7 +3,6 @@ dependencies {
     testImplementation libs.kotlin.test.junit
     testImplementation libs.robolectric
     testImplementation libs.junit
-    testImplementation libs.mockwebserver
     testImplementation libs.mockito
     testImplementation libs.kotest.runner.junit5
     testImplementation libs.kotest.assertions
