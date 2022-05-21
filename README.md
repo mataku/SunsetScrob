@@ -1,6 +1,6 @@
 ## SunsetScrob
 
-Last.fm scrobbler for Apple Music on Android
+Last.fm client on Android
 
 ## Features
 - Show latest scrobbles
