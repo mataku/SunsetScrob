@@ -22,6 +22,7 @@ import coil.compose.rememberImagePainter
 import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.core.api.endpoint.Artist
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
+import com.mataku.scrobscrob.ui_common.R as uiCommonR
 
 @Composable
 fun TopArtist(artist: Artist, imageSize: Dp, onArtistTap: () -> Unit) {
@@ -40,7 +41,7 @@ fun TopArtist(artist: Artist, imageSize: Dp, onArtistTap: () -> Unit) {
             imageList.last().imageUrl
         }
         val painter = if (url.isBlank()) {
-            painterResource(R.drawable.no_image)
+            painterResource(uiCommonR.drawable.no_image)
         } else {
             rememberImagePainter(url)
         }

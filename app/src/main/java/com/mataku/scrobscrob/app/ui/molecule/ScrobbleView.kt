@@ -22,8 +22,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
-import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.core.api.endpoint.RecentTrack
+import com.mataku.scrobscrob.ui_common.R as uiCommonR
 
 @Composable
 fun ScrobbleView(recentTrack: RecentTrack, onScrobbleTap: () -> Unit) {
@@ -54,7 +54,7 @@ private fun ScrobbleViewContent(
             )
     ) {
         val painter = if (imageUrl == null) {
-            painterResource(R.drawable.no_image)
+            painterResource(uiCommonR.drawable.no_image)
         } else {
             rememberImagePainter(imageUrl)
         }
