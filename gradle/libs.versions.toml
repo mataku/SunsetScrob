@@ -59,7 +59,7 @@ crashlytics-gradle-plugin = { module = "com.google.firebase:firebase-crashlytics
 hilt-gradle-plugin = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hilt" }
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 gradle-versions-plugin = { module = "com.github.ben-manes:gradle-versions-plugin", version = "0.27.0" }
-google-services-plugin = { module = "com.google.gms:google-services", version = "4.3.8" }
+google-services-plugin = { module = "com.google.gms:google-services", version = "4.3.10" }
 serialization-plugin = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin" }
 
 androidx-test-core = { module = "androidx.test:core", version = "1.4.0" }
