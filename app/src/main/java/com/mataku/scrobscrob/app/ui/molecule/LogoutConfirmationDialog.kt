@@ -6,29 +6,20 @@ import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.navigation.NavController
-import androidx.navigation.NavGraph.Companion.findStartDestination
-import com.mataku.scrobscrob.app.ui.viewmodel.LogoutViewModel
+import com.mataku.scrobscrob.app.ui.state.LogoutConfirmationDialogState
+import com.mataku.scrobscrob.app.ui.state.rememberLogoutConfirmationDialogState
 
 @Composable
-fun LogoutDialog(
-    navController: NavController,
-    viewModel: LogoutViewModel
+fun LogoutConfirmationDialog(
+    stateHolder: LogoutConfirmationDialogState = rememberLogoutConfirmationDialogState()
 ) {
     val openStatus = remember {
         mutableStateOf(true)
     }
-    val uiState = viewModel.uiState
+    val uiState = stateHolder.uiState
     if (uiState.logoutEvent != null) {
         openStatus.value = false
-        navController.navigate("login") {
-            launchSingleTop = true
-            popUpTo(
-                navController.graph.findStartDestination().id
-            ) {
-                inclusive = true
-            }
-        }
+        stateHolder.navigateToLoginScreen()
     }
     if (openStatus.value) {
         AlertDialog(
@@ -38,7 +29,7 @@ fun LogoutDialog(
             },
             confirmButton = {
                 TextButton(onClick = {
-                    viewModel.logout()
+                    stateHolder.logout()
                 }) {
                     Text(text = "Let me out!")
                 }
