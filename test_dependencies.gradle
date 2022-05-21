@@ -5,7 +5,10 @@ dependencies {
     testImplementation libs.junit
     testImplementation libs.mockwebserver
     testImplementation libs.mockito
-
+    testImplementation libs.kotest.runner.junit5
+    testImplementation libs.kotest.assertions
+    testImplementation libs.mockk
+    testImplementation libs.mockk.agent.jvm
 }
 
 android.testOptions {
