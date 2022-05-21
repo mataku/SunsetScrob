@@ -1,4 +1,3 @@
-import dependency.Deps
 import dependency.Versions
 
 plugins {
@@ -42,11 +41,11 @@ android {
 dependencies {
     implementation(project(":core"))
 
-    implementation(Deps.hilt)
-    kapt(Deps.hiltCompiler)
+    implementation libs.hilt.android
+    kapt libs.hilt.compiler
 
-    implementation(Deps.roomRuntime)
-    kapt(Deps.roomCompiler)
+    implementation libs.room.runtime
+    kapt libs.room.compiler
 
-    implementation(Deps.datastorePreferences)
+    implementation libs.datastore.preferences
 }

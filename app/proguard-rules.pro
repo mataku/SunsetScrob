@@ -40,7 +40,3 @@
 -dontwarn io.netty.**
 -dontwarn com.typesafe.**
 -dontwarn org.slf4j.**
-
-# Glide
--keep public class * implements com.bumptech.glide.module.GlideModule
--dontwarn com.bumptech.glide.load.resource.bitmap.VideoDecoder

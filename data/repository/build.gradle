@@ -1,4 +1,3 @@
-import dependency.Deps
 import dependency.Versions
 
 plugins {
@@ -51,8 +50,8 @@ dependencies {
     implementation(project(":data:db"))
 
     // TODO: Endpoint の requestType を独自の enum にして ktor に依存しないようにした上で消す
-    implementation(Deps.ktorClientCore)
+    implementation libs.ktor.client.core
 
-    implementation(Deps.hilt)
-    kapt(Deps.hiltCompiler)
+    implementation libs.hilt.android
+    kapt libs.hilt.compiler
 }

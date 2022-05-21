@@ -1,11 +1,8 @@
-import dependency.UnitTestDeps
-
 dependencies {
-    testImplementation UnitTestDeps.androidxTestCore
-    testImplementation UnitTestDeps.kotlinTestJunit
-    testImplementation UnitTestDeps.robolectric
-    testImplementation UnitTestDeps.guava
-    testImplementation UnitTestDeps.junit
-    testImplementation UnitTestDeps.mockWebServer
-    testImplementation UnitTestDeps.mockito
+    testImplementation libs.androidx.test.core
+    testImplementation libs.kotlin.test.junit
+    testImplementation libs.robolectric
+    testImplementation libs.junit
+    testImplementation libs.mockwebserver
+    testImplementation libs.mockito
 }

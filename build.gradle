@@ -1,5 +1,3 @@
-import dependency.Deps
-
 buildscript {
     repositories {
         google()
@@ -9,14 +7,14 @@ buildscript {
         }
     }
     dependencies {
-        classpath(Deps.GradlePlugin.android)
-        classpath(Deps.GradlePlugin.kotlin)
-        classpath(Deps.GradlePlugin.kotlinSerialization)
-        classpath(Deps.GradlePlugin.firebaseCrashlyticsGradlePlugin)
-        classpath(Deps.GradlePlugin.licenseTools)
-        classpath(Deps.GradlePlugin.gradleVersionsPlugin)
-        classpath(Deps.GradlePlugin.googleServices)
-        classpath(Deps.GradlePlugin.hilt)
+        classpath libs.android.gradle.plugin
+        classpath libs.kotlin.gradle.plugin
+        classpath libs.serialization.plugin
+        classpath libs.crashlytics.gradle.plugin
+        classpath libs.license.tools.plugin
+        classpath libs.gradle.versions.plugin
+        classpath libs.google.services.plugin
+        classpath libs.hilt.gradle.plugin
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files

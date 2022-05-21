@@ -7,7 +7,6 @@ import com.mataku.scrobscrob.app.receiver.AppleMusicNotificationReceiver
 import com.mataku.scrobscrob.app.ui.screen.MainScreen
 import com.mataku.scrobscrob.app.util.SharedPreferencesHelper
 import com.mataku.scrobscrob.data.repository.UsernameRepository
-import com.mataku.scrobscrob.databinding.ActivityMainBinding
 import com.mataku.scrobscrob.ui_common.style.SunsetTheme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -16,9 +15,6 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity() {
     private var receiver = AppleMusicNotificationReceiver()
     private lateinit var sharedPreferencesHelper: SharedPreferencesHelper
-    private lateinit var binding: ActivityMainBinding
-
-    private val self = this
 
     @Inject
     lateinit var usernameRepository: UsernameRepository
