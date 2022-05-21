@@ -1,6 +1,5 @@
 package com.mataku.scrobscrob.app.ui.molecule
 
-import androidx.annotation.DrawableRes
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
@@ -14,7 +13,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.mataku.scrobscrob.R
+import com.mataku.scrobscrob.ui_common.SunsetBottomNavItem
 import com.mataku.scrobscrob.ui_common.style.Colors
 import com.mataku.scrobscrob.ui_common.style.SunsetTheme
 
@@ -49,28 +48,6 @@ fun SunsetBottomNavigation(navController: NavController) {
             )
         }
     }
-}
-
-enum class SunsetBottomNavItem(
-    @DrawableRes val iconDrawable: Int,
-    val title: String,
-    val screenRoute: String
-) {
-    SCROBBLE(
-        R.drawable.ic_last_fm_logo,
-        "Scrobble",
-        "scrobble"
-    ),
-    TOP_ALBUMS(
-        R.drawable.ic_album_black_24px,
-        "Top Albums",
-        "top_albums"
-    ),
-    TOP_ARTISTS(
-        R.drawable.ic_account_circle_black,
-        "Top Artists",
-        "top_artists"
-    )
 }
 
 @Preview(showBackground = true)

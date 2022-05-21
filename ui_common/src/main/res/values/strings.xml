@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">SunsetScrob</string>
+    <string name="login_to_last_fm">Login to Last.fm</string>
+    <string name="preference_title">Preferences</string>
+    <string name="activity_login_title">Log in to Last.fm</string>
+    <string name="enable_notification_access">Enable Notification Access</string>
+    <string name="enable_notification_access_summary">Required for scrobbling from Apple Music</string>
+    <string name="label_now_playing">Now Playing Track</string>
+    <string name="label_not_playing">Nothing!</string>
+    <string name="label_not_logged_in">Not logged in!</string>
+    <string name="label_not_playing_message">Let\'s play music on Apple Music App!</string>
+    <string name="label_message_to_log_in">Log in to Last.fm and play music on Apple Music App!</string>
+    <string name="label_open_source_licenses">Open Source Licenses</string>
+    <string name="playcounts">%s times</string>
+    <string name="playcount">%s time</string>
+    <string name="error_message_fetch_top_albums">Failed to fetch top albums...</string>
+    <string name="error_message_fetch_top_artists">Failed to fetch top artists...</string>
+    <string name="error_message_bad_network">Network unavailable, try later...</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_user_name">User Name</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_user_name">This user name is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <string name="allow_notification_service_message">Allow AppleMusicNotificationService to access notification</string>
+
+    <string name="menu_scrobble">Scrobble</string>
+    <string name="menu_top_artists">Top Artists</string>
+    <string name="menu_top_albums">Top Albums</string>
+
+    <string name="logout">Logout</string>
+</resources>
