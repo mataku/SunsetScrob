@@ -1,6 +1,8 @@
 package com.mataku.scrobscrob.app.ui.state
 
 import android.content.Context
+import android.content.res.Resources
+import android.util.DisplayMetrics
 import androidx.navigation.NavController
 import com.mataku.scrobscrob.app.ui.viewmodel.TopArtistsViewModel
 import io.kotest.core.spec.style.DescribeSpec
@@ -14,6 +16,8 @@ class TopArtistsScreenStateSpec : DescribeSpec({
     val navController = mockk<NavController>()
     val viewModel = mockk<TopArtistsViewModel>()
     val context = mockk<Context>()
+    val resources = mockk<Resources>()
+    val displayMetrics = mockk<DisplayMetrics>(relaxed = true)
 
     beforeContainer {
         every {
@@ -25,6 +29,20 @@ class TopArtistsScreenStateSpec : DescribeSpec({
                 hasNext = false
             )
         )
+        every {
+            context.resources
+        }.returns(resources)
+        every {
+            resources.displayMetrics
+        }.returns(displayMetrics)
+
+//        every {
+//            displayMetrics.getProperty("widthPixels")
+//        }.returns(100)
+//
+//        every {
+//            displayMetrics.getProperty("density")
+//        }.returns(1F)
     }
 
     describe("#onTapArtist") {
@@ -35,15 +53,13 @@ class TopArtistsScreenStateSpec : DescribeSpec({
         it("should navigate to webView") {
             every {
                 navController.navigate(
-                    "webview?url=$url",
-                    captureLambda()
+                    "webview?url=$url"
                 )
             }.answers { }
             stateHolder.onTapArtist(url)
             verify(exactly = 1) {
                 navController.navigate(
-                    "webview?url=$url",
-                    captureLambda()
+                    "webview?url=$url"
                 )
             }
         }
