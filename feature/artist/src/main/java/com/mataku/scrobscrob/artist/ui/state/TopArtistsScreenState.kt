@@ -15,7 +15,7 @@ class TopArtistsScreenState(
     context: Context
 ) {
     val uiState: TopArtistsViewModel.UiState
-        @@Composable get() = viewModel.uiState.collectAsState().value
+        @Composable get() = viewModel.uiState.collectAsState().value
 
     private val displayMetrics = context.resources.displayMetrics
     private val fullWidth = displayMetrics.widthPixels / displayMetrics.density
