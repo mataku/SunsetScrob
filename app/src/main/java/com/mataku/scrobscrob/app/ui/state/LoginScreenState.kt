@@ -10,8 +10,8 @@ import com.mataku.scrobscrob.app.ui.molecule.SunsetBottomNavItem
 import com.mataku.scrobscrob.app.ui.viewmodel.LoginViewModel
 
 class LoginScreenState(
-    val navController: NavController,
-    val viewModel: LoginViewModel
+    private val navController: NavController,
+    private val viewModel: LoginViewModel
 ) {
     val uiState = viewModel.uiState
 

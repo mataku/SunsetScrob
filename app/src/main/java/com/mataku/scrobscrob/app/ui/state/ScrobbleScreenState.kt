@@ -9,7 +9,7 @@ import com.mataku.scrobscrob.app.ui.viewmodel.ScrobbleViewModel
 
 class ScrobbleScreenState(
     val navController: NavController,
-    val viewModel: ScrobbleViewModel
+    private val viewModel: ScrobbleViewModel
 ) {
     val uiState = viewModel.uiState
 

@@ -10,9 +10,9 @@ import androidx.navigation.compose.rememberNavController
 import com.mataku.scrobscrob.app.ui.viewmodel.TopArtistsViewModel
 
 class TopArtistsScreenState(
-    val navController: NavController,
-    val viewModel: TopArtistsViewModel,
-    val context: Context
+    private val navController: NavController,
+    private val viewModel: TopArtistsViewModel,
+    context: Context
 ) {
     val uiState = viewModel.uiState
 

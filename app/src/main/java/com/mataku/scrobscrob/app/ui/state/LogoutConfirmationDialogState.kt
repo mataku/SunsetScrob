@@ -9,8 +9,8 @@ import androidx.navigation.compose.rememberNavController
 import com.mataku.scrobscrob.app.ui.viewmodel.LogoutViewModel
 
 class LogoutConfirmationDialogState(
-    val navController: NavController,
-    val viewModel: LogoutViewModel
+    private val navController: NavController,
+    private val viewModel: LogoutViewModel
 ) {
     val uiState = viewModel.uiState
 
