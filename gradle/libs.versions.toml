@@ -1,10 +1,10 @@
 [versions]
-compose = "1.0.5"
+compose = "1.1.1"
 hilt = "2.42"
 ktor = "1.5.1"
 room = "2.4.0"
-kotlin = "1.5.31"
-kotlin-compiler-extension = "1.0.5"
+kotlin = "1.6.10"
+kotlin-compiler-extension = "1.1.1"
 kotest = "5.3.0"
 mockk = "1.12.4"
 
