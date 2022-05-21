@@ -42,7 +42,7 @@ room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 
 activity-ktx = { module = "androidx.activity:activity-ktx", version = "1.4.0" }
 appcompat = { module = "androidx.appcompat:appcompat", version = "1.4.1" }
-browser = { module = "androidx.browser:browser", version = "1.0.0" }
+browser = { module = "androidx.browser:browser", version = "1.4.0" }
 cardview = { module = "androidx.cardview:cardview", version = "1.0.0" }
 
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
