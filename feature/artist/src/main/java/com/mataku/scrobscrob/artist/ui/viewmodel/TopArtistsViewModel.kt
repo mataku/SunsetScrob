@@ -1,18 +1,17 @@
 package com.mataku.scrobscrob.artist.ui.viewmodel
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mataku.scrobscrob.core.api.endpoint.Artist
 import com.mataku.scrobscrob.data.repository.TopArtistsRepository
 import com.mataku.scrobscrob.data.repository.UsernameRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,55 +23,67 @@ class TopArtistsViewModel @Inject constructor(
 
     private val username: String = usernameRepository.username() ?: ""
 
-    var uiState by mutableStateOf(UiState.initialize())
+    var uiState = MutableStateFlow(UiState.initialize())
         private set
 
     private var page = 1
 
     init {
         if (username.isBlank()) {
-            uiState = uiState.copy(
-                isLoading = false,
-                hasNext = false
-            )
+            uiState.update {
+                it.copy(
+                    isLoading = false,
+                    hasNext = false
+                )
+            }
         } else {
             fetchTopArtists()
         }
     }
 
     fun fetchTopArtists() {
-        if (uiState.isLoading) {
+        if (uiState.value.isLoading) {
             return
         }
 
         viewModelScope.launch {
             topArtistsRepository.fetchTopArtists(page = page, username = username)
                 .onStart {
-                    uiState = uiState.copy(
-                        isLoading = true
-                    )
+                    uiState.update {
+                        it.copy(
+                            isLoading = true
+                        )
+                    }
                 }
                 .onCompletion {
-                    uiState = uiState.copy(
-                        isLoading = false
-                    )
+                    uiState.update {
+                        it.copy(
+                            isLoading = false
+                        )
+                    }
                 }
                 .catch {
-                    uiState = uiState.copy(
-                        hasNext = false
-                    )
+                    uiState.update {
+                        it.copy(
+                            hasNext = false
+                        )
+                    }
                 }
                 .collect {
                     if (it.isEmpty()) {
-                        uiState = uiState.copy(
-                            hasNext = false
-                        )
+                        uiState.update { state ->
+                            state.copy(
+                                hasNext = false
+                            )
+                        }
                     } else {
-                        val artists = uiState.topArtists.toMutableList()
+                        val artists = uiState.value.topArtists.toMutableList()
                         artists.addAll(it)
-                        uiState = uiState.copy(
-                            topArtists = artists
-                        )
+                        uiState.update { state ->
+                            state.copy(
+                                topArtists = artists
+                            )
+                        }
                         page++
                     }
                 }
