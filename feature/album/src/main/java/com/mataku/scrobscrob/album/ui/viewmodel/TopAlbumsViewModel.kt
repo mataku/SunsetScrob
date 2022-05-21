@@ -1,18 +1,17 @@
 package com.mataku.scrobscrob.album.ui.viewmodel
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mataku.scrobscrob.core.api.endpoint.Album
 import com.mataku.scrobscrob.data.repository.TopAlbumsRepository
 import com.mataku.scrobscrob.data.repository.UsernameRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,7 +21,7 @@ class TopAlbumsViewModel @Inject constructor(
     usernameRepository: UsernameRepository
 ) : ViewModel() {
 
-    var uiState by mutableStateOf(UiState.initialized())
+    var uiState: MutableStateFlow<UiState> = MutableStateFlow(UiState.initialized())
         private set
 
     private val username: String = usernameRepository.username() ?: ""
@@ -31,48 +30,60 @@ class TopAlbumsViewModel @Inject constructor(
 
     init {
         if (username.isBlank()) {
-            uiState = uiState.copy(
-                isLoading = false,
-                hasNext = false
-            )
+            uiState.update {
+                it.copy(
+                    isLoading = false,
+                    hasNext = false
+                )
+            }
         } else {
             fetchAlbums()
         }
     }
 
     fun fetchAlbums() {
-        if (uiState.isLoading) {
+        if (uiState.value.isLoading) {
             return
         }
 
         viewModelScope.launch {
             topAlbumsRepository.fetchTopAlbums(page = page, username = username)
                 .onStart {
-                    uiState = uiState.copy(
-                        isLoading = true
-                    )
+                    uiState.update {
+                        it.copy(
+                            isLoading = true
+                        )
+                    }
                 }
                 .onCompletion {
-                    uiState = uiState.copy(
-                        isLoading = false
-                    )
+                    uiState.update {
+                        it.copy(
+                            isLoading = false
+                        )
+                    }
                 }
                 .catch {
-                    uiState = uiState.copy(
-                        hasNext = false
-                    )
+                    uiState.update {
+                        it.copy(
+                            hasNext = false
+                        )
+                    }
                 }
                 .collect { albums ->
                     if (albums.isEmpty()) {
-                        uiState = uiState.copy(
-                            hasNext = false
-                        )
+                        uiState.update {
+                            it.copy(
+                                hasNext = false
+                            )
+                        }
                     } else {
-                        val currentAlbums = uiState.topAlbums.toMutableList()
+                        val currentAlbums = uiState.value.topAlbums.toMutableList()
                         currentAlbums.addAll(albums)
-                        uiState = uiState.copy(
-                            topAlbums = currentAlbums
-                        )
+                        uiState.update {
+                            it.copy(
+                                topAlbums = currentAlbums
+                            )
+                        }
                         page++
                     }
                 }

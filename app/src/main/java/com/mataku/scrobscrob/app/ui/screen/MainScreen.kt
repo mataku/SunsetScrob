@@ -5,17 +5,18 @@ import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.google.accompanist.navigation.animation.rememberAnimatedNavController
-import com.mataku.scrobscrob.app.ui.molecule.SunsetBottomNavItem
+import androidx.navigation.compose.rememberNavController
 import com.mataku.scrobscrob.app.ui.molecule.SunsetBottomNavigation
 import com.mataku.scrobscrob.app.ui.navigation.NavigationGraph
+import com.mataku.scrobscrob.ui_common.SunsetBottomNavItem
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun MainScreen(username: String?) {
-    val navController = rememberAnimatedNavController()
+    val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
+
     Scaffold(
         topBar = {},
         bottomBar = {

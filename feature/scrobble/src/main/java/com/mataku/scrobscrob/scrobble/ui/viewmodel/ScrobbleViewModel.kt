@@ -1,8 +1,5 @@
 package com.mataku.scrobscrob.scrobble.ui.viewmodel
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mataku.scrobscrob.core.api.endpoint.RecentTrack
@@ -10,6 +7,8 @@ import com.mataku.scrobscrob.core.entity.presentation.onFailure
 import com.mataku.scrobscrob.core.entity.presentation.onSuccess
 import com.mataku.scrobscrob.data.repository.ScrobbleRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,7 +17,7 @@ class ScrobbleViewModel @Inject constructor(
     private val scrobbleRepository: ScrobbleRepository
 ) : ViewModel() {
 
-    var uiState by mutableStateOf(UiState.initialize())
+    var uiState = MutableStateFlow<UiState>(UiState.initialize())
         private set
 
     private var page = 1
@@ -28,29 +27,35 @@ class ScrobbleViewModel @Inject constructor(
     }
 
     fun fetchRecentTracks() {
-        if (!uiState.hasNext) return
+        if (!uiState.value.hasNext) return
         viewModelScope.launch {
-            uiState = uiState.copy(
-                isLoading = true
-            )
+            uiState.update {
+                it.copy(
+                    isLoading = true
+                )
+            }
             val result = scrobbleRepository.recentTracks(
                 page = page
             )
             result
                 .onSuccess {
-                    uiState = uiState.copy(
-                        isLoading = false,
-                        recentTracks = uiState.recentTracks + it,
-                        hasNext = it.isNotEmpty()
-                    )
+                    uiState.update { state ->
+                        state.copy(
+                            isLoading = false,
+                            recentTracks = state.recentTracks + it,
+                            hasNext = state.recentTracks.isNotEmpty()
+                        )
+                    }
                     page++
                 }
                 .onFailure {
-                    uiState = uiState.copy(
-                        isLoading = false,
-                        throwable = it,
-                        hasNext = false
-                    )
+                    uiState.update { state ->
+                        state.copy(
+                            isLoading = false,
+                            throwable = it,
+                            hasNext = false
+                        )
+                    }
                 }
         }
     }

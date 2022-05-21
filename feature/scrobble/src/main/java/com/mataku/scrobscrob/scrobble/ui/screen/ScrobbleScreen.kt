@@ -14,13 +14,12 @@ import com.mataku.scrobscrob.core.api.endpoint.RecentTrack
 import com.mataku.scrobscrob.scrobble.ui.molecule.Scrobble
 import com.mataku.scrobscrob.scrobble.ui.molecule.ScrobbleTopBar
 import com.mataku.scrobscrob.scrobble.ui.state.ScrobbleScreenState
-import com.mataku.scrobscrob.scrobble.ui.state.rememberScrobbleScreenState
 import com.mataku.scrobscrob.ui_common.organism.InfiniteLoadingIndicator
 import com.mataku.scrobscrob.ui_common.style.Colors
 
 @Composable
 fun ScrobbleScreen(
-    state: ScrobbleScreenState = rememberScrobbleScreenState()
+    state: ScrobbleScreenState
 ) {
     val uiState = state.uiState
     Scaffold(

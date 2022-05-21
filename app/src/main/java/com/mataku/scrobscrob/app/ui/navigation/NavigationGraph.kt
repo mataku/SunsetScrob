@@ -7,10 +7,15 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
 import androidx.navigation.navArgument
 import com.mataku.scrobscrob.album.ui.screen.TopAlbumsScreen
+import com.mataku.scrobscrob.album.ui.state.rememberTopAlbumsScreenState
 import com.mataku.scrobscrob.artist.ui.screen.TopArtistsScreen
+import com.mataku.scrobscrob.artist.ui.state.rememberTopArtistsScreenState
 import com.mataku.scrobscrob.auth.ui.screen.LoginScreen
 import com.mataku.scrobscrob.auth.ui.screen.LogoutConfirmationDialog
+import com.mataku.scrobscrob.auth.ui.state.rememberLoginScreenState
+import com.mataku.scrobscrob.auth.ui.state.rememberLogoutConfirmationDialogState
 import com.mataku.scrobscrob.scrobble.ui.screen.ScrobbleScreen
+import com.mataku.scrobscrob.scrobble.ui.state.rememberScrobbleScreenState
 import com.mataku.scrobscrob.ui_common.SunsetBottomNavItem
 import com.mataku.scrobscrob.ui_common.template.WebViewScreen
 
@@ -35,15 +40,21 @@ fun NavigationGraph(navController: NavHostController, isLoggedIn: Boolean) {
         composable(
             SunsetBottomNavItem.SCROBBLE.screenRoute
         ) {
-            ScrobbleScreen()
+            ScrobbleScreen(
+                state = rememberScrobbleScreenState(navController = navController)
+            )
         }
         composable(
             SunsetBottomNavItem.TOP_ALBUMS.screenRoute
         ) {
-            TopAlbumsScreen()
+            TopAlbumsScreen(
+                state = rememberTopAlbumsScreenState(navController = navController)
+            )
         }
         composable(SunsetBottomNavItem.TOP_ARTISTS.screenRoute) {
-            TopArtistsScreen()
+            TopArtistsScreen(
+                state = rememberTopArtistsScreenState(navController = navController)
+            )
         }
         composable(
             "webview?url={url}",
@@ -54,10 +65,14 @@ fun NavigationGraph(navController: NavHostController, isLoggedIn: Boolean) {
             WebViewScreen(navController = navController, url = it.arguments?.getString("url")!!)
         }
         composable("login") {
-            LoginScreen()
+            LoginScreen(
+                stateHolder = rememberLoginScreenState(navController = navController)
+            )
         }
         dialog("logout") {
-            LogoutConfirmationDialog()
+            LogoutConfirmationDialog(
+                stateHolder = rememberLogoutConfirmationDialogState(navController = navController)
+            )
         }
     }
 }

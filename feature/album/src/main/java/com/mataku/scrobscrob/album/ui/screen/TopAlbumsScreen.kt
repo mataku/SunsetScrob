@@ -16,14 +16,13 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.mataku.scrobscrob.album.ui.molecule.TopAlbum
 import com.mataku.scrobscrob.album.ui.state.TopAlbumsScreenState
-import com.mataku.scrobscrob.album.ui.state.rememberTopAlbumsScreenState
 import com.mataku.scrobscrob.core.api.endpoint.Album
 import com.mataku.scrobscrob.ui_common.organism.InfiniteLoadingIndicator
 import com.mataku.scrobscrob.ui_common.style.Colors
 
 @Composable
 fun TopAlbumsScreen(
-    state: TopAlbumsScreenState = rememberTopAlbumsScreenState()
+    state: TopAlbumsScreenState
 ) {
     val uiState = state.uiState
 

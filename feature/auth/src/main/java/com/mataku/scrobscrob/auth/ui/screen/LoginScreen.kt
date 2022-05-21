@@ -21,10 +21,12 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,18 +40,25 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mataku.scrobscrob.auth.ui.state.LoginScreenState
-import com.mataku.scrobscrob.auth.ui.state.rememberLoginScreenState
 import com.mataku.scrobscrob.ui_common.R
 import com.mataku.scrobscrob.ui_common.style.Colors
 import com.mataku.scrobscrob.ui_common.style.SunsetTheme
+import kotlinx.coroutines.launch
 
 @Composable
 fun LoginScreen(
-    stateHolder: LoginScreenState = rememberLoginScreenState()
+    stateHolder: LoginScreenState
 ) {
+    val scaffoldState = rememberScaffoldState()
+    val coroutineScope = rememberCoroutineScope()
     val uiState = stateHolder.uiState
     uiState.loginEvent?.let {
         stateHolder.navigateToTop()
+    }
+    uiState.throwable?.let {
+        coroutineScope.launch {
+            scaffoldState.snackbarHostState.showSnackbar("Login failed")
+        }
     }
     LoginContent(
         isLoading = uiState.isLoading,

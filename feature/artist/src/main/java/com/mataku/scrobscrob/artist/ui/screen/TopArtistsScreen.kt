@@ -16,14 +16,13 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.mataku.scrobscrob.artist.ui.molecule.TopArtist
 import com.mataku.scrobscrob.artist.ui.state.TopArtistsScreenState
-import com.mataku.scrobscrob.artist.ui.state.rememberTopArtistsScreenState
 import com.mataku.scrobscrob.core.api.endpoint.Artist
 import com.mataku.scrobscrob.ui_common.organism.InfiniteLoadingIndicator
 import com.mataku.scrobscrob.ui_common.style.Colors
 
 @Composable
 fun TopArtistsScreen(
-    state: TopArtistsScreenState = rememberTopArtistsScreenState()
+    state: TopArtistsScreenState
 ) {
     val contentWidth = state.contentWidth
     val uiState = state.uiState

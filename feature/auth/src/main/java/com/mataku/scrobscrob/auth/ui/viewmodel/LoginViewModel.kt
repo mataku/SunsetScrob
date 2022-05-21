@@ -1,23 +1,22 @@
 package com.mataku.scrobscrob.auth.ui.viewmodel
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mataku.scrobscrob.data.repository.SessionRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(private val repo: SessionRepository) : ViewModel() {
 
-    var uiState by mutableStateOf(UiState.initialize())
+    var uiState: MutableStateFlow<UiState> = MutableStateFlow(UiState.initialize())
         private set
 
     fun authorize(username: String, password: String) {
@@ -27,23 +26,31 @@ class LoginViewModel @Inject constructor(private val repo: SessionRepository) : 
                 password = password
             )
                 .onStart {
-                    uiState = uiState.copy(
-                        isLoading = true,
-                        throwable = null
-                    )
+                    uiState.update {
+                        it.copy(
+                            isLoading = true,
+                            throwable = null
+                        )
+                    }
                 }
                 .onCompletion {
-                    uiState = uiState.copy(
-                        isLoading = false
-                    )
+                    uiState.update {
+                        it.copy(
+                            isLoading = false
+                        )
+                    }
                 }
                 .catch {
-                    uiState = uiState.copy(
-                        throwable = it
-                    )
+                    uiState.update { state ->
+                        state.copy(
+                            throwable = it
+                        )
+                    }
                 }
                 .collect {
-                    uiState = UiState(isLoading = false, loginEvent = Unit)
+                    uiState.update {
+                        it.copy(isLoading = false, loginEvent = Unit)
+                    }
                 }
         }
     }

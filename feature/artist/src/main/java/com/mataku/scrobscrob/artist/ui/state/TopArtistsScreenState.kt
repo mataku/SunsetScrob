@@ -5,12 +5,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation.NavHostController
 import com.mataku.scrobscrob.artist.ui.viewmodel.TopArtistsViewModel
 
 class TopArtistsScreenState(
-    private val navController: NavController,
+    private val navController: NavHostController,
     private val viewModel: TopArtistsViewModel,
     context: Context
 ) {
@@ -32,7 +31,7 @@ class TopArtistsScreenState(
 @Composable
 fun rememberTopArtistsScreenState(
     viewModel: TopArtistsViewModel = hiltViewModel(),
-    navController: NavController = rememberNavController(),
+    navController: NavHostController,
     context: Context = LocalContext.current
 ): TopArtistsScreenState {
     return remember {

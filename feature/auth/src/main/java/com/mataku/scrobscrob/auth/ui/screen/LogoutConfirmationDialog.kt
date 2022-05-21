@@ -7,11 +7,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import com.mataku.scrobscrob.auth.ui.state.LogoutConfirmationDialogState
-import com.mataku.scrobscrob.auth.ui.state.rememberLogoutConfirmationDialogState
 
 @Composable
 fun LogoutConfirmationDialog(
-    stateHolder: LogoutConfirmationDialogState = rememberLogoutConfirmationDialogState()
+    stateHolder: LogoutConfirmationDialogState
 ) {
     val openStatus = remember {
         mutableStateOf(true)
