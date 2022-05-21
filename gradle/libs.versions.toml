@@ -4,6 +4,7 @@ hilt = "2.40.4"
 ktor = "1.5.1"
 room = "2.4.0"
 kotlin = "1.5.31"
+kotlin-compiler-extension = "1.0.5"
 
 [libraries]
 activity-compose = { module = "androidx.activity:activity-compose", version = "1.3.1" }

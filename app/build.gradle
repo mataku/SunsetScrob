@@ -1,4 +1,3 @@
-import dependency.Deps
 import dependency.Versions
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -69,7 +68,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion Deps.kotlinCompilerExtensionVersion
+        kotlinCompilerExtensionVersion libs.kotlin.compiler.extension,get()
     }
 
     packagingOptions {
