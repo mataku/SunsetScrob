@@ -1,9 +1,5 @@
 dependencies {
     testImplementation libs.androidx.test.core
-    testImplementation libs.kotlin.test.junit
-    testImplementation libs.robolectric
-    testImplementation libs.junit
-    testImplementation libs.mockito
     testImplementation libs.kotest.runner.junit5
     testImplementation libs.kotest.assertions
     testImplementation libs.mockk
