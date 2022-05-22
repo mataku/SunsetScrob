@@ -17,7 +17,7 @@ compose-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-compose",
 compose-navigation = { module = "androidx.navigation:navigation-compose", version = "2.4.2" }
 compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version = "1.1.1" }
 
-accompanist-navigation-animation = { module = "com.google.accompanist:accompanist-navigation-animation", version = "0.22.0-rc" }
+accompanist-navigation-animation = { module = "com.google.accompanist:accompanist-navigation-animation", version = "0.23.1" }
 
 coil-compose = { module = "io.coil-kt:coil-compose", version = "1.4.0" }
 firebase-core = { module = "com.google.firebase:firebase-core", version = "17.5.1" }
