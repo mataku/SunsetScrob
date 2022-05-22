@@ -1,7 +1,7 @@
 [versions]
 compose = "1.1.1"
 hilt = "2.42"
-ktor = "1.5.1"
+ktor = "1.6.8"
 room = "2.4.2"
 kotlin = "1.6.10"
 kotlin-compiler-extension = "1.1.1"
