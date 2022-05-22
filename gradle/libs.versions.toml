@@ -68,7 +68,7 @@ androidx-test-core = { module = "androidx.test:core", version = "1.4.0" }
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
 robolectric = { module = "org.robolectric:robolectric", version = "4.0.2" }
 junit = { module = "junit:junit", version = "4.12" }
-mockito = { module = "org.mockito:mockito-core", version = "2.27.0" }
+mockito = { module = "org.mockito:mockito-core", version = "2.28.2" }
 kotest-runner-junit5 = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest" }
 kotest-assertions = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
