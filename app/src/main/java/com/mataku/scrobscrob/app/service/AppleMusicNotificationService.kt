@@ -7,7 +7,6 @@ import android.os.Build
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.text.TextUtils
-import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.app.model.RxEventBus
 import com.mataku.scrobscrob.app.presenter.AppleMusicNotificationServicePresenter
 import com.mataku.scrobscrob.app.ui.view.NotificationServiceInterface
@@ -158,9 +157,9 @@ class AppleMusicNotificationService : NotificationListenerService(), Notificatio
 
     private fun dummyTrack(): Track {
         return Track(
-            getString(R.string.label_not_playing_message),
-            getString(R.string.label_now_playing),
-            getString(R.string.label_not_playing)
+            "Let's play music on Apple Music App!",
+            "Now Playing Track",
+            "Nothing!"
         )
     }
 }
