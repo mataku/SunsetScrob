@@ -37,7 +37,7 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
     composeOptions {
-        kotlinCompilerExtensionVersion libs.versions.kotlin.compiler.extension.get()
+        kotlinCompilerExtensionVersion libs.versions.compose.get()
     }
 
     kotlinOptions {
@@ -52,4 +52,9 @@ dependencies {
     implementation libs.compose.material
     implementation libs.compose.navigation
     implementation libs.accompanist.navigation.animation
+    implementation libs.accompanist.webview
+}
+
+repositories {
+    mavenCentral()
 }

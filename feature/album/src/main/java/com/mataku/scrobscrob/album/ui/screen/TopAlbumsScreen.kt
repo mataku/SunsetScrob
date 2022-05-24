@@ -1,15 +1,14 @@
 package com.mataku.scrobscrob.album.ui.screen
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.lazy.GridCells
-import androidx.compose.foundation.lazy.GridItemSpan
-import androidx.compose.foundation.lazy.LazyVerticalGrid
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
@@ -49,7 +48,6 @@ fun TopAlbumsScreen(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TopAlbumsContent(
     albums: List<Album>,
@@ -58,29 +56,26 @@ fun TopAlbumsContent(
     padding: Dp,
     onUrlTap: (String) -> Unit,
     onScrollEnd: () -> Unit
+) = LazyVerticalGrid(
+    columns = GridCells.Fixed(2),
+    modifier = Modifier
+        .background(
+            Colors.ContentBackground
+        )
+        .fillMaxHeight(),
+    contentPadding = PaddingValues(start = 8.dp, end = 8.dp)
 ) {
-    LazyVerticalGrid(
-        cells = GridCells.Fixed(2),
-        content = {
-            items(albums) {
-                TopAlbum(album = it, imageSize = imageSize, onAlbumTap = {
-                    onUrlTap(it.url)
-                })
-            }
-            if (hasNext) {
-                item(span = { GridItemSpan(2) }) {
-                    InfiniteLoadingIndicator(
-                        onScrollEnd = onScrollEnd,
-                        padding = padding
-                    )
-                }
-            }
-        },
-        contentPadding = PaddingValues(start = 8.dp, end = 8.dp),
-        modifier = Modifier
-            .background(
-                Colors.ContentBackground
+    items(albums) {
+        TopAlbum(album = it, imageSize = imageSize, onAlbumTap = {
+            onUrlTap(it.url)
+        })
+    }
+    if (hasNext) {
+        item(span = { GridItemSpan(2) }) {
+            InfiniteLoadingIndicator(
+                onScrollEnd = onScrollEnd,
+                padding = padding
             )
-            .fillMaxHeight()
-    )
+        }
+    }
 }

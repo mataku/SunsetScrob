@@ -1,10 +1,10 @@
 [versions]
-compose = "1.1.1"
+accompanist = "0.24.9-beta"
+compose = "1.2.0-beta02"
 hilt = "2.42"
 ktor = "2.0.1"
 room = "2.4.2"
 kotlin = "1.6.21"
-kotlin-compiler-extension = "1.1.1"
 kotest = "5.3.0"
 mockk = "1.12.4"
 
@@ -17,7 +17,8 @@ compose-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-compose",
 compose-navigation = { module = "androidx.navigation:navigation-compose", version = "2.4.2" }
 compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version = "1.1.1" }
 
-accompanist-navigation-animation = { module = "com.google.accompanist:accompanist-navigation-animation", version = "0.23.1" }
+accompanist-navigation-animation = { module = "com.google.accompanist:accompanist-navigation-animation", version.ref = "accompanist" }
+accompanist-webview = { module = "com.google.accompanist:accompanist-webview", version.ref = "accompanist" }
 
 coil-compose = { module = "io.coil-kt:coil-compose", version = "2.1.0" }
 firebase-core = { module = "com.google.firebase:firebase-core", version = "17.5.1" }
