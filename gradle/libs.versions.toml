@@ -19,7 +19,7 @@ compose-material-icons-extended = { module = "androidx.compose.material:material
 
 accompanist-navigation-animation = { module = "com.google.accompanist:accompanist-navigation-animation", version = "0.23.1" }
 
-coil-compose = { module = "io.coil-kt:coil-compose", version = "1.4.0" }
+coil-compose = { module = "io.coil-kt:coil-compose", version = "2.1.0" }
 firebase-core = { module = "com.google.firebase:firebase-core", version = "17.5.1" }
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics", version = "17.4.1" }
 
