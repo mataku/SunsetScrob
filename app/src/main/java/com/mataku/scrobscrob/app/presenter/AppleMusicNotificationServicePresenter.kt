@@ -1,13 +1,11 @@
 package com.mataku.scrobscrob.app.presenter
 
 import com.mataku.scrobscrob.app.ui.view.NotificationServiceInterface
-import com.mataku.scrobscrob.core.api.repository.NowPlayingRepository
-import com.mataku.scrobscrob.core.api.repository.ScrobbleRepository
-import com.mataku.scrobscrob.core.api.repository.TrackRepository
 import com.mataku.scrobscrob.core.entity.Track
-import com.mataku.scrobscrob.core.entity.presentation.onFailure
-import com.mataku.scrobscrob.core.entity.presentation.onSuccess
 import com.mataku.scrobscrob.core.util.AppUtil
+import com.mataku.scrobscrob.data.repository.NowPlayingRepository
+import com.mataku.scrobscrob.data.repository.ScrobbleRepository
+import com.mataku.scrobscrob.data.repository.TrackRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -44,63 +42,63 @@ class AppleMusicNotificationServicePresenter(
     }
 
     private suspend fun requestScrobble(track: Track, sessionKey: String, timeStamp: Long) {
-        scrobbleRepository.scrobble(track, sessionKey, timeStamp)
-            .onSuccess { attr ->
-                val accepted = attr.accepted
-                accepted?.let {
-                    if (it == 1) {
-                        notificationServiceInterface.saveScrobble(track)
-                        appUtil.debugLog("scrobbleApi", "success")
-                    }
-                }
-            }
-            .onFailure {
-                appUtil.debugLog("Scrobble API", it.localizedMessage.toString())
-            }
+//        scrobbleRepository.scrobble(track, sessionKey, timeStamp)
+//            .onSuccess { attr ->
+//                val accepted = attr.accepted
+//                accepted?.let {
+//                    if (it == 1) {
+//                        notificationServiceInterface.saveScrobble(track)
+//                        appUtil.debugLog("scrobbleApi", "success")
+//                    }
+//                }
+//            }
+//            .onFailure {
+//                appUtil.debugLog("Scrobble API", it.localizedMessage.toString())
+//            }
     }
 
     private suspend fun setNowPlaying(trackName: String, artistName: String, sessionKey: String) {
-        nowPlayingRepository.update(trackName, artistName, sessionKey)
-            .onSuccess {
-                notificationServiceInterface.notifyNowPlayingUpdated(
-                    Track(
-                        it.artist.text,
-                        it.track.text,
-                        it.album.text
-                    )
-                )
-
-            }
-            .onFailure {
-                appUtil.debugLog("NowPlayingApi", "Something wrong")
-            }
+//        nowPlayingRepository.update(trackName, artistName, sessionKey)
+//            .onSuccess {
+//                notificationServiceInterface.notifyNowPlayingUpdated(
+//                    Track(
+//                        it.artist.text,
+//                        it.track.text,
+//                        it.album.text
+//                    )
+//                )
+//
+//            }
+//            .onFailure {
+//                appUtil.debugLog("NowPlayingApi", "Something wrong")
+//            }
     }
 
     private suspend fun getTrackInfo(artistName: String, trackName: String) {
-        var trackDuration = appUtil.defaultPlayingTime
-        var albumArtwork = ""
-
-        trackRepository.getInfo(artistName, trackName)
-            .onSuccess {
-                val duration = it.duration
-                if (duration != null) {
-                    trackDuration = duration.toLong() / 1000L
-                }
-                try {
-                    it.album?.imageList?.let { list ->
-                        albumArtwork = list[1].imageUrl
-                    }
-                } catch (e: Exception) {
-                }
-                // Use default value if duration is 0
-                if (trackDuration == 0L) {
-                    trackDuration = appUtil.defaultPlayingTime
-                }
-
-                notificationServiceInterface.setCurrentTrackInfo(trackDuration, albumArtwork)
-            }
-            .onFailure {
-                notificationServiceInterface.setCurrentTrackInfo(trackDuration, albumArtwork)
-            }
+//        var trackDuration = appUtil.defaultPlayingTime
+//        var albumArtwork = ""
+//
+//        trackRepository.getInfo(artistName, trackName)
+//            .onSuccess {
+//                val duration = it.duration
+//                if (duration != null) {
+//                    trackDuration = duration.toLong() / 1000L
+//                }
+//                try {
+//                    it.album?.imageList?.let { list ->
+//                        albumArtwork = list[1].imageUrl
+//                    }
+//                } catch (e: Exception) {
+//                }
+//                // Use default value if duration is 0
+//                if (trackDuration == 0L) {
+//                    trackDuration = appUtil.defaultPlayingTime
+//                }
+//
+//                notificationServiceInterface.setCurrentTrackInfo(trackDuration, albumArtwork)
+//            }
+//            .onFailure {
+//                notificationServiceInterface.setCurrentTrackInfo(trackDuration, albumArtwork)
+//            }
     }
 }

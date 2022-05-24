@@ -2,9 +2,12 @@ package com.mataku.scrobscrob.data.api
 
 import com.mataku.scrobscrob.core.api.endpoint.Endpoint
 import io.ktor.client.HttpClient
+import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.ktor.client.request.post
+import io.ktor.client.request.setBody
+import io.ktor.client.request.url
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -12,27 +15,28 @@ import javax.inject.Singleton
 class LastFmService @Inject constructor(val httpClient: HttpClient) {
 
     suspend inline fun <reified T> get(endpoint: Endpoint): T {
-        val response = httpClient.get<T>(BASE_URL + endpoint.path) {
+        val response = httpClient.get {
+            url(BASE_URL + endpoint.path)
             if (endpoint.params.isNotEmpty()) {
                 endpoint.params.forEach { (k, v) ->
-                    parameter(key = k, value = v)
+                    parameter(k, v)
                 }
             }
         }
-        return response
+
+        return response.body()
     }
 
     suspend inline fun <reified T> post(endpoint: Endpoint): T {
-        val response = httpClient.post<T>(BASE_URL + endpoint.path) {
-            // Fix at ktor 1.2
-            // https://github.com/ktorio/ktor/issues/904
-            body = ""
+        val response = httpClient.post {
+            url(BASE_URL + endpoint.path)
+            setBody("")
             endpoint.params.forEach { (k, v) ->
                 parameter(k, v)
             }
         }
 
-        return response
+        return response.body()
     }
 
     companion object {

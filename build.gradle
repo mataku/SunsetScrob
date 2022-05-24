@@ -12,7 +12,6 @@ buildscript {
         classpath libs.serialization.plugin
         classpath libs.crashlytics.gradle.plugin
         classpath libs.license.tools.plugin
-        classpath libs.gradle.versions.plugin
         classpath libs.google.services.plugin
         classpath libs.hilt.gradle.plugin
 
@@ -25,6 +24,5 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-        jcenter()
     }
 }
