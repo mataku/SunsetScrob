@@ -1,7 +1,7 @@
 [versions]
 compose = "1.1.1"
 hilt = "2.42"
-ktor = "1.6.8"
+ktor = "2.0.1"
 room = "2.4.2"
 kotlin = "1.6.10"
 kotlin-compiler-extension = "1.1.1"
@@ -27,9 +27,10 @@ coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", vers
 serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version = "1.1.0" }
 
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
-ktor-client-serialization = { module = "io.ktor:ktor-client-serialization-jvm", version.ref = "ktor" }
+ktor-client-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
 ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
 
 material = { module = "com.google.android.material:material", version = "1.1.0" }
 

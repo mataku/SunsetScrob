@@ -49,7 +49,6 @@ android {
 
 dependencies {
     implementation libs.ktor.client.okhttp
-    implementation libs.ktor.client.serialization
     implementation libs.ktor.client.logging
     implementation platform(libs.okhttp.bom)
     implementation libs.okhttp
