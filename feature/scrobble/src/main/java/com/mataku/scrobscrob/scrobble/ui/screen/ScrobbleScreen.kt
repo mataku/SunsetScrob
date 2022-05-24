@@ -1,5 +1,6 @@
 package com.mataku.scrobscrob.scrobble.ui.screen
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,6 +18,7 @@ import com.mataku.scrobscrob.scrobble.ui.state.ScrobbleScreenState
 import com.mataku.scrobscrob.ui_common.organism.InfiniteLoadingIndicator
 import com.mataku.scrobscrob.ui_common.style.Colors
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun ScrobbleScreen(
     state: ScrobbleScreenState
