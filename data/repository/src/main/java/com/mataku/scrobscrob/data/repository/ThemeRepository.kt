@@ -15,9 +15,10 @@ interface ThemeRepository {
 class ThemeRepositoryImpl @Inject constructor(
     private val themeDataStore: ThemeDataStore
 ) : ThemeRepository {
-    override suspend fun currentTheme() = themeDataStore.theme().flowOn(Dispatchers.IO)
+    override suspend fun currentTheme(): Flow<AppTheme> {
+        return themeDataStore.theme().flowOn(Dispatchers.IO)
+    }
 
     override suspend fun storeTheme(theme: AppTheme): Flow<Unit> =
         themeDataStore.setTheme(theme)
-
 }
