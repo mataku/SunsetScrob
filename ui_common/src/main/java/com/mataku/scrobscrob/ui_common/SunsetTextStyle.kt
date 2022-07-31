@@ -8,7 +8,7 @@ import com.mataku.scrobscrob.ui_common.style.Colors
 object SunsetTextStyle {
     // TODO: font
     val caption = TextStyle(
-        fontSize = 12.sp,
+        fontSize = 13.sp,
         color = Colors.textSecondary
     )
 
@@ -23,6 +23,12 @@ object SunsetTextStyle {
     val h6 = TextStyle(
         fontWeight = FontWeight.Medium,
         fontSize = 20.sp,
+        letterSpacing = 0.15.sp
+    )
+
+    val subtitle1 = TextStyle(
+        fontWeight = FontWeight.Medium,
+        fontSize = 16.sp,
         letterSpacing = 0.15.sp
     )
 

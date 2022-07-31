@@ -5,6 +5,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.mataku.scrobscrob.account.ui.ThemeSelectorScreen
+import com.mataku.scrobscrob.account.ui.screen.AccountScreen
+import com.mataku.scrobscrob.account.ui.state.rememberAccountState
+import com.mataku.scrobscrob.account.ui.state.rememberThemeSelectorState
 import com.mataku.scrobscrob.album.ui.screen.TopAlbumsScreen
 import com.mataku.scrobscrob.album.ui.state.rememberTopAlbumsScreenState
 import com.mataku.scrobscrob.artist.ui.screen.TopArtistsScreen
@@ -44,6 +48,9 @@ fun NavigationGraph(navController: NavHostController, isLoggedIn: Boolean) {
                 state = rememberTopArtistsScreenState(navController = navController)
             )
         }
+        composable(SunsetBottomNavItem.ACCOUNT.screenRoute) {
+            AccountScreen(state = rememberAccountState(navController = navController))
+        }
         composable(
             "webview?url={url}",
             arguments = listOf(navArgument("url") {
@@ -55,6 +62,13 @@ fun NavigationGraph(navController: NavHostController, isLoggedIn: Boolean) {
         composable("login") {
             LoginScreen(
                 stateHolder = rememberLoginScreenState(navController = navController)
+            )
+        }
+        composable("theme") {
+            ThemeSelectorScreen(
+                state = rememberThemeSelectorState(
+                    navController = navController
+                )
             )
         }
     }

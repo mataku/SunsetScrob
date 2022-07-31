@@ -12,10 +12,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -75,7 +75,7 @@ private fun ScrobbleContent(
                 text = trackName,
                 fontSize = 14.sp,
                 modifier = Modifier.wrapContentSize(),
-                color = Color.White,
+                color = MaterialTheme.colors.onSurface,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
@@ -86,7 +86,7 @@ private fun ScrobbleContent(
                 text = artistName,
                 fontSize = 12.sp,
                 modifier = Modifier.wrapContentSize(),
-                color = Color.White,
+                color = MaterialTheme.colors.onSurface,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )

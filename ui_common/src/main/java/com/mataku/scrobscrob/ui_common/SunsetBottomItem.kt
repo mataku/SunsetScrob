@@ -3,7 +3,7 @@ package com.mataku.scrobscrob.ui_common
 import androidx.annotation.DrawableRes
 
 enum class SunsetBottomNavItem(
-    @DrawableRes val iconDrawable: Int,
+    @DrawableRes val iconDrawable: Int?,
     val title: String,
     val screenRoute: String
 ) {
@@ -21,5 +21,10 @@ enum class SunsetBottomNavItem(
         R.drawable.ic_account_circle_black,
         "Top Artists",
         "top_artists"
-    )
+    ),
+    ACCOUNT(
+        null,
+        "Account",
+        "Account"
+    );
 }
