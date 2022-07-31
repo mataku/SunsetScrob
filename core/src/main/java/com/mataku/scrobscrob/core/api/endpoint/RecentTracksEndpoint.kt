@@ -43,7 +43,7 @@ data class RecentTrack(
     val url: String,
 
     @SerialName("date")
-    val date: RecentTrackDate
+    val date: RecentTrackDate? = null
 ) {
     fun largeImageUrl(): String? {
         val largeImage = images.find {
@@ -51,6 +51,8 @@ data class RecentTrack(
         }
         return largeImage?.url
     }
+
+    fun isNowPlayingTrack(): Boolean = date == null
 }
 
 @Serializable
