@@ -1,8 +1,8 @@
 package com.mataku.scrobscrob.core.entity
 
 enum class AppTheme(val rawValue: String) {
-    DARK("dark"),
-    LIGHT("light");
+    DARK("Dark"),
+    LIGHT("Light");
 
     companion object {
         fun deserialize(
