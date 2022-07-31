@@ -25,10 +25,10 @@ import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.R as uiCommonR
 
 @Composable
-fun TopArtist(artist: Artist, imageSize: Dp, onArtistTap: () -> Unit) {
+fun TopArtist(artist: Artist, imageSize: Dp, onArtistTap: () -> Unit, modifier: Modifier) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
+        modifier = modifier
             .padding(8.dp)
             .clickable {
                 onArtistTap()
