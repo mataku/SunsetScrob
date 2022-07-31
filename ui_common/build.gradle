@@ -46,6 +46,7 @@ android {
 }
 
 dependencies {
+    implementation(project(':core'))
     implementation libs.activity.compose
     implementation libs.compose.ui.tooling
     implementation libs.compose.animation
@@ -53,4 +54,5 @@ dependencies {
     implementation libs.compose.navigation
     implementation libs.accompanist.navigation.animation
     implementation libs.compose.material.icons.extended
+    implementation libs.accompanist.systemuicontroller
 }

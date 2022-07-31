@@ -1,4 +1,5 @@
 [versions]
+accompanist = "0.23.1"
 compose = "1.1.1"
 hilt = "2.42"
 ktor = "2.0.1"
@@ -17,7 +18,8 @@ compose-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-compose",
 compose-navigation = { module = "androidx.navigation:navigation-compose", version = "2.4.2" }
 compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version = "1.1.1" }
 
-accompanist-navigation-animation = { module = "com.google.accompanist:accompanist-navigation-animation", version = "0.23.1" }
+accompanist-navigation-animation = { module = "com.google.accompanist:accompanist-navigation-animation", version.ref = "accompanist" }
+accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
 
 core-splashscreen = { module = "androidx.core:core-splashscreen", version = "1.0.0" }
 
