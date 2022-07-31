@@ -1,6 +1,5 @@
 package com.mataku.scrobscrob.auth.ui.screen
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -41,7 +40,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mataku.scrobscrob.auth.ui.state.LoginScreenState
 import com.mataku.scrobscrob.ui_common.R
-import com.mataku.scrobscrob.ui_common.style.Colors
 import com.mataku.scrobscrob.ui_common.style.SunsetTheme
 import kotlinx.coroutines.launch
 
@@ -82,7 +80,6 @@ fun LoginContent(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Colors.ContentBackground)
             .verticalScroll(rememberScrollState())
             .padding(horizontal = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
