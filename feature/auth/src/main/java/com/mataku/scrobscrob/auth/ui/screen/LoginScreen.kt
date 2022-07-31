@@ -67,7 +67,7 @@ fun LoginScreen(
 }
 
 @Composable
-fun LoginContent(
+private fun LoginContent(
     isLoading: Boolean,
     onLoginButtonTap: (String, String) -> Unit
 ) {
