@@ -27,10 +27,10 @@ import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.R as uiCommonR
 
 @Composable
-fun TopAlbum(album: Album, imageSize: Dp, onAlbumTap: () -> Unit) {
+fun TopAlbum(album: Album, imageSize: Dp, onAlbumTap: () -> Unit, modifier: Modifier) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
+        modifier = modifier
             .padding(8.dp)
             .clickable {
                 onAlbumTap()
