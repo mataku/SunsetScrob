@@ -5,6 +5,8 @@ import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
@@ -26,10 +28,20 @@ fun SunsetBottomNavigation(navController: NavController) {
             BottomNavigationItem(
                 label = { Text(text = item.title) },
                 icon = {
-                    Icon(
-                        painterResource(item.iconDrawable),
-                        contentDescription = item.title
-                    )
+                    when (item) {
+                        SunsetBottomNavItem.SCROBBLE, SunsetBottomNavItem.TOP_ALBUMS, SunsetBottomNavItem.TOP_ARTISTS -> {
+                            Icon(
+                                painterResource(item.iconDrawable!!),
+                                contentDescription = item.title
+                            )
+                        }
+                        SunsetBottomNavItem.ACCOUNT -> {
+                            Icon(
+                                imageVector = Icons.Default.AccountCircle,
+                                contentDescription = item.title
+                            )
+                        }
+                    }
                 },
                 selected = currentRoute == item.screenRoute,
                 onClick = {
