@@ -84,7 +84,7 @@ private fun TopArtistsContent(
         },
         modifier = Modifier
             .fillMaxHeight()
-            .padding(56.dp)
+            .padding(bottom = 56.dp)
     )
 }
 
