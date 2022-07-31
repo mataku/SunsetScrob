@@ -1,7 +1,6 @@
 package com.mataku.scrobscrob.artist.ui.screen
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,25 +25,19 @@ fun TopArtistsScreen(
 ) {
     val contentWidth = state.contentWidth
     val uiState = state.uiState
-    if (uiState.topArtists.isEmpty()) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-        )
-    } else {
-        TopArtistsContent(
-            artists = uiState.topArtists,
-            hasNext = uiState.hasNext,
-            imageSize = contentWidth.dp,
-            padding = contentWidth.dp - 20.dp,
-            onUrlTap = {
-                state.onTapArtist(it)
-            },
-            onScrollEnd = {
-                state.onScrollEnd()
-            }
-        )
-    }
+
+    TopArtistsContent(
+        artists = uiState.topArtists,
+        hasNext = uiState.hasNext,
+        imageSize = contentWidth.dp,
+        padding = contentWidth.dp - 20.dp,
+        onUrlTap = {
+            state.onTapArtist(it)
+        },
+        onScrollEnd = {
+            state.onScrollEnd()
+        }
+    )
 }
 
 @OptIn(ExperimentalFoundationApi::class)

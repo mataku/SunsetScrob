@@ -1,10 +1,8 @@
 package com.mataku.scrobscrob.album.ui.screen
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -27,26 +25,19 @@ fun TopAlbumsScreen(
 ) {
     val uiState = state.uiState
 
-    if (uiState.topAlbums.isEmpty()) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-        )
-    } else {
-        val contentWidth = state.contentWidth
-        TopAlbumsContent(
-            albums = uiState.topAlbums,
-            hasNext = uiState.hasNext,
-            imageSize = contentWidth.dp,
-            padding = contentWidth.dp - 20.dp,
-            onUrlTap = {
-                state.onTapAlbum(it)
-            },
-            onScrollEnd = {
-                state.onScrollEnd()
-            }
-        )
-    }
+    val contentWidth = state.contentWidth
+    TopAlbumsContent(
+        albums = uiState.topAlbums,
+        hasNext = uiState.hasNext,
+        imageSize = contentWidth.dp,
+        padding = contentWidth.dp - 20.dp,
+        onUrlTap = {
+            state.onTapAlbum(it)
+        },
+        onScrollEnd = {
+            state.onScrollEnd()
+        }
+    )
 }
 
 @OptIn(ExperimentalFoundationApi::class)
