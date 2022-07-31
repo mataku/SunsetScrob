@@ -18,7 +18,7 @@ fun SunsetTheme(
 private val darkColors = darkColors(
     primary = Color(0xff4c626d),
     onPrimary = Color.White,
-    primaryVariant = Color(0xff000000),
+    primaryVariant = Colors.ContentBackground,
     secondary = Color(0xffFF4081),
     onSecondary = Color.White,
     surface = Colors.ContentBackground,

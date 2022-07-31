@@ -3,6 +3,8 @@ package com.mataku.scrobscrob.app.ui.top
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.app.receiver.AppleMusicNotificationReceiver
 import com.mataku.scrobscrob.app.ui.screen.MainScreen
 import com.mataku.scrobscrob.app.util.SharedPreferencesHelper
@@ -21,6 +23,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        installSplashScreen()
+
+        setTheme(R.style.AppTheme)
+
         setContent {
             SunsetTheme {
                 MainScreen(
