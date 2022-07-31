@@ -2,28 +2,23 @@ package com.mataku.scrobscrob.scrobble.ui.screen
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import com.mataku.scrobscrob.core.api.endpoint.RecentTrack
 import com.mataku.scrobscrob.scrobble.R
 import com.mataku.scrobscrob.scrobble.ui.molecule.Scrobble
 import com.mataku.scrobscrob.scrobble.ui.state.ScrobbleScreenState
 import com.mataku.scrobscrob.scrobble.ui.state.ScrobbleTopBarState
-import com.mataku.scrobscrob.ui_common.SunsetTextStyle
+import com.mataku.scrobscrob.ui_common.organism.ContentHeader
 import com.mataku.scrobscrob.ui_common.organism.InfiniteLoadingIndicator
-import com.mataku.scrobscrob.ui_common.style.Colors
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -63,19 +58,8 @@ private fun ScrobbleContent(
     LazyColumn(
         content = {
             stickyHeader {
-                Text(
-                    text = stringResource(id = R.string.menu_scrobble),
-                    style = SunsetTextStyle.h6,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(
-                            color = Colors.ContentBackground
-                        )
-                        .padding(16.dp)
-                )
+                ContentHeader(text = stringResource(id = R.string.menu_scrobble))
             }
-
-
 
             items(recentTracks) {
                 Scrobble(
@@ -97,7 +81,6 @@ private fun ScrobbleContent(
             }
         },
         modifier = Modifier
-            .background(Colors.ContentBackground)
             .fillMaxSize()
     )
 }

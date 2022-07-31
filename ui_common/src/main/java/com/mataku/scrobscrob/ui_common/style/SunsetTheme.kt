@@ -22,5 +22,7 @@ private val darkColors = darkColors(
     secondary = Color(0xffFF4081),
     onSecondary = Color.White,
     surface = Colors.ContentBackground,
-    onSurface = Color.White
+    onSurface = Color.White,
+    background = Colors.ContentBackground,
+    onBackground = Color.White
 )

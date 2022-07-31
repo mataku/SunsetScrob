@@ -1,7 +1,6 @@
 package com.mataku.scrobscrob.album.ui.screen
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -10,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -20,9 +18,8 @@ import com.mataku.scrobscrob.album.R
 import com.mataku.scrobscrob.album.ui.molecule.TopAlbum
 import com.mataku.scrobscrob.album.ui.state.TopAlbumsScreenState
 import com.mataku.scrobscrob.core.api.endpoint.Album
-import com.mataku.scrobscrob.ui_common.SunsetTextStyle
+import com.mataku.scrobscrob.ui_common.organism.ContentHeader
 import com.mataku.scrobscrob.ui_common.organism.InfiniteLoadingIndicator
-import com.mataku.scrobscrob.ui_common.style.Colors
 
 @Composable
 fun TopAlbumsScreen(
@@ -34,7 +31,6 @@ fun TopAlbumsScreen(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Colors.ContentBackground)
         )
     } else {
         val contentWidth = state.contentWidth
@@ -66,16 +62,7 @@ fun TopAlbumsContent(
     LazyColumn(
         content = {
             stickyHeader {
-                Text(
-                    text = stringResource(id = R.string.menu_top_albums),
-                    style = SunsetTextStyle.h6,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(
-                            color = Colors.ContentBackground
-                        )
-                        .padding(16.dp)
-                )
+                ContentHeader(text = stringResource(id = R.string.menu_top_albums))
             }
 
             items(albums.chunked(2)) {
@@ -98,9 +85,6 @@ fun TopAlbumsContent(
             }
         },
         modifier = Modifier
-            .background(
-                Colors.ContentBackground
-            )
             .fillMaxHeight()
             .padding(bottom = 56.dp)
     )
