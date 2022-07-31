@@ -5,6 +5,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.mataku.scrobscrob.account.ui.viewmodel.AccountViewModel
 
 class AccountState(
@@ -16,6 +17,21 @@ class AccountState(
 
     fun navigateToThemeSelector() {
         navController.navigate("theme")
+    }
+
+    fun logout() {
+        viewModel.logout()
+    }
+
+    fun navigateToLoginScreen() {
+        navController.navigate("login") {
+            launchSingleTop = true
+            popUpTo(
+                navController.graph.findStartDestination().id
+            ) {
+                inclusive = true
+            }
+        }
     }
 }
 
