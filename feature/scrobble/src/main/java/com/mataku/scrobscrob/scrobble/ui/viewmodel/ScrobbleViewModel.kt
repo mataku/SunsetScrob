@@ -27,7 +27,7 @@ class ScrobbleViewModel @Inject constructor(
     }
 
     fun fetchRecentTracks() {
-        if (!uiState.value.hasNext) return
+        if (!uiState.value.hasNext || uiState.value.isLoading) return
         viewModelScope.launch {
             uiState.update {
                 it.copy(
