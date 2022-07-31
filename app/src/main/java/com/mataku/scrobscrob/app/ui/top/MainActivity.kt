@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
             viewModel.theme.collect {
                 it?.let { theme ->
                     setContent {
-                        SunsetTheme {
+                        SunsetTheme(theme = theme) {
                             MainScreen(
                                 usernameRepository.username()
                             )

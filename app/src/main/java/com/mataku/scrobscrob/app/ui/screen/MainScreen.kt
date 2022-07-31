@@ -1,6 +1,5 @@
 package com.mataku.scrobscrob.app.ui.screen
 
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -10,7 +9,6 @@ import com.mataku.scrobscrob.app.ui.molecule.SunsetBottomNavigation
 import com.mataku.scrobscrob.app.ui.navigation.NavigationGraph
 import com.mataku.scrobscrob.ui_common.SunsetBottomNavItem
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun MainScreen(username: String?) {
     val navController = rememberNavController()
