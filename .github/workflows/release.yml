@@ -27,7 +27,7 @@ jobs:
         bundler-cache: true
     - name: Prepare keystore
       run: |
-        echo "${{ secrets.SUNSET_KEYSTORE }}" | base64 -d > SunsetScrob.jks
+        echo -n "${{ secrets.SUNSETSCROB_KEYSTORE }}" | base64 -d > SunsetScrob.jks
     - name: Deploy an aab
       env:
         LAST_FM_API_KEY: ${{ secrets.LAST_FM_API_KEY }}
