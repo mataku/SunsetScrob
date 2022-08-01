@@ -63,4 +63,8 @@ dependencies {
     implementation libs.coil.compose
 
     implementation libs.coroutines
+
+    implementation libs.accompanist.swiperefresh
+
+    implementation libs.lottie.compose
 }

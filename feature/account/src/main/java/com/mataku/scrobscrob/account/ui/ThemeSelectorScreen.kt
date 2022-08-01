@@ -1,5 +1,6 @@
 package com.mataku.scrobscrob.account.ui
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -16,6 +17,8 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Check
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.stringResource
@@ -38,7 +41,12 @@ fun ThemeSelectorScreen(
 ) {
     val uiState = state.uiState
     val systemUiController = rememberSystemUiController()
-    uiState.theme?.let { currentTheme ->
+    val currentTheme = LocalAppTheme.current
+    val initialState = remember {
+        mutableStateOf(true)
+    }
+
+    if (initialState.value) {
         systemUiController.setNavigationBarColor(
             color = if (currentTheme == AppTheme.SUNSET) {
                 Colors.SunsetBlue
@@ -46,6 +54,27 @@ fun ThemeSelectorScreen(
                 currentTheme.backgroundColor()
             }
         )
+        initialState.value = false
+    }
+
+    // Because there were cases where values flowed in unintentionally, control
+    // TODO
+    uiState.event?.let {
+        when (it) {
+            is ThemeSelectorState.UiEvent.ThemeChanged -> {
+                systemUiController.setNavigationBarColor(
+                    color = if (it.theme == AppTheme.SUNSET) {
+                        Colors.SunsetBlue
+                    } else {
+                        it.theme.backgroundColor()
+                    }
+                )
+            }
+        }
+        state.popEvent()
+    }
+
+    uiState.theme?.let {
         LazyColumn(
             content = {
                 stickyHeader {
@@ -73,6 +102,11 @@ fun ThemeSelectorScreen(
                     .fillMaxSize()
             }
         )
+    }
+    val navigationBarColor = MaterialTheme.colors.primary
+    BackHandler() {
+        systemUiController.setNavigationBarColor(navigationBarColor)
+        state.back()
     }
 }
 
