@@ -5,6 +5,7 @@
 
     <application
         android:supportsRtl="false"
+        android:exported="false"
         tools:replace="android:supportsRtl">
         <activity android:name=".ui.LicensesActivity" />
     </application>

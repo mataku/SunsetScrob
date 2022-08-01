@@ -7,11 +7,11 @@
 
     <application
         android:name=".app.App"
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="false"
-        android:theme="@style/AppTheme"
+        android:theme="@style/SplashTheme"
         tools:replace="android:supportsRtl">
         <activity android:name=".app.ui.top.MainActivity"
             android:exported="true">
@@ -22,16 +22,16 @@
             </intent-filter>
         </activity>
 
-        <service
-            android:name=".app.service.AppleMusicNotificationService"
-            android:enabled="true"
-            android:exported="true"
-            android:label="AppleMusicNotificationService"
-            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
-            <intent-filter>
-                <action android:name="android.service.notification.NotificationListenerService" />
-            </intent-filter>
-        </service>
+<!--        <service-->
+<!--            android:name=".app.service.AppleMusicNotificationService"-->
+<!--            android:enabled="true"-->
+<!--            android:exported="true"-->
+<!--            android:label="AppleMusicNotificationService"-->
+<!--            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.service.notification.NotificationListenerService" />-->
+<!--            </intent-filter>-->
+<!--        </service>-->
     </application>
 
 </manifest>

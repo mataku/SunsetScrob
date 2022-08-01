@@ -1,5 +1,0 @@
-v0.0.8
-Added Your top albums content.
-
-v0.0.5
-Performance improved.

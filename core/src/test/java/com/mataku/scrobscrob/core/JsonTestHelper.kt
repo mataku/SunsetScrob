@@ -1,6 +1,5 @@
 package com.mataku.scrobscrob.core
 
-import com.google.common.io.Files
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.IOException
@@ -20,6 +19,6 @@ object JsonTestHelper {
     @Throws(IOException::class)
     @JvmOverloads
     fun getAssetFileString(name: String, charset: Charset = Charset.defaultCharset()): String =
-        Files.asCharSource(getAssetFile(name), charset).read()
+        getAssetFile(name).readText(charset = charset)
 
 }

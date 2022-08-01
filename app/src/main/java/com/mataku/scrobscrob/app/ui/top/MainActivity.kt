@@ -2,36 +2,51 @@ package com.mataku.scrobscrob.app.ui.top
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.lifecycleScope
+import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.app.receiver.AppleMusicNotificationReceiver
 import com.mataku.scrobscrob.app.ui.screen.MainScreen
+import com.mataku.scrobscrob.app.ui.viewmodel.MainViewModel
 import com.mataku.scrobscrob.app.util.SharedPreferencesHelper
 import com.mataku.scrobscrob.data.repository.UsernameRepository
-import com.mataku.scrobscrob.databinding.ActivityMainBinding
 import com.mataku.scrobscrob.ui_common.style.SunsetTheme
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private var receiver = AppleMusicNotificationReceiver()
     private lateinit var sharedPreferencesHelper: SharedPreferencesHelper
-    private lateinit var binding: ActivityMainBinding
-
-    private val self = this
 
     @Inject
     lateinit var usernameRepository: UsernameRepository
 
+    private val viewModel by viewModels<MainViewModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent {
-            SunsetTheme {
-                MainScreen(
-                    usernameRepository.username()
-                )
+        installSplashScreen()
+
+        setTheme(R.style.AppTheme)
+
+        lifecycleScope.launch {
+            viewModel.theme.collect {
+                it?.let { theme ->
+                    setContent {
+                        SunsetTheme(theme = theme) {
+                            MainScreen(
+                                usernameRepository.username()
+                            )
+                        }
+                    }
+                }
             }
         }
+
 //        sharedPreferencesHelper = SharedPreferencesHelper(this)
 //        this.title = "Latest 20 scrobbles (Beta)"
 //        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)

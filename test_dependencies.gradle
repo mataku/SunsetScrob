@@ -1,11 +1,13 @@
-import dependency.UnitTestDeps
-
 dependencies {
-    testImplementation UnitTestDeps.androidxTestCore
-    testImplementation UnitTestDeps.kotlinTestJunit
-    testImplementation UnitTestDeps.robolectric
-    testImplementation UnitTestDeps.guava
-    testImplementation UnitTestDeps.junit
-    testImplementation UnitTestDeps.mockWebServer
-    testImplementation UnitTestDeps.mockito
+    testImplementation libs.androidx.test.core
+    testImplementation libs.kotest.runner.junit5
+    testImplementation libs.kotest.assertions
+    testImplementation libs.mockk
+    testImplementation libs.mockk.agent.jvm
+}
+
+android.testOptions {
+    unitTests.all {
+        useJUnitPlatform()
+    }
 }

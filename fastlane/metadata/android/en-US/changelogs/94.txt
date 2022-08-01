@@ -1,0 +1,1 @@
+The color of status bar and navigation bar now matches the color of the content.

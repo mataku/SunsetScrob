@@ -1,4 +1,3 @@
-import dependency.Deps
 import dependency.Versions
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -7,28 +6,25 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'dagger.hilt.android.plugin'
 
-apply plugin: 'com.github.ben-manes.versions'
 apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'com.google.gms.google-services'
 
 apply from: "lint-checks.gradle"
-apply from: "$project.rootDir/core_dependencies.gradle"
 apply from: "$project.rootDir/test_dependencies.gradle"
 apply from: "$project.rootDir/test_options.gradle"
 
 android {
-    compileSdkVersion Versions.compileSdkVersion
+    compileSdk Versions.compileSdkVersion
     buildFeatures {
-        dataBinding = true
         compose = true
     }
 
     defaultConfig {
         applicationId 'com.mataku.scrobscrob'
-        minSdkVersion Versions.minSdkVersion
-        targetSdkVersion Versions.targetSdkVersion
-        versionCode 90
-        versionName '0.9.0'
+        minSdk Versions.minSdkVersion
+        targetSdk Versions.targetSdkVersion
+        versionCode 95
+        versionName '0.9.5'
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         vectorDrawables.useSupportLibrary = true
         proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
@@ -70,7 +66,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion Deps.kotlinCompilerExtensionVersion
+        kotlinCompilerExtensionVersion libs.versions.kotlin.compiler.extension.get()
     }
 
     packagingOptions {
@@ -93,44 +89,43 @@ dependencies {
     implementation project(":core")
     implementation project(":data:repository")
 
-    implementation Deps.activityKtx
-    implementation Deps.cardView
-    implementation Deps.lifecycleExtensions
-    implementation Deps.lifecycleViewmodelKtx
-    implementation Deps.materialComponent
-    implementation Deps.preference
+    implementation project(":feature:album")
+    implementation project(":feature:artist")
+    implementation project(':feature:auth')
+    implementation project(':feature:scrobble')
+    implementation project(':feature:account')
 
-    implementation Deps.kotlinCoroutinesAndroid
+    implementation libs.activity.ktx
+    implementation libs.material
+    implementation libs.coroutines
 
-    implementation Deps.epoxy
-    kapt Deps.epoxyProcessor
+    implementation libs.firebase.crashlytics
 
-    implementation Deps.firebaseCrashlytics
+    implementation libs.room.runtime
+    kapt libs.room.compiler
 
-    implementation Deps.roomRuntime
-    kapt Deps.roomCompiler
-
-    implementation Deps.glide
-    kapt Deps.glideCompiler
-
-    implementation Deps.hilt
-    kapt Deps.hiltCompiler
-    kapt Deps.hiltAndroidXCompiler
+    implementation libs.hilt.android
+    kapt libs.hilt.compiler
+    kapt libs.hilt.android.compiler
 
     implementation(project(":ui_common"))
-    implementation(Deps.Compose.activity)
-    implementation(Deps.Compose.uiTooling)
-    implementation(Deps.Compose.animation)
-    implementation(Deps.Compose.material)
-    implementation(Deps.Compose.navigation)
-    implementation(Deps.coil)
-    implementation(Deps.Accompanist.navigationAnimation)
-    implementation(Deps.Compose.hiltNavigationCompose)
-    implementation Deps.Compose.materialIconsExtended
+    implementation libs.activity.compose
+    implementation libs.compose.ui.tooling
+    implementation libs.compose.animation
+    implementation libs.compose.material
+    implementation libs.compose.navigation
+    implementation libs.coil.compose
+    implementation libs.accompanist.navigation.animation
+    implementation libs.hilt.navigation.compose
+    implementation libs.compose.material.icons.extended
+    implementation libs.core.splashscreen
 }
 
 kapt {
     correctErrorTypes true
+    javacOptions {
+        option("-Xmaxerrs", 1000)
+    }
 }
 
 tasks.withType(KotlinCompile).all {

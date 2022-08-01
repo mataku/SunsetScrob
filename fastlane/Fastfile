@@ -1,5 +1,3 @@
-fastlane_version "2.67.0"
-
 default_platform :android
 
 platform :android do
@@ -28,6 +26,12 @@ platform :android do
 
   lane :bundle_release do
     gradle(task: 'bundleRelease')
+  end
+
+  lane :fetch_metadata do
+    download_from_play_store(
+      package_name: 'com.mataku.scrobscrob'
+    )
   end
 
 

@@ -1,11 +1,8 @@
-import dependency.Deps
 import dependency.Versions
 
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
-
-apply from: "$project.rootDir/core_dependencies.gradle"
 
 android {
     compileSdkVersion Versions.compileSdkVersion
@@ -40,7 +37,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion Deps.kotlinCompilerExtensionVersion
+        kotlinCompilerExtensionVersion libs.versions.kotlin.compiler.extension.get()
     }
 }
 

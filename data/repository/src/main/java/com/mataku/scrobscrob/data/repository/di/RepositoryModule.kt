@@ -7,6 +7,8 @@ import com.mataku.scrobscrob.data.repository.ScrobbleRepository
 import com.mataku.scrobscrob.data.repository.ScrobbleRepositoryImpl
 import com.mataku.scrobscrob.data.repository.SessionRepository
 import com.mataku.scrobscrob.data.repository.SessionRepositoryImpl
+import com.mataku.scrobscrob.data.repository.ThemeRepository
+import com.mataku.scrobscrob.data.repository.ThemeRepositoryImpl
 import com.mataku.scrobscrob.data.repository.TopAlbumsRepository
 import com.mataku.scrobscrob.data.repository.TopAlbumsRepositoryImpl
 import com.mataku.scrobscrob.data.repository.TopArtistsRepository
@@ -55,6 +57,12 @@ class RepositoryModule {
     @Singleton
     @Provides
     fun provideScrobbleRepository(repository: ScrobbleRepositoryImpl): ScrobbleRepository {
+        return repository
+    }
+
+    @Singleton
+    @Provides
+    fun provideThemeRepository(repository: ThemeRepositoryImpl): ThemeRepository {
         return repository
     }
 }

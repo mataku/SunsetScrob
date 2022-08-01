@@ -1,0 +1,10 @@
+{
+  "extends": [
+    "config:base"
+  ],
+  "ignoreDeps": [
+    "kotlin",
+    "org.jetbrains.kotlinx",
+    "compose"
+  ]
+}

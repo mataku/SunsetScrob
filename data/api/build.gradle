@@ -1,4 +1,3 @@
-import dependency.Deps
 import dependency.Versions
 
 plugins {
@@ -49,13 +48,15 @@ android {
 dependencies {
     implementation(project(":core"))
 
-    implementation(Deps.hilt)
-    kapt(Deps.hiltCompiler)
-    implementation(Deps.kotlinCoroutinesAndroid)
-    implementation(Deps.kotlinSerializationRuntime)
-    implementation(Deps.okhttp)
-    implementation(Deps.okhttpLoggingInterceptor)
-    implementation(Deps.ktorClientJsonJvm)
-    implementation(Deps.ktorClientLogging)
-    implementation(Deps.ktorClientOkhttp)
+    implementation libs.hilt.android
+    kapt libs.hilt.compiler
+    implementation libs.coroutines
+    implementation libs.serialization.json
+    implementation platform(libs.okhttp.bom)
+    implementation libs.okhttp
+    implementation libs.okhttp.logging.interceptor
+    implementation libs.ktor.client.json
+    implementation libs.ktor.client.logging
+    implementation libs.ktor.client.okhttp
+    implementation libs.ktor.client.content.negotiation
 }

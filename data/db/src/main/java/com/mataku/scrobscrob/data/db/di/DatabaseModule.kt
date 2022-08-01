@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.mataku.scrobscrob.data.db.AppDatabase
 import com.mataku.scrobscrob.data.db.ScrobbleDao
 import com.mataku.scrobscrob.data.db.SessionKeyDataStore
+import com.mataku.scrobscrob.data.db.ThemeDataStore
 import com.mataku.scrobscrob.data.db.UsernameDataStore
 import dagger.Module
 import dagger.Provides
@@ -27,6 +28,12 @@ class DatabaseModule {
     @Provides
     fun provideUsernameStore(@ApplicationContext context: Context): UsernameDataStore {
         return UsernameDataStore(context)
+    }
+
+    @Singleton
+    @Provides
+    fun provideThemeDataStore(@ApplicationContext context: Context): ThemeDataStore {
+        return ThemeDataStore(context)
     }
 
     @Singleton
