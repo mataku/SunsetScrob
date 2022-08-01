@@ -33,6 +33,10 @@ class AccountState(
             }
         }
     }
+
+    fun navigateToLicenseScreen() {
+        navController.navigate("license")
+    }
 }
 
 @Composable

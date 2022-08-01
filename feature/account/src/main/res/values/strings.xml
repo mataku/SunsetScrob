@@ -4,4 +4,6 @@
 
     <string name="item_theme">Theme</string>
     <string name="title_theme_selector">Theme</string>
+
+    <string name="item_license">Licenses</string>
 </resources>

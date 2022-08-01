@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.AlertDialog
+import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
@@ -46,6 +47,9 @@ fun AccountScreen(
             navigateToThemeSelector = { state.navigateToThemeSelector() },
             navigateToLogoutConfirmation = {
                 openDialog.value = true
+            },
+            navigateToLicenseList = {
+                state.navigateToLicenseScreen()
             }
         )
     }
@@ -98,7 +102,8 @@ fun AccountScreen(
 private fun AccountContent(
     theme: AppTheme,
     navigateToThemeSelector: () -> Unit,
-    navigateToLogoutConfirmation: () -> Unit
+    navigateToLogoutConfirmation: () -> Unit,
+    navigateToLicenseList: () -> Unit
 ) {
     LazyColumn(
         content = {
@@ -119,6 +124,18 @@ private fun AccountContent(
                     description = stringResource(id = logoutMenu.descriptionRes)
                 ) {
                     navigateToLogoutConfirmation.invoke()
+                }
+            }
+            item {
+                Divider()
+            }
+            item {
+                val licenseMenu = AccountMenu.LICENSE
+                AccountMenuCell(
+                    title = stringResource(id = licenseMenu.titleRes),
+                    description = ""
+                ) {
+                    navigateToLicenseList.invoke()
                 }
             }
 
@@ -152,7 +169,9 @@ private fun AccountMenuCell(
         verticalArrangement = Arrangement.SpaceEvenly
     ) {
         Text(text = title, style = SunsetTextStyle.subtitle1)
-        Text(text = description, style = SunsetTextStyle.caption)
+        if (description.isNotBlank()) {
+            Text(text = description, style = SunsetTextStyle.caption)
+        }
     }
 }
 
@@ -164,7 +183,9 @@ private fun AccountContentPreview() {
             AccountContent(
                 theme = AppTheme.DARK,
                 navigateToThemeSelector = {},
-                navigateToLogoutConfirmation = {})
+                navigateToLogoutConfirmation = {},
+                navigateToLicenseList = {}
+            )
         }
     }
 }

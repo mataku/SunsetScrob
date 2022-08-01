@@ -13,5 +13,9 @@ enum class AccountMenu(
     LOGOUT(
         titleRes = R.string.item_logout,
         descriptionRes = R.string.item_logout_description
+    ),
+    LICENSE(
+        titleRes = R.string.item_license,
+        descriptionRes = 0
     );
 }

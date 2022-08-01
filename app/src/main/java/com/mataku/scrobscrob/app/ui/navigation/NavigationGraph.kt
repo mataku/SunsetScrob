@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.mataku.scrobscrob.account.ui.ThemeSelectorScreen
 import com.mataku.scrobscrob.account.ui.screen.AccountScreen
+import com.mataku.scrobscrob.account.ui.screen.LicenseScreen
 import com.mataku.scrobscrob.account.ui.state.rememberAccountState
 import com.mataku.scrobscrob.account.ui.state.rememberThemeSelectorState
 import com.mataku.scrobscrob.album.ui.screen.TopAlbumsScreen
@@ -17,7 +18,6 @@ import com.mataku.scrobscrob.auth.ui.screen.LoginScreen
 import com.mataku.scrobscrob.auth.ui.state.rememberLoginScreenState
 import com.mataku.scrobscrob.scrobble.ui.screen.ScrobbleScreen
 import com.mataku.scrobscrob.scrobble.ui.state.rememberScrobbleScreenState
-import com.mataku.scrobscrob.scrobble.ui.state.rememberScrobbleTopBarState
 import com.mataku.scrobscrob.ui_common.SunsetBottomNavItem
 import com.mataku.scrobscrob.ui_common.template.WebViewScreen
 
@@ -30,10 +30,8 @@ fun NavigationGraph(navController: NavHostController, isLoggedIn: Boolean) {
         composable(
             SunsetBottomNavItem.SCROBBLE.screenRoute
         ) {
-            val topBarState = rememberScrobbleTopBarState(navController = navController)
             ScrobbleScreen(
-                state = rememberScrobbleScreenState(navController = navController),
-                topBarState = topBarState
+                state = rememberScrobbleScreenState(navController = navController)
             )
         }
         composable(
@@ -70,6 +68,9 @@ fun NavigationGraph(navController: NavHostController, isLoggedIn: Boolean) {
                     navController = navController
                 )
             )
+        }
+        composable("license") {
+            LicenseScreen()
         }
     }
 }
