@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,7 +19,6 @@ import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.scrobble.R
 import com.mataku.scrobscrob.scrobble.ui.molecule.Scrobble
 import com.mataku.scrobscrob.scrobble.ui.state.ScrobbleScreenState
-import com.mataku.scrobscrob.scrobble.ui.state.ScrobbleTopBarState
 import com.mataku.scrobscrob.ui_common.organism.ContentHeader
 import com.mataku.scrobscrob.ui_common.organism.InfiniteLoadingIndicator
 import com.mataku.scrobscrob.ui_common.style.Colors
@@ -31,27 +29,19 @@ import com.mataku.scrobscrob.ui_common.style.sunsetBackgroundGradient
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun ScrobbleScreen(
-    state: ScrobbleScreenState,
-    topBarState: ScrobbleTopBarState
+    state: ScrobbleScreenState
 ) {
     val uiState = state.uiState
-    Scaffold(
-        topBar = {
-//            ScrobbleTopBar(stateHolder = topBarState)
+    ScrobbleContent(
+        recentTracks = uiState.recentTracks,
+        hasNext = uiState.hasNext,
+        onScrobbleTap = {
+            state.onScrobbleTap(it)
         },
-        bottomBar = {}
-    ) {
-        ScrobbleContent(
-            recentTracks = uiState.recentTracks,
-            hasNext = uiState.hasNext,
-            onScrobbleTap = {
-                state.onScrobbleTap(it)
-            },
-            onScrollEnd = {
-                state.onScrollEnd()
-            }
-        )
-    }
+        onScrollEnd = {
+            state.onScrollEnd()
+        }
+    )
 }
 
 @OptIn(ExperimentalFoundationApi::class)
