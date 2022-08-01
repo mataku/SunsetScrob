@@ -11,6 +11,10 @@
         <item name="textInputStyle">@style/DefaultEditTextStyle</item>
         <item name="android:statusBarColor">@color/contentBackground</item>
         <item name="android:navigationBarColor">@color/colorPrimary</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="SplashTheme" parent="Theme.SplashScreen.IconBackground">
@@ -19,6 +23,10 @@
         <item name="windowSplashScreenAnimatedIcon">@color/contentBackground</item>
         <item name="android:statusBarColor">@color/contentBackground</item>
         <item name="android:navigationBarColor">@color/colorPrimary</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="RegistrationButtonStyle" parent="Widget.MaterialComponents.Button">
