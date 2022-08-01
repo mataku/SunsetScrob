@@ -1,6 +1,5 @@
 package com.mataku.scrobscrob.scrobble.ui.screen
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -14,6 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.mataku.scrobscrob.core.api.endpoint.RecentTrack
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.scrobble.R
@@ -26,22 +27,27 @@ import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import com.mataku.scrobscrob.ui_common.style.sunsetBackgroundGradient
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun ScrobbleScreen(
     state: ScrobbleScreenState
 ) {
     val uiState = state.uiState
-    ScrobbleContent(
-        recentTracks = uiState.recentTracks,
-        hasNext = uiState.hasNext,
-        onScrobbleTap = {
-            state.onScrobbleTap(it)
-        },
-        onScrollEnd = {
-            state.onScrollEnd()
-        }
-    )
+    SwipeRefresh(
+        state = rememberSwipeRefreshState(isRefreshing = uiState.isRefreshing),
+        onRefresh = {
+            state.refresh()
+        }) {
+        ScrobbleContent(
+            recentTracks = uiState.recentTracks,
+            hasNext = uiState.hasNext,
+            onScrobbleTap = {
+                state.onScrobbleTap(it)
+            },
+            onScrollEnd = {
+                state.onScrollEnd()
+            }
+        )
+    }
 }
 
 @OptIn(ExperimentalFoundationApi::class)

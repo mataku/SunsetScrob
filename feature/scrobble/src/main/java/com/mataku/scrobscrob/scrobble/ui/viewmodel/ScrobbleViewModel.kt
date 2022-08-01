@@ -26,8 +26,45 @@ class ScrobbleViewModel @Inject constructor(
         fetchRecentTracks()
     }
 
+    fun refresh() {
+        if (!uiState.value.hasNext || uiState.value.isLoading || uiState.value.isRefreshing) return
+
+        page = 1
+
+        viewModelScope.launch {
+            uiState.update {
+                it.copy(
+                    isRefreshing = true
+                )
+            }
+            val result = scrobbleRepository.recentTracks(
+                page = page
+            )
+            result
+                .onSuccess {
+                    uiState.update { state ->
+                        state.copy(
+                            isRefreshing = false,
+                            recentTracks = it,
+                            hasNext = it.isNotEmpty()
+                        )
+                    }
+                    page++
+                }
+                .onFailure {
+                    uiState.update { state ->
+                        state.copy(
+                            isLoading = false,
+                            throwable = it,
+                            hasNext = false
+                        )
+                    }
+                }
+        }
+    }
+
     fun fetchRecentTracks() {
-        if (!uiState.value.hasNext || uiState.value.isLoading) return
+        if (!uiState.value.hasNext || uiState.value.isLoading || uiState.value.isRefreshing) return
         viewModelScope.launch {
             uiState.update {
                 it.copy(
@@ -43,7 +80,7 @@ class ScrobbleViewModel @Inject constructor(
                         state.copy(
                             isLoading = false,
                             recentTracks = state.recentTracks + it,
-                            hasNext = state.recentTracks.isNotEmpty()
+                            hasNext = it.isNotEmpty()
                         )
                     }
                     page++
@@ -62,6 +99,7 @@ class ScrobbleViewModel @Inject constructor(
 
     data class UiState(
         val isLoading: Boolean,
+        val isRefreshing: Boolean,
         val throwable: Throwable? = null,
         val recentTracks: List<RecentTrack> = emptyList(),
         val hasNext: Boolean = true
@@ -70,6 +108,7 @@ class ScrobbleViewModel @Inject constructor(
             fun initialize(): UiState {
                 return UiState(
                     isLoading = false,
+                    isRefreshing = false,
                     throwable = null,
                     recentTracks = emptyList()
                 )

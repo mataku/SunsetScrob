@@ -21,6 +21,10 @@ class ScrobbleScreenState(
     fun onScrollEnd() {
         viewModel.fetchRecentTracks()
     }
+
+    fun refresh() {
+        viewModel.refresh()
+    }
 }
 
 @Composable
