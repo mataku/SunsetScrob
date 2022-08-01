@@ -46,6 +46,9 @@ fun AppTheme.colors(): androidx.compose.material.Colors {
         AppTheme.LIGHT -> {
             lightColors
         }
+        AppTheme.MIDNIGHT -> {
+            midnightColors
+        }
     }
 }
 
@@ -70,6 +73,18 @@ private val darkColors = darkColors(
     surface = Color(0xFF37474F),
     onSurface = Color.White,
     background = Colors.ContentBackground,
+    onBackground = Color.White
+)
+
+private val midnightColors = darkColors(
+    primary = Color.DarkGray,
+    onPrimary = Color.White,
+    primaryVariant = Color.Black,
+    secondary = Color(0xFFFF4081),
+    onSecondary = Color.White,
+    surface = Color.Black,
+    onSurface = Color.White,
+    background = Color.Black,
     onBackground = Color.White
 )
 

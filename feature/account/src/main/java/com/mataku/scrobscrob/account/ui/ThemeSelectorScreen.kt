@@ -56,7 +56,11 @@ private fun ThemeCell(
         }
         .padding(16.dp)
     ) {
-        Text(text = theme.rawValue, style = SunsetTextStyle.body1, modifier = Modifier.weight(1F))
+        Text(
+            text = theme.displayName,
+            style = SunsetTextStyle.body1,
+            modifier = Modifier.weight(1F)
+        )
 
         if (selected) {
             Image(

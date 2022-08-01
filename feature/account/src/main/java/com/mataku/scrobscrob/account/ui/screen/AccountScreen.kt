@@ -106,7 +106,7 @@ private fun AccountContent(
                 val menu = AccountMenu.THEME
                 AccountMenuCell(
                     title = stringResource(id = menu.titleRes),
-                    description = theme.rawValue
+                    description = theme.displayName
                 ) {
                     navigateToThemeSelector.invoke()
                 }

@@ -1,17 +1,22 @@
 package com.mataku.scrobscrob.core.entity
 
-enum class AppTheme(val rawValue: String, val isLight: Boolean) {
-    DARK("Dark", false),
-    LIGHT("Light", true);
+enum class AppTheme(
+    val displayName: String,
+    val isLight: Boolean,
+    val primaryId: Int
+) {
+    DARK("Dark", false, 1),
+    LIGHT("Light", true, 2),
+    MIDNIGHT("Midnight", false, 3);
 
     companion object {
-        fun deserialize(
-            rawValue: String?
+        fun find(
+            rawPrimaryId: Int?
         ): AppTheme {
-            rawValue ?: return DARK
+            rawPrimaryId ?: return DARK
 
             return AppTheme.values().find {
-                it.rawValue == rawValue
+                it.primaryId == rawPrimaryId
             } ?: DARK
         }
     }

@@ -9,5 +9,6 @@ object Colors {
     val textSecondary = Color(0xFF90A4AE)
     val Lime = Color(0xFFCDDC39)
     val LightLime = Color(0xFFC0CA33)
+    val MidnightGray = Color(0xFF424242)
 }
 
