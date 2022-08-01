@@ -14,6 +14,16 @@ class AppThemeSpec : DescribeSpec({
         }
     }
 
+    describe("priority") {
+        it("should unique") {
+            val appThemes = AppTheme.values()
+            val priorityList = appThemes.map {
+                it.priority
+            }
+            priorityList.size shouldBe appThemes.size
+        }
+    }
+
     describe("#find") {
         context("null is passed") {
             it("should return default value as DARK") {

@@ -7,10 +7,10 @@ enum class AppTheme(
     val priority: Int
 ) {
     DARK("Dark", false, 1, 1),
-    LIGHT("Light", true, 2, 3),
+    LIGHT("Light", true, 2, 5),
     MIDNIGHT("Midnight", false, 3, 2),
-    OCEAN("Ocean", false, 4, 4),
-    LASTFM_DARK("Last.fm Dark", false, 5, 5),
+    OCEAN("Ocean", false, 4, 3),
+    LASTFM_DARK("Last.fm Dark", false, 5, 4),
     SUNSET("Sunset", true, 6, 6);
 
     companion object {
