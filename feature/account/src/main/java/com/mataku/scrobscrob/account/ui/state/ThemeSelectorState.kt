@@ -9,6 +9,7 @@ import com.mataku.scrobscrob.account.ui.viewmodel.ThemeSelectorViewModel
 import com.mataku.scrobscrob.core.entity.AppTheme
 
 class ThemeSelectorState(
+    private val navController: NavController,
     private val viewModel: ThemeSelectorViewModel
 ) {
     val uiState: ThemeSelectorViewModel.UiState
@@ -16,6 +17,18 @@ class ThemeSelectorState(
 
     fun changeTheme(theme: AppTheme) {
         viewModel.changeTheme(theme)
+    }
+
+    fun back() {
+        navController.popBackStack()
+    }
+
+    fun popEvent() {
+        viewModel.popEvent()
+    }
+
+    sealed class UiEvent {
+        data class ThemeChanged(val theme: AppTheme) : UiEvent()
     }
 }
 
@@ -26,7 +39,8 @@ fun rememberThemeSelectorState(
 ): ThemeSelectorState {
     return remember {
         ThemeSelectorState(
-            viewModel = viewModel
+            viewModel = viewModel,
+            navController = navController
         )
     }
 }
