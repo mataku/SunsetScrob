@@ -1,0 +1,2 @@
+- You can now change app theme
+- Now playing song can be identified
