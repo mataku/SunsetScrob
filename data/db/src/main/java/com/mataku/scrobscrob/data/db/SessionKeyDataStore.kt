@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import javax.inject.Singleton
 
-private val Context.sessionKeyDataStore by preferencesDataStore("DATA")
+private val Context.sessionKeyDataStore by preferencesDataStore("SESSION_KEY")
 
 @Singleton
 class SessionKeyDataStore(
@@ -38,8 +38,7 @@ class SessionKeyDataStore(
             context.sessionKeyDataStore.edit {
                 it[SESSION_KEY] = sessionKey
             }
-        ).flowOn(Dispatchers.IO)
-            .map { Unit }
+        ).map { }
     }
 
     suspend fun remove(): Flow<Unit> {

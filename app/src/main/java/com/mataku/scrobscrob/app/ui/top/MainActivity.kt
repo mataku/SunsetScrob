@@ -1,5 +1,6 @@
 package com.mataku.scrobscrob.app.ui.top
 
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -29,8 +30,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        installSplashScreen()
 
+        // On Android 12 or later, toolbar does not disappear when installSplashScreen() is called with setTheme
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.R) {
+            installSplashScreen()
+        }
         setTheme(R.style.AppTheme)
 
         lifecycleScope.launch {

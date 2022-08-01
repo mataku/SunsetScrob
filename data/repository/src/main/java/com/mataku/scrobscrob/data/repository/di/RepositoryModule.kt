@@ -2,6 +2,7 @@ package com.mataku.scrobscrob.data.repository.di
 
 import android.content.Context
 import com.mataku.scrobscrob.data.api.di.ApiModule
+import com.mataku.scrobscrob.data.db.UsernameDataStore
 import com.mataku.scrobscrob.data.db.di.DatabaseModule
 import com.mataku.scrobscrob.data.repository.ScrobbleRepository
 import com.mataku.scrobscrob.data.repository.ScrobbleRepositoryImpl
@@ -35,8 +36,7 @@ class RepositoryModule {
     @Singleton
     @Provides
     fun provideUsernameRepository(@ApplicationContext context: Context): UsernameRepository {
-        val sharedPref = context.getSharedPreferences("DATA", Context.MODE_PRIVATE)
-        return UsernameRepositoryImpl(sharedPref)
+        return UsernameRepositoryImpl(UsernameDataStore(context))
     }
 
 //    @Binds

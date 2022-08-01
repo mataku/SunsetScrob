@@ -35,6 +35,19 @@ class LoginScreenState(
             }
         }
     }
+
+    fun navigateToPrivacyPolicy() {
+        navController.navigate("privacy_policy")
+    }
+
+    fun popEvent() {
+        viewModel.popEvent()
+    }
+
+    sealed class UiEvent {
+        object LoginSuccess : UiEvent()
+        object LoginFailed : UiEvent()
+    }
 }
 
 @Composable

@@ -9,14 +9,18 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
@@ -29,6 +33,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -38,9 +43,15 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mataku.scrobscrob.auth.ui.state.LoginScreenState
+import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.ui_common.R
+import com.mataku.scrobscrob.ui_common.SunsetTextStyle
+import com.mataku.scrobscrob.ui_common.style.Colors
+import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.SunsetTheme
+import com.mataku.scrobscrob.ui_common.style.backgroundColor
 import kotlinx.coroutines.launch
 
 @Composable
@@ -50,32 +61,56 @@ fun LoginScreen(
     val scaffoldState = rememberScaffoldState()
     val coroutineScope = rememberCoroutineScope()
     val uiState = stateHolder.uiState
-    uiState.loginEvent?.let {
-        stateHolder.navigateToTop()
-    }
-    uiState.throwable?.let {
-        coroutineScope.launch {
-            scaffoldState.snackbarHostState.showSnackbar("Login failed")
-        }
-    }
-    LoginContent(
-        isLoading = uiState.isLoading,
-        onLoginButtonTap = { id, password ->
-            stateHolder.login(id, password)
+    val currentTheme = LocalAppTheme.current
+    val systemUiController = rememberSystemUiController()
+    systemUiController.setNavigationBarColor(
+        color = if (currentTheme == AppTheme.SUNSET) {
+            Colors.SunsetBlue
+        } else {
+            currentTheme.backgroundColor()
         }
     )
+    val navigationBarColor = MaterialTheme.colors.primary
+    uiState.event?.let {
+        when (it) {
+            is LoginScreenState.UiEvent.LoginSuccess -> {
+                systemUiController.setSystemBarsColor(navigationBarColor)
+                stateHolder.navigateToTop()
+            }
+            is LoginScreenState.UiEvent.LoginFailed -> {
+                coroutineScope.launch {
+                    scaffoldState.snackbarHostState.showSnackbar("Login failed")
+                }
+            }
+
+        }
+        stateHolder.popEvent()
+    }
+    Scaffold(scaffoldState = scaffoldState) {
+        LoginContent(
+            isLoading = uiState.isLoading,
+            onLoginButtonTap = { id, password ->
+                stateHolder.login(id, password)
+            },
+            onPrivacyPolicyTap = {
+                stateHolder.navigateToPrivacyPolicy()
+            }
+        )
+    }
 }
 
 @Composable
 private fun LoginContent(
     isLoading: Boolean,
-    onLoginButtonTap: (String, String) -> Unit
+    onLoginButtonTap: (String, String) -> Unit,
+    onPrivacyPolicyTap: () -> Unit
 ) {
     var idText by remember { mutableStateOf("") }
     var passwordText by remember { mutableStateOf("") }
     var passwordVisible by remember {
         mutableStateOf(false)
     }
+    val focusManager = LocalFocusManager.current
 
     Column(
         modifier = Modifier
@@ -85,7 +120,6 @@ private fun LoginContent(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-
         Spacer(modifier = Modifier.height(24.dp))
 
         Text(
@@ -102,8 +136,15 @@ private fun LoginContent(
             onValueChange = {
                 idText = it
             },
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Ascii,
+                imeAction = ImeAction.Next
+            ),
             label = { Text(text = "Username or Email") },
-            modifier = Modifier.align(Alignment.CenterHorizontally)
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp)
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -117,8 +158,16 @@ private fun LoginContent(
                 keyboardType = KeyboardType.Password,
                 imeAction = ImeAction.Done
             ),
+            keyboardActions = KeyboardActions(
+                onDone = {
+                    focusManager.clearFocus()
+                }
+            ),
             label = { Text(text = "Password") },
-            modifier = Modifier.align(Alignment.CenterHorizontally),
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp),
             singleLine = true,
             visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
             trailingIcon = {
@@ -150,9 +199,14 @@ private fun LoginContent(
             Text(text = "Let me in!")
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
-    }
+        Spacer(modifier = Modifier.height(32.dp))
 
+        TextButton(onClick = {
+            onPrivacyPolicyTap.invoke()
+        }) {
+            Text(text = "Privacy policy", style = SunsetTextStyle.button)
+        }
+    }
 }
 
 @Preview(showBackground = true)
@@ -160,9 +214,10 @@ private fun LoginContent(
 private fun LoginScreenPreview() {
     SunsetTheme {
         Surface {
-            LoginContent(isLoading = false, onLoginButtonTap = { id, password ->
-
-            })
+            LoginContent(
+                isLoading = false,
+                onLoginButtonTap = { _, _ -> },
+                onPrivacyPolicyTap = {})
         }
     }
 }
