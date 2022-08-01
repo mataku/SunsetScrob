@@ -1,0 +1,41 @@
+name: Release to Google Play Console alpha track
+
+on:
+  push:
+    branches:
+      - master
+
+concurrency:
+  group: ${{ github.head_ref }}
+  cancel-in-progress: true
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: set up JDK
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'zulu'
+        java-version: 11
+        cache: 'gradle'
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 3.1
+        bundler-cache: true
+    - name: Prepare keystore
+      run: |
+        echo "${{ secrets.SUNSET_KEYSTORE }}" | base64 -d > SunsetScrob.jks
+    - name: Deploy an aab
+      env:
+        LAST_FM_API_KEY: ${{ secrets.LAST_FM_API_KEY }}
+        LAST_FM_SHARED_SECRET: ${{ secrets.LAST_FM_SHARED_SECRET }}
+        GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON_DEV }}
+        SUNSET_KEY_ALIAS: ${{ secrets.SUNSET_KEY_ALIAS }}
+        SUNSET_KEY_PASSWORD: ${{ secrets.SUNSET_KEY_PASSWORD }}
+        SUNSET_STORE_PASSWORD: ${{ secrets.SUNSET_STORE_PASSWORD }}
+      run: |
+        bundle exec fastlane android setup_for_ci
+        bundle exec fastlane android deploy
