@@ -15,6 +15,7 @@ import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -50,20 +51,28 @@ fun LoginScreen(
     val scaffoldState = rememberScaffoldState()
     val coroutineScope = rememberCoroutineScope()
     val uiState = stateHolder.uiState
-    uiState.loginEvent?.let {
-        stateHolder.navigateToTop()
-    }
-    uiState.throwable?.let {
-        coroutineScope.launch {
-            scaffoldState.snackbarHostState.showSnackbar("Login failed")
+    uiState.event?.let {
+        when (it) {
+            is LoginScreenState.UiEvent.LoginSuccess -> {
+                stateHolder.navigateToTop()
+            }
+            is LoginScreenState.UiEvent.LoginFailed -> {
+                coroutineScope.launch {
+                    scaffoldState.snackbarHostState.showSnackbar("Login failed")
+                }
+            }
+
         }
+        stateHolder.popEvent()
     }
-    LoginContent(
-        isLoading = uiState.isLoading,
-        onLoginButtonTap = { id, password ->
-            stateHolder.login(id, password)
-        }
-    )
+    Scaffold(scaffoldState = scaffoldState) {
+        LoginContent(
+            isLoading = uiState.isLoading,
+            onLoginButtonTap = { id, password ->
+                stateHolder.login(id, password)
+            }
+        )
+    }
 }
 
 @Composable

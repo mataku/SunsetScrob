@@ -35,6 +35,15 @@ class LoginScreenState(
             }
         }
     }
+
+    fun popEvent() {
+        viewModel.popEvent()
+    }
+
+    sealed class UiEvent {
+        object LoginSuccess : UiEvent()
+        object LoginFailed : UiEvent()
+    }
 }
 
 @Composable
