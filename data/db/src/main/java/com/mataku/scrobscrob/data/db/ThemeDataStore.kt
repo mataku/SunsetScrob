@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import javax.inject.Singleton
 
-private val Context.themeDataStore by preferencesDataStore("DATA")
+private val Context.themeDataStore by preferencesDataStore("THEME")
 
 @Singleton
 class ThemeDataStore(

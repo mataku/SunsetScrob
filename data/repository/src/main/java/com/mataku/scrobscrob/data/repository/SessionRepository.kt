@@ -10,6 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.zip
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -38,9 +39,13 @@ class SessionRepositoryImpl @Inject constructor(
                 params = params
             )
         ).mobileSession
-        sessionKeyDataStore.setSessionKey(result.key)
-        usernameDataStore.setUsername(result.name)
-        emit(result)
+        sessionKeyDataStore.setSessionKey(result.key).zip(
+            usernameDataStore.setUsername(result.name)
+        ) { sessionKeyResult, usernameResult ->
+            Pair(sessionKeyResult, usernameResult)
+        }.collect {
+            emit(result)
+        }
     }.flowOn(Dispatchers.IO)
 
     override suspend fun logout(): Flow<Unit> = flow {
