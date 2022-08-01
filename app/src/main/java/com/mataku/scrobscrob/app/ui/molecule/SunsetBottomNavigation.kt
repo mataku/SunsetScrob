@@ -18,8 +18,9 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.mataku.scrobscrob.ui_common.SunsetBottomNavItem
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
-import com.mataku.scrobscrob.ui_common.style.Colors
+import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.SunsetTheme
+import com.mataku.scrobscrob.ui_common.style.accentColor
 
 @Composable
 fun SunsetBottomNavigation(navController: NavController) {
@@ -47,7 +48,7 @@ fun SunsetBottomNavigation(navController: NavController) {
                 },
                 icon = {
                     val iconColor = if (currentRoute == item.screenRoute) {
-                        Colors.LightLime
+                        LocalAppTheme.current.accentColor()
                     } else {
                         MaterialTheme.colors.onPrimary.copy(
                             alpha = 0.4F

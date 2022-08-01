@@ -10,5 +10,7 @@ object Colors {
     val Lime = Color(0xFFCDDC39)
     val LightLime = Color(0xFFC0CA33)
     val MidnightGray = Color(0xFF424242)
+    val DeepOcean = Color(0xFF0277FF)
+    val DeepOceanBackground = Color(0xFF191c38)
 }
 
