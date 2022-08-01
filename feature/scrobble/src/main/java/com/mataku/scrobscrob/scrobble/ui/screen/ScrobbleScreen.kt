@@ -20,7 +20,6 @@ import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.scrobble.R
 import com.mataku.scrobscrob.scrobble.ui.molecule.Scrobble
 import com.mataku.scrobscrob.scrobble.ui.state.ScrobbleScreenState
-import com.mataku.scrobscrob.scrobble.ui.state.ScrobbleTopBarState
 import com.mataku.scrobscrob.ui_common.organism.ContentHeader
 import com.mataku.scrobscrob.ui_common.organism.InfiniteLoadingIndicator
 import com.mataku.scrobscrob.ui_common.style.Colors
@@ -31,8 +30,7 @@ import com.mataku.scrobscrob.ui_common.style.sunsetBackgroundGradient
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun ScrobbleScreen(
-    state: ScrobbleScreenState,
-    topBarState: ScrobbleTopBarState
+    state: ScrobbleScreenState
 ) {
     val uiState = state.uiState
     Scaffold(

@@ -33,6 +33,14 @@ class AccountState(
             }
         }
     }
+
+    fun navigateToLicenseScreen() {
+        navController.navigate("license")
+    }
+
+    fun navigateToPrivacyPolicyScreen() {
+        navController.navigate("privacy_policy")
+    }
 }
 
 @Composable
