@@ -10,7 +10,8 @@ enum class AppTheme(
     LIGHT("Light", true, 2, 3),
     MIDNIGHT("Midnight", false, 3, 2),
     OCEAN("Ocean", false, 4, 4),
-    LASTFM_DARK("Last.fm Dark", false, 5, 5);
+    LASTFM_DARK("Last.fm Dark", false, 5, 5),
+    SUNSET("Sunset", true, 6, 6);
 
     companion object {
         fun find(

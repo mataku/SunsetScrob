@@ -1,6 +1,7 @@
 package com.mataku.scrobscrob.account.ui.screen
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -27,7 +28,9 @@ import com.mataku.scrobscrob.account.ui.viewmodel.AccountViewModel
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.organism.ContentHeader
+import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.SunsetTheme
+import com.mataku.scrobscrob.ui_common.style.sunsetBackgroundGradient
 
 @Composable
 fun AccountScreen(
@@ -120,7 +123,16 @@ private fun AccountContent(
             }
 
         },
-        modifier = Modifier.fillMaxSize()
+        modifier = if (LocalAppTheme.current == AppTheme.SUNSET) {
+            Modifier
+                .fillMaxSize()
+                .background(
+                    brush = sunsetBackgroundGradient
+                )
+        } else {
+            Modifier
+                .fillMaxSize()
+        }
     )
 }
 

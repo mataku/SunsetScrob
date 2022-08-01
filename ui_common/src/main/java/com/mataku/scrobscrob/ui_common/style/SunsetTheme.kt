@@ -2,12 +2,14 @@ package com.mataku.scrobscrob.ui_common.style
 
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
+import androidx.compose.material.lightColors
 import androidx.compose.material.ripple.LocalRippleTheme
 import androidx.compose.material.ripple.RippleAlpha
 import androidx.compose.material.ripple.RippleTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mataku.scrobscrob.core.entity.AppTheme
@@ -26,10 +28,25 @@ fun SunsetTheme(
     )
     val rippleTheme = SunsetRippleTheme(theme)
     MaterialTheme(
-        colors = theme.colors()
+        colors = theme.colors(),
     ) {
         CompositionLocalProvider(
             LocalRippleTheme provides rippleTheme,
+            LocalAppTheme provides theme,
+            content = content
+        )
+    }
+}
+
+@Composable
+fun SunsetThemePreview(
+    theme: AppTheme = AppTheme.DARK,
+    content: @Composable () -> Unit,
+) {
+    MaterialTheme(
+        colors = theme.colors(),
+    ) {
+        CompositionLocalProvider(
             LocalAppTheme provides theme,
             content = content
         )
@@ -59,12 +76,15 @@ fun AppTheme.colors(): androidx.compose.material.Colors {
         AppTheme.LASTFM_DARK -> {
             lastFmDarkColors
         }
+        AppTheme.SUNSET -> {
+            sunsetColors
+        }
     }
 }
 
 fun AppTheme.accentColor(): Color {
     return when (this) {
-        AppTheme.DARK, AppTheme.LIGHT, AppTheme.MIDNIGHT -> {
+        AppTheme.DARK, AppTheme.LIGHT, AppTheme.MIDNIGHT, AppTheme.SUNSET -> {
             Colors.LightLime
         }
         AppTheme.OCEAN -> {
@@ -76,12 +96,12 @@ fun AppTheme.accentColor(): Color {
     }
 }
 
-private val lightColors = darkColors(
+private val lightColors = lightColors(
     primary = Color(0xFFE0E0E0),
     onPrimary = Color.Black,
     primaryVariant = Color.Black,
-    secondary = Color(0xFFFF4081),
-    onSecondary = Color.White,
+    secondary = Color.White,
+    onSecondary = Colors.SunsetTextSecondary,
     surface = Color(0xFFF5F5F5),
     onSurface = Color.Black,
     background = Color(0xFFF5F5F5),
@@ -92,8 +112,8 @@ private val darkColors = darkColors(
     primary = Color.DarkGray,
     onPrimary = Color.White,
     primaryVariant = Colors.ContentBackground,
-    secondary = Color(0xFFFF4081),
-    onSecondary = Color.White,
+    secondary = Color.White,
+    onSecondary = Colors.SunsetTextSecondary,
     surface = Color(0xFF37474F),
     onSurface = Color.White,
     background = Colors.ContentBackground,
@@ -104,8 +124,8 @@ private val oceanColors = darkColors(
     primary = Color.DarkGray,
     onPrimary = Color.White,
     primaryVariant = Colors.ContentBackground,
-    secondary = Color(0xFFFF4081),
-    onSecondary = Color.White,
+    secondary = Color.White,
+    onSecondary = Colors.textSecondary,
     surface = Color(0xFF37474F),
     onSurface = Color.White,
     background = Colors.DeepOceanBackground,
@@ -116,8 +136,8 @@ private val lastFmDarkColors = darkColors(
     primary = Color.DarkGray,
     onPrimary = Color.White,
     primaryVariant = Colors.ContentBackground,
-    secondary = Color(0xFFFF4081),
-    onSecondary = Color.White,
+    secondary = Color.White,
+    onSecondary = Colors.textSecondary,
     surface = Color(0xFF37474F),
     onSurface = Color.White,
     background = Colors.ContentBackground,
@@ -128,12 +148,28 @@ private val midnightColors = darkColors(
     primary = Color.DarkGray,
     onPrimary = Color.White,
     primaryVariant = Color.Black,
-    secondary = Color(0xFFFF4081),
-    onSecondary = Color.White,
+    secondary = Color.White,
+    onSecondary = Colors.textSecondary,
     surface = Color.Black,
     onSurface = Color.White,
     background = Color.Black,
     onBackground = Color.White
+)
+
+private val sunsetColors = lightColors(
+    primary = Color(0xFFE0E0E0),
+    onPrimary = Color.Black,
+    primaryVariant = Color.Black,
+    secondary = Colors.SunsetTextSecondary,
+    onSecondary = Colors.SunsetTextSecondary,
+    surface = Color.White,
+    onSurface = Color.Black,
+    background = Colors.SunsetBackground,
+    onBackground = Color.Black
+)
+
+val sunsetBackgroundGradient = Brush.verticalGradient(
+    colors = listOf(Colors.SunsetOrange, Colors.SunsetBlue)
 )
 
 private class SunsetRippleTheme(

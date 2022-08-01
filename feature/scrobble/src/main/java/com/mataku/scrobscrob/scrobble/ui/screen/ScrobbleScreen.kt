@@ -2,6 +2,7 @@ package com.mataku.scrobscrob.scrobble.ui.screen
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,14 +12,21 @@ import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import com.mataku.scrobscrob.core.api.endpoint.RecentTrack
+import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.scrobble.R
 import com.mataku.scrobscrob.scrobble.ui.molecule.Scrobble
 import com.mataku.scrobscrob.scrobble.ui.state.ScrobbleScreenState
 import com.mataku.scrobscrob.scrobble.ui.state.ScrobbleTopBarState
 import com.mataku.scrobscrob.ui_common.organism.ContentHeader
 import com.mataku.scrobscrob.ui_common.organism.InfiniteLoadingIndicator
+import com.mataku.scrobscrob.ui_common.style.Colors
+import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
+import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
+import com.mataku.scrobscrob.ui_common.style.sunsetBackgroundGradient
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -80,7 +88,33 @@ private fun ScrobbleContent(
                 }
             }
         },
-        modifier = Modifier
-            .fillMaxSize()
+        modifier = if (LocalAppTheme.current == AppTheme.SUNSET) {
+            Modifier
+                .fillMaxSize()
+                .background(
+                    brush = sunsetBackgroundGradient
+                )
+        } else {
+            Modifier
+                .fillMaxSize()
+        }
     )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun GradientPreview() {
+    SunsetThemePreview {
+        androidx.compose.material.Surface {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(
+                        brush = Brush.verticalGradient(
+                            colors = listOf(Colors.SunsetOrange, Colors.SunsetBlue)
+                        )
+                    )
+            )
+        }
+    }
 }
