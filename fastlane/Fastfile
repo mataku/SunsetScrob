@@ -28,6 +28,12 @@ platform :android do
     gradle(task: 'bundleRelease')
   end
 
+  lane :fetch_metadata do
+    download_from_play_store(
+      package_name: 'com.mataku.scrobscrob'
+    )
+  end
+
 
   desc "Deploy a new version to the Google Play"
   lane :deploy do
