@@ -30,6 +30,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // On Android 12 or later, toolbar does not disappear when installSplashScreen() is called with setTheme
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.R) {
             installSplashScreen()
         }
