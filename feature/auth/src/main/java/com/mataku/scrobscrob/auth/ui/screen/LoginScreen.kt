@@ -14,6 +14,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
@@ -65,9 +66,11 @@ fun LoginScreen(
             currentTheme.backgroundColor()
         }
     )
+    val navigationBarColor = MaterialTheme.colors.primary
     uiState.event?.let {
         when (it) {
             is LoginScreenState.UiEvent.LoginSuccess -> {
+                systemUiController.setSystemBarsColor(navigationBarColor)
                 stateHolder.navigateToTop()
             }
             is LoginScreenState.UiEvent.LoginFailed -> {
@@ -125,6 +128,10 @@ private fun LoginContent(
             onValueChange = {
                 idText = it
             },
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Ascii,
+                imeAction = ImeAction.Done
+            ),
             label = { Text(text = "Username or Email") },
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
