@@ -59,4 +59,6 @@ dependencies {
 
     implementation libs.coroutines
     implementation libs.timber
+
+    implementation libs.accompanist.systemuicontroller
 }

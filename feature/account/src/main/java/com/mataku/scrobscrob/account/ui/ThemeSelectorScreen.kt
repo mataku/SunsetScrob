@@ -2,8 +2,10 @@ package com.mataku.scrobscrob.account.ui
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -17,11 +19,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mataku.scrobscrob.account.R
 import com.mataku.scrobscrob.account.ui.state.ThemeSelectorState
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.organism.ContentHeader
+import com.mataku.scrobscrob.ui_common.style.Colors
+import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
+import com.mataku.scrobscrob.ui_common.style.backgroundColor
+import com.mataku.scrobscrob.ui_common.style.sunsetBackgroundGradient
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -29,17 +36,42 @@ fun ThemeSelectorScreen(
     state: ThemeSelectorState
 ) {
     val uiState = state.uiState
+    val systemUiController = rememberSystemUiController()
     uiState.theme?.let { currentTheme ->
-        LazyColumn(content = {
-            stickyHeader {
-                ContentHeader(text = stringResource(id = R.string.title_theme_selector))
+        systemUiController.setNavigationBarColor(
+            color = if (currentTheme == AppTheme.SUNSET) {
+                Colors.SunsetBlue
+            } else {
+                currentTheme.backgroundColor()
             }
-            items(AppTheme.values()) {
-                ThemeCell(theme = it, selected = it == currentTheme, onTapTheme = { currentTheme ->
-                    state.changeTheme(currentTheme)
-                })
+        )
+        LazyColumn(
+            content = {
+                stickyHeader {
+                    ContentHeader(text = stringResource(id = R.string.title_theme_selector))
+                }
+                items(AppTheme.values().sortedBy {
+                    it.priority
+                }) {
+                    ThemeCell(
+                        theme = it,
+                        selected = it == currentTheme,
+                        onTapTheme = { currentTheme ->
+                            state.changeTheme(currentTheme)
+                        })
+                }
+            },
+            modifier = if (LocalAppTheme.current == AppTheme.SUNSET) {
+                Modifier
+                    .fillMaxSize()
+                    .background(
+                        brush = sunsetBackgroundGradient
+                    )
+            } else {
+                Modifier
+                    .fillMaxSize()
             }
-        })
+        )
     }
 }
 
