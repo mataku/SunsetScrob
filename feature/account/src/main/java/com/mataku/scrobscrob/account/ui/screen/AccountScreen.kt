@@ -140,7 +140,9 @@ private fun AccountContent(
                 }
             }
             item {
-                Divider()
+                Divider(
+                    modifier = Modifier.padding(vertical = 4.dp)
+                )
                 val licenseMenu = AccountMenu.LICENSE
                 AccountMenuCell(
                     title = stringResource(id = licenseMenu.titleRes),
