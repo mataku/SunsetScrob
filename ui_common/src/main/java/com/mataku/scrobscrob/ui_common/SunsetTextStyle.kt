@@ -22,6 +22,14 @@ object SunsetTextStyle {
         fontSize = 14.sp
     )
 
+    val button
+        @Composable get() = TextStyle(
+            fontWeight = FontWeight.Medium,
+            fontSize = 14.sp,
+            letterSpacing = 1.25.sp,
+            color = MaterialTheme.colors.onSecondary
+        )
+
     val h6 = TextStyle(
         fontWeight = FontWeight.Medium,
         fontSize = 20.sp,

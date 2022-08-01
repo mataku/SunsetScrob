@@ -20,6 +20,7 @@ import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
@@ -46,6 +47,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mataku.scrobscrob.auth.ui.state.LoginScreenState
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.ui_common.R
+import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.style.Colors
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.SunsetTheme
@@ -89,6 +91,9 @@ fun LoginScreen(
             isLoading = uiState.isLoading,
             onLoginButtonTap = { id, password ->
                 stateHolder.login(id, password)
+            },
+            onPrivacyPolicyTap = {
+                stateHolder.navigateToPrivacyPolicy()
             }
         )
     }
@@ -97,7 +102,8 @@ fun LoginScreen(
 @Composable
 private fun LoginContent(
     isLoading: Boolean,
-    onLoginButtonTap: (String, String) -> Unit
+    onLoginButtonTap: (String, String) -> Unit,
+    onPrivacyPolicyTap: () -> Unit
 ) {
     var idText by remember { mutableStateOf("") }
     var passwordText by remember { mutableStateOf("") }
@@ -114,7 +120,6 @@ private fun LoginContent(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-
         Spacer(modifier = Modifier.height(24.dp))
 
         Text(
@@ -139,7 +144,7 @@ private fun LoginContent(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp)
+                .padding(horizontal = 24.dp)
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -162,7 +167,7 @@ private fun LoginContent(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp),
+                .padding(horizontal = 24.dp),
             singleLine = true,
             visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
             trailingIcon = {
@@ -194,9 +199,14 @@ private fun LoginContent(
             Text(text = "Let me in!")
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
-    }
+        Spacer(modifier = Modifier.height(32.dp))
 
+        TextButton(onClick = {
+            onPrivacyPolicyTap.invoke()
+        }) {
+            Text(text = "Privacy policy", style = SunsetTextStyle.button)
+        }
+    }
 }
 
 @Preview(showBackground = true)
@@ -204,9 +214,10 @@ private fun LoginContent(
 private fun LoginScreenPreview() {
     SunsetTheme {
         Surface {
-            LoginContent(isLoading = false, onLoginButtonTap = { id, password ->
-
-            })
+            LoginContent(
+                isLoading = false,
+                onLoginButtonTap = { _, _ -> },
+                onPrivacyPolicyTap = {})
         }
     }
 }

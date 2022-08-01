@@ -36,6 +36,10 @@ class LoginScreenState(
         }
     }
 
+    fun navigateToPrivacyPolicy() {
+        navController.navigate("privacy_policy")
+    }
+
     fun popEvent() {
         viewModel.popEvent()
     }
