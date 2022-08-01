@@ -25,14 +25,15 @@ jobs:
       with:
         ruby-version: 3.1
         bundler-cache: true
-    - name: Prepare keystore
+    - name: Prepare authentication
       run: |
         echo -n "${{ secrets.SUNSETSCROB_KEYSTORE }}" | base64 -d > SunsetScrob.jks
+        echo -n "${{ secrets.APP_PUBLISHER_JSON }}" | base64 -d > app/app-publisher.json
     - name: Deploy an aab
       env:
         LAST_FM_API_KEY: ${{ secrets.LAST_FM_API_KEY }}
         LAST_FM_SHARED_SECRET: ${{ secrets.LAST_FM_SHARED_SECRET }}
-        GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON_DEV }}
+        GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
         SUNSET_KEY_ALIAS: ${{ secrets.SUNSET_KEY_ALIAS }}
         SUNSET_KEY_PASSWORD: ${{ secrets.SUNSET_KEY_PASSWORD }}
         SUNSET_STORE_PASSWORD: ${{ secrets.SUNSET_STORE_PASSWORD }}
