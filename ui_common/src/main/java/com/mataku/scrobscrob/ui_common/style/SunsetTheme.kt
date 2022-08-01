@@ -7,6 +7,7 @@ import androidx.compose.material.ripple.RippleAlpha
 import androidx.compose.material.ripple.RippleTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mataku.scrobscrob.core.entity.AppTheme
@@ -29,11 +30,13 @@ fun SunsetTheme(
     ) {
         CompositionLocalProvider(
             LocalRippleTheme provides rippleTheme,
+            LocalAppTheme provides theme,
             content = content
         )
     }
 }
 
+val LocalAppTheme = staticCompositionLocalOf { AppTheme.DARK }
 fun AppTheme.backgroundColor(): Color {
     return this.colors().background
 }
