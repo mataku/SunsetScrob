@@ -1,8 +1,9 @@
 package com.mataku.scrobscrob.album.ui.screen
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -16,8 +17,11 @@ import com.mataku.scrobscrob.album.R
 import com.mataku.scrobscrob.album.ui.molecule.TopAlbum
 import com.mataku.scrobscrob.album.ui.state.TopAlbumsScreenState
 import com.mataku.scrobscrob.core.api.endpoint.Album
+import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.ui_common.organism.ContentHeader
 import com.mataku.scrobscrob.ui_common.organism.InfiniteLoadingIndicator
+import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
+import com.mataku.scrobscrob.ui_common.style.sunsetBackgroundGradient
 
 @Composable
 fun TopAlbumsScreen(
@@ -75,9 +79,18 @@ fun TopAlbumsContent(
                 }
             }
         },
-        modifier = Modifier
-            .fillMaxHeight()
-            .padding(bottom = 56.dp)
+        modifier = if (LocalAppTheme.current == AppTheme.SUNSET) {
+            Modifier
+                .fillMaxSize()
+                .background(
+                    brush = sunsetBackgroundGradient
+                )
+                .padding(bottom = 56.dp)
+        } else {
+            Modifier
+                .fillMaxSize()
+                .padding(bottom = 56.dp)
+        }
     )
 }
 

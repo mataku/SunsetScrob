@@ -2,7 +2,7 @@ package com.mataku.scrobscrob.data.db
 
 import android.content.Context
 import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.mataku.scrobscrob.core.entity.AppTheme
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -26,20 +26,20 @@ class ThemeDataStore(
                 AppTheme.DARK
             }
             .map {
-                val rawValue = it[THEME_KEY]
-                AppTheme.deserialize(rawValue)
+                val rawPrimaryId = it[THEME_KEY]
+                AppTheme.find(rawPrimaryId)
             }
 
     suspend fun setTheme(theme: AppTheme): Flow<Unit> {
         return flowOf(
             context.themeDataStore.edit {
-                it[THEME_KEY] = theme.rawValue
+                it[THEME_KEY] = theme.primaryId
             }
         ).flowOn(Dispatchers.IO)
             .map { }
     }
 
     companion object {
-        private val THEME_KEY = stringPreferencesKey("current_theme")
+        private val THEME_KEY = intPreferencesKey("current_theme_id")
     }
 }
