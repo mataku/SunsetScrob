@@ -39,9 +39,14 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mataku.scrobscrob.auth.ui.state.LoginScreenState
+import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.ui_common.R
+import com.mataku.scrobscrob.ui_common.style.Colors
+import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.SunsetTheme
+import com.mataku.scrobscrob.ui_common.style.backgroundColor
 import kotlinx.coroutines.launch
 
 @Composable
@@ -51,6 +56,15 @@ fun LoginScreen(
     val scaffoldState = rememberScaffoldState()
     val coroutineScope = rememberCoroutineScope()
     val uiState = stateHolder.uiState
+    val currentTheme = LocalAppTheme.current
+    val systemUiController = rememberSystemUiController()
+    systemUiController.setNavigationBarColor(
+        color = if (currentTheme == AppTheme.SUNSET) {
+            Colors.SunsetBlue
+        } else {
+            currentTheme.backgroundColor()
+        }
+    )
     uiState.event?.let {
         when (it) {
             is LoginScreenState.UiEvent.LoginSuccess -> {
