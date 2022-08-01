@@ -6,4 +6,5 @@
     <string name="title_theme_selector">Theme</string>
 
     <string name="item_license">Licenses</string>
+    <string name="item_privacy_policy">Privacy policy</string>
 </resources>

@@ -12,13 +12,19 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Divider
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.ModalBottomSheetLayout
+import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
+import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -32,6 +38,7 @@ import com.mataku.scrobscrob.ui_common.organism.ContentHeader
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.SunsetTheme
 import com.mataku.scrobscrob.ui_common.style.sunsetBackgroundGradient
+import com.mataku.scrobscrob.ui_common.template.WebViewScreen
 
 @Composable
 fun AccountScreen(
@@ -50,6 +57,9 @@ fun AccountScreen(
             },
             navigateToLicenseList = {
                 state.navigateToLicenseScreen()
+            },
+            navigateToPrivacyPolicy = {
+                state.navigateToPrivacyPolicyScreen()
             }
         )
     }
@@ -97,14 +107,17 @@ fun AccountScreen(
 
 }
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class)
 @Composable
 private fun AccountContent(
     theme: AppTheme,
     navigateToThemeSelector: () -> Unit,
     navigateToLogoutConfirmation: () -> Unit,
-    navigateToLicenseList: () -> Unit
+    navigateToLicenseList: () -> Unit,
+    navigateToPrivacyPolicy: () -> Unit
 ) {
+    val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
+    val coroutineScope = rememberCoroutineScope()
     LazyColumn(
         content = {
             stickyHeader {
@@ -128,8 +141,6 @@ private fun AccountContent(
             }
             item {
                 Divider()
-            }
-            item {
                 val licenseMenu = AccountMenu.LICENSE
                 AccountMenuCell(
                     title = stringResource(id = licenseMenu.titleRes),
@@ -137,8 +148,14 @@ private fun AccountContent(
                 ) {
                     navigateToLicenseList.invoke()
                 }
+                val privacyPolicyMenu = AccountMenu.PRIVACY_POLICY
+                AccountMenuCell(
+                    title = stringResource(id = privacyPolicyMenu.titleRes),
+                    description = ""
+                ) {
+                    navigateToPrivacyPolicy.invoke()
+                }
             }
-
         },
         modifier = if (LocalAppTheme.current == AppTheme.SUNSET) {
             Modifier
@@ -151,6 +168,19 @@ private fun AccountContent(
                 .fillMaxSize()
         }
     )
+
+    ModalBottomSheetLayout(
+        sheetContent = {
+            WebViewScreen(
+                url = "https://mataku.github.io/sunsetscrob/index.html",
+                modifier = Modifier.height(600.dp)
+            )
+        },
+        sheetState = sheetState,
+        scrimColor = Color.Transparent
+    ) {
+
+    }
 }
 
 @Composable
@@ -184,7 +214,8 @@ private fun AccountContentPreview() {
                 theme = AppTheme.DARK,
                 navigateToThemeSelector = {},
                 navigateToLogoutConfirmation = {},
-                navigateToLicenseList = {}
+                navigateToLicenseList = {},
+                navigateToPrivacyPolicy = {}
             )
         }
     }

@@ -17,5 +17,9 @@ enum class AccountMenu(
     LICENSE(
         titleRes = R.string.item_license,
         descriptionRes = 0
+    ),
+    PRIVACY_POLICY(
+        titleRes = R.string.item_privacy_policy,
+        descriptionRes = 0
     );
 }

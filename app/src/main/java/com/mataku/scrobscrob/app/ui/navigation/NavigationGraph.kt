@@ -1,6 +1,8 @@
 package com.mataku.scrobscrob.app.ui.navigation
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -8,6 +10,7 @@ import androidx.navigation.navArgument
 import com.mataku.scrobscrob.account.ui.ThemeSelectorScreen
 import com.mataku.scrobscrob.account.ui.screen.AccountScreen
 import com.mataku.scrobscrob.account.ui.screen.LicenseScreen
+import com.mataku.scrobscrob.account.ui.screen.PrivacyPolicyScreen
 import com.mataku.scrobscrob.account.ui.state.rememberAccountState
 import com.mataku.scrobscrob.account.ui.state.rememberThemeSelectorState
 import com.mataku.scrobscrob.album.ui.screen.TopAlbumsScreen
@@ -55,7 +58,7 @@ fun NavigationGraph(navController: NavHostController, isLoggedIn: Boolean) {
                 defaultValue = ""
             })
         ) {
-            WebViewScreen(navController = navController, url = it.arguments?.getString("url")!!)
+            WebViewScreen(url = it.arguments?.getString("url")!!, modifier = Modifier.fillMaxSize())
         }
         composable("login") {
             LoginScreen(
@@ -71,6 +74,9 @@ fun NavigationGraph(navController: NavHostController, isLoggedIn: Boolean) {
         }
         composable("license") {
             LicenseScreen()
+        }
+        composable("privacy_policy") {
+            PrivacyPolicyScreen()
         }
     }
 }
