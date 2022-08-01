@@ -56,6 +56,9 @@ fun AppTheme.colors(): androidx.compose.material.Colors {
         AppTheme.OCEAN -> {
             oceanColors
         }
+        AppTheme.LASTFM_DARK -> {
+            lastFmDarkColors
+        }
     }
 }
 
@@ -66,6 +69,9 @@ fun AppTheme.accentColor(): Color {
         }
         AppTheme.OCEAN -> {
             Colors.DeepOcean
+        }
+        AppTheme.LASTFM_DARK -> {
+            Colors.LastFmColor
         }
     }
 }
@@ -103,6 +109,18 @@ private val oceanColors = darkColors(
     surface = Color(0xFF37474F),
     onSurface = Color.White,
     background = Colors.DeepOceanBackground,
+    onBackground = Color.White
+)
+
+private val lastFmDarkColors = darkColors(
+    primary = Color.DarkGray,
+    onPrimary = Color.White,
+    primaryVariant = Colors.ContentBackground,
+    secondary = Color(0xFFFF4081),
+    onSecondary = Color.White,
+    surface = Color(0xFF37474F),
+    onSurface = Color.White,
+    background = Colors.ContentBackground,
     onBackground = Color.White
 )
 
