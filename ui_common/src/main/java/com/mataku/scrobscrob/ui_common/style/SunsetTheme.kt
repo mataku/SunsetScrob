@@ -2,7 +2,11 @@ package com.mataku.scrobscrob.ui_common.style
 
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
+import androidx.compose.material.ripple.LocalRippleTheme
+import androidx.compose.material.ripple.RippleAlpha
+import androidx.compose.material.ripple.RippleTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.graphics.Color
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mataku.scrobscrob.core.entity.AppTheme
@@ -19,10 +23,15 @@ fun SunsetTheme(
     systemUiController.setNavigationBarColor(
         theme.colors().primary
     )
+    val rippleTheme = SunsetRippleTheme(theme)
     MaterialTheme(
-        colors = theme.colors(),
-        content = content
-    )
+        colors = theme.colors()
+    ) {
+        CompositionLocalProvider(
+            LocalRippleTheme provides rippleTheme,
+            content = content
+        )
+    }
 }
 
 fun AppTheme.backgroundColor(): Color {
@@ -63,3 +72,20 @@ private val darkColors = darkColors(
     background = Colors.ContentBackground,
     onBackground = Color.White
 )
+
+private class SunsetRippleTheme(
+    val appTheme: AppTheme
+) : RippleTheme {
+    @Composable
+    override fun defaultColor(): Color {
+        return MaterialTheme.colors.onSurface
+    }
+
+    @Composable
+    override fun rippleAlpha(): RippleAlpha {
+        return RippleTheme.defaultRippleAlpha(
+            Color.Black,
+            lightTheme = appTheme.isLight
+        )
+    }
+}
