@@ -1,7 +1,7 @@
 [versions]
 aboutlibraries = "10.3.1"
 accompanist = "0.23.1"
-compose = "1.1.1"
+compose = "1.2.0"
 hilt = "2.42"
 ktor = "2.0.3"
 room = "2.4.3"
