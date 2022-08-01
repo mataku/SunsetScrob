@@ -23,8 +23,8 @@ android {
         applicationId 'com.mataku.scrobscrob'
         minSdk Versions.minSdkVersion
         targetSdk Versions.targetSdkVersion
-        versionCode 95
-        versionName '0.9.5'
+        versionCode 96
+        versionName '0.9.6'
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         vectorDrawables.useSupportLibrary = true
         proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
