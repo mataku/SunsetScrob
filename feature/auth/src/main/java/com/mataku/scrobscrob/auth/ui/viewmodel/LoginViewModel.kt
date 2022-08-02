@@ -28,6 +28,22 @@ class LoginViewModel @Inject constructor(private val repo: SessionRepository) : 
     }
 
     fun authorize(username: String, password: String) {
+        if (username.isBlank()) {
+            uiState.update {
+                it.copy(
+                    event = LoginScreenState.UiEvent.EmptyUsernameError
+                )
+            }
+            return
+        }
+
+        if (password.isBlank()) {
+            uiState.update {
+                it.copy(event = LoginScreenState.UiEvent.EmptyPasswordError)
+            }
+            return
+        }
+
         viewModelScope.launch {
             repo.authorize(
                 userName = username,

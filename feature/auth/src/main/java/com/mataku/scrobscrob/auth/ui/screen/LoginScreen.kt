@@ -88,6 +88,16 @@ fun LoginScreen(
                     scaffoldState.snackbarHostState.showSnackbar("Login failed")
                 }
             }
+            is LoginScreenState.UiEvent.EmptyPasswordError -> {
+                coroutineScope.launch {
+                    scaffoldState.snackbarHostState.showSnackbar("Password is required")
+                }
+            }
+            is LoginScreenState.UiEvent.EmptyUsernameError -> {
+                coroutineScope.launch {
+                    scaffoldState.snackbarHostState.showSnackbar("Username is required")
+                }
+            }
 
         }
         stateHolder.popEvent()

@@ -47,6 +47,8 @@ class LoginScreenState(
     sealed class UiEvent {
         object LoginSuccess : UiEvent()
         object LoginFailed : UiEvent()
+        object EmptyUsernameError : UiEvent()
+        object EmptyPasswordError : UiEvent()
     }
 }
 
