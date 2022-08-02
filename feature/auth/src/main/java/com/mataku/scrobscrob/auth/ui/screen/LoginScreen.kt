@@ -30,6 +30,7 @@ import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -66,6 +67,7 @@ import com.mataku.scrobscrob.ui_common.style.Colors
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.SunsetTheme
 import com.mataku.scrobscrob.ui_common.style.backgroundColor
+import com.mataku.scrobscrob.ui_common.style.colors
 import kotlinx.coroutines.launch
 import com.mataku.scrobscrob.ui_common.R as uiCommonR
 
@@ -151,6 +153,8 @@ private fun LoginContent(
     }
     val focusManager = LocalFocusManager.current
     val autofill = LocalAutofill.current
+    val systemUiController = rememberSystemUiController()
+    val navigationBackgroundColor = LocalAppTheme.current.colors().primary
 
     // Stored data with "remember { mutableStateOf("") }" will blow up the data in AutoFill#onFill,
     //  so manages input data in ViewModel (TODO: details)
@@ -283,6 +287,12 @@ private fun LoginContent(
             onPrivacyPolicyTap.invoke()
         }) {
             Text(text = "Privacy policy", style = SunsetTextStyle.button)
+        }
+    }
+
+    DisposableEffect(Unit) {
+        onDispose {
+            systemUiController.setNavigationBarColor(navigationBackgroundColor)
         }
     }
 }
