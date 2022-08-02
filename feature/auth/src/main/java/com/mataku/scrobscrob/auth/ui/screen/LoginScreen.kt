@@ -75,10 +75,12 @@ fun LoginScreen(
         }
     )
     val navigationBarColor = MaterialTheme.colors.primary
+    val systemBarColor = LocalAppTheme.current.backgroundColor()
     uiState.event?.let {
         when (it) {
             is LoginScreenState.UiEvent.LoginSuccess -> {
-                systemUiController.setSystemBarsColor(navigationBarColor)
+                systemUiController.setSystemBarsColor(color = systemBarColor)
+                systemUiController.setNavigationBarColor(navigationBarColor)
                 stateHolder.navigateToTop()
             }
             is LoginScreenState.UiEvent.LoginFailed -> {
