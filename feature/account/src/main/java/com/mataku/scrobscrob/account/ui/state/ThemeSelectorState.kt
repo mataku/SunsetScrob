@@ -9,38 +9,38 @@ import com.mataku.scrobscrob.account.ui.viewmodel.ThemeSelectorViewModel
 import com.mataku.scrobscrob.core.entity.AppTheme
 
 class ThemeSelectorState(
-    private val navController: NavController,
-    private val viewModel: ThemeSelectorViewModel
+  private val navController: NavController,
+  private val viewModel: ThemeSelectorViewModel
 ) {
-    val uiState: ThemeSelectorViewModel.UiState
-        @Composable get() = viewModel.uiState.collectAsState().value
+  val uiState: ThemeSelectorViewModel.UiState
+    @Composable get() = viewModel.uiState.collectAsState().value
 
-    fun changeTheme(theme: AppTheme) {
-        viewModel.changeTheme(theme)
-    }
+  fun changeTheme(theme: AppTheme) {
+    viewModel.changeTheme(theme)
+  }
 
-    fun back() {
-        navController.popBackStack()
-    }
+  fun back() {
+    navController.popBackStack()
+  }
 
-    fun popEvent() {
-        viewModel.popEvent()
-    }
+  fun popEvent() {
+    viewModel.popEvent()
+  }
 
-    sealed class UiEvent {
-        data class ThemeChanged(val theme: AppTheme) : UiEvent()
-    }
+  sealed class UiEvent {
+    data class ThemeChanged(val theme: AppTheme) : UiEvent()
+  }
 }
 
 @Composable
 fun rememberThemeSelectorState(
-    navController: NavController,
-    viewModel: ThemeSelectorViewModel = hiltViewModel()
+  navController: NavController,
+  viewModel: ThemeSelectorViewModel = hiltViewModel()
 ): ThemeSelectorState {
-    return remember {
-        ThemeSelectorState(
-            viewModel = viewModel,
-            navController = navController
-        )
-    }
+  return remember {
+    ThemeSelectorState(
+      viewModel = viewModel,
+      navController = navController
+    )
+  }
 }

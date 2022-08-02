@@ -8,17 +8,17 @@ import androidx.compose.ui.text.input.KeyboardType
 
 @Composable
 fun SensitiveTextField(
-    value: String,
-    onValueChange: (String) -> Unit,
-    imeAction: ImeAction = ImeAction.Done
+  value: String,
+  onValueChange: (String) -> Unit,
+  imeAction: ImeAction = ImeAction.Done
 ) {
-    BasicTextField(
-        value = value,
-        onValueChange = onValueChange,
-        singleLine = true,
-        keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Password,
-            imeAction = imeAction
-        )
+  BasicTextField(
+    value = value,
+    onValueChange = onValueChange,
+    singleLine = true,
+    keyboardOptions = KeyboardOptions(
+      keyboardType = KeyboardType.Password,
+      imeAction = imeAction
     )
+  )
 }

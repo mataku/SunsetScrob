@@ -1,5 +1,5 @@
 <resources>
-    <string name="error_password_required">パスワードを入力してください</string>
-    <string name="error_username_required">ユーザIDを入力してください</string>
-    <string name="error_login_failed">ログインに失敗しました</string>
+  <string name="error_password_required">パスワードを入力してください</string>
+  <string name="error_username_required">ユーザIDを入力してください</string>
+  <string name="error_login_failed">ログインに失敗しました</string>
 </resources>

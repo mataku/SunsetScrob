@@ -24,13 +24,13 @@ import javax.inject.Singleton
 //}
 
 interface UsernameRepository {
-    fun username(): String?
+  fun username(): String?
 }
 
 @Singleton
 class UsernameRepositoryImpl @Inject constructor(
-    private val usernameDataStore: UsernameDataStore
+  private val usernameDataStore: UsernameDataStore
 ) : UsernameRepository {
-    override fun username(): String? =
-        runBlocking { usernameDataStore.username() }
+  override fun username(): String? =
+    runBlocking { usernameDataStore.username() }
 }

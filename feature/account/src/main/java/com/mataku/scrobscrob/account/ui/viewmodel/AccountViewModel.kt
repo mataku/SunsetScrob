@@ -15,59 +15,59 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AccountViewModel @Inject constructor(
-    private val themeRepository: ThemeRepository,
-    private val sessionRepository: SessionRepository
+  private val themeRepository: ThemeRepository,
+  private val sessionRepository: SessionRepository
 ) : ViewModel() {
 
-    var uiState: MutableStateFlow<UiState> = MutableStateFlow(UiState.initialize())
-        private set
+  var uiState: MutableStateFlow<UiState> = MutableStateFlow(UiState.initialize())
+    private set
 
-    init {
-        viewModelScope.launch {
-            themeRepository.currentTheme()
-                .catch {
-                    uiState.update {
-                        it.copy(
-                            theme = AppTheme.DARK
-                        )
-                    }
-                }
-                .collect {
-                    uiState.update { state ->
-                        state.copy(theme = it)
-                    }
-                }
-        }
-    }
-
-    fun logout() {
-        viewModelScope.launch {
-            sessionRepository.logout()
-                .catch {
-
-                }
-                .onCompletion {
-                    uiState.update {
-                        it.copy(event = Event.Logout)
-                    }
-                }
-                .collect { }
-        }
-    }
-
-    data class UiState(
-        val theme: AppTheme?,
-        val event: Event?
-    ) {
-        companion object {
-            fun initialize() = UiState(
-                theme = null,
-                event = null
+  init {
+    viewModelScope.launch {
+      themeRepository.currentTheme()
+        .catch {
+          uiState.update {
+            it.copy(
+              theme = AppTheme.DARK
             )
+          }
+        }
+        .collect {
+          uiState.update { state ->
+            state.copy(theme = it)
+          }
         }
     }
+  }
 
-    sealed class Event {
-        object Logout : Event()
+  fun logout() {
+    viewModelScope.launch {
+      sessionRepository.logout()
+        .catch {
+
+        }
+        .onCompletion {
+          uiState.update {
+            it.copy(event = Event.Logout)
+          }
+        }
+        .collect { }
     }
+  }
+
+  data class UiState(
+    val theme: AppTheme?,
+    val event: Event?
+  ) {
+    companion object {
+      fun initialize() = UiState(
+        theme = null,
+        event = null
+      )
+    }
+  }
+
+  sealed class Event {
+    object Logout : Event()
+  }
 }

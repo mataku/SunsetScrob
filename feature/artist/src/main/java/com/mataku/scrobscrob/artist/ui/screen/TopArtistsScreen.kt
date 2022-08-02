@@ -24,102 +24,102 @@ import com.mataku.scrobscrob.ui_common.style.sunsetBackgroundGradient
 
 @Composable
 fun TopArtistsScreen(
-    state: TopArtistsScreenState
+  state: TopArtistsScreenState
 ) {
-    val contentWidth = state.contentWidth
-    val uiState = state.uiState
+  val contentWidth = state.contentWidth
+  val uiState = state.uiState
 
-    TopArtistsContent(
-        artists = uiState.topArtists,
-        hasNext = uiState.hasNext,
-        imageSize = contentWidth.dp,
-        padding = contentWidth.dp - 20.dp,
-        onUrlTap = {
-            state.onTapArtist(it)
-        },
-        onScrollEnd = {
-            state.onScrollEnd()
-        }
-    )
+  TopArtistsContent(
+    artists = uiState.topArtists,
+    hasNext = uiState.hasNext,
+    imageSize = contentWidth.dp,
+    padding = contentWidth.dp - 20.dp,
+    onUrlTap = {
+      state.onTapArtist(it)
+    },
+    onScrollEnd = {
+      state.onScrollEnd()
+    }
+  )
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun TopArtistsContent(
-    artists: List<Artist>,
-    hasNext: Boolean,
-    imageSize: Dp,
-    padding: Dp,
-    onUrlTap: (String) -> Unit,
-    onScrollEnd: () -> Unit
+  artists: List<Artist>,
+  hasNext: Boolean,
+  imageSize: Dp,
+  padding: Dp,
+  onUrlTap: (String) -> Unit,
+  onScrollEnd: () -> Unit
 ) {
-    LazyColumn(
-        content = {
-            stickyHeader {
-                ContentHeader(text = stringResource(id = R.string.menu_top_artists))
-            }
+  LazyColumn(
+    content = {
+      stickyHeader {
+        ContentHeader(text = stringResource(id = R.string.menu_top_artists))
+      }
 
-            items(artists.chunked(2)) {
-                val rightItem = if (it.size == 1) null else it[1]
-                TopArtistsGridRow(
-                    leftArtist = it[0],
-                    rightArtist = rightItem,
-                    imageSize = imageSize - 24.dp,
-                    onArtistTap = onUrlTap,
-                    modifier = Modifier.padding(horizontal = 8.dp)
-                )
-            }
-            if (hasNext) {
-                item {
-                    InfiniteLoadingIndicator(
-                        onScrollEnd = onScrollEnd,
-                        padding = padding
-                    )
-                }
-            }
-        },
-        modifier = if (LocalAppTheme.current == AppTheme.SUNSET) {
-            Modifier
-                .fillMaxSize()
-                .background(
-                    brush = sunsetBackgroundGradient
-                )
-                .padding(bottom = 56.dp)
-        } else {
-            Modifier
-                .fillMaxSize()
-                .padding(bottom = 56.dp)
+      items(artists.chunked(2)) {
+        val rightItem = if (it.size == 1) null else it[1]
+        TopArtistsGridRow(
+          leftArtist = it[0],
+          rightArtist = rightItem,
+          imageSize = imageSize - 24.dp,
+          onArtistTap = onUrlTap,
+          modifier = Modifier.padding(horizontal = 8.dp)
+        )
+      }
+      if (hasNext) {
+        item {
+          InfiniteLoadingIndicator(
+            onScrollEnd = onScrollEnd,
+            padding = padding
+          )
         }
+      }
+    },
+    modifier = if (LocalAppTheme.current == AppTheme.SUNSET) {
+      Modifier
+        .fillMaxSize()
+        .background(
+          brush = sunsetBackgroundGradient
+        )
+        .padding(bottom = 56.dp)
+    } else {
+      Modifier
+        .fillMaxSize()
+        .padding(bottom = 56.dp)
+    }
 
-    )
+  )
 }
 
 @Composable
 private fun TopArtistsGridRow(
-    leftArtist: Artist,
-    rightArtist: Artist?,
-    imageSize: Dp,
-    onArtistTap: (String) -> Unit,
-    modifier: Modifier
+  leftArtist: Artist,
+  rightArtist: Artist?,
+  imageSize: Dp,
+  onArtistTap: (String) -> Unit,
+  modifier: Modifier
 ) {
-    Row(modifier = modifier.fillMaxSize()) {
-        TopArtist(
-            artist = leftArtist,
-            imageSize = imageSize,
-            onArtistTap = {
-                onArtistTap.invoke(leftArtist.url)
-            },
-            modifier = Modifier.weight(1F, fill = false)
-        )
-        rightArtist?.let {
-            TopArtist(
-                artist = it,
-                imageSize = imageSize,
-                onArtistTap = {
-                    onArtistTap.invoke(it.url)
-                },
-                modifier = Modifier.weight(1F, fill = false)
-            )
-        }
+  Row(modifier = modifier.fillMaxSize()) {
+    TopArtist(
+      artist = leftArtist,
+      imageSize = imageSize,
+      onArtistTap = {
+        onArtistTap.invoke(leftArtist.url)
+      },
+      modifier = Modifier.weight(1F, fill = false)
+    )
+    rightArtist?.let {
+      TopArtist(
+        artist = it,
+        imageSize = imageSize,
+        onArtistTap = {
+          onArtistTap.invoke(it.url)
+        },
+        modifier = Modifier.weight(1F, fill = false)
+      )
     }
+  }
 }

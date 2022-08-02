@@ -14,105 +14,105 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ScrobbleViewModel @Inject constructor(
-    private val scrobbleRepository: ScrobbleRepository
+  private val scrobbleRepository: ScrobbleRepository
 ) : ViewModel() {
 
-    var uiState = MutableStateFlow<UiState>(UiState.initialize())
-        private set
+  var uiState = MutableStateFlow<UiState>(UiState.initialize())
+    private set
 
-    private var page = 1
+  private var page = 1
 
-    init {
-        fetchRecentTracks()
-    }
+  init {
+    fetchRecentTracks()
+  }
 
-    fun refresh() {
-        if (!uiState.value.hasNext || uiState.value.isLoading || uiState.value.isRefreshing) return
+  fun refresh() {
+    if (!uiState.value.hasNext || uiState.value.isLoading || uiState.value.isRefreshing) return
 
-        page = 1
+    page = 1
 
-        viewModelScope.launch {
-            uiState.update {
-                it.copy(
-                    isRefreshing = true
-                )
-            }
-            val result = scrobbleRepository.recentTracks(
-                page = page
+    viewModelScope.launch {
+      uiState.update {
+        it.copy(
+          isRefreshing = true
+        )
+      }
+      val result = scrobbleRepository.recentTracks(
+        page = page
+      )
+      result
+        .onSuccess {
+          uiState.update { state ->
+            state.copy(
+              isRefreshing = false,
+              recentTracks = it,
+              hasNext = it.isNotEmpty()
             )
-            result
-                .onSuccess {
-                    uiState.update { state ->
-                        state.copy(
-                            isRefreshing = false,
-                            recentTracks = it,
-                            hasNext = it.isNotEmpty()
-                        )
-                    }
-                    page++
-                }
-                .onFailure {
-                    uiState.update { state ->
-                        state.copy(
-                            isLoading = false,
-                            throwable = it,
-                            hasNext = false
-                        )
-                    }
-                }
+          }
+          page++
         }
-    }
-
-    fun fetchRecentTracks() {
-        if (!uiState.value.hasNext || uiState.value.isLoading || uiState.value.isRefreshing) return
-        viewModelScope.launch {
-            uiState.update {
-                it.copy(
-                    isLoading = true
-                )
-            }
-            val result = scrobbleRepository.recentTracks(
-                page = page
+        .onFailure {
+          uiState.update { state ->
+            state.copy(
+              isLoading = false,
+              throwable = it,
+              hasNext = false
             )
-            result
-                .onSuccess {
-                    uiState.update { state ->
-                        state.copy(
-                            isLoading = false,
-                            recentTracks = state.recentTracks + it,
-                            hasNext = it.isNotEmpty()
-                        )
-                    }
-                    page++
-                }
-                .onFailure {
-                    uiState.update { state ->
-                        state.copy(
-                            isLoading = false,
-                            throwable = it,
-                            hasNext = false
-                        )
-                    }
-                }
+          }
         }
     }
+  }
 
-    data class UiState(
-        val isLoading: Boolean,
-        val isRefreshing: Boolean,
-        val throwable: Throwable? = null,
-        val recentTracks: List<RecentTrack> = emptyList(),
-        val hasNext: Boolean = true
-    ) {
-        companion object {
-            fun initialize(): UiState {
-                return UiState(
-                    isLoading = false,
-                    isRefreshing = false,
-                    throwable = null,
-                    recentTracks = emptyList()
-                )
-            }
+  fun fetchRecentTracks() {
+    if (!uiState.value.hasNext || uiState.value.isLoading || uiState.value.isRefreshing) return
+    viewModelScope.launch {
+      uiState.update {
+        it.copy(
+          isLoading = true
+        )
+      }
+      val result = scrobbleRepository.recentTracks(
+        page = page
+      )
+      result
+        .onSuccess {
+          uiState.update { state ->
+            state.copy(
+              isLoading = false,
+              recentTracks = state.recentTracks + it,
+              hasNext = it.isNotEmpty()
+            )
+          }
+          page++
+        }
+        .onFailure {
+          uiState.update { state ->
+            state.copy(
+              isLoading = false,
+              throwable = it,
+              hasNext = false
+            )
+          }
         }
     }
+  }
+
+  data class UiState(
+    val isLoading: Boolean,
+    val isRefreshing: Boolean,
+    val throwable: Throwable? = null,
+    val recentTracks: List<RecentTrack> = emptyList(),
+    val hasNext: Boolean = true
+  ) {
+    companion object {
+      fun initialize(): UiState {
+        return UiState(
+          isLoading = false,
+          isRefreshing = false,
+          throwable = null,
+          recentTracks = emptyList()
+        )
+      }
+    }
+  }
 }

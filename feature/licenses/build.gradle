@@ -7,65 +7,65 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'com.cookpad.android.plugin.license-tools'
 
 android {
-    compileSdkVersion Versions.compileSdkVersion
-    buildFeatures {
-        dataBinding = true
-        compose = true
-    }
+  compileSdkVersion Versions.compileSdkVersion
+  buildFeatures {
+    dataBinding = true
+    compose = true
+  }
 
-    defaultConfig {
-        minSdkVersion Versions.minSdkVersion
-        targetSdkVersion Versions.targetSdkVersion
-        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
-        vectorDrawables.useSupportLibrary = true
-    }
+  defaultConfig {
+    minSdkVersion Versions.minSdkVersion
+    targetSdkVersion Versions.targetSdkVersion
+    testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+    vectorDrawables.useSupportLibrary = true
+  }
 
-    buildTypes {
-        debug {
-        }
-        release {
-        }
+  buildTypes {
+    debug {
     }
+    release {
+    }
+  }
 
-    lintOptions {
-        abortOnError false
-        textReport true
-        textOutput "stdout"
-        xmlReport false
-    }
+  lintOptions {
+    abortOnError false
+    textReport true
+    textOutput "stdout"
+    xmlReport false
+  }
 
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion libs.versions.kotlin.compiler.extension.get()
-    }
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
+  composeOptions {
+    kotlinCompilerExtensionVersion libs.versions.kotlin.compiler.extension.get()
+  }
 }
 
 dependencies {
-    implementation(project(":app"))
-    implementation(project(":ui_common"))
-    implementation libs.activity.compose
-    implementation libs.compose.ui.tooling
-    implementation libs.compose.animation
-    implementation libs.compose.material
+  implementation(project(":app"))
+  implementation(project(":ui_common"))
+  implementation libs.activity.compose
+  implementation libs.compose.ui.tooling
+  implementation libs.compose.animation
+  implementation libs.compose.material
 }
 
 repositories {
-    google()
-    mavenCentral()
-    maven {
-        url "https://maven.google.com"
-    }
+  google()
+  mavenCentral()
+  maven {
+    url "https://maven.google.com"
+  }
 }
 
 kapt {
-    correctErrorTypes true
+  correctErrorTypes true
 }
 
 tasks.withType(KotlinCompile).all {
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8
-    }
+  kotlinOptions {
+    jvmTarget = JavaVersion.VERSION_1_8
+  }
 }

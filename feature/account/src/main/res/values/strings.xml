@@ -1,10 +1,10 @@
 <resources>
-    <string name="item_logout">Logout</string>
-    <string name="item_logout_description">Logout of Last.fm</string>
+  <string name="item_logout">Logout</string>
+  <string name="item_logout_description">Logout of Last.fm</string>
 
-    <string name="item_theme">Theme</string>
-    <string name="title_theme_selector">Theme</string>
+  <string name="item_theme">Theme</string>
+  <string name="title_theme_selector">Theme</string>
 
-    <string name="item_license">Licenses</string>
-    <string name="item_privacy_policy">Privacy policy</string>
+  <string name="item_license">Licenses</string>
+  <string name="item_privacy_policy">Privacy policy</string>
 </resources>

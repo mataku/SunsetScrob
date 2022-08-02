@@ -12,23 +12,23 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 interface TopArtistsRepository {
-    suspend fun fetchTopArtists(page: Int, username: String): Flow<List<Artist>>
+  suspend fun fetchTopArtists(page: Int, username: String): Flow<List<Artist>>
 }
 
 @Singleton
 class TopArtistsRepositoryImpl @Inject constructor(
-    private val lastFmService: LastFmService
+  private val lastFmService: LastFmService
 ) : TopArtistsRepository {
-    override suspend fun fetchTopArtists(page: Int, username: String): Flow<List<Artist>> = flow {
-        val params = mapOf(
-            "limit" to 20,
-            "page" to page,
-            "period" to "overall",
-            "user" to username
-        )
-        val artists = lastFmService.get<TopArtistsApiResponse>(
-            TopArtistsEndpoint(params = params)
-        ).topArtists.artists
-        emit(artists)
-    }.flowOn(Dispatchers.IO)
+  override suspend fun fetchTopArtists(page: Int, username: String): Flow<List<Artist>> = flow {
+    val params = mapOf(
+      "limit" to 20,
+      "page" to page,
+      "period" to "overall",
+      "user" to username
+    )
+    val artists = lastFmService.get<TopArtistsApiResponse>(
+      TopArtistsEndpoint(params = params)
+    ).topArtists.artists
+    emit(artists)
+  }.flowOn(Dispatchers.IO)
 }

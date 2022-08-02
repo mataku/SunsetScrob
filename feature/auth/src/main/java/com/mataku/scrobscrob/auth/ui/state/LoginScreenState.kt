@@ -10,64 +10,64 @@ import com.mataku.scrobscrob.auth.ui.viewmodel.LoginViewModel
 import com.mataku.scrobscrob.ui_common.SunsetBottomNavItem
 
 class LoginScreenState(
-    private val navController: NavHostController,
-    private val viewModel: LoginViewModel
+  private val navController: NavHostController,
+  private val viewModel: LoginViewModel
 ) {
-    val uiState: LoginViewModel.UiState
-        @Composable get() = viewModel.uiState.collectAsState().value
+  val uiState: LoginViewModel.UiState
+    @Composable get() = viewModel.uiState.collectAsState().value
 
-    fun login(username: String, password: String) {
-        viewModel.authorize(
-            username = username,
-            password = password
-        )
-    }
+  fun login(username: String, password: String) {
+    viewModel.authorize(
+      username = username,
+      password = password
+    )
+  }
 
-    fun navigateToTop() {
-        navController.navigate(
-            SunsetBottomNavItem.SCROBBLE.screenRoute
-        ) {
-            launchSingleTop = true
-            popUpTo(
-                navController.graph.findStartDestination().id
-            ) {
-                inclusive = true
-            }
-        }
+  fun navigateToTop() {
+    navController.navigate(
+      SunsetBottomNavItem.SCROBBLE.screenRoute
+    ) {
+      launchSingleTop = true
+      popUpTo(
+        navController.graph.findStartDestination().id
+      ) {
+        inclusive = true
+      }
     }
+  }
 
-    fun navigateToPrivacyPolicy() {
-        navController.navigate("privacy_policy")
-    }
+  fun navigateToPrivacyPolicy() {
+    navController.navigate("privacy_policy")
+  }
 
-    fun popEvent() {
-        viewModel.popEvent()
-    }
+  fun popEvent() {
+    viewModel.popEvent()
+  }
 
-    fun onUsernameUpdate(username: String) {
-        viewModel.updateUsername(username)
-    }
+  fun onUsernameUpdate(username: String) {
+    viewModel.updateUsername(username)
+  }
 
-    fun onPasswordUpdate(password: String) {
-        viewModel.updatePassword(password)
-    }
+  fun onPasswordUpdate(password: String) {
+    viewModel.updatePassword(password)
+  }
 
-    sealed class UiEvent {
-        object LoginSuccess : UiEvent()
-        object LoginFailed : UiEvent()
-        object EmptyUsernameError : UiEvent()
-        object EmptyPasswordError : UiEvent()
-    }
+  sealed class UiEvent {
+    object LoginSuccess : UiEvent()
+    object LoginFailed : UiEvent()
+    object EmptyUsernameError : UiEvent()
+    object EmptyPasswordError : UiEvent()
+  }
 }
 
 @Composable
 fun rememberLoginScreenState(
-    navController: NavHostController,
-    viewModel: LoginViewModel = hiltViewModel()
+  navController: NavHostController,
+  viewModel: LoginViewModel = hiltViewModel()
 ): LoginScreenState =
-    remember(navController, viewModel) {
-        LoginScreenState(
-            navController = navController,
-            viewModel = viewModel
-        )
-    }
+  remember(navController, viewModel) {
+    LoginScreenState(
+      navController = navController,
+      viewModel = viewModel
+    )
+  }

@@ -16,93 +16,93 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(private val repo: SessionRepository) : ViewModel() {
 
-    var uiState: MutableStateFlow<UiState> = MutableStateFlow(UiState.initialize())
-        private set
+  var uiState: MutableStateFlow<UiState> = MutableStateFlow(UiState.initialize())
+    private set
 
-    fun popEvent() {
-        uiState.update {
+  fun popEvent() {
+    uiState.update {
+      it.copy(
+        event = null
+      )
+    }
+  }
+
+  fun authorize(username: String, password: String) {
+    if (username.isBlank()) {
+      uiState.update {
+        it.copy(
+          event = LoginScreenState.UiEvent.EmptyUsernameError
+        )
+      }
+      return
+    }
+
+    if (password.isBlank()) {
+      uiState.update {
+        it.copy(event = LoginScreenState.UiEvent.EmptyPasswordError)
+      }
+      return
+    }
+
+    viewModelScope.launch {
+      repo.authorize(
+        userName = username,
+        password = password
+      )
+        .onStart {
+          uiState.update {
             it.copy(
-                event = null
+              isLoading = true
             )
+          }
         }
-    }
-
-    fun authorize(username: String, password: String) {
-        if (username.isBlank()) {
-            uiState.update {
-                it.copy(
-                    event = LoginScreenState.UiEvent.EmptyUsernameError
-                )
-            }
-            return
-        }
-
-        if (password.isBlank()) {
-            uiState.update {
-                it.copy(event = LoginScreenState.UiEvent.EmptyPasswordError)
-            }
-            return
-        }
-
-        viewModelScope.launch {
-            repo.authorize(
-                userName = username,
-                password = password
+        .onCompletion {
+          uiState.update {
+            it.copy(
+              isLoading = false
             )
-                .onStart {
-                    uiState.update {
-                        it.copy(
-                            isLoading = true
-                        )
-                    }
-                }
-                .onCompletion {
-                    uiState.update {
-                        it.copy(
-                            isLoading = false
-                        )
-                    }
-                }
-                .catch {
-                    uiState.update { state ->
-                        state.copy(
-                            event = LoginScreenState.UiEvent.LoginFailed
-                        )
-                    }
-                }
-                .collect {
-                    uiState.update { state ->
-                        state.copy(isLoading = false, event = LoginScreenState.UiEvent.LoginSuccess)
-                    }
-                }
+          }
         }
-    }
-
-    fun updateUsername(username: String) {
-        uiState.update {
-            it.copy(username = username)
-        }
-    }
-
-    fun updatePassword(password: String) {
-        uiState.update {
-            it.copy(password = password)
-        }
-    }
-
-    data class UiState(
-        val isLoading: Boolean,
-        val event: LoginScreenState.UiEvent? = null,
-        val username: String,
-        val password: String
-    ) {
-        companion object {
-            fun initialize() = UiState(
-                isLoading = false,
-                event = null,
-                username = "",
-                password = ""
+        .catch {
+          uiState.update { state ->
+            state.copy(
+              event = LoginScreenState.UiEvent.LoginFailed
             )
+          }
+        }
+        .collect {
+          uiState.update { state ->
+            state.copy(isLoading = false, event = LoginScreenState.UiEvent.LoginSuccess)
+          }
         }
     }
+  }
+
+  fun updateUsername(username: String) {
+    uiState.update {
+      it.copy(username = username)
+    }
+  }
+
+  fun updatePassword(password: String) {
+    uiState.update {
+      it.copy(password = password)
+    }
+  }
+
+  data class UiState(
+    val isLoading: Boolean,
+    val event: LoginScreenState.UiEvent? = null,
+    val username: String,
+    val password: String
+  ) {
+    companion object {
+      fun initialize() = UiState(
+        isLoading = false,
+        event = null,
+        username = "",
+        password = ""
+      )
+    }
+  }
 }

@@ -18,34 +18,34 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class DatabaseModule {
 
-    @Singleton
-    @Provides
-    fun provideSessionKeyStore(@ApplicationContext context: Context): SessionKeyDataStore {
-        return SessionKeyDataStore(context)
-    }
+  @Singleton
+  @Provides
+  fun provideSessionKeyStore(@ApplicationContext context: Context): SessionKeyDataStore {
+    return SessionKeyDataStore(context)
+  }
 
-    @Singleton
-    @Provides
-    fun provideUsernameStore(@ApplicationContext context: Context): UsernameDataStore {
-        return UsernameDataStore(context)
-    }
+  @Singleton
+  @Provides
+  fun provideUsernameStore(@ApplicationContext context: Context): UsernameDataStore {
+    return UsernameDataStore(context)
+  }
 
-    @Singleton
-    @Provides
-    fun provideThemeDataStore(@ApplicationContext context: Context): ThemeDataStore {
-        return ThemeDataStore(context)
-    }
+  @Singleton
+  @Provides
+  fun provideThemeDataStore(@ApplicationContext context: Context): ThemeDataStore {
+    return ThemeDataStore(context)
+  }
 
-    @Singleton
-    @Provides
-    fun provideSunsetDatabase(@ApplicationContext context: Context): AppDatabase {
-        return Room.databaseBuilder(context, AppDatabase::class.java, "sunset_db").build()
-    }
+  @Singleton
+  @Provides
+  fun provideSunsetDatabase(@ApplicationContext context: Context): AppDatabase {
+    return Room.databaseBuilder(context, AppDatabase::class.java, "sunset_db").build()
+  }
 
-    @Singleton
-    @Provides
-    fun provideScrobbleDao(appDatabase: AppDatabase): ScrobbleDao {
-        return appDatabase.scrobbleDao
-    }
+  @Singleton
+  @Provides
+  fun provideScrobbleDao(appDatabase: AppDatabase): ScrobbleDao {
+    return appDatabase.scrobbleDao
+  }
 
 }

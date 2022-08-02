@@ -17,92 +17,92 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TopAlbumsViewModel @Inject constructor(
-    private val topAlbumsRepository: TopAlbumsRepository,
-    usernameRepository: UsernameRepository
+  private val topAlbumsRepository: TopAlbumsRepository,
+  usernameRepository: UsernameRepository
 ) : ViewModel() {
 
-    var uiState: MutableStateFlow<UiState> = MutableStateFlow(UiState.initialized())
-        private set
+  var uiState: MutableStateFlow<UiState> = MutableStateFlow(UiState.initialized())
+    private set
 
-    private val username: String = usernameRepository.username() ?: ""
+  private val username: String = usernameRepository.username() ?: ""
 
-    private var page = 1
+  private var page = 1
 
-    init {
-        if (username.isBlank()) {
+  init {
+    if (username.isBlank()) {
+      uiState.update {
+        it.copy(
+          isLoading = false,
+          hasNext = false
+        )
+      }
+    } else {
+      fetchAlbums()
+    }
+  }
+
+  fun fetchAlbums() {
+    if (uiState.value.isLoading) {
+      return
+    }
+
+    viewModelScope.launch {
+      topAlbumsRepository.fetchTopAlbums(page = page, username = username)
+        .onStart {
+          uiState.update {
+            it.copy(
+              isLoading = true
+            )
+          }
+        }
+        .onCompletion {
+          uiState.update {
+            it.copy(
+              isLoading = false
+            )
+          }
+        }
+        .catch {
+          uiState.update {
+            it.copy(
+              hasNext = false
+            )
+          }
+        }
+        .collect { albums ->
+          if (albums.isEmpty()) {
             uiState.update {
-                it.copy(
-                    isLoading = false,
-                    hasNext = false
-                )
+              it.copy(
+                hasNext = false
+              )
             }
-        } else {
-            fetchAlbums()
+          } else {
+            val currentAlbums = uiState.value.topAlbums.toMutableList()
+            currentAlbums.addAll(albums)
+            uiState.update {
+              it.copy(
+                topAlbums = currentAlbums
+              )
+            }
+            page++
+          }
         }
     }
+  }
 
-    fun fetchAlbums() {
-        if (uiState.value.isLoading) {
-            return
-        }
+  data class UiState(
+    val isLoading: Boolean,
+    val topAlbums: List<Album>,
+    val hasNext: Boolean
+  ) {
+    companion object {
+      fun initialized(): UiState =
+        UiState(
+          isLoading = false,
+          topAlbums = emptyList(),
+          hasNext = true
+        )
 
-        viewModelScope.launch {
-            topAlbumsRepository.fetchTopAlbums(page = page, username = username)
-                .onStart {
-                    uiState.update {
-                        it.copy(
-                            isLoading = true
-                        )
-                    }
-                }
-                .onCompletion {
-                    uiState.update {
-                        it.copy(
-                            isLoading = false
-                        )
-                    }
-                }
-                .catch {
-                    uiState.update {
-                        it.copy(
-                            hasNext = false
-                        )
-                    }
-                }
-                .collect { albums ->
-                    if (albums.isEmpty()) {
-                        uiState.update {
-                            it.copy(
-                                hasNext = false
-                            )
-                        }
-                    } else {
-                        val currentAlbums = uiState.value.topAlbums.toMutableList()
-                        currentAlbums.addAll(albums)
-                        uiState.update {
-                            it.copy(
-                                topAlbums = currentAlbums
-                            )
-                        }
-                        page++
-                    }
-                }
-        }
     }
-
-    data class UiState(
-        val isLoading: Boolean,
-        val topAlbums: List<Album>,
-        val hasNext: Boolean
-    ) {
-        companion object {
-            fun initialized(): UiState =
-                UiState(
-                    isLoading = false,
-                    topAlbums = emptyList(),
-                    hasNext = true
-                )
-
-        }
-    }
+  }
 }

@@ -14,32 +14,32 @@ import javax.inject.Singleton
 @Singleton
 class LastFmService @Inject constructor(val httpClient: HttpClient) {
 
-    suspend inline fun <reified T> get(endpoint: Endpoint): T {
-        val response = httpClient.get {
-            url(BASE_URL + endpoint.path)
-            if (endpoint.params.isNotEmpty()) {
-                endpoint.params.forEach { (k, v) ->
-                    parameter(k, v)
-                }
-            }
+  suspend inline fun <reified T> get(endpoint: Endpoint): T {
+    val response = httpClient.get {
+      url(BASE_URL + endpoint.path)
+      if (endpoint.params.isNotEmpty()) {
+        endpoint.params.forEach { (k, v) ->
+          parameter(k, v)
         }
-
-        return response.body()
+      }
     }
 
-    suspend inline fun <reified T> post(endpoint: Endpoint): T {
-        val response = httpClient.post {
-            url(BASE_URL + endpoint.path)
-            setBody("")
-            endpoint.params.forEach { (k, v) ->
-                parameter(k, v)
-            }
-        }
+    return response.body()
+  }
 
-        return response.body()
+  suspend inline fun <reified T> post(endpoint: Endpoint): T {
+    val response = httpClient.post {
+      url(BASE_URL + endpoint.path)
+      setBody("")
+      endpoint.params.forEach { (k, v) ->
+        parameter(k, v)
+      }
     }
 
-    companion object {
-        const val BASE_URL = "https://ws.audioscrobbler.com"
-    }
+    return response.body()
+  }
+
+  companion object {
+    const val BASE_URL = "https://ws.audioscrobbler.com"
+  }
 }

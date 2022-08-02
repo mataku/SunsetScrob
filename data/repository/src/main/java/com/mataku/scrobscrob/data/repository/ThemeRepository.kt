@@ -8,17 +8,17 @@ import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 interface ThemeRepository {
-    suspend fun currentTheme(): Flow<AppTheme>
-    suspend fun storeTheme(theme: AppTheme): Flow<Unit>
+  suspend fun currentTheme(): Flow<AppTheme>
+  suspend fun storeTheme(theme: AppTheme): Flow<Unit>
 }
 
 class ThemeRepositoryImpl @Inject constructor(
-    private val themeDataStore: ThemeDataStore
+  private val themeDataStore: ThemeDataStore
 ) : ThemeRepository {
-    override suspend fun currentTheme(): Flow<AppTheme> {
-        return themeDataStore.theme().flowOn(Dispatchers.IO)
-    }
+  override suspend fun currentTheme(): Flow<AppTheme> {
+    return themeDataStore.theme().flowOn(Dispatchers.IO)
+  }
 
-    override suspend fun storeTheme(theme: AppTheme): Flow<Unit> =
-        themeDataStore.setTheme(theme)
+  override suspend fun storeTheme(theme: AppTheme): Flow<Unit> =
+    themeDataStore.setTheme(theme)
 }

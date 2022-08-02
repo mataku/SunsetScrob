@@ -15,60 +15,60 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ThemeSelectorViewModel @Inject constructor(
-    private val themeRepository: ThemeRepository
+  private val themeRepository: ThemeRepository
 ) : ViewModel() {
 
-    var uiState: MutableStateFlow<UiState> = MutableStateFlow(UiState.initialize())
-        private set
+  var uiState: MutableStateFlow<UiState> = MutableStateFlow(UiState.initialize())
+    private set
 
-    init {
-        viewModelScope.launch {
-            themeRepository.currentTheme()
-                .distinctUntilChanged()
-                .catch {
-                    uiState.update {
-                        it.copy(theme = AppTheme.DARK)
-                    }
-                }
-                .collect { theme ->
-                    uiState.update {
-                        it.copy(
-                            theme = theme
-                        )
-                    }
-                }
+  init {
+    viewModelScope.launch {
+      themeRepository.currentTheme()
+        .distinctUntilChanged()
+        .catch {
+          uiState.update {
+            it.copy(theme = AppTheme.DARK)
+          }
         }
-    }
-
-    fun changeTheme(theme: AppTheme) {
-        viewModelScope.launch {
-            themeRepository.storeTheme(theme)
-                .catch {
-
-                }
-                .collect {
-                    uiState.update {
-                        it.copy(event = ThemeSelectorState.UiEvent.ThemeChanged(theme))
-                    }
-                }
-        }
-    }
-
-    fun popEvent() {
-        uiState.update {
-            it.copy(event = null)
-        }
-    }
-
-    data class UiState(
-        val theme: AppTheme?,
-        val event: ThemeSelectorState.UiEvent?
-    ) {
-        companion object {
-            fun initialize() = UiState(
-                theme = null,
-                event = null
+        .collect { theme ->
+          uiState.update {
+            it.copy(
+              theme = theme
             )
+          }
         }
     }
+  }
+
+  fun changeTheme(theme: AppTheme) {
+    viewModelScope.launch {
+      themeRepository.storeTheme(theme)
+        .catch {
+
+        }
+        .collect {
+          uiState.update {
+            it.copy(event = ThemeSelectorState.UiEvent.ThemeChanged(theme))
+          }
+        }
+    }
+  }
+
+  fun popEvent() {
+    uiState.update {
+      it.copy(event = null)
+    }
+  }
+
+  data class UiState(
+    val theme: AppTheme?,
+    val event: ThemeSelectorState.UiEvent?
+  ) {
+    companion object {
+      fun initialize() = UiState(
+        theme = null,
+        event = null
+      )
+    }
+  }
 }

@@ -18,28 +18,28 @@ private val Context.themeDataStore by preferencesDataStore("THEME")
 
 @Singleton
 class ThemeDataStore(
-    @ApplicationContext private val context: Context
+  @ApplicationContext private val context: Context
 ) {
-    fun theme(): Flow<AppTheme> =
-        context.themeDataStore.data
-            .catch {
-                AppTheme.DARK
-            }
-            .map {
-                val rawPrimaryId = it[THEME_KEY]
-                AppTheme.find(rawPrimaryId)
-            }
+  fun theme(): Flow<AppTheme> =
+    context.themeDataStore.data
+      .catch {
+        AppTheme.DARK
+      }
+      .map {
+        val rawPrimaryId = it[THEME_KEY]
+        AppTheme.find(rawPrimaryId)
+      }
 
-    suspend fun setTheme(theme: AppTheme): Flow<Unit> {
-        return flowOf(
-            context.themeDataStore.edit {
-                it[THEME_KEY] = theme.primaryId
-            }
-        ).flowOn(Dispatchers.IO)
-            .map { }
-    }
+  suspend fun setTheme(theme: AppTheme): Flow<Unit> {
+    return flowOf(
+      context.themeDataStore.edit {
+        it[THEME_KEY] = theme.primaryId
+      }
+    ).flowOn(Dispatchers.IO)
+      .map { }
+  }
 
-    companion object {
-        private val THEME_KEY = intPreferencesKey("current_theme_id")
-    }
+  companion object {
+    private val THEME_KEY = intPreferencesKey("current_theme_id")
+  }
 }

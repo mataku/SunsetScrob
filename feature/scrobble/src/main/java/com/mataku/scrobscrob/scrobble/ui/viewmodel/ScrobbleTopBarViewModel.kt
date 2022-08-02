@@ -13,34 +13,34 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ScrobbleTopBarViewModel @Inject constructor(
-    private val sessionRepository: SessionRepository
+  private val sessionRepository: SessionRepository
 ) : ViewModel() {
 
-    var uiState: MutableStateFlow<UiState> = MutableStateFlow(UiState.initial)
-        private set
+  var uiState: MutableStateFlow<UiState> = MutableStateFlow(UiState.initial)
+    private set
 
-    fun logout() {
-        viewModelScope.launch {
-            sessionRepository.logout()
-                .catch {
+  fun logout() {
+    viewModelScope.launch {
+      sessionRepository.logout()
+        .catch {
 
-                }
-                .onCompletion {
-                    uiState.update {
-                        it.copy(
-                            logoutEvent = Unit
-                        )
-                    }
-                }
-                .collect { }
         }
-    }
-    
-    data class UiState(
-        val logoutEvent: Unit? = null
-    ) {
-        companion object {
-            val initial = UiState(logoutEvent = null)
+        .onCompletion {
+          uiState.update {
+            it.copy(
+              logoutEvent = Unit
+            )
+          }
         }
+        .collect { }
     }
+  }
+
+  data class UiState(
+    val logoutEvent: Unit? = null
+  ) {
+    companion object {
+      val initial = UiState(logoutEvent = null)
+    }
+  }
 }

@@ -26,57 +26,57 @@ import com.mataku.scrobscrob.ui_common.template.WebViewScreen
 
 @Composable
 fun NavigationGraph(navController: NavHostController, isLoggedIn: Boolean) {
-    NavHost(
-        navController = navController,
-        startDestination = if (isLoggedIn) SunsetBottomNavItem.SCROBBLE.screenRoute else "login"
+  NavHost(
+    navController = navController,
+    startDestination = if (isLoggedIn) SunsetBottomNavItem.SCROBBLE.screenRoute else "login"
+  ) {
+    composable(
+      SunsetBottomNavItem.SCROBBLE.screenRoute
     ) {
-        composable(
-            SunsetBottomNavItem.SCROBBLE.screenRoute
-        ) {
-            ScrobbleScreen(
-                state = rememberScrobbleScreenState(navController = navController)
-            )
-        }
-        composable(
-            SunsetBottomNavItem.TOP_ALBUMS.screenRoute
-        ) {
-            TopAlbumsScreen(
-                state = rememberTopAlbumsScreenState(navController = navController)
-            )
-        }
-        composable(SunsetBottomNavItem.TOP_ARTISTS.screenRoute) {
-            TopArtistsScreen(
-                state = rememberTopArtistsScreenState(navController = navController)
-            )
-        }
-        composable(SunsetBottomNavItem.ACCOUNT.screenRoute) {
-            AccountScreen(state = rememberAccountState(navController = navController))
-        }
-        composable(
-            "webview?url={url}",
-            arguments = listOf(navArgument("url") {
-                defaultValue = ""
-            })
-        ) {
-            WebViewScreen(url = it.arguments?.getString("url")!!, modifier = Modifier.fillMaxSize())
-        }
-        composable("login") {
-            LoginScreen(
-                stateHolder = rememberLoginScreenState(navController = navController)
-            )
-        }
-        composable("theme") {
-            ThemeSelectorScreen(
-                state = rememberThemeSelectorState(
-                    navController = navController
-                )
-            )
-        }
-        composable("license") {
-            LicenseScreen()
-        }
-        composable("privacy_policy") {
-            PrivacyPolicyScreen()
-        }
+      ScrobbleScreen(
+        state = rememberScrobbleScreenState(navController = navController)
+      )
     }
+    composable(
+      SunsetBottomNavItem.TOP_ALBUMS.screenRoute
+    ) {
+      TopAlbumsScreen(
+        state = rememberTopAlbumsScreenState(navController = navController)
+      )
+    }
+    composable(SunsetBottomNavItem.TOP_ARTISTS.screenRoute) {
+      TopArtistsScreen(
+        state = rememberTopArtistsScreenState(navController = navController)
+      )
+    }
+    composable(SunsetBottomNavItem.ACCOUNT.screenRoute) {
+      AccountScreen(state = rememberAccountState(navController = navController))
+    }
+    composable(
+      "webview?url={url}",
+      arguments = listOf(navArgument("url") {
+        defaultValue = ""
+      })
+    ) {
+      WebViewScreen(url = it.arguments?.getString("url")!!, modifier = Modifier.fillMaxSize())
+    }
+    composable("login") {
+      LoginScreen(
+        stateHolder = rememberLoginScreenState(navController = navController)
+      )
+    }
+    composable("theme") {
+      ThemeSelectorScreen(
+        state = rememberThemeSelectorState(
+          navController = navController
+        )
+      )
+    }
+    composable("license") {
+      LicenseScreen()
+    }
+    composable("privacy_policy") {
+      PrivacyPolicyScreen()
+    }
+  }
 }

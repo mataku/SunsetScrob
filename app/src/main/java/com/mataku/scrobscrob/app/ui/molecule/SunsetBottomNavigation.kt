@@ -24,76 +24,76 @@ import com.mataku.scrobscrob.ui_common.style.accentColor
 
 @Composable
 fun SunsetBottomNavigation(navController: NavController) {
-    BottomNavigation(
-        backgroundColor = MaterialTheme.colors.primary
-    ) {
-        val navBackStackEntry by navController.currentBackStackEntryAsState()
-        val currentRoute = navBackStackEntry?.destination?.route
-        SunsetBottomNavItem.values().forEach { item ->
-            BottomNavigationItem(
-                label = {
-                    val textColor = if (currentRoute == item.screenRoute) {
-                        MaterialTheme.colors.onPrimary
-                    } else {
-                        MaterialTheme.colors.onPrimary.copy(
-                            alpha = 0.4F
-                        )
-                    }
-                    Text(
-                        text = item.title, style = SunsetTextStyle.caption.copy(
-                            color = textColor,
-                            fontSize = 12.sp
-                        )
-                    )
-                },
-                icon = {
-                    val iconColor = if (currentRoute == item.screenRoute) {
-                        LocalAppTheme.current.accentColor()
-                    } else {
-                        MaterialTheme.colors.onPrimary.copy(
-                            alpha = 0.4F
-                        )
-                    }
-                    when (item) {
-                        SunsetBottomNavItem.SCROBBLE, SunsetBottomNavItem.TOP_ALBUMS, SunsetBottomNavItem.TOP_ARTISTS -> {
-                            Icon(
-                                painterResource(item.iconDrawable!!),
-                                contentDescription = item.title,
-                                tint = iconColor
-                            )
-                        }
-                        SunsetBottomNavItem.ACCOUNT -> {
-                            Icon(
-                                imageVector = Icons.Default.AccountCircle,
-                                contentDescription = item.title,
-                                tint = iconColor
-                            )
-                        }
-                    }
-                },
-                selected = currentRoute == item.screenRoute,
-                onClick = {
-                    navController.navigate(item.screenRoute) {
-                        navController.graph.startDestinationRoute?.let { screenRoute ->
-                            popUpTo(screenRoute) {
-                                saveState = true
-                            }
-                        }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-                }
+  BottomNavigation(
+    backgroundColor = MaterialTheme.colors.primary
+  ) {
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
+    SunsetBottomNavItem.values().forEach { item ->
+      BottomNavigationItem(
+        label = {
+          val textColor = if (currentRoute == item.screenRoute) {
+            MaterialTheme.colors.onPrimary
+          } else {
+            MaterialTheme.colors.onPrimary.copy(
+              alpha = 0.4F
             )
+          }
+          Text(
+            text = item.title, style = SunsetTextStyle.caption.copy(
+              color = textColor,
+              fontSize = 12.sp
+            )
+          )
+        },
+        icon = {
+          val iconColor = if (currentRoute == item.screenRoute) {
+            LocalAppTheme.current.accentColor()
+          } else {
+            MaterialTheme.colors.onPrimary.copy(
+              alpha = 0.4F
+            )
+          }
+          when (item) {
+            SunsetBottomNavItem.SCROBBLE, SunsetBottomNavItem.TOP_ALBUMS, SunsetBottomNavItem.TOP_ARTISTS -> {
+              Icon(
+                painterResource(item.iconDrawable!!),
+                contentDescription = item.title,
+                tint = iconColor
+              )
+            }
+            SunsetBottomNavItem.ACCOUNT -> {
+              Icon(
+                imageVector = Icons.Default.AccountCircle,
+                contentDescription = item.title,
+                tint = iconColor
+              )
+            }
+          }
+        },
+        selected = currentRoute == item.screenRoute,
+        onClick = {
+          navController.navigate(item.screenRoute) {
+            navController.graph.startDestinationRoute?.let { screenRoute ->
+              popUpTo(screenRoute) {
+                saveState = true
+              }
+            }
+            launchSingleTop = true
+            restoreState = true
+          }
         }
+      )
     }
+  }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun SunsetBottomNavPreview() {
-    SunsetTheme {
-        Surface() {
-            SunsetBottomNavigation(navController = NavController(LocalContext.current))
-        }
+  SunsetTheme {
+    Surface() {
+      SunsetBottomNavigation(navController = NavController(LocalContext.current))
     }
+  }
 }

@@ -1,13 +1,13 @@
 dependencies {
-    testImplementation libs.androidx.test.core
-    testImplementation libs.kotest.runner.junit5
-    testImplementation libs.kotest.assertions
-    testImplementation libs.mockk
-    testImplementation libs.mockk.agent.jvm
+  testImplementation libs.androidx.test.core
+  testImplementation libs.kotest.runner.junit5
+  testImplementation libs.kotest.assertions
+  testImplementation libs.mockk
+  testImplementation libs.mockk.agent.jvm
 }
 
 android.testOptions {
-    unitTests.all {
-        useJUnitPlatform()
-    }
+  unitTests.all {
+    useJUnitPlatform()
+  }
 }

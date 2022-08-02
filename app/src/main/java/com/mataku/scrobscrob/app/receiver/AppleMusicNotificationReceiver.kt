@@ -5,9 +5,9 @@ import android.content.Context
 import android.content.Intent
 
 class AppleMusicNotificationReceiver : BroadcastReceiver() {
-    override fun onReceive(context: Context, intent: Intent) {
-        if (intent.action != "AppleMusic") {
-            return
-        }
+  override fun onReceive(context: Context, intent: Intent) {
+    if (intent.action != "AppleMusic") {
+      return
     }
+  }
 }

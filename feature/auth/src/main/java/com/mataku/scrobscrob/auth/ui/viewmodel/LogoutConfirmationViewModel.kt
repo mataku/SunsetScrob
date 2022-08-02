@@ -15,32 +15,32 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LogoutConfirmationViewModel @Inject constructor(
-    private val sessionRepository: SessionRepository
+  private val sessionRepository: SessionRepository
 ) : ViewModel() {
 
-    var uiState by mutableStateOf(UiState.initial)
-        private set
+  var uiState by mutableStateOf(UiState.initial)
+    private set
 
-    fun logout() {
-        viewModelScope.launch {
-            sessionRepository.logout()
-                .catch {
+  fun logout() {
+    viewModelScope.launch {
+      sessionRepository.logout()
+        .catch {
 
-                }
-                .onCompletion {
-                    uiState = uiState.copy(
-                        logoutEvent = Unit
-                    )
-                }
-                .collect { }
         }
-    }
-
-    data class UiState(
-        val logoutEvent: Unit? = null
-    ) {
-        companion object {
-            val initial = UiState(logoutEvent = null)
+        .onCompletion {
+          uiState = uiState.copy(
+            logoutEvent = Unit
+          )
         }
+        .collect { }
     }
+  }
+
+  data class UiState(
+    val logoutEvent: Unit? = null
+  ) {
+    companion object {
+      val initial = UiState(logoutEvent = null)
+    }
+  }
 }

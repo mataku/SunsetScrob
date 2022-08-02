@@ -8,35 +8,35 @@ import androidx.navigation.NavHostController
 import com.mataku.scrobscrob.auth.ui.viewmodel.LogoutConfirmationViewModel
 
 class LogoutConfirmationDialogState(
-    private val navController: NavHostController,
-    private val viewModel: LogoutConfirmationViewModel
+  private val navController: NavHostController,
+  private val viewModel: LogoutConfirmationViewModel
 ) {
-    val uiState = viewModel.uiState
+  val uiState = viewModel.uiState
 
-    fun navigateToLoginScreen() {
-        navController.navigate("login") {
-            launchSingleTop = true
-            popUpTo(
-                navController.graph.findStartDestination().id
-            ) {
-                inclusive = true
-            }
-        }
+  fun navigateToLoginScreen() {
+    navController.navigate("login") {
+      launchSingleTop = true
+      popUpTo(
+        navController.graph.findStartDestination().id
+      ) {
+        inclusive = true
+      }
     }
+  }
 
-    fun logout() {
-        viewModel.logout()
-    }
+  fun logout() {
+    viewModel.logout()
+  }
 }
 
 @Composable
 fun rememberLogoutConfirmationDialogState(
-    navController: NavHostController,
-    LogoutConfirmationViewModel: LogoutConfirmationViewModel = hiltViewModel()
+  navController: NavHostController,
+  LogoutConfirmationViewModel: LogoutConfirmationViewModel = hiltViewModel()
 ): LogoutConfirmationDialogState =
-    remember {
-        LogoutConfirmationDialogState(
-            navController = navController,
-            viewModel = LogoutConfirmationViewModel
-        )
-    }
+  remember {
+    LogoutConfirmationDialogState(
+      navController = navController,
+      viewModel = LogoutConfirmationViewModel
+    )
+  }
