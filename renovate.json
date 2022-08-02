@@ -3,8 +3,11 @@
     "config:base"
   ],
   "ignoreDeps": [
-    "kotlin",
-    "org.jetbrains.kotlinx",
-    "compose"
-  ]
+    "androidx.compose.animation:animation",
+    "androidx.compose.ui:ui-tooling",
+    "com.google.accompanist:accompanist-navigation-animation",
+    "com.google.accompanist:accompanist-systemuicontroller",
+    "com.google.accompanist:accompanist-swiperefresh"
+  ],
+  "prConcurrentLimit": 3
 }
