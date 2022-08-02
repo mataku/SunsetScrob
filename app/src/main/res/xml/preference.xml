@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory android:title="@string/preference_title">
-        <Preference
-            android:key="login"
-            android:summary=""
-            android:title="@string/login_to_last_fm" />
-        <Preference
-            android:key="notification"
-            android:summary="@string/enable_notification_access_summary"
-            android:title="@string/enable_notification_access" />
+  <PreferenceCategory android:title="@string/preference_title">
+    <Preference
+      android:key="login"
+      android:summary=""
+      android:title="@string/login_to_last_fm" />
+    <Preference
+      android:key="notification"
+      android:summary="@string/enable_notification_access_summary"
+      android:title="@string/enable_notification_access" />
 
-<!--        <Preference-->
-<!--            android:key="licenses"-->
-<!--            android:title="@string/label_open_source_licenses" />-->
-    </PreferenceCategory>
+    <!--        <Preference-->
+    <!--            android:key="licenses"-->
+    <!--            android:title="@string/label_open_source_licenses" />-->
+  </PreferenceCategory>
 </PreferenceScreen>

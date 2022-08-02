@@ -8,34 +8,34 @@ import androidx.navigation.NavHostController
 import com.mataku.scrobscrob.scrobble.ui.viewmodel.ScrobbleViewModel
 
 class ScrobbleScreenState(
-    val navController: NavHostController,
-    private val viewModel: ScrobbleViewModel
+  val navController: NavHostController,
+  private val viewModel: ScrobbleViewModel
 ) {
-    val uiState: ScrobbleViewModel.UiState
-        @Composable get() = viewModel.uiState.collectAsState().value
+  val uiState: ScrobbleViewModel.UiState
+    @Composable get() = viewModel.uiState.collectAsState().value
 
-    fun onScrobbleTap(url: String) {
-        navController.navigate("webview?url=$url")
-    }
+  fun onScrobbleTap(url: String) {
+    navController.navigate("webview?url=$url")
+  }
 
-    fun onScrollEnd() {
-        viewModel.fetchRecentTracks()
-    }
+  fun onScrollEnd() {
+    viewModel.fetchRecentTracks()
+  }
 
-    fun refresh() {
-        viewModel.refresh()
-    }
+  fun refresh() {
+    viewModel.refresh()
+  }
 }
 
 @Composable
 fun rememberScrobbleScreenState(
-    navController: NavHostController,
-    viewModel: ScrobbleViewModel = hiltViewModel()
+  navController: NavHostController,
+  viewModel: ScrobbleViewModel = hiltViewModel()
 ): ScrobbleScreenState {
-    return remember(navController, viewModel) {
-        ScrobbleScreenState(
-            navController = navController,
-            viewModel = viewModel
-        )
-    }
+  return remember(navController, viewModel) {
+    ScrobbleScreenState(
+      navController = navController,
+      viewModel = viewModel
+    )
+  }
 }

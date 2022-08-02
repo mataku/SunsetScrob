@@ -17,20 +17,20 @@ import com.mikepenz.aboutlibraries.ui.compose.LibrariesContainer
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun LicenseScreen() {
-    val systemUiController = rememberSystemUiController()
-    systemUiController.setNavigationBarColor(
-        color = if (LocalAppTheme.current == AppTheme.SUNSET) {
-            Colors.SunsetBlue
-        } else {
-            LocalAppTheme.current.backgroundColor()
-        }
-    )
-    LibrariesContainer(
-        modifier = Modifier.fillMaxSize(),
-        header = {
-            stickyHeader {
-                ContentHeader(text = stringResource(id = R.string.item_license))
-            }
-        }
-    )
+  val systemUiController = rememberSystemUiController()
+  systemUiController.setNavigationBarColor(
+    color = if (LocalAppTheme.current == AppTheme.SUNSET) {
+      Colors.SunsetBlue
+    } else {
+      LocalAppTheme.current.backgroundColor()
+    }
+  )
+  LibrariesContainer(
+    modifier = Modifier.fillMaxSize(),
+    header = {
+      stickyHeader {
+        ContentHeader(text = stringResource(id = R.string.item_license))
+      }
+    }
+  )
 }

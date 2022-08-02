@@ -36,100 +36,100 @@ import com.mataku.scrobscrob.ui_common.R as uiCommonR
 
 @Composable
 fun Scrobble(recentTrack: RecentTrack, onScrobbleTap: () -> Unit) {
-    ScrobbleContent(
-        imageUrl = recentTrack.largeImageUrl(),
-        trackName = recentTrack.name,
-        artistName = recentTrack.artist.name,
-        date = recentTrack.date,
-        onScrobbleTap = onScrobbleTap
-    )
+  ScrobbleContent(
+    imageUrl = recentTrack.largeImageUrl(),
+    trackName = recentTrack.name,
+    artistName = recentTrack.artist.name,
+    date = recentTrack.date,
+    onScrobbleTap = onScrobbleTap
+  )
 }
 
 @Composable
 private fun ScrobbleContent(
-    imageUrl: String?,
-    trackName: String,
-    artistName: String,
-    date: RecentTrackDate?,
-    onScrobbleTap: () -> Unit
+  imageUrl: String?,
+  trackName: String,
+  artistName: String,
+  date: RecentTrackDate?,
+  onScrobbleTap: () -> Unit
 ) {
-    Row(
+  Row(
+    modifier = Modifier
+      .fillMaxWidth()
+      .clickable {
+        onScrobbleTap()
+      }
+      .padding(
+        horizontal = 16.dp,
+        vertical = 8.dp
+      ),
+    verticalAlignment = Alignment.CenterVertically
+  ) {
+    Row(modifier = Modifier.weight(1F)) {
+      val painter = if (imageUrl == null) {
+        painterResource(uiCommonR.drawable.no_image)
+      } else {
+        rememberAsyncImagePainter(imageUrl)
+      }
+      Image(
+        painter = painter,
+        contentDescription = "Scrobble track image",
         modifier = Modifier
-            .fillMaxWidth()
-            .clickable {
-                onScrobbleTap()
-            }
-            .padding(
-                horizontal = 16.dp,
-                vertical = 8.dp
-            ),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Row(modifier = Modifier.weight(1F)) {
-            val painter = if (imageUrl == null) {
-                painterResource(uiCommonR.drawable.no_image)
-            } else {
-                rememberAsyncImagePainter(imageUrl)
-            }
-            Image(
-                painter = painter,
-                contentDescription = "Scrobble track image",
-                modifier = Modifier
-                    .size(48.dp)
-            )
+          .size(48.dp)
+      )
 
-            Column(
-                modifier = Modifier
-                    .padding(start = 8.dp)
-                    .fillMaxWidth()
-                    .height(48.dp),
-                verticalArrangement = Arrangement.Center
-            ) {
-                Text(
-                    text = trackName,
-                    fontSize = 14.sp,
-                    modifier = Modifier.wrapContentSize(),
-                    color = MaterialTheme.colors.onSurface,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
+      Column(
+        modifier = Modifier
+          .padding(start = 8.dp)
+          .fillMaxWidth()
+          .height(48.dp),
+        verticalArrangement = Arrangement.Center
+      ) {
+        Text(
+          text = trackName,
+          fontSize = 14.sp,
+          modifier = Modifier.wrapContentSize(),
+          color = MaterialTheme.colors.onSurface,
+          maxLines = 1,
+          overflow = TextOverflow.Ellipsis
+        )
 
-                Spacer(modifier = Modifier.size(4.dp))
+        Spacer(modifier = Modifier.size(4.dp))
 
-                Text(
-                    text = artistName,
-                    fontSize = 12.sp,
-                    modifier = Modifier.wrapContentSize(),
-                    color = MaterialTheme.colors.onSurface,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-            }
-        }
-
-        if (date == null) {
-            val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.equalizer))
-            val animationState by animateLottieCompositionAsState(
-                composition = composition,
-                iterations = LottieConstants.IterateForever
-            )
-            LottieAnimation(
-                composition = composition,
-                progress = { animationState },
-                modifier = Modifier.size(24.dp)
-            )
-        }
+        Text(
+          text = artistName,
+          fontSize = 12.sp,
+          modifier = Modifier.wrapContentSize(),
+          color = MaterialTheme.colors.onSurface,
+          maxLines = 1,
+          overflow = TextOverflow.Ellipsis
+        )
+      }
     }
+
+    if (date == null) {
+      val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.equalizer))
+      val animationState by animateLottieCompositionAsState(
+        composition = composition,
+        iterations = LottieConstants.IterateForever
+      )
+      LottieAnimation(
+        composition = composition,
+        progress = { animationState },
+        modifier = Modifier.size(24.dp)
+      )
+    }
+  }
 }
 
 @Composable
 @Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)
 fun ScrobblePreview() {
-    ScrobbleContent(
-        imageUrl = null,
-        trackName = "裸足でSummer",
-        artistName = "乃木坂46",
-        date = RecentTrackDate("01 Aug 2022, 04:08"),
-        onScrobbleTap = {}
-    )
+  ScrobbleContent(
+    imageUrl = null,
+    trackName = "裸足でSummer",
+    artistName = "乃木坂46",
+    date = RecentTrackDate("01 Aug 2022, 04:08"),
+    onScrobbleTap = {}
+  )
 }

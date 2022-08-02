@@ -13,13 +13,13 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class ApiModule {
 
-    @Singleton
-    @Provides
-    fun provideLastFmService(): LastFmService {
-        return LastFmService(provideHttpClient())
-    }
+  @Singleton
+  @Provides
+  fun provideLastFmService(): LastFmService {
+    return LastFmService(provideHttpClient())
+  }
 
-    private fun provideHttpClient(): HttpClient {
-        return LastFmHttpClient.create()
-    }
+  private fun provideHttpClient(): HttpClient {
+    return LastFmHttpClient.create()
+  }
 }

@@ -12,14 +12,14 @@ import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 
 @Composable
 fun ContentHeader(
-    text: String
+  text: String
 ) {
-    Text(
-        text = text,
-        style = SunsetTextStyle.h6,
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(MaterialTheme.colors.background)
-            .padding(16.dp)
-    )
+  Text(
+    text = text,
+    style = SunsetTextStyle.h6,
+    modifier = Modifier
+      .fillMaxWidth()
+      .background(MaterialTheme.colors.background)
+      .padding(16.dp)
+  )
 }

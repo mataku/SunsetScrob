@@ -11,18 +11,18 @@ import com.mataku.scrobscrob.ui_common.SunsetBottomNavItem
 
 @Composable
 fun MainScreen(username: String?) {
-    val navController = rememberNavController()
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = navBackStackEntry?.destination?.route
+  val navController = rememberNavController()
+  val navBackStackEntry by navController.currentBackStackEntryAsState()
+  val currentRoute = navBackStackEntry?.destination?.route
 
-    Scaffold(
-        topBar = {},
-        bottomBar = {
-            if (SunsetBottomNavItem.values().map { it.screenRoute }.contains(currentRoute)) {
-                SunsetBottomNavigation(navController = navController)
-            }
-        }
-    ) {
-        NavigationGraph(navController, isLoggedIn = username != null)
+  Scaffold(
+    topBar = {},
+    bottomBar = {
+      if (SunsetBottomNavItem.values().map { it.screenRoute }.contains(currentRoute)) {
+        SunsetBottomNavigation(navController = navController)
+      }
     }
+  ) {
+    NavigationGraph(navController, isLoggedIn = username != null)
+  }
 }

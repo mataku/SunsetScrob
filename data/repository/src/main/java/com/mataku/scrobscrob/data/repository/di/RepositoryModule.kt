@@ -27,42 +27,42 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class RepositoryModule {
 
-    @Singleton
-    @Provides
-    fun provideSessionRepository(repository: SessionRepositoryImpl): SessionRepository {
-        return repository
-    }
+  @Singleton
+  @Provides
+  fun provideSessionRepository(repository: SessionRepositoryImpl): SessionRepository {
+    return repository
+  }
 
-    @Singleton
-    @Provides
-    fun provideUsernameRepository(@ApplicationContext context: Context): UsernameRepository {
-        return UsernameRepositoryImpl(UsernameDataStore(context))
-    }
+  @Singleton
+  @Provides
+  fun provideUsernameRepository(@ApplicationContext context: Context): UsernameRepository {
+    return UsernameRepositoryImpl(UsernameDataStore(context))
+  }
 
 //    @Binds
 //    abstract fun provideUsernameRepository(repository: UsernameRepositoryImpl): UsernameRepository
 
-    @Singleton
-    @Provides
-    fun provideTopAlbumsRepository(repository: TopAlbumsRepositoryImpl): TopAlbumsRepository {
-        return repository
-    }
+  @Singleton
+  @Provides
+  fun provideTopAlbumsRepository(repository: TopAlbumsRepositoryImpl): TopAlbumsRepository {
+    return repository
+  }
 
-    @Singleton
-    @Provides
-    fun provideTopArtistsRepository(repository: TopArtistsRepositoryImpl): TopArtistsRepository {
-        return repository
-    }
+  @Singleton
+  @Provides
+  fun provideTopArtistsRepository(repository: TopArtistsRepositoryImpl): TopArtistsRepository {
+    return repository
+  }
 
-    @Singleton
-    @Provides
-    fun provideScrobbleRepository(repository: ScrobbleRepositoryImpl): ScrobbleRepository {
-        return repository
-    }
+  @Singleton
+  @Provides
+  fun provideScrobbleRepository(repository: ScrobbleRepositoryImpl): ScrobbleRepository {
+    return repository
+  }
 
-    @Singleton
-    @Provides
-    fun provideThemeRepository(repository: ThemeRepositoryImpl): ThemeRepository {
-        return repository
-    }
+  @Singleton
+  @Provides
+  fun provideThemeRepository(repository: ThemeRepositoryImpl): ThemeRepository {
+    return repository
+  }
 }

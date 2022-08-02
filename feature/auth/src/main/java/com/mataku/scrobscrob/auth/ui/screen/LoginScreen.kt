@@ -73,266 +73,266 @@ import com.mataku.scrobscrob.ui_common.R as uiCommonR
 
 @Composable
 fun LoginScreen(
-    stateHolder: LoginScreenState
+  stateHolder: LoginScreenState
 ) {
-    val scaffoldState = rememberScaffoldState()
-    val coroutineScope = rememberCoroutineScope()
-    val uiState = stateHolder.uiState
-    val currentTheme = LocalAppTheme.current
-    val systemUiController = rememberSystemUiController()
-    systemUiController.setNavigationBarColor(
-        color = if (currentTheme == AppTheme.SUNSET) {
-            Colors.SunsetBlue
-        } else {
-            currentTheme.backgroundColor()
+  val scaffoldState = rememberScaffoldState()
+  val coroutineScope = rememberCoroutineScope()
+  val uiState = stateHolder.uiState
+  val currentTheme = LocalAppTheme.current
+  val systemUiController = rememberSystemUiController()
+  systemUiController.setNavigationBarColor(
+    color = if (currentTheme == AppTheme.SUNSET) {
+      Colors.SunsetBlue
+    } else {
+      currentTheme.backgroundColor()
+    }
+  )
+  val navigationBarColor = MaterialTheme.colors.primary
+  val systemBarColor = LocalAppTheme.current.backgroundColor()
+  val context = LocalContext.current
+  uiState.event?.let {
+    when (it) {
+      is LoginScreenState.UiEvent.LoginSuccess -> {
+        systemUiController.setSystemBarsColor(color = systemBarColor)
+        systemUiController.setNavigationBarColor(navigationBarColor)
+        stateHolder.navigateToTop()
+      }
+      is LoginScreenState.UiEvent.LoginFailed -> {
+        coroutineScope.launch {
+          scaffoldState.snackbarHostState.showSnackbar(context.getString(R.string.error_login_failed))
         }
-    )
-    val navigationBarColor = MaterialTheme.colors.primary
-    val systemBarColor = LocalAppTheme.current.backgroundColor()
-    val context = LocalContext.current
-    uiState.event?.let {
-        when (it) {
-            is LoginScreenState.UiEvent.LoginSuccess -> {
-                systemUiController.setSystemBarsColor(color = systemBarColor)
-                systemUiController.setNavigationBarColor(navigationBarColor)
-                stateHolder.navigateToTop()
-            }
-            is LoginScreenState.UiEvent.LoginFailed -> {
-                coroutineScope.launch {
-                    scaffoldState.snackbarHostState.showSnackbar(context.getString(R.string.error_login_failed))
-                }
-            }
-            is LoginScreenState.UiEvent.EmptyPasswordError -> {
-                coroutineScope.launch {
-                    scaffoldState.snackbarHostState.showSnackbar(context.getString(R.string.error_password_required))
-                }
-            }
-            is LoginScreenState.UiEvent.EmptyUsernameError -> {
-                coroutineScope.launch {
-                    scaffoldState.snackbarHostState.showSnackbar(context.getString(R.string.error_username_required))
-                }
-            }
+      }
+      is LoginScreenState.UiEvent.EmptyPasswordError -> {
+        coroutineScope.launch {
+          scaffoldState.snackbarHostState.showSnackbar(context.getString(R.string.error_password_required))
+        }
+      }
+      is LoginScreenState.UiEvent.EmptyUsernameError -> {
+        coroutineScope.launch {
+          scaffoldState.snackbarHostState.showSnackbar(context.getString(R.string.error_username_required))
+        }
+      }
 
-        }
-        stateHolder.popEvent()
     }
-    Scaffold(scaffoldState = scaffoldState) {
-        LoginContent(
-            isLoading = uiState.isLoading,
-            onLoginButtonTap = { id, password ->
-                stateHolder.login(id, password)
-            },
-            onPrivacyPolicyTap = {
-                stateHolder.navigateToPrivacyPolicy()
-            },
-            username = uiState.username,
-            password = uiState.password,
-            onUsernameUpdate = {
-                stateHolder.onUsernameUpdate(it)
-            },
-            onPasswordUpdate = {
-                stateHolder.onPasswordUpdate(it)
-            }
-        )
-    }
+    stateHolder.popEvent()
+  }
+  Scaffold(scaffoldState = scaffoldState) {
+    LoginContent(
+      isLoading = uiState.isLoading,
+      onLoginButtonTap = { id, password ->
+        stateHolder.login(id, password)
+      },
+      onPrivacyPolicyTap = {
+        stateHolder.navigateToPrivacyPolicy()
+      },
+      username = uiState.username,
+      password = uiState.password,
+      onUsernameUpdate = {
+        stateHolder.onUsernameUpdate(it)
+      },
+      onPasswordUpdate = {
+        stateHolder.onPasswordUpdate(it)
+      }
+    )
+  }
 }
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun LoginContent(
-    isLoading: Boolean,
-    onLoginButtonTap: (String, String) -> Unit,
-    onPrivacyPolicyTap: () -> Unit,
-    username: String,
-    password: String,
-    onUsernameUpdate: (String) -> Unit,
-    onPasswordUpdate: (String) -> Unit
+  isLoading: Boolean,
+  onLoginButtonTap: (String, String) -> Unit,
+  onPrivacyPolicyTap: () -> Unit,
+  username: String,
+  password: String,
+  onUsernameUpdate: (String) -> Unit,
+  onPasswordUpdate: (String) -> Unit
 ) {
-    var passwordVisible by remember {
-        mutableStateOf(false)
-    }
-    val focusManager = LocalFocusManager.current
-    val autofill = LocalAutofill.current
-    val systemUiController = rememberSystemUiController()
-    val navigationBackgroundColor = LocalAppTheme.current.colors().primary
+  var passwordVisible by remember {
+    mutableStateOf(false)
+  }
+  val focusManager = LocalFocusManager.current
+  val autofill = LocalAutofill.current
+  val systemUiController = rememberSystemUiController()
+  val navigationBackgroundColor = LocalAppTheme.current.colors().primary
 
-    // Stored data with "remember { mutableStateOf("") }" will blow up the data in AutoFill#onFill,
-    //  so manages input data in ViewModel (TODO: details)
-    Column(
+  // Stored data with "remember { mutableStateOf("") }" will blow up the data in AutoFill#onFill,
+  //  so manages input data in ViewModel (TODO: details)
+  Column(
+    modifier = Modifier
+      .fillMaxSize()
+      .verticalScroll(rememberScrollState())
+      .padding(horizontal = 16.dp),
+    horizontalAlignment = Alignment.CenterHorizontally,
+    verticalArrangement = Arrangement.Center
+  ) {
+    Spacer(modifier = Modifier.height(24.dp))
+
+    Text(
+      text = stringResource(id = uiCommonR.string.login_to_last_fm),
+      fontSize = 20.sp,
+      fontWeight = FontWeight.Bold,
+      modifier = Modifier.align(Alignment.CenterHorizontally)
+    )
+
+    Spacer(modifier = Modifier.height(24.dp))
+
+    Autofill(autofillTypes = listOf(AutofillType.Username), onFill = {
+      onUsernameUpdate.invoke(it)
+    }) { autofillNode ->
+      OutlinedTextField(
+        value = username,
+        onValueChange = {
+          onUsernameUpdate.invoke(it)
+        },
+        keyboardOptions = KeyboardOptions(
+          keyboardType = KeyboardType.Email,
+          imeAction = ImeAction.Next
+        ),
+        singleLine = true,
+        label = { Text(text = "Username") },
         modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(horizontal = 16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Spacer(modifier = Modifier.height(24.dp))
-
-        Text(
-            text = stringResource(id = uiCommonR.string.login_to_last_fm),
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.align(Alignment.CenterHorizontally)
-        )
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        Autofill(autofillTypes = listOf(AutofillType.Username), onFill = {
-            onUsernameUpdate.invoke(it)
-        }) { autofillNode ->
-            OutlinedTextField(
-                value = username,
-                onValueChange = {
-                    onUsernameUpdate.invoke(it)
-                },
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Email,
-                    imeAction = ImeAction.Next
-                ),
-                singleLine = true,
-                label = { Text(text = "Username") },
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .fillMaxWidth()
-                    .padding(horizontal = 24.dp)
-                    .onFocusChanged {
-                        autofill?.run {
-                            if (it.isFocused) {
-                                requestAutofillForNode(autofillNode)
-                            } else {
-                                cancelAutofillForNode(autofillNode)
-                            }
-                        }
-                    }
-            )
-        }
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Autofill(autofillTypes = listOf(AutofillType.Password), onFill = {
-            onPasswordUpdate.invoke(it)
-        }) { autofillNode ->
-            OutlinedTextField(
-                value = password,
-                onValueChange = {
-                    onPasswordUpdate.invoke(it)
-                },
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Password,
-                    imeAction = ImeAction.Done
-                ),
-                singleLine = true,
-                visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-                trailingIcon = {
-                    val icon = if (passwordVisible) {
-                        Icons.Filled.Visibility
-                    } else {
-                        Icons.Filled.VisibilityOff
-                    }
-                    IconButton(onClick = {
-                        passwordVisible = !passwordVisible
-                    }) {
-                        Icon(imageVector = icon, "password visibility toggle")
-                    }
-                },
-                keyboardActions = KeyboardActions(
-                    onDone = {
-                        focusManager.clearFocus()
-                    }
-                ),
-                label = { Text(text = "Password") },
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .fillMaxWidth()
-                    .padding(horizontal = 24.dp)
-                    .onFocusChanged {
-                        autofill?.run {
-                            if (it.isFocused) {
-                                requestAutofillForNode(autofillNode)
-                            } else {
-                                cancelAutofillForNode(autofillNode)
-                            }
-                        }
-                    }
-            )
-        }
-
-        Spacer(modifier = Modifier.height(48.dp))
-
-        Button(
-            onClick = {
-                focusManager.clearFocus()
-                onLoginButtonTap(username, password)
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 24.dp),
-            enabled = !isLoading,
-            contentPadding = PaddingValues(vertical = 12.dp)
-        ) {
-            if (isLoading) {
-                CircularProgressIndicator(
-                    modifier = Modifier
-                        .size(16.dp)
-                        .background(color = Color.Transparent)
-                        .align(alignment = Alignment.CenterVertically)
-                )
-            } else {
-                Text(text = "Let me in!")
+          .align(Alignment.CenterHorizontally)
+          .fillMaxWidth()
+          .padding(horizontal = 24.dp)
+          .onFocusChanged {
+            autofill?.run {
+              if (it.isFocused) {
+                requestAutofillForNode(autofillNode)
+              } else {
+                cancelAutofillForNode(autofillNode)
+              }
             }
-        }
+          }
+      )
+    }
+    Spacer(modifier = Modifier.height(16.dp))
 
-        Spacer(modifier = Modifier.height(32.dp))
-
-        TextButton(onClick = {
-            onPrivacyPolicyTap.invoke()
-        }) {
-            Text(text = "Privacy policy", style = SunsetTextStyle.button)
-        }
+    Autofill(autofillTypes = listOf(AutofillType.Password), onFill = {
+      onPasswordUpdate.invoke(it)
+    }) { autofillNode ->
+      OutlinedTextField(
+        value = password,
+        onValueChange = {
+          onPasswordUpdate.invoke(it)
+        },
+        keyboardOptions = KeyboardOptions(
+          keyboardType = KeyboardType.Password,
+          imeAction = ImeAction.Done
+        ),
+        singleLine = true,
+        visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+        trailingIcon = {
+          val icon = if (passwordVisible) {
+            Icons.Filled.Visibility
+          } else {
+            Icons.Filled.VisibilityOff
+          }
+          IconButton(onClick = {
+            passwordVisible = !passwordVisible
+          }) {
+            Icon(imageVector = icon, "password visibility toggle")
+          }
+        },
+        keyboardActions = KeyboardActions(
+          onDone = {
+            focusManager.clearFocus()
+          }
+        ),
+        label = { Text(text = "Password") },
+        modifier = Modifier
+          .align(Alignment.CenterHorizontally)
+          .fillMaxWidth()
+          .padding(horizontal = 24.dp)
+          .onFocusChanged {
+            autofill?.run {
+              if (it.isFocused) {
+                requestAutofillForNode(autofillNode)
+              } else {
+                cancelAutofillForNode(autofillNode)
+              }
+            }
+          }
+      )
     }
 
-    DisposableEffect(Unit) {
-        onDispose {
-            systemUiController.setNavigationBarColor(navigationBackgroundColor)
-        }
+    Spacer(modifier = Modifier.height(48.dp))
+
+    Button(
+      onClick = {
+        focusManager.clearFocus()
+        onLoginButtonTap(username, password)
+      },
+      modifier = Modifier
+        .fillMaxWidth()
+        .padding(horizontal = 24.dp),
+      enabled = !isLoading,
+      contentPadding = PaddingValues(vertical = 12.dp)
+    ) {
+      if (isLoading) {
+        CircularProgressIndicator(
+          modifier = Modifier
+            .size(16.dp)
+            .background(color = Color.Transparent)
+            .align(alignment = Alignment.CenterVertically)
+        )
+      } else {
+        Text(text = "Let me in!")
+      }
     }
+
+    Spacer(modifier = Modifier.height(32.dp))
+
+    TextButton(onClick = {
+      onPrivacyPolicyTap.invoke()
+    }) {
+      Text(text = "Privacy policy", style = SunsetTextStyle.button)
+    }
+  }
+
+  DisposableEffect(Unit) {
+    onDispose {
+      systemUiController.setNavigationBarColor(navigationBackgroundColor)
+    }
+  }
 }
 
 // ref. https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:compose/ui/ui/integration-tests/ui-demos/src/main/java/androidx/compose/ui/demos/autofill/ExplicitAutofillTypesDemo.kt;drc=2cfa51635d05d62cbc08cb3abf333155c994fb16
 @ExperimentalComposeUiApi
 @Composable
 private fun Autofill(
-    autofillTypes: List<AutofillType>,
-    onFill: ((String) -> Unit),
-    content: @Composable (AutofillNode) -> Unit
+  autofillTypes: List<AutofillType>,
+  onFill: ((String) -> Unit),
+  content: @Composable (AutofillNode) -> Unit
 ) {
-    val autofillNode = AutofillNode(onFill = onFill, autofillTypes = autofillTypes)
+  val autofillNode = AutofillNode(onFill = onFill, autofillTypes = autofillTypes)
 
-    val autofillTree = LocalAutofillTree.current
-    autofillTree += autofillNode
+  val autofillTree = LocalAutofillTree.current
+  autofillTree += autofillNode
 
-    Box(
-        Modifier.onGloballyPositioned {
-            autofillNode.boundingBox = it.boundsInWindow()
-        }
-    ) {
-        content(autofillNode)
+  Box(
+    Modifier.onGloballyPositioned {
+      autofillNode.boundingBox = it.boundsInWindow()
     }
+  ) {
+    content(autofillNode)
+  }
 }
 
 @Preview(showBackground = true)
 @Composable
 private fun LoginScreenPreview() {
-    SunsetTheme {
-        Surface {
-            LoginContent(
-                isLoading = false,
-                onLoginButtonTap = { _, _ -> },
-                onPrivacyPolicyTap = {},
-                username = "",
-                password = "",
-                onUsernameUpdate = {},
-                onPasswordUpdate = {}
-            )
-        }
+  SunsetTheme {
+    Surface {
+      LoginContent(
+        isLoading = false,
+        onLoginButtonTap = { _, _ -> },
+        onPrivacyPolicyTap = {},
+        username = "",
+        password = "",
+        onUsernameUpdate = {},
+        onPasswordUpdate = {}
+      )
     }
+  }
 }

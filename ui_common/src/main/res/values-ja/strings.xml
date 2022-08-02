@@ -1,27 +1,27 @@
 <resources>
-    <string name="app_name">SunsetScrob</string>
-    <string name="login_to_last_fm">Last.fm へログイン</string>
-    <string name="preference_title">Preferences</string>
-    <string name="activity_login_title">Last.fm へログイン</string>
-    <string name="enable_notification_access">Enable Notification Access</string>
-    <string name="enable_notification_access_summary">Apple Music の曲情報取得のため、通知へのアクセスが必要です</string>
-    <string name="label_now_playing">Now Playing Track</string>
-    <string name="label_not_playing">Nothing!</string>
-    <string name="label_not_playing_message">Let\'s play music on Apple Music App!</string>
-    <string name="label_message_to_log_in">Log in to Last.fm and play music on Apple Music App!</string>
+  <string name="app_name">SunsetScrob</string>
+  <string name="login_to_last_fm">Last.fm へログイン</string>
+  <string name="preference_title">Preferences</string>
+  <string name="activity_login_title">Last.fm へログイン</string>
+  <string name="enable_notification_access">Enable Notification Access</string>
+  <string name="enable_notification_access_summary">Apple Music の曲情報取得のため、通知へのアクセスが必要です</string>
+  <string name="label_now_playing">Now Playing Track</string>
+  <string name="label_not_playing">Nothing!</string>
+  <string name="label_not_playing_message">Let\'s play music on Apple Music App!</string>
+  <string name="label_message_to_log_in">Log in to Last.fm and play music on Apple Music App!</string>
 
-    <!-- Strings related to login -->
-    <string name="prompt_user_name">User Name</string>
-    <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign in</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="error_invalid_password">This password is too short</string>
-    <string name="error_incorrect_password">パスワードが正しくありません</string>
-    <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
+  <!-- Strings related to login -->
+  <string name="prompt_user_name">User Name</string>
+  <string name="prompt_password">Password</string>
+  <string name="action_sign_in">Sign in</string>
+  <string name="action_sign_in_short">Sign in</string>
+  <string name="error_invalid_password">This password is too short</string>
+  <string name="error_incorrect_password">パスワードが正しくありません</string>
+  <string name="error_field_required">This field is required</string>
+  <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-    <string name="error_invalid_user_name">ユーザ名が空です</string>
-    <string name="allow_notification_service_message">AppleMusicNotificationService に通知バーへのアクセスを許可してください</string>
-    <string name="label_not_logged_in">Not Logged in!</string>
+  <string name="error_invalid_user_name">ユーザ名が空です</string>
+  <string name="allow_notification_service_message">AppleMusicNotificationService に通知バーへのアクセスを許可してください</string>
+  <string name="label_not_logged_in">Not Logged in!</string>
 </resources>

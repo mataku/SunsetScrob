@@ -14,22 +14,22 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val themeRepository: ThemeRepository
+  private val themeRepository: ThemeRepository
 ) : ViewModel() {
 
-    private var _theme: MutableStateFlow<AppTheme?> = MutableStateFlow(null)
-    val theme: StateFlow<AppTheme?> = _theme.asStateFlow()
+  private var _theme: MutableStateFlow<AppTheme?> = MutableStateFlow(null)
+  val theme: StateFlow<AppTheme?> = _theme.asStateFlow()
 
-    init {
-        viewModelScope.launch {
-            themeRepository.currentTheme()
-                .catch {
-                    _theme.value = AppTheme.DARK
-                }
-                .collect {
-                    _theme.value = it
-                }
-
+  init {
+    viewModelScope.launch {
+      themeRepository.currentTheme()
+        .catch {
+          _theme.value = AppTheme.DARK
         }
+        .collect {
+          _theme.value = it
+        }
+
     }
+  }
 }

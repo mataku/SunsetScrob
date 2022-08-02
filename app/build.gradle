@@ -14,122 +14,122 @@ apply from: "$project.rootDir/gradle/test_dependencies.gradle"
 apply from: "$project.rootDir/gradle/test_options.gradle"
 
 android {
-    compileSdk Versions.compileSdkVersion
-    buildFeatures {
-        compose = true
-    }
+  compileSdk Versions.compileSdkVersion
+  buildFeatures {
+    compose = true
+  }
 
-    defaultConfig {
-        applicationId 'com.mataku.scrobscrob'
-        minSdk Versions.minSdkVersion
-        targetSdk Versions.targetSdkVersion
-        versionCode 97
-        versionName '0.9.7'
-        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
-        vectorDrawables.useSupportLibrary = true
-        proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
-    }
+  defaultConfig {
+    applicationId 'com.mataku.scrobscrob'
+    minSdk Versions.minSdkVersion
+    targetSdk Versions.targetSdkVersion
+    versionCode 97
+    versionName '0.9.7'
+    testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+    vectorDrawables.useSupportLibrary = true
+    proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+  }
 
-    signingConfigs {
-        debug {
-            storeFile file('../debug.keystore')
-        }
-        release {
-            storeFile file("../SunsetScrob.jks")
-            storePassword System.getenv("SUNSET_STORE_PASSWORD")
-            keyAlias System.getenv("SUNSET_KEY_ALIAS")
-            keyPassword System.getenv("SUNSET_KEY_PASSWORD")
-        }
+  signingConfigs {
+    debug {
+      storeFile file('../debug.keystore')
     }
+    release {
+      storeFile file("../SunsetScrob.jks")
+      storePassword System.getenv("SUNSET_STORE_PASSWORD")
+      keyAlias System.getenv("SUNSET_KEY_ALIAS")
+      keyPassword System.getenv("SUNSET_KEY_PASSWORD")
+    }
+  }
 
-    buildTypes {
-        debug {
-            minifyEnabled false
-            applicationIdSuffix '.dev'
-            signingConfig signingConfigs.debug
-        }
-        release {
-            minifyEnabled true
-            signingConfig signingConfigs.release
-        }
+  buildTypes {
+    debug {
+      minifyEnabled false
+      applicationIdSuffix '.dev'
+      signingConfig signingConfigs.debug
     }
+    release {
+      minifyEnabled true
+      signingConfig signingConfigs.release
+    }
+  }
 
-    lintOptions {
-        abortOnError false
-        textReport true
-        textOutput "stdout"
-        xmlReport false
-    }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
+  lintOptions {
+    abortOnError false
+    textReport true
+    textOutput "stdout"
+    xmlReport false
+  }
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
 
-    composeOptions {
-        kotlinCompilerExtensionVersion libs.versions.kotlin.compiler.extension.get()
-    }
+  composeOptions {
+    kotlinCompilerExtensionVersion libs.versions.kotlin.compiler.extension.get()
+  }
 
-    packagingOptions {
-        exclude("META-INF/atomicfu.kotlin_module")
-        exclude("META-INF/kotlinx-coroutines-io.kotlin_module")
-        exclude("META-INF/kotlinx-io.kotlin_module")
-        exclude("META-INF/ktor-client-json.kotlin_module")
-        exclude("META-INF/ktor-client-core.kotlin_module")
-        exclude("META-INF/ktor-http.kotlin_module")
-        exclude("META-INF/ktor-utils.kotlin_module")
-        exclude("META-INF/kotlinx-coroutines-core.kotlin_module")
-        exclude("META-INF/kotlinx-serialization-runtime.kotlin_module")
-        exclude("META-INF/gradle/incremental.annotation.processors")
-    }
+  packagingOptions {
+    exclude("META-INF/atomicfu.kotlin_module")
+    exclude("META-INF/kotlinx-coroutines-io.kotlin_module")
+    exclude("META-INF/kotlinx-io.kotlin_module")
+    exclude("META-INF/ktor-client-json.kotlin_module")
+    exclude("META-INF/ktor-client-core.kotlin_module")
+    exclude("META-INF/ktor-http.kotlin_module")
+    exclude("META-INF/ktor-utils.kotlin_module")
+    exclude("META-INF/kotlinx-coroutines-core.kotlin_module")
+    exclude("META-INF/kotlinx-serialization-runtime.kotlin_module")
+    exclude("META-INF/gradle/incremental.annotation.processors")
+  }
 
 //    dynamicFeatures [':feature:licenses']
 }
 
 dependencies {
-    implementation project(":core")
-    implementation project(":data:repository")
+  implementation project(":core")
+  implementation project(":data:repository")
 
-    implementation project(":feature:album")
-    implementation project(":feature:artist")
-    implementation project(':feature:auth')
-    implementation project(':feature:scrobble')
-    implementation project(':feature:account')
+  implementation project(":feature:album")
+  implementation project(":feature:artist")
+  implementation project(':feature:auth')
+  implementation project(':feature:scrobble')
+  implementation project(':feature:account')
 
-    implementation libs.activity.ktx
-    implementation libs.material
-    implementation libs.coroutines
+  implementation libs.activity.ktx
+  implementation libs.material
+  implementation libs.coroutines
 
-    implementation libs.firebase.crashlytics
+  implementation libs.firebase.crashlytics
 
-    implementation libs.room.runtime
-    kapt libs.room.compiler
+  implementation libs.room.runtime
+  kapt libs.room.compiler
 
-    implementation libs.hilt.android
-    kapt libs.hilt.compiler
-    kapt libs.hilt.android.compiler
+  implementation libs.hilt.android
+  kapt libs.hilt.compiler
+  kapt libs.hilt.android.compiler
 
-    implementation(project(":ui_common"))
-    implementation libs.activity.compose
-    implementation libs.compose.ui.tooling
-    implementation libs.compose.animation
-    implementation libs.compose.material
-    implementation libs.compose.navigation
-    implementation libs.coil.compose
-    implementation libs.accompanist.navigation.animation
-    implementation libs.hilt.navigation.compose
-    implementation libs.compose.material.icons.extended
-    implementation libs.core.splashscreen
+  implementation(project(":ui_common"))
+  implementation libs.activity.compose
+  implementation libs.compose.ui.tooling
+  implementation libs.compose.animation
+  implementation libs.compose.material
+  implementation libs.compose.navigation
+  implementation libs.coil.compose
+  implementation libs.accompanist.navigation.animation
+  implementation libs.hilt.navigation.compose
+  implementation libs.compose.material.icons.extended
+  implementation libs.core.splashscreen
 }
 
 kapt {
-    correctErrorTypes true
-    javacOptions {
-        option("-Xmaxerrs", 1000)
-    }
+  correctErrorTypes true
+  javacOptions {
+    option("-Xmaxerrs", 1000)
+  }
 }
 
 tasks.withType(KotlinCompile).all {
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8
-    }
+  kotlinOptions {
+    jvmTarget = JavaVersion.VERSION_1_8
+  }
 }

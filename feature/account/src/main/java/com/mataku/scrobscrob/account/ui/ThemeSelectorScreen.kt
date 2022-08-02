@@ -37,107 +37,107 @@ import com.mataku.scrobscrob.ui_common.style.sunsetBackgroundGradient
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ThemeSelectorScreen(
-    state: ThemeSelectorState
+  state: ThemeSelectorState
 ) {
-    val uiState = state.uiState
-    val systemUiController = rememberSystemUiController()
-    val currentTheme = LocalAppTheme.current
-    val initialState = remember {
-        mutableStateOf(true)
-    }
+  val uiState = state.uiState
+  val systemUiController = rememberSystemUiController()
+  val currentTheme = LocalAppTheme.current
+  val initialState = remember {
+    mutableStateOf(true)
+  }
 
-    if (initialState.value) {
+  if (initialState.value) {
+    systemUiController.setNavigationBarColor(
+      color = if (currentTheme == AppTheme.SUNSET) {
+        Colors.SunsetBlue
+      } else {
+        currentTheme.backgroundColor()
+      }
+    )
+    initialState.value = false
+  }
+
+  // Because there were cases where values flowed in unintentionally, control
+  // TODO
+  uiState.event?.let {
+    when (it) {
+      is ThemeSelectorState.UiEvent.ThemeChanged -> {
         systemUiController.setNavigationBarColor(
-            color = if (currentTheme == AppTheme.SUNSET) {
-                Colors.SunsetBlue
-            } else {
-                currentTheme.backgroundColor()
-            }
+          color = if (it.theme == AppTheme.SUNSET) {
+            Colors.SunsetBlue
+          } else {
+            it.theme.backgroundColor()
+          }
         )
-        initialState.value = false
+      }
     }
+    state.popEvent()
+  }
 
-    // Because there were cases where values flowed in unintentionally, control
-    // TODO
-    uiState.event?.let {
-        when (it) {
-            is ThemeSelectorState.UiEvent.ThemeChanged -> {
-                systemUiController.setNavigationBarColor(
-                    color = if (it.theme == AppTheme.SUNSET) {
-                        Colors.SunsetBlue
-                    } else {
-                        it.theme.backgroundColor()
-                    }
-                )
-            }
+  uiState.theme?.let {
+    LazyColumn(
+      content = {
+        stickyHeader {
+          ContentHeader(text = stringResource(id = R.string.title_theme_selector))
         }
-        state.popEvent()
-    }
-
-    uiState.theme?.let {
-        LazyColumn(
-            content = {
-                stickyHeader {
-                    ContentHeader(text = stringResource(id = R.string.title_theme_selector))
-                }
-                items(AppTheme.values().sortedBy {
-                    it.priority
-                }) {
-                    ThemeCell(
-                        theme = it,
-                        selected = it == currentTheme,
-                        onTapTheme = { currentTheme ->
-                            state.changeTheme(currentTheme)
-                        })
-                }
-            },
-            modifier = if (LocalAppTheme.current == AppTheme.SUNSET) {
-                Modifier
-                    .fillMaxSize()
-                    .background(
-                        brush = sunsetBackgroundGradient
-                    )
-            } else {
-                Modifier
-                    .fillMaxSize()
-            }
-        )
-    }
-    val navigationBarColor = MaterialTheme.colors.primary
-    BackHandler() {
-        systemUiController.setNavigationBarColor(navigationBarColor)
-        state.back()
-    }
+        items(AppTheme.values().sortedBy {
+          it.priority
+        }) {
+          ThemeCell(
+            theme = it,
+            selected = it == currentTheme,
+            onTapTheme = { currentTheme ->
+              state.changeTheme(currentTheme)
+            })
+        }
+      },
+      modifier = if (LocalAppTheme.current == AppTheme.SUNSET) {
+          Modifier
+              .fillMaxSize()
+              .background(
+                  brush = sunsetBackgroundGradient
+              )
+      } else {
+        Modifier
+          .fillMaxSize()
+      }
+    )
+  }
+  val navigationBarColor = MaterialTheme.colors.primary
+  BackHandler() {
+    systemUiController.setNavigationBarColor(navigationBarColor)
+    state.back()
+  }
 }
 
 @Composable
 private fun ThemeCell(
-    theme: AppTheme,
-    selected: Boolean,
-    onTapTheme: (AppTheme) -> Unit
+  theme: AppTheme,
+  selected: Boolean,
+  onTapTheme: (AppTheme) -> Unit
 ) {
-    Row(modifier = Modifier
-        .fillMaxWidth()
-        .height(48.dp)
-        .clickable {
-            onTapTheme.invoke(theme)
-        }
-        .padding(horizontal = 16.dp, vertical = 12.dp)
-    ) {
-        Text(
-            text = theme.displayName,
-            style = SunsetTextStyle.body1,
-            modifier = Modifier.weight(1F)
-        )
+  Row(modifier = Modifier
+      .fillMaxWidth()
+      .height(48.dp)
+      .clickable {
+          onTapTheme.invoke(theme)
+      }
+      .padding(horizontal = 16.dp, vertical = 12.dp)
+  ) {
+    Text(
+      text = theme.displayName,
+      style = SunsetTextStyle.body1,
+      modifier = Modifier.weight(1F)
+    )
 
-        if (selected) {
-            Image(
-                imageVector = Icons.Outlined.Check,
-                contentDescription = "selected theme",
-                colorFilter = ColorFilter.tint(
-                    color = MaterialTheme.colors.onSurface
-                )
-            )
-        }
+    if (selected) {
+      Image(
+        imageVector = Icons.Outlined.Check,
+        contentDescription = "selected theme",
+        colorFilter = ColorFilter.tint(
+          color = MaterialTheme.colors.onSurface
+        )
+      )
     }
+  }
 }

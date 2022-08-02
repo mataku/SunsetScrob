@@ -17,36 +17,36 @@ private val Context.dataStore by preferencesDataStore("USERNAME")
 
 @Singleton
 class UsernameDataStore(
-    @ApplicationContext private val context: Context
+  @ApplicationContext private val context: Context
 ) {
-    suspend fun username(): String? {
-        val preferences = context.dataStore.data.first()
-        return kotlin.runCatching {
-            preferences[USERNAME_KEY]
-        }.fold(
-            onSuccess = { it },
-            onFailure = {
-                null
-            }
-        )
-    }
+  suspend fun username(): String? {
+    val preferences = context.dataStore.data.first()
+    return kotlin.runCatching {
+      preferences[USERNAME_KEY]
+    }.fold(
+      onSuccess = { it },
+      onFailure = {
+        null
+      }
+    )
+  }
 
-    suspend fun setUsername(username: String): Flow<Unit> {
-        return flowOf(
-            context.dataStore.edit {
-                it[USERNAME_KEY] = username
-            }
-        ).flowOn(Dispatchers.IO)
-            .map { }
-    }
+  suspend fun setUsername(username: String): Flow<Unit> {
+    return flowOf(
+      context.dataStore.edit {
+        it[USERNAME_KEY] = username
+      }
+    ).flowOn(Dispatchers.IO)
+      .map { }
+  }
 
-    suspend fun remove() {
-        context.dataStore.edit {
-            it.clear()
-        }
+  suspend fun remove() {
+    context.dataStore.edit {
+      it.clear()
     }
+  }
 
-    private companion object {
-        val USERNAME_KEY = stringPreferencesKey("UserName")
-    }
+  private companion object {
+    val USERNAME_KEY = stringPreferencesKey("UserName")
+  }
 }

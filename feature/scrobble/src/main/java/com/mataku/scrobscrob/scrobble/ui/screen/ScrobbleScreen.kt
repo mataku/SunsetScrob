@@ -29,88 +29,88 @@ import com.mataku.scrobscrob.ui_common.style.sunsetBackgroundGradient
 
 @Composable
 fun ScrobbleScreen(
-    state: ScrobbleScreenState
+  state: ScrobbleScreenState
 ) {
-    val uiState = state.uiState
-    SwipeRefresh(
-        state = rememberSwipeRefreshState(isRefreshing = uiState.isRefreshing),
-        onRefresh = {
-            state.refresh()
-        }) {
-        ScrobbleContent(
-            recentTracks = uiState.recentTracks,
-            hasNext = uiState.hasNext,
-            onScrobbleTap = {
-                state.onScrobbleTap(it)
-            },
-            onScrollEnd = {
-                state.onScrollEnd()
-            }
-        )
-    }
+  val uiState = state.uiState
+  SwipeRefresh(
+    state = rememberSwipeRefreshState(isRefreshing = uiState.isRefreshing),
+    onRefresh = {
+      state.refresh()
+    }) {
+    ScrobbleContent(
+      recentTracks = uiState.recentTracks,
+      hasNext = uiState.hasNext,
+      onScrobbleTap = {
+        state.onScrobbleTap(it)
+      },
+      onScrollEnd = {
+        state.onScrollEnd()
+      }
+    )
+  }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun ScrobbleContent(
-    recentTracks: List<RecentTrack>,
-    hasNext: Boolean,
-    onScrobbleTap: (String) -> Unit,
-    onScrollEnd: () -> Unit
+  recentTracks: List<RecentTrack>,
+  hasNext: Boolean,
+  onScrobbleTap: (String) -> Unit,
+  onScrollEnd: () -> Unit
 ) {
 
-    LazyColumn(
-        content = {
-            stickyHeader {
-                ContentHeader(text = stringResource(id = R.string.menu_scrobble))
-            }
+  LazyColumn(
+    content = {
+      stickyHeader {
+        ContentHeader(text = stringResource(id = R.string.menu_scrobble))
+      }
 
-            items(recentTracks) {
-                Scrobble(
-                    recentTrack = it,
-                    onScrobbleTap = {
-                        onScrobbleTap(it.url)
-                    }
-                )
-            }
-            if (hasNext) {
-                item {
-                    Box(
-                        Modifier.fillMaxWidth(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        InfiniteLoadingIndicator(onScrollEnd = onScrollEnd)
-                    }
-                }
-            }
-        },
-        modifier = if (LocalAppTheme.current == AppTheme.SUNSET) {
-            Modifier
-                .fillMaxSize()
-                .background(
-                    brush = sunsetBackgroundGradient
-                )
-        } else {
-            Modifier
-                .fillMaxSize()
+      items(recentTracks) {
+        Scrobble(
+          recentTrack = it,
+          onScrobbleTap = {
+            onScrobbleTap(it.url)
+          }
+        )
+      }
+      if (hasNext) {
+        item {
+          Box(
+            Modifier.fillMaxWidth(),
+            contentAlignment = Alignment.Center
+          ) {
+            InfiniteLoadingIndicator(onScrollEnd = onScrollEnd)
+          }
         }
-    )
+      }
+    },
+    modifier = if (LocalAppTheme.current == AppTheme.SUNSET) {
+      Modifier
+        .fillMaxSize()
+        .background(
+          brush = sunsetBackgroundGradient
+        )
+    } else {
+      Modifier
+        .fillMaxSize()
+    }
+  )
 }
 
 @Preview(showBackground = true)
 @Composable
 private fun GradientPreview() {
-    SunsetThemePreview {
-        androidx.compose.material.Surface {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(
-                        brush = Brush.verticalGradient(
-                            colors = listOf(Colors.SunsetOrange, Colors.SunsetBlue)
-                        )
-                    )
+  SunsetThemePreview {
+    androidx.compose.material.Surface {
+      Box(
+        modifier = Modifier
+          .fillMaxSize()
+          .background(
+            brush = Brush.verticalGradient(
+              colors = listOf(Colors.SunsetOrange, Colors.SunsetBlue)
             )
-        }
+          )
+      )
     }
+  }
 }

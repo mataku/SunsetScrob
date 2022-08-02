@@ -6,11 +6,11 @@ import java.io.FileInputStream
 import java.util.Properties
 
 fun Project.loadProperties(path: String, extra: ExtraPropertiesExtension) {
-    val file = file(path)
-    Properties().also {
-        it.load(FileInputStream(file))
-        it.forEach { (key, value) ->
-            extra.set(key.toString(), value)
-        }
+  val file = file(path)
+  Properties().also {
+    it.load(FileInputStream(file))
+    it.forEach { (key, value) ->
+      extra.set(key.toString(), value)
     }
+  }
 }

@@ -11,13 +11,13 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun InfiniteLoadingIndicator(onScrollEnd: () -> Unit, padding: Dp = 0.dp) {
-    CircularProgressIndicator(
-        modifier = Modifier
-            .size(40.dp)
-            .padding(horizontal = padding, vertical = 16.dp),
-    )
+  CircularProgressIndicator(
+    modifier = Modifier
+        .size(40.dp)
+        .padding(horizontal = padding, vertical = 16.dp),
+  )
 
-    LaunchedEffect(key1 = true, block = {
-        onScrollEnd()
-    })
+  LaunchedEffect(key1 = true, block = {
+    onScrollEnd()
+  })
 }

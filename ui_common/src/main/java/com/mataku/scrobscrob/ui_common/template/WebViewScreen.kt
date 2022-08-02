@@ -11,18 +11,18 @@ import androidx.compose.ui.viewinterop.AndroidView
 
 @Composable
 fun WebViewScreen(url: String, modifier: Modifier) {
-    Column(
-        modifier = modifier
-            .verticalScroll(rememberScrollState())
-    ) {
-        AndroidView(
-            factory = {
-                WebView(it)
-            },
-            update = { webView ->
-                webView.webViewClient = WebViewClient()
-                webView.loadUrl(url)
-            }
-        )
-    }
+  Column(
+    modifier = modifier
+      .verticalScroll(rememberScrollState())
+  ) {
+    AndroidView(
+      factory = {
+        WebView(it)
+      },
+      update = { webView ->
+        webView.webViewClient = WebViewClient()
+        webView.loadUrl(url)
+      }
+    )
+  }
 }

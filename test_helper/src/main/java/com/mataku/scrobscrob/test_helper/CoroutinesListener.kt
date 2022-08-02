@@ -10,18 +10,18 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 
 class CoroutinesListener(
-    val testDispatcher: TestDispatcher = UnconfinedTestDispatcher()
+  val testDispatcher: TestDispatcher = UnconfinedTestDispatcher()
 ) : TestListener {
 
-    val scope = TestScope(testDispatcher)
+  val scope = TestScope(testDispatcher)
 
-    override suspend fun beforeSpec(spec: Spec) {
-        super.beforeSpec(spec)
-        Dispatchers.setMain(testDispatcher)
-    }
+  override suspend fun beforeSpec(spec: Spec) {
+    super.beforeSpec(spec)
+    Dispatchers.setMain(testDispatcher)
+  }
 
-    override suspend fun afterSpec(spec: Spec) {
-        super.afterSpec(spec)
-        Dispatchers.resetMain()
-    }
+  override suspend fun afterSpec(spec: Spec) {
+    super.afterSpec(spec)
+    Dispatchers.resetMain()
+  }
 }

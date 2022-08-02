@@ -20,36 +20,36 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    private var receiver = AppleMusicNotificationReceiver()
-    private lateinit var sharedPreferencesHelper: SharedPreferencesHelper
+  private var receiver = AppleMusicNotificationReceiver()
+  private lateinit var sharedPreferencesHelper: SharedPreferencesHelper
 
-    @Inject
-    lateinit var usernameRepository: UsernameRepository
+  @Inject
+  lateinit var usernameRepository: UsernameRepository
 
-    private val viewModel by viewModels<MainViewModel>()
+  private val viewModel by viewModels<MainViewModel>()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
 
-        // On Android 12 or later, toolbar does not disappear when installSplashScreen() is called with setTheme
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.R) {
-            installSplashScreen()
-        }
-        setTheme(R.style.AppTheme)
+    // On Android 12 or later, toolbar does not disappear when installSplashScreen() is called with setTheme
+    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.R) {
+      installSplashScreen()
+    }
+    setTheme(R.style.AppTheme)
 
-        lifecycleScope.launch {
-            viewModel.theme.collect {
-                it?.let { theme ->
-                    setContent {
-                        SunsetTheme(theme = theme) {
-                            MainScreen(
-                                usernameRepository.username()
-                            )
-                        }
-                    }
-                }
+    lifecycleScope.launch {
+      viewModel.theme.collect {
+        it?.let { theme ->
+          setContent {
+            SunsetTheme(theme = theme) {
+              MainScreen(
+                usernameRepository.username()
+              )
             }
+          }
         }
+      }
+    }
 
 //        sharedPreferencesHelper = SharedPreferencesHelper(this)
 //        this.title = "Latest 20 scrobbles (Beta)"
@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity() {
 //        filter.addAction("AppleMusic")
 //        registerReceiver(receiver, filter)
 //        setUpContentTab()
-    }
+  }
 
 //    override fun onDestroy() {
 //        super.onDestroy()

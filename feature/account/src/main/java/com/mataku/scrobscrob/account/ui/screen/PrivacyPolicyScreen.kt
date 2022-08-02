@@ -16,22 +16,22 @@ import com.mataku.scrobscrob.ui_common.organism.ContentHeader
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PrivacyPolicyScreen() {
-    LazyColumn(content = {
-        stickyHeader {
-            ContentHeader(text = stringResource(id = R.string.item_privacy_policy))
-        }
-        item {
-            Column(modifier = Modifier.fillMaxSize()) {
-                AndroidView(
-                    factory = {
-                        WebView(it)
-                    },
-                    update = { webView ->
-                        webView.webViewClient = WebViewClient()
-                        webView.loadUrl("https://mataku.github.io/sunsetscrob/index.html")
-                    }
-                )
-            }
-        }
-    }, modifier = Modifier.fillMaxSize())
+  LazyColumn(content = {
+    stickyHeader {
+      ContentHeader(text = stringResource(id = R.string.item_privacy_policy))
+    }
+    item {
+      Column(modifier = Modifier.fillMaxSize()) {
+        AndroidView(
+          factory = {
+            WebView(it)
+          },
+          update = { webView ->
+            webView.webViewClient = WebViewClient()
+            webView.loadUrl("https://mataku.github.io/sunsetscrob/index.html")
+          }
+        )
+      }
+    }
+  }, modifier = Modifier.fillMaxSize())
 }

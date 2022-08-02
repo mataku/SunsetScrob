@@ -17,91 +17,91 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TopArtistsViewModel @Inject constructor(
-    private val topArtistsRepository: TopArtistsRepository,
-    usernameRepository: UsernameRepository
+  private val topArtistsRepository: TopArtistsRepository,
+  usernameRepository: UsernameRepository
 ) : ViewModel() {
 
-    private val username: String = usernameRepository.username() ?: ""
+  private val username: String = usernameRepository.username() ?: ""
 
-    var uiState = MutableStateFlow(UiState.initialize())
-        private set
+  var uiState = MutableStateFlow(UiState.initialize())
+    private set
 
-    private var page = 1
+  private var page = 1
 
-    init {
-        if (username.isBlank()) {
-            uiState.update {
-                it.copy(
-                    isLoading = false,
-                    hasNext = false
-                )
+  init {
+    if (username.isBlank()) {
+      uiState.update {
+        it.copy(
+          isLoading = false,
+          hasNext = false
+        )
+      }
+    } else {
+      fetchTopArtists()
+    }
+  }
+
+  fun fetchTopArtists() {
+    if (uiState.value.isLoading) {
+      return
+    }
+
+    viewModelScope.launch {
+      topArtistsRepository.fetchTopArtists(page = page, username = username)
+        .onStart {
+          uiState.update {
+            it.copy(
+              isLoading = true
+            )
+          }
+        }
+        .onCompletion {
+          uiState.update {
+            it.copy(
+              isLoading = false
+            )
+          }
+        }
+        .catch {
+          uiState.update {
+            it.copy(
+              hasNext = false
+            )
+          }
+        }
+        .collect {
+          if (it.isEmpty()) {
+            uiState.update { state ->
+              state.copy(
+                hasNext = false
+              )
             }
-        } else {
-            fetchTopArtists()
+          } else {
+            val artists = uiState.value.topArtists.toMutableList()
+            artists.addAll(it)
+            uiState.update { state ->
+              state.copy(
+                topArtists = artists
+              )
+            }
+            page++
+          }
         }
     }
+  }
 
-    fun fetchTopArtists() {
-        if (uiState.value.isLoading) {
-            return
-        }
-
-        viewModelScope.launch {
-            topArtistsRepository.fetchTopArtists(page = page, username = username)
-                .onStart {
-                    uiState.update {
-                        it.copy(
-                            isLoading = true
-                        )
-                    }
-                }
-                .onCompletion {
-                    uiState.update {
-                        it.copy(
-                            isLoading = false
-                        )
-                    }
-                }
-                .catch {
-                    uiState.update {
-                        it.copy(
-                            hasNext = false
-                        )
-                    }
-                }
-                .collect {
-                    if (it.isEmpty()) {
-                        uiState.update { state ->
-                            state.copy(
-                                hasNext = false
-                            )
-                        }
-                    } else {
-                        val artists = uiState.value.topArtists.toMutableList()
-                        artists.addAll(it)
-                        uiState.update { state ->
-                            state.copy(
-                                topArtists = artists
-                            )
-                        }
-                        page++
-                    }
-                }
-        }
+  data class UiState(
+    val isLoading: Boolean,
+    val topArtists: List<Artist>,
+    val hasNext: Boolean
+  ) {
+    companion object {
+      fun initialize(): UiState =
+        UiState(
+          isLoading = false,
+          topArtists = emptyList(),
+          hasNext = true
+        )
     }
-
-    data class UiState(
-        val isLoading: Boolean,
-        val topArtists: List<Artist>,
-        val hasNext: Boolean
-    ) {
-        companion object {
-            fun initialize(): UiState =
-                UiState(
-                    isLoading = false,
-                    topArtists = emptyList(),
-                    hasNext = true
-                )
-        }
-    }
+  }
 }

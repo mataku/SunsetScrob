@@ -12,23 +12,23 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TopBarViewModel @Inject constructor(
-    private val usernameRepository: UsernameRepository
+  private val usernameRepository: UsernameRepository
 ) : ViewModel() {
 
-    var uiState by mutableStateOf(UiState.INITIAL)
-        private set
+  var uiState by mutableStateOf(UiState.INITIAL)
+    private set
 
-    init {
-        viewModelScope.launch {
-            usernameRepository.username()
-        }
+  init {
+    viewModelScope.launch {
+      usernameRepository.username()
     }
+  }
 
-    data class UiState(
-        val isLoggedIn: Boolean = false
-    ) {
-        companion object {
-            val INITIAL = UiState(isLoggedIn = false)
-        }
+  data class UiState(
+    val isLoggedIn: Boolean = false
+  ) {
+    companion object {
+      val INITIAL = UiState(isLoggedIn = false)
     }
+  }
 }

@@ -17,40 +17,40 @@ private val Context.sessionKeyDataStore by preferencesDataStore("SESSION_KEY")
 
 @Singleton
 class SessionKeyDataStore(
-    @ApplicationContext private val context: Context
+  @ApplicationContext private val context: Context
 ) {
-    suspend fun sessionKey(): String? {
-        val preferences = context.sessionKeyDataStore.data.first()
-        return kotlin.runCatching {
-            preferences[SESSION_KEY]
-        }.fold(
-            onSuccess = {
-                it
-            },
-            onFailure = {
-                null
-            }
-        )
-    }
+  suspend fun sessionKey(): String? {
+    val preferences = context.sessionKeyDataStore.data.first()
+    return kotlin.runCatching {
+      preferences[SESSION_KEY]
+    }.fold(
+      onSuccess = {
+        it
+      },
+      onFailure = {
+        null
+      }
+    )
+  }
 
-    suspend fun setSessionKey(sessionKey: String): Flow<Unit> {
-        return flowOf(
-            context.sessionKeyDataStore.edit {
-                it[SESSION_KEY] = sessionKey
-            }
-        ).map { }
-    }
+  suspend fun setSessionKey(sessionKey: String): Flow<Unit> {
+    return flowOf(
+      context.sessionKeyDataStore.edit {
+        it[SESSION_KEY] = sessionKey
+      }
+    ).map { }
+  }
 
-    suspend fun remove(): Flow<Unit> {
-        return flowOf(
-            context.sessionKeyDataStore.edit {
-                it.clear()
-            }
-        ).flowOn(Dispatchers.IO)
-            .map { }
-    }
+  suspend fun remove(): Flow<Unit> {
+    return flowOf(
+      context.sessionKeyDataStore.edit {
+        it.clear()
+      }
+    ).flowOn(Dispatchers.IO)
+      .map { }
+  }
 
-    companion object {
-        private val SESSION_KEY = stringPreferencesKey("session_key")
-    }
+  companion object {
+    private val SESSION_KEY = stringPreferencesKey("session_key")
+  }
 }

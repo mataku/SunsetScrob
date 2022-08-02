@@ -21,77 +21,77 @@ import com.mataku.scrobscrob.ui_common.R
 
 @Composable
 fun ScrobbleTopBar(stateHolder: ScrobbleTopBarState) {
-    var showMenu by remember {
-        mutableStateOf(false)
-    }
+  var showMenu by remember {
+    mutableStateOf(false)
+  }
 
-    var dialogShow by remember {
-        mutableStateOf(false)
-    }
+  var dialogShow by remember {
+    mutableStateOf(false)
+  }
 
-    val uiState = stateHolder.uiState
-    uiState.logoutEvent?.let {
-        stateHolder.navigateToLoginScreen()
-    }
+  val uiState = stateHolder.uiState
+  uiState.logoutEvent?.let {
+    stateHolder.navigateToLoginScreen()
+  }
 
-    TopAppBar(
-        title = {
-            Text("Scrobbles")
-        },
-        actions = {
-            IconButton(onClick = {
-                showMenu = !showMenu
-            }) {
-                Icon(imageVector = Icons.Outlined.Settings, contentDescription = "settings")
-            }
-            DropdownMenu(
-                expanded = showMenu,
-                onDismissRequest = { showMenu = false }
-            ) {
-                DropdownMenuItem(
-                    onClick = {
-                        showMenu = !showMenu
-                        dialogShow = true
-                    }
-                ) {
-                    Text(
-                        text = stringResource(
-                            id = R.string.logout
-                        )
-                    )
-                }
-
-                DropdownMenuItem(
-                    onClick = {
-                        stateHolder.navigateToNotificationListenerSettings()
-                    }
-                ) {
-                    Text(text = stringResource(id = R.string.enable_notification_access))
-                }
-            }
+  TopAppBar(
+    title = {
+      Text("Scrobbles")
+    },
+    actions = {
+      IconButton(onClick = {
+        showMenu = !showMenu
+      }) {
+        Icon(imageVector = Icons.Outlined.Settings, contentDescription = "settings")
+      }
+      DropdownMenu(
+        expanded = showMenu,
+        onDismissRequest = { showMenu = false }
+      ) {
+        DropdownMenuItem(
+          onClick = {
+            showMenu = !showMenu
+            dialogShow = true
+          }
+        ) {
+          Text(
+            text = stringResource(
+              id = R.string.logout
+            )
+          )
         }
-    )
 
-    if (dialogShow) {
-        AlertDialog(
-            onDismissRequest = {},
-            title = {
-                Text(text = "Logout?")
-            },
-            confirmButton = {
-                TextButton(onClick = {
-                    stateHolder.logout()
-                }) {
-                    Text(text = "Let me out!")
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = {
-                    dialogShow = false
-                }) {
-                    Text(text = "NO")
-                }
-            }
-        )
+        DropdownMenuItem(
+          onClick = {
+            stateHolder.navigateToNotificationListenerSettings()
+          }
+        ) {
+          Text(text = stringResource(id = R.string.enable_notification_access))
+        }
+      }
     }
+  )
+
+  if (dialogShow) {
+    AlertDialog(
+      onDismissRequest = {},
+      title = {
+        Text(text = "Logout?")
+      },
+      confirmButton = {
+        TextButton(onClick = {
+          stateHolder.logout()
+        }) {
+          Text(text = "Let me out!")
+        }
+      },
+      dismissButton = {
+        TextButton(onClick = {
+          dialogShow = false
+        }) {
+          Text(text = "NO")
+        }
+      }
+    )
+  }
 }

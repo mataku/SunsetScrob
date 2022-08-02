@@ -10,30 +10,30 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 interface ScrobbleRepository {
-    suspend fun recentTracks(page: Int): SunsetResult<List<RecentTrack>>
+  suspend fun recentTracks(page: Int): SunsetResult<List<RecentTrack>>
 }
 
 @Singleton
 class ScrobbleRepositoryImpl @Inject constructor(
-    private val lastFmService: LastFmService,
-    private val usernameDataStore: UsernameDataStore
+  private val lastFmService: LastFmService,
+  private val usernameDataStore: UsernameDataStore
 ) : ScrobbleRepository {
-    override suspend fun recentTracks(page: Int): SunsetResult<List<RecentTrack>> {
-        val username = usernameDataStore.username() ?: return SunsetResult.success(emptyList())
+  override suspend fun recentTracks(page: Int): SunsetResult<List<RecentTrack>> {
+    val username = usernameDataStore.username() ?: return SunsetResult.success(emptyList())
 
-        val params = mapOf(
-            "user" to username,
-            "limit" to 50,
-            "page" to page
-        )
+    val params = mapOf(
+      "user" to username,
+      "limit" to 50,
+      "page" to page
+    )
 
-        return try {
-            val result = lastFmService.get<RecentTrackApiResponse>(
-                RecentTracksEndpoint(params = params)
-            )
-            SunsetResult.success(result.recentTracks.tracks)
-        } catch (e: Throwable) {
-            SunsetResult.failure(e)
-        }
+    return try {
+      val result = lastFmService.get<RecentTrackApiResponse>(
+        RecentTracksEndpoint(params = params)
+      )
+      SunsetResult.success(result.recentTracks.tracks)
+    } catch (e: Throwable) {
+      SunsetResult.failure(e)
     }
+  }
 }

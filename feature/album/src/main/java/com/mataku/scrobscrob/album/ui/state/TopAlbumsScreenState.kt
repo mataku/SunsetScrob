@@ -10,37 +10,37 @@ import androidx.navigation.NavHostController
 import com.mataku.scrobscrob.album.ui.viewmodel.TopAlbumsViewModel
 
 class TopAlbumsScreenState(
-    private val navController: NavHostController,
-    private val viewModel: TopAlbumsViewModel,
-    context: Context
+  private val navController: NavHostController,
+  private val viewModel: TopAlbumsViewModel,
+  context: Context
 ) {
-    val uiState: TopAlbumsViewModel.UiState
-        @Composable get() = viewModel.uiState.collectAsState().value
+  val uiState: TopAlbumsViewModel.UiState
+    @Composable get() = viewModel.uiState.collectAsState().value
 
-    private val displayMetrics = context.resources.displayMetrics
-    private val fullWidth = displayMetrics.widthPixels / displayMetrics.density
-    val contentWidth = fullWidth / 2
+  private val displayMetrics = context.resources.displayMetrics
+  private val fullWidth = displayMetrics.widthPixels / displayMetrics.density
+  val contentWidth = fullWidth / 2
 
-    fun onTapAlbum(url: String) {
-        navController.navigate("webview?url=$url")
-    }
+  fun onTapAlbum(url: String) {
+    navController.navigate("webview?url=$url")
+  }
 
-    fun onScrollEnd() {
-        viewModel.fetchAlbums()
-    }
+  fun onScrollEnd() {
+    viewModel.fetchAlbums()
+  }
 }
 
 @Composable
 fun rememberTopAlbumsScreenState(
-    viewModel: TopAlbumsViewModel = hiltViewModel(),
-    navController: NavHostController,
-    context: Context = LocalContext.current
+  viewModel: TopAlbumsViewModel = hiltViewModel(),
+  navController: NavHostController,
+  context: Context = LocalContext.current
 ): TopAlbumsScreenState {
-    return remember {
-        TopAlbumsScreenState(
-            navController = navController,
-            viewModel = viewModel,
-            context = context
-        )
-    }
+  return remember {
+    TopAlbumsScreenState(
+      navController = navController,
+      viewModel = viewModel,
+      context = context
+    )
+  }
 }

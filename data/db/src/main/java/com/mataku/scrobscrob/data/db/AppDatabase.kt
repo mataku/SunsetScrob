@@ -5,5 +5,5 @@ import androidx.room.RoomDatabase
 
 @Database(entities = [Scrobble::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
-    abstract val scrobbleDao: ScrobbleDao
+  abstract val scrobbleDao: ScrobbleDao
 }

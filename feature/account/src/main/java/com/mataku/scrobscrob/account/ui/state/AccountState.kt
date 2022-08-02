@@ -9,46 +9,46 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.mataku.scrobscrob.account.ui.viewmodel.AccountViewModel
 
 class AccountState(
-    private val navController: NavController,
-    private val viewModel: AccountViewModel
+  private val navController: NavController,
+  private val viewModel: AccountViewModel
 ) {
-    val uiState: AccountViewModel.UiState
-        @Composable get() = viewModel.uiState.collectAsState().value
+  val uiState: AccountViewModel.UiState
+    @Composable get() = viewModel.uiState.collectAsState().value
 
-    fun navigateToThemeSelector() {
-        navController.navigate("theme")
-    }
+  fun navigateToThemeSelector() {
+    navController.navigate("theme")
+  }
 
-    fun logout() {
-        viewModel.logout()
-    }
+  fun logout() {
+    viewModel.logout()
+  }
 
-    fun navigateToLoginScreen() {
-        navController.navigate("login") {
-            launchSingleTop = true
-            popUpTo(
-                navController.graph.findStartDestination().id
-            ) {
-                inclusive = true
-            }
-        }
+  fun navigateToLoginScreen() {
+    navController.navigate("login") {
+      launchSingleTop = true
+      popUpTo(
+        navController.graph.findStartDestination().id
+      ) {
+        inclusive = true
+      }
     }
+  }
 
-    fun navigateToLicenseScreen() {
-        navController.navigate("license")
-    }
+  fun navigateToLicenseScreen() {
+    navController.navigate("license")
+  }
 
-    fun navigateToPrivacyPolicyScreen() {
-        navController.navigate("privacy_policy")
-    }
+  fun navigateToPrivacyPolicyScreen() {
+    navController.navigate("privacy_policy")
+  }
 }
 
 @Composable
 fun rememberAccountState(
-    navController: NavController,
-    viewModel: AccountViewModel = hiltViewModel()
+  navController: NavController,
+  viewModel: AccountViewModel = hiltViewModel()
 ): AccountState {
-    return remember {
-        AccountState(viewModel = viewModel, navController = navController)
-    }
+  return remember {
+    AccountState(viewModel = viewModel, navController = navController)
+  }
 }

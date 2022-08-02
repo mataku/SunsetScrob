@@ -6,18 +6,18 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class Scrobble(
-    @PrimaryKey
-    var id: Long = 0,
+  @PrimaryKey
+  var id: Long = 0,
 
-    @ColumnInfo(name = "artist_name")
-    var artistName: String = "",
+  @ColumnInfo(name = "artist_name")
+  var artistName: String = "",
 
-    @ColumnInfo(name = "track_name")
-    var trackName: String = "",
+  @ColumnInfo(name = "track_name")
+  var trackName: String = "",
 
-    @ColumnInfo(name = "album_name")
-    var albumName: String = "",
+  @ColumnInfo(name = "album_name")
+  var albumName: String = "",
 
-    @ColumnInfo(name = "artwork")
-    var artwork: String = ""
+  @ColumnInfo(name = "artwork")
+  var artwork: String = ""
 )

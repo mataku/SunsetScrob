@@ -13,15 +13,15 @@ import kotlinx.coroutines.launch
 @ExperimentalCoroutinesApi
 object RxEventBus {
 
-    val bus = ConflatedBroadcastChannel<Any>()
+  val bus = ConflatedBroadcastChannel<Any>()
 
-    fun send(o: Any) {
-        GlobalScope.launch {
-            bus.send(o)
-        }
+  fun send(o: Any) {
+    GlobalScope.launch {
+      bus.send(o)
     }
+  }
 
-    inline fun <reified T> asChannel(): Flow<T> {
-        return bus.openSubscription().consumeAsFlow().filter { it is T }.map { it as T }
-    }
+  inline fun <reified T> asChannel(): Flow<T> {
+    return bus.openSubscription().consumeAsFlow().filter { it is T }.map { it as T }
+  }
 }
