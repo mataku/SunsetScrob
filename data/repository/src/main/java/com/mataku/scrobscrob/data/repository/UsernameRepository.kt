@@ -25,6 +25,8 @@ import javax.inject.Singleton
 
 interface UsernameRepository {
   fun username(): String?
+
+  suspend fun asyncUsername(): String?
 }
 
 @Singleton
@@ -33,4 +35,7 @@ class UsernameRepositoryImpl @Inject constructor(
 ) : UsernameRepository {
   override fun username(): String? =
     runBlocking { usernameDataStore.username() }
+
+  override suspend fun asyncUsername(): String? =
+    usernameDataStore.username()
 }
