@@ -30,6 +30,8 @@ jobs:
         ruby-version: 3.1
         bundler-cache: true
     - name: Setup authentication
+      env:
+        GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON_DEV }}
       run: |
         echo -n "${{ secrets.APP_DISTRIBUTION_JSON }}" | base64 -d > app/app-distribution.json
         bundle exec fastlane android setup_for_ci
@@ -38,7 +40,6 @@ jobs:
       env:
         LAST_FM_API_KEY: ${{ secrets.LAST_FM_API_KEY }}
         LAST_FM_SHARED_SECRET: ${{ secrets.LAST_FM_SHARED_SECRET }}
-        GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON_DEV }}
         RELEASE_NOTES: ${{ github.event.inputs.release_notes }}
         FIREBASE_DEV_APP_ID: ${{ secrets.FIREBASE_DEV_APP_ID }}
       run: |

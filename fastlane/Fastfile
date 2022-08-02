@@ -60,13 +60,14 @@ platform :android do
     )
   end
 
+  # To upload an aab, needs to link Google Play Account to your Firebase project, so upload an apk currently
   lane :deploy_to_firebase_app_distribution do
-    gradle(task: "bundleDebug")
+    gradle(task: "assembleDebug")
     release_notes = ENV['RELEASE_NOTES'] || 'Deployed from GitHub Actions'
     firebase_app_distribution(
       app: ENV['FIREBASE_DEV_APP_ID'],
-      android_artifact_type: 'AAB',
-      android_artifact_path: 'app/build/outputs/bundle/debug/app-debug.aab',
+      android_artifact_type: 'APK',
+      android_artifact_path: 'app/build/outputs/apk/debug/app-debug.apk',
       release_notes: release_notes,
       service_credentials_file: 'app/app-distribution.json',
       groups: 'tester'
