@@ -34,7 +34,6 @@ platform :android do
     )
   end
 
-
   desc "Deploy a new version to the Google Play"
   lane :deploy do
     gradle(task: "bundleRelease")
@@ -58,6 +57,19 @@ platform :android do
       skip_upload_images: true,
       skip_upload_screenshots: true,
       skip_upload_apk: true
+    )
+  end
+
+  lane :deploy_to_firebase_app_distribution do
+    gradle(task: "bundleDebug")
+    release_notes = ENV['RELEASE_NOTES'] || 'Deployed from GitHub Actions'
+    firebase_app_distribution(
+      app: ENV['FIREBASE_DEV_APP_ID'],
+      android_artifact_type: 'AAB',
+      android_artifact_path: 'app/build/outputs/bundle/debug/app-debug.aab',
+      release_notes: release_notes,
+      service_credentials_file: 'app/app-distribution.json',
+      groups: 'tester'
     )
   end
 
