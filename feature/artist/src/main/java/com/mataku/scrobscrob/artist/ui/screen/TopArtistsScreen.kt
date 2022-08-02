@@ -64,7 +64,7 @@ private fun TopArtistsContent(
                 TopArtistsGridRow(
                     leftArtist = it[0],
                     rightArtist = rightItem,
-                    imageSize = imageSize,
+                    imageSize = imageSize - 24.dp,
                     onArtistTap = onUrlTap,
                     modifier = Modifier.padding(horizontal = 8.dp)
                 )
@@ -103,13 +103,23 @@ private fun TopArtistsGridRow(
     modifier: Modifier
 ) {
     Row(modifier = modifier.fillMaxSize()) {
-        TopArtist(artist = leftArtist, imageSize = imageSize, onArtistTap = {
-            onArtistTap.invoke(leftArtist.url)
-        }, modifier = Modifier.weight(1F))
+        TopArtist(
+            artist = leftArtist,
+            imageSize = imageSize,
+            onArtistTap = {
+                onArtistTap.invoke(leftArtist.url)
+            },
+            modifier = Modifier.weight(1F, fill = false)
+        )
         rightArtist?.let {
-            TopArtist(artist = it, imageSize = imageSize, onArtistTap = {
-                onArtistTap.invoke(it.url)
-            }, modifier = Modifier.weight(1F))
+            TopArtist(
+                artist = it,
+                imageSize = imageSize,
+                onArtistTap = {
+                    onArtistTap.invoke(it.url)
+                },
+                modifier = Modifier.weight(1F, fill = false)
+            )
         }
     }
 }

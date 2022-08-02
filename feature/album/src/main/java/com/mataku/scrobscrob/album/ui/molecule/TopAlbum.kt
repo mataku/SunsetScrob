@@ -21,7 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.rememberImagePainter
+import coil.compose.rememberAsyncImagePainter
 import com.mataku.scrobscrob.core.api.endpoint.Album
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.R as uiCommonR
@@ -47,13 +47,14 @@ fun TopAlbum(album: Album, imageSize: Dp, onAlbumTap: () -> Unit, modifier: Modi
                 uiCommonR.drawable.no_image
             )
         } else {
-            rememberImagePainter(url)
+            rememberAsyncImagePainter(model = url)
         }
         Image(
             painter = painter,
             contentDescription = album.name,
             modifier = Modifier.size(imageSize)
         )
+        Spacer(modifier = Modifier.height(4.dp))
         Text(
             album.name,
             fontSize = 16.sp,

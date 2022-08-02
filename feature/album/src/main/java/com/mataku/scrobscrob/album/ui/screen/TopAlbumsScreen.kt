@@ -65,7 +65,7 @@ fun TopAlbumsContent(
                 TopAlbumsGridRow(
                     leftItem = it[0],
                     rightItem = rightItem,
-                    imageSize = imageSize,
+                    imageSize = imageSize - 24.dp,
                     onAlbumTap = onUrlTap,
                     modifier = Modifier.padding(horizontal = 8.dp)
                 )
@@ -107,15 +107,14 @@ private fun TopAlbumsGridRow(
             album = leftItem, imageSize = imageSize, onAlbumTap = {
                 onAlbumTap(leftItem.url)
             },
-            modifier = Modifier.weight(1F)
+            modifier = Modifier.weight(1F, fill = false)
         )
         rightItem?.let {
             TopAlbum(
                 album = it, imageSize = imageSize, onAlbumTap = {
                     onAlbumTap(it.url)
                 },
-                modifier = Modifier.weight(1F)
-
+                modifier = Modifier.weight(1F, fill = false)
             )
         }
     }
