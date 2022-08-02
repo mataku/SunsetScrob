@@ -1,5 +1,6 @@
 package com.mataku.scrobscrob.auth.ui.screen
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -8,11 +9,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -33,6 +36,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -140,7 +144,7 @@ private fun LoginContent(
                 keyboardType = KeyboardType.Ascii,
                 imeAction = ImeAction.Next
             ),
-            label = { Text(text = "Username or Email") },
+            label = { Text(text = "Username") },
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .fillMaxWidth()
@@ -188,6 +192,7 @@ private fun LoginContent(
 
         Button(
             onClick = {
+                focusManager.clearFocus()
                 onLoginButtonTap(idText, passwordText)
             },
             modifier = Modifier
@@ -196,7 +201,16 @@ private fun LoginContent(
             enabled = !isLoading,
             contentPadding = PaddingValues(vertical = 12.dp)
         ) {
-            Text(text = "Let me in!")
+            if (isLoading) {
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .size(16.dp)
+                        .background(color = Color.Transparent)
+                        .align(alignment = Alignment.CenterVertically)
+                )
+            } else {
+                Text(text = "Let me in!")
+            }
         }
 
         Spacer(modifier = Modifier.height(32.dp))
