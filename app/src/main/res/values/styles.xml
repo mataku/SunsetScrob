@@ -19,6 +19,7 @@
     <item name="windowSplashScreenAnimatedIcon">@color/contentBackground</item>
     <item name="android:statusBarColor">@color/contentBackground</item>
     <item name="android:navigationBarColor">@color/colorPrimary</item>
+    <item name="postSplashScreenTheme">@style/AppTheme</item>
   </style>
 
   <style name="RegistrationButtonStyle" parent="Widget.MaterialComponents.Button">

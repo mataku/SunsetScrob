@@ -1,13 +1,11 @@
 package com.mataku.scrobscrob.app.ui.top
 
-import android.os.Build
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
-import com.mataku.scrobscrob.R
 import com.mataku.scrobscrob.app.receiver.AppleMusicNotificationReceiver
 import com.mataku.scrobscrob.app.ui.screen.MainScreen
 import com.mataku.scrobscrob.app.ui.viewmodel.MainViewModel
@@ -29,13 +27,8 @@ class MainActivity : AppCompatActivity() {
   private val viewModel by viewModels<MainViewModel>()
 
   override fun onCreate(savedInstanceState: Bundle?) {
+    installSplashScreen()
     super.onCreate(savedInstanceState)
-
-    // On Android 12 or later, toolbar does not disappear when installSplashScreen() is called with setTheme
-    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.R) {
-      installSplashScreen()
-    }
-    setTheme(R.style.AppTheme)
 
     lifecycleScope.launch {
       viewModel.theme.collect {
