@@ -78,14 +78,30 @@ class LoginViewModel @Inject constructor(private val repo: SessionRepository) : 
         }
     }
 
+    fun updateUsername(username: String) {
+        uiState.update {
+            it.copy(username = username)
+        }
+    }
+
+    fun updatePassword(password: String) {
+        uiState.update {
+            it.copy(password = password)
+        }
+    }
+
     data class UiState(
         val isLoading: Boolean,
-        val event: LoginScreenState.UiEvent? = null
+        val event: LoginScreenState.UiEvent? = null,
+        val username: String,
+        val password: String
     ) {
         companion object {
             fun initialize() = UiState(
                 isLoading = false,
-                event = null
+                event = null,
+                username = "",
+                password = ""
             )
         }
     }
