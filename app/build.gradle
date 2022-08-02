@@ -10,8 +10,8 @@ apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'com.google.gms.google-services'
 
 apply from: "lint-checks.gradle"
-apply from: "$project.rootDir/test_dependencies.gradle"
-apply from: "$project.rootDir/test_options.gradle"
+apply from: "$project.rootDir/gradle/test_dependencies.gradle"
+apply from: "$project.rootDir/gradle/test_options.gradle"
 
 android {
     compileSdk Versions.compileSdkVersion
