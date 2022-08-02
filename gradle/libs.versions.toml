@@ -2,12 +2,13 @@
 aboutlibraries = "10.3.1"
 accompanist = "0.23.1"
 compose = "1.1.1"
+coroutines = "1.6.4"
 hilt = "2.42"
 ktor = "2.0.3"
 room = "2.4.3"
 kotlin = "1.6.10"
 kotlin-compiler-extension = "1.1.1"
-kotest = "5.3.2"
+kotest = "5.4.1"
 mockk = "1.12.5"
 
 [libraries]
@@ -29,7 +30,7 @@ coil-compose = { module = "io.coil-kt:coil-compose", version = "2.1.0" }
 firebase-core = { module = "com.google.firebase:firebase-core", version = "17.5.1" }
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics", version = "17.4.1" }
 
-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version = "1.4.3" }
+coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version = "1.1.0" }
 
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
@@ -79,3 +80,4 @@ kotest-runner-junit5 = { module = "io.kotest:kotest-runner-junit5", version.ref 
 kotest-assertions = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 mockk-agent-jvm = { module = "io.mockk:mockk-agent-jvm", version.ref = "mockk" }
+coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }

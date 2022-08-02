@@ -67,6 +67,7 @@ fun AccountScreen(
     uiState.event?.let {
         when (it) {
             is AccountViewModel.Event.Logout -> {
+                openDialog.value = false
                 state.navigateToLoginScreen()
             }
         }

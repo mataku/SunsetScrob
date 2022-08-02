@@ -2,6 +2,7 @@ package com.mataku.scrobscrob.auth.ui.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -29,14 +30,24 @@ import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.autofill.AutofillNode
+import androidx.compose.ui.autofill.AutofillType
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.boundsInWindow
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalAutofill
+import androidx.compose.ui.platform.LocalAutofillTree
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -48,15 +59,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.mataku.scrobscrob.auth.R
 import com.mataku.scrobscrob.auth.ui.state.LoginScreenState
 import com.mataku.scrobscrob.core.entity.AppTheme
-import com.mataku.scrobscrob.ui_common.R
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.style.Colors
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.SunsetTheme
 import com.mataku.scrobscrob.ui_common.style.backgroundColor
+import com.mataku.scrobscrob.ui_common.style.colors
 import kotlinx.coroutines.launch
+import com.mataku.scrobscrob.ui_common.R as uiCommonR
 
 @Composable
 fun LoginScreen(
@@ -76,6 +89,7 @@ fun LoginScreen(
     )
     val navigationBarColor = MaterialTheme.colors.primary
     val systemBarColor = LocalAppTheme.current.backgroundColor()
+    val context = LocalContext.current
     uiState.event?.let {
         when (it) {
             is LoginScreenState.UiEvent.LoginSuccess -> {
@@ -85,7 +99,17 @@ fun LoginScreen(
             }
             is LoginScreenState.UiEvent.LoginFailed -> {
                 coroutineScope.launch {
-                    scaffoldState.snackbarHostState.showSnackbar("Login failed")
+                    scaffoldState.snackbarHostState.showSnackbar(context.getString(R.string.error_login_failed))
+                }
+            }
+            is LoginScreenState.UiEvent.EmptyPasswordError -> {
+                coroutineScope.launch {
+                    scaffoldState.snackbarHostState.showSnackbar(context.getString(R.string.error_password_required))
+                }
+            }
+            is LoginScreenState.UiEvent.EmptyUsernameError -> {
+                coroutineScope.launch {
+                    scaffoldState.snackbarHostState.showSnackbar(context.getString(R.string.error_username_required))
                 }
             }
 
@@ -100,24 +124,40 @@ fun LoginScreen(
             },
             onPrivacyPolicyTap = {
                 stateHolder.navigateToPrivacyPolicy()
+            },
+            username = uiState.username,
+            password = uiState.password,
+            onUsernameUpdate = {
+                stateHolder.onUsernameUpdate(it)
+            },
+            onPasswordUpdate = {
+                stateHolder.onPasswordUpdate(it)
             }
         )
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun LoginContent(
     isLoading: Boolean,
     onLoginButtonTap: (String, String) -> Unit,
-    onPrivacyPolicyTap: () -> Unit
+    onPrivacyPolicyTap: () -> Unit,
+    username: String,
+    password: String,
+    onUsernameUpdate: (String) -> Unit,
+    onPasswordUpdate: (String) -> Unit
 ) {
-    var idText by remember { mutableStateOf("") }
-    var passwordText by remember { mutableStateOf("") }
     var passwordVisible by remember {
         mutableStateOf(false)
     }
     val focusManager = LocalFocusManager.current
+    val autofill = LocalAutofill.current
+    val systemUiController = rememberSystemUiController()
+    val navigationBackgroundColor = LocalAppTheme.current.colors().primary
 
+    // Stored data with "remember { mutableStateOf("") }" will blow up the data in AutoFill#onFill,
+    //  so manages input data in ViewModel (TODO: details)
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -129,7 +169,7 @@ private fun LoginContent(
         Spacer(modifier = Modifier.height(24.dp))
 
         Text(
-            text = stringResource(id = R.string.login_to_last_fm),
+            text = stringResource(id = uiCommonR.string.login_to_last_fm),
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.align(Alignment.CenterHorizontally)
@@ -137,65 +177,91 @@ private fun LoginContent(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        OutlinedTextField(
-            value = idText,
-            onValueChange = {
-                idText = it
-            },
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Ascii,
-                imeAction = ImeAction.Next
-            ),
-            label = { Text(text = "Username") },
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .fillMaxWidth()
-                .padding(horizontal = 24.dp)
-        )
-
+        Autofill(autofillTypes = listOf(AutofillType.Username), onFill = {
+            onUsernameUpdate.invoke(it)
+        }) { autofillNode ->
+            OutlinedTextField(
+                value = username,
+                onValueChange = {
+                    onUsernameUpdate.invoke(it)
+                },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Email,
+                    imeAction = ImeAction.Next
+                ),
+                singleLine = true,
+                label = { Text(text = "Username") },
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp)
+                    .onFocusChanged {
+                        autofill?.run {
+                            if (it.isFocused) {
+                                requestAutofillForNode(autofillNode)
+                            } else {
+                                cancelAutofillForNode(autofillNode)
+                            }
+                        }
+                    }
+            )
+        }
         Spacer(modifier = Modifier.height(16.dp))
 
-        OutlinedTextField(
-            value = passwordText,
-            onValueChange = {
-                passwordText = it
-            },
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Password,
-                imeAction = ImeAction.Done
-            ),
-            keyboardActions = KeyboardActions(
-                onDone = {
-                    focusManager.clearFocus()
-                }
-            ),
-            label = { Text(text = "Password") },
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .fillMaxWidth()
-                .padding(horizontal = 24.dp),
-            singleLine = true,
-            visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-            trailingIcon = {
-                val icon = if (passwordVisible) {
-                    Icons.Filled.Visibility
-                } else {
-                    Icons.Filled.VisibilityOff
-                }
-                IconButton(onClick = {
-                    passwordVisible = !passwordVisible
-                }) {
-                    Icon(imageVector = icon, "password visibility toggle")
-                }
-            }
-        )
+        Autofill(autofillTypes = listOf(AutofillType.Password), onFill = {
+            onPasswordUpdate.invoke(it)
+        }) { autofillNode ->
+            OutlinedTextField(
+                value = password,
+                onValueChange = {
+                    onPasswordUpdate.invoke(it)
+                },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Password,
+                    imeAction = ImeAction.Done
+                ),
+                singleLine = true,
+                visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                trailingIcon = {
+                    val icon = if (passwordVisible) {
+                        Icons.Filled.Visibility
+                    } else {
+                        Icons.Filled.VisibilityOff
+                    }
+                    IconButton(onClick = {
+                        passwordVisible = !passwordVisible
+                    }) {
+                        Icon(imageVector = icon, "password visibility toggle")
+                    }
+                },
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        focusManager.clearFocus()
+                    }
+                ),
+                label = { Text(text = "Password") },
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp)
+                    .onFocusChanged {
+                        autofill?.run {
+                            if (it.isFocused) {
+                                requestAutofillForNode(autofillNode)
+                            } else {
+                                cancelAutofillForNode(autofillNode)
+                            }
+                        }
+                    }
+            )
+        }
 
         Spacer(modifier = Modifier.height(48.dp))
 
         Button(
             onClick = {
                 focusManager.clearFocus()
-                onLoginButtonTap(idText, passwordText)
+                onLoginButtonTap(username, password)
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -223,6 +289,34 @@ private fun LoginContent(
             Text(text = "Privacy policy", style = SunsetTextStyle.button)
         }
     }
+
+    DisposableEffect(Unit) {
+        onDispose {
+            systemUiController.setNavigationBarColor(navigationBackgroundColor)
+        }
+    }
+}
+
+// ref. https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:compose/ui/ui/integration-tests/ui-demos/src/main/java/androidx/compose/ui/demos/autofill/ExplicitAutofillTypesDemo.kt;drc=2cfa51635d05d62cbc08cb3abf333155c994fb16
+@ExperimentalComposeUiApi
+@Composable
+private fun Autofill(
+    autofillTypes: List<AutofillType>,
+    onFill: ((String) -> Unit),
+    content: @Composable (AutofillNode) -> Unit
+) {
+    val autofillNode = AutofillNode(onFill = onFill, autofillTypes = autofillTypes)
+
+    val autofillTree = LocalAutofillTree.current
+    autofillTree += autofillNode
+
+    Box(
+        Modifier.onGloballyPositioned {
+            autofillNode.boundingBox = it.boundsInWindow()
+        }
+    ) {
+        content(autofillNode)
+    }
 }
 
 @Preview(showBackground = true)
@@ -233,7 +327,12 @@ private fun LoginScreenPreview() {
             LoginContent(
                 isLoading = false,
                 onLoginButtonTap = { _, _ -> },
-                onPrivacyPolicyTap = {})
+                onPrivacyPolicyTap = {},
+                username = "",
+                password = "",
+                onUsernameUpdate = {},
+                onPasswordUpdate = {}
+            )
         }
     }
 }

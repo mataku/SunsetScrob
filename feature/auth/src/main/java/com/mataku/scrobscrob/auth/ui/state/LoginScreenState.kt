@@ -44,9 +44,19 @@ class LoginScreenState(
         viewModel.popEvent()
     }
 
+    fun onUsernameUpdate(username: String) {
+        viewModel.updateUsername(username)
+    }
+
+    fun onPasswordUpdate(password: String) {
+        viewModel.updatePassword(password)
+    }
+
     sealed class UiEvent {
         object LoginSuccess : UiEvent()
         object LoginFailed : UiEvent()
+        object EmptyUsernameError : UiEvent()
+        object EmptyPasswordError : UiEvent()
     }
 }
 

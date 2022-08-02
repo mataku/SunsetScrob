@@ -1,0 +1,5 @@
+<resources>
+    <string name="error_password_required">Password is required</string>
+    <string name="error_username_required">Username is required</string>
+    <string name="error_login_failed">Login failed</string>
+</resources>
