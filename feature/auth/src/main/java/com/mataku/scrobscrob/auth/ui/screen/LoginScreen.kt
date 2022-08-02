@@ -35,8 +35,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.autofill.AutofillNode
+import androidx.compose.ui.autofill.AutofillType
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.boundsInWindow
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalAutofill
+import androidx.compose.ui.platform.LocalAutofillTree
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -48,15 +57,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.mataku.scrobscrob.auth.R
 import com.mataku.scrobscrob.auth.ui.state.LoginScreenState
 import com.mataku.scrobscrob.core.entity.AppTheme
-import com.mataku.scrobscrob.ui_common.R
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.style.Colors
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.SunsetTheme
 import com.mataku.scrobscrob.ui_common.style.backgroundColor
 import kotlinx.coroutines.launch
+import com.mataku.scrobscrob.ui_common.R as uiCommonR
 
 @Composable
 fun LoginScreen(
@@ -76,6 +86,7 @@ fun LoginScreen(
     )
     val navigationBarColor = MaterialTheme.colors.primary
     val systemBarColor = LocalAppTheme.current.backgroundColor()
+    val context = LocalContext.current
     uiState.event?.let {
         when (it) {
             is LoginScreenState.UiEvent.LoginSuccess -> {
@@ -85,17 +96,17 @@ fun LoginScreen(
             }
             is LoginScreenState.UiEvent.LoginFailed -> {
                 coroutineScope.launch {
-                    scaffoldState.snackbarHostState.showSnackbar("Login failed")
+                    scaffoldState.snackbarHostState.showSnackbar(context.getString(R.string.error_login_failed))
                 }
             }
             is LoginScreenState.UiEvent.EmptyPasswordError -> {
                 coroutineScope.launch {
-                    scaffoldState.snackbarHostState.showSnackbar("Password is required")
+                    scaffoldState.snackbarHostState.showSnackbar(context.getString(R.string.error_password_required))
                 }
             }
             is LoginScreenState.UiEvent.EmptyUsernameError -> {
                 coroutineScope.launch {
-                    scaffoldState.snackbarHostState.showSnackbar("Username is required")
+                    scaffoldState.snackbarHostState.showSnackbar(context.getString(R.string.error_username_required))
                 }
             }
 
@@ -115,6 +126,7 @@ fun LoginScreen(
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun LoginContent(
     isLoading: Boolean,
@@ -127,6 +139,15 @@ private fun LoginContent(
         mutableStateOf(false)
     }
     val focusManager = LocalFocusManager.current
+    val autoFillNode = AutofillNode(
+        autofillTypes = listOf(AutofillType.Password),
+        onFill = {
+            passwordText = it
+        }
+    )
+
+    LocalAutofillTree.current += autoFillNode
+    val autoFill = LocalAutofill.current
 
     Column(
         modifier = Modifier
@@ -139,7 +160,7 @@ private fun LoginContent(
         Spacer(modifier = Modifier.height(24.dp))
 
         Text(
-            text = stringResource(id = R.string.login_to_last_fm),
+            text = stringResource(id = uiCommonR.string.login_to_last_fm),
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.align(Alignment.CenterHorizontally)
@@ -183,7 +204,19 @@ private fun LoginContent(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .fillMaxWidth()
-                .padding(horizontal = 24.dp),
+                .padding(horizontal = 24.dp)
+                .onGloballyPositioned {
+                    autoFillNode.boundingBox = it.boundsInWindow()
+                }
+                .onFocusChanged {
+                    autoFill?.run {
+                        if (it.isFocused) {
+                            requestAutofillForNode(autoFillNode)
+                        } else {
+                            cancelAutofillForNode(autoFillNode)
+                        }
+                    }
+                },
             singleLine = true,
             visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
             trailingIcon = {
