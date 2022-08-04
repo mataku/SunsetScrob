@@ -114,6 +114,10 @@ fun ScrobbleScreen(
       recentTracks = uiState.recentTracks,
       hasNext = uiState.hasNext,
       onScrobbleTap = { track, firstVisibleIndex, tappedItemIndex, firstVisibleItemScrollOffset ->
+        if (detail.value) {
+          return@ScrobbleContent
+        }
+
         val topLeftCoordinate = if (firstVisibleIndex == tappedItemIndex) {
           Pair(0, 0)
         } else {
@@ -150,7 +154,6 @@ private fun ScrobbleContent(
   onScrobbleTap: (RecentTrack, Int, Int, Int) -> Unit,
   onScrollEnd: () -> Unit
 ) {
-
   LazyColumn(
     state = lazyListState,
     content = {

@@ -4,12 +4,16 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
@@ -21,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.mataku.scrobscrob.scrobble.R
+import com.mataku.scrobscrob.scrobble.ui.molecule.TrackAlbum
 import com.mataku.scrobscrob.scrobble.ui.state.TrackScreenState
 import com.mataku.scrobscrob.ui_common.organism.ContentHeader
 import kotlinx.coroutines.launch
@@ -57,13 +62,13 @@ fun TrackScreen(
   }
 
   LazyColumn(
+    contentPadding = PaddingValues(vertical = 8.dp),
     content = {
       stickyHeader {
         ContentHeader(text = trackName)
       }
       item {
         val animateValue = animateState.value
-
         val yCoordinate = topLeftCoordinate.second
         val offset = (yCoordinate.dp) - ((yCoordinate.dp) * animateValue)
         val imageSize = 48
@@ -89,8 +94,14 @@ fun TrackScreen(
         )
       }
 
-      uiState.trackInfo?.let {
-
+      uiState.trackInfo?.let { trackInfo ->
+        trackInfo.album?.let { album ->
+          item {
+            Divider()
+            Spacer(modifier = Modifier.height(16.dp))
+            TrackAlbum(album = album)
+          }
+        }
       }
     },
     state = lazyListState,
