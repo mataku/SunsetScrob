@@ -27,7 +27,7 @@ class ScrobbleViewModel @Inject constructor(
   }
 
   fun refresh() {
-    if (!uiState.value.hasNext || uiState.value.isLoading || uiState.value.isRefreshing) return
+    if (uiState.value.isLoading || uiState.value.isRefreshing) return
 
     page = 1
 
