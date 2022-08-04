@@ -45,11 +45,21 @@ data class RecentTrack(
   @SerialName("date")
   val date: RecentTrackDate? = null
 ) {
-  fun largeImageUrl(): String? {
+  fun imageUrl(): String? {
+    val extraLargeImage = images.find {
+      it.size == "extralarge"
+    }
+    if (extraLargeImage != null) {
+      return extraLargeImage.url
+    }
     val largeImage = images.find {
       it.size == "large"
     }
-    return largeImage?.url
+    if (largeImage != null) {
+      return largeImage.url
+    }
+
+    return null
   }
 
   fun isNowPlayingTrack(): Boolean = date == null

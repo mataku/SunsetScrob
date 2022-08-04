@@ -18,12 +18,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.rememberAsyncImagePainter
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
@@ -37,7 +39,7 @@ import com.mataku.scrobscrob.ui_common.R as uiCommonR
 @Composable
 fun Scrobble(recentTrack: RecentTrack, onScrobbleTap: () -> Unit) {
   ScrobbleContent(
-    imageUrl = recentTrack.largeImageUrl(),
+    imageUrl = recentTrack.imageUrl(),
     trackName = recentTrack.name,
     artistName = recentTrack.artist.name,
     date = recentTrack.date,
@@ -56,6 +58,7 @@ private fun ScrobbleContent(
   Row(
     modifier = Modifier
       .fillMaxWidth()
+      .height(64.dp)
       .clickable {
         onScrobbleTap()
       }
@@ -66,17 +69,21 @@ private fun ScrobbleContent(
     verticalAlignment = Alignment.CenterVertically
   ) {
     Row(modifier = Modifier.weight(1F)) {
-      val painter = if (imageUrl == null) {
-        painterResource(uiCommonR.drawable.no_image)
+      if (imageUrl == null) {
+        Image(
+          painter = painterResource(uiCommonR.drawable.no_image),
+          contentDescription = "Scrobble track image",
+          modifier = Modifier.size(48.dp)
+        )
       } else {
-        rememberAsyncImagePainter(imageUrl)
+        AsyncImage(
+          model = ImageRequest.Builder(LocalContext.current)
+            .size(1000)
+            .data(imageUrl)
+            .build(), contentDescription = "$trackName artwork image",
+          modifier = Modifier.size(48.dp)
+        )
       }
-      Image(
-        painter = painter,
-        contentDescription = "Scrobble track image",
-        modifier = Modifier
-          .size(48.dp)
-      )
 
       Column(
         modifier = Modifier
