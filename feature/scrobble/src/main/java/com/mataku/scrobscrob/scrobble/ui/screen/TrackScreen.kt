@@ -23,10 +23,9 @@ import coil.request.ImageRequest
 import com.mataku.scrobscrob.scrobble.R
 import com.mataku.scrobscrob.scrobble.ui.state.TrackScreenState
 import com.mataku.scrobscrob.ui_common.organism.ContentHeader
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalCoroutinesApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TrackScreen(
   trackName: String,
@@ -34,7 +33,8 @@ fun TrackScreen(
   artworkUrl: String?,
   topLeftCoordinate: Pair<Int, Int>,
   screenState: TrackScreenState,
-  onBackPressed: () -> Unit
+  onBackPressed: () -> Unit,
+  onDispose: () -> Unit
 ) {
   // TODO: Replace with LocalDensity
   val density = LocalContext.current.resources.displayMetrics.density
@@ -109,6 +109,7 @@ fun TrackScreen(
   BackHandler() {
     coroutineScope.launch {
       screenState.clearState()
+      onDispose.invoke()
       animateState.animateTo(
         0F,
         animationSpec = tween(durationMillis = 800)
