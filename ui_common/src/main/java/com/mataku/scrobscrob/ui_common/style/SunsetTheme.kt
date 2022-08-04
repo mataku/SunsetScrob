@@ -1,6 +1,7 @@
 package com.mataku.scrobscrob.ui_common.style
 
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.ScaffoldState
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.material.ripple.LocalRippleTheme
@@ -54,6 +55,9 @@ fun SunsetThemePreview(
 }
 
 val LocalAppTheme = staticCompositionLocalOf { AppTheme.DARK }
+val LocalScaffoldState = staticCompositionLocalOf<ScaffoldState> {
+  throw IllegalStateException("LocalScaffoldState provider is required")
+}
 
 fun AppTheme.backgroundColor(): Color {
   return this.colors().background

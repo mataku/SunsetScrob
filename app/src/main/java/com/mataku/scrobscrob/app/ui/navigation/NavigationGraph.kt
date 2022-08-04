@@ -1,6 +1,7 @@
 package com.mataku.scrobscrob.app.ui.navigation
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.ScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -21,11 +22,16 @@ import com.mataku.scrobscrob.auth.ui.screen.LoginScreen
 import com.mataku.scrobscrob.auth.ui.state.rememberLoginScreenState
 import com.mataku.scrobscrob.scrobble.ui.screen.ScrobbleScreen
 import com.mataku.scrobscrob.scrobble.ui.state.rememberScrobbleScreenState
+import com.mataku.scrobscrob.scrobble.ui.state.rememberTrackScreenState
 import com.mataku.scrobscrob.ui_common.SunsetBottomNavItem
 import com.mataku.scrobscrob.ui_common.template.WebViewScreen
 
 @Composable
-fun NavigationGraph(navController: NavHostController, isLoggedIn: Boolean) {
+fun NavigationGraph(
+  navController: NavHostController,
+  isLoggedIn: Boolean,
+  scaffoldState: ScaffoldState
+) {
   NavHost(
     navController = navController,
     startDestination = if (isLoggedIn) SunsetBottomNavItem.SCROBBLE.screenRoute else "login"
@@ -34,7 +40,8 @@ fun NavigationGraph(navController: NavHostController, isLoggedIn: Boolean) {
       SunsetBottomNavItem.SCROBBLE.screenRoute
     ) {
       ScrobbleScreen(
-        state = rememberScrobbleScreenState(navController = navController)
+        state = rememberScrobbleScreenState(navController = navController),
+        trackScreenState = rememberTrackScreenState()
       )
     }
     composable(
