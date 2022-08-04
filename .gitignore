@@ -32,8 +32,8 @@ local.properties
 .idea/gradle.xml
 .idea/kotlinScripting.xml
 .idea/jarRepositories.xml
+.idea/dictionaries/
 !.idea/codeStyles/
-!.idea/dictionaries/
 
 *.iml
 .env
