@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -20,10 +19,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.airbnb.lottie.compose.LottieAnimation
@@ -34,6 +33,7 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.mataku.scrobscrob.core.api.endpoint.RecentTrack
 import com.mataku.scrobscrob.core.api.endpoint.RecentTrackDate
 import com.mataku.scrobscrob.scrobble.R
+import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.R as uiCommonR
 
 @Composable
@@ -94,22 +94,22 @@ private fun ScrobbleContent(
       ) {
         Text(
           text = trackName,
-          fontSize = 14.sp,
           modifier = Modifier.wrapContentSize(),
-          color = MaterialTheme.colors.onSurface,
           maxLines = 1,
-          overflow = TextOverflow.Ellipsis
+          overflow = TextOverflow.Ellipsis,
+          style = SunsetTextStyle.body2.copy(
+            fontWeight = FontWeight.Medium
+          )
         )
 
         Spacer(modifier = Modifier.size(4.dp))
 
         Text(
           text = artistName,
-          fontSize = 12.sp,
           modifier = Modifier.wrapContentSize(),
-          color = MaterialTheme.colors.onSurface,
           maxLines = 1,
-          overflow = TextOverflow.Ellipsis
+          overflow = TextOverflow.Ellipsis,
+          style = SunsetTextStyle.caption
         )
       }
     }

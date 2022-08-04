@@ -36,6 +36,12 @@ object SunsetTextStyle {
     letterSpacing = 0.15.sp
   )
 
+  val h7 = TextStyle(
+    fontWeight = FontWeight.Medium,
+    fontSize = 18.sp,
+    letterSpacing = 0.15.sp
+  )
+
   val subtitle1 = TextStyle(
     fontWeight = FontWeight.Medium,
     fontSize = 16.sp,
