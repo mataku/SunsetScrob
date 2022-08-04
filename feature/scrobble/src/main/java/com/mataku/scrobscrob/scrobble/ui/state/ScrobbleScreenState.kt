@@ -14,10 +14,6 @@ class ScrobbleScreenState(
   val uiState: ScrobbleViewModel.UiState
     @Composable get() = viewModel.uiState.collectAsState().value
 
-  fun onScrobbleTap(url: String) {
-    navController.navigate("webview?url=$url")
-  }
-
   fun onScrollEnd() {
     viewModel.fetchRecentTracks()
   }
