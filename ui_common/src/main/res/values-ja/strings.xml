@@ -38,4 +38,6 @@
   <string name="error_message_fetch_top_albums">Failed to fetch top albums...</string>
   <string name="error_message_fetch_top_artists">Failed to fetch top artists...</string>
   <string name="error_message_bad_network">Network unavailable, try later...</string>
+
+  <string name="label_track_album">Album</string>
 </resources>
