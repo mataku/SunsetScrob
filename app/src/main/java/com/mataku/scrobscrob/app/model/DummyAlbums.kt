@@ -13,7 +13,8 @@ object DummyAlbums {
       ),
       imageList = listOf(
         Image(
-          imageUrl = "https://lastfm.freetls.fastly.net/i/u/300x300/115974ea870713fc196e5597626098b6.jpg"
+          size = "extralarge",
+          url = "https://lastfm.freetls.fastly.net/i/u/300x300/115974ea870713fc196e5597626098b6.jpg"
         )
       ),
       url = "https://last.fm",
@@ -26,7 +27,8 @@ object DummyAlbums {
       ),
       imageList = listOf(
         Image(
-          imageUrl = "https://lastfm.freetls.fastly.net/i/u/300x300/115974ea870713fc196e5597626098b6.jpg"
+          size = "extralarge",
+          url = "https://lastfm.freetls.fastly.net/i/u/300x300/115974ea870713fc196e5597626098b6.jpg"
         )
       ),
       url = "https://www.last.fm/music/PassCode",
@@ -39,7 +41,8 @@ object DummyAlbums {
       ),
       imageList = listOf(
         Image(
-          imageUrl = "https://lastfm.freetls.fastly.net/i/u/300x300/115974ea870713fc196e5597626098b6.jpg"
+          size = "extralarge",
+          url = "https://lastfm.freetls.fastly.net/i/u/300x300/115974ea870713fc196e5597626098b6.jpg"
         )
       ),
       url = "https://last.fm",

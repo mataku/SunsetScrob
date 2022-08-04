@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.mataku.scrobscrob.core.api.endpoint.Artist
+import com.mataku.scrobscrob.core.api.endpoint.imageUrl
 import com.mataku.scrobscrob.ui_common.R
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.R as uiCommonR
@@ -40,9 +41,9 @@ fun TopArtist(artist: Artist, imageSize: Dp, onArtistTap: () -> Unit, modifier: 
     val url = if (imageList == null || imageList.isEmpty()) {
       ""
     } else {
-      imageList.last().imageUrl
+      imageList.imageUrl()
     }
-    val painter = if (url.isBlank()) {
+    val painter = if (url == null || url.isBlank()) {
       painterResource(uiCommonR.drawable.no_image)
     } else {
       rememberAsyncImagePainter(model = url)

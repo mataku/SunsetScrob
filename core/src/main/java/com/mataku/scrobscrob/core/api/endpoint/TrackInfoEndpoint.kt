@@ -1,6 +1,6 @@
 package com.mataku.scrobscrob.core.api.endpoint
 
-import com.mataku.scrobscrob.core.entity.Tag
+import com.mataku.scrobscrob.core.entity.TopTags
 import io.ktor.http.HttpMethod
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -28,11 +28,19 @@ data class TrackInfo(
   @SerialName("url")
   val url: String,
   @SerialName("toptags")
-  val topTags: List<Tag>
+  val topTags: TopTags
 )
 
 @Serializable
 data class AlbumInfo(
+  @SerialName("artist")
+  val artist: String,
+
+  @SerialName("title")
+  val title: String,
+
   @SerialName("image")
   val imageList: List<Image>
-)
+) {
+  fun imageUrl(): String? = imageList.imageUrl()
+}

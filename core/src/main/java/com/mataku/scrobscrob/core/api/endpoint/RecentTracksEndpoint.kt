@@ -31,7 +31,7 @@ data class RecentTrack(
   val artist: RecentTrackArtist,
 
   @SerialName("image")
-  val images: List<RecentTrackImage>,
+  val images: List<Image>,
 
   @SerialName("album")
   val album: RecentTrackAlbum,
@@ -45,22 +45,8 @@ data class RecentTrack(
   @SerialName("date")
   val date: RecentTrackDate? = null
 ) {
-  fun imageUrl(): String? {
-    val extraLargeImage = images.find {
-      it.size == "extralarge"
-    }
-    if (extraLargeImage != null) {
-      return extraLargeImage.url
-    }
-    val largeImage = images.find {
-      it.size == "large"
-    }
-    if (largeImage != null) {
-      return largeImage.url
-    }
-
-    return null
-  }
+  fun imageUrl(): String? =
+    images.imageUrl()
 
   fun isNowPlayingTrack(): Boolean = date == null
 }
