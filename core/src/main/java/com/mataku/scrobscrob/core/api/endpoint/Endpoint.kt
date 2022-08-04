@@ -7,7 +7,7 @@ import java.security.MessageDigest
 
 interface Endpoint {
   val path: String
-  val params: Map<String, Any>
+  val params: Map<String, Any?>
     get() = mapOf()
   val requestType: HttpMethod
 }
