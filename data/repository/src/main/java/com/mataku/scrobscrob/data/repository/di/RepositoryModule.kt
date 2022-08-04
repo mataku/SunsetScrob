@@ -4,6 +4,8 @@ import android.content.Context
 import com.mataku.scrobscrob.data.api.di.ApiModule
 import com.mataku.scrobscrob.data.db.UsernameDataStore
 import com.mataku.scrobscrob.data.db.di.DatabaseModule
+import com.mataku.scrobscrob.data.repository.ArtistRepository
+import com.mataku.scrobscrob.data.repository.ArtistRepositoryImpl
 import com.mataku.scrobscrob.data.repository.ScrobbleRepository
 import com.mataku.scrobscrob.data.repository.ScrobbleRepositoryImpl
 import com.mataku.scrobscrob.data.repository.SessionRepository
@@ -71,6 +73,12 @@ class RepositoryModule {
   @Singleton
   @Provides
   fun provideTrackRepository(repository: TrackRepositoryImpl): TrackRepository {
+    return repository
+  }
+
+  @Singleton
+  @Provides
+  fun provideArtistRepository(repository: ArtistRepositoryImpl): ArtistRepository {
     return repository
   }
 
