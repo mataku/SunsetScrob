@@ -5,11 +5,15 @@ with my account
 ### Features
 
 | Latest tracks | Top Albums | Top Artists | Account |
-| :--: | :--: | :--: | :--: |
-| ![](./scrobble_dark.png) | ![](./top_albums_dark.png) | ![](./top_artists_dark.png) | ![](./account_dark.png) |
+ :---: | :---: | :---: | :---:
+| <img src="./scrobble_dark.png" height=300 /> |  <img src="./top_albums_dark.png" height=300 /> | <img src="./scrobble_dark.png" height=300 />  | <img src="./scrobble_dark.png" height=300 />  |
 
 ### Theme
 
-| Dark | Light | Midnight | Ocean | Last.fm Dark |
-| :--: | :--: | :--: | :--: | :--: |
-| ![](./scrobble_dark.png) | ![](./scrobble_light.png) | ![](./scrobble_midnight.png) | ![](./scrobble_ocean.png) | ![](./scrobble_lastfm_dark.png) |
+| Dark | Light | Midnight |
+| :--: | :--: | :--: |
+| <img src="./scrobble_dark.png" height=400 /> | <img src="./scrobble_light.png" height=400 /> | <img src="./scrobble_midnight.png" height=400 /> |
+
+| Ocean | Last.fm Dark |
+| :--: | :--: |
+|  <img src="./scrobble_ocean.png" height=600 /> |  <img src="./scrobble_lastfm_dark.png" height=600 /> |
