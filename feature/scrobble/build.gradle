@@ -5,6 +5,7 @@ plugins {
   id 'org.jetbrains.kotlin.android'
   id 'org.jetbrains.kotlin.kapt'
   id 'dagger.hilt.android.plugin'
+  id 'com.google.dagger.hilt.android'
 }
 
 apply from: "$project.rootDir/gradle/test_dependencies.gradle"
@@ -37,6 +38,7 @@ android {
   }
   kotlinOptions {
     jvmTarget = '1.8'
+    freeCompilerArgs += ["-Xopt-in=kotlin.RequiresOptIn"]
   }
   composeOptions {
     kotlinCompilerExtensionVersion libs.versions.kotlin.compiler.extension.get()
@@ -67,4 +69,6 @@ dependencies {
   implementation libs.accompanist.swiperefresh
 
   implementation libs.lottie.compose
+
+  implementation libs.compose.material.icons.extended
 }
