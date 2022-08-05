@@ -24,6 +24,6 @@ data class ArtistInfo(
   @SerialName("image")
   val imageList: List<Image>,
 
-  @SerialName("toptags")
+  @SerialName("tags")
   val topTags: TopTags
 )
