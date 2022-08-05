@@ -35,6 +35,7 @@ import com.mataku.scrobscrob.scrobble.ui.state.ScrobbleScreenState
 import com.mataku.scrobscrob.scrobble.ui.state.TrackScreenState
 import com.mataku.scrobscrob.ui_common.organism.ContentHeader
 import com.mataku.scrobscrob.ui_common.organism.InfiniteLoadingIndicator
+import com.mataku.scrobscrob.ui_common.style.ANIMATION_DURATION_MILLIS
 import com.mataku.scrobscrob.ui_common.style.Colors
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
@@ -66,7 +67,7 @@ fun ScrobbleScreen(
       coroutineScope.launch {
         alphaValue.animateTo(
           0F,
-          animationSpec = tween(durationMillis = 800)
+          animationSpec = tween(durationMillis = ANIMATION_DURATION_MILLIS)
         )
       }
     }
@@ -83,7 +84,7 @@ fun ScrobbleScreen(
         coroutineScope.launch {
           alphaValue.animateTo(
             1F,
-            animationSpec = tween(durationMillis = 800)
+            animationSpec = tween(durationMillis = ANIMATION_DURATION_MILLIS)
           )
         }
       },
@@ -97,51 +98,53 @@ fun ScrobbleScreen(
     alphaValue.value
   }
 
-  SwipeRefresh(
-    modifier = Modifier.alpha(
-      if (detail.value) {
-        alpha
-      } else {
-        1F
-      }
-    ),
-    state = rememberSwipeRefreshState(isRefreshing = uiState.isRefreshing),
-    onRefresh = {
-      state.refresh()
-    }) {
-    ScrobbleContent(
-      lazyListState = lazyListState,
-      recentTracks = uiState.recentTracks,
-      hasNext = uiState.hasNext,
-      onScrobbleTap = { track, firstVisibleIndex, tappedItemIndex, firstVisibleItemScrollOffset ->
+  if (!detail.value || alpha >= 0.9F) {
+    SwipeRefresh(
+      modifier = Modifier.alpha(
         if (detail.value) {
-          return@ScrobbleContent
-        }
-
-        val topLeftCoordinate = if (firstVisibleIndex == tappedItemIndex) {
-          Pair(0, 0)
+          alpha
         } else {
-          val cellHeight = density * 64
-          val betweenCellCount = tappedItemIndex - firstVisibleIndex - 1
-          val heightPxBetweenTappedItemAndFirstVisibleItem = cellHeight * betweenCellCount
-          val firstVisibleItemRemainingHeightPx = cellHeight - firstVisibleItemScrollOffset
-
-          Pair(
-            0,
-            ((firstVisibleItemRemainingHeightPx + heightPxBetweenTappedItemAndFirstVisibleItem) / density).toInt()
-          )
+          1F
         }
+      ),
+      state = rememberSwipeRefreshState(isRefreshing = uiState.isRefreshing),
+      onRefresh = {
+        state.refresh()
+      }) {
+      ScrobbleContent(
+        lazyListState = lazyListState,
+        recentTracks = uiState.recentTracks,
+        hasNext = uiState.hasNext,
+        onScrobbleTap = { track, firstVisibleIndex, tappedItemIndex, firstVisibleItemScrollOffset ->
+          if (detail.value) {
+            return@ScrobbleContent
+          }
 
-        item.value = Pair(
-          topLeftCoordinate,
-          track
-        )
-        detail.value = true
-      },
-      onScrollEnd = {
-        state.onScrollEnd()
-      }
-    )
+          val topLeftCoordinate = if (firstVisibleIndex == tappedItemIndex) {
+            Pair(0, 0)
+          } else {
+            val cellHeight = density * 64
+            val betweenCellCount = tappedItemIndex - firstVisibleIndex - 1
+            val heightPxBetweenTappedItemAndFirstVisibleItem = cellHeight * betweenCellCount
+            val firstVisibleItemRemainingHeightPx = cellHeight - firstVisibleItemScrollOffset
+
+            Pair(
+              0,
+              ((firstVisibleItemRemainingHeightPx + heightPxBetweenTappedItemAndFirstVisibleItem) / density).toInt()
+            )
+          }
+
+          item.value = Pair(
+            topLeftCoordinate,
+            track
+          )
+          detail.value = true
+        },
+        onScrollEnd = {
+          state.onScrollEnd()
+        }
+      )
+    }
   }
 }
 

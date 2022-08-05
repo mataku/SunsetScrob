@@ -4,7 +4,6 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,8 +25,11 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.mataku.scrobscrob.scrobble.R
 import com.mataku.scrobscrob.scrobble.ui.molecule.TrackAlbum
+import com.mataku.scrobscrob.scrobble.ui.molecule.TrackArtist
 import com.mataku.scrobscrob.scrobble.ui.state.TrackScreenState
+import com.mataku.scrobscrob.ui_common.molecule.TopTags
 import com.mataku.scrobscrob.ui_common.organism.ContentHeader
+import com.mataku.scrobscrob.ui_common.style.ANIMATION_DURATION_MILLIS
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -62,7 +64,6 @@ fun TrackScreen(
   }
 
   LazyColumn(
-    contentPadding = PaddingValues(vertical = 8.dp),
     content = {
       stickyHeader {
         ContentHeader(text = trackName)
@@ -94,25 +95,39 @@ fun TrackScreen(
         )
       }
 
+      uiState.artistInfo?.let { artistInfo ->
+        item {
+          Divider()
+          Spacer(modifier = Modifier.height(16.dp))
+          TrackArtist(artistInfo = artistInfo)
+        }
+      }
+
       uiState.trackInfo?.let { trackInfo ->
         trackInfo.album?.let { album ->
           item {
+            Spacer(modifier = Modifier.height(16.dp))
             Divider()
             Spacer(modifier = Modifier.height(16.dp))
             TrackAlbum(album = album)
+            Spacer(modifier = Modifier.height(16.dp))
+            Divider()
+            TopTags(tagList = trackInfo.topTags.tagList)
           }
         }
       }
     },
     state = lazyListState,
-    modifier = Modifier.fillMaxSize()
+    modifier = Modifier
+      .fillMaxSize()
+      .padding(bottom = 56.dp)
   )
 
   LaunchedEffect(Unit) {
     coroutineScope.launch {
       animateState.animateTo(
         1F,
-        animationSpec = tween(durationMillis = 800)
+        animationSpec = tween(durationMillis = ANIMATION_DURATION_MILLIS)
       )
     }
   }
@@ -123,7 +138,7 @@ fun TrackScreen(
       onDispose.invoke()
       animateState.animateTo(
         0F,
-        animationSpec = tween(durationMillis = 800)
+        animationSpec = tween(durationMillis = ANIMATION_DURATION_MILLIS)
       )
       onBackPressed.invoke()
     }

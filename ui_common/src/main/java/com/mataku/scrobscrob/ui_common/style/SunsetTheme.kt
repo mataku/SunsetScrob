@@ -59,6 +59,8 @@ val LocalScaffoldState = staticCompositionLocalOf<ScaffoldState> {
   throw IllegalStateException("LocalScaffoldState provider is required")
 }
 
+const val ANIMATION_DURATION_MILLIS = 700
+
 fun AppTheme.backgroundColor(): Color {
   return this.colors().background
 }
