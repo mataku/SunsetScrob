@@ -16,9 +16,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.mataku.scrobscrob.core.api.endpoint.ArtistInfo
-import com.mataku.scrobscrob.core.api.endpoint.imageUrl
-import com.mataku.scrobscrob.core.entity.TopTags
+import com.mataku.scrobscrob.core.entity.ArtistInfo
+import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.scrobble.R
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
@@ -65,8 +64,11 @@ private fun TrackArtistPreview() {
     androidx.compose.material.Surface() {
       TrackArtist(
         ArtistInfo(
-          name = "Nayeon", imageList = emptyList(),
-          topTags = TopTags(emptyList())
+          name = "Nayeon",
+          imageList = emptyList(),
+          topTags = emptyList(),
+          playCount = "1",
+          url = ""
         )
       )
     }

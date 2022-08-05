@@ -1,9 +1,7 @@
 package com.mataku.scrobscrob.data.repository
 
-import com.mataku.scrobscrob.core.api.endpoint.AuthMobileSessionApiResponse
-import com.mataku.scrobscrob.core.api.endpoint.AuthMobileSessionEndpoint
-import com.mataku.scrobscrob.core.api.endpoint.MobileSession
 import com.mataku.scrobscrob.data.api.LastFmService
+import com.mataku.scrobscrob.data.api.endpoint.AuthMobileSessionEndpoint
 import com.mataku.scrobscrob.data.db.SessionKeyDataStore
 import com.mataku.scrobscrob.data.db.UsernameDataStore
 import kotlinx.coroutines.Dispatchers
@@ -15,7 +13,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 interface SessionRepository {
-  suspend fun authorize(userName: String, password: String): Flow<MobileSession>
+  suspend fun authorize(userName: String, password: String): Flow<Unit>
   suspend fun logout(): Flow<Unit>
 }
 
@@ -26,7 +24,7 @@ class SessionRepositoryImpl @Inject constructor(
   private val usernameDataStore: UsernameDataStore
 ) :
   SessionRepository {
-  override suspend fun authorize(userName: String, password: String): Flow<MobileSession> = flow {
+  override suspend fun authorize(userName: String, password: String): Flow<Unit> = flow {
     val params = mutableMapOf(
       "username" to userName,
       "password" to password,
@@ -34,17 +32,16 @@ class SessionRepositoryImpl @Inject constructor(
     )
     val apiSig = ApiSignature.generateApiSig(params)
     params["api_sig"] = apiSig
-    val result = lastFmService.post<AuthMobileSessionApiResponse>(
-      AuthMobileSessionEndpoint(
-        params = params
-      )
-    ).mobileSession
+    val endpoint = AuthMobileSessionEndpoint(
+      params = params
+    )
+    val result = lastFmService.request(endpoint).mobileSession
     sessionKeyDataStore.setSessionKey(result.key).zip(
       usernameDataStore.setUsername(result.name)
     ) { sessionKeyResult, usernameResult ->
       Pair(sessionKeyResult, usernameResult)
     }.collect {
-      emit(result)
+      emit(Unit)
     }
   }.flowOn(Dispatchers.IO)
 

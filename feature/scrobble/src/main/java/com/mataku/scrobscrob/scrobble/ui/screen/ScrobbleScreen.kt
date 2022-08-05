@@ -27,8 +27,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import com.mataku.scrobscrob.core.api.endpoint.RecentTrack
 import com.mataku.scrobscrob.core.entity.AppTheme
+import com.mataku.scrobscrob.core.entity.RecentTrack
+import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.scrobble.R
 import com.mataku.scrobscrob.scrobble.ui.molecule.Scrobble
 import com.mataku.scrobscrob.scrobble.ui.state.ScrobbleScreenState
@@ -74,8 +75,8 @@ fun ScrobbleScreen(
     val track = item.value.second!!
     TrackScreen(
       trackName = track.name,
-      artistName = track.artist.name,
-      artworkUrl = track.imageUrl(),
+      artistName = track.artistName,
+      artworkUrl = track.images.imageUrl(),
       topLeftCoordinate = item.value.first,
       onBackPressed = {
         detail.value = false

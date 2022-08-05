@@ -1,12 +1,14 @@
 package com.mataku.scrobscrob.data.repository
 
-import com.mataku.scrobscrob.core.api.endpoint.TrackInfo
-import com.mataku.scrobscrob.core.api.endpoint.TrackInfoApiResponse
-import com.mataku.scrobscrob.core.api.endpoint.TrackInfoEndpoint
+import com.mataku.scrobscrob.core.entity.TrackInfo
 import com.mataku.scrobscrob.data.api.LastFmService
+import com.mataku.scrobscrob.data.api.endpoint.TrackInfoEndpoint
 import com.mataku.scrobscrob.data.db.UsernameDataStore
+import com.mataku.scrobscrob.data.repository.mapper.toTrackInfo
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -30,8 +32,10 @@ class TrackRepositoryImpl @Inject constructor(
       "track" to trackName,
       "username" to username
     )
-    emit(
-      lastFmService.get<TrackInfoApiResponse>(TrackInfoEndpoint(params = params)).trackInfo
+    val endpoint = TrackInfoEndpoint(
+      params = params
     )
-  }
+    val response = lastFmService.request(endpoint)
+    emit(response.toTrackInfo())
+  }.flowOn(Dispatchers.IO)
 }

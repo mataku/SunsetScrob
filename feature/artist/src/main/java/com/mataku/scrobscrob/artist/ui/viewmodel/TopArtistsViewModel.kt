@@ -2,13 +2,12 @@ package com.mataku.scrobscrob.artist.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mataku.scrobscrob.core.api.endpoint.Artist
+import com.mataku.scrobscrob.core.entity.ArtistInfo
 import com.mataku.scrobscrob.data.repository.TopArtistsRepository
 import com.mataku.scrobscrob.data.repository.UsernameRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
@@ -92,7 +91,7 @@ class TopArtistsViewModel @Inject constructor(
 
   data class UiState(
     val isLoading: Boolean,
-    val topArtists: List<Artist>,
+    val topArtists: List<ArtistInfo>,
     val hasNext: Boolean
   ) {
     companion object {

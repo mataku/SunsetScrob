@@ -2,13 +2,12 @@ package com.mataku.scrobscrob.album.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mataku.scrobscrob.core.api.endpoint.Album
+import com.mataku.scrobscrob.core.entity.AlbumInfo
 import com.mataku.scrobscrob.data.repository.TopAlbumsRepository
 import com.mataku.scrobscrob.data.repository.UsernameRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
@@ -92,7 +91,7 @@ class TopAlbumsViewModel @Inject constructor(
 
   data class UiState(
     val isLoading: Boolean,
-    val topAlbums: List<Album>,
+    val topAlbums: List<AlbumInfo>,
     val hasNext: Boolean
   ) {
     companion object {
@@ -102,7 +101,6 @@ class TopAlbumsViewModel @Inject constructor(
           topAlbums = emptyList(),
           hasNext = true
         )
-
     }
   }
 }

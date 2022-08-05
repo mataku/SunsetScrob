@@ -102,6 +102,7 @@ class LoginViewModel @Inject constructor(private val repo: SessionRepository) : 
         event = null,
         username = "",
         password = ""
+
       )
     }
   }

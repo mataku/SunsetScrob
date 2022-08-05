@@ -30,8 +30,8 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
-import com.mataku.scrobscrob.core.api.endpoint.RecentTrack
-import com.mataku.scrobscrob.core.api.endpoint.RecentTrackDate
+import com.mataku.scrobscrob.core.entity.RecentTrack
+import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.scrobble.R
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.R as uiCommonR
@@ -39,9 +39,9 @@ import com.mataku.scrobscrob.ui_common.R as uiCommonR
 @Composable
 fun Scrobble(recentTrack: RecentTrack, onScrobbleTap: () -> Unit) {
   ScrobbleContent(
-    imageUrl = recentTrack.imageUrl(),
+    imageUrl = recentTrack.images.imageUrl(),
     trackName = recentTrack.name,
-    artistName = recentTrack.artist.name,
+    artistName = recentTrack.artistName,
     date = recentTrack.date,
     onScrobbleTap = onScrobbleTap
   )
@@ -52,7 +52,7 @@ private fun ScrobbleContent(
   imageUrl: String?,
   trackName: String,
   artistName: String,
-  date: RecentTrackDate?,
+  date: String?,
   onScrobbleTap: () -> Unit
 ) {
   Row(
@@ -136,7 +136,7 @@ fun ScrobblePreview() {
     imageUrl = null,
     trackName = "裸足でSummer",
     artistName = "乃木坂46",
-    date = RecentTrackDate("01 Aug 2022, 04:08"),
+    date = "01 Aug 2022, 04:08",
     onScrobbleTap = {}
   )
 }

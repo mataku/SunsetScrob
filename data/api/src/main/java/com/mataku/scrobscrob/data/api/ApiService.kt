@@ -14,8 +14,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class LastFmService @Inject constructor(val httpClient: HttpClient) {
-
+class ApiService @Inject constructor(val httpClient: HttpClient) {
   suspend inline fun <reified T> request(endpoint: Endpoint<T>): T {
     return when (val requestType = endpoint.requestType) {
       HttpMethod.Get -> {
@@ -70,7 +69,4 @@ class LastFmService @Inject constructor(val httpClient: HttpClient) {
     return response.body()
   }
 
-  companion object {
-    const val BASE_URL = "https://ws.audioscrobbler.com"
-  }
 }
