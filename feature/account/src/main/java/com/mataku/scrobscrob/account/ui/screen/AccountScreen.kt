@@ -71,6 +71,7 @@ fun AccountScreen(
         state.navigateToLoginScreen()
       }
     }
+    state.popEvent()
   }
 
   if (openDialog.value) {

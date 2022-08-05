@@ -55,6 +55,14 @@ class AccountViewModel @Inject constructor(
     }
   }
 
+  fun popEvent() {
+    uiState.update {
+      it.copy(
+        event = null
+      )
+    }
+  }
+
   data class UiState(
     val theme: AppTheme?,
     val event: Event?

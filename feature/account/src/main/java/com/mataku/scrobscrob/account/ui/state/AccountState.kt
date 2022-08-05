@@ -41,6 +41,10 @@ class AccountState(
   fun navigateToPrivacyPolicyScreen() {
     navController.navigate("privacy_policy")
   }
+
+  fun popEvent() {
+    viewModel.popEvent()
+  }
 }
 
 @Composable
