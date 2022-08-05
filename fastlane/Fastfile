@@ -14,9 +14,13 @@ platform :android do
     end
   end
 
-  desc "Build an aab and run unit tests"
-  lane :build_and_test do
+  desc "Build an aab"
+  lane :build do
     gradle(task: "bundleDebug")
+  end
+
+  desc "Run unit tests"
+  lane :test do
     gradle(task: "testDebugUnitTest")
   end
 
