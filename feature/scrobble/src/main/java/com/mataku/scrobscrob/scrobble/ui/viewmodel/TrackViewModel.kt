@@ -66,7 +66,9 @@ class TrackViewModel @Inject constructor(
   fun clearState() {
     state.update {
       it.copy(
-        trackInfo = null
+        trackInfo = null,
+        artistInfo = null,
+        event = null
       )
     }
   }
