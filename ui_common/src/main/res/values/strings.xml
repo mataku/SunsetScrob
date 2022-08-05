@@ -37,4 +37,5 @@
   <string name="menu_account">Account</string>
 
   <string name="logout">Logout</string>
+  <string name="label_track_album">Album</string>
 </resources>

@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.mataku.scrobscrob.core.api.endpoint.Album
+import com.mataku.scrobscrob.core.api.endpoint.imageUrl
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.R as uiCommonR
 
@@ -40,9 +41,9 @@ fun TopAlbum(album: Album, imageSize: Dp, onAlbumTap: () -> Unit, modifier: Modi
     val url = if (imageList == null || imageList.isEmpty()) {
       ""
     } else {
-      imageList.last().imageUrl
+      imageList.imageUrl()
     }
-    val painter = if (url.isBlank()) {
+    val painter = if (url == null || url.isBlank()) {
       painterResource(
         uiCommonR.drawable.no_image
       )

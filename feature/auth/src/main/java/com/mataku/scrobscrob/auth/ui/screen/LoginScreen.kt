@@ -28,7 +28,6 @@ import androidx.compose.material.TextButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
@@ -65,6 +64,7 @@ import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.style.Colors
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
+import com.mataku.scrobscrob.ui_common.style.LocalScaffoldState
 import com.mataku.scrobscrob.ui_common.style.SunsetTheme
 import com.mataku.scrobscrob.ui_common.style.backgroundColor
 import com.mataku.scrobscrob.ui_common.style.colors
@@ -75,7 +75,7 @@ import com.mataku.scrobscrob.ui_common.R as uiCommonR
 fun LoginScreen(
   stateHolder: LoginScreenState
 ) {
-  val scaffoldState = rememberScaffoldState()
+  val scaffoldState = LocalScaffoldState.current
   val coroutineScope = rememberCoroutineScope()
   val uiState = stateHolder.uiState
   val currentTheme = LocalAppTheme.current

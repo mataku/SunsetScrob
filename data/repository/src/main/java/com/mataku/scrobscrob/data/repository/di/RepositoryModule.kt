@@ -4,6 +4,8 @@ import android.content.Context
 import com.mataku.scrobscrob.data.api.di.ApiModule
 import com.mataku.scrobscrob.data.db.UsernameDataStore
 import com.mataku.scrobscrob.data.db.di.DatabaseModule
+import com.mataku.scrobscrob.data.repository.ArtistRepository
+import com.mataku.scrobscrob.data.repository.ArtistRepositoryImpl
 import com.mataku.scrobscrob.data.repository.ScrobbleRepository
 import com.mataku.scrobscrob.data.repository.ScrobbleRepositoryImpl
 import com.mataku.scrobscrob.data.repository.SessionRepository
@@ -14,6 +16,8 @@ import com.mataku.scrobscrob.data.repository.TopAlbumsRepository
 import com.mataku.scrobscrob.data.repository.TopAlbumsRepositoryImpl
 import com.mataku.scrobscrob.data.repository.TopArtistsRepository
 import com.mataku.scrobscrob.data.repository.TopArtistsRepositoryImpl
+import com.mataku.scrobscrob.data.repository.TrackRepository
+import com.mataku.scrobscrob.data.repository.TrackRepositoryImpl
 import com.mataku.scrobscrob.data.repository.UsernameRepository
 import com.mataku.scrobscrob.data.repository.UsernameRepositoryImpl
 import dagger.Module
@@ -65,4 +69,17 @@ class RepositoryModule {
   fun provideThemeRepository(repository: ThemeRepositoryImpl): ThemeRepository {
     return repository
   }
+
+  @Singleton
+  @Provides
+  fun provideTrackRepository(repository: TrackRepositoryImpl): TrackRepository {
+    return repository
+  }
+
+  @Singleton
+  @Provides
+  fun provideArtistRepository(repository: ArtistRepositoryImpl): ArtistRepository {
+    return repository
+  }
+
 }
