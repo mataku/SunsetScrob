@@ -20,9 +20,9 @@ data class TrackInfoApiResponse(
 @Serializable
 data class TrackInfo(
   @SerialName("duration")
-  val duration: String?,
+  val duration: String? = null,
   @SerialName("album")
-  val album: AlbumInfo?,
+  val album: AlbumInfo? = null,
   @SerialName("listeners")
   val listeners: String,
   @SerialName("url")
