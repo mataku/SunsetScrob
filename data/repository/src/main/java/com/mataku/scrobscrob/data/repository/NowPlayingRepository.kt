@@ -1,9 +1,9 @@
 package com.mataku.scrobscrob.data.repository
 
-import com.mataku.scrobscrob.core.api.endpoint.NowPlaying
-import com.mataku.scrobscrob.core.api.endpoint.NowPlayingApiResponse
-import com.mataku.scrobscrob.core.api.endpoint.UpdateNowPlayingEndpoint
+import com.mataku.scrobscrob.core.entity.NowPlaying
+import com.mataku.scrobscrob.data.api.endpoint.UpdateNowPlayingEndpoint
 import com.mataku.scrobscrob.data.db.SessionKeyDataStore
+import com.mataku.scrobscrob.data.repository.mapper.toNowPlaying
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flow
@@ -38,9 +38,12 @@ class NowPlayingRepositoryImpl @Inject constructor(
         val apiSig = ApiSignature.generateApiSig(params)
         params.remove("method")
         params["api_sig"] = apiSig
+        val endpoint = UpdateNowPlayingEndpoint(
+          params = params
+        )
+        val response = lastFmService.request(endpoint)
 
-
-        emit(lastFmService.post<NowPlayingApiResponse>(UpdateNowPlayingEndpoint(params = params)).nowPlaying)
+        emit(response.toNowPlaying())
       }
     }
   }

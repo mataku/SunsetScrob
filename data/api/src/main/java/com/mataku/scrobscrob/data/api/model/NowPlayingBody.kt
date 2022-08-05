@@ -1,33 +1,26 @@
-package com.mataku.scrobscrob.core.api.endpoint
+package com.mataku.scrobscrob.data.api.model
 
-import io.ktor.http.HttpMethod
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-
-data class UpdateNowPlayingEndpoint(
-  override val path: String = "/2.0/?method=track.updateNowPlaying&format=json",
-  override val params: Map<String, Any>,
-  override val requestType: HttpMethod = HttpMethod.Post
-) : Endpoint
 
 @Serializable
 data class NowPlayingApiResponse(
   @SerialName("nowplaying")
-  val nowPlaying: NowPlaying
+  val nowPlaying: NowPlayingBody
 )
 
 @Serializable
-data class NowPlaying(
+data class NowPlayingBody(
   @SerialName("artist")
-  val artist: NowPlayingArtist,
+  val artist: NowPlayingArtistBody,
   @SerialName("album")
-  val album: NowPlayingAlbum,
+  val album: NowPlayingAlbumBody,
   @SerialName("track")
-  val track: NowPlayingTrack
+  val track: NowPlayingTrackBody
 )
 
 @Serializable
-data class NowPlayingArtist(
+data class NowPlayingArtistBody(
   @SerialName("corrected")
   val corrected: String,
 
@@ -36,7 +29,7 @@ data class NowPlayingArtist(
 )
 
 @Serializable
-data class NowPlayingAlbum(
+data class NowPlayingAlbumBody(
   @SerialName("corrected")
   val corrected: String,
 
@@ -45,7 +38,7 @@ data class NowPlayingAlbum(
 )
 
 @Serializable
-data class NowPlayingTrack(
+data class NowPlayingTrackBody(
   @SerialName("corrected")
   val corrected: String,
 

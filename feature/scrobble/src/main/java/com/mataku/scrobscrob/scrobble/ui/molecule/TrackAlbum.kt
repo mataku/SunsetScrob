@@ -21,14 +21,15 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.mataku.scrobscrob.core.api.endpoint.AlbumInfo
+import com.mataku.scrobscrob.core.entity.TrackAlbumInfo
+import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.scrobble.R
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 
 @Composable
 fun TrackAlbum(
-  album: AlbumInfo
+  album: TrackAlbumInfo
 ) {
   Column(
     modifier = Modifier
@@ -46,7 +47,7 @@ fun TrackAlbum(
         .fillMaxWidth()
         .padding(vertical = 8.dp)
     ) {
-      val imageUrl = album.imageUrl()
+      val imageUrl = album.imageList.imageUrl()
       val height = 80.dp
 
       AsyncImage(
@@ -94,10 +95,10 @@ private fun TrackAlbumPreview() {
   SunsetThemePreview() {
     Surface {
       TrackAlbum(
-        album = AlbumInfo(
+        album = TrackAlbumInfo(
           artist = "Perfume",
           title = "セラミックガール",
-          imageList = emptyList()
+          imageList = emptyList(),
         )
       )
     }

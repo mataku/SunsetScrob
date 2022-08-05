@@ -5,6 +5,8 @@ plugins {
   id 'kotlin-android'
   id 'kotlin-kapt'
   id 'dagger.hilt.android.plugin'
+  id 'com.google.dagger.hilt.android'
+  id 'kotlinx-serialization'
 }
 
 android {
@@ -46,8 +48,6 @@ android {
 }
 
 dependencies {
-  implementation(project(":core"))
-
   implementation libs.hilt.android
   kapt libs.hilt.compiler
   implementation libs.coroutines

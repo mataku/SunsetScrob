@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import com.mataku.scrobscrob.album.R
 import com.mataku.scrobscrob.album.ui.molecule.TopAlbum
 import com.mataku.scrobscrob.album.ui.state.TopAlbumsScreenState
-import com.mataku.scrobscrob.core.api.endpoint.Album
+import com.mataku.scrobscrob.core.entity.AlbumInfo
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.ui_common.organism.ContentHeader
 import com.mataku.scrobscrob.ui_common.organism.InfiniteLoadingIndicator
@@ -47,7 +47,7 @@ fun TopAlbumsScreen(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TopAlbumsContent(
-  albums: List<Album>,
+  albums: List<AlbumInfo>,
   hasNext: Boolean,
   imageSize: Dp,
   padding: Dp,
@@ -96,8 +96,8 @@ fun TopAlbumsContent(
 
 @Composable
 private fun TopAlbumsGridRow(
-  leftItem: Album,
-  rightItem: Album?,
+  leftItem: AlbumInfo,
+  rightItem: AlbumInfo?,
   imageSize: Dp,
   onAlbumTap: (String) -> Unit,
   modifier: Modifier

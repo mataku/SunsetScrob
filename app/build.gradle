@@ -1,13 +1,16 @@
 import dependency.Versions
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
-apply plugin: 'dagger.hilt.android.plugin'
+plugins {
+  id 'com.android.application'
+  id 'kotlin-android'
+  id 'kotlin-kapt'
+  id 'dagger.hilt.android.plugin'
+  id 'com.google.dagger.hilt.android'
+  id 'com.google.firebase.crashlytics'
+  id 'com.google.gms.google-services'
+}
 
-apply plugin: 'com.google.firebase.crashlytics'
-apply plugin: 'com.google.gms.google-services'
 
 apply from: "lint-checks.gradle"
 apply from: "$project.rootDir/gradle/test_dependencies.gradle"
@@ -131,5 +134,6 @@ kapt {
 tasks.withType(KotlinCompile).all {
   kotlinOptions {
     jvmTarget = JavaVersion.VERSION_1_8
+    freeCompilerArgs += ["-Xopt-in=kotlin.RequiresOptIn"]
   }
 }

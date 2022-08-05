@@ -21,14 +21,14 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
-import com.mataku.scrobscrob.core.api.endpoint.Artist
-import com.mataku.scrobscrob.core.api.endpoint.imageUrl
+import com.mataku.scrobscrob.core.entity.ArtistInfo
+import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.ui_common.R
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.R as uiCommonR
 
 @Composable
-fun TopArtist(artist: Artist, imageSize: Dp, onArtistTap: () -> Unit, modifier: Modifier) {
+fun TopArtist(artist: ArtistInfo, imageSize: Dp, onArtistTap: () -> Unit, modifier: Modifier) {
   Column(
     horizontalAlignment = Alignment.CenterHorizontally,
     modifier = modifier
@@ -38,7 +38,7 @@ fun TopArtist(artist: Artist, imageSize: Dp, onArtistTap: () -> Unit, modifier: 
       }
   ) {
     val imageList = artist.imageList
-    val url = if (imageList == null || imageList.isEmpty()) {
+    val url = if (imageList.isEmpty()) {
       ""
     } else {
       imageList.imageUrl()
@@ -64,13 +64,13 @@ fun TopArtist(artist: Artist, imageSize: Dp, onArtistTap: () -> Unit, modifier: 
       maxLines = 1,
       overflow = TextOverflow.Ellipsis
     )
-    val playCountResource = if (artist.playcount == "1") {
+    val playCountResource = if (artist.playCount == "1") {
       R.string.playcount
     } else {
       R.string.playcounts
     }
     Text(
-      stringResource(playCountResource, artist.playcount),
+      stringResource(playCountResource, artist.playCount),
       style = SunsetTextStyle.caption,
       maxLines = 1
     )

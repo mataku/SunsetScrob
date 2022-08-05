@@ -1,40 +1,33 @@
-package com.mataku.scrobscrob.core.api.endpoint
+package com.mataku.scrobscrob.data.api.model
 
-import io.ktor.http.HttpMethod
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-data class RecentTracksEndpoint(
-  override val path: String = "/2.0/?method=user.getrecenttracks&format=json",
-  override val requestType: HttpMethod = HttpMethod.Get,
-  override val params: Map<String, Any>
-) : Endpoint
-
 @Serializable
-data class RecentTrackApiResponse(
+data class RecentTracksApiResponse(
   @SerialName("recenttracks")
-  val recentTracks: RecentTracks
+  val recentTracks: RecentTracksBody
 )
 
 @Serializable
-data class RecentTracks(
+data class RecentTracksBody(
   @SerialName("track")
   val tracks: List<RecentTrack>,
 
   @SerialName("@attr")
-  val attr: RecentTrackAttr
+  val attr: RecentTrackAttrBody
 )
 
 @Serializable
 data class RecentTrack(
   @SerialName("artist")
-  val artist: RecentTrackArtist,
+  val artist: RecentTrackArtistBody,
 
   @SerialName("image")
-  val images: List<Image>,
+  val images: List<ImageBody>,
 
   @SerialName("album")
-  val album: RecentTrackAlbum,
+  val album: RecentTrackAlbumBody,
 
   @SerialName("name")
   val name: String,
@@ -43,34 +36,31 @@ data class RecentTrack(
   val url: String,
 
   @SerialName("date")
-  val date: RecentTrackDate? = null
+  val date: RecentTrackDateBody? = null
 ) {
-  fun imageUrl(): String? =
-    images.imageUrl()
-
   fun isNowPlayingTrack(): Boolean = date == null
 }
 
 @Serializable
-data class RecentTrackArtist(
+data class RecentTrackArtistBody(
   @SerialName("#text")
   val name: String
 )
 
 @Serializable
-data class RecentTrackAlbum(
+data class RecentTrackAlbumBody(
   @SerialName("#text")
   val name: String
 )
 
 @Serializable
-data class RecentTrackDate(
+data class RecentTrackDateBody(
   @SerialName("#text")
   val date: String
 )
 
 @Serializable
-data class RecentTrackImage(
+data class RecentTrackImageBody(
   @SerialName("size")
   val size: String,
 
@@ -79,7 +69,7 @@ data class RecentTrackImage(
 )
 
 @Serializable
-data class RecentTrackAttr(
+data class RecentTrackAttrBody(
   @SerialName("user")
   val user: String,
 

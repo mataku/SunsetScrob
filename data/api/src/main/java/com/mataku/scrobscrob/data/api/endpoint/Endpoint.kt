@@ -1,21 +1,20 @@
-package com.mataku.scrobscrob.core.api.endpoint
+package com.mataku.scrobscrob.data.api.endpoint
 
-import com.mataku.scrobscrob.core.BuildConfig
-import com.mataku.scrobscrob.core.util.AppUtil
+import com.mataku.scrobscrob.data.api.BuildConfig
 import io.ktor.http.HttpMethod
 import java.security.MessageDigest
 
-interface Endpoint {
+interface Endpoint<out T> {
   val path: String
   val params: Map<String, Any?>
     get() = mapOf()
   val requestType: HttpMethod
 }
 
-fun Endpoint.generateApiSignature(): String {
+fun Endpoint<*>.generateApiSignature(): String {
   var str = ""
   val paramsCopy = params.toMutableMap()
-  paramsCopy["api_key"] = AppUtil.apiKey
+  paramsCopy["api_key"] = BuildConfig.API_KEY
   paramsCopy.toSortedMap().forEach { (k, v) ->
     str += k + v
   }

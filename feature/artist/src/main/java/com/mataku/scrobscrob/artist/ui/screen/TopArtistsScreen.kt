@@ -15,8 +15,8 @@ import androidx.compose.ui.unit.dp
 import com.mataku.scrobscrob.artist.R
 import com.mataku.scrobscrob.artist.ui.molecule.TopArtist
 import com.mataku.scrobscrob.artist.ui.state.TopArtistsScreenState
-import com.mataku.scrobscrob.core.api.endpoint.Artist
 import com.mataku.scrobscrob.core.entity.AppTheme
+import com.mataku.scrobscrob.core.entity.ArtistInfo
 import com.mataku.scrobscrob.ui_common.organism.ContentHeader
 import com.mataku.scrobscrob.ui_common.organism.InfiniteLoadingIndicator
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
@@ -46,7 +46,7 @@ fun TopArtistsScreen(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun TopArtistsContent(
-  artists: List<Artist>,
+  artists: List<ArtistInfo>,
   hasNext: Boolean,
   imageSize: Dp,
   padding: Dp,
@@ -96,8 +96,8 @@ private fun TopArtistsContent(
 
 @Composable
 private fun TopArtistsGridRow(
-  leftArtist: Artist,
-  rightArtist: Artist?,
+  leftArtist: ArtistInfo,
+  rightArtist: ArtistInfo?,
   imageSize: Dp,
   onArtistTap: (String) -> Unit,
   modifier: Modifier

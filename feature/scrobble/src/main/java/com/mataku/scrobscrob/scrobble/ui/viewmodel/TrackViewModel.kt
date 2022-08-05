@@ -2,8 +2,8 @@ package com.mataku.scrobscrob.scrobble.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mataku.scrobscrob.core.api.endpoint.ArtistInfo
-import com.mataku.scrobscrob.core.api.endpoint.TrackInfo
+import com.mataku.scrobscrob.core.entity.ArtistInfo
+import com.mataku.scrobscrob.core.entity.TrackInfo
 import com.mataku.scrobscrob.data.repository.ArtistRepository
 import com.mataku.scrobscrob.data.repository.TrackRepository
 import com.mataku.scrobscrob.scrobble.ui.state.TrackScreenState
@@ -47,6 +47,7 @@ class TrackViewModel @Inject constructor(
           it.copy(isLoading = false)
         }
       }.catch { e ->
+        println("MATAKUDEBUG $e")
         state.update {
           it.copy(
             event = TrackScreenState.UiEvent.TrackInfoFetchFailure

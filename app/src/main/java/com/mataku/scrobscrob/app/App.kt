@@ -13,13 +13,20 @@ import dagger.hilt.android.HiltAndroidApp
 open class App : Application() {
   override fun onCreate() {
     super.onCreate()
+    // Cleanup coil cache dir
+    val dir = cacheDir.resolve("sunsetscrob_image")
+    kotlin.runCatching {
+      if (dir.exists()) {
+        dir.delete()
+      }
+    }
     val imageLoaderBuilder = ImageLoader.Builder(applicationContext)
       .memoryCachePolicy(CachePolicy.DISABLED)
       .diskCachePolicy(CachePolicy.ENABLED)
       .networkCachePolicy(CachePolicy.ENABLED)
       .diskCache {
         DiskCache.Builder()
-          .directory(cacheDir.resolve("sunsetscrob_image"))
+          .directory(dir)
           .maxSizeBytes(256L * 1024L * 1024L)
           .build()
       }.crossfade(true)

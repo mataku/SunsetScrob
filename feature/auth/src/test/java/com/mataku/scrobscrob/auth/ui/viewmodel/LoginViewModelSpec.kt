@@ -1,7 +1,6 @@
 package com.mataku.scrobscrob.auth.ui.viewmodel
 
 import com.mataku.scrobscrob.auth.ui.state.LoginScreenState
-import com.mataku.scrobscrob.core.api.endpoint.MobileSession
 import com.mataku.scrobscrob.data.repository.SessionRepository
 import com.mataku.scrobscrob.test_helper.CoroutinesListener
 import io.kotest.core.spec.style.DescribeSpec
@@ -74,7 +73,7 @@ class LoginViewModelSpec : DescribeSpec({
           username, password
         )
       }.returns(
-        flowOf(MobileSession(name = "name", key = "key"))
+        flowOf(Unit)
       )
 
       it("should return LoginScreenState.UiEvent.LoginSuccess") {

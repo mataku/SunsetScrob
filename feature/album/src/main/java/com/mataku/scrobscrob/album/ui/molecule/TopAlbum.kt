@@ -22,13 +22,13 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
-import com.mataku.scrobscrob.core.api.endpoint.Album
-import com.mataku.scrobscrob.core.api.endpoint.imageUrl
+import com.mataku.scrobscrob.core.entity.AlbumInfo
+import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.R as uiCommonR
 
 @Composable
-fun TopAlbum(album: Album, imageSize: Dp, onAlbumTap: () -> Unit, modifier: Modifier) {
+fun TopAlbum(album: AlbumInfo, imageSize: Dp, onAlbumTap: () -> Unit, modifier: Modifier) {
   Column(
     horizontalAlignment = Alignment.CenterHorizontally,
     modifier = modifier
@@ -38,7 +38,7 @@ fun TopAlbum(album: Album, imageSize: Dp, onAlbumTap: () -> Unit, modifier: Modi
       },
   ) {
     val imageList = album.imageList
-    val url = if (imageList == null || imageList.isEmpty()) {
+    val url = if (imageList.isEmpty()) {
       ""
     } else {
       imageList.imageUrl()
@@ -52,12 +52,12 @@ fun TopAlbum(album: Album, imageSize: Dp, onAlbumTap: () -> Unit, modifier: Modi
     }
     Image(
       painter = painter,
-      contentDescription = album.name,
+      contentDescription = album.title,
       modifier = Modifier.size(imageSize)
     )
     Spacer(modifier = Modifier.height(4.dp))
     Text(
-      album.name,
+      album.title,
       fontSize = 16.sp,
       modifier = Modifier
         .wrapContentSize(),
@@ -67,7 +67,7 @@ fun TopAlbum(album: Album, imageSize: Dp, onAlbumTap: () -> Unit, modifier: Modi
       overflow = TextOverflow.Ellipsis
     )
     Text(
-      album.artist.name,
+      album.artist,
       fontSize = 14.sp,
       color = MaterialTheme.colors.onSurface,
       modifier = Modifier
@@ -75,13 +75,13 @@ fun TopAlbum(album: Album, imageSize: Dp, onAlbumTap: () -> Unit, modifier: Modi
       maxLines = 1
     )
     Spacer(modifier = Modifier.height(2.dp))
-    val playCountResource = if (album.playcount == "1") {
+    val playCountResource = if (album.playCount == "1") {
       uiCommonR.string.playcount
     } else {
       uiCommonR.string.playcounts
     }
     Text(
-      stringResource(playCountResource, album.playcount),
+      stringResource(playCountResource, album.playCount),
       style = SunsetTextStyle.caption,
       maxLines = 1
     )

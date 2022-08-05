@@ -1,6 +1,6 @@
 package com.mataku.scrobscrob.data.api.okhttp
 
-import com.mataku.scrobscrob.core.BuildConfig
+import com.mataku.scrobscrob.data.api.BuildConfig
 import okhttp3.Interceptor
 import okhttp3.Response
 

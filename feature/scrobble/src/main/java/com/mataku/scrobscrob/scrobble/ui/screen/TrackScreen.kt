@@ -112,7 +112,7 @@ fun TrackScreen(
             TrackAlbum(album = album)
             Spacer(modifier = Modifier.height(16.dp))
             Divider()
-            TopTags(tagList = trackInfo.topTags.tagList)
+            TopTags(tagList = trackInfo.topTags)
           }
         }
       }
