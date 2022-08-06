@@ -56,6 +56,8 @@ dependencies {
   implementation libs.compose.navigation
   implementation libs.coil.compose
   implementation libs.accompanist.navigation.animation
+  implementation libs.accompanist.swiperefresh
+  implementation libs.accompanist.systemuicontroller
   implementation libs.hilt.navigation.compose
 
   implementation libs.hilt.android
@@ -66,7 +68,6 @@ dependencies {
 
   implementation libs.coroutines
 
-  implementation libs.accompanist.swiperefresh
 
   implementation libs.lottie.compose
 

@@ -5,6 +5,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -12,6 +13,7 @@ import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mataku.scrobscrob.account.ui.ThemeSelectorScreen
 import com.mataku.scrobscrob.account.ui.screen.AccountScreen
 import com.mataku.scrobscrob.account.ui.screen.LicenseScreen
@@ -38,6 +40,7 @@ fun NavigationGraph(
   navController: NavHostController,
   isLoggedIn: Boolean
 ) {
+  val systemUiController = rememberSystemUiController()
   AnimatedNavHost(
     navController = navController,
     startDestination = if (isLoggedIn) SunsetBottomNavItem.SCROBBLE.screenRoute else "login"
@@ -51,6 +54,7 @@ fun NavigationGraph(
         fadeOut(tween(ANIMATION_DURATION_MILLIS))
       }
     ) {
+      systemUiController.setNavigationBarColor(MaterialTheme.colors.primary)
       ScrobbleScreen(
         state = rememberScrobbleScreenState(navController = navController)
       )
@@ -99,7 +103,6 @@ fun NavigationGraph(
 
         TrackScreen(
           trackName = trackName,
-          artistName = artistName,
           artworkUrl = arguments.getString("imageUrl", ""),
           topLeftCoordinate = Pair(x, y),
           screenState = rememberTrackScreenState(

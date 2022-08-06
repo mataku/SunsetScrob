@@ -26,6 +26,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.scrobble.R
 import com.mataku.scrobscrob.scrobble.ui.molecule.TrackAlbum
 import com.mataku.scrobscrob.scrobble.ui.molecule.TrackArtist
@@ -33,13 +35,15 @@ import com.mataku.scrobscrob.scrobble.ui.state.TrackScreenState
 import com.mataku.scrobscrob.ui_common.molecule.TopTags
 import com.mataku.scrobscrob.ui_common.organism.ContentHeader
 import com.mataku.scrobscrob.ui_common.style.ANIMATION_DURATION_MILLIS
+import com.mataku.scrobscrob.ui_common.style.Colors
+import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
+import com.mataku.scrobscrob.ui_common.style.backgroundColor
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TrackScreen(
   trackName: String,
-  artistName: String,
   artworkUrl: String?,
   topLeftCoordinate: Pair<Int, Int>,
   screenState: TrackScreenState
@@ -54,6 +58,15 @@ fun TrackScreen(
   val coroutineScope = rememberCoroutineScope()
   val lazyListState = rememberLazyListState()
   val uiState = screenState.uiState
+  val systemUiController = rememberSystemUiController()
+  val currentTheme = LocalAppTheme.current
+  systemUiController.setNavigationBarColor(
+    color = if (currentTheme == AppTheme.SUNSET) {
+      Colors.SunsetBlue
+    } else {
+      currentTheme.backgroundColor()
+    }
+  )
 
   LazyColumn(
     content = {
