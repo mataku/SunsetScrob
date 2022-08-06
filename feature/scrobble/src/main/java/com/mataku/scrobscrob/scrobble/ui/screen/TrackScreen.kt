@@ -4,25 +4,30 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.scrobble.R
 import com.mataku.scrobscrob.scrobble.ui.molecule.TrackAlbum
 import com.mataku.scrobscrob.scrobble.ui.molecule.TrackArtist
@@ -30,18 +35,18 @@ import com.mataku.scrobscrob.scrobble.ui.state.TrackScreenState
 import com.mataku.scrobscrob.ui_common.molecule.TopTags
 import com.mataku.scrobscrob.ui_common.organism.ContentHeader
 import com.mataku.scrobscrob.ui_common.style.ANIMATION_DURATION_MILLIS
+import com.mataku.scrobscrob.ui_common.style.Colors
+import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
+import com.mataku.scrobscrob.ui_common.style.backgroundColor
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TrackScreen(
   trackName: String,
-  artistName: String,
   artworkUrl: String?,
   topLeftCoordinate: Pair<Int, Int>,
-  screenState: TrackScreenState,
-  onBackPressed: () -> Unit,
-  onDispose: () -> Unit
+  screenState: TrackScreenState
 ) {
   // TODO: Replace with LocalDensity
   val density = LocalContext.current.resources.displayMetrics.density
@@ -53,15 +58,15 @@ fun TrackScreen(
   val coroutineScope = rememberCoroutineScope()
   val lazyListState = rememberLazyListState()
   val uiState = screenState.uiState
-  val loaded = remember {
-    mutableStateOf(false)
-  }
-  if (!loaded.value) {
-    screenState.fetchTrackInfo(
-      trackName, artistName
-    )
-    loaded.value = true
-  }
+  val systemUiController = rememberSystemUiController()
+  val currentTheme = LocalAppTheme.current
+  systemUiController.setNavigationBarColor(
+    color = if (currentTheme == AppTheme.SUNSET) {
+      Colors.SunsetBlue
+    } else {
+      currentTheme.backgroundColor()
+    }
+  )
 
   LazyColumn(
     content = {
@@ -94,25 +99,44 @@ fun TrackScreen(
           )
         )
       }
+      val artistInfo = uiState.artistInfo
+      val trackInfo = uiState.trackInfo
 
-      uiState.artistInfo?.let { artistInfo ->
+      if (artistInfo == null && trackInfo == null && animateState.value == 1F) {
         item {
-          Divider()
-          Spacer(modifier = Modifier.height(16.dp))
-          TrackArtist(artistInfo = artistInfo)
+          Box(
+            modifier = Modifier.fillMaxWidth()
+          ) {
+            CircularProgressIndicator(
+              modifier = Modifier
+                .size(40.dp)
+                .padding(vertical = 16.dp)
+                .align(Alignment.Center)
+            )
+          }
         }
       }
 
-      uiState.trackInfo?.let { trackInfo ->
-        trackInfo.album?.let { album ->
+      if (animateState.value == 1F) {
+        artistInfo?.let { artist ->
           item {
-            Spacer(modifier = Modifier.height(16.dp))
             Divider()
             Spacer(modifier = Modifier.height(16.dp))
-            TrackAlbum(album = album)
-            Spacer(modifier = Modifier.height(16.dp))
-            Divider()
-            TopTags(tagList = trackInfo.topTags)
+            TrackArtist(artistInfo = artist)
+          }
+        }
+
+        trackInfo?.let { track ->
+          track.album?.let { album ->
+            item {
+              Spacer(modifier = Modifier.height(16.dp))
+              Divider()
+              Spacer(modifier = Modifier.height(16.dp))
+              TrackAlbum(album = album)
+              Spacer(modifier = Modifier.height(16.dp))
+              Divider()
+              TopTags(tagList = track.topTags)
+            }
           }
         }
       }
@@ -135,12 +159,11 @@ fun TrackScreen(
   BackHandler() {
     coroutineScope.launch {
       screenState.clearState()
-      onDispose.invoke()
       animateState.animateTo(
         0F,
         animationSpec = tween(durationMillis = ANIMATION_DURATION_MILLIS)
       )
-      onBackPressed.invoke()
+      screenState.popBackStack()
     }
   }
 }

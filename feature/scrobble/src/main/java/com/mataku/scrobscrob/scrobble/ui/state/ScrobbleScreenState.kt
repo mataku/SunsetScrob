@@ -8,7 +8,7 @@ import androidx.navigation.NavHostController
 import com.mataku.scrobscrob.scrobble.ui.viewmodel.ScrobbleViewModel
 
 class ScrobbleScreenState(
-  val navController: NavHostController,
+  private val navController: NavHostController,
   private val viewModel: ScrobbleViewModel
 ) {
   val uiState: ScrobbleViewModel.UiState
@@ -20,6 +20,18 @@ class ScrobbleScreenState(
 
   fun refresh() {
     viewModel.refresh()
+  }
+
+  fun navigateToTrackDetail(
+    trackName: String,
+    artistName: String,
+    imageUrl: String,
+    x: Int,
+    y: Int
+  ) {
+    val destination =
+      "track_detail?trackName=$trackName&artistName=$artistName&imageUrl=$imageUrl&upperLeftCoordinatorX=$x&upperLeftCoordinatorY=$y"
+    navController.navigate(destination)
   }
 }
 
