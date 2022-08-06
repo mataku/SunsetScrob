@@ -68,6 +68,4 @@ dependencies {
   implementation(libs.coroutines)
 
   implementation(libs.lottie.compose)
-
-  implementation(libs.compose.material.icons.extended)
 }

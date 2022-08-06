@@ -52,6 +52,5 @@ dependencies {
   implementation(libs.compose.material)
   implementation(libs.compose.navigation)
   implementation(libs.accompanist.navigation.animation)
-  implementation(libs.compose.material.icons.extended)
   implementation(libs.accompanist.systemuicontroller)
 }

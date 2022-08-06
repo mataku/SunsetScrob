@@ -124,7 +124,6 @@ dependencies {
   implementation(libs.accompanist.navigation.animation)
   implementation(libs.accompanist.systemuicontroller)
   implementation(libs.hilt.navigation.compose)
-  implementation(libs.compose.material.icons.extended)
   implementation(libs.core.splashscreen)
 }
 
