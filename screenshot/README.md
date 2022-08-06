@@ -6,7 +6,7 @@ with my account
 
 | Latest tracks | Top Albums | Top Artists | Account |
  :---: | :---: | :---: | :---:
-| <img src="./scrobble_dark.png" height=300 /> |  <img src="./top_albums_dark.png" height=300 /> | <img src="./scrobble_dark.png" height=300 />  | <img src="./scrobble_dark.png" height=300 />  |
+| <img src="./scrobble_dark.png" height=300 /> |  <img src="./top_albums_dark.png" height=300 /> | <img src="./top_artists_dark.png" height=300 />  | <img src="./account_dark.png" height=300 />  |
 
 ### Theme
 
