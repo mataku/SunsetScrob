@@ -100,7 +100,7 @@ fun TrackScreen(
       val artistInfo = uiState.artistInfo
       val trackInfo = uiState.trackInfo
 
-      if (artistInfo == null && trackInfo == null && animateState.value == 1F) {
+      if (uiState.isLoading && animateState.value == 1F) {
         item {
           Box(
             modifier = Modifier.fillMaxWidth()
