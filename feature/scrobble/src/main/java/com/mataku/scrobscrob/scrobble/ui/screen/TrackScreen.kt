@@ -88,15 +88,13 @@ fun TrackScreen(
             .data(artworkUrl ?: R.drawable.no_image)
             .build(),
           contentDescription = "artwork image",
-          modifier = Modifier.then(
-            Modifier
-              .padding(horizontal = 16.dp, vertical = 8.dp)
-              .absoluteOffset(
-                0.dp,
-                offset
-              )
-              .size(size)
-          )
+          modifier = Modifier
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .absoluteOffset(
+              0.dp,
+              offset
+            )
+            .size(size)
         )
       }
       val artistInfo = uiState.artistInfo
