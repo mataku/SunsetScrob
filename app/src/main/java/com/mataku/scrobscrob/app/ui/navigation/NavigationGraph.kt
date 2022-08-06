@@ -95,9 +95,8 @@ fun NavigationGraph(
           artistName = arguments.getString("artistName", ""),
           artworkUrl = arguments.getString("imageUrl", ""),
           topLeftCoordinate = Pair(x, y),
-          screenState = rememberTrackScreenState(navController),
-          onBackPressed = { }) {
-        }
+          screenState = rememberTrackScreenState(navController)
+        )
       }
     )
 

@@ -4,20 +4,24 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -39,9 +43,7 @@ fun TrackScreen(
   artistName: String,
   artworkUrl: String?,
   topLeftCoordinate: Pair<Int, Int>,
-  screenState: TrackScreenState,
-  onBackPressed: () -> Unit,
-  onDispose: () -> Unit
+  screenState: TrackScreenState
 ) {
   // TODO: Replace with LocalDensity
   val density = LocalContext.current.resources.displayMetrics.density
@@ -94,17 +96,34 @@ fun TrackScreen(
           )
         )
       }
+      val artistInfo = uiState.artistInfo
+      val trackInfo = uiState.trackInfo
 
-      uiState.artistInfo?.let { artistInfo ->
+      if (artistInfo == null && trackInfo == null && animateState.value == 1F) {
         item {
-          Divider()
-          Spacer(modifier = Modifier.height(16.dp))
-          TrackArtist(artistInfo = artistInfo)
+          Box(
+            modifier = Modifier.fillMaxWidth()
+          ) {
+            CircularProgressIndicator(
+              modifier = Modifier
+                .size(40.dp)
+                .padding(vertical = 16.dp)
+                .align(Alignment.Center)
+            )
+          }
         }
       }
 
-      uiState.trackInfo?.let { trackInfo ->
-        trackInfo.album?.let { album ->
+      artistInfo?.let {
+        item {
+          Divider()
+          Spacer(modifier = Modifier.height(16.dp))
+          TrackArtist(artistInfo = it)
+        }
+      }
+
+      trackInfo?.let { it ->
+        it.album?.let { album ->
           item {
             Spacer(modifier = Modifier.height(16.dp))
             Divider()
@@ -112,7 +131,7 @@ fun TrackScreen(
             TrackAlbum(album = album)
             Spacer(modifier = Modifier.height(16.dp))
             Divider()
-            TopTags(tagList = trackInfo.topTags)
+            TopTags(tagList = it.topTags)
           }
         }
       }
@@ -135,12 +154,11 @@ fun TrackScreen(
   BackHandler() {
     coroutineScope.launch {
       screenState.clearState()
-      onDispose.invoke()
       animateState.animateTo(
         0F,
         animationSpec = tween(durationMillis = ANIMATION_DURATION_MILLIS)
       )
-      onBackPressed.invoke()
+      screenState.popBackStack()
     }
   }
 }
