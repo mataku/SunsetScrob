@@ -9,16 +9,15 @@ import com.mataku.scrobscrob.scrobble.ui.viewmodel.TrackViewModel
 
 class TrackScreenState(
   private val navController: NavController,
-  private val viewModel: TrackViewModel
+  private val viewModel: TrackViewModel,
+  private val trackName: String,
+  private val artistName: String,
 ) {
 
   val uiState: TrackViewModel.UiState
     @Composable get() = viewModel.state.collectAsState().value
 
-  fun fetchTrackInfo(
-    trackName: String,
-    artistName: String
-  ) {
+  init {
     viewModel.fetchTrackInfo(
       trackName = trackName,
       artistName = artistName
@@ -41,11 +40,15 @@ class TrackScreenState(
 @Composable
 fun rememberTrackScreenState(
   navController: NavController,
-  viewModel: TrackViewModel = hiltViewModel()
+  viewModel: TrackViewModel = hiltViewModel(),
+  trackName: String,
+  artistName: String
 ): TrackScreenState =
   remember {
     TrackScreenState(
       navController = navController,
-      viewModel = viewModel
+      viewModel = viewModel,
+      trackName = trackName,
+      artistName = artistName
     )
   }

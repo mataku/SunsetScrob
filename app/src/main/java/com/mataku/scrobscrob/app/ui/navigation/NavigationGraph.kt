@@ -3,6 +3,7 @@ package com.mataku.scrobscrob.app.ui.navigation
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -45,6 +46,9 @@ fun NavigationGraph(
       SunsetBottomNavItem.SCROBBLE.screenRoute,
       enterTransition = {
         fadeIn(tween(ANIMATION_DURATION_MILLIS))
+      },
+      exitTransition = {
+        fadeOut(tween(ANIMATION_DURATION_MILLIS))
       }
     ) {
       ScrobbleScreen(
@@ -90,12 +94,19 @@ fun NavigationGraph(
         val x = arguments.getInt("x", 0)
         val y = arguments.getInt("y", 0)
 
+        val trackName = arguments.getString("trackName", "")
+        val artistName = arguments.getString("artistName", "")
+
         TrackScreen(
-          trackName = arguments.getString("trackName", ""),
-          artistName = arguments.getString("artistName", ""),
+          trackName = trackName,
+          artistName = artistName,
           artworkUrl = arguments.getString("imageUrl", ""),
           topLeftCoordinate = Pair(x, y),
-          screenState = rememberTrackScreenState(navController)
+          screenState = rememberTrackScreenState(
+            navController = navController,
+            trackName = trackName,
+            artistName = artistName
+          )
         )
       }
     )

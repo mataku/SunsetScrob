@@ -18,7 +18,6 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -55,15 +54,6 @@ fun TrackScreen(
   val coroutineScope = rememberCoroutineScope()
   val lazyListState = rememberLazyListState()
   val uiState = screenState.uiState
-  val loaded = remember {
-    mutableStateOf(false)
-  }
-  if (!loaded.value) {
-    screenState.fetchTrackInfo(
-      trackName, artistName
-    )
-    loaded.value = true
-  }
 
   LazyColumn(
     content = {
@@ -114,24 +104,26 @@ fun TrackScreen(
         }
       }
 
-      artistInfo?.let {
-        item {
-          Divider()
-          Spacer(modifier = Modifier.height(16.dp))
-          TrackArtist(artistInfo = it)
-        }
-      }
-
-      trackInfo?.let { it ->
-        it.album?.let { album ->
+      if (animateState.value == 1F) {
+        artistInfo?.let { artist ->
           item {
-            Spacer(modifier = Modifier.height(16.dp))
             Divider()
             Spacer(modifier = Modifier.height(16.dp))
-            TrackAlbum(album = album)
-            Spacer(modifier = Modifier.height(16.dp))
-            Divider()
-            TopTags(tagList = it.topTags)
+            TrackArtist(artistInfo = artist)
+          }
+        }
+
+        trackInfo?.let { track ->
+          track.album?.let { album ->
+            item {
+              Spacer(modifier = Modifier.height(16.dp))
+              Divider()
+              Spacer(modifier = Modifier.height(16.dp))
+              TrackAlbum(album = album)
+              Spacer(modifier = Modifier.height(16.dp))
+              Divider()
+              TopTags(tagList = track.topTags)
+            }
           }
         }
       }
