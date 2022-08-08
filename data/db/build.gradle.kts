@@ -45,6 +45,7 @@ dependencies {
   kapt(libs.hilt.compiler)
 
   implementation(libs.room.runtime)
+  implementation(libs.room.ktx)
   kapt(libs.room.compiler)
 
   implementation(libs.datastore.preferences)
