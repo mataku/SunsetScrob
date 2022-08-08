@@ -47,7 +47,6 @@ class TrackViewModel @Inject constructor(
           it.copy(isLoading = false)
         }
       }.catch { e ->
-        println("MATAKUDEBUG $e")
         state.update {
           it.copy(
             event = TrackScreenState.UiEvent.TrackInfoFetchFailure
