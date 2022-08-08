@@ -5,8 +5,9 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class TrackInfoBody(
+  // milliseconds
   @SerialName("duration")
-  val duration: String? = null,
+  val duration: Long = 0L,
   @SerialName("album")
   val album: TrackAlbumInfoBody? = null,
   @SerialName("listeners")
@@ -14,7 +15,11 @@ data class TrackInfoBody(
   @SerialName("url")
   val url: String,
   @SerialName("toptags")
-  val topTags: TopTagsBody
+  val topTags: TopTagsBody,
+  @SerialName("artist")
+  val artist: TrackArtistBody,
+  @SerialName("name")
+  val name: String
 )
 
 @Serializable
@@ -27,5 +32,11 @@ data class TrackAlbumInfoBody(
 
   @SerialName("image")
   val imageList: List<ImageBody>
+)
+
+@Serializable
+data class TrackArtistBody(
+  val name: String,
+  val url: String
 )
 

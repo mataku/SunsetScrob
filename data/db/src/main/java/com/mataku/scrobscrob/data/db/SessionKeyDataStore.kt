@@ -5,11 +5,9 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import javax.inject.Singleton
 
@@ -41,13 +39,10 @@ class SessionKeyDataStore(
     ).map { }
   }
 
-  suspend fun remove(): Flow<Unit> {
-    return flowOf(
-      context.sessionKeyDataStore.edit {
-        it.clear()
-      }
-    ).flowOn(Dispatchers.IO)
-      .map { }
+  suspend fun remove() {
+    context.sessionKeyDataStore.edit {
+      it.clear()
+    }
   }
 
   companion object {

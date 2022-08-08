@@ -4,19 +4,26 @@ import com.mataku.scrobscrob.core.entity.AlbumInfo
 import com.mataku.scrobscrob.core.entity.ArtistInfo
 import com.mataku.scrobscrob.core.entity.Image
 import com.mataku.scrobscrob.core.entity.NowPlaying
+import com.mataku.scrobscrob.core.entity.NowPlayingTrack
 import com.mataku.scrobscrob.core.entity.RecentTrack
+import com.mataku.scrobscrob.core.entity.ScrobbleResult
 import com.mataku.scrobscrob.core.entity.Tag
 import com.mataku.scrobscrob.core.entity.TrackAlbumInfo
+import com.mataku.scrobscrob.core.entity.TrackArtist
 import com.mataku.scrobscrob.core.entity.TrackInfo
+import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.data.api.endpoint.TrackInfoApiResponse
 import com.mataku.scrobscrob.data.api.model.ArtistInfoApiResponse
 import com.mataku.scrobscrob.data.api.model.ImageBody
 import com.mataku.scrobscrob.data.api.model.NowPlayingApiResponse
 import com.mataku.scrobscrob.data.api.model.RecentTracksApiResponse
+import com.mataku.scrobscrob.data.api.model.ScrobbleApiResponse
 import com.mataku.scrobscrob.data.api.model.TopTagsBody
 import com.mataku.scrobscrob.data.api.model.TrackAlbumInfoBody
+import com.mataku.scrobscrob.data.api.model.TrackArtistBody
 import com.mataku.scrobscrob.data.api.model.UserTopAlbumsApiResponse
 import com.mataku.scrobscrob.data.api.model.UserTopArtistsApiResponse
+import com.mataku.scrobscrob.data.db.NowPlayingTrackEntity
 
 fun ArtistInfoApiResponse.toArtistInfo(): ArtistInfo {
   val body = this.artistInfo
@@ -46,6 +53,13 @@ fun TrackAlbumInfoBody.toTrackAlbumInfo(): TrackAlbumInfo {
   )
 }
 
+fun TrackArtistBody.toTrackArtist(): TrackArtist {
+  return TrackArtist(
+    name = name,
+    url = url
+  )
+}
+
 fun TrackInfoApiResponse.toTrackInfo(): TrackInfo {
   val body = this.trackInfo
   return TrackInfo(
@@ -53,7 +67,9 @@ fun TrackInfoApiResponse.toTrackInfo(): TrackInfo {
     album = body.album?.toTrackAlbumInfo(),
     listeners = body.listeners,
     url = body.url,
-    topTags = body.topTags.toTagList()
+    topTags = body.topTags.toTagList(),
+    artist = body.artist.toTrackArtist(),
+    name = body.name
   )
 }
 
@@ -113,6 +129,33 @@ fun TopTagsBody.toTagList(): List<Tag> {
       url = it.url
     )
   }
+}
+
+fun NowPlayingTrackEntity.toNowPlayingTrack(): NowPlayingTrack {
+  return NowPlayingTrack(
+    artistName = artistName,
+    trackName = trackName,
+    albumName = albumName,
+    artwork = artwork,
+    duration = duration
+  )
+}
+
+fun TrackInfo.toNowPlayingTrackEntity(): NowPlayingTrackEntity {
+  return NowPlayingTrackEntity(
+    artistName = artist.name,
+    trackName = name,
+    albumName = album?.title ?: "",
+    artwork = album?.imageList?.imageUrl() ?: ""
+  )
+}
+
+fun ScrobbleApiResponse.toScrobbleResult(): ScrobbleResult {
+  // TODO: multi track scrobble
+  val body = this.scrobbleResult
+  return ScrobbleResult(
+    accepted = body.attr.accepted == 1
+  )
 }
 
 

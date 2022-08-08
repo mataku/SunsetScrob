@@ -3,6 +3,7 @@ package com.mataku.scrobscrob.data.db.di
 import android.content.Context
 import androidx.room.Room
 import com.mataku.scrobscrob.data.db.AppDatabase
+import com.mataku.scrobscrob.data.db.NowPlayingDao
 import com.mataku.scrobscrob.data.db.ScrobbleDao
 import com.mataku.scrobscrob.data.db.SessionKeyDataStore
 import com.mataku.scrobscrob.data.db.ThemeDataStore
@@ -46,6 +47,12 @@ class DatabaseModule {
   @Provides
   fun provideScrobbleDao(appDatabase: AppDatabase): ScrobbleDao {
     return appDatabase.scrobbleDao
+  }
+
+  @Singleton
+  @Provides
+  fun provideNowPlayingDao(appDatabase: AppDatabase): NowPlayingDao {
+    return appDatabase.nowPlayingDao
   }
 
 }

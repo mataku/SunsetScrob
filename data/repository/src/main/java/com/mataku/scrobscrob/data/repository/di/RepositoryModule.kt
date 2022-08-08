@@ -6,6 +6,8 @@ import com.mataku.scrobscrob.data.db.UsernameDataStore
 import com.mataku.scrobscrob.data.db.di.DatabaseModule
 import com.mataku.scrobscrob.data.repository.ArtistRepository
 import com.mataku.scrobscrob.data.repository.ArtistRepositoryImpl
+import com.mataku.scrobscrob.data.repository.NowPlayingRepository
+import com.mataku.scrobscrob.data.repository.NowPlayingRepositoryImpl
 import com.mataku.scrobscrob.data.repository.ScrobbleRepository
 import com.mataku.scrobscrob.data.repository.ScrobbleRepositoryImpl
 import com.mataku.scrobscrob.data.repository.SessionRepository
@@ -43,9 +45,6 @@ class RepositoryModule {
     return UsernameRepositoryImpl(UsernameDataStore(context))
   }
 
-//    @Binds
-//    abstract fun provideUsernameRepository(repository: UsernameRepositoryImpl): UsernameRepository
-
   @Singleton
   @Provides
   fun provideTopAlbumsRepository(repository: TopAlbumsRepositoryImpl): TopAlbumsRepository {
@@ -82,4 +81,9 @@ class RepositoryModule {
     return repository
   }
 
+  @Singleton
+  @Provides
+  fun provideNowPlayingRepository(repository: NowPlayingRepositoryImpl): NowPlayingRepository {
+    return repository
+  }
 }
