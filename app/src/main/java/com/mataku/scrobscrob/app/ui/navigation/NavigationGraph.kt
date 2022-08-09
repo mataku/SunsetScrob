@@ -4,10 +4,14 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideIn
+import androidx.compose.animation.slideOut
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.IntOffset
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
@@ -18,6 +22,7 @@ import com.mataku.scrobscrob.account.ui.ThemeSelectorScreen
 import com.mataku.scrobscrob.account.ui.screen.AccountScreen
 import com.mataku.scrobscrob.account.ui.screen.LicenseScreen
 import com.mataku.scrobscrob.account.ui.screen.PrivacyPolicyScreen
+import com.mataku.scrobscrob.account.ui.screen.ScrobbleSettingScreen
 import com.mataku.scrobscrob.account.ui.state.rememberAccountState
 import com.mataku.scrobscrob.account.ui.state.rememberThemeSelectorState
 import com.mataku.scrobscrob.album.ui.screen.TopAlbumsScreen
@@ -26,12 +31,17 @@ import com.mataku.scrobscrob.artist.ui.screen.TopArtistsScreen
 import com.mataku.scrobscrob.artist.ui.state.rememberTopArtistsScreenState
 import com.mataku.scrobscrob.auth.ui.screen.LoginScreen
 import com.mataku.scrobscrob.auth.ui.state.rememberLoginScreenState
+import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.scrobble.ui.screen.ScrobbleScreen
 import com.mataku.scrobscrob.scrobble.ui.screen.TrackScreen
 import com.mataku.scrobscrob.scrobble.ui.state.rememberScrobbleScreenState
 import com.mataku.scrobscrob.scrobble.ui.state.rememberTrackScreenState
 import com.mataku.scrobscrob.ui_common.SunsetBottomNavItem
 import com.mataku.scrobscrob.ui_common.style.ANIMATION_DURATION_MILLIS
+import com.mataku.scrobscrob.ui_common.style.Colors
+import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
+import com.mataku.scrobscrob.ui_common.style.TRANSITION_ANIMATION_DURATION_MILLIS
+import com.mataku.scrobscrob.ui_common.style.backgroundColor
 import com.mataku.scrobscrob.ui_common.template.WebViewScreen
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -72,7 +82,9 @@ fun NavigationGraph(
       )
     }
     composable(SunsetBottomNavItem.ACCOUNT.screenRoute) {
-      AccountScreen(state = rememberAccountState(navController = navController))
+      systemUiController.setNavigationBarColor(MaterialTheme.colors.primary)
+      val context = LocalContext.current
+      AccountScreen(state = rememberAccountState(navController = navController, context = context))
     }
     composable(
       "track_detail?trackName={trackName}&artistName={artistName}&imageUrl={imageUrl}&upperLeftCoordinatorX={x}&upperLeftCoordinatorY={y}",
@@ -113,6 +125,53 @@ fun NavigationGraph(
         )
       }
     )
+
+    composable("scrobble_setting",
+      enterTransition = {
+        slideIn(animationSpec = tween(TRANSITION_ANIMATION_DURATION_MILLIS)) { fullSize ->
+          IntOffset(
+            fullSize.width,
+            0
+          )
+        }
+      },
+      exitTransition = {
+        // Unnecessary as it is a dead end screen, but set up just in case
+        slideOut(animationSpec = tween(TRANSITION_ANIMATION_DURATION_MILLIS)) { fullSize ->
+          IntOffset(
+            -fullSize.width,
+            0
+          )
+        }
+      },
+      popEnterTransition = {
+        // Unnecessary as it is a dead end screen, but set up just in case
+        slideIn(animationSpec = tween(TRANSITION_ANIMATION_DURATION_MILLIS)) { fullSize ->
+          IntOffset(
+            -fullSize.width,
+            0
+          )
+        }
+      },
+      popExitTransition = {
+        slideOut(animationSpec = tween(TRANSITION_ANIMATION_DURATION_MILLIS)) { fullSize ->
+          IntOffset(
+            fullSize.width,
+            0
+          )
+        }
+      }
+
+    ) {
+      systemUiController.setNavigationBarColor(
+        color = if (LocalAppTheme.current == AppTheme.SUNSET) {
+          Colors.SunsetBlue
+        } else {
+          LocalAppTheme.current.backgroundColor()
+        }
+      )
+      ScrobbleSettingScreen()
+    }
 
     composable(
       "webview?url={url}",

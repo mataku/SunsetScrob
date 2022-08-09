@@ -8,6 +8,7 @@ import coil.request.CachePolicy
 import coil.util.DebugLogger
 import com.mataku.scrobscrob.BuildConfig
 import dagger.hilt.android.HiltAndroidApp
+import timber.log.Timber
 
 @HiltAndroidApp
 open class App : Application() {
@@ -35,5 +36,8 @@ open class App : Application() {
       imageLoaderBuilder.logger(DebugLogger())
     }
     Coil.setImageLoader(imageLoaderBuilder.build())
+    if (BuildConfig.DEBUG) {
+      Timber.plant(Timber.DebugTree())
+    }
   }
 }

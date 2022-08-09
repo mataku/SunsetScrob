@@ -1,13 +1,15 @@
 package com.mataku.scrobscrob.data.repository.di
 
-import android.content.Context
 import com.mataku.scrobscrob.data.api.di.ApiModule
-import com.mataku.scrobscrob.data.db.UsernameDataStore
 import com.mataku.scrobscrob.data.db.di.DatabaseModule
 import com.mataku.scrobscrob.data.repository.ArtistRepository
 import com.mataku.scrobscrob.data.repository.ArtistRepositoryImpl
+import com.mataku.scrobscrob.data.repository.NowPlayingRepository
+import com.mataku.scrobscrob.data.repository.NowPlayingRepositoryImpl
 import com.mataku.scrobscrob.data.repository.ScrobbleRepository
 import com.mataku.scrobscrob.data.repository.ScrobbleRepositoryImpl
+import com.mataku.scrobscrob.data.repository.ScrobbleSettingRepository
+import com.mataku.scrobscrob.data.repository.ScrobbleSettingRepositoryImpl
 import com.mataku.scrobscrob.data.repository.SessionRepository
 import com.mataku.scrobscrob.data.repository.SessionRepositoryImpl
 import com.mataku.scrobscrob.data.repository.ThemeRepository
@@ -20,66 +22,53 @@ import com.mataku.scrobscrob.data.repository.TrackRepository
 import com.mataku.scrobscrob.data.repository.TrackRepositoryImpl
 import com.mataku.scrobscrob.data.repository.UsernameRepository
 import com.mataku.scrobscrob.data.repository.UsernameRepositoryImpl
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 @Module(includes = [ApiModule::class, DatabaseModule::class])
 @InstallIn(SingletonComponent::class)
-class RepositoryModule {
+abstract class RepositoryModule {
 
   @Singleton
-  @Provides
-  fun provideSessionRepository(repository: SessionRepositoryImpl): SessionRepository {
-    return repository
-  }
+  @Binds
+  abstract fun provideSessionRepository(repository: SessionRepositoryImpl): SessionRepository
 
   @Singleton
-  @Provides
-  fun provideUsernameRepository(@ApplicationContext context: Context): UsernameRepository {
-    return UsernameRepositoryImpl(UsernameDataStore(context))
-  }
-
-//    @Binds
-//    abstract fun provideUsernameRepository(repository: UsernameRepositoryImpl): UsernameRepository
+  @Binds
+  abstract fun provideUsernameRepository(repository: UsernameRepositoryImpl): UsernameRepository
 
   @Singleton
-  @Provides
-  fun provideTopAlbumsRepository(repository: TopAlbumsRepositoryImpl): TopAlbumsRepository {
-    return repository
-  }
+  @Binds
+  abstract fun provideTopAlbumsRepository(repository: TopAlbumsRepositoryImpl): TopAlbumsRepository
 
   @Singleton
-  @Provides
-  fun provideTopArtistsRepository(repository: TopArtistsRepositoryImpl): TopArtistsRepository {
-    return repository
-  }
+  @Binds
+  abstract fun provideTopArtistsRepository(repository: TopArtistsRepositoryImpl): TopArtistsRepository
 
   @Singleton
-  @Provides
-  fun provideScrobbleRepository(repository: ScrobbleRepositoryImpl): ScrobbleRepository {
-    return repository
-  }
+  @Binds
+  abstract fun provideScrobbleRepository(repository: ScrobbleRepositoryImpl): ScrobbleRepository
 
   @Singleton
-  @Provides
-  fun provideThemeRepository(repository: ThemeRepositoryImpl): ThemeRepository {
-    return repository
-  }
+  @Binds
+  abstract fun provideThemeRepository(repository: ThemeRepositoryImpl): ThemeRepository
 
   @Singleton
-  @Provides
-  fun provideTrackRepository(repository: TrackRepositoryImpl): TrackRepository {
-    return repository
-  }
+  @Binds
+  abstract fun provideTrackRepository(repository: TrackRepositoryImpl): TrackRepository
 
   @Singleton
-  @Provides
-  fun provideArtistRepository(repository: ArtistRepositoryImpl): ArtistRepository {
-    return repository
-  }
+  @Binds
+  abstract fun provideArtistRepository(repository: ArtistRepositoryImpl): ArtistRepository
 
+  @Singleton
+  @Binds
+  abstract fun provideNowPlayingRepository(repository: NowPlayingRepositoryImpl): NowPlayingRepository
+
+  @Singleton
+  @Binds
+  abstract fun provideScrobbleSettingRepository(repository: ScrobbleSettingRepositoryImpl): ScrobbleSettingRepository
 }

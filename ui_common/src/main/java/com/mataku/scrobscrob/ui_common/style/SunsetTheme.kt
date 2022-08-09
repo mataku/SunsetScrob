@@ -60,6 +60,7 @@ val LocalScaffoldState = staticCompositionLocalOf<ScaffoldState> {
 }
 
 const val ANIMATION_DURATION_MILLIS = 700
+const val TRANSITION_ANIMATION_DURATION_MILLIS = 600
 
 fun AppTheme.backgroundColor(): Color {
   return this.colors().background

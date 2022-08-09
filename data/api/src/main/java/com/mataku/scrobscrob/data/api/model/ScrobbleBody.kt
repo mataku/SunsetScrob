@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ScrobbleApiResponse(
   @SerialName("scrobbles")
-  val scrobbleResult: ScrobbleResultBody? = null
+  val scrobbleResult: ScrobbleResultBody
 )
 
 @Serializable
