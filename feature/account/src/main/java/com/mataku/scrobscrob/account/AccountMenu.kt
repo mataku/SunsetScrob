@@ -21,5 +21,9 @@ enum class AccountMenu(
   PRIVACY_POLICY(
     titleRes = R.string.item_privacy_policy,
     descriptionRes = 0
+  ),
+  SCROBBLE(
+    titleRes = R.string.title_scrobble,
+    descriptionRes = R.string.description_scrobble
   );
 }

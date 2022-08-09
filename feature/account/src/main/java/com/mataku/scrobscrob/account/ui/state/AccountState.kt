@@ -42,6 +42,10 @@ class AccountState(
     navController.navigate("privacy_policy")
   }
 
+  fun navigateToScrobbleSetting() {
+    navController.navigate("scrobble_setting")
+  }
+
   fun popEvent() {
     viewModel.popEvent()
   }
