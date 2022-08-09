@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -34,7 +33,6 @@ class ScrobbleSettingViewModel @Inject constructor(
         }
         .distinctUntilChanged()
         .collect {
-          Timber.d("MATAKUDEBUG $it")
           uiState = uiState.copy(
             allowedApps = it,
             isLoading = false
