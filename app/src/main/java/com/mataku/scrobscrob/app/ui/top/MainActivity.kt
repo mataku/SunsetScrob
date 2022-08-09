@@ -1,9 +1,9 @@
 package com.mataku.scrobscrob.app.ui.top
 
 import android.os.Bundle
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
 import com.mataku.scrobscrob.app.ui.screen.MainScreen
@@ -13,11 +13,11 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : ComponentActivity() {
   private val viewModel by viewModels<MainViewModel>()
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    // Call before onCreate
+    // Should Call before onCreate
     // https://developer.android.com/guide/topics/ui/splash-screen/migrate#migrate_your_splash_screen_implementation
     installSplashScreen()
     super.onCreate(savedInstanceState)

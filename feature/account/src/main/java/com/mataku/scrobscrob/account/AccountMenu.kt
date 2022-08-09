@@ -6,6 +6,10 @@ enum class AccountMenu(
   @StringRes val titleRes: Int,
   @StringRes val descriptionRes: Int
 ) {
+  SCROBBLE(
+    titleRes = R.string.title_scrobble,
+    descriptionRes = R.string.description_scrobble
+  ),
   THEME(
     titleRes = R.string.item_theme,
     descriptionRes = 0
@@ -21,9 +25,5 @@ enum class AccountMenu(
   PRIVACY_POLICY(
     titleRes = R.string.item_privacy_policy,
     descriptionRes = 0
-  ),
-  SCROBBLE(
-    titleRes = R.string.title_scrobble,
-    descriptionRes = R.string.description_scrobble
   );
 }
