@@ -46,21 +46,28 @@ fun ScrobbleSettingScreen(
     }
     viewModel.popEvent()
   }
-  val appleMusicAllowed = uiState.allowedApps.contains(APPLE_MUSIC_NAME)
-  val spotifyAllowed = uiState.allowedApps.contains(SPOTIFY_NAME)
+  val appleMusicAllowed = uiState.allowedApps.contains(APPLE_MUSIC_NAME.mappedApp())
+  val spotifyAllowed = uiState.allowedApps.contains(SPOTIFY_NAME.mappedApp())
+
   LazyColumn(content = {
     stickyHeader {
       ContentHeader(text = stringResource(id = R.string.label_scrobble_setting))
     }
 
     item {
-      ScrobbleSettingCell(title = APPLE_MUSIC_NAME, enabled = appleMusicAllowed, onTapCell = {
-        viewModel.allowApp(APPLE_MUSIC_NAME)
-      })
+      ScrobbleSettingCell(
+        title = APPLE_MUSIC_NAME,
+        enabled = appleMusicAllowed,
+        onTapCell = { appName, enable ->
+          viewModel.changeAppScrobbleState(appName, enable)
+        })
 
-      ScrobbleSettingCell(title = SPOTIFY_NAME, enabled = spotifyAllowed, onTapCell = {
-        viewModel.allowApp(SPOTIFY_NAME)
-      })
+      ScrobbleSettingCell(
+        title = SPOTIFY_NAME,
+        enabled = spotifyAllowed,
+        onTapCell = { appName, enable ->
+          viewModel.changeAppScrobbleState(appName, enable)
+        })
     }
   }, modifier = Modifier.fillMaxSize())
 }
@@ -69,7 +76,7 @@ fun ScrobbleSettingScreen(
 private fun ScrobbleSettingCell(
   title: String,
   enabled: Boolean,
-  onTapCell: (String) -> Unit
+  onTapCell: (String, Boolean) -> Unit
 ) {
   Row(
     modifier = Modifier
@@ -84,7 +91,19 @@ private fun ScrobbleSettingCell(
       modifier = Modifier.weight(1F)
     )
 
-    Switch(checked = enabled, onCheckedChange = { onTapCell.invoke(title) })
+    Switch(checked = enabled, onCheckedChange = { onTapCell.invoke(title, it) })
+  }
+}
+
+internal fun String.mappedApp(): String? {
+  return when (this) {
+    APPLE_MUSIC_NAME -> {
+      "com.apple.android.music"
+    }
+    SPOTIFY_NAME -> {
+      "com.spotify.music"
+    }
+    else -> null
   }
 }
 
@@ -96,7 +115,7 @@ private const val SPOTIFY_NAME = "Spotify"
 private fun ScrobbleSettingCellPreview() {
   SunsetThemePreview {
     androidx.compose.material.Surface {
-      ScrobbleSettingCell("Apple Music", true, {})
+      ScrobbleSettingCell("Apple Music", true) { _, _ -> }
     }
   }
 }

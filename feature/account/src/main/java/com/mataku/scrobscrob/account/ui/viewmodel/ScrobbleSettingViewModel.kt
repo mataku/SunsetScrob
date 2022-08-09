@@ -5,12 +5,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mataku.scrobscrob.account.ui.screen.mappedApp
 import com.mataku.scrobscrob.data.repository.ScrobbleSettingRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,18 +26,33 @@ class ScrobbleSettingViewModel @Inject constructor(
 
   init {
     viewModelScope.launch {
-      uiState = uiState.copy(isLoading = true)
-      val allowedApps = scrobbleSettingRepository.allowedApps()
-      uiState = uiState.copy(
-        allowedApps = allowedApps,
-        isLoading = false
-      )
+      scrobbleSettingRepository.allowedAppsFlow()
+        .onStart {
+          uiState = uiState.copy(isLoading = true)
+        }.catch {
+
+        }
+        .distinctUntilChanged()
+        .collect {
+          Timber.d("MATAKUDEBUG $it")
+          uiState = uiState.copy(
+            allowedApps = it,
+            isLoading = false
+          )
+        }
     }
   }
 
-  fun allowApp(appName: String) {
+  fun changeAppScrobbleState(appName: String, enable: Boolean) {
+    val packageName = appName.mappedApp() ?: return
+
     viewModelScope.launch {
-      scrobbleSettingRepository.allowApp(appName)
+      val request = if (enable) {
+        scrobbleSettingRepository.allowApp(packageName)
+      } else {
+        scrobbleSettingRepository.disallowApp(packageName)
+      }
+      request
         .onStart {
           uiState = uiState.copy(isLoading = true)
         }
@@ -43,11 +61,8 @@ class ScrobbleSettingViewModel @Inject constructor(
         }.catch {
           uiState = uiState.copy(event = UiEvent.AllowAppError)
         }.collect {
-          val apps = uiState.allowedApps
-          apps.toMutableSet().add(appName)
           uiState = uiState.copy(
             event = UiEvent.AllowAppDone,
-            allowedApps = apps
           )
         }
     }

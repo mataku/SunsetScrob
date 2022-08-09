@@ -4,6 +4,7 @@ import com.mataku.scrobscrob.data.db.ScrobbleAppDataStore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -12,7 +13,11 @@ import javax.inject.Singleton
 interface ScrobbleSettingRepository {
   suspend fun allowedApps(): Set<String>
 
+  suspend fun allowedAppsFlow(): Flow<Set<String>>
+
   suspend fun allowApp(appName: String): Flow<Unit>
+
+  suspend fun disallowApp(appName: String): Flow<Unit>
 }
 
 @Singleton
@@ -29,4 +34,11 @@ class ScrobbleSettingRepositoryImpl @Inject constructor(
   override suspend fun allowedApps(): Set<String> {
     return scrobbleAppDataStore.allowedApps()
   }
+
+  override suspend fun allowedAppsFlow(): Flow<Set<String>> =
+    scrobbleAppDataStore.allowedAppsFlow().distinctUntilChanged().flowOn(Dispatchers.IO)
+
+  override suspend fun disallowApp(appName: String): Flow<Unit> =
+    scrobbleAppDataStore.disallowApp(appName)
+
 }
