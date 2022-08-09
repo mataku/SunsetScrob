@@ -31,6 +31,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat.startActivity
 import com.mataku.scrobscrob.account.AccountMenu
 import com.mataku.scrobscrob.account.R
@@ -64,6 +65,9 @@ fun AccountScreen(
       },
       navigateToPrivacyPolicy = {
         state.navigateToPrivacyPolicyScreen()
+      },
+      navigateToScrobbleSetting = {
+        state.navigateToScrobbleSetting()
       }
     )
   }
@@ -117,6 +121,7 @@ fun AccountScreen(
 @Composable
 private fun AccountContent(
   theme: AppTheme,
+  navigateToScrobbleSetting: () -> Unit,
   navigateToThemeSelector: () -> Unit,
   navigateToLogoutConfirmation: () -> Unit,
   navigateToLicenseList: () -> Unit,
@@ -124,12 +129,28 @@ private fun AccountContent(
 ) {
   val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
   val coroutineScope = rememberCoroutineScope()
+  val context = LocalContext.current
   LazyColumn(
     content = {
       stickyHeader {
         ContentHeader(text = stringResource(id = R.string.menu_account))
       }
       item {
+        val scrobbleMenu = AccountMenu.SCROBBLE
+        AccountMenuCell(
+          title = stringResource(id = scrobbleMenu.titleRes),
+          description = stringResource(id = scrobbleMenu.descriptionRes)
+        ) {
+          if (NotificationManagerCompat.getEnabledListenerPackages(context)
+              .contains(context.packageName)
+          ) {
+            navigateToScrobbleSetting.invoke()
+          } else {
+            val intent = Intent()
+            intent.action = Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS
+            startActivity(context, intent, null)
+          }
+        }
         val menu = AccountMenu.THEME
         AccountMenuCell(
           title = stringResource(id = menu.titleRes),
@@ -163,17 +184,6 @@ private fun AccountContent(
         ) {
           navigateToPrivacyPolicy.invoke()
         }
-        val context = LocalContext.current
-        // TODO
-        AccountMenuCell(
-          title = "Scrobble Request",
-          description = ""
-        ) {
-          val intent = Intent()
-          intent.action = Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS
-          startActivity(context, intent, null)
-        }
-
       }
     },
     modifier = if (LocalAppTheme.current == AppTheme.SUNSET) {
@@ -234,7 +244,8 @@ private fun AccountContentPreview() {
         navigateToThemeSelector = {},
         navigateToLogoutConfirmation = {},
         navigateToLicenseList = {},
-        navigateToPrivacyPolicy = {}
+        navigateToPrivacyPolicy = {},
+        navigateToScrobbleSetting = {}
       )
     }
   }
