@@ -62,6 +62,12 @@ fun NavigationGraph(
       },
       exitTransition = {
         fadeOut(tween(ANIMATION_DURATION_MILLIS))
+      },
+      popEnterTransition = {
+        fadeIn(tween(ANIMATION_DURATION_MILLIS))
+      },
+      popExitTransition = {
+        fadeOut(tween(ANIMATION_DURATION_MILLIS))
       }
     ) {
       systemUiController.setNavigationBarColor(MaterialTheme.colors.primary)
@@ -81,8 +87,21 @@ fun NavigationGraph(
         state = rememberTopArtistsScreenState(navController = navController)
       )
     }
-    composable(SunsetBottomNavItem.ACCOUNT.screenRoute) {
-      systemUiController.setNavigationBarColor(MaterialTheme.colors.primary)
+    // TODO: first navigation from another screen should be fixed because unexpected diagonal effect
+    composable(SunsetBottomNavItem.ACCOUNT.screenRoute,
+      enterTransition = {
+        fadeIn(tween(ANIMATION_DURATION_MILLIS))
+      },
+      popEnterTransition = {
+        fadeIn(tween(ANIMATION_DURATION_MILLIS))
+      },
+      exitTransition = {
+        fadeOut(tween(ANIMATION_DURATION_MILLIS))
+      },
+      popExitTransition = {
+        fadeOut(tween(ANIMATION_DURATION_MILLIS))
+      }
+    ) {
       val context = LocalContext.current
       AccountScreen(state = rememberAccountState(navController = navController, context = context))
     }
@@ -126,7 +145,8 @@ fun NavigationGraph(
       }
     )
 
-    composable("scrobble_setting",
+    composable(
+      "scrobble_setting",
       enterTransition = {
         slideIn(animationSpec = tween(TRANSITION_ANIMATION_DURATION_MILLIS)) { fullSize ->
           IntOffset(
@@ -160,9 +180,9 @@ fun NavigationGraph(
             0
           )
         }
-      }
+      },
 
-    ) {
+      ) {
       systemUiController.setNavigationBarColor(
         color = if (LocalAppTheme.current == AppTheme.SUNSET) {
           Colors.SunsetBlue
