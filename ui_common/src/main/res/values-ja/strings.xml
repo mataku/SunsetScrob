@@ -45,4 +45,11 @@
 
   <string name="label_scrobble_setting">Scrobble 設定</string>
   <string name="error_allow_scrobble_app">Scrobble するアプリの更新に失敗しました</string>
+  <string name="dialog_notification_permission_required">通知バーへの権限付与が必要です</string>
+  <string name="dialog_notification_permission_required_description">現在再生している曲の情報を取得するために、通知情報へのアクセス権限が必要です。</string>
+
+  <string name="button_back">戻る</string>
+  <string name="button_go_to_setting">設定へ</string>
+
+  <string name="label_notification_permission_help">SunsetScrob の設定を確認してください</string>
 </resources>

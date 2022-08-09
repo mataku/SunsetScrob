@@ -44,4 +44,11 @@
 
   <string name="label_scrobble_setting">Scrobble settings</string>
   <string name="error_allow_scrobble_app">Failed to allow Scrobble App.</string>
+  <string name="dialog_notification_permission_required">Notification permission is required</string>
+  <string name="dialog_notification_permission_required_description">In order to retrieve information on the currently playing song, you must have permission to access the notification bar.</string>
+
+  <string name="button_back">No</string>
+  <string name="button_go_to_setting">Settings</string>
+
+  <string name="label_notification_permission_help">Check SunsetScrob</string>
 </resources>

@@ -2,6 +2,8 @@ package com.mataku.scrobscrob.account.ui.screen
 
 import android.content.Intent
 import android.provider.Settings
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -24,7 +26,6 @@ import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -32,7 +33,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.ContextCompat.startActivity
 import com.mataku.scrobscrob.account.AccountMenu
 import com.mataku.scrobscrob.account.R
 import com.mataku.scrobscrob.account.ui.state.AccountState
@@ -53,6 +53,17 @@ fun AccountScreen(
     mutableStateOf(false)
   }
   val uiState = state.uiState
+
+  val context = LocalContext.current
+  val launcher =
+    rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+      if (NotificationManagerCompat.getEnabledListenerPackages(context)
+          .contains(context.packageName)
+      ) {
+        state.navigateToScrobbleSetting()
+      }
+    }
+
   uiState.theme?.let {
     AccountContent(
       theme = it,
@@ -68,6 +79,11 @@ fun AccountScreen(
       },
       navigateToScrobbleSetting = {
         state.navigateToScrobbleSetting()
+      },
+      navigateToNotificationSetting = {
+        val intent = Intent()
+        intent.action = Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS
+        launcher.launch(intent)
       }
     )
   }
@@ -125,11 +141,14 @@ private fun AccountContent(
   navigateToThemeSelector: () -> Unit,
   navigateToLogoutConfirmation: () -> Unit,
   navigateToLicenseList: () -> Unit,
-  navigateToPrivacyPolicy: () -> Unit
+  navigateToPrivacyPolicy: () -> Unit,
+  navigateToNotificationSetting: () -> Unit
 ) {
   val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
-  val coroutineScope = rememberCoroutineScope()
   val context = LocalContext.current
+  val openDialog = remember {
+    mutableStateOf(false)
+  }
   LazyColumn(
     content = {
       stickyHeader {
@@ -146,9 +165,7 @@ private fun AccountContent(
           ) {
             navigateToScrobbleSetting.invoke()
           } else {
-            val intent = Intent()
-            intent.action = Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS
-            startActivity(context, intent, null)
+            openDialog.value = true
           }
         }
         val menu = AccountMenu.THEME
@@ -210,6 +227,38 @@ private fun AccountContent(
   ) {
 
   }
+
+  if (openDialog.value) {
+    AlertDialog(
+      onDismissRequest = {
+        openDialog.value = false
+      },
+      title = {
+        Text(text = stringResource(id = R.string.dialog_notification_permission_required))
+      },
+      text = {
+        Text(text = stringResource(id = R.string.dialog_notification_permission_required_description))
+      },
+      dismissButton = {
+        TextButton(onClick = {
+          openDialog.value = false
+        }) {
+          Text(text = stringResource(id = R.string.button_back), style = SunsetTextStyle.button)
+        }
+      },
+      confirmButton = {
+        TextButton(onClick = {
+          openDialog.value = false
+          navigateToNotificationSetting.invoke()
+        }) {
+          Text(
+            text = stringResource(id = R.string.button_go_to_setting),
+            style = SunsetTextStyle.button
+          )
+        }
+      }
+    )
+  }
 }
 
 @Composable
@@ -245,7 +294,8 @@ private fun AccountContentPreview() {
         navigateToLogoutConfirmation = {},
         navigateToLicenseList = {},
         navigateToPrivacyPolicy = {},
-        navigateToScrobbleSetting = {}
+        navigateToScrobbleSetting = {},
+        navigateToNotificationSetting = {}
       )
     }
   }
