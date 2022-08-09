@@ -1,18 +1,21 @@
 package com.mataku.scrobscrob.scrobble.service
 
 import com.mataku.scrobscrob.data.repository.NowPlayingRepository
+import com.mataku.scrobscrob.data.repository.ScrobbleRepository
 import com.mataku.scrobscrob.data.repository.TrackRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
 class MusicNotificationRequester(
   private val job: Job,
   private val trackRepository: TrackRepository,
-  private val nowPlayingRepository: NowPlayingRepository
+  private val nowPlayingRepository: NowPlayingRepository,
+  private val scrobbleRepository: ScrobbleRepository
 ) {
 
   private val coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.IO + job)
@@ -47,9 +50,12 @@ class MusicNotificationRequester(
         .catch {
           isLoading = false
         }.collect {
+          currentNowPlaying?.let {
+            scrobbleRepository.scrobble().catch {}.collect()
+          }
+
           nowPlayingRepository.update(it)
-            .catch { e ->
-            }
+            .catch {}
             .collect {
               previousTrackName = trackName
               isLoading = false

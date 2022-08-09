@@ -8,6 +8,7 @@ import com.mataku.scrobscrob.data.api.endpoint.UserRecentTracksEndpoint
 import com.mataku.scrobscrob.data.db.NowPlayingDao
 import com.mataku.scrobscrob.data.db.SessionKeyDataStore
 import com.mataku.scrobscrob.data.db.UsernameDataStore
+import com.mataku.scrobscrob.data.db.overScrobblePoint
 import com.mataku.scrobscrob.data.repository.mapper.toRecentTracks
 import com.mataku.scrobscrob.data.repository.mapper.toScrobbleResult
 import kotlinx.coroutines.Dispatchers
@@ -19,6 +20,8 @@ import javax.inject.Singleton
 
 interface ScrobbleRepository {
   suspend fun recentTracks(page: Int): Flow<List<RecentTrack>>
+
+  suspend fun scrobble(): Flow<ScrobbleResult>
 }
 
 @Singleton
@@ -45,24 +48,33 @@ class ScrobbleRepositoryImpl @Inject constructor(
     emit(response.toRecentTracks())
   }
 
-  suspend fun scrobble() = flow {
+  override suspend fun scrobble() = flow {
     val currentTrack = nowPlayingDao.nowPlaying()
     val sessionKey = sessionDataStore.sessionKey()
     if (currentTrack == null || sessionKey == null) {
       emit(ScrobbleResult(accepted = false))
       return@flow
     }
-    val params = mapOf(
-      "album[0]" to currentTrack.albumName,
-      "artist[0]" to currentTrack.artistName,
-      "sk" to sessionKey,
-      "timestamp[0]" to currentTrack.timeStamp,
-      "track[0]" to currentTrack.trackName
-    )
-    val endpoint = ScrobbleEndpoint(
-      params = params
-    )
-    val response = lastFmService.request(endpoint)
-    emit(response.toScrobbleResult())
+    if (currentTrack.overScrobblePoint()) {
+      val params = mutableMapOf(
+        "album[0]" to currentTrack.albumName,
+        "artist[0]" to currentTrack.artistName,
+        "sk" to sessionKey,
+        "timestamp[0]" to currentTrack.timeStamp.toString(),
+        "track[0]" to currentTrack.trackName,
+        "method" to "track.scrobble"
+      )
+      val apiSig = ApiSignature.generateApiSig(params)
+      params.remove("method")
+      params["api_sig"] = apiSig
+      val endpoint = ScrobbleEndpoint(
+        params = params
+      )
+      val response = lastFmService.request(endpoint)
+      emit(response.toScrobbleResult())
+    } else {
+      emit(ScrobbleResult(false))
+    }
+
   }.flowOn(Dispatchers.IO)
 }

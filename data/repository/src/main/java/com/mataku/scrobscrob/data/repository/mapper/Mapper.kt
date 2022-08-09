@@ -146,7 +146,12 @@ fun TrackInfo.toNowPlayingTrackEntity(): NowPlayingTrackEntity {
     artistName = artist.name,
     trackName = name,
     albumName = album?.title ?: "",
-    artwork = album?.imageList?.imageUrl() ?: ""
+    artwork = album?.imageList?.imageUrl() ?: "",
+    duration = if (duration == 0L) {
+      300000L
+    } else {
+      duration
+    }
   )
 }
 
