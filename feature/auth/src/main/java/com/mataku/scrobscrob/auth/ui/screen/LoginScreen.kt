@@ -2,7 +2,6 @@ package com.mataku.scrobscrob.auth.ui.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -155,6 +154,14 @@ private fun LoginContent(
   val autofill = LocalAutofill.current
   val systemUiController = rememberSystemUiController()
   val navigationBackgroundColor = LocalAppTheme.current.colors().primary
+  val usernameAutofillNode = AutofillNode(autofillTypes = listOf(AutofillType.Username), onFill = {
+    onUsernameUpdate.invoke(it)
+  })
+  val passwordAutofillNode = AutofillNode(autofillTypes = listOf(AutofillType.Password), onFill = {
+    onPasswordUpdate.invoke(it)
+  })
+  LocalAutofillTree.current += usernameAutofillNode
+  LocalAutofillTree.current += passwordAutofillNode
 
   // Stored data with "remember { mutableStateOf("") }" will blow up the data in AutoFill#onFill,
   //  so manages input data in ViewModel (TODO: details)
@@ -177,84 +184,85 @@ private fun LoginContent(
 
     Spacer(modifier = Modifier.height(24.dp))
 
-    Autofill(autofillTypes = listOf(AutofillType.Username), onFill = {
-      onUsernameUpdate.invoke(it)
-    }) { autofillNode ->
-      OutlinedTextField(
-        value = username,
-        onValueChange = {
-          onUsernameUpdate.invoke(it)
-        },
-        keyboardOptions = KeyboardOptions(
-          keyboardType = KeyboardType.Email,
-          imeAction = ImeAction.Next
-        ),
-        singleLine = true,
-        label = { Text(text = "Username") },
-        modifier = Modifier
-          .align(Alignment.CenterHorizontally)
-          .fillMaxWidth()
-          .padding(horizontal = 24.dp)
-          .onFocusChanged {
-            autofill?.run {
-              if (it.isFocused) {
-                requestAutofillForNode(autofillNode)
-              } else {
-                cancelAutofillForNode(autofillNode)
-              }
+
+
+    OutlinedTextField(
+      value = username,
+      onValueChange = {
+        onUsernameUpdate.invoke(it)
+      },
+      keyboardOptions = KeyboardOptions(
+        keyboardType = KeyboardType.Email,
+        imeAction = ImeAction.Next
+      ),
+      singleLine = true,
+      label = { Text(text = "Username") },
+      modifier = Modifier
+        .onGloballyPositioned {
+          usernameAutofillNode.boundingBox = it.boundsInWindow()
+        }
+        .align(Alignment.CenterHorizontally)
+        .fillMaxWidth()
+        .padding(horizontal = 24.dp)
+        .onFocusChanged {
+          autofill?.run {
+            if (it.isFocused) {
+              requestAutofillForNode(usernameAutofillNode)
+            } else {
+              cancelAutofillForNode(usernameAutofillNode)
             }
           }
-      )
-    }
+        }
+    )
+
     Spacer(modifier = Modifier.height(16.dp))
 
-    Autofill(autofillTypes = listOf(AutofillType.Password), onFill = {
-      onPasswordUpdate.invoke(it)
-    }) { autofillNode ->
-      OutlinedTextField(
-        value = password,
-        onValueChange = {
-          onPasswordUpdate.invoke(it)
-        },
-        keyboardOptions = KeyboardOptions(
-          keyboardType = KeyboardType.Password,
-          imeAction = ImeAction.Done
-        ),
-        singleLine = true,
-        visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-        trailingIcon = {
-          val icon = if (passwordVisible) {
-            Icons.Filled.Visibility
-          } else {
-            Icons.Filled.VisibilityOff
-          }
-          IconButton(onClick = {
-            passwordVisible = !passwordVisible
-          }) {
-            Icon(imageVector = icon, "password visibility toggle")
-          }
-        },
-        keyboardActions = KeyboardActions(
-          onDone = {
-            focusManager.clearFocus()
-          }
-        ),
-        label = { Text(text = "Password") },
-        modifier = Modifier
-          .align(Alignment.CenterHorizontally)
-          .fillMaxWidth()
-          .padding(horizontal = 24.dp)
-          .onFocusChanged {
-            autofill?.run {
-              if (it.isFocused) {
-                requestAutofillForNode(autofillNode)
-              } else {
-                cancelAutofillForNode(autofillNode)
-              }
+    OutlinedTextField(
+      value = password,
+      onValueChange = {
+        onPasswordUpdate.invoke(it)
+      },
+      keyboardOptions = KeyboardOptions(
+        keyboardType = KeyboardType.Password,
+        imeAction = ImeAction.Done
+      ),
+      singleLine = true,
+      visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+      trailingIcon = {
+        val icon = if (passwordVisible) {
+          Icons.Filled.Visibility
+        } else {
+          Icons.Filled.VisibilityOff
+        }
+        IconButton(onClick = {
+          passwordVisible = !passwordVisible
+        }) {
+          Icon(imageVector = icon, "password visibility toggle")
+        }
+      },
+      keyboardActions = KeyboardActions(
+        onDone = {
+          focusManager.clearFocus()
+        }
+      ),
+      label = { Text(text = "Password") },
+      modifier = Modifier
+        .onGloballyPositioned {
+          passwordAutofillNode.boundingBox = it.boundsInWindow()
+        }
+        .align(Alignment.CenterHorizontally)
+        .fillMaxWidth()
+        .padding(horizontal = 24.dp)
+        .onFocusChanged {
+          autofill?.run {
+            if (it.isFocused) {
+              requestAutofillForNode(passwordAutofillNode)
+            } else {
+              cancelAutofillForNode(passwordAutofillNode)
             }
           }
-      )
-    }
+        }
+    )
 
     Spacer(modifier = Modifier.height(48.dp))
 
@@ -294,28 +302,6 @@ private fun LoginContent(
     onDispose {
       systemUiController.setNavigationBarColor(navigationBackgroundColor)
     }
-  }
-}
-
-// ref. https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:compose/ui/ui/integration-tests/ui-demos/src/main/java/androidx/compose/ui/demos/autofill/ExplicitAutofillTypesDemo.kt;drc=2cfa51635d05d62cbc08cb3abf333155c994fb16
-@ExperimentalComposeUiApi
-@Composable
-private fun Autofill(
-  autofillTypes: List<AutofillType>,
-  onFill: ((String) -> Unit),
-  content: @Composable (AutofillNode) -> Unit
-) {
-  val autofillNode = AutofillNode(onFill = onFill, autofillTypes = autofillTypes)
-
-  val autofillTree = LocalAutofillTree.current
-  autofillTree += autofillNode
-
-  Box(
-    Modifier.onGloballyPositioned {
-      autofillNode.boundingBox = it.boundsInWindow()
-    }
-  ) {
-    content(autofillNode)
   }
 }
 
