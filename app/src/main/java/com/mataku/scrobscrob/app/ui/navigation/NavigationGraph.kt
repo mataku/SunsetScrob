@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.IntOffset
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -39,6 +40,7 @@ import com.mataku.scrobscrob.ui_common.SunsetBottomNavItem
 import com.mataku.scrobscrob.ui_common.style.ANIMATION_DURATION_MILLIS
 import com.mataku.scrobscrob.ui_common.style.Colors
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
+import com.mataku.scrobscrob.ui_common.style.TRANSITION_ANIMATION_DURATION_MILLIS
 import com.mataku.scrobscrob.ui_common.style.backgroundColor
 import com.mataku.scrobscrob.ui_common.template.WebViewScreen
 
@@ -81,7 +83,8 @@ fun NavigationGraph(
     }
     composable(SunsetBottomNavItem.ACCOUNT.screenRoute) {
       systemUiController.setNavigationBarColor(MaterialTheme.colors.primary)
-      AccountScreen(state = rememberAccountState(navController = navController))
+      val context = LocalContext.current
+      AccountScreen(state = rememberAccountState(navController = navController, context = context))
     }
     composable(
       "track_detail?trackName={trackName}&artistName={artistName}&imageUrl={imageUrl}&upperLeftCoordinatorX={x}&upperLeftCoordinatorY={y}",
@@ -125,7 +128,7 @@ fun NavigationGraph(
 
     composable("scrobble_setting",
       enterTransition = {
-        slideIn(animationSpec = tween(ANIMATION_DURATION_MILLIS)) { fullSize ->
+        slideIn(animationSpec = tween(TRANSITION_ANIMATION_DURATION_MILLIS)) { fullSize ->
           IntOffset(
             fullSize.width,
             0
@@ -134,7 +137,7 @@ fun NavigationGraph(
       },
       exitTransition = {
         // Unnecessary as it is a dead end screen, but set up just in case
-        slideOut(animationSpec = tween(ANIMATION_DURATION_MILLIS)) { fullSize ->
+        slideOut(animationSpec = tween(TRANSITION_ANIMATION_DURATION_MILLIS)) { fullSize ->
           IntOffset(
             -fullSize.width,
             0
@@ -143,7 +146,7 @@ fun NavigationGraph(
       },
       popEnterTransition = {
         // Unnecessary as it is a dead end screen, but set up just in case
-        slideIn(animationSpec = tween(ANIMATION_DURATION_MILLIS)) { fullSize ->
+        slideIn(animationSpec = tween(TRANSITION_ANIMATION_DURATION_MILLIS)) { fullSize ->
           IntOffset(
             -fullSize.width,
             0
@@ -151,7 +154,7 @@ fun NavigationGraph(
         }
       },
       popExitTransition = {
-        slideOut(animationSpec = tween(ANIMATION_DURATION_MILLIS)) { fullSize ->
+        slideOut(animationSpec = tween(TRANSITION_ANIMATION_DURATION_MILLIS)) { fullSize ->
           IntOffset(
             fullSize.width,
             0
