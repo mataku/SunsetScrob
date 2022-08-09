@@ -80,6 +80,7 @@ fun NavigationGraph(
       )
     }
     composable(SunsetBottomNavItem.ACCOUNT.screenRoute) {
+      systemUiController.setNavigationBarColor(MaterialTheme.colors.primary)
       AccountScreen(state = rememberAccountState(navController = navController))
     }
     composable(
