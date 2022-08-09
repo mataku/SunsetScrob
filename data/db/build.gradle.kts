@@ -8,6 +8,9 @@ plugins {
   id("com.google.dagger.hilt.android")
 }
 
+apply(from = "${project.rootDir}/gradle/test_dependencies.gradle")
+apply(from = "${project.rootDir}/gradle/test_options.gradle")
+
 android {
   compileSdk = Versions.compileSdkVersion
   defaultConfig {
