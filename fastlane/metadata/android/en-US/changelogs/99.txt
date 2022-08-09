@@ -1,0 +1,2 @@
+- You can now update NowPlaying track. Allow app to give permission to Notification bar.
+- Scrobble is back.

@@ -1,1 +1,10 @@
 Last.fm client app
+
+Features
+- Show recent scrobbled tracks
+- Show your top albums
+- Show your top artists
+- Update NowPlaying
+- Scrobbling
+- Theme Switcher
+- No ADs
