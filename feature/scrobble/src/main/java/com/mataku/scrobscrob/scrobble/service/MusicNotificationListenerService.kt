@@ -4,6 +4,7 @@ import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import com.mataku.scrobscrob.data.repository.NowPlayingRepository
 import com.mataku.scrobscrob.data.repository.ScrobbleRepository
+import com.mataku.scrobscrob.data.repository.ScrobbleSettingRepository
 import com.mataku.scrobscrob.data.repository.TrackRepository
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
@@ -23,22 +24,34 @@ class MusicNotificationListenerService() : NotificationListenerService() {
   @Inject
   lateinit var scrobbleRepository: ScrobbleRepository
 
+  @Inject
+  lateinit var scrobbleSettingRepository: ScrobbleSettingRepository
+
   private var requester: MusicNotificationRequester? = null
 
   override fun onCreate() {
     super.onCreate()
     val job = Job()
     requester = MusicNotificationRequester(
-      job, trackRepository, nowPlayingRepository, scrobbleRepository
+      job,
+      trackRepository,
+      nowPlayingRepository,
+      scrobbleRepository,
+      scrobbleSettingRepository
     )
   }
 
   override fun onNotificationPosted(sbn: StatusBarNotification) {
     super.onNotificationPosted(sbn)
-    if (!ALLOW_PACKAGES.contains(sbn.packageName)) {
+    val allowedPackages = requester?.state?.allowedApps ?: emptySet()
+
+    val notification = sbn.notification
+    if (allowedPackages.isEmpty() || !allowedPackages.contains(sbn.packageName) || !ALLOW_NOTIFICATION_ID_LIST.contains(
+        notification.channelId
+      )
+    ) {
       return
     }
-    val notification = sbn.notification
     val bundle = notification?.extras ?: return
 
     val trackName = bundle.get("android.title")?.toString() ?: return
@@ -63,6 +76,10 @@ class MusicNotificationListenerService() : NotificationListenerService() {
   companion object {
     private const val SPOTIFY_PACKAGE = "com.spotify.music"
     private const val APPLE_MUSIC_PACKAGE = "com.apple.android.music"
-    private val ALLOW_PACKAGES = listOf(SPOTIFY_PACKAGE, APPLE_MUSIC_PACKAGE)
+
+    // HACK
+    private val ALLOW_NOTIFICATION_ID_LIST = listOf(
+      "playback", "playback_channel"
+    )
   }
 }
