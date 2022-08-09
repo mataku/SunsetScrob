@@ -1,5 +1,8 @@
 package com.mataku.scrobscrob.account.ui.screen
 
+import android.content.Intent
+import android.net.Uri
+import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -8,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.viewinterop.AndroidView
 import com.mataku.scrobscrob.account.R
@@ -16,6 +20,7 @@ import com.mataku.scrobscrob.ui_common.organism.ContentHeader
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PrivacyPolicyScreen() {
+  val context = LocalContext.current
   LazyColumn(content = {
     stickyHeader {
       ContentHeader(text = stringResource(id = R.string.item_privacy_policy))
@@ -27,11 +32,42 @@ fun PrivacyPolicyScreen() {
             WebView(it)
           },
           update = { webView ->
-            webView.webViewClient = WebViewClient()
+            webView.webViewClient = object : WebViewClient() {
+              override fun shouldOverrideUrlLoading(
+                view: WebView?,
+                request: WebResourceRequest?
+              ): Boolean {
+                val urlStr = request?.url
+                urlStr?.let {
+                  kotlin.runCatching {
+                    context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(it.toString())))
+                  }.fold(
+                    onSuccess = {},
+                    onFailure = {}
+                  )
+                  return true
+                }
+
+                return false
+              }
+            }
             webView.loadUrl("https://mataku.github.io/sunsetscrob/index.html")
           }
         )
       }
     }
   }, modifier = Modifier.fillMaxSize())
+
+//  val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
+//  ModalBottomSheetLayout(
+//    sheetContent = {
+//      WebViewScreen(
+//        url = "https://mataku.github.io/sunsetscrob/index.html",
+//        modifier = Modifier.height(600.dp)
+//      )
+//    },
+//    sheetState = sheetState,
+//    scrimColor = Color.Transparent
+//  ) {
+//  }
 }

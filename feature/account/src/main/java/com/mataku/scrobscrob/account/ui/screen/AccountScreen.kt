@@ -18,16 +18,12 @@ import androidx.compose.material.AlertDialog
 import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.ModalBottomSheetLayout
-import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
-import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -43,7 +39,6 @@ import com.mataku.scrobscrob.ui_common.organism.ContentHeader
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.SunsetTheme
 import com.mataku.scrobscrob.ui_common.style.sunsetBackgroundGradient
-import com.mataku.scrobscrob.ui_common.template.WebViewScreen
 
 @Composable
 fun AccountScreen(
@@ -144,7 +139,6 @@ private fun AccountContent(
   navigateToPrivacyPolicy: () -> Unit,
   navigateToNotificationSetting: () -> Unit
 ) {
-  val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
   val context = LocalContext.current
   val openDialog = remember {
     mutableStateOf(false)
@@ -214,19 +208,6 @@ private fun AccountContent(
         .fillMaxSize()
     }
   )
-
-  ModalBottomSheetLayout(
-    sheetContent = {
-      WebViewScreen(
-        url = "https://mataku.github.io/sunsetscrob/index.html",
-        modifier = Modifier.height(600.dp)
-      )
-    },
-    sheetState = sheetState,
-    scrimColor = Color.Transparent
-  ) {
-
-  }
 
   if (openDialog.value) {
     AlertDialog(
