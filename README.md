@@ -6,13 +6,13 @@ Last.fm client on Android (mainly for my portfolio)
 - Show latest scrobbles
 - Show top albums
 - Show top artists
+- Update NowPlaying (only Apple Music and Spotify)
+- Scrobbling (only Apple Music and Spotify)
 - Switch themes
 - Fake shared element transition
 - Autofill
 
 ## TODO
-- Update NowPlaying
-- Scrobbling
 - Show each content details
 
 ## Screenshots
