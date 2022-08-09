@@ -1,15 +1,7 @@
 <resources>
   <string name="app_name">SunsetScrob</string>
   <string name="login_to_last_fm">Login to Last.fm</string>
-  <string name="preference_title">Preferences</string>
-  <string name="activity_login_title">Log in to Last.fm</string>
-  <string name="enable_notification_access">Enable Notification Access</string>
-  <string name="enable_notification_access_summary">Required for scrobbling from Apple Music</string>
-  <string name="label_now_playing">Now Playing Track</string>
-  <string name="label_not_playing">Nothing!</string>
   <string name="label_not_logged_in">Not logged in!</string>
-  <string name="label_not_playing_message">Let\'s play music on Apple Music App!</string>
-  <string name="label_message_to_log_in">Log in to Last.fm and play music on Apple Music App!</string>
   <string name="label_open_source_licenses">Open Source Licenses</string>
   <string name="playcounts">%s times</string>
   <string name="playcount">%s time</string>
@@ -29,7 +21,6 @@
   <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-  <string name="allow_notification_service_message">Allow AppleMusicNotificationService to access notification</string>
 
   <string name="menu_scrobble">Scrobble</string>
   <string name="menu_top_artists">Top Artists</string>
@@ -51,4 +42,13 @@
   <string name="button_go_to_setting">Settings</string>
 
   <string name="label_notification_permission_help">Check SunsetScrob</string>
+
+  <string name="item_logout">Logout</string>
+  <string name="item_logout_description">Logout of Last.fm</string>
+
+  <string name="item_theme">Theme</string>
+  <string name="title_theme_selector">Theme</string>
+
+  <string name="item_license">Licenses</string>
+  <string name="item_privacy_policy">Privacy policy</string>
 </resources>
