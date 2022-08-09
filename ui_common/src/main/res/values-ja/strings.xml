@@ -40,4 +40,9 @@
   <string name="error_message_bad_network">Network unavailable, try later...</string>
 
   <string name="label_track_album">Album</string>
+  <string name="title_scrobble">Scrobble</string>
+  <string name="description_scrobble">選択したアプリの曲を Last.fm へ Scrobble します</string>
+
+  <string name="label_scrobble_setting">Scrobble 設定</string>
+  <string name="error_allow_scrobble_app">Scrobble するアプリの更新に失敗しました</string>
 </resources>

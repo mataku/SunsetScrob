@@ -38,4 +38,10 @@
 
   <string name="logout">Logout</string>
   <string name="label_track_album">Album</string>
+
+  <string name="title_scrobble">Scrobble</string>
+  <string name="description_scrobble">Scrobble from selected apps</string>
+
+  <string name="label_scrobble_setting">Scrobble settings</string>
+  <string name="error_allow_scrobble_app">Failed to allow Scrobble App.</string>
 </resources>
