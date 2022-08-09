@@ -2,6 +2,7 @@ package com.mataku.scrobscrob.data.repository
 
 import com.mataku.scrobscrob.data.api.LastFmService
 import com.mataku.scrobscrob.data.api.endpoint.AuthMobileSessionEndpoint
+import com.mataku.scrobscrob.data.db.ScrobbleAppDataStore
 import com.mataku.scrobscrob.data.db.SessionKeyDataStore
 import com.mataku.scrobscrob.data.db.UsernameDataStore
 import kotlinx.coroutines.Dispatchers
@@ -21,7 +22,8 @@ interface SessionRepository {
 class SessionRepositoryImpl @Inject constructor(
   private val lastFmService: LastFmService,
   private val sessionKeyDataStore: SessionKeyDataStore,
-  private val usernameDataStore: UsernameDataStore
+  private val usernameDataStore: UsernameDataStore,
+  private val scrobbleAppDataStore: ScrobbleAppDataStore
 ) :
   SessionRepository {
   override suspend fun authorize(userName: String, password: String): Flow<Unit> = flow {
@@ -48,6 +50,7 @@ class SessionRepositoryImpl @Inject constructor(
   override suspend fun logout(): Flow<Unit> = flow {
     sessionKeyDataStore.remove()
     usernameDataStore.remove()
+    scrobbleAppDataStore.clear()
     emit(Unit)
   }
 
