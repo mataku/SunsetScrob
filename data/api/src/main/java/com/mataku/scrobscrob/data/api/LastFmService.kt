@@ -1,7 +1,6 @@
 package com.mataku.scrobscrob.data.api
 
 import com.mataku.scrobscrob.data.api.endpoint.Endpoint
-import com.mataku.scrobscrob.data.api.endpoint.generateApiSignature
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -53,7 +52,6 @@ class LastFmService @Inject constructor(val httpClient: HttpClient) {
       endpoint.params.forEach { (k, v) ->
         parameter(k, v)
       }
-      parameter("api_sig", endpoint.generateApiSignature())
     }
 
     return response.body()
