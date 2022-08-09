@@ -68,4 +68,5 @@ dependencies {
   implementation(libs.coroutines)
 
   implementation(libs.lottie.compose)
+  implementation(libs.timber)
 }

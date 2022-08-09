@@ -125,6 +125,7 @@ dependencies {
   implementation(libs.accompanist.systemuicontroller)
   implementation(libs.hilt.navigation.compose)
   implementation(libs.core.splashscreen)
+  implementation(libs.timber)
 }
 
 kapt {
