@@ -43,7 +43,7 @@ android {
     targetCompatibility = JavaVersion.VERSION_1_8
 
     kotlinOptions {
-      freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
+      freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
     }
   }
 }

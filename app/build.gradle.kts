@@ -11,7 +11,6 @@ plugins {
   id("com.google.gms.google-services")
 }
 
-apply(from = "lint-checks.gradle")
 apply(from = "${project.rootDir}/gradle/test_dependencies.gradle")
 apply(from = "${project.rootDir}/gradle/test_options.gradle")
 
@@ -138,6 +137,6 @@ kapt {
 tasks.withType(KotlinCompile::class).all {
   kotlinOptions {
     jvmTarget = "1.8"
-    freeCompilerArgs += listOf("-Xopt-in=kotlin.RequiresOptIn")
+    freeCompilerArgs += listOf("-opt-in=kotlin.RequiresOptIn")
   }
 }
