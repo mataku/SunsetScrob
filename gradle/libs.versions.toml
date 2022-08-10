@@ -1,6 +1,6 @@
 [versions]
 activity = "1.5.1"
-aboutlibraries = "10.3.1"
+aboutlibraries = "10.4.0"
 accompanist = "0.23.1"
 compose = "1.1.1"
 coroutines = "1.6.4"
