@@ -64,6 +64,12 @@ android {
     // Configure the duplication rule, to match "duplicates" with
     duplicationRule = com.mikepenz.aboutlibraries.plugin.DuplicateRule.SIMPLE
   }
+
+  lint {
+    abortOnError = false
+    textReport = true
+    xmlReport = false
+  }
 }
 
 dependencies {
