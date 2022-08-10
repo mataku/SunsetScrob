@@ -10,7 +10,7 @@ ktor = "2.0.3"
 room = "2.4.3"
 kotlin = "1.7.0"
 kotlin-compiler-extension = "1.2.0"
-kotest = "5.4.1"
+kotest = "5.4.2"
 mockk = "1.12.5"
 
 [libraries]
