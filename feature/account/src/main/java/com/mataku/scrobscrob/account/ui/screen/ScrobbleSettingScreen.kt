@@ -48,6 +48,7 @@ fun ScrobbleSettingScreen(
   }
   val appleMusicAllowed = uiState.allowedApps.contains(APPLE_MUSIC_NAME.mappedApp())
   val spotifyAllowed = uiState.allowedApps.contains(SPOTIFY_NAME.mappedApp())
+  val youTubeMusicAllowed = uiState.allowedApps.contains(YOUTUBE_MUSIC_NAME.mappedApp())
 
   LazyColumn(content = {
     stickyHeader {
@@ -60,14 +61,25 @@ fun ScrobbleSettingScreen(
         enabled = appleMusicAllowed,
         onTapCell = { appName, enable ->
           viewModel.changeAppScrobbleState(appName, enable)
-        })
+        }
+      )
 
       ScrobbleSettingCell(
         title = SPOTIFY_NAME,
         enabled = spotifyAllowed,
         onTapCell = { appName, enable ->
           viewModel.changeAppScrobbleState(appName, enable)
-        })
+        }
+      )
+
+      ScrobbleSettingCell(
+        title = YOUTUBE_MUSIC_NAME,
+        enabled = youTubeMusicAllowed,
+        onTapCell = { appName, enable ->
+          viewModel.changeAppScrobbleState(appName, enable)
+        }
+      )
+
     }
   }, modifier = Modifier.fillMaxSize())
 }
@@ -103,12 +115,16 @@ internal fun String.mappedApp(): String? {
     SPOTIFY_NAME -> {
       "com.spotify.music"
     }
+    YOUTUBE_MUSIC_NAME -> {
+      "com.google.android.apps.youtube.music"
+    }
     else -> null
   }
 }
 
 private const val APPLE_MUSIC_NAME = "Apple Music"
 private const val SPOTIFY_NAME = "Spotify"
+private const val YOUTUBE_MUSIC_NAME = "YouTube Music"
 
 @Preview(showBackground = true)
 @Composable

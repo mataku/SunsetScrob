@@ -46,13 +46,13 @@ class MusicNotificationListenerService() : NotificationListenerService() {
     val allowedPackages = requester?.state?.allowedApps ?: emptySet()
 
     val notification = sbn.notification
-    if (allowedPackages.isEmpty() || !allowedPackages.contains(sbn.packageName) || !ALLOW_NOTIFICATION_ID_LIST.contains(
-        notification.channelId
-      )
-    ) {
+    val bundle = notification?.extras ?: return
+
+    if (allowedPackages.isEmpty() || !allowedPackages.contains(sbn.packageName)) {
       return
     }
-    val bundle = notification?.extras ?: return
+    // Notification using Media Player
+    bundle.get("android.mediaSession") ?: return
 
     val trackName = bundle.get("android.title")?.toString() ?: return
     val artistName = bundle.get("android.text")?.toString() ?: return
@@ -60,6 +60,8 @@ class MusicNotificationListenerService() : NotificationListenerService() {
     if (trackName == previousTrackName) {
       return
     }
+
+
     previousTrackName = trackName
     requester?.updateNowPlaying(
       trackName = trackName,
@@ -71,15 +73,5 @@ class MusicNotificationListenerService() : NotificationListenerService() {
     requester?.dispose()
     requester = null
     super.onDestroy()
-  }
-
-  companion object {
-    private const val SPOTIFY_PACKAGE = "com.spotify.music"
-    private const val APPLE_MUSIC_PACKAGE = "com.apple.android.music"
-
-    // HACK
-    private val ALLOW_NOTIFICATION_ID_LIST = listOf(
-      "playback", "playback_channel"
-    )
   }
 }
