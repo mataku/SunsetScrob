@@ -9,6 +9,9 @@ plugins {
   id("com.mikepenz.aboutlibraries.plugin")
 }
 
+apply(from = "${project.rootDir}/gradle/test_dependencies.gradle")
+apply(from = "${project.rootDir}/gradle/test_options.gradle")
+
 android {
   compileSdk = Versions.compileSdkVersion
 
@@ -82,6 +85,7 @@ dependencies {
   implementation(libs.compose.animation)
   implementation(libs.compose.material)
   implementation(libs.compose.navigation)
+  implementation(libs.compose.material.icons.extended)
 
   implementation(libs.hilt.navigation.compose)
 
@@ -92,6 +96,7 @@ dependencies {
   implementation(libs.coroutines)
   implementation(libs.timber)
 
+  implementation(libs.accompanist.navigation.animation)
   implementation(libs.accompanist.systemuicontroller)
 
   implementation(libs.aboutlibraries)
