@@ -52,4 +52,8 @@
   <string name="button_go_to_setting">設定へ</string>
 
   <string name="label_notification_permission_help">SunsetScrob の設定を確認してください</string>
+
+  <string name="error_password_required">パスワードを入力してください</string>
+  <string name="error_username_required">ユーザIDを入力してください</string>
+  <string name="error_login_failed">ログインに失敗しました</string>
 </resources>
