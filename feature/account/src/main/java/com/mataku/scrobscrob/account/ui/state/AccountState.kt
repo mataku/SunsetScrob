@@ -1,18 +1,19 @@
 package com.mataku.scrobscrob.account.ui.state
 
 import android.content.Context
-import android.content.Intent
-import android.provider.Settings
 import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
-import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.mataku.scrobscrob.account.R
+import com.mataku.scrobscrob.account.ui.navigation.navigateToLicense
+import com.mataku.scrobscrob.account.ui.navigation.navigateToScrobbleSetting
+import com.mataku.scrobscrob.account.ui.navigation.navigateToThemeSelector
 import com.mataku.scrobscrob.account.ui.viewmodel.AccountViewModel
+import com.mataku.scrobscrob.ui_common.navigateToLogin
+import com.mataku.scrobscrob.ui_common.navigateToPrivacyPolicy
 
 class AccountState(
   private val navController: NavController,
@@ -23,7 +24,7 @@ class AccountState(
     @Composable get() = viewModel.uiState.collectAsState().value
 
   fun navigateToThemeSelector() {
-    navController.navigate("theme")
+    navController.navigateToThemeSelector()
   }
 
   fun logout() {
@@ -31,32 +32,22 @@ class AccountState(
   }
 
   fun navigateToLoginScreen() {
-    navController.navigate("login") {
-      launchSingleTop = true
-      popUpTo(
-        navController.graph.findStartDestination().id
-      ) {
-        inclusive = true
-      }
-    }
+    navController.navigateToLogin()
   }
 
   fun navigateToLicenseScreen() {
-    navController.navigate("license")
+    navController.navigateToLicense()
   }
 
   fun navigateToPrivacyPolicyScreen() {
-    navController.navigate("privacy_policy")
+    navController.navigateToPrivacyPolicy()
   }
 
   fun navigateToScrobbleSetting() {
-    navController.navigate("scrobble_setting")
+    navController.navigateToScrobbleSetting()
   }
 
-  fun navigateToNotificationSetting() {
-    val intent = Intent()
-    intent.action = Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS
-    ContextCompat.startActivity(context, intent, null)
+  fun showPermissionHelp() {
     Toast.makeText(
       context.applicationContext,
       R.string.label_notification_permission_help,

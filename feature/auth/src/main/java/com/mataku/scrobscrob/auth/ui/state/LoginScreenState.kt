@@ -4,13 +4,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.NavHostController
+import androidx.navigation.NavController
 import com.mataku.scrobscrob.auth.ui.viewmodel.LoginViewModel
-import com.mataku.scrobscrob.ui_common.SunsetBottomNavItem
+import com.mataku.scrobscrob.ui_common.navigateToPrivacyPolicy
+import com.mataku.scrobscrob.ui_common.navigateToScrobble
 
 class LoginScreenState(
-  private val navController: NavHostController,
+  private val navController: NavController,
   private val viewModel: LoginViewModel
 ) {
   val uiState: LoginViewModel.UiState
@@ -24,20 +24,11 @@ class LoginScreenState(
   }
 
   fun navigateToTop() {
-    navController.navigate(
-      SunsetBottomNavItem.SCROBBLE.screenRoute
-    ) {
-      launchSingleTop = true
-      popUpTo(
-        navController.graph.findStartDestination().id
-      ) {
-        inclusive = true
-      }
-    }
+    navController.navigateToScrobble()
   }
 
   fun navigateToPrivacyPolicy() {
-    navController.navigate("privacy_policy")
+    navController.navigateToPrivacyPolicy()
   }
 
   fun popEvent() {
@@ -62,7 +53,7 @@ class LoginScreenState(
 
 @Composable
 fun rememberLoginScreenState(
-  navController: NavHostController,
+  navController: NavController,
   viewModel: LoginViewModel = hiltViewModel()
 ): LoginScreenState =
   remember(navController, viewModel) {

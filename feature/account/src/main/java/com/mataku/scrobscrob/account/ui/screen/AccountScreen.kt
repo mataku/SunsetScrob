@@ -79,6 +79,7 @@ fun AccountScreen(
         val intent = Intent()
         intent.action = Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS
         launcher.launch(intent)
+        state.showPermissionHelp()
       }
     )
   }

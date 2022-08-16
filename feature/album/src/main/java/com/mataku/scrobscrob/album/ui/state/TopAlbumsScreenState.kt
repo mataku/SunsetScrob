@@ -6,11 +6,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
+import androidx.navigation.NavController
 import com.mataku.scrobscrob.album.ui.viewmodel.TopAlbumsViewModel
+import com.mataku.scrobscrob.ui_common.navigateToWebView
 
 class TopAlbumsScreenState(
-  private val navController: NavHostController,
+  private val navController: NavController,
   private val viewModel: TopAlbumsViewModel,
   context: Context
 ) {
@@ -22,7 +23,7 @@ class TopAlbumsScreenState(
   val contentWidth = fullWidth / 2
 
   fun onTapAlbum(url: String) {
-    navController.navigate("webview?url=$url")
+    navController.navigateToWebView(url)
   }
 
   fun onScrollEnd() {
@@ -33,7 +34,7 @@ class TopAlbumsScreenState(
 @Composable
 fun rememberTopAlbumsScreenState(
   viewModel: TopAlbumsViewModel = hiltViewModel(),
-  navController: NavHostController,
+  navController: NavController,
   context: Context = LocalContext.current
 ): TopAlbumsScreenState {
   return remember {
