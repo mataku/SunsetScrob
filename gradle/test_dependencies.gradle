@@ -4,6 +4,7 @@ dependencies {
   testImplementation libs.kotest.assertions
   testImplementation libs.mockk
   testImplementation libs.mockk.agent.jvm
+  testImplementation project(':test_helper')
 }
 
 android.testOptions {
