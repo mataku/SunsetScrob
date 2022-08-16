@@ -16,8 +16,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.mataku.scrobscrob.account.ui.navigation.navigateToAccount
+import com.mataku.scrobscrob.album.ui.navigation.navigateToTopAlbums
+import com.mataku.scrobscrob.artist.ui.navigation.navigateToTopArtists
 import com.mataku.scrobscrob.ui_common.SunsetBottomNavItem
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
+import com.mataku.scrobscrob.ui_common.navigateToScrobble
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.SunsetTheme
 import com.mataku.scrobscrob.ui_common.style.accentColor
@@ -73,14 +77,19 @@ fun SunsetBottomNavigation(navController: NavController) {
         },
         selected = currentRoute == item.screenRoute,
         onClick = {
-          navController.navigate(item.screenRoute) {
-            navController.graph.startDestinationRoute?.let { screenRoute ->
-              popUpTo(screenRoute) {
-                saveState = true
-              }
+          when (item) {
+            SunsetBottomNavItem.SCROBBLE -> {
+              navController.navigateToScrobble()
             }
-            launchSingleTop = true
-            restoreState = true
+            SunsetBottomNavItem.TOP_ALBUMS -> {
+              navController.navigateToTopAlbums()
+            }
+            SunsetBottomNavItem.TOP_ARTISTS -> {
+              navController.navigateToTopArtists()
+            }
+            SunsetBottomNavItem.ACCOUNT -> {
+              navController.navigateToAccount()
+            }
           }
         }
       )
