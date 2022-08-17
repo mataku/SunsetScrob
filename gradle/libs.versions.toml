@@ -75,6 +75,8 @@ aboutlibraries-compose = { module = "com.mikepenz:aboutlibraries-compose", versi
 
 lottie-compose = { module = "com.airbnb.android:lottie-compose", version = "5.2.0" }
 
+app-update = { module = "com.google.android.play:app-update-ktx", version = "2.0.0" }
+
 timber = { module = "com.jakewharton.timber:timber", version = "5.0.1" }
 
 androidx-test-core = { module = "androidx.test:core", version = "1.4.0" }
@@ -83,3 +85,4 @@ kotest-assertions = { module = "io.kotest:kotest-assertions-core", version.ref =
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 mockk-agent-jvm = { module = "io.mockk:mockk-agent-jvm", version.ref = "mockk" }
 coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
+

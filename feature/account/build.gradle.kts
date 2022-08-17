@@ -101,4 +101,6 @@ dependencies {
 
   implementation(libs.aboutlibraries)
   implementation(libs.aboutlibraries.compose)
+
+  implementation(libs.app.update)
 }
