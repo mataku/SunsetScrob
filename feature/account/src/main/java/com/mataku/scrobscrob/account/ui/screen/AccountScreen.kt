@@ -1,5 +1,6 @@
 package com.mataku.scrobscrob.account.ui.screen
 
+import android.app.Activity
 import android.content.Intent
 import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -17,28 +18,41 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.app.NotificationManagerCompat
+import com.google.android.play.core.appupdate.AppUpdateInfo
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.appupdate.AppUpdateOptions
+import com.google.android.play.core.install.InstallStateUpdatedListener
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.InstallStatus
+import com.google.android.play.core.install.model.UpdateAvailability
+import com.google.android.play.core.ktx.requestAppUpdateInfo
+import com.google.android.play.core.ktx.requestCompleteUpdate
 import com.mataku.scrobscrob.account.AccountMenu
 import com.mataku.scrobscrob.account.R
 import com.mataku.scrobscrob.account.ui.state.AccountState
 import com.mataku.scrobscrob.account.ui.viewmodel.AccountViewModel
 import com.mataku.scrobscrob.core.entity.AppTheme
+import com.mataku.scrobscrob.ui_common.SunsetAlertDialog
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.organism.ContentHeader
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
+import com.mataku.scrobscrob.ui_common.style.LocalScaffoldState
 import com.mataku.scrobscrob.ui_common.style.SunsetTheme
 import com.mataku.scrobscrob.ui_common.style.sunsetBackgroundGradient
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun AccountScreen(
@@ -50,7 +64,8 @@ fun AccountScreen(
   val uiState = state.uiState
 
   val context = LocalContext.current
-  val launcher =
+  val coroutineScope = rememberCoroutineScope()
+  val notificationPermissionLauncher =
     rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
       if (NotificationManagerCompat.getEnabledListenerPackages(context)
           .contains(context.packageName)
@@ -58,6 +73,28 @@ fun AccountScreen(
         state.navigateToScrobbleSetting()
       }
     }
+
+  val appUpdateManager = AppUpdateManagerFactory.create(context.applicationContext)
+
+  val appUpdateLauncher =
+    rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+
+    }
+
+  val scaffoldState = LocalScaffoldState.current
+  val listener = InstallStateUpdatedListener { installState ->
+    if (installState.installStatus() == InstallStatus.DOWNLOADED) {
+      coroutineScope.launch {
+        scaffoldState.snackbarHostState.showSnackbar(
+          context.getString(R.string.label_start_update)
+        )
+        delay(2000L)
+        appUpdateManager.requestCompleteUpdate()
+      }
+    }
+  }
+
+  appUpdateManager.registerListener(listener)
 
   uiState.theme?.let {
     AccountContent(
@@ -78,9 +115,29 @@ fun AccountScreen(
       navigateToNotificationSetting = {
         val intent = Intent()
         intent.action = Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS
-        launcher.launch(intent)
+        notificationPermissionLauncher.launch(intent)
         state.showPermissionHelp()
-      }
+      },
+      appUpdateInfo = uiState.appUpdateInfo,
+      requestAppUpdate = { appUpdateInfo ->
+        if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
+          state.completeUpdate()
+        } else {
+          coroutineScope.launch {
+            kotlin.runCatching {
+              val updateInfo = appUpdateManager.requestAppUpdateInfo()
+              appUpdateManager.startUpdateFlowForResult(
+                updateInfo,
+                context as Activity,
+                AppUpdateOptions.defaultOptions(AppUpdateType.FLEXIBLE),
+                1
+              )
+              appUpdateLauncher.launch(context.intent)
+            }
+          }
+        }
+      },
+      appVersion = uiState.appVersion
     )
   }
 
@@ -95,38 +152,21 @@ fun AccountScreen(
   }
 
   if (openDialog.value) {
-    AlertDialog(
+    SunsetAlertDialog(
+      title = "Logout?",
+      onConfirmButton = {
+        state.logout()
+      },
+      confirmButtonText = "Let me out!",
+      dismissButtonText = "NO",
       onDismissRequest = {
         openDialog.value = false
       },
-      title = {
-        Text(text = "Logout?")
-      },
-      confirmButton = {
-        TextButton(onClick = {
-          state.logout()
-        }) {
-          Text(
-            text = "Let me out!", style = SunsetTextStyle.body1.copy(
-              MaterialTheme.colors.onSurface
-            )
-          )
-        }
-      },
-      dismissButton = {
-        TextButton(onClick = {
-          openDialog.value = false
-        }) {
-          Text(
-            text = "NO", style = SunsetTextStyle.body1.copy(
-              MaterialTheme.colors.onSurface
-            )
-          )
-        }
+      onDismissButton = {
+        openDialog.value = false
       }
     )
   }
-
 }
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class)
@@ -138,7 +178,10 @@ private fun AccountContent(
   navigateToLogoutConfirmation: () -> Unit,
   navigateToLicenseList: () -> Unit,
   navigateToPrivacyPolicy: () -> Unit,
-  navigateToNotificationSetting: () -> Unit
+  navigateToNotificationSetting: () -> Unit,
+  requestAppUpdate: (AppUpdateInfo) -> Unit,
+  appVersion: String,
+  appUpdateInfo: AppUpdateInfo?
 ) {
   val context = LocalContext.current
   val openDialog = remember {
@@ -196,6 +239,20 @@ private fun AccountContent(
         ) {
           navigateToPrivacyPolicy.invoke()
         }
+        val appUpdateMenu = AccountMenu.APP_VERSION
+        val updateAvailable =
+          appUpdateInfo?.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE || appUpdateInfo?.installStatus() == InstallStatus.DOWNLOADED
+        AccountMenuCell(
+          title = stringResource(id = appUpdateMenu.titleRes, appVersion),
+          description = if (updateAvailable) {
+            stringResource(id = R.string.label_update_available)
+          } else {
+            ""
+          },
+          enabled = updateAvailable
+        ) {
+          requestAppUpdate.invoke(appUpdateInfo!!)
+        }
       }
     },
     modifier = if (LocalAppTheme.current == AppTheme.SUNSET) {
@@ -247,12 +304,13 @@ private fun AccountContent(
 private fun AccountMenuCell(
   title: String,
   description: String,
+  enabled: Boolean = true,
   onTapAccount: () -> Unit
 ) {
   Column(modifier = Modifier
     .fillMaxWidth()
     .height(64.dp)
-    .clickable {
+    .clickable(enabled = enabled) {
       onTapAccount.invoke()
     }
     .padding(horizontal = 16.dp),
@@ -277,7 +335,10 @@ private fun AccountContentPreview() {
         navigateToLicenseList = {},
         navigateToPrivacyPolicy = {},
         navigateToScrobbleSetting = {},
-        navigateToNotificationSetting = {}
+        navigateToNotificationSetting = {},
+        requestAppUpdate = {},
+        appUpdateInfo = null,
+        appVersion = "1.0.0"
       )
     }
   }

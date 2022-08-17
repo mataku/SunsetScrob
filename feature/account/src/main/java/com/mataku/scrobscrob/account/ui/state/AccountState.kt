@@ -23,6 +23,10 @@ class AccountState(
   val uiState: AccountViewModel.UiState
     @Composable get() = viewModel.uiState.collectAsState().value
 
+  fun completeUpdate() {
+    viewModel.completeUpdate()
+  }
+
   fun navigateToThemeSelector() {
     navController.navigateToThemeSelector()
   }
