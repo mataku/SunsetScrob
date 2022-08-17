@@ -2,7 +2,7 @@
 activity = "1.5.1"
 aboutlibraries = "10.4.0"
 accompanist = "0.25.0"
-compose = "1.2.0"
+compose = "1.2.1"
 coroutines = "1.6.4"
 firebase = "26.8.0"
 hilt = "2.43.2"
