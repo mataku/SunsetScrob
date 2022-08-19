@@ -52,6 +52,10 @@
   <string name="item_license">Licenses</string>
   <string name="item_privacy_policy">Privacy policy</string>
 
+  <string name="item_app_version">v%s</string>
+  <string name="label_update_available">Update Available</string>
+  <string name="label_start_update">Start app update. App will restart.</string>
+
   <string name="error_password_required">Password is required</string>
   <string name="error_username_required">Username is required</string>
   <string name="error_login_failed">Login failed</string>

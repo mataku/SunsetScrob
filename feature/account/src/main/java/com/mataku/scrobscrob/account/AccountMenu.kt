@@ -25,5 +25,9 @@ enum class AccountMenu(
   PRIVACY_POLICY(
     titleRes = R.string.item_privacy_policy,
     descriptionRes = 0
+  ),
+  APP_VERSION(
+    titleRes = R.string.item_app_version,
+    descriptionRes = 0
   );
 }
