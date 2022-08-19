@@ -1,0 +1,1 @@
+Improve themed app icon for Android 13
