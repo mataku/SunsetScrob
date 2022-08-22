@@ -1,10 +1,6 @@
-import dependency.Versions
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
-  id("com.android.application")
-  id("kotlin-android")
-  id("kotlin-kapt")
+  id("sunsetscrob.android.application")
+  id("sunsetscrob.android.compose")
   id("dagger.hilt.android.plugin")
   id("com.google.dagger.hilt.android")
   id("com.google.firebase.crashlytics")
@@ -12,83 +8,6 @@ plugins {
 }
 
 apply(from = "${project.rootDir}/gradle/test_dependencies.gradle")
-apply(from = "${project.rootDir}/gradle/test_options.gradle")
-
-android {
-  compileSdk = Versions.compileSdkVersion
-  buildFeatures {
-    compose = true
-  }
-
-  defaultConfig {
-    applicationId = "com.mataku.scrobscrob"
-    minSdk = Versions.minSdkVersion
-    targetSdk = Versions.targetSdkVersion
-    versionCode = 101
-    versionName = "1.0.1"
-    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    vectorDrawables.useSupportLibrary = true
-    proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
-  }
-
-  signingConfigs {
-    getByName("debug") {
-      storeFile = file("../debug.keystore")
-    }
-    create("release") {
-      storeFile = file("../SunsetScrob.jks")
-      storePassword = System.getenv("SUNSET_STORE_PASSWORD")
-      keyAlias = System.getenv("SUNSET_KEY_ALIAS")
-      keyPassword = System.getenv("SUNSET_KEY_PASSWORD")
-    }
-  }
-
-  buildTypes {
-    getByName("debug") {
-      isMinifyEnabled = true
-      applicationIdSuffix = ".dev"
-      signingConfig = signingConfigs.getByName("debug")
-      isDebuggable = true
-    }
-    release {
-      isMinifyEnabled = true
-      signingConfig = signingConfigs.getByName("release")
-      isDebuggable = false
-    }
-  }
-
-  lint {
-    abortOnError = false
-    textReport = true
-    xmlReport = false
-  }
-  compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
-  }
-
-  composeOptions {
-    kotlinCompilerExtensionVersion = libs.versions.kotlin.compiler.extension.get()
-  }
-
-  packagingOptions {
-    val excludePatterns = listOf(
-      "META-INF/atomicfu.kotlin_module",
-      "META-INF/kotlinx-coroutines-io.kotlin_module",
-      "META-INF/kotlinx-io.kotlin_module",
-      "META-INF/ktor-client-json.kotlin_module",
-      "META-INF/ktor-client-core.kotlin_module",
-      "META-INF/ktor-http.kotlin_module",
-      "META-INF/ktor-utils.kotlin_module",
-      "META-INF/kotlinx-coroutines-core.kotlin_module",
-      "META-INF/kotlinx-serialization-runtime.kotlin_module",
-      "META-INF/gradle/incremental.annotation.processors"
-    )
-    resources.excludes.addAll(excludePatterns)
-  }
-
-//    dynamicFeatures [":feature:licenses"]
-}
 
 dependencies {
   implementation(project(":core"))
@@ -132,12 +51,5 @@ kapt {
   correctErrorTypes = true
   javacOptions {
     option("-Xmaxerrs", 1000)
-  }
-}
-
-tasks.withType(KotlinCompile::class).all {
-  kotlinOptions {
-    jvmTarget = "1.8"
-    freeCompilerArgs += listOf("-opt-in=kotlin.RequiresOptIn")
   }
 }

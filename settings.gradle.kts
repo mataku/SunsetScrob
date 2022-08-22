@@ -1,3 +1,12 @@
+pluginManagement {
+  includeBuild("build-logic")
+  repositories {
+    google()
+    mavenCentral()
+    gradlePluginPortal()
+  }
+}
+
 include(":app")
 include(":core")
 include(":ui_common")

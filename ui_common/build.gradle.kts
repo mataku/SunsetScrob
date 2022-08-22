@@ -1,47 +1,8 @@
-import dependency.Versions
-
 plugins {
-  id("com.android.library")
+  id("sunsetscrob.android.feature")
+  id("sunsetscrob.android.compose")
   id("kotlin-android")
   id("kotlin-kapt")
-}
-
-android {
-  compileSdk = Versions.compileSdkVersion
-  buildFeatures {
-    compose = true
-  }
-
-  defaultConfig {
-    minSdk = Versions.minSdkVersion
-    targetSdk = Versions.targetSdkVersion
-    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-  }
-
-  buildTypes {
-    getByName("debug") {
-    }
-    release {
-    }
-  }
-
-  lint {
-    abortOnError = false
-    textReport = true
-    xmlReport = false
-  }
-
-  compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
-  }
-  composeOptions {
-    kotlinCompilerExtensionVersion = libs.versions.kotlin.compiler.extension.get()
-  }
-
-  kotlinOptions {
-    jvmTarget = "1.8"
-  }
 }
 
 dependencies {
