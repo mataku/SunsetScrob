@@ -1,4 +1,5 @@
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
+import ext.androidLintConfiguration
 import ext.kotlinConfiguration
 import ext.testConfiguration
 import org.gradle.api.Plugin
@@ -41,6 +42,7 @@ class ApplicationConventionPlugin : Plugin<Project> {
           }
         }
         kotlinConfiguration()
+        androidLintConfiguration()
         packagingOptions {
           val excludePatterns = listOf(
             "META-INF/atomicfu.kotlin_module",

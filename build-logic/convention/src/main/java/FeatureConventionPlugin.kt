@@ -1,4 +1,5 @@
 import com.android.build.gradle.LibraryExtension
+import ext.androidLintConfiguration
 import ext.kotlinConfiguration
 import ext.testConfiguration
 import org.gradle.api.Plugin
@@ -15,6 +16,7 @@ class FeatureConventionPlugin : Plugin<Project> {
 
         extensions.configure<LibraryExtension> {
           kotlinConfiguration()
+          androidLintConfiguration()
           testConfiguration()
           buildTypes {
             getByName("debug") {

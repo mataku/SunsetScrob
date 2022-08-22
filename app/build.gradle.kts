@@ -9,18 +9,6 @@ plugins {
 
 apply(from = "${project.rootDir}/gradle/test_dependencies.gradle")
 
-android {
-  lint {
-    abortOnError = false
-    textReport = true
-    xmlReport = false
-  }
-
-  composeOptions {
-    kotlinCompilerExtensionVersion = libs.versions.kotlin.compiler.extension.get()
-  }
-}
-
 dependencies {
   implementation(project(":core"))
   implementation(project(":data:repository"))
