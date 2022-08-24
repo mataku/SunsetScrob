@@ -9,6 +9,6 @@
     "com.google.accompanist:accompanist-systemuicontroller",
     "com.google.accompanist:accompanist-swiperefresh"
   ],
-  "prConcurrentLimit": 3,
+  "prConcurrentLimit": 5,
   "rebaseWhen": "never"
 }
