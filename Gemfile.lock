@@ -269,7 +269,7 @@ DEPENDENCIES
   danger
   danger-android_lint
   danger-android_permissions_checker
-  fastlane
+  fastlane (~> 2.209.0)
   fastlane-plugin-firebase_app_distribution
 
 BUNDLED WITH
