@@ -66,7 +66,7 @@ license-tools-plugin = { module = "gradle.plugin.com.cookpad.android.plugin:plug
 crashlytics-gradle-plugin = { module = "com.google.firebase:firebase-crashlytics-gradle", version = "2.9.1" }
 hilt-gradle-plugin = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hilt" }
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
-google-services-plugin = { module = "com.google.gms:google-services", version = "4.3.13" }
+google-services-plugin = { module = "com.google.gms:google-services", version = "4.3.14" }
 serialization-plugin = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin" }
 aboutlibraries-plugin = { module = "com.mikepenz.aboutlibraries.plugin:aboutlibraries-plugin", version.ref = "aboutlibraries" }
 
