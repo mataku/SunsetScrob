@@ -79,7 +79,7 @@ app-update = { module = "com.google.android.play:app-update-ktx", version = "2.0
 
 timber = { module = "com.jakewharton.timber:timber", version = "5.0.1" }
 
-androidx-test-core = { module = "androidx.test:core", version = "1.4.0" }
+androidx-test-core = { module = "androidx.test:core", version = "1.5.0" }
 kotest-runner-junit5 = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest" }
 kotest-assertions = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
