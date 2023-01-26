@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import androidx.navigation.compose.rememberNavController
 import com.mataku.scrobscrob.app.ui.molecule.SunsetBottomNavigation
 import com.mataku.scrobscrob.app.ui.navigation.NavigationGraph
 import com.mataku.scrobscrob.ui_common.SunsetBottomNavItem
@@ -18,7 +18,7 @@ import com.mataku.scrobscrob.ui_common.style.LocalScaffoldState
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun MainScreen(username: String?) {
-  val navController = rememberAnimatedNavController()
+  val navController = rememberNavController()
   val navBackStackEntry by navController.currentBackStackEntryAsState()
   val currentRoute = navBackStackEntry?.destination?.route
   val scaffoldState = rememberScaffoldState()

@@ -1,13 +1,11 @@
 package com.mataku.scrobscrob.artist.ui.navigation
 
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
-import com.google.accompanist.navigation.animation.composable
+import androidx.navigation.compose.composable
 import com.mataku.scrobscrob.artist.ui.screen.TopArtistsScreen
 import com.mataku.scrobscrob.artist.ui.state.rememberTopArtistsScreenState
 
-@OptIn(ExperimentalAnimationApi::class)
 fun NavGraphBuilder.artistGraph(navController: NavController) {
   composable(TOP_ARTISTS_DESTINATION) {
     TopArtistsScreen(

@@ -1,16 +1,14 @@
 package com.mataku.scrobscrob.ui_common
 
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.google.accompanist.navigation.animation.composable
 import com.mataku.scrobscrob.ui_common.template.WebViewScreen
 
-@OptIn(ExperimentalAnimationApi::class)
 fun NavGraphBuilder.commonGraph() {
   composable(
     "webview?url={url}",
