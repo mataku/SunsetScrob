@@ -277,7 +277,7 @@ private fun LoginContent(
         .fillMaxWidth()
         .padding(horizontal = 24.dp),
       enabled = !isLoading,
-      contentPadding = PaddingValues(vertical = 12.dp)
+      contentPadding = PaddingValues(vertical = 16.dp)
     ) {
       if (isLoading) {
         CircularProgressIndicator(
