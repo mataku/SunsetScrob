@@ -9,7 +9,6 @@ buildscript {
     classpath(libs.kotlin.gradle.plugin)
     classpath(libs.serialization.plugin)
     classpath(libs.crashlytics.gradle.plugin)
-    classpath(libs.license.tools.plugin)
     classpath(libs.google.services.plugin)
     classpath(libs.hilt.gradle.plugin)
     classpath(libs.aboutlibraries.plugin)
