@@ -5,6 +5,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getByType
 
 class ComposeConventionPlugin : Plugin<Project> {
@@ -19,6 +20,10 @@ class ComposeConventionPlugin : Plugin<Project> {
         extensions.configure<LibraryExtension> {
           composeConfiguration(libs)
         }
+      }
+      dependencies {
+        val composeBom = libs.findLibrary("compose-bom").get()
+        add("implementation", platform(composeBom))
       }
     }
   }

@@ -1,25 +1,26 @@
 [versions]
 activity = "1.6.1"
-aboutlibraries = "10.4.0"
-accompanist = "0.25.0"
-compose = "1.2.0"
+aboutlibraries = "10.5.2"
+accompanist = "0.28.0"
+compose = "2023.01.00"
 coroutines = "1.6.4"
 firebase = "30.5.0"
-hilt = "2.44"
+hilt = "2.44.2"
 ktor = "2.1.1"
 room = "2.4.3"
-kotlin = "1.7.0"
-kotlin-compiler-extension = "1.2.0"
-kotest = "5.4.2"
-mockk = "1.12.8"
+kotlin = "1.8.0"
+kotlin-compiler-extension = "1.4.0"
+kotest = "5.5.4"
+mockk = "1.13.3"
 
 [libraries]
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity" }
-compose-material = { module = "androidx.compose.material:material", version.ref = "compose" }
-compose-animation = { module = "androidx.compose.animation:animation", version.ref = "compose" }
-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
+compose-bom = { module = "androidx.compose:compose-bom", version.ref = "compose" }
+compose-material = { module = "androidx.compose.material:material" }
+compose-animation = { module = "androidx.compose.animation:animation" }
+compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 compose-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version = "2.5.1" }
-compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "compose" }
+compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
 compose-navigation = { module = "androidx.navigation:navigation-compose", version = "2.5.3" }
 
 accompanist-navigation-animation = { module = "com.google.accompanist:accompanist-navigation-animation", version.ref = "accompanist" }
@@ -61,7 +62,7 @@ hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", ve
 
 datastore-preferences = { module = "androidx.datastore:datastore-preferences", version = "1.0.0" }
 
-android-gradle-plugin = { module = "com.android.tools.build:gradle", version = "7.3.0" }
+android-gradle-plugin = { module = "com.android.tools.build:gradle", version = "7.4.0" }
 crashlytics-gradle-plugin = { module = "com.google.firebase:firebase-crashlytics-gradle", version = "2.9.2" }
 hilt-gradle-plugin = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hilt" }
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
@@ -78,7 +79,7 @@ app-update = { module = "com.google.android.play:app-update-ktx", version = "2.0
 
 timber = { module = "com.jakewharton.timber:timber", version = "5.0.1" }
 
-androidx-test-core = { module = "androidx.test:core", version = "1.4.0" }
+androidx-test-core = { module = "androidx.test:core", version = "1.5.0" }
 kotest-runner-junit5 = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest" }
 kotest-assertions = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
