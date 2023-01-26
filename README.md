@@ -15,6 +15,8 @@ Last.fm client on Android (mainly for my portfolio)
 ## Tech stacks
 - MVVM
 - automation of building and releasing with Fastlane
+- Gradle version catalog
+- Gradle convention plugin
 
 ## TODO
 - Show each content details
