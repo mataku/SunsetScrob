@@ -2,6 +2,10 @@ plugins {
   id("sunsetscrob.android.feature")
 }
 
+android {
+  namespace = "com.mataku.scrobscrob.test_helper"
+}
+
 dependencies {
   implementation(libs.androidx.test.core)
   implementation(libs.kotest.runner.junit5)

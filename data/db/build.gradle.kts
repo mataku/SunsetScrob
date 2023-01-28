@@ -6,6 +6,10 @@ plugins {
 
 apply(from = "${project.rootDir}/gradle/test_dependencies.gradle")
 
+android {
+  namespace = "com.mataku.scrobscrob.data.db"
+}
+
 dependencies {
   implementation(project(":core"))
 

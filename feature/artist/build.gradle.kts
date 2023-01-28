@@ -7,6 +7,10 @@ plugins {
 
 apply(from = "${project.rootDir}/gradle/test_dependencies.gradle")
 
+android {
+  namespace = "com.mataku.scrobscrob.artist"
+}
+
 dependencies {
   implementation(project(":ui_common"))
   implementation(project(":core"))

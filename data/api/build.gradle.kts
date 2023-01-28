@@ -15,6 +15,7 @@ android {
     buildConfigField("String", "API_KEY", apiKey)
     buildConfigField("String", "SHARED_SECRET", sharedSecret)
   }
+  namespace = "com.mataku.scrobscrob.data.api"
 }
 
 dependencies {

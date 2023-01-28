@@ -5,6 +5,10 @@ plugins {
   id("kotlin-kapt")
 }
 
+android {
+  namespace = "com.mataku.scrobscrob.ui_common"
+}
+
 dependencies {
   implementation(project(":core"))
   implementation(libs.activity.compose)

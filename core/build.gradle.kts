@@ -5,6 +5,10 @@ plugins {
 
 apply(from = "${project.rootDir}/gradle/test_dependencies.gradle")
 
+android {
+  namespace = "com.mataku.scrobscrob.core"
+}
+
 dependencies {
   implementation(libs.ktor.client.okhttp)
   implementation(libs.ktor.client.logging)

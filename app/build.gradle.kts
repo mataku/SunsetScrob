@@ -9,6 +9,10 @@ plugins {
 
 apply(from = "${project.rootDir}/gradle/test_dependencies.gradle")
 
+android {
+  namespace = "com.mataku.scrobscrob"
+}
+
 dependencies {
   implementation(project(":core"))
   implementation(project(":data:repository"))

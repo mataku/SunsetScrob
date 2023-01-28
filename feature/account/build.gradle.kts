@@ -34,6 +34,8 @@ android {
     // Configure the duplication rule, to match "duplicates" with
     duplicationRule = com.mikepenz.aboutlibraries.plugin.DuplicateRule.SIMPLE
   }
+
+  namespace = "com.mataku.scrobscrob.account"
 }
 
 dependencies {
