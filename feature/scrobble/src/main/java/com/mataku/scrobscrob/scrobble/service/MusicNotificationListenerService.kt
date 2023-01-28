@@ -52,10 +52,10 @@ class MusicNotificationListenerService() : NotificationListenerService() {
       return
     }
     // Notification using Media Player
-    bundle.get("android.mediaSession") ?: return
+    bundle.getString("android.mediaSession") ?: return
 
-    val trackName = bundle.get("android.title")?.toString() ?: return
-    val artistName = bundle.get("android.text")?.toString() ?: return
+    val trackName = bundle.getString("android.title") ?: return
+    val artistName = bundle.getString("android.text") ?: return
 
     if (trackName == previousTrackName) {
       return
