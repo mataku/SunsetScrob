@@ -11,7 +11,7 @@ room = "2.5.0"
 kotlin = "1.8.0"
 kotlin-compiler-extension = "1.4.0"
 kotest = "5.5.4"
-mockk = "1.13.3"
+mockk = "1.13.4"
 
 [libraries]
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity" }
