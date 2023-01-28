@@ -22,7 +22,6 @@ dependencies {
   implementation(libs.compose.navigation)
   implementation(libs.coil.compose)
   implementation(libs.accompanist.navigation.animation)
-  implementation(libs.accompanist.swiperefresh)
   implementation(libs.accompanist.systemuicontroller)
   implementation(libs.hilt.navigation.compose)
 

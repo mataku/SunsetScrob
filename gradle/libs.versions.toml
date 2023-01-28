@@ -25,7 +25,6 @@ compose-navigation = { module = "androidx.navigation:navigation-compose", versio
 
 accompanist-navigation-animation = { module = "com.google.accompanist:accompanist-navigation-animation", version.ref = "accompanist" }
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
-accompanist-swiperefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "accompanist" }
 
 core-splashscreen = { module = "androidx.core:core-splashscreen", version = "1.0.0" }
 

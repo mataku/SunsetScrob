@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterialApi::class)
+
 package com.mataku.scrobscrob.scrobble.ui.screen
 
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -10,6 +12,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,8 +23,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.core.entity.RecentTrack
 import com.mataku.scrobscrob.core.entity.imageUrl
@@ -41,11 +44,18 @@ fun ScrobbleScreen(
   val lazyListState = rememberLazyListState()
   val density = LocalContext.current.resources.displayMetrics.density
 
-  SwipeRefresh(
-    state = rememberSwipeRefreshState(isRefreshing = uiState.isRefreshing),
+  val pullRefreshState = rememberPullRefreshState(
+    refreshing = uiState.isRefreshing,
     onRefresh = {
       state.refresh()
-    }) {
+    }
+  )
+
+  Box(
+    modifier = Modifier.pullRefresh(
+      state = pullRefreshState,
+    )
+  ) {
     ScrobbleContent(
       lazyListState = lazyListState,
       recentTracks = uiState.recentTracks,
