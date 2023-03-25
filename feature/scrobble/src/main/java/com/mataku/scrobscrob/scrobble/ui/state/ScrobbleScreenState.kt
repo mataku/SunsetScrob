@@ -3,10 +3,10 @@ package com.mataku.scrobscrob.scrobble.ui.state
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mataku.scrobscrob.scrobble.ui.navigation.navigateToTrackDetail
 import com.mataku.scrobscrob.scrobble.ui.viewmodel.ScrobbleViewModel
+import org.koin.androidx.compose.koinViewModel
 
 class ScrobbleScreenState(
   private val navController: NavController,
@@ -39,7 +39,7 @@ class ScrobbleScreenState(
 @Composable
 fun rememberScrobbleScreenState(
   navController: NavController,
-  viewModel: ScrobbleViewModel = hiltViewModel()
+  viewModel: ScrobbleViewModel = koinViewModel(),
 ): ScrobbleScreenState {
   return remember(navController, viewModel) {
     ScrobbleScreenState(
