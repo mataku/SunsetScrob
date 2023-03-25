@@ -1,7 +1,6 @@
 package com.mataku.scrobscrob.app.ui.screen
 
 import android.annotation.SuppressLint
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
@@ -14,7 +13,6 @@ import com.mataku.scrobscrob.app.ui.navigation.NavigationGraph
 import com.mataku.scrobscrob.ui_common.SunsetBottomNavItem
 import com.mataku.scrobscrob.ui_common.style.LocalScaffoldState
 
-@OptIn(ExperimentalAnimationApi::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun MainScreen(username: String?) {
@@ -22,6 +20,7 @@ fun MainScreen(username: String?) {
   val navBackStackEntry by navController.currentBackStackEntryAsState()
   val currentRoute = navBackStackEntry?.destination?.route
   val scaffoldState = rememberScaffoldState()
+  val screenRoutes = SunsetBottomNavItem.values().map { it.screenRoute }
 
   CompositionLocalProvider(
     LocalScaffoldState provides scaffoldState
@@ -29,7 +28,7 @@ fun MainScreen(username: String?) {
     Scaffold(
       topBar = {},
       bottomBar = {
-        if (SunsetBottomNavItem.values().map { it.screenRoute }.contains(currentRoute)) {
+        if (screenRoutes.contains(currentRoute)) {
           SunsetBottomNavigation(navController = navController)
         }
       },

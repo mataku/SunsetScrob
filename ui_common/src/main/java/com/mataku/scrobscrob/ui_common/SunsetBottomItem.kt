@@ -25,6 +25,6 @@ enum class SunsetBottomNavItem(
   ACCOUNT(
     null,
     "Account",
-    "Account"
+    "account"
   );
 }
