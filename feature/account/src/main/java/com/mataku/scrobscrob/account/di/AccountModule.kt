@@ -5,10 +5,12 @@ import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.mataku.scrobscrob.account.ui.viewmodel.AccountViewModel
 import com.mataku.scrobscrob.account.ui.viewmodel.ScrobbleSettingViewModel
 import com.mataku.scrobscrob.account.ui.viewmodel.ThemeSelectorViewModel
+import com.mataku.scrobscrob.data.repository.di.repositoryModule
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val accountModule = module {
+  includes(repositoryModule)
   single<AppUpdateManager> {
     AppUpdateManagerFactory.create(get())
   }
