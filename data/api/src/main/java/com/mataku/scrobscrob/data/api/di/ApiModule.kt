@@ -6,6 +6,10 @@ import org.koin.dsl.module
 
 val apiModule = module {
   single {
-    LastFmService(LastFmHttpClient.create())
+    LastFmHttpClient.create()
+  }
+
+  single {
+    LastFmService(get())
   }
 }
