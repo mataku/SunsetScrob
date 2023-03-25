@@ -14,6 +14,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import org.koin.dsl.module
 import javax.inject.Singleton
 
 @Module
@@ -60,5 +61,27 @@ class DatabaseModule {
   @Provides
   fun provideNowPlayingDao(appDatabase: AppDatabase): NowPlayingDao {
     return appDatabase.nowPlayingDao
+  }
+}
+
+val databaseModule = module {
+  single {
+    SessionKeyDataStore(get())
+  }
+
+  single {
+    UsernameDataStore(get())
+  }
+
+  single {
+    ThemeDataStore(get())
+  }
+
+  single {
+    ScrobbleAppDataStore(get())
+  }
+
+  single {
+    Room.databaseBuilder(get(), AppDatabase::class.java, "sunset_db").build()
   }
 }
