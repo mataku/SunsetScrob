@@ -5,10 +5,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mataku.scrobscrob.album.ui.viewmodel.TopAlbumsViewModel
 import com.mataku.scrobscrob.ui_common.navigateToWebView
+import org.koin.androidx.compose.koinViewModel
 
 class TopAlbumsScreenState(
   private val navController: NavController,
@@ -33,7 +33,7 @@ class TopAlbumsScreenState(
 
 @Composable
 fun rememberTopAlbumsScreenState(
-  viewModel: TopAlbumsViewModel = hiltViewModel(),
+  viewModel: TopAlbumsViewModel = koinViewModel(),
   navController: NavController,
   context: Context = LocalContext.current
 ): TopAlbumsScreenState {

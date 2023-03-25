@@ -8,6 +8,7 @@ import coil.request.CachePolicy
 import coil.util.DebugLogger
 import com.mataku.scrobscrob.BuildConfig
 import com.mataku.scrobscrob.account.di.accountModule
+import com.mataku.scrobscrob.album.di.albumModule
 import com.mataku.scrobscrob.app.di.appModule
 import com.mataku.scrobscrob.data.repository.di.repositoryModule
 import dagger.hilt.android.HiltAndroidApp
@@ -46,7 +47,12 @@ open class App : Application() {
     }
     startKoin {
       androidContext(this@App)
-      modules(appModule, repositoryModule, accountModule)
+      modules(
+        appModule,
+        repositoryModule,
+        accountModule,
+        albumModule
+      )
     }
   }
 }
