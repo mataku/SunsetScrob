@@ -20,7 +20,6 @@ dependencies {
   implementation(libs.compose.navigation)
   implementation(libs.coil.compose)
   implementation(libs.accompanist.navigation.animation)
-  implementation(libs.hilt.navigation.compose)
   implementation(libs.compose.material.icons.extended)
   implementation(libs.accompanist.systemuicontroller)
 

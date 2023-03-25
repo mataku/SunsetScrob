@@ -21,7 +21,6 @@ dependencies {
   implementation(libs.coil.compose)
   implementation(libs.accompanist.navigation.animation)
   implementation(libs.accompanist.systemuicontroller)
-  implementation(libs.hilt.navigation.compose)
 
   implementation(libs.coil.compose)
 

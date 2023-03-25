@@ -54,12 +54,6 @@ room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 
 activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activity" }
 
-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
-hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
-
-hilt-android-compiler = { module = "androidx.hilt:hilt-compiler", version = "1.0.0" }
-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version = "1.0.0" }
-
 datastore-preferences = { module = "androidx.datastore:datastore-preferences", version = "1.0.0" }
 
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version = "7.4.2" }
