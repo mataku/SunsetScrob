@@ -14,12 +14,10 @@ import com.mataku.scrobscrob.artist.di.artistModule
 import com.mataku.scrobscrob.auth.di.authModule
 import com.mataku.scrobscrob.data.repository.di.repositoryModule
 import com.mataku.scrobscrob.scrobble.di.scrobbleModule
-import dagger.hilt.android.HiltAndroidApp
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import timber.log.Timber
 
-@HiltAndroidApp
 open class App : Application() {
   override fun onCreate() {
     super.onCreate()

@@ -25,11 +25,3 @@ repositories {
   maven("https://maven.google.com")
   maven("https://kotlin.bintray.com/kotlinx")
 }
-
-kapt {
-  correctErrorTypes = true
-
-  javacOptions {
-    option("-Xmaxerrs", 1000)
-  }
-}

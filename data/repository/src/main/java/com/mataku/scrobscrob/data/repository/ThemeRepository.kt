@@ -5,14 +5,13 @@ import com.mataku.scrobscrob.data.db.ThemeDataStore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
-import javax.inject.Inject
 
 interface ThemeRepository {
   suspend fun currentTheme(): Flow<AppTheme>
   suspend fun storeTheme(theme: AppTheme): Flow<Unit>
 }
 
-class ThemeRepositoryImpl @Inject constructor(
+class ThemeRepositoryImpl(
   private val themeDataStore: ThemeDataStore
 ) : ThemeRepository {
   override suspend fun currentTheme(): Flow<AppTheme> {

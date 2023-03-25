@@ -1,8 +1,6 @@
 plugins {
   id("sunsetscrob.android.feature")
   id("sunsetscrob.android.compose")
-  id("dagger.hilt.android.plugin")
-  id("com.google.dagger.hilt.android")
   id("com.mikepenz.aboutlibraries.plugin")
 }
 
@@ -11,7 +9,7 @@ apply(from = "${project.rootDir}/gradle/test_dependencies.gradle")
 android {
   aboutLibraries {
     // - If the automatic registered android tasks are disabled, a similar thing can be achieved manually
-    // - `./gradlew app:exportLibraryDefinitions -PexportPath=src/main/res/raw`
+    // - `./gradlew feature:account:exportLibraryDefinitions -PexportPath=src/main/res/raw`
     // - the resulting file can for example be added as part of the SCM
     registerAndroidTasks = false
     // Define the output file name. Modifying this will disable the automatic meta data discovery for supported platforms.
@@ -52,10 +50,6 @@ dependencies {
 
   implementation(libs.hilt.navigation.compose)
 
-  implementation(libs.hilt.android)
-  kapt(libs.hilt.compiler)
-  kapt(libs.hilt.android.compiler)
-
   implementation(libs.coroutines)
   implementation(libs.timber)
 
@@ -69,4 +63,6 @@ dependencies {
 
   implementation(libs.koin.android)
   implementation(libs.koin.compose)
+
+  testImplementation(libs.koin.test)
 }

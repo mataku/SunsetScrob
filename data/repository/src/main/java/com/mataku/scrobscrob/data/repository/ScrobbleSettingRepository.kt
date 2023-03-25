@@ -7,8 +7,6 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
-import javax.inject.Singleton
 
 interface ScrobbleSettingRepository {
   suspend fun allowedApps(): Set<String>
@@ -20,8 +18,7 @@ interface ScrobbleSettingRepository {
   suspend fun disallowApp(appName: String): Flow<Unit>
 }
 
-@Singleton
-class ScrobbleSettingRepositoryImpl @Inject constructor(
+class ScrobbleSettingRepositoryImpl(
   private val scrobbleAppDataStore: ScrobbleAppDataStore
 ) : ScrobbleSettingRepository {
   override suspend fun allowApp(appName: String): Flow<Unit> {

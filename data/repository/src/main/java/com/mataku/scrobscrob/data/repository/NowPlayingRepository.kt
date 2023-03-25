@@ -10,8 +10,6 @@ import com.mataku.scrobscrob.data.repository.mapper.toNowPlayingTrack
 import com.mataku.scrobscrob.data.repository.mapper.toNowPlayingTrackEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import javax.inject.Inject
-import javax.inject.Singleton
 
 interface NowPlayingRepository {
   suspend fun update(trackInfo: TrackInfo): Flow<Unit>
@@ -19,8 +17,7 @@ interface NowPlayingRepository {
   suspend fun current(): NowPlayingTrack?
 }
 
-@Singleton
-class NowPlayingRepositoryImpl @Inject constructor(
+class NowPlayingRepositoryImpl(
   private val lastFmService: LastFmService,
   private val sessionKeyDataStore: SessionKeyDataStore,
   private val nowPlayingDao: NowPlayingDao

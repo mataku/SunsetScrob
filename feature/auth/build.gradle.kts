@@ -1,8 +1,6 @@
 plugins {
   id("sunsetscrob.android.feature")
   id("sunsetscrob.android.compose")
-  id("dagger.hilt.android.plugin")
-  id("com.google.dagger.hilt.android")
 }
 
 apply(from = "${project.rootDir}/gradle/test_dependencies.gradle")
@@ -25,10 +23,6 @@ dependencies {
   implementation(libs.hilt.navigation.compose)
   implementation(libs.compose.material.icons.extended)
   implementation(libs.accompanist.systemuicontroller)
-
-  implementation(libs.hilt.android)
-  kapt(libs.hilt.compiler)
-  kapt(libs.hilt.android.compiler)
 
   implementation(libs.coroutines)
   implementation(libs.timber)

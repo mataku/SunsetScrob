@@ -8,15 +8,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import javax.inject.Inject
-import javax.inject.Singleton
 
 interface TopArtistsRepository {
   suspend fun fetchTopArtists(page: Int, username: String): Flow<List<ArtistInfo>>
 }
 
-@Singleton
-class TopArtistsRepositoryImpl @Inject constructor(
+class TopArtistsRepositoryImpl(
   private val lastFmService: LastFmService
 ) : TopArtistsRepository {
   override suspend fun fetchTopArtists(page: Int, username: String): Flow<List<ArtistInfo>> = flow {
