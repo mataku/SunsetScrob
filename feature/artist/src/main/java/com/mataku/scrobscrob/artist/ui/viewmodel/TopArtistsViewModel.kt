@@ -5,17 +5,14 @@ import androidx.lifecycle.viewModelScope
 import com.mataku.scrobscrob.core.entity.ArtistInfo
 import com.mataku.scrobscrob.data.repository.TopArtistsRepository
 import com.mataku.scrobscrob.data.repository.UsernameRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class TopArtistsViewModel @Inject constructor(
+class TopArtistsViewModel(
   private val topArtistsRepository: TopArtistsRepository,
   usernameRepository: UsernameRepository
 ) : ViewModel() {
