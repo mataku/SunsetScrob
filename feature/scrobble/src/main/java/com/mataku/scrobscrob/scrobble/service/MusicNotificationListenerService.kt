@@ -6,11 +6,9 @@ import com.mataku.scrobscrob.data.repository.NowPlayingRepository
 import com.mataku.scrobscrob.data.repository.ScrobbleRepository
 import com.mataku.scrobscrob.data.repository.ScrobbleSettingRepository
 import com.mataku.scrobscrob.data.repository.TrackRepository
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import org.koin.android.ext.android.inject
 
-@AndroidEntryPoint
 class MusicNotificationListenerService() : NotificationListenerService() {
 
   private var previousTrackName = ""
