@@ -3,11 +3,11 @@ package com.mataku.scrobscrob.auth.ui.state
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mataku.scrobscrob.auth.ui.viewmodel.LoginViewModel
 import com.mataku.scrobscrob.ui_common.navigateToPrivacyPolicy
 import com.mataku.scrobscrob.ui_common.navigateToScrobble
+import org.koin.androidx.compose.koinViewModel
 
 class LoginScreenState(
   private val navController: NavController,
@@ -54,7 +54,7 @@ class LoginScreenState(
 @Composable
 fun rememberLoginScreenState(
   navController: NavController,
-  viewModel: LoginViewModel = hiltViewModel()
+  viewModel: LoginViewModel = koinViewModel()
 ): LoginScreenState =
   remember(navController, viewModel) {
     LoginScreenState(

@@ -37,4 +37,6 @@ dependencies {
   implementation(libs.koin.compose)
 
   testImplementation(project(":test_helper"))
+
+  testImplementation(libs.koin.test)
 }
