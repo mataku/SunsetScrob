@@ -10,7 +10,10 @@ import com.mataku.scrobscrob.BuildConfig
 import com.mataku.scrobscrob.account.di.accountModule
 import com.mataku.scrobscrob.album.di.albumModule
 import com.mataku.scrobscrob.app.di.appModule
+import com.mataku.scrobscrob.artist.di.artistModule
+import com.mataku.scrobscrob.auth.di.authModule
 import com.mataku.scrobscrob.data.repository.di.repositoryModule
+import com.mataku.scrobscrob.scrobble.di.scrobbleModule
 import dagger.hilt.android.HiltAndroidApp
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
@@ -49,9 +52,12 @@ open class App : Application() {
       androidContext(this@App)
       modules(
         appModule,
-        repositoryModule,
+        repositoryModule, // includes api module and database module
         accountModule,
-        albumModule
+        albumModule,
+        artistModule,
+        authModule,
+        scrobbleModule
       )
     }
   }
