@@ -5,7 +5,6 @@ accompanist = "0.28.0"
 compose = "2023.03.00"
 coroutines = "1.6.4"
 firebase = "31.2.3"
-hilt = "2.45"
 ktor = "2.2.3"
 koin = "3.4.0"
 room = "2.5.0"
@@ -58,7 +57,6 @@ datastore-preferences = { module = "androidx.datastore:datastore-preferences", v
 
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version = "7.4.2" }
 crashlytics-gradle-plugin = { module = "com.google.firebase:firebase-crashlytics-gradle", version = "2.9.2" }
-hilt-gradle-plugin = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hilt" }
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 google-services-plugin = { module = "com.google.gms:google-services", version = "4.3.15" }
 serialization-plugin = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin" }
