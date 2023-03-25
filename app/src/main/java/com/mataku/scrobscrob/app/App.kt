@@ -7,7 +7,12 @@ import coil.disk.DiskCache
 import coil.request.CachePolicy
 import coil.util.DebugLogger
 import com.mataku.scrobscrob.BuildConfig
+import com.mataku.scrobscrob.account.di.accountModule
+import com.mataku.scrobscrob.app.di.appModule
+import com.mataku.scrobscrob.data.repository.di.repositoryModule
 import dagger.hilt.android.HiltAndroidApp
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
 import timber.log.Timber
 
 @HiltAndroidApp
@@ -38,6 +43,10 @@ open class App : Application() {
     Coil.setImageLoader(imageLoaderBuilder.build())
     if (BuildConfig.DEBUG) {
       Timber.plant(Timber.DebugTree())
+    }
+    startKoin {
+      androidContext(this@App)
+      modules(appModule, repositoryModule, accountModule)
     }
   }
 }
