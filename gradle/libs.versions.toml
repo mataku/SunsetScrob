@@ -7,6 +7,7 @@ coroutines = "1.6.4"
 firebase = "31.2.3"
 hilt = "2.45"
 ktor = "2.2.3"
+koin = "3.4.0"
 room = "2.5.0"
 kotlin = "1.8.10"
 kotlin-compiler-extension = "1.4.3"
@@ -75,6 +76,9 @@ aboutlibraries-compose = { module = "com.mikepenz:aboutlibraries-compose", versi
 lottie-compose = { module = "com.airbnb.android:lottie-compose", version = "6.0.0" }
 
 app-update = { module = "com.google.android.play:app-update-ktx", version = "2.0.1" }
+
+koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
+koin-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin" }
 
 timber = { module = "com.jakewharton.timber:timber", version = "5.0.1" }
 
