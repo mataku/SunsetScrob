@@ -1,7 +1,9 @@
 package com.mataku.scrobscrob.data.repository.di
 
 import com.mataku.scrobscrob.data.api.di.ApiModule
+import com.mataku.scrobscrob.data.api.di.apiModule
 import com.mataku.scrobscrob.data.db.di.DatabaseModule
+import com.mataku.scrobscrob.data.db.di.databaseModule
 import com.mataku.scrobscrob.data.repository.ArtistRepository
 import com.mataku.scrobscrob.data.repository.ArtistRepositoryImpl
 import com.mataku.scrobscrob.data.repository.NowPlayingRepository
@@ -26,6 +28,7 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import org.koin.dsl.module
 import javax.inject.Singleton
 
 @Module(includes = [ApiModule::class, DatabaseModule::class])
@@ -71,4 +74,68 @@ abstract class RepositoryModule {
   @Singleton
   @Binds
   abstract fun provideScrobbleSettingRepository(repository: ScrobbleSettingRepositoryImpl): ScrobbleSettingRepository
+}
+
+val repositoryModule = module {
+  includes(apiModule, databaseModule)
+  single<SessionRepository> {
+    SessionRepositoryImpl(
+      get(),
+      get(),
+      get(),
+      get()
+    )
+  }
+
+  single<UsernameRepository> {
+    UsernameRepositoryImpl(
+      get()
+    )
+  }
+
+  single<TopAlbumsRepository> {
+    TopAlbumsRepositoryImpl(
+      get()
+    )
+  }
+
+  single<TopArtistsRepository> {
+    TopArtistsRepositoryImpl(
+      get()
+    )
+  }
+
+  single<ScrobbleRepository> {
+    ScrobbleRepositoryImpl(
+      get(),
+      get(),
+      get(),
+      get()
+    )
+  }
+
+  single<ThemeRepository> {
+    ThemeRepositoryImpl(
+      get()
+    )
+  }
+
+  single<TrackRepository> {
+    TrackRepositoryImpl(
+      get(),
+      get()
+    )
+  }
+
+  single<ArtistRepository> {
+    ArtistRepositoryImpl(
+      get()
+    )
+  }
+
+  single<ScrobbleSettingRepository> {
+    ScrobbleSettingRepositoryImpl(
+      get()
+    )
+  }
 }
