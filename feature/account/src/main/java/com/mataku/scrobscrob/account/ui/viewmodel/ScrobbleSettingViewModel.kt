@@ -7,16 +7,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mataku.scrobscrob.account.ui.screen.mappedApp
 import com.mataku.scrobscrob.data.repository.ScrobbleSettingRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class ScrobbleSettingViewModel @Inject constructor(
+class ScrobbleSettingViewModel(
   private val scrobbleSettingRepository: ScrobbleSettingRepository
 ) : ViewModel() {
 

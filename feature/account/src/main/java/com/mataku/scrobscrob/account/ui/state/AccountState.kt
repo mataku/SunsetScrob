@@ -14,6 +14,7 @@ import com.mataku.scrobscrob.account.ui.navigation.navigateToThemeSelector
 import com.mataku.scrobscrob.account.ui.viewmodel.AccountViewModel
 import com.mataku.scrobscrob.ui_common.navigateToLogin
 import com.mataku.scrobscrob.ui_common.navigateToPrivacyPolicy
+import org.koin.androidx.compose.koinViewModel
 
 class AccountState(
   private val navController: NavController,
@@ -68,7 +69,7 @@ class AccountState(
 fun rememberAccountState(
   navController: NavController,
   context: Context,
-  viewModel: AccountViewModel = hiltViewModel()
+  viewModel: AccountViewModel = koinViewModel()
 ): AccountState {
   return remember {
     AccountState(viewModel = viewModel, navController = navController, context = context)

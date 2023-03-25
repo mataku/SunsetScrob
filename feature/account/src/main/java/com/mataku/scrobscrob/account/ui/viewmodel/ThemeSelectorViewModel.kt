@@ -5,16 +5,13 @@ import androidx.lifecycle.viewModelScope
 import com.mataku.scrobscrob.account.ui.state.ThemeSelectorState
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.data.repository.ThemeRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class ThemeSelectorViewModel @Inject constructor(
+class ThemeSelectorViewModel(
   private val themeRepository: ThemeRepository
 ) : ViewModel() {
 

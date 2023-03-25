@@ -3,10 +3,10 @@ package com.mataku.scrobscrob.account.ui.state
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mataku.scrobscrob.account.ui.viewmodel.ThemeSelectorViewModel
 import com.mataku.scrobscrob.core.entity.AppTheme
+import org.koin.androidx.compose.koinViewModel
 
 class ThemeSelectorState(
   private val navController: NavController,
@@ -35,7 +35,7 @@ class ThemeSelectorState(
 @Composable
 fun rememberThemeSelectorState(
   navController: NavController,
-  viewModel: ThemeSelectorViewModel = hiltViewModel()
+  viewModel: ThemeSelectorViewModel = koinViewModel()
 ): ThemeSelectorState {
   return remember {
     ThemeSelectorState(
