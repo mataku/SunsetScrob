@@ -35,4 +35,7 @@ dependencies {
 
   implementation(libs.lottie.compose)
   implementation(libs.timber)
+
+  implementation(libs.koin.android)
+  implementation(libs.koin.compose)
 }

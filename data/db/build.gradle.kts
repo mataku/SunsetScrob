@@ -21,4 +21,5 @@ dependencies {
   kapt(libs.room.compiler)
 
   implementation(libs.datastore.preferences)
+  implementation(libs.koin.android)
 }

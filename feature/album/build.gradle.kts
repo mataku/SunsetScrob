@@ -31,4 +31,7 @@ dependencies {
   implementation(libs.coil.compose)
 
   implementation(libs.coroutines)
+
+  implementation(libs.koin.android)
+  implementation(libs.koin.compose)
 }

@@ -49,6 +49,8 @@ dependencies {
   implementation(libs.hilt.navigation.compose)
   implementation(libs.core.splashscreen)
   implementation(libs.timber)
+
+  implementation(libs.koin.android)
 }
 
 kapt {

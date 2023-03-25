@@ -66,4 +66,7 @@ dependencies {
   implementation(libs.aboutlibraries.compose)
 
   implementation(libs.app.update)
+
+  implementation(libs.koin.android)
+  implementation(libs.koin.compose)
 }

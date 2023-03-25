@@ -33,5 +33,8 @@ dependencies {
   implementation(libs.coroutines)
   implementation(libs.timber)
 
+  implementation(libs.koin.android)
+  implementation(libs.koin.compose)
+
   testImplementation(project(":test_helper"))
 }
