@@ -48,4 +48,11 @@ dependencies {
   implementation(libs.koin.android)
 
   testImplementation(libs.koin.test)
+  testImplementation(libs.ktor.client.core)
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+  kotlinOptions {
+    jvmTarget = "11"
+  }
 }
