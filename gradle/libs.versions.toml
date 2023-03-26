@@ -29,12 +29,12 @@ accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-
 
 core-splashscreen = { module = "androidx.core:core-splashscreen", version = "1.0.0" }
 
-coil-compose = { module = "io.coil-kt:coil-compose", version = "2.2.2" }
+coil-compose = { module = "io.coil-kt:coil-compose", version = "2.3.0" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase" }
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 
 coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version = "1.4.1" }
+serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version = "1.5.0" }
 
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
 ktor-client-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
