@@ -1,7 +1,6 @@
 package com.mataku.scrobscrob.scrobble.ui.molecule
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,14 +16,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
@@ -34,6 +29,7 @@ import com.mataku.scrobscrob.core.entity.RecentTrack
 import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.scrobble.R
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
+import com.mataku.scrobscrob.ui_common.molecule.SunsetImage
 import com.mataku.scrobscrob.ui_common.R as uiCommonR
 
 @Composable
@@ -69,21 +65,17 @@ private fun ScrobbleContent(
     verticalAlignment = Alignment.CenterVertically
   ) {
     Row(modifier = Modifier.weight(1F)) {
-      if (imageUrl == null) {
-        Image(
-          painter = painterResource(uiCommonR.drawable.no_image),
-          contentDescription = "Scrobble track image",
-          modifier = Modifier.size(48.dp)
-        )
+      val imageData = if (imageUrl == null || imageUrl.isBlank()) {
+        uiCommonR.drawable.no_image
       } else {
-        AsyncImage(
-          model = ImageRequest.Builder(LocalContext.current)
-            .size(1000)
-            .data(imageUrl)
-            .build(), contentDescription = "$trackName artwork image",
-          modifier = Modifier.size(48.dp)
-        )
+        imageUrl
       }
+
+      SunsetImage(
+        imageData = imageData,
+        contentDescription = "$trackName artwork image",
+        modifier = Modifier.size(48.dp)
+      )
 
       Column(
         modifier = Modifier

@@ -18,4 +18,6 @@ dependencies {
   implementation(libs.compose.navigation)
   implementation(libs.accompanist.navigation.animation)
   implementation(libs.accompanist.systemuicontroller)
+
+  implementation(libs.coil.compose)
 }

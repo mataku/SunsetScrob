@@ -20,15 +20,12 @@ dependencies {
   implementation(libs.compose.animation)
   implementation(libs.compose.material)
   implementation(libs.compose.navigation)
-  implementation(libs.coil.compose)
   implementation(libs.accompanist.navigation.animation)
   implementation(libs.hilt.navigation.compose)
 
   implementation(libs.hilt.android)
   kapt(libs.hilt.compiler)
   kapt(libs.hilt.android.compiler)
-
-  implementation(libs.coil.compose)
 
   implementation(libs.coroutines)
 }

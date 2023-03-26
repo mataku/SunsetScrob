@@ -24,14 +24,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.scrobble.R
 import com.mataku.scrobscrob.scrobble.ui.molecule.TrackAlbum
 import com.mataku.scrobscrob.scrobble.ui.molecule.TrackArtist
 import com.mataku.scrobscrob.scrobble.ui.state.TrackScreenState
+import com.mataku.scrobscrob.ui_common.molecule.SunsetImage
 import com.mataku.scrobscrob.ui_common.molecule.TopTags
 import com.mataku.scrobscrob.ui_common.organism.ContentHeader
 import com.mataku.scrobscrob.ui_common.style.ANIMATION_DURATION_MILLIS
@@ -82,11 +81,14 @@ fun TrackScreen(
         val size =
           imageSize.dp + ((screenWidthDp - imageSize - horizontalPadding) * animateValue).dp
 
-        AsyncImage(
-          model = ImageRequest.Builder(LocalContext.current)
-            .size(1000)
-            .data(artworkUrl ?: R.drawable.no_image)
-            .build(),
+        val imageData = if (artworkUrl == null || artworkUrl.isBlank()) {
+          R.drawable.no_image
+        } else {
+          artworkUrl
+        }
+
+        SunsetImage(
+          imageData = imageData,
           contentDescription = "artwork image",
           modifier = Modifier
             .padding(horizontal = 16.dp, vertical = 8.dp)

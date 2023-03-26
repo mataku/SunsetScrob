@@ -21,10 +21,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.rememberAsyncImagePainter
 import com.mataku.scrobscrob.core.entity.AlbumInfo
 import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
+import com.mataku.scrobscrob.ui_common.molecule.SunsetImage
 import com.mataku.scrobscrob.ui_common.R as uiCommonR
 
 @Composable
@@ -43,15 +43,14 @@ fun TopAlbum(album: AlbumInfo, imageSize: Dp, onAlbumTap: () -> Unit, modifier: 
     } else {
       imageList.imageUrl()
     }
-    val painter = if (url == null || url.isBlank()) {
-      painterResource(
-        uiCommonR.drawable.no_image
-      )
+    val imageData = if (url == null || url.isBlank()) {
+      uiCommonR.drawable.no_image
     } else {
-      rememberAsyncImagePainter(model = url)
+      url
     }
-    Image(
-      painter = painter,
+
+    SunsetImage(
+      imageData = imageData,
       contentDescription = album.title,
       modifier = Modifier.size(imageSize)
     )
