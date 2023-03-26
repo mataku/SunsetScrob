@@ -28,7 +28,7 @@ accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-
 
 core-splashscreen = { module = "androidx.core:core-splashscreen", version = "1.0.0" }
 
-coil-compose = { module = "io.coil-kt:coil-compose", version = "2.2.2" }
+coil-compose = { module = "io.coil-kt:coil-compose", version = "2.3.0" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase" }
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 
