@@ -24,7 +24,7 @@ class LoginScreenState(
   }
 
   fun navigateToTop() {
-    navController.navigateToScrobble()
+    navController.navigateToScrobble(fromAuth = true)
   }
 
   fun navigateToPrivacyPolicy() {
