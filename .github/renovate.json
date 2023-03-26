@@ -8,8 +8,7 @@
     "com.google.accompanist:accompanist-navigation-animation",
     "com.google.accompanist:accompanist-systemuicontroller",
     "com.google.accompanist:accompanist-swiperefresh",
-    "org.jetbrains.kotlin:kotlin-gradle-plugin",
-    "org.jetbrains.kotlin:kotlin-serialization"
+    "org.jetbrains.kotlin:kotlin-gradle-plugin"
   ],
   "prConcurrentLimit": 5,
   "rebaseWhen": "never"
