@@ -72,4 +72,5 @@ jobs:
         FASTLANE_HIDE_CHANGELOG: true
         GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx6g"
       run: |
-        bundle exec fastlane android setup_for_ci test
+        bundle exec fastlane android setup_for_ci
+        bundle exec fastlane android test
