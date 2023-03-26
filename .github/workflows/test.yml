@@ -10,7 +10,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build_and_test:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -18,7 +18,7 @@ jobs:
     - name: set up JDK
       uses: actions/setup-java@v3
       with:
-        distribution: 'zulu'
+        distribution: zulu
         java-version: 11
     - name: Cache gradle dir
       uses: actions/cache@v3
@@ -40,9 +40,39 @@ jobs:
         LAST_FM_SHARED_SECRET: ${{ secrets.LAST_FM_SHARED_SECRET }}
         GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON_DEV }}
         FASTLANE_HIDE_CHANGELOG: true
+        GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx6g"
       run: |
         bundle exec fastlane android setup_for_ci
         bundle exec fastlane android build
-    - name: Run unit tests
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: set up JDK
+      uses: actions/setup-java@v3
+      with:
+        distribution: zulu
+        java-version: 11
+    - name: Cache gradle dir
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-test-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-test-
+    - uses: ruby/setup-ruby@v1
+      with:
+        bundler-cache: true
+    - name: Build with Gradle
+      env:
+        LAST_FM_API_KEY: ${{ secrets.LAST_FM_API_KEY }}
+        LAST_FM_SHARED_SECRET: ${{ secrets.LAST_FM_SHARED_SECRET }}
+        GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON_DEV }}
+        FASTLANE_HIDE_CHANGELOG: true
+        GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx6g"
       run: |
+        bundle exec fastlane android setup_for_ci
         bundle exec fastlane android test
