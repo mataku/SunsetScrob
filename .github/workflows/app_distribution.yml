@@ -49,6 +49,7 @@ jobs:
         LAST_FM_SHARED_SECRET: ${{ secrets.LAST_FM_SHARED_SECRET }}
         RELEASE_NOTES: ${{ github.event.inputs.release_notes }}
         FIREBASE_DEV_APP_ID: ${{ secrets.FIREBASE_DEV_APP_ID }}
+        FASTLANE_HIDE_CHANGELOG: true
       run: |
         bundle exec fastlane android setup_for_ci
         bundle exec fastlane android deploy_to_firebase_app_distribution
