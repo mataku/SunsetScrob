@@ -40,7 +40,7 @@ jobs:
         LAST_FM_SHARED_SECRET: ${{ secrets.LAST_FM_SHARED_SECRET }}
         GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON_DEV }}
         FASTLANE_HIDE_CHANGELOG: true
-        GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx6g"
+        GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx6g -XX:+UseParallelGC -XX:MaxMetaspaceSize=2g"
       run: |
         bundle exec fastlane android setup_for_ci
         bundle exec fastlane android build
@@ -72,7 +72,7 @@ jobs:
         LAST_FM_SHARED_SECRET: ${{ secrets.LAST_FM_SHARED_SECRET }}
         GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON_DEV }}
         FASTLANE_HIDE_CHANGELOG: true
-        GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx6g"
+        GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx6g -XX:+UseParallelGC -XX:MaxMetaspaceSize=2g"
       run: |
         bundle exec fastlane android setup_for_ci
         bundle exec fastlane android test
