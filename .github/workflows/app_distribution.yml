@@ -11,6 +11,9 @@ on:
         description: "Release notes"
         required: false
 
+env:
+  FASTLANE_HIDE_CHANGELOG: true
+
 jobs:
   deploy-app-to-app-distribution:
     runs-on: ubuntu-latest

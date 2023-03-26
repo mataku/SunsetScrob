@@ -9,6 +9,9 @@ concurrency:
   group: release
   cancel-in-progress: true
 
+env:
+  FASTLANE_HIDE_CHANGELOG: true
+
 jobs:
   release:
     runs-on: ubuntu-latest
