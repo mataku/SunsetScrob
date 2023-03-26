@@ -22,6 +22,7 @@ jobs:
         java-version: 11
     - name: Cache gradle dir
       uses: actions/cache@v3
+      if: ${{ !startsWith(github.head_ref, 'dependabot') }}
       with:
         path: |
           ~/.gradle/caches
@@ -29,6 +30,7 @@ jobs:
         key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
         restore-keys: |
           ${{ runner.os }}-gradle-
+
     - uses: ruby/setup-ruby@v1
       with:
         bundler-cache: true
