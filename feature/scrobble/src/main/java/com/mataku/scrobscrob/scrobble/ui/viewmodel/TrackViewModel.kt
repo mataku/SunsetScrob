@@ -46,7 +46,7 @@ class TrackViewModel @Inject constructor(
         state.update {
           it.copy(isLoading = false)
         }
-      }.catch { e ->
+      }.catch {
         state.update {
           it.copy(
             event = TrackScreenState.UiEvent.TrackInfoFetchFailure
