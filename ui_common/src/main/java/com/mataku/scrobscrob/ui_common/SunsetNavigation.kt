@@ -25,10 +25,11 @@ fun NavController.navigateToScrobble() {
     SCROBBLE_DESTINATION
   ) {
     launchSingleTop = true
+    restoreState = true
     popUpTo(
       graph.findStartDestination().id
     ) {
-      inclusive = true
+      saveState = true
     }
   }
 }

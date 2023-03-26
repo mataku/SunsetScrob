@@ -64,18 +64,6 @@ fun NavGraphBuilder.scrobbleGraph(navController: NavController) {
   )
 }
 
-fun NavController.navigateToScrobble() {
-  navigate(SCROBBLE_DESTINATION) {
-    graph.startDestinationRoute?.let { screenRoute ->
-      popUpTo(screenRoute) {
-        saveState = true
-      }
-    }
-    launchSingleTop = true
-    restoreState = true
-  }
-}
-
 fun NavController.navigateToTrackDetail(
   trackName: String,
   artistName: String,

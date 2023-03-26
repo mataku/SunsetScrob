@@ -7,10 +7,17 @@ import coil.disk.DiskCache
 import coil.request.CachePolicy
 import coil.util.DebugLogger
 import com.mataku.scrobscrob.BuildConfig
-import dagger.hilt.android.HiltAndroidApp
+import com.mataku.scrobscrob.account.di.accountModule
+import com.mataku.scrobscrob.album.di.albumModule
+import com.mataku.scrobscrob.app.di.appModule
+import com.mataku.scrobscrob.artist.di.artistModule
+import com.mataku.scrobscrob.auth.di.authModule
+import com.mataku.scrobscrob.data.repository.di.repositoryModule
+import com.mataku.scrobscrob.scrobble.di.scrobbleModule
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
 import timber.log.Timber
 
-@HiltAndroidApp
 open class App : Application() {
   override fun onCreate() {
     super.onCreate()
@@ -38,6 +45,18 @@ open class App : Application() {
     Coil.setImageLoader(imageLoaderBuilder.build())
     if (BuildConfig.DEBUG) {
       Timber.plant(Timber.DebugTree())
+    }
+    startKoin {
+      androidContext(this@App)
+      modules(
+        appModule,
+        repositoryModule, // includes api module and database module
+        accountModule,
+        albumModule,
+        artistModule,
+        authModule,
+        scrobbleModule
+      )
     }
   }
 }

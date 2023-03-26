@@ -10,7 +10,6 @@ buildscript {
     classpath(libs.serialization.plugin)
     classpath(libs.crashlytics.gradle.plugin)
     classpath(libs.google.services.plugin)
-    classpath(libs.hilt.gradle.plugin)
     classpath(libs.aboutlibraries.plugin)
 
     // NOTE: Do not place your application dependencies here; they belong

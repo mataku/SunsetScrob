@@ -9,15 +9,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import javax.inject.Inject
-import javax.inject.Singleton
 
 interface TrackRepository {
   suspend fun getInfo(trackName: String, artistName: String): Flow<TrackInfo>
 }
 
-@Singleton
-class TrackRepositoryImpl @Inject constructor(
+class TrackRepositoryImpl(
   private val lastFmService: LastFmService,
   private val usernameDataStore: UsernameDataStore
 ) :

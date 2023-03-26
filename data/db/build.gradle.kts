@@ -1,7 +1,6 @@
 plugins {
   id("sunsetscrob.android.feature")
-  id("dagger.hilt.android.plugin")
-  id("com.google.dagger.hilt.android")
+  id("com.google.devtools.ksp") version "1.8.10-1.0.9"
 }
 
 apply(from = "${project.rootDir}/gradle/test_dependencies.gradle")
@@ -13,12 +12,18 @@ android {
 dependencies {
   implementation(project(":core"))
 
-  implementation(libs.hilt.android)
-  kapt(libs.hilt.compiler)
-
   implementation(libs.room.runtime)
   implementation(libs.room.ktx)
-  kapt(libs.room.compiler)
+  ksp(libs.room.compiler)
 
   implementation(libs.datastore.preferences)
+  implementation(libs.koin.android)
+
+  testImplementation(libs.koin.test)
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+  kotlinOptions {
+    jvmTarget = "11"
+  }
 }

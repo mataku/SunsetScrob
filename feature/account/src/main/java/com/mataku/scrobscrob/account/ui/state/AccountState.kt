@@ -5,7 +5,6 @@ import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mataku.scrobscrob.account.R
 import com.mataku.scrobscrob.account.ui.navigation.navigateToLicense
@@ -14,6 +13,7 @@ import com.mataku.scrobscrob.account.ui.navigation.navigateToThemeSelector
 import com.mataku.scrobscrob.account.ui.viewmodel.AccountViewModel
 import com.mataku.scrobscrob.ui_common.navigateToLogin
 import com.mataku.scrobscrob.ui_common.navigateToPrivacyPolicy
+import org.koin.androidx.compose.koinViewModel
 
 class AccountState(
   private val navController: NavController,
@@ -68,7 +68,7 @@ class AccountState(
 fun rememberAccountState(
   navController: NavController,
   context: Context,
-  viewModel: AccountViewModel = hiltViewModel()
+  viewModel: AccountViewModel = koinViewModel()
 ): AccountState {
   return remember {
     AccountState(viewModel = viewModel, navController = navController, context = context)

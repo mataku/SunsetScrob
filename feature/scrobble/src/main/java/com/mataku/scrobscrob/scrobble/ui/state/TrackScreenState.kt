@@ -3,9 +3,9 @@ package com.mataku.scrobscrob.scrobble.ui.state
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mataku.scrobscrob.scrobble.ui.viewmodel.TrackViewModel
+import org.koin.androidx.compose.koinViewModel
 
 class TrackScreenState(
   private val navController: NavController,
@@ -40,7 +40,7 @@ class TrackScreenState(
 @Composable
 fun rememberTrackScreenState(
   navController: NavController,
-  viewModel: TrackViewModel = hiltViewModel(),
+  viewModel: TrackViewModel = koinViewModel(),
   trackName: String,
   artistName: String
 ): TrackScreenState =

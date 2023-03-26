@@ -17,18 +17,18 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.mataku.scrobscrob.account.R
 import com.mataku.scrobscrob.account.ui.viewmodel.ScrobbleSettingViewModel
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.organism.ContentHeader
 import com.mataku.scrobscrob.ui_common.style.LocalScaffoldState
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ScrobbleSettingScreen(
-  viewModel: ScrobbleSettingViewModel = hiltViewModel()
+  viewModel: ScrobbleSettingViewModel = koinViewModel()
 ) {
   val uiState = viewModel.uiState
   val scaffoldState = LocalScaffoldState.current

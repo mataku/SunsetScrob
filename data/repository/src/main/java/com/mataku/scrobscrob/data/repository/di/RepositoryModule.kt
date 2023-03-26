@@ -1,11 +1,9 @@
 package com.mataku.scrobscrob.data.repository.di
 
-import com.mataku.scrobscrob.data.api.di.ApiModule
-import com.mataku.scrobscrob.data.db.di.DatabaseModule
+import com.mataku.scrobscrob.data.api.di.apiModule
+import com.mataku.scrobscrob.data.db.di.databaseModule
 import com.mataku.scrobscrob.data.repository.ArtistRepository
 import com.mataku.scrobscrob.data.repository.ArtistRepositoryImpl
-import com.mataku.scrobscrob.data.repository.NowPlayingRepository
-import com.mataku.scrobscrob.data.repository.NowPlayingRepositoryImpl
 import com.mataku.scrobscrob.data.repository.ScrobbleRepository
 import com.mataku.scrobscrob.data.repository.ScrobbleRepositoryImpl
 import com.mataku.scrobscrob.data.repository.ScrobbleSettingRepository
@@ -22,53 +20,68 @@ import com.mataku.scrobscrob.data.repository.TrackRepository
 import com.mataku.scrobscrob.data.repository.TrackRepositoryImpl
 import com.mataku.scrobscrob.data.repository.UsernameRepository
 import com.mataku.scrobscrob.data.repository.UsernameRepositoryImpl
-import dagger.Binds
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import org.koin.dsl.module
 
-@Module(includes = [ApiModule::class, DatabaseModule::class])
-@InstallIn(SingletonComponent::class)
-abstract class RepositoryModule {
+val repositoryModule = module {
+  includes(apiModule, databaseModule)
+  single<SessionRepository> {
+    SessionRepositoryImpl(
+      get(),
+      get(),
+      get(),
+      get()
+    )
+  }
 
-  @Singleton
-  @Binds
-  abstract fun provideSessionRepository(repository: SessionRepositoryImpl): SessionRepository
+  single<UsernameRepository> {
+    UsernameRepositoryImpl(
+      get()
+    )
+  }
 
-  @Singleton
-  @Binds
-  abstract fun provideUsernameRepository(repository: UsernameRepositoryImpl): UsernameRepository
+  single<TopAlbumsRepository> {
+    TopAlbumsRepositoryImpl(
+      get()
+    )
+  }
 
-  @Singleton
-  @Binds
-  abstract fun provideTopAlbumsRepository(repository: TopAlbumsRepositoryImpl): TopAlbumsRepository
+  single<TopArtistsRepository> {
+    TopArtistsRepositoryImpl(
+      get()
+    )
+  }
 
-  @Singleton
-  @Binds
-  abstract fun provideTopArtistsRepository(repository: TopArtistsRepositoryImpl): TopArtistsRepository
+  single<ScrobbleRepository> {
+    ScrobbleRepositoryImpl(
+      get(),
+      get(),
+      get(),
+      get()
+    )
+  }
 
-  @Singleton
-  @Binds
-  abstract fun provideScrobbleRepository(repository: ScrobbleRepositoryImpl): ScrobbleRepository
+  single<ThemeRepository> {
+    ThemeRepositoryImpl(
+      get()
+    )
+  }
 
-  @Singleton
-  @Binds
-  abstract fun provideThemeRepository(repository: ThemeRepositoryImpl): ThemeRepository
+  single<TrackRepository> {
+    TrackRepositoryImpl(
+      get(),
+      get()
+    )
+  }
 
-  @Singleton
-  @Binds
-  abstract fun provideTrackRepository(repository: TrackRepositoryImpl): TrackRepository
+  single<ArtistRepository> {
+    ArtistRepositoryImpl(
+      get()
+    )
+  }
 
-  @Singleton
-  @Binds
-  abstract fun provideArtistRepository(repository: ArtistRepositoryImpl): ArtistRepository
-
-  @Singleton
-  @Binds
-  abstract fun provideNowPlayingRepository(repository: NowPlayingRepositoryImpl): NowPlayingRepository
-
-  @Singleton
-  @Binds
-  abstract fun provideScrobbleSettingRepository(repository: ScrobbleSettingRepositoryImpl): ScrobbleSettingRepository
+  single<ScrobbleSettingRepository> {
+    ScrobbleSettingRepositoryImpl(
+      get()
+    )
+  }
 }

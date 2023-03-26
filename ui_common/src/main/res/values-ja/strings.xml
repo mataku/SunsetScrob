@@ -53,7 +53,7 @@
 
   <string name="label_notification_permission_help">SunsetScrob の設定を確認してください</string>
 
-  <string name="item_app_version">v%s</string>
+  <string name="item_app_version">Version %s</string>
   <string name="label_update_available">アプリのアップデートが利用可能です</string>
   <string name="label_start_update">アップデートを開始します。アプリは再起動されます。</string>
 

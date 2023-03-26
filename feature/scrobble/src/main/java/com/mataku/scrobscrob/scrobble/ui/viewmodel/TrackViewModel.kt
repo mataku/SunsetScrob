@@ -7,7 +7,6 @@ import com.mataku.scrobscrob.core.entity.TrackInfo
 import com.mataku.scrobscrob.data.repository.ArtistRepository
 import com.mataku.scrobscrob.data.repository.TrackRepository
 import com.mataku.scrobscrob.scrobble.ui.state.TrackScreenState
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onCompletion
@@ -15,10 +14,8 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class TrackViewModel @Inject constructor(
+class TrackViewModel(
   private val trackRepository: TrackRepository,
   private val artistRepository: ArtistRepository
 ) : ViewModel() {
@@ -46,7 +43,7 @@ class TrackViewModel @Inject constructor(
         state.update {
           it.copy(isLoading = false)
         }
-      }.catch { e ->
+      }.catch {
         state.update {
           it.copy(
             event = TrackScreenState.UiEvent.TrackInfoFetchFailure

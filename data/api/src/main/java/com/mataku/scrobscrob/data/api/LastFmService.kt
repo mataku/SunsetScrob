@@ -10,11 +10,8 @@ import io.ktor.client.request.put
 import io.ktor.client.request.setBody
 import io.ktor.client.request.url
 import io.ktor.http.HttpMethod
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class LastFmService @Inject constructor(val httpClient: HttpClient) {
+class LastFmService(val httpClient: HttpClient) {
 
   suspend inline fun <reified T> request(endpoint: Endpoint<T>): T {
     return when (val requestType = endpoint.requestType) {

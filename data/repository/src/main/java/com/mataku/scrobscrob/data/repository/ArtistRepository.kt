@@ -6,8 +6,6 @@ import com.mataku.scrobscrob.data.api.endpoint.ArtistInfoEndpoint
 import com.mataku.scrobscrob.data.repository.mapper.toArtistInfo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import javax.inject.Inject
-import javax.inject.Singleton
 
 interface ArtistRepository {
   suspend fun artistInfo(
@@ -15,8 +13,7 @@ interface ArtistRepository {
   ): Flow<ArtistInfo>
 }
 
-@Singleton
-class ArtistRepositoryImpl @Inject constructor(
+class ArtistRepositoryImpl(
   private val lastFmService: LastFmService
 ) : ArtistRepository {
   override suspend fun artistInfo(name: String): Flow<ArtistInfo> = flow {

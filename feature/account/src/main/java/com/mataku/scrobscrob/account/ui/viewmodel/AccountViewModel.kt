@@ -9,16 +9,13 @@ import com.mataku.scrobscrob.account.AppInfoProvider
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.data.repository.SessionRepository
 import com.mataku.scrobscrob.data.repository.ThemeRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class AccountViewModel @Inject constructor(
+class AccountViewModel(
   private val themeRepository: ThemeRepository,
   private val sessionRepository: SessionRepository,
   private val appInfoProvider: AppInfoProvider,

@@ -6,26 +6,20 @@ import com.mataku.scrobscrob.data.repository.NowPlayingRepository
 import com.mataku.scrobscrob.data.repository.ScrobbleRepository
 import com.mataku.scrobscrob.data.repository.ScrobbleSettingRepository
 import com.mataku.scrobscrob.data.repository.TrackRepository
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
-import javax.inject.Inject
+import org.koin.android.ext.android.inject
 
-@AndroidEntryPoint
 class MusicNotificationListenerService() : NotificationListenerService() {
 
   private var previousTrackName = ""
 
-  @Inject
-  lateinit var nowPlayingRepository: NowPlayingRepository
+  private val nowPlayingRepository: NowPlayingRepository by inject()
 
-  @Inject
-  lateinit var trackRepository: TrackRepository
+  private val trackRepository: TrackRepository by inject()
 
-  @Inject
-  lateinit var scrobbleRepository: ScrobbleRepository
+  private val scrobbleRepository: ScrobbleRepository by inject()
 
-  @Inject
-  lateinit var scrobbleSettingRepository: ScrobbleSettingRepository
+  private val scrobbleSettingRepository: ScrobbleSettingRepository by inject()
 
   private var requester: MusicNotificationRequester? = null
 

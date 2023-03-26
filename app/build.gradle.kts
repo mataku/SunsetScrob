@@ -1,10 +1,9 @@
 plugins {
   id("sunsetscrob.android.application")
   id("sunsetscrob.android.compose")
-  id("dagger.hilt.android.plugin")
-  id("com.google.dagger.hilt.android")
   id("com.google.firebase.crashlytics")
   id("com.google.gms.google-services")
+  id("com.google.devtools.ksp") version "1.8.10-1.0.9"
 }
 
 apply(from = "${project.rootDir}/gradle/test_dependencies.gradle")
@@ -31,11 +30,7 @@ dependencies {
   implementation(libs.firebase.crashlytics)
 
   implementation(libs.room.runtime)
-  kapt(libs.room.compiler)
-
-  implementation(libs.hilt.android)
-  kapt(libs.hilt.compiler)
-  kapt(libs.hilt.android.compiler)
+  ksp(libs.room.compiler)
 
   implementation(project(":ui_common"))
   implementation(libs.activity.compose)
@@ -46,14 +41,18 @@ dependencies {
   implementation(libs.coil.compose)
   implementation(libs.accompanist.navigation.animation)
   implementation(libs.accompanist.systemuicontroller)
-  implementation(libs.hilt.navigation.compose)
+
   implementation(libs.core.splashscreen)
   implementation(libs.timber)
+
+  implementation(libs.koin.android)
+
+  testImplementation(libs.koin.test)
+  testImplementation(libs.ktor.client.core)
 }
 
-kapt {
-  correctErrorTypes = true
-  javacOptions {
-    option("-Xmaxerrs", 1000)
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+  kotlinOptions {
+    jvmTarget = "11"
   }
 }

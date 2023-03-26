@@ -37,6 +37,7 @@ jobs:
         LAST_FM_API_KEY: ${{ secrets.LAST_FM_API_KEY }}
         LAST_FM_SHARED_SECRET: ${{ secrets.LAST_FM_SHARED_SECRET }}
         GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON_DEV }}
+        FASTLANE_HIDE_CHANGELOG: true
       run: |
         bundle exec fastlane android setup_for_ci
         bundle exec fastlane android build

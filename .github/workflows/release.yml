@@ -44,6 +44,7 @@ jobs:
         SUNSET_KEY_ALIAS: ${{ secrets.SUNSET_KEY_ALIAS }}
         SUNSET_KEY_PASSWORD: ${{ secrets.SUNSET_KEY_PASSWORD }}
         SUNSET_STORE_PASSWORD: ${{ secrets.SUNSET_STORE_PASSWORD }}
+        FASTLANE_HIDE_CHANGELOG: true
       run: |
         bundle exec fastlane android setup_for_ci
         bundle exec fastlane android deploy

@@ -2,8 +2,6 @@ package com.mataku.scrobscrob.data.repository
 
 import com.mataku.scrobscrob.data.db.UsernameDataStore
 import kotlinx.coroutines.runBlocking
-import javax.inject.Inject
-import javax.inject.Singleton
 
 //interface UsernameRepository {
 //    suspend fun username(): Flow<String?>
@@ -29,8 +27,7 @@ interface UsernameRepository {
   suspend fun asyncUsername(): String?
 }
 
-@Singleton
-class UsernameRepositoryImpl @Inject constructor(
+class UsernameRepositoryImpl(
   private val usernameDataStore: UsernameDataStore
 ) : UsernameRepository {
   override fun username(): String? =

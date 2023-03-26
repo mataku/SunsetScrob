@@ -2,8 +2,6 @@ import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 
 plugins {
   id("sunsetscrob.android.feature")
-  id("dagger.hilt.android.plugin")
-  id("com.google.dagger.hilt.android")
   id("kotlinx-serialization")
 }
 
@@ -18,9 +16,9 @@ android {
   namespace = "com.mataku.scrobscrob.data.api"
 }
 
+apply(from = "${project.rootDir}/gradle/test_dependencies.gradle")
+
 dependencies {
-  implementation(libs.hilt.android)
-  kapt(libs.hilt.compiler)
   implementation(libs.coroutines)
   implementation(libs.serialization.json)
   implementation(platform(libs.okhttp.bom))
@@ -30,4 +28,7 @@ dependencies {
   implementation(libs.ktor.client.logging)
   implementation(libs.ktor.client.okhttp)
   implementation(libs.ktor.client.content.negotiation)
+  implementation(libs.koin.android)
+
+  testImplementation(libs.koin.test)
 }
