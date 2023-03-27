@@ -7,6 +7,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ModalBottomSheetLayout
+import androidx.compose.material.ModalBottomSheetValue
+import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -22,6 +26,7 @@ import com.mataku.scrobscrob.ui_common.organism.InfiniteLoadingIndicator
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.sunsetBackgroundGradient
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun TopArtistsScreen(
   state: TopArtistsScreenState
@@ -29,18 +34,26 @@ fun TopArtistsScreen(
   val contentWidth = state.contentWidth
   val uiState = state.uiState
 
-  TopArtistsContent(
-    artists = uiState.topArtists,
-    hasNext = uiState.hasNext,
-    imageSize = contentWidth.dp,
-    padding = contentWidth.dp - 20.dp,
-    onUrlTap = {
-      state.onTapArtist(it)
+  val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
+  ModalBottomSheetLayout(
+    sheetContent = {
+
     },
-    onScrollEnd = {
-      state.onScrollEnd()
-    }
-  )
+    sheetState = sheetState
+  ) {
+    TopArtistsContent(
+      artists = uiState.topArtists,
+      hasNext = uiState.hasNext,
+      imageSize = contentWidth.dp,
+      padding = contentWidth.dp - 20.dp,
+      onUrlTap = {
+        state.onTapArtist(it)
+      },
+      onScrollEnd = {
+        state.onScrollEnd()
+      }
+    )
+  }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
