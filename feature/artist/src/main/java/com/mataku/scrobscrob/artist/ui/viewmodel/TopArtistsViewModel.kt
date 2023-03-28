@@ -1,11 +1,15 @@
 package com.mataku.scrobscrob.artist.ui.viewmodel
 
+import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mataku.scrobscrob.core.entity.ArtistInfo
+import com.mataku.scrobscrob.core.entity.TimeRangeFiltering
 import com.mataku.scrobscrob.data.repository.TopArtistsRepository
 import com.mataku.scrobscrob.data.repository.UsernameRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.collections.immutable.ImmutableSet
+import kotlinx.collections.immutable.toImmutableSet
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onCompletion
@@ -25,7 +29,7 @@ class TopArtistsViewModel @Inject constructor(
   var uiState = MutableStateFlow(UiState.initialize())
     private set
 
-  private var page = 1
+  private var page: Int = 1
 
   init {
     if (username.isBlank()) {
@@ -40,13 +44,22 @@ class TopArtistsViewModel @Inject constructor(
     }
   }
 
-  fun fetchTopArtists() {
-    if (uiState.value.isLoading) {
+  fun fetchTopArtists(timeRangeChanged: Boolean = false) {
+    val currentState = uiState.value
+    if (currentState.isLoading) {
       return
     }
 
+    if (timeRangeChanged) {
+      page = 1
+    }
+
     viewModelScope.launch {
-      topArtistsRepository.fetchTopArtists(page = page, username = username)
+      topArtistsRepository.fetchTopArtists(
+        page = page,
+        username = username,
+        timeRangeFiltering = currentState.selectedTimeRangeFiltering
+      )
         .onStart {
           uiState.update {
             it.copy(
@@ -70,17 +83,28 @@ class TopArtistsViewModel @Inject constructor(
         }
         .collect {
           if (it.isEmpty()) {
+            val list = if (timeRangeChanged) {
+              emptyList<ArtistInfo>().toImmutableSet()
+            } else {
+              currentState.topArtists
+            }
             uiState.update { state ->
               state.copy(
-                hasNext = false
+                hasNext = false,
+                topArtists = list
               )
             }
           } else {
-            val artists = uiState.value.topArtists.toMutableList()
-            artists.addAll(it)
+            val artists = if (timeRangeChanged) {
+              it
+            } else {
+              val current = uiState.value.topArtists.toMutableList()
+              current.addAll(it)
+              current
+            }.toImmutableSet()
             uiState.update { state ->
               state.copy(
-                topArtists = artists
+                topArtists = artists,
               )
             }
             page++
@@ -89,17 +113,33 @@ class TopArtistsViewModel @Inject constructor(
     }
   }
 
+  fun updateTimeRange(filtering: TimeRangeFiltering) {
+    if (uiState.value.selectedTimeRangeFiltering == filtering) {
+      return
+    }
+
+    uiState.update {
+      it.copy(
+        selectedTimeRangeFiltering = filtering
+      )
+    }
+    fetchTopArtists(timeRangeChanged = true)
+  }
+
+  @Stable
   data class UiState(
     val isLoading: Boolean,
-    val topArtists: List<ArtistInfo>,
-    val hasNext: Boolean
+    val topArtists: ImmutableSet<ArtistInfo>,
+    val hasNext: Boolean,
+    val selectedTimeRangeFiltering: TimeRangeFiltering,
   ) {
     companion object {
       fun initialize(): UiState =
         UiState(
           isLoading = false,
-          topArtists = emptyList(),
-          hasNext = true
+          topArtists = emptyList<ArtistInfo>().toImmutableSet(),
+          hasNext = true,
+          selectedTimeRangeFiltering = TimeRangeFiltering.OVERALL,
         )
     }
   }
