@@ -19,11 +19,13 @@ import com.mataku.scrobscrob.ui_common.style.accentColor
 
 @Composable
 fun FilteringFloatingButton(
-  onClick: () -> Unit
+  onClick: () -> Unit,
+  modifier: Modifier
 ) {
   FloatingActionButton(
     onClick = onClick,
-    backgroundColor = LocalAppTheme.current.accentColor()
+    backgroundColor = LocalAppTheme.current.accentColor(),
+    modifier = modifier
   ) {
     Icon(
       painter = rememberVectorPainter(image = Icons.Filled.FilterList),
@@ -42,9 +44,10 @@ private fun FilteringFloatingButtonPreview() {
           .wrapContentSize()
           .padding(16.dp)
       ) {
-        FilteringFloatingButton {
-
-        }
+        FilteringFloatingButton(
+          onClick = {},
+          modifier = Modifier
+        )
       }
     }
   }
