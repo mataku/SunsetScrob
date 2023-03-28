@@ -75,7 +75,8 @@ private fun ScrobbleContent(
       SunsetImage(
         imageData = imageData,
         contentDescription = "$trackName artwork image",
-        modifier = Modifier.size(56.dp)
+        modifier = Modifier.size(56.dp),
+        size = 1000
       )
 
       Column(

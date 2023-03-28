@@ -10,12 +10,18 @@ import coil.request.ImageRequest
 fun SunsetImage(
   imageData: Any?,
   contentDescription: String?,
+  size: Int? = null,
   modifier: Modifier
 ) {
+  val imageRequestBuilder = ImageRequest.Builder(LocalContext.current)
+    .data(imageData)
+    .crossfade(300)
+
+  if (size != null) {
+    imageRequestBuilder.size(size)
+  }
   AsyncImage(
-    model = ImageRequest.Builder(LocalContext.current)
-      .data(imageData)
-      .crossfade(300)
+    model = imageRequestBuilder
       .build(),
     contentDescription = contentDescription,
     modifier = modifier
