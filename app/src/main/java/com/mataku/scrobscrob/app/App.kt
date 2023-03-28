@@ -14,13 +14,8 @@ import timber.log.Timber
 open class App : Application() {
   override fun onCreate() {
     super.onCreate()
-    // Cleanup coil cache dir
     val dir = cacheDir.resolve("sunsetscrob_image")
-    kotlin.runCatching {
-      if (dir.exists()) {
-        dir.delete()
-      }
-    }
+
     val imageLoaderBuilder = ImageLoader.Builder(applicationContext)
       .memoryCachePolicy(CachePolicy.DISABLED)
       .diskCachePolicy(CachePolicy.ENABLED)
@@ -30,7 +25,7 @@ open class App : Application() {
           .directory(dir)
           .maxSizeBytes(256L * 1024L * 1024L)
           .build()
-      }.crossfade(true)
+      }.crossfade(300)
 
     if (BuildConfig.DEBUG) {
       imageLoaderBuilder.logger(DebugLogger())

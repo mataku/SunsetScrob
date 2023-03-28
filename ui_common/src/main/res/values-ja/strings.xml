@@ -21,6 +21,8 @@
   <string name="menu_top_albums">Top Albums</string>
   <string name="menu_account">Account</string>
 
+  <string name="item_clear_cache">Clear cache</string>
+
   <string name="item_logout">Logout</string>
   <string name="item_logout_description">ログアウトする</string>
 

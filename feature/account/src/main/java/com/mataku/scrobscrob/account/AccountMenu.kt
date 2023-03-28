@@ -14,6 +14,10 @@ enum class AccountMenu(
     titleRes = R.string.item_theme,
     descriptionRes = 0
   ),
+  CLEAR_CACHE(
+    titleRes = R.string.item_clear_cache,
+    descriptionRes = 0
+  ),
   LOGOUT(
     titleRes = R.string.item_logout,
     descriptionRes = R.string.item_logout_description

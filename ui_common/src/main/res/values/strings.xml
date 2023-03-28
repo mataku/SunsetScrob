@@ -43,6 +43,8 @@
 
   <string name="label_notification_permission_help">Check SunsetScrob</string>
 
+  <string name="item_clear_cache">Clear cache</string>
+
   <string name="item_logout">Logout</string>
   <string name="item_logout_description">Logout of Last.fm</string>
 

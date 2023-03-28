@@ -137,7 +137,8 @@ fun AccountScreen(
           }
         }
       },
-      appVersion = uiState.appVersion
+      appVersion = uiState.appVersion,
+      clearCache = state::clearCache
     )
   }
 
@@ -176,6 +177,7 @@ private fun AccountContent(
   navigateToScrobbleSetting: () -> Unit,
   navigateToThemeSelector: () -> Unit,
   navigateToLogoutConfirmation: () -> Unit,
+  clearCache: () -> Unit,
   navigateToLicenseList: () -> Unit,
   navigateToPrivacyPolicy: () -> Unit,
   navigateToNotificationSetting: () -> Unit,
@@ -187,6 +189,10 @@ private fun AccountContent(
   val openDialog = remember {
     mutableStateOf(false)
   }
+  val openClearCacheConfirmationDialog = remember {
+    mutableStateOf(false)
+  }
+
   LazyColumn(
     content = {
       stickyHeader {
@@ -223,8 +229,15 @@ private fun AccountContent(
       }
       item {
         Divider(
-          modifier = Modifier.padding(vertical = 4.dp)
+          modifier = Modifier.padding(vertical = 8.dp)
         )
+        AccountMenuCell(
+          title = stringResource(id = AccountMenu.CLEAR_CACHE.titleRes),
+          description = ""
+        ) {
+          openClearCacheConfirmationDialog.value = true
+        }
+
         val licenseMenu = AccountMenu.LICENSE
         AccountMenuCell(
           title = stringResource(id = licenseMenu.titleRes),
@@ -298,6 +311,24 @@ private fun AccountContent(
       }
     )
   }
+
+  if (openClearCacheConfirmationDialog.value) {
+    SunsetAlertDialog(
+      title = "Clear cache?",
+      onConfirmButton = {
+        clearCache.invoke()
+        openClearCacheConfirmationDialog.value = false
+      },
+      confirmButtonText = "Clear",
+      dismissButtonText = "Cancel",
+      onDismissRequest = {
+        openClearCacheConfirmationDialog.value = false
+      },
+      onDismissButton = {
+        openClearCacheConfirmationDialog.value = false
+      }
+    )
+  }
 }
 
 @Composable
@@ -338,7 +369,8 @@ private fun AccountContentPreview() {
         navigateToNotificationSetting = {},
         requestAppUpdate = {},
         appUpdateInfo = null,
-        appVersion = "1.0.0"
+        appVersion = "1.0.0",
+        clearCache = {}
       )
     }
   }
