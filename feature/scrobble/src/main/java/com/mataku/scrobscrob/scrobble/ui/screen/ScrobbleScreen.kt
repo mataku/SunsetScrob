@@ -29,6 +29,7 @@ import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.scrobble.R
 import com.mataku.scrobscrob.scrobble.ui.molecule.Scrobble
 import com.mataku.scrobscrob.scrobble.ui.state.ScrobbleScreenState
+import com.mataku.scrobscrob.ui_common.molecule.LoadingIndicator
 import com.mataku.scrobscrob.ui_common.organism.ContentHeader
 import com.mataku.scrobscrob.ui_common.organism.InfiniteLoadingIndicator
 import com.mataku.scrobscrob.ui_common.style.Colors
@@ -88,6 +89,15 @@ fun ScrobbleScreen(
       }
     )
   }
+
+  if (uiState.isLoading && uiState.recentTracks.isEmpty()) {
+    Box(
+      modifier = Modifier.fillMaxSize(),
+      contentAlignment = Alignment.Center
+    ) {
+      LoadingIndicator(modifier = Modifier)
+    }
+  }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -119,7 +129,7 @@ private fun ScrobbleContent(
           }
         )
       }
-      if (hasNext) {
+      if (hasNext && recentTracks.isNotEmpty()) {
         item {
           Box(
             Modifier.fillMaxWidth(),
