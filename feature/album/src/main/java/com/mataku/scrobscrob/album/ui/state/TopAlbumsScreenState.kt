@@ -8,6 +8,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mataku.scrobscrob.album.ui.viewmodel.TopAlbumsViewModel
+import com.mataku.scrobscrob.core.entity.TimeRangeFiltering
 import com.mataku.scrobscrob.ui_common.navigateToWebView
 
 class TopAlbumsScreenState(
@@ -28,6 +29,10 @@ class TopAlbumsScreenState(
 
   fun onScrollEnd() {
     viewModel.fetchAlbums()
+  }
+
+  fun updateTimeRangeFiltering(selectedTimeRangeFiltering: TimeRangeFiltering) {
+    viewModel.updateTimeRange(selectedTimeRangeFiltering)
   }
 }
 

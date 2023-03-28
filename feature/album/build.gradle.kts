@@ -28,4 +28,6 @@ dependencies {
   kapt(libs.hilt.android.compiler)
 
   implementation(libs.coroutines)
+
+  implementation(libs.kotlinx.collection)
 }
