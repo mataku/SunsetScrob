@@ -20,4 +20,5 @@ dependencies {
   implementation(libs.accompanist.systemuicontroller)
 
   implementation(libs.coil.compose)
+  implementation(libs.compose.material.icons.extended)
 }

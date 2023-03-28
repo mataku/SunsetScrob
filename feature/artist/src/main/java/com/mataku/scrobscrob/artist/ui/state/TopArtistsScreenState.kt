@@ -8,6 +8,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mataku.scrobscrob.artist.ui.viewmodel.TopArtistsViewModel
+import com.mataku.scrobscrob.core.entity.TimeRangeFiltering
 import com.mataku.scrobscrob.ui_common.navigateToWebView
 
 class TopArtistsScreenState(
@@ -28,6 +29,10 @@ class TopArtistsScreenState(
 
   fun onScrollEnd() {
     viewModel.fetchTopArtists()
+  }
+
+  fun updateTimeRange(filtering: TimeRangeFiltering) {
+    viewModel.updateTimeRange(filtering)
   }
 }
 
