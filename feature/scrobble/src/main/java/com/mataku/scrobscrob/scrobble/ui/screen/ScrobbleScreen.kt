@@ -65,7 +65,7 @@ fun ScrobbleScreen(
         val topLeftCoordinate = if (firstVisibleIndex == tappedItemIndex) {
           Pair(0, 0)
         } else {
-          val cellHeight = density * 64
+          val cellHeight = density * 72
           val betweenCellCount = tappedItemIndex - firstVisibleIndex - 1
           val heightPxBetweenTappedItemAndFirstVisibleItem = cellHeight * betweenCellCount
           val firstVisibleItemRemainingHeightPx = cellHeight - firstVisibleItemScrollOffset

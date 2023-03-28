@@ -76,7 +76,7 @@ fun TrackScreen(
         val animateValue = animateState.value
         val yCoordinate = topLeftCoordinate.second
         val offset = (yCoordinate.dp) - ((yCoordinate.dp) * animateValue)
-        val imageSize = 48
+        val imageSize = 56
         val horizontalPadding = 32
         val size =
           imageSize.dp + ((screenWidthDp - imageSize - horizontalPadding) * animateValue).dp
