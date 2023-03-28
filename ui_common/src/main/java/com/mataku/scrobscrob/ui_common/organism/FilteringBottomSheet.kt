@@ -32,13 +32,16 @@ fun FilteringBottomSheet(
     modifier = modifier
       .fillMaxWidth()
       .padding(
-        horizontal = 16.dp,
         vertical = 24.dp
       )
   ) {
     Text(
       text = "Select time-range",
-      style = SunsetTextStyle.h7
+      style = SunsetTextStyle.h7,
+      modifier = Modifier
+        .padding(
+          horizontal = 16.dp,
+        )
     )
 
     Spacer(modifier = Modifier.height(16.dp))
@@ -48,7 +51,11 @@ fun FilteringBottomSheet(
         selected = it == selectedTimeRangeFiltering,
         onClick = {
           onClick.invoke(it)
-        }
+        },
+        modifier = Modifier
+          .padding(
+            horizontal = 16.dp,
+          )
       )
     }
 
@@ -59,7 +66,8 @@ fun FilteringBottomSheet(
 private fun TimeRangeCell(
   timeRangeValue: String,
   selected: Boolean,
-  onClick: () -> Unit
+  onClick: () -> Unit,
+  modifier: Modifier
 ) {
   Row(modifier = Modifier
     .fillMaxWidth()
@@ -68,6 +76,7 @@ private fun TimeRangeCell(
       onClick.invoke()
     }
     .padding(vertical = 12.dp)
+    .then(modifier)
   ) {
     Text(
       text = timeRangeValue,
