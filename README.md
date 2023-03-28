@@ -14,11 +14,16 @@ Last.fm client on Android (mainly for my portfolio)
 - Autofill
 - Themed icon
 
-## Tech stacks
-- MVVM
-- automation of building and releasing with Fastlane
+## Libraries and tools
+- Jetpack Compose
+- Kotlin Coroutines
+- Ktor client
+- Coil
 - Gradle version catalog
 - Gradle convention plugin
+- Fastlane
+- Kotest
+
 
 ## TODO
 - Show each content details
