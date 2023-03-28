@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -54,7 +55,7 @@ private fun ScrobbleContent(
   Row(
     modifier = Modifier
       .fillMaxWidth()
-      .height(64.dp)
+      .height(72.dp)
       .clickable {
         onScrobbleTap()
       }
@@ -74,14 +75,14 @@ private fun ScrobbleContent(
       SunsetImage(
         imageData = imageData,
         contentDescription = "$trackName artwork image",
-        modifier = Modifier.size(48.dp)
+        modifier = Modifier.size(56.dp)
       )
 
       Column(
         modifier = Modifier
-          .padding(start = 8.dp)
+          .padding(start = 16.dp)
           .fillMaxWidth()
-          .height(48.dp),
+          .height(56.dp),
         verticalArrangement = Arrangement.Center
       ) {
         Text(
@@ -89,7 +90,7 @@ private fun ScrobbleContent(
           modifier = Modifier.wrapContentSize(),
           maxLines = 1,
           overflow = TextOverflow.Ellipsis,
-          style = SunsetTextStyle.body2.copy(
+          style = SunsetTextStyle.body1.copy(
             fontWeight = FontWeight.Medium
           )
         )
@@ -101,7 +102,9 @@ private fun ScrobbleContent(
           modifier = Modifier.wrapContentSize(),
           maxLines = 1,
           overflow = TextOverflow.Ellipsis,
-          style = SunsetTextStyle.caption
+          style = SunsetTextStyle.caption.copy(
+            color = MaterialTheme.colors.onSurface
+          )
         )
       }
     }
