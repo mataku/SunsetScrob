@@ -14,9 +14,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
-import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberModalBottomSheetState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -34,13 +35,14 @@ import com.mataku.scrobscrob.ui_common.molecule.LoadingIndicator
 import com.mataku.scrobscrob.ui_common.organism.ContentHeader
 import com.mataku.scrobscrob.ui_common.organism.FilteringBottomSheet
 import com.mataku.scrobscrob.ui_common.organism.InfiniteLoadingIndicator
+import com.mataku.scrobscrob.ui_common.style.BOTTOM_APP_BAR_HEIGHT
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.sunsetBackgroundGradient
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.coroutines.launch
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterialApi::class)
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter", "UnusedMaterial3ScaffoldPaddingParameter")
+@OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun TopAlbumsScreen(
   state: TopAlbumsScreenState
@@ -68,7 +70,7 @@ fun TopAlbumsScreen(
           state.updateTimeRangeFiltering(it)
         },
         modifier = Modifier
-          .padding(bottom = 56.dp)
+          .padding(bottom = BOTTOM_APP_BAR_HEIGHT)
       )
     },
     sheetState = sheetState,
@@ -83,7 +85,7 @@ fun TopAlbumsScreen(
             }
           },
           modifier = Modifier
-            .padding(bottom = 56.dp)
+            .padding(bottom = BOTTOM_APP_BAR_HEIGHT)
         )
       }
     ) {
@@ -155,11 +157,11 @@ fun TopAlbumsContent(
         .background(
           brush = sunsetBackgroundGradient
         )
-        .padding(bottom = 56.dp)
+        .padding(bottom = BOTTOM_APP_BAR_HEIGHT)
     } else {
       Modifier
         .fillMaxSize()
-        .padding(bottom = 56.dp)
+        .padding(bottom = BOTTOM_APP_BAR_HEIGHT)
     }
   )
 }

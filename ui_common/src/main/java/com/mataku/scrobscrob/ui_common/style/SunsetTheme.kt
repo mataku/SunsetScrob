@@ -13,6 +13,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mataku.scrobscrob.core.entity.AppTheme
 
@@ -62,6 +63,7 @@ val LocalScaffoldState = staticCompositionLocalOf<ScaffoldState> {
 
 const val ANIMATION_DURATION_MILLIS = 700
 const val TRANSITION_ANIMATION_DURATION_MILLIS = 600
+val BOTTOM_APP_BAR_HEIGHT = 80.dp
 
 fun AppTheme.backgroundColor(): Color {
   return this.colorScheme().background

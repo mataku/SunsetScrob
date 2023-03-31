@@ -7,8 +7,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.Switch
-import androidx.compose.material.Text
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Switch
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -130,7 +131,7 @@ private const val YOUTUBE_MUSIC_NAME = "YouTube Music"
 @Composable
 private fun ScrobbleSettingCellPreview() {
   SunsetThemePreview {
-    androidx.compose.material.Surface {
+    Surface {
       ScrobbleSettingCell("Apple Music", true) { _, _ -> }
     }
   }

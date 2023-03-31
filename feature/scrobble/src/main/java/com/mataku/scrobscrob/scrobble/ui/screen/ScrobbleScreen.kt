@@ -22,7 +22,6 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.core.entity.RecentTrack
 import com.mataku.scrobscrob.core.entity.imageUrl
@@ -32,6 +31,7 @@ import com.mataku.scrobscrob.scrobble.ui.state.ScrobbleScreenState
 import com.mataku.scrobscrob.ui_common.molecule.LoadingIndicator
 import com.mataku.scrobscrob.ui_common.organism.ContentHeader
 import com.mataku.scrobscrob.ui_common.organism.InfiniteLoadingIndicator
+import com.mataku.scrobscrob.ui_common.style.BOTTOM_APP_BAR_HEIGHT
 import com.mataku.scrobscrob.ui_common.style.Colors
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
@@ -146,11 +146,11 @@ private fun ScrobbleContent(
         .background(
           brush = sunsetBackgroundGradient
         )
-        .padding(bottom = 56.dp)
+        .padding(bottom = BOTTOM_APP_BAR_HEIGHT)
     } else {
       Modifier
         .fillMaxSize()
-        .padding(bottom = 56.dp)
+        .padding(bottom = BOTTOM_APP_BAR_HEIGHT)
     }
   )
 }

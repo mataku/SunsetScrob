@@ -60,3 +60,7 @@ kapt {
     option("-Xmaxerrs", 1000)
   }
 }
+
+hilt {
+  enableAggregatingTask = true
+}

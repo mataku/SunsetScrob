@@ -3,9 +3,9 @@ package com.mataku.scrobscrob.ui_common.molecule
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.toggleable
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,7 +21,7 @@ fun Chip(
 ) {
   Surface(
     modifier = Modifier.padding(4.dp),
-    elevation = 8.dp,
+    shadowElevation = 8.dp,
     shape = MaterialTheme.shapes.medium,
     color = if (isSelected) Color.LightGray else MaterialTheme.colorScheme.primary
   ) {

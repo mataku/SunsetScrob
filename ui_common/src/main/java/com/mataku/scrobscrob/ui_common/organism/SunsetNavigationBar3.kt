@@ -3,7 +3,6 @@ package com.mataku.scrobscrob.ui_common.organism
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
-import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.LibraryMusic
@@ -11,6 +10,7 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -27,7 +27,14 @@ import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import com.mataku.scrobscrob.ui_common.style.accentColor
 
 @Composable
-fun SunsetNavigationBar3(navController: NavController) {
+fun SunsetNavigationBar3(
+  navController: NavController,
+  navigateToScrobble: () -> Unit,
+  navigateToTopAlbums: () -> Unit,
+  navigateToTopArtists: () -> Unit,
+  navigateToAccount: () -> Unit,
+
+  ) {
   val backStackEntry = navController.currentBackStackEntryAsState()
   NavigationBar(
     containerColor = MaterialTheme.colorScheme.primary
@@ -45,7 +52,14 @@ fun SunsetNavigationBar3(navController: NavController) {
       NavigationBarItem(
         selected = selected,
         onClick = {
-          navController.navigate(item.screenRoute)
+          if (backStackEntry.value?.destination?.route == item.screenRoute) return@NavigationBarItem
+
+          when (item) {
+            SunsetBottomNavItem.SCROBBLE -> navigateToScrobble.invoke()
+            SunsetBottomNavItem.TOP_ALBUMS -> navigateToTopAlbums.invoke()
+            SunsetBottomNavItem.TOP_ARTISTS -> navigateToTopArtists.invoke()
+            SunsetBottomNavItem.ACCOUNT -> navigateToAccount.invoke()
+          }
         },
         label = {
           Text(
@@ -98,7 +112,13 @@ fun SunsetNavigationBar3(navController: NavController) {
 private fun SunsetNavigationBar3Preview() {
   SunsetThemePreview {
     Surface {
-      SunsetNavigationBar3(navController = NavController(LocalContext.current))
+      SunsetNavigationBar3(
+        navController = NavController(LocalContext.current),
+        navigateToTopArtists = {},
+        navigateToTopAlbums = {},
+        navigateToAccount = {},
+        navigateToScrobble = {}
+      )
     }
   }
 }

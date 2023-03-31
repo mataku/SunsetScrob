@@ -11,8 +11,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.material.Text
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -31,6 +32,7 @@ import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.scrobble.R
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.molecule.SunsetImage
+import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import com.mataku.scrobscrob.ui_common.R as uiCommonR
 
 @Composable
@@ -128,11 +130,15 @@ private fun ScrobbleContent(
 @Composable
 @Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)
 fun ScrobblePreview() {
-  ScrobbleContent(
-    imageUrl = null,
-    trackName = "裸足でSummer",
-    artistName = "乃木坂46",
-    date = "01 Aug 2022, 04:08",
-    onScrobbleTap = {}
-  )
+  SunsetThemePreview {
+    Surface {
+      ScrobbleContent(
+        imageUrl = null,
+        trackName = "裸足でSummer",
+        artistName = "乃木坂46",
+        date = "01 Aug 2022, 04:08",
+        onScrobbleTap = {}
+      )
+    }
+  }
 }

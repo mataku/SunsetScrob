@@ -8,6 +8,7 @@ import androidx.navigation.NavController
 import com.mataku.scrobscrob.auth.ui.viewmodel.LoginViewModel
 import com.mataku.scrobscrob.ui_common.navigateToPrivacyPolicy
 import com.mataku.scrobscrob.ui_common.navigateToScrobble
+import com.mataku.scrobscrob.ui_common.navigateToScrobbleFromAuth
 
 class LoginScreenState(
   private val navController: NavController,
@@ -24,7 +25,7 @@ class LoginScreenState(
   }
 
   fun navigateToTop() {
-    navController.navigateToScrobble(fromAuth = true)
+    navController.navigateToScrobbleFromAuth()
   }
 
   fun navigateToPrivacyPolicy() {

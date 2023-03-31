@@ -14,8 +14,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Divider
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -34,6 +34,7 @@ import com.mataku.scrobscrob.ui_common.molecule.SunsetImage
 import com.mataku.scrobscrob.ui_common.molecule.TopTags
 import com.mataku.scrobscrob.ui_common.organism.ContentHeader
 import com.mataku.scrobscrob.ui_common.style.ANIMATION_DURATION_MILLIS
+import com.mataku.scrobscrob.ui_common.style.BOTTOM_APP_BAR_HEIGHT
 import com.mataku.scrobscrob.ui_common.style.Colors
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.backgroundColor
@@ -144,7 +145,7 @@ fun TrackScreen(
     state = lazyListState,
     modifier = Modifier
       .fillMaxSize()
-      .padding(bottom = 56.dp)
+      .padding(bottom = BOTTOM_APP_BAR_HEIGHT)
   )
 
   LaunchedEffect(Unit) {
