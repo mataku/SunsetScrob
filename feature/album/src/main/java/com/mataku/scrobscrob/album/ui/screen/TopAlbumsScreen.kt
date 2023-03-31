@@ -35,13 +35,12 @@ import com.mataku.scrobscrob.ui_common.molecule.LoadingIndicator
 import com.mataku.scrobscrob.ui_common.organism.ContentHeader
 import com.mataku.scrobscrob.ui_common.organism.FilteringBottomSheet
 import com.mataku.scrobscrob.ui_common.organism.InfiniteLoadingIndicator
-import com.mataku.scrobscrob.ui_common.style.BOTTOM_APP_BAR_HEIGHT
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.sunsetBackgroundGradient
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.coroutines.launch
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter", "UnusedMaterial3ScaffoldPaddingParameter")
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun TopAlbumsScreen(
@@ -70,7 +69,6 @@ fun TopAlbumsScreen(
           state.updateTimeRangeFiltering(it)
         },
         modifier = Modifier
-          .padding(bottom = BOTTOM_APP_BAR_HEIGHT)
       )
     },
     sheetState = sheetState,
@@ -85,7 +83,6 @@ fun TopAlbumsScreen(
             }
           },
           modifier = Modifier
-            .padding(bottom = BOTTOM_APP_BAR_HEIGHT)
         )
       }
     ) {
@@ -124,7 +121,7 @@ fun TopAlbumsContent(
   imageSize: Dp,
   padding: Dp,
   onUrlTap: (String) -> Unit,
-  onScrollEnd: () -> Unit
+  onScrollEnd: () -> Unit,
 ) {
   LazyColumn(
     content = {
@@ -157,11 +154,9 @@ fun TopAlbumsContent(
         .background(
           brush = sunsetBackgroundGradient
         )
-        .padding(bottom = BOTTOM_APP_BAR_HEIGHT)
     } else {
       Modifier
         .fillMaxSize()
-        .padding(bottom = BOTTOM_APP_BAR_HEIGHT)
     }
   )
 }

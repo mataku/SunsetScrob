@@ -1,6 +1,5 @@
 package com.mataku.scrobscrob.auth.ui.screen
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -25,7 +24,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -72,8 +70,6 @@ import com.mataku.scrobscrob.ui_common.style.colorScheme
 import kotlinx.coroutines.launch
 import com.mataku.scrobscrob.ui_common.R as uiCommonR
 
-@OptIn(ExperimentalMaterial3Api::class)
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter", "UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun LoginScreen(
   stateHolder: LoginScreenState
@@ -119,25 +115,23 @@ fun LoginScreen(
     }
     stateHolder.popEvent()
   }
-  Scaffold {
-    LoginContent(
-      isLoading = uiState.isLoading,
-      onLoginButtonTap = { id, password ->
-        stateHolder.login(id, password)
-      },
-      onPrivacyPolicyTap = {
-        stateHolder.navigateToPrivacyPolicy()
-      },
-      username = uiState.username,
-      password = uiState.password,
-      onUsernameUpdate = {
-        stateHolder.onUsernameUpdate(it)
-      },
-      onPasswordUpdate = {
-        stateHolder.onPasswordUpdate(it)
-      }
-    )
-  }
+  LoginContent(
+    isLoading = uiState.isLoading,
+    onLoginButtonTap = { id, password ->
+      stateHolder.login(id, password)
+    },
+    onPrivacyPolicyTap = {
+      stateHolder.navigateToPrivacyPolicy()
+    },
+    username = uiState.username,
+    password = uiState.password,
+    onUsernameUpdate = {
+      stateHolder.onUsernameUpdate(it)
+    },
+    onPasswordUpdate = {
+      stateHolder.onPasswordUpdate(it)
+    }
+  )
 }
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
