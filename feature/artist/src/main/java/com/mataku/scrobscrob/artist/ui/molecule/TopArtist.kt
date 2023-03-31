@@ -52,7 +52,7 @@ fun TopArtist(artist: ArtistInfo, imageSize: Dp, onArtistTap: () -> Unit, modifi
       modifier = Modifier.size(imageSize)
     )
 
-    Spacer(modifier = Modifier.height(4.dp))
+    Spacer(modifier = Modifier.height(8.dp))
     Text(
       artist.name,
       fontSize = 16.sp,

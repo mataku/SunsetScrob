@@ -53,7 +53,7 @@ fun TopAlbum(album: AlbumInfo, imageSize: Dp, onAlbumTap: () -> Unit, modifier: 
       contentDescription = album.title,
       modifier = Modifier.size(imageSize)
     )
-    Spacer(modifier = Modifier.height(4.dp))
+    Spacer(modifier = Modifier.height(8.dp))
     Text(
       album.title,
       fontSize = 16.sp,
