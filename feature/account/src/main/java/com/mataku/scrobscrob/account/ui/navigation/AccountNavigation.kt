@@ -2,6 +2,7 @@ package com.mataku.scrobscrob.account.ui.navigation
 
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -56,10 +57,8 @@ fun NavGraphBuilder.accountGraph(navController: NavController) {
 
 fun NavController.navigateToAccount() {
   navigate(ACCOUNT_DESTINATION) {
-    graph.startDestinationRoute?.let { screenRoute ->
-      popUpTo(screenRoute) {
-        saveState = true
-      }
+    popUpTo(graph.findStartDestination().id) {
+      saveState = true
     }
     launchSingleTop = true
     restoreState = true

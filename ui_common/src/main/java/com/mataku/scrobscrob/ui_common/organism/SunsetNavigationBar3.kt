@@ -20,6 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.mataku.scrobscrob.ui_common.SunsetBottomNavItem
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
@@ -54,11 +55,12 @@ fun SunsetNavigationBar3(
         onClick = {
           if (backStackEntry.value?.destination?.route == item.screenRoute) return@NavigationBarItem
 
-          when (item) {
-            SunsetBottomNavItem.SCROBBLE -> navigateToScrobble.invoke()
-            SunsetBottomNavItem.TOP_ALBUMS -> navigateToTopAlbums.invoke()
-            SunsetBottomNavItem.TOP_ARTISTS -> navigateToTopArtists.invoke()
-            SunsetBottomNavItem.ACCOUNT -> navigateToAccount.invoke()
+          navController.navigate(item.screenRoute) {
+            popUpTo(navController.graph.findStartDestination().id) {
+              saveState = true
+            }
+            launchSingleTop = true
+            restoreState = true
           }
         },
         label = {

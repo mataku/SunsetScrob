@@ -24,21 +24,17 @@ fun NavController.navigateToScrobbleFromAuth() {
   navigate(
     SCROBBLE_DESTINATION
   ) {
-    launchSingleTop = true
-    popUpTo(
-      graph.findStartDestination().id
-    ) {
-      inclusive = true
+    popUpTo(graph.findStartDestination().id) {
+      saveState = true
     }
+    launchSingleTop = true
   }
 }
 
 fun NavController.navigateToScrobble() {
   navigate(SCROBBLE_DESTINATION) {
-    graph.startDestinationRoute?.let { screenRoute ->
-      popUpTo(screenRoute) {
-        saveState = true
-      }
+    popUpTo(graph.findStartDestination().id) {
+      saveState = true
     }
     launchSingleTop = true
     restoreState = true
