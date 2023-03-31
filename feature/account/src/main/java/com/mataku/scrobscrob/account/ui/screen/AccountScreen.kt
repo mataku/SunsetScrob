@@ -48,11 +48,11 @@ import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.ui_common.SunsetAlertDialog
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.organism.ContentHeader
-import com.mataku.scrobscrob.ui_common.style.Colors
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.LocalSnackbarHostState
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import com.mataku.scrobscrob.ui_common.style.backgroundColor
+import com.mataku.scrobscrob.ui_common.style.colorScheme
 import com.mataku.scrobscrob.ui_common.style.sunsetBackgroundGradient
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -62,12 +62,12 @@ fun AccountScreen(
   state: AccountState
 ) {
   val systemUiController = rememberSystemUiController()
+  val theme = LocalAppTheme.current
+  systemUiController.setSystemBarsColor(
+    theme.backgroundColor()
+  )
   systemUiController.setNavigationBarColor(
-    color = if (LocalAppTheme.current == AppTheme.SUNSET) {
-      Colors.SunsetBlue
-    } else {
-      LocalAppTheme.current.backgroundColor()
-    }
+    theme.colorScheme().primary
   )
   val openDialog = remember {
     mutableStateOf(false)
