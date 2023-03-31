@@ -30,6 +30,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.app.NotificationManagerCompat
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.google.android.play.core.appupdate.AppUpdateInfo
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.appupdate.AppUpdateOptions
@@ -47,9 +48,11 @@ import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.ui_common.SunsetAlertDialog
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.organism.ContentHeader
+import com.mataku.scrobscrob.ui_common.style.Colors
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.LocalSnackbarHostState
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
+import com.mataku.scrobscrob.ui_common.style.backgroundColor
 import com.mataku.scrobscrob.ui_common.style.sunsetBackgroundGradient
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -58,6 +61,14 @@ import kotlinx.coroutines.launch
 fun AccountScreen(
   state: AccountState
 ) {
+  val systemUiController = rememberSystemUiController()
+  systemUiController.setNavigationBarColor(
+    color = if (LocalAppTheme.current == AppTheme.SUNSET) {
+      Colors.SunsetBlue
+    } else {
+      LocalAppTheme.current.backgroundColor()
+    }
+  )
   val openDialog = remember {
     mutableStateOf(false)
   }
