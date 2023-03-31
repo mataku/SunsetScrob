@@ -1,9 +1,9 @@
 package com.mataku.scrobscrob.ui_common
 
 import androidx.compose.material.AlertDialog
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 
 @Composable
@@ -30,7 +30,7 @@ fun SunsetAlertDialog(
       }) {
         Text(
           text = confirmButtonText, style = SunsetTextStyle.body1.copy(
-            MaterialTheme.colors.onSurface
+            MaterialTheme.colorScheme.onSurface
           )
         )
       }
@@ -42,7 +42,7 @@ fun SunsetAlertDialog(
         }) {
           Text(
             text = dismissButtonText, style = SunsetTextStyle.body1.copy(
-              MaterialTheme.colors.onSurface
+              MaterialTheme.colorScheme.onSurface
             )
           )
         }

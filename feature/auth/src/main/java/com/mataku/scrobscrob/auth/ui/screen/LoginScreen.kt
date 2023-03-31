@@ -19,7 +19,6 @@ import androidx.compose.material.Button
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
@@ -28,6 +27,7 @@ import androidx.compose.material.TextButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
@@ -67,7 +67,7 @@ import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.LocalScaffoldState
 import com.mataku.scrobscrob.ui_common.style.SunsetTheme
 import com.mataku.scrobscrob.ui_common.style.backgroundColor
-import com.mataku.scrobscrob.ui_common.style.colors
+import com.mataku.scrobscrob.ui_common.style.colorScheme
 import kotlinx.coroutines.launch
 import com.mataku.scrobscrob.ui_common.R as uiCommonR
 
@@ -88,7 +88,7 @@ fun LoginScreen(
       currentTheme.backgroundColor()
     }
   )
-  val navigationBarColor = MaterialTheme.colors.primary
+  val navigationBarColor = MaterialTheme.colorScheme.primary
   val systemBarColor = LocalAppTheme.current.backgroundColor()
   val context = LocalContext.current
   uiState.event?.let {
@@ -155,7 +155,7 @@ private fun LoginContent(
   val focusManager = LocalFocusManager.current
   val autofill = LocalAutofill.current
   val systemUiController = rememberSystemUiController()
-  val navigationBackgroundColor = LocalAppTheme.current.colors().primary
+  val navigationBackgroundColor = LocalAppTheme.current.colorScheme().primary
   val usernameAutofillNode = AutofillNode(autofillTypes = listOf(AutofillType.Username), onFill = {
     onUsernameUpdate.invoke(it)
   })

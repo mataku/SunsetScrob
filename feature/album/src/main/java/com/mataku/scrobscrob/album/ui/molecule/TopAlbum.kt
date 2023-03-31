@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -60,7 +59,6 @@ fun TopAlbum(album: AlbumInfo, imageSize: Dp, onAlbumTap: () -> Unit, modifier: 
       fontSize = 16.sp,
       modifier = Modifier
         .wrapContentSize(),
-      color = MaterialTheme.colors.onSurface,
       fontWeight = FontWeight.Bold,
       maxLines = 1,
       overflow = TextOverflow.Ellipsis
@@ -68,7 +66,6 @@ fun TopAlbum(album: AlbumInfo, imageSize: Dp, onAlbumTap: () -> Unit, modifier: 
     Text(
       album.artist,
       fontSize = 14.sp,
-      color = MaterialTheme.colors.onSurface,
       modifier = Modifier
         .wrapContentSize(),
       maxLines = 1

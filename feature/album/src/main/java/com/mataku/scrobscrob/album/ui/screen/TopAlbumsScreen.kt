@@ -12,11 +12,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberModalBottomSheetState
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -72,7 +72,7 @@ fun TopAlbumsScreen(
       )
     },
     sheetState = sheetState,
-    sheetBackgroundColor = MaterialTheme.colors.background
+    sheetBackgroundColor = MaterialTheme.colorScheme.background
   ) {
     Scaffold(
       floatingActionButton = {

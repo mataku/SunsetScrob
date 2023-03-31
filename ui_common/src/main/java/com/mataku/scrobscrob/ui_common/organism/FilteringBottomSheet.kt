@@ -8,11 +8,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Check
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
@@ -89,7 +89,7 @@ private fun TimeRangeCell(
         imageVector = Icons.Outlined.Check,
         contentDescription = "selected time-range",
         colorFilter = ColorFilter.tint(
-          color = MaterialTheme.colors.onSurface
+          color = MaterialTheme.colorScheme.onSurface
         )
       )
     }

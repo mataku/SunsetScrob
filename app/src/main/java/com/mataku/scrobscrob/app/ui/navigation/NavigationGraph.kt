@@ -1,6 +1,5 @@
 package com.mataku.scrobscrob.app.ui.navigation
 
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -12,7 +11,6 @@ import com.mataku.scrobscrob.scrobble.ui.navigation.scrobbleGraph
 import com.mataku.scrobscrob.ui_common.SunsetBottomNavItem
 import com.mataku.scrobscrob.ui_common.commonGraph
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun NavigationGraph(
   navController: NavHostController,

@@ -1,6 +1,6 @@
 package com.mataku.scrobscrob.scrobble.ui.navigation
 
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
@@ -17,7 +17,7 @@ fun NavGraphBuilder.scrobbleGraph(navController: NavController) {
     SCROBBLE_DESTINATION,
   ) {
     val systemUiController = rememberSystemUiController()
-    systemUiController.setNavigationBarColor(MaterialTheme.colors.primary)
+    systemUiController.setNavigationBarColor(MaterialTheme.colorScheme.primary)
     ScrobbleScreen(
       state = rememberScrobbleScreenState(navController = navController)
     )
