@@ -1,11 +1,11 @@
 package com.mataku.scrobscrob.ui_common.style
 
-import androidx.compose.material.ScaffoldState
 import androidx.compose.material.ripple.LocalRippleTheme
 import androidx.compose.material.ripple.RippleAlpha
 import androidx.compose.material.ripple.RippleTheme
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
@@ -57,8 +57,9 @@ fun SunsetThemePreview(
 }
 
 val LocalAppTheme = staticCompositionLocalOf { AppTheme.DARK }
-val LocalScaffoldState = staticCompositionLocalOf<ScaffoldState> {
-  throw IllegalStateException("LocalScaffoldState provider is required")
+
+val LocalSnackbarHostState = staticCompositionLocalOf {
+  SnackbarHostState()
 }
 
 const val ANIMATION_DURATION_MILLIS = 700

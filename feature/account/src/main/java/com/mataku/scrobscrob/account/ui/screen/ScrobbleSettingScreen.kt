@@ -23,7 +23,7 @@ import com.mataku.scrobscrob.account.R
 import com.mataku.scrobscrob.account.ui.viewmodel.ScrobbleSettingViewModel
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.organism.ContentHeader
-import com.mataku.scrobscrob.ui_common.style.LocalScaffoldState
+import com.mataku.scrobscrob.ui_common.style.LocalSnackbarHostState
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -32,13 +32,13 @@ fun ScrobbleSettingScreen(
   viewModel: ScrobbleSettingViewModel = hiltViewModel()
 ) {
   val uiState = viewModel.uiState
-  val scaffoldState = LocalScaffoldState.current
+  val snackbarHostState = LocalSnackbarHostState.current
   val context = LocalContext.current
   uiState.event?.let {
     when (it) {
       is ScrobbleSettingViewModel.UiEvent.AllowAppError -> {
         LaunchedEffect(Unit) {
-          scaffoldState.snackbarHostState.showSnackbar(
+          snackbarHostState.showSnackbar(
             context.getString(R.string.error_allow_scrobble_app)
           )
         }

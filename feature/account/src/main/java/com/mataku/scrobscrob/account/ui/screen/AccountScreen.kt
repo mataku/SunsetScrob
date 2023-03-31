@@ -48,7 +48,7 @@ import com.mataku.scrobscrob.ui_common.SunsetAlertDialog
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.organism.ContentHeader
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
-import com.mataku.scrobscrob.ui_common.style.LocalScaffoldState
+import com.mataku.scrobscrob.ui_common.style.LocalSnackbarHostState
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import com.mataku.scrobscrob.ui_common.style.sunsetBackgroundGradient
 import kotlinx.coroutines.delay
@@ -81,11 +81,12 @@ fun AccountScreen(
 
     }
 
-  val scaffoldState = LocalScaffoldState.current
+  val snackbarHostState = LocalSnackbarHostState.current
+
   val listener = InstallStateUpdatedListener { installState ->
     if (installState.installStatus() == InstallStatus.DOWNLOADED) {
       coroutineScope.launch {
-        scaffoldState.snackbarHostState.showSnackbar(
+        snackbarHostState.showSnackbar(
           context.getString(R.string.label_start_update)
         )
         delay(2000L)

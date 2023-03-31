@@ -65,7 +65,7 @@ import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.style.Colors
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
-import com.mataku.scrobscrob.ui_common.style.LocalScaffoldState
+import com.mataku.scrobscrob.ui_common.style.LocalSnackbarHostState
 import com.mataku.scrobscrob.ui_common.style.SunsetTheme
 import com.mataku.scrobscrob.ui_common.style.backgroundColor
 import com.mataku.scrobscrob.ui_common.style.colorScheme
@@ -78,7 +78,6 @@ import com.mataku.scrobscrob.ui_common.R as uiCommonR
 fun LoginScreen(
   stateHolder: LoginScreenState
 ) {
-  val scaffoldState = LocalScaffoldState.current
   val coroutineScope = rememberCoroutineScope()
   val uiState = stateHolder.uiState
   val currentTheme = LocalAppTheme.current
@@ -93,6 +92,7 @@ fun LoginScreen(
   val navigationBarColor = MaterialTheme.colorScheme.primary
   val systemBarColor = LocalAppTheme.current.backgroundColor()
   val context = LocalContext.current
+  val snackbarHostState = LocalSnackbarHostState.current
   uiState.event?.let {
     when (it) {
       is LoginScreenState.UiEvent.LoginSuccess -> {
@@ -102,17 +102,17 @@ fun LoginScreen(
       }
       is LoginScreenState.UiEvent.LoginFailed -> {
         coroutineScope.launch {
-          scaffoldState.snackbarHostState.showSnackbar(context.getString(R.string.error_login_failed))
+          snackbarHostState.showSnackbar(context.getString(R.string.error_login_failed))
         }
       }
       is LoginScreenState.UiEvent.EmptyPasswordError -> {
         coroutineScope.launch {
-          scaffoldState.snackbarHostState.showSnackbar(context.getString(R.string.error_password_required))
+          snackbarHostState.showSnackbar(context.getString(R.string.error_password_required))
         }
       }
       is LoginScreenState.UiEvent.EmptyUsernameError -> {
         coroutineScope.launch {
-          scaffoldState.snackbarHostState.showSnackbar(context.getString(R.string.error_username_required))
+          snackbarHostState.showSnackbar(context.getString(R.string.error_username_required))
         }
       }
 
