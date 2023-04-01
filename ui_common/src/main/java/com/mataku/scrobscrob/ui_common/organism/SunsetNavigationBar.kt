@@ -13,6 +13,7 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -28,19 +29,17 @@ import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import com.mataku.scrobscrob.ui_common.style.accentColor
 
 @Composable
-fun SunsetNavigationBar3(
+fun SunsetNavigationBar(
   navController: NavController,
-  navigateToScrobble: () -> Unit,
-  navigateToTopAlbums: () -> Unit,
-  navigateToTopArtists: () -> Unit,
-  navigateToAccount: () -> Unit,
-
-  ) {
+) {
   val backStackEntry = navController.currentBackStackEntryAsState()
+  val navItems = remember {
+    SunsetBottomNavItem.values()
+  }
   NavigationBar(
     containerColor = MaterialTheme.colorScheme.primary
   ) {
-    SunsetBottomNavItem.values().forEach { item ->
+    navItems.forEach { item ->
       val selected = item.screenRoute == backStackEntry.value?.destination?.route
 
       val iconColor = if (selected) {
@@ -53,7 +52,7 @@ fun SunsetNavigationBar3(
       NavigationBarItem(
         selected = selected,
         onClick = {
-          if (backStackEntry.value?.destination?.route == item.screenRoute) return@NavigationBarItem
+          if (selected) return@NavigationBarItem
 
           navController.navigate(item.screenRoute) {
             popUpTo(navController.graph.findStartDestination().id) {
@@ -114,12 +113,8 @@ fun SunsetNavigationBar3(
 private fun SunsetNavigationBar3Preview() {
   SunsetThemePreview {
     Surface {
-      SunsetNavigationBar3(
+      SunsetNavigationBar(
         navController = NavController(LocalContext.current),
-        navigateToTopArtists = {},
-        navigateToTopAlbums = {},
-        navigateToAccount = {},
-        navigateToScrobble = {}
       )
     }
   }

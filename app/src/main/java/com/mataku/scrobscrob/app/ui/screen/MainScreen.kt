@@ -7,13 +7,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.mataku.scrobscrob.account.ui.navigation.navigateToAccount
-import com.mataku.scrobscrob.album.ui.navigation.navigateToTopAlbums
 import com.mataku.scrobscrob.app.ui.navigation.NavigationGraph
-import com.mataku.scrobscrob.artist.ui.navigation.navigateToTopArtists
 import com.mataku.scrobscrob.ui_common.SunsetBottomNavItem
-import com.mataku.scrobscrob.ui_common.navigateToScrobble
-import com.mataku.scrobscrob.ui_common.organism.SunsetNavigationBar3
+import com.mataku.scrobscrob.ui_common.organism.SunsetNavigationBar
 import com.mataku.scrobscrob.ui_common.style.LocalSnackbarHostState
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -30,12 +26,8 @@ fun MainScreen(username: String?) {
     topBar = {},
     bottomBar = {
       if (SunsetBottomNavItem.values().map { it.screenRoute }.contains(currentRoute)) {
-        SunsetNavigationBar3(
+        SunsetNavigationBar(
           navController = navController,
-          navigateToScrobble = navController::navigateToScrobble,
-          navigateToAccount = navController::navigateToAccount,
-          navigateToTopAlbums = navController::navigateToTopAlbums,
-          navigateToTopArtists = navController::navigateToTopArtists
         )
       }
     },
