@@ -7,8 +7,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -53,13 +52,12 @@ fun TopArtist(artist: ArtistInfo, imageSize: Dp, onArtistTap: () -> Unit, modifi
       modifier = Modifier.size(imageSize)
     )
 
-    Spacer(modifier = Modifier.height(4.dp))
+    Spacer(modifier = Modifier.height(8.dp))
     Text(
       artist.name,
       fontSize = 16.sp,
       modifier = Modifier
         .wrapContentSize(),
-      color = MaterialTheme.colors.onSurface,
       fontWeight = FontWeight.Bold,
       maxLines = 1,
       overflow = TextOverflow.Ellipsis

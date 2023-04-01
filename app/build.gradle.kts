@@ -42,6 +42,7 @@ dependencies {
   implementation(libs.compose.ui.tooling)
   implementation(libs.compose.animation)
   implementation(libs.compose.material)
+  implementation(libs.compose.material3)
   implementation(libs.compose.navigation)
   implementation(libs.coil.compose)
   implementation(libs.accompanist.navigation.animation)
@@ -58,4 +59,8 @@ kapt {
   javacOptions {
     option("-Xmaxerrs", 1000)
   }
+}
+
+hilt {
+  enableAggregatingTask = true
 }

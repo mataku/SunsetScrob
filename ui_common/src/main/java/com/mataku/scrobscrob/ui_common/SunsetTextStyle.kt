@@ -1,6 +1,6 @@
 package com.mataku.scrobscrob.ui_common
 
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -11,7 +11,7 @@ object SunsetTextStyle {
   val caption
     @Composable get() = TextStyle(
       fontSize = 13.sp,
-      color = MaterialTheme.colors.onSecondary
+      color = MaterialTheme.colorScheme.onSecondary
     )
 
   val body1 = TextStyle(
@@ -27,7 +27,7 @@ object SunsetTextStyle {
       fontWeight = FontWeight.Medium,
       fontSize = 14.sp,
       letterSpacing = 1.25.sp,
-      color = MaterialTheme.colors.onSecondary
+      color = MaterialTheme.colorScheme.onSecondary
     )
 
   val h6 = TextStyle(

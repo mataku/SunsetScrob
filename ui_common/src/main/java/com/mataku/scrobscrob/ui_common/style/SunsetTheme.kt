@@ -1,17 +1,19 @@
 package com.mataku.scrobscrob.ui_common.style
 
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.ScaffoldState
-import androidx.compose.material.darkColors
-import androidx.compose.material.lightColors
 import androidx.compose.material.ripple.LocalRippleTheme
 import androidx.compose.material.ripple.RippleAlpha
 import androidx.compose.material.ripple.RippleTheme
+import androidx.compose.material3.ColorScheme
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mataku.scrobscrob.core.entity.AppTheme
 
@@ -25,11 +27,11 @@ fun SunsetTheme(
     theme.backgroundColor()
   )
   systemUiController.setNavigationBarColor(
-    theme.colors().primary
+    theme.colorScheme().primary
   )
   val rippleTheme = SunsetRippleTheme(theme)
   MaterialTheme(
-    colors = theme.colors(),
+    colorScheme = theme.colorScheme(),
   ) {
     CompositionLocalProvider(
       LocalRippleTheme provides rippleTheme,
@@ -45,7 +47,7 @@ fun SunsetThemePreview(
   content: @Composable () -> Unit,
 ) {
   MaterialTheme(
-    colors = theme.colors(),
+    colorScheme = theme.colorScheme(),
   ) {
     CompositionLocalProvider(
       LocalAppTheme provides theme,
@@ -55,38 +57,17 @@ fun SunsetThemePreview(
 }
 
 val LocalAppTheme = staticCompositionLocalOf { AppTheme.DARK }
-val LocalScaffoldState = staticCompositionLocalOf<ScaffoldState> {
-  throw IllegalStateException("LocalScaffoldState provider is required")
+
+val LocalSnackbarHostState = staticCompositionLocalOf {
+  SnackbarHostState()
 }
 
 const val ANIMATION_DURATION_MILLIS = 700
 const val TRANSITION_ANIMATION_DURATION_MILLIS = 600
+val BOTTOM_APP_BAR_HEIGHT = 80.dp
 
 fun AppTheme.backgroundColor(): Color {
-  return this.colors().background
-}
-
-fun AppTheme.colors(): androidx.compose.material.Colors {
-  return when (this) {
-    AppTheme.DARK -> {
-      darkColors
-    }
-    AppTheme.LIGHT -> {
-      lightColors
-    }
-    AppTheme.MIDNIGHT -> {
-      midnightColors
-    }
-    AppTheme.OCEAN -> {
-      oceanColors
-    }
-    AppTheme.LASTFM_DARK -> {
-      lastFmDarkColors
-    }
-    AppTheme.SUNSET -> {
-      sunsetColors
-    }
-  }
+  return this.colorScheme().background
 }
 
 fun AppTheme.accentColor(): Color {
@@ -103,10 +84,32 @@ fun AppTheme.accentColor(): Color {
   }
 }
 
-private val lightColors = lightColors(
+fun AppTheme.colorScheme(): ColorScheme {
+  return when (this) {
+    AppTheme.DARK -> {
+      darkColorScheme
+    }
+    AppTheme.LIGHT -> {
+      lightColorScheme
+    }
+    AppTheme.MIDNIGHT -> {
+      midnightColorScheme
+    }
+    AppTheme.OCEAN -> {
+      oceanColorScheme
+    }
+    AppTheme.LASTFM_DARK -> {
+      lastFmDarkColorScheme
+    }
+    AppTheme.SUNSET -> {
+      sunsetColorScheme
+    }
+  }
+}
+
+private val lightColorScheme = lightColorScheme(
   primary = Color(0xFFE0E0E0),
   onPrimary = Color.Black,
-  primaryVariant = Color.Black,
   secondary = Color.White,
   onSecondary = Colors.textSecondary,
   surface = Color(0xFFF5F5F5),
@@ -115,10 +118,9 @@ private val lightColors = lightColors(
   onBackground = Color.Black,
 )
 
-private val darkColors = darkColors(
+private val darkColorScheme = darkColorScheme(
   primary = Color.DarkGray,
   onPrimary = Color.White,
-  primaryVariant = Colors.ContentBackground,
   secondary = Color.White,
   onSecondary = Colors.textSecondary,
   surface = Color(0xFF37474F),
@@ -127,10 +129,9 @@ private val darkColors = darkColors(
   onBackground = Color.White
 )
 
-private val oceanColors = darkColors(
+private val oceanColorScheme = darkColorScheme(
   primary = Color.DarkGray,
   onPrimary = Color.White,
-  primaryVariant = Colors.ContentBackground,
   secondary = Color.White,
   onSecondary = Colors.textSecondary,
   surface = Color(0xFF37474F),
@@ -139,10 +140,9 @@ private val oceanColors = darkColors(
   onBackground = Color.White
 )
 
-private val lastFmDarkColors = darkColors(
+private val lastFmDarkColorScheme = darkColorScheme(
   primary = Color.DarkGray,
   onPrimary = Color.White,
-  primaryVariant = Colors.ContentBackground,
   secondary = Color.White,
   onSecondary = Colors.textSecondary,
   surface = Color(0xFF37474F),
@@ -151,10 +151,9 @@ private val lastFmDarkColors = darkColors(
   onBackground = Color.White
 )
 
-private val midnightColors = darkColors(
+private val midnightColorScheme = darkColorScheme(
   primary = Color.DarkGray,
   onPrimary = Color.White,
-  primaryVariant = Color.Black,
   secondary = Color.White,
   onSecondary = Colors.textSecondary,
   surface = Color.Black,
@@ -163,10 +162,9 @@ private val midnightColors = darkColors(
   onBackground = Color.White
 )
 
-private val sunsetColors = lightColors(
+private val sunsetColorScheme = lightColorScheme(
   primary = Color(0xFFE0E0E0),
   onPrimary = Color.Black,
-  primaryVariant = Color.Black,
   secondary = Colors.SunsetTextSecondary,
   onSecondary = Colors.SunsetTextSecondary,
   surface = Color.White,
@@ -184,7 +182,7 @@ private class SunsetRippleTheme(
 ) : RippleTheme {
   @Composable
   override fun defaultColor(): Color {
-    return MaterialTheme.colors.onSurface
+    return MaterialTheme.colorScheme.onSurface
   }
 
   @Composable

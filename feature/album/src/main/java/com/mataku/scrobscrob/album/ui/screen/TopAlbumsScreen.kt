@@ -12,11 +12,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
-import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberModalBottomSheetState
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -39,8 +40,8 @@ import com.mataku.scrobscrob.ui_common.style.sunsetBackgroundGradient
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.coroutines.launch
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterialApi::class)
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun TopAlbumsScreen(
   state: TopAlbumsScreenState
@@ -68,11 +69,10 @@ fun TopAlbumsScreen(
           state.updateTimeRangeFiltering(it)
         },
         modifier = Modifier
-          .padding(bottom = 56.dp)
       )
     },
     sheetState = sheetState,
-    sheetBackgroundColor = MaterialTheme.colors.background
+    sheetBackgroundColor = MaterialTheme.colorScheme.background
   ) {
     Scaffold(
       floatingActionButton = {
@@ -83,7 +83,6 @@ fun TopAlbumsScreen(
             }
           },
           modifier = Modifier
-            .padding(bottom = 56.dp)
         )
       }
     ) {
@@ -122,7 +121,7 @@ fun TopAlbumsContent(
   imageSize: Dp,
   padding: Dp,
   onUrlTap: (String) -> Unit,
-  onScrollEnd: () -> Unit
+  onScrollEnd: () -> Unit,
 ) {
   LazyColumn(
     content = {
@@ -155,11 +154,9 @@ fun TopAlbumsContent(
         .background(
           brush = sunsetBackgroundGradient
         )
-        .padding(bottom = 56.dp)
     } else {
       Modifier
         .fillMaxSize()
-        .padding(bottom = 56.dp)
     }
   )
 }

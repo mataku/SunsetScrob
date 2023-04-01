@@ -4,6 +4,7 @@
   ],
   "ignoreDeps": [
     "androidx.compose.animation:animation",
+    "androidx.compose:compose-bom",
     "androidx.compose.ui:ui-tooling",
     "com.google.accompanist:accompanist-navigation-animation",
     "com.google.accompanist:accompanist-systemuicontroller",

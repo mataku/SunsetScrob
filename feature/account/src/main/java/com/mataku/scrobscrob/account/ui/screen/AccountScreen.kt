@@ -15,11 +15,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.AlertDialog
-import androidx.compose.material.Divider
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Divider
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,6 +30,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.app.NotificationManagerCompat
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.google.android.play.core.appupdate.AppUpdateInfo
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.appupdate.AppUpdateOptions
@@ -48,8 +49,10 @@ import com.mataku.scrobscrob.ui_common.SunsetAlertDialog
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.organism.ContentHeader
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
-import com.mataku.scrobscrob.ui_common.style.LocalScaffoldState
-import com.mataku.scrobscrob.ui_common.style.SunsetTheme
+import com.mataku.scrobscrob.ui_common.style.LocalSnackbarHostState
+import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
+import com.mataku.scrobscrob.ui_common.style.backgroundColor
+import com.mataku.scrobscrob.ui_common.style.colorScheme
 import com.mataku.scrobscrob.ui_common.style.sunsetBackgroundGradient
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -58,6 +61,14 @@ import kotlinx.coroutines.launch
 fun AccountScreen(
   state: AccountState
 ) {
+  val systemUiController = rememberSystemUiController()
+  val theme = LocalAppTheme.current
+  systemUiController.setSystemBarsColor(
+    theme.backgroundColor()
+  )
+  systemUiController.setNavigationBarColor(
+    theme.colorScheme().primary
+  )
   val openDialog = remember {
     mutableStateOf(false)
   }
@@ -81,11 +92,12 @@ fun AccountScreen(
 
     }
 
-  val scaffoldState = LocalScaffoldState.current
+  val snackbarHostState = LocalSnackbarHostState.current
+
   val listener = InstallStateUpdatedListener { installState ->
     if (installState.installStatus() == InstallStatus.DOWNLOADED) {
       coroutineScope.launch {
-        scaffoldState.snackbarHostState.showSnackbar(
+        snackbarHostState.showSnackbar(
           context.getString(R.string.label_start_update)
         )
         delay(2000L)
@@ -170,7 +182,7 @@ fun AccountScreen(
   }
 }
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun AccountContent(
   theme: AppTheme,
@@ -357,8 +369,8 @@ private fun AccountMenuCell(
 @Preview(showBackground = true)
 @Composable
 private fun AccountContentPreview() {
-  SunsetTheme {
-    androidx.compose.material.Surface {
+  SunsetThemePreview {
+    Surface {
       AccountContent(
         theme = AppTheme.DARK,
         navigateToThemeSelector = {},

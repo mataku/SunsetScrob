@@ -1,7 +1,9 @@
 package com.mataku.scrobscrob.app.ui.navigation
 
-import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.mataku.scrobscrob.account.ui.navigation.accountGraph
@@ -12,15 +14,16 @@ import com.mataku.scrobscrob.scrobble.ui.navigation.scrobbleGraph
 import com.mataku.scrobscrob.ui_common.SunsetBottomNavItem
 import com.mataku.scrobscrob.ui_common.commonGraph
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun NavigationGraph(
   navController: NavHostController,
-  isLoggedIn: Boolean
+  isLoggedIn: Boolean,
+  paddingValues: PaddingValues
 ) {
   NavHost(
     navController = navController,
-    startDestination = if (isLoggedIn) SunsetBottomNavItem.SCROBBLE.screenRoute else "login"
+    startDestination = if (isLoggedIn) SunsetBottomNavItem.SCROBBLE.screenRoute else "login",
+    modifier = Modifier.padding(paddingValues)
   ) {
     scrobbleGraph(navController)
     albumGraph(navController)

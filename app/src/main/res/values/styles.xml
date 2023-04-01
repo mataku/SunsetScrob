@@ -1,14 +1,13 @@
 <resources>
 
   <!-- Base application theme. -->
-  <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+  <style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar">
     <!-- Customize your theme here. -->
     <item name="colorPrimary">@color/colorPrimary</item>
     <item name="colorPrimaryDark">@color/contentBackground</item>
     <item name="background">@color/contentBackground</item>
     <item name="colorAccent">@color/colorAccent</item>
     <item name="android:windowBackground">@color/contentBackground</item>
-    <item name="textInputStyle">@style/DefaultEditTextStyle</item>
     <item name="android:statusBarColor">@color/contentBackground</item>
     <item name="android:navigationBarColor">@color/colorPrimary</item>
   </style>
@@ -21,15 +20,4 @@
     <item name="android:navigationBarColor">@color/colorPrimary</item>
     <item name="postSplashScreenTheme">@style/AppTheme</item>
   </style>
-
-  <style name="RegistrationButtonStyle" parent="Widget.MaterialComponents.Button">
-    <item name="backgroundTint">@color/colorAccent</item>
-    <item name="android:textStyle">bold</item>
-  </style>
-
-  <style name="DefaultEditTextStyle" parent="Widget.MaterialComponents.TextInputEditText.FilledBox">
-    <item name="android:background">@color/transparent</item>
-    <item name="android:padding">0dp</item>
-  </style>
-
 </resources>

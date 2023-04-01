@@ -1,6 +1,7 @@
 package com.mataku.scrobscrob.artist.ui.navigation
 
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.mataku.scrobscrob.artist.ui.screen.TopArtistsScreen
@@ -17,10 +18,8 @@ fun NavGraphBuilder.artistGraph(navController: NavController) {
 
 fun NavController.navigateToTopArtists() {
   navigate(TOP_ARTISTS_DESTINATION) {
-    graph.startDestinationRoute?.let { screenRoute ->
-      popUpTo(screenRoute) {
-        saveState = true
-      }
+    popUpTo(graph.findStartDestination().id) {
+      saveState = true
     }
     launchSingleTop = true
     restoreState = true

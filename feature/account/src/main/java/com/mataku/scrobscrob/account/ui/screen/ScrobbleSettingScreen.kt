@@ -7,8 +7,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.Switch
-import androidx.compose.material.Text
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Switch
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -22,7 +23,7 @@ import com.mataku.scrobscrob.account.R
 import com.mataku.scrobscrob.account.ui.viewmodel.ScrobbleSettingViewModel
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.organism.ContentHeader
-import com.mataku.scrobscrob.ui_common.style.LocalScaffoldState
+import com.mataku.scrobscrob.ui_common.style.LocalSnackbarHostState
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -31,13 +32,13 @@ fun ScrobbleSettingScreen(
   viewModel: ScrobbleSettingViewModel = hiltViewModel()
 ) {
   val uiState = viewModel.uiState
-  val scaffoldState = LocalScaffoldState.current
+  val snackbarHostState = LocalSnackbarHostState.current
   val context = LocalContext.current
   uiState.event?.let {
     when (it) {
       is ScrobbleSettingViewModel.UiEvent.AllowAppError -> {
         LaunchedEffect(Unit) {
-          scaffoldState.snackbarHostState.showSnackbar(
+          snackbarHostState.showSnackbar(
             context.getString(R.string.error_allow_scrobble_app)
           )
         }
@@ -130,7 +131,7 @@ private const val YOUTUBE_MUSIC_NAME = "YouTube Music"
 @Composable
 private fun ScrobbleSettingCellPreview() {
   SunsetThemePreview {
-    androidx.compose.material.Surface {
+    Surface {
       ScrobbleSettingCell("Apple Music", true) { _, _ -> }
     }
   }

@@ -20,28 +20,24 @@ fun NavGraphBuilder.commonGraph() {
   }
 }
 
-fun NavController.navigateToScrobble(fromAuth: Boolean = false) {
-  if (fromAuth) {
-    navigate(
-      SCROBBLE_DESTINATION
-    ) {
-      launchSingleTop = true
-      popUpTo(
-        graph.findStartDestination().id
-      ) {
-        inclusive = true
-      }
+fun NavController.navigateToScrobbleFromAuth() {
+  navigate(
+    SCROBBLE_DESTINATION
+  ) {
+    popUpTo(graph.findStartDestination().id) {
+      saveState = true
     }
-  } else {
-    navigate(SCROBBLE_DESTINATION) {
-      graph.startDestinationRoute?.let { screenRoute ->
-        popUpTo(screenRoute) {
-          saveState = true
-        }
-      }
-      launchSingleTop = true
-      restoreState = true
+    launchSingleTop = true
+  }
+}
+
+fun NavController.navigateToScrobble() {
+  navigate(SCROBBLE_DESTINATION) {
+    popUpTo(graph.findStartDestination().id) {
+      saveState = true
     }
+    launchSingleTop = true
+    restoreState = true
   }
 }
 

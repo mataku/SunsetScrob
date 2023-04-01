@@ -1,6 +1,5 @@
 package com.mataku.scrobscrob.auth.ui.screen
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,19 +14,19 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
@@ -64,19 +63,17 @@ import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.style.Colors
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
-import com.mataku.scrobscrob.ui_common.style.LocalScaffoldState
+import com.mataku.scrobscrob.ui_common.style.LocalSnackbarHostState
 import com.mataku.scrobscrob.ui_common.style.SunsetTheme
 import com.mataku.scrobscrob.ui_common.style.backgroundColor
-import com.mataku.scrobscrob.ui_common.style.colors
+import com.mataku.scrobscrob.ui_common.style.colorScheme
 import kotlinx.coroutines.launch
 import com.mataku.scrobscrob.ui_common.R as uiCommonR
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun LoginScreen(
   stateHolder: LoginScreenState
 ) {
-  val scaffoldState = LocalScaffoldState.current
   val coroutineScope = rememberCoroutineScope()
   val uiState = stateHolder.uiState
   val currentTheme = LocalAppTheme.current
@@ -88,9 +85,10 @@ fun LoginScreen(
       currentTheme.backgroundColor()
     }
   )
-  val navigationBarColor = MaterialTheme.colors.primary
+  val navigationBarColor = MaterialTheme.colorScheme.primary
   val systemBarColor = LocalAppTheme.current.backgroundColor()
   val context = LocalContext.current
+  val snackbarHostState = LocalSnackbarHostState.current
   uiState.event?.let {
     when (it) {
       is LoginScreenState.UiEvent.LoginSuccess -> {
@@ -100,45 +98,43 @@ fun LoginScreen(
       }
       is LoginScreenState.UiEvent.LoginFailed -> {
         coroutineScope.launch {
-          scaffoldState.snackbarHostState.showSnackbar(context.getString(R.string.error_login_failed))
+          snackbarHostState.showSnackbar(context.getString(R.string.error_login_failed))
         }
       }
       is LoginScreenState.UiEvent.EmptyPasswordError -> {
         coroutineScope.launch {
-          scaffoldState.snackbarHostState.showSnackbar(context.getString(R.string.error_password_required))
+          snackbarHostState.showSnackbar(context.getString(R.string.error_password_required))
         }
       }
       is LoginScreenState.UiEvent.EmptyUsernameError -> {
         coroutineScope.launch {
-          scaffoldState.snackbarHostState.showSnackbar(context.getString(R.string.error_username_required))
+          snackbarHostState.showSnackbar(context.getString(R.string.error_username_required))
         }
       }
 
     }
     stateHolder.popEvent()
   }
-  Scaffold(scaffoldState = scaffoldState) {
-    LoginContent(
-      isLoading = uiState.isLoading,
-      onLoginButtonTap = { id, password ->
-        stateHolder.login(id, password)
-      },
-      onPrivacyPolicyTap = {
-        stateHolder.navigateToPrivacyPolicy()
-      },
-      username = uiState.username,
-      password = uiState.password,
-      onUsernameUpdate = {
-        stateHolder.onUsernameUpdate(it)
-      },
-      onPasswordUpdate = {
-        stateHolder.onPasswordUpdate(it)
-      }
-    )
-  }
+  LoginContent(
+    isLoading = uiState.isLoading,
+    onLoginButtonTap = { id, password ->
+      stateHolder.login(id, password)
+    },
+    onPrivacyPolicyTap = {
+      stateHolder.navigateToPrivacyPolicy()
+    },
+    username = uiState.username,
+    password = uiState.password,
+    onUsernameUpdate = {
+      stateHolder.onUsernameUpdate(it)
+    },
+    onPasswordUpdate = {
+      stateHolder.onPasswordUpdate(it)
+    }
+  )
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
 @Composable
 private fun LoginContent(
   isLoading: Boolean,
@@ -155,7 +151,7 @@ private fun LoginContent(
   val focusManager = LocalFocusManager.current
   val autofill = LocalAutofill.current
   val systemUiController = rememberSystemUiController()
-  val navigationBackgroundColor = LocalAppTheme.current.colors().primary
+  val navigationBackgroundColor = LocalAppTheme.current.colorScheme().primary
   val usernameAutofillNode = AutofillNode(autofillTypes = listOf(AutofillType.Username), onFill = {
     onUsernameUpdate.invoke(it)
   })
@@ -185,8 +181,6 @@ private fun LoginContent(
     )
 
     Spacer(modifier = Modifier.height(24.dp))
-
-
 
     OutlinedTextField(
       value = username,

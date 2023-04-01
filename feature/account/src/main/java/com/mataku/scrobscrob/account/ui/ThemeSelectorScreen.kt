@@ -12,10 +12,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Check
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -92,18 +92,18 @@ fun ThemeSelectorScreen(
         }
       },
       modifier = if (LocalAppTheme.current == AppTheme.SUNSET) {
-          Modifier
-              .fillMaxSize()
-              .background(
-                  brush = sunsetBackgroundGradient
-              )
+        Modifier
+          .fillMaxSize()
+          .background(
+            brush = sunsetBackgroundGradient
+          )
       } else {
         Modifier
           .fillMaxSize()
       }
     )
   }
-  val navigationBarColor = MaterialTheme.colors.primary
+  val navigationBarColor = MaterialTheme.colorScheme.primary
   BackHandler() {
     systemUiController.setNavigationBarColor(navigationBarColor)
     state.back()
@@ -117,12 +117,12 @@ private fun ThemeCell(
   onTapTheme: (AppTheme) -> Unit
 ) {
   Row(modifier = Modifier
-      .fillMaxWidth()
-      .height(48.dp)
-      .clickable {
-          onTapTheme.invoke(theme)
-      }
-      .padding(horizontal = 16.dp, vertical = 12.dp)
+    .fillMaxWidth()
+    .height(48.dp)
+    .clickable {
+      onTapTheme.invoke(theme)
+    }
+    .padding(horizontal = 16.dp, vertical = 12.dp)
   ) {
     Text(
       text = theme.displayName,
@@ -135,7 +135,7 @@ private fun ThemeCell(
         imageVector = Icons.Outlined.Check,
         contentDescription = "selected theme",
         colorFilter = ColorFilter.tint(
-          color = MaterialTheme.colors.onSurface
+          color = MaterialTheme.colorScheme.onSurface
         )
       )
     }
