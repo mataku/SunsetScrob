@@ -1,0 +1,48 @@
+name: Generate baseline profile
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '00 12 1 * *'
+
+jobs:
+  generate-baseline-profile:
+    # ubuntu-latest is enough, but needed for Android Emulator: https://issuetracker.google.com/issues/193118030
+    runs-on: macos-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: zulu
+          java-version: 11
+      - name: Cache gradle dir
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v2
+      - name: Generate benchmark profile
+        run: |
+          ./gradlew :benchmark:cleanManagedDevices --unused-only
+          ./gradlew :benchmark:pixel4Api31BenchmarkAndroidTest -Pandroid.testoptions.manageddevices.emulator.gpu="swiftshader_indirect" -Pandroid.testInstrumentationRunnerArguments.androidx.benchmark.enabledRules=BaselineProfile
+      - name: Move baseline profile file
+        run: |
+          mv benchmark/build/outputs/managed_device_android_test_additional_output/pixel4Api31/BaselineProfileGenerator_generateBaselineProfile-baseline-prof.txt app/src/main/baseline-prof.txt
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
+        with:
+          commit-message: Generate baseline profiles
+          title: Generate baseline profiles
+          delete-branch: true
+          branch: actions/update-baseline-profiles
+          base: develop
+
