@@ -20,8 +20,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.mataku.scrobscrob.ui_common.SunsetBottomNavItem
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
@@ -30,9 +29,15 @@ import com.mataku.scrobscrob.ui_common.style.accentColor
 
 @Composable
 fun SunsetNavigationBar(
-  navController: NavController,
-) {
+  navController: NavHostController,
+  navigateToScrobble: () -> Unit,
+  navigateToTopAlbums: () -> Unit,
+  navigateToTopArtists: () -> Unit,
+  navigateToAccount: () -> Unit,
+
+  ) {
   val backStackEntry = navController.currentBackStackEntryAsState()
+  val route = backStackEntry.value?.destination?.route
   val navItems = remember {
     SunsetBottomNavItem.values()
   }
@@ -40,7 +45,7 @@ fun SunsetNavigationBar(
     containerColor = MaterialTheme.colorScheme.primary
   ) {
     navItems.forEach { item ->
-      val selected = item.screenRoute == backStackEntry.value?.destination?.route
+      val selected = item.screenRoute == route
 
       val iconColor = if (selected) {
         LocalAppTheme.current.accentColor()
@@ -54,12 +59,19 @@ fun SunsetNavigationBar(
         onClick = {
           if (selected) return@NavigationBarItem
 
-          navController.navigate(item.screenRoute) {
-            popUpTo(navController.graph.findStartDestination().id) {
-              saveState = true
+          when (item) {
+            SunsetBottomNavItem.SCROBBLE -> {
+              navigateToScrobble.invoke()
             }
-            launchSingleTop = true
-            restoreState = true
+            SunsetBottomNavItem.ACCOUNT -> {
+              navigateToAccount.invoke()
+            }
+            SunsetBottomNavItem.TOP_ARTISTS -> {
+              navigateToTopArtists.invoke()
+            }
+            SunsetBottomNavItem.TOP_ALBUMS -> {
+              navigateToTopAlbums.invoke()
+            }
           }
         },
         label = {
@@ -114,7 +126,11 @@ private fun SunsetNavigationBar3Preview() {
   SunsetThemePreview {
     Surface {
       SunsetNavigationBar(
-        navController = NavController(LocalContext.current),
+        navController = NavHostController(LocalContext.current),
+        navigateToScrobble = {},
+        navigateToAccount = {},
+        navigateToTopAlbums = {},
+        navigateToTopArtists = {}
       )
     }
   }

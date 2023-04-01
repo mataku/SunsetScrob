@@ -6,6 +6,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import androidx.navigation.navigation
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mataku.scrobscrob.scrobble.ui.screen.ScrobbleScreen
 import com.mataku.scrobscrob.scrobble.ui.screen.TrackScreen
@@ -13,55 +14,57 @@ import com.mataku.scrobscrob.scrobble.ui.state.rememberScrobbleScreenState
 import com.mataku.scrobscrob.scrobble.ui.state.rememberTrackScreenState
 
 fun NavGraphBuilder.scrobbleGraph(navController: NavController) {
-  composable(
-    SCROBBLE_DESTINATION,
-  ) {
-    val systemUiController = rememberSystemUiController()
-    systemUiController.setNavigationBarColor(MaterialTheme.colorScheme.primary)
-    ScrobbleScreen(
-      state = rememberScrobbleScreenState(navController = navController)
-    )
-  }
-
-  composable(
-    "track_detail?trackName={trackName}&artistName={artistName}&imageUrl={imageUrl}&upperLeftCoordinatorX={x}&upperLeftCoordinatorY={y}",
-    arguments = listOf(
-      navArgument("trackName") {
-        type = NavType.StringType
-      },
-      navArgument("artistName") {
-        type = NavType.StringType
-      },
-      navArgument("imageUrl") {
-        type = NavType.StringType
-      },
-      navArgument("x") {
-        type = NavType.IntType
-      },
-      navArgument("y") {
-        type = NavType.IntType
-      }
-    ),
-    content = {
-      val arguments = it.arguments ?: return@composable
-      val x = arguments.getInt("x", 0)
-      val y = arguments.getInt("y", 0)
-
-      val trackName = arguments.getString("trackName", "")
-      val artistName = arguments.getString("artistName", "")
-
-      TrackScreen(
-        trackName = trackName,
-        artworkUrl = arguments.getString("imageUrl", ""),
-        topLeftCoordinate = Pair(x, y),
-        screenState = rememberTrackScreenState(
-          navController = navController,
-          trackName = trackName,
-          artistName = artistName
-        )
+  navigation(route = SCROBBLE_NAVIGATION_ROUTE, startDestination = "scrobble") {
+    composable(
+      SCROBBLE_DESTINATION,
+    ) {
+      val systemUiController = rememberSystemUiController()
+      systemUiController.setNavigationBarColor(MaterialTheme.colorScheme.primary)
+      ScrobbleScreen(
+        state = rememberScrobbleScreenState(navController = navController)
       )
     }
-  )
+
+    composable(
+      "track_detail?trackName={trackName}&artistName={artistName}&imageUrl={imageUrl}&upperLeftCoordinatorX={x}&upperLeftCoordinatorY={y}",
+      arguments = listOf(
+        navArgument("trackName") {
+          type = NavType.StringType
+        },
+        navArgument("artistName") {
+          type = NavType.StringType
+        },
+        navArgument("imageUrl") {
+          type = NavType.StringType
+        },
+        navArgument("x") {
+          type = NavType.IntType
+        },
+        navArgument("y") {
+          type = NavType.IntType
+        }
+      ),
+      content = {
+        val arguments = it.arguments ?: return@composable
+        val x = arguments.getInt("x", 0)
+        val y = arguments.getInt("y", 0)
+
+        val trackName = arguments.getString("trackName", "")
+        val artistName = arguments.getString("artistName", "")
+
+        TrackScreen(
+          trackName = trackName,
+          artworkUrl = arguments.getString("imageUrl", ""),
+          topLeftCoordinate = Pair(x, y),
+          screenState = rememberTrackScreenState(
+            navController = navController,
+            trackName = trackName,
+            artistName = artistName
+          )
+        )
+      }
+    )
+  }
 }
 
 fun NavController.navigateToTrackDetail(
@@ -77,3 +80,4 @@ fun NavController.navigateToTrackDetail(
 }
 
 private const val SCROBBLE_DESTINATION = "scrobble"
+const val SCROBBLE_NAVIGATION_ROUTE = "scrobble_route"

@@ -24,10 +24,7 @@ fun NavController.navigateToScrobbleFromAuth() {
   navigate(
     SCROBBLE_DESTINATION
   ) {
-    popUpTo(graph.findStartDestination().id) {
-      saveState = true
-    }
-    launchSingleTop = true
+    popUpTo(0)
   }
 }
 
@@ -42,7 +39,9 @@ fun NavController.navigateToScrobble() {
 }
 
 fun NavController.navigateToLogin() {
-  navigate(LOGIN_DESTINATION)
+  navigate(LOGIN_DESTINATION) {
+    popUpTo(0)
+  }
 }
 
 fun NavController.navigateToPrivacyPolicy() {

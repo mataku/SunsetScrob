@@ -21,7 +21,7 @@ dependencies {
   implementation(libs.compose.material)
   implementation(libs.compose.material3)
   implementation(libs.compose.navigation)
-  implementation(libs.accompanist.navigation.animation)
+
   implementation(libs.accompanist.systemuicontroller)
   implementation(libs.hilt.navigation.compose)
 
