@@ -1,0 +1,33 @@
+name: Generate baseline profile
+
+on:
+  workflow_dispatch:
+
+jobs:
+  generate-baseline-profile:
+    # ubuntu-latest is enough, but needed for Android Emulator: https://issuetracker.google.com/issues/193118030
+    runs-on: macos-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: zulu
+          java-version: 11
+      - name: Cache gradle dir
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v2
+      - name: Generate benchmark profile
+        run: |
+          ./gradlew :benchmark:cleanManagedDevices --unused-only
+          ./gradlew :benchmark:pixel4Api30BenchmarkAndroidTest -Pandroid.testoptions.manageddevices.emulator.gpu="swiftshader_indirect" -Pandroid.testInstrumentationRunnerArguments.androidx.benchmark.enabledRules=BaselineProfile
