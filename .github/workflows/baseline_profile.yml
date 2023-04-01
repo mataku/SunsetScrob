@@ -30,4 +30,17 @@ jobs:
       - name: Generate benchmark profile
         run: |
           ./gradlew :benchmark:cleanManagedDevices --unused-only
-          ./gradlew :benchmark:pixel4Api30BenchmarkAndroidTest -Pandroid.testoptions.manageddevices.emulator.gpu="swiftshader_indirect" -Pandroid.testInstrumentationRunnerArguments.androidx.benchmark.enabledRules=BaselineProfile
+          ./gradlew :benchmark:pixel4Api31BenchmarkAndroidTest -Pandroid.testoptions.manageddevices.emulator.gpu="swiftshader_indirect" -Pandroid.testInstrumentationRunnerArguments.androidx.benchmark.enabledRules=BaselineProfile
+      - name: Move baseline profile file
+        run: |
+          mv benchmark/build/outputs/managed_device_android_test_additional_output/pixel4Api31/BaselineProfileGenerator_generateBaselineProfile-baseline-prof.txt app/src/main/baseline-prof.txt
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
+        with:
+          commit-message: Generate baseline profiles
+          title: Generate baseline profiles
+          delete-branch: true
+          branch: actions/update-baseline-profiles
+          base: develop
+
