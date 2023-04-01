@@ -4,20 +4,22 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import androidx.navigation.navigation
 import com.mataku.scrobscrob.artist.ui.screen.TopArtistsScreen
 import com.mataku.scrobscrob.artist.ui.state.rememberTopArtistsScreenState
 
 fun NavGraphBuilder.artistGraph(navController: NavController) {
-  composable(TOP_ARTISTS_DESTINATION) {
-    TopArtistsScreen(
-      state = rememberTopArtistsScreenState(navController = navController)
-    )
+  navigation(route = ARTIST_NAVIGATION_ROUTE, startDestination = TOP_ARTISTS_DESTINATION) {
+    composable(TOP_ARTISTS_DESTINATION) {
+      TopArtistsScreen(
+        state = rememberTopArtistsScreenState(navController = navController)
+      )
+    }
   }
-
 }
 
 fun NavController.navigateToTopArtists() {
-  navigate(TOP_ARTISTS_DESTINATION) {
+  navigate(ARTIST_NAVIGATION_ROUTE) {
     popUpTo(graph.findStartDestination().id) {
       saveState = true
     }
@@ -27,3 +29,4 @@ fun NavController.navigateToTopArtists() {
 }
 
 private const val TOP_ARTISTS_DESTINATION = "top_artists"
+private const val ARTIST_NAVIGATION_ROUTE = "artist_route"

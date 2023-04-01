@@ -5,6 +5,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import androidx.navigation.navigation
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mataku.scrobscrob.account.ui.ThemeSelectorScreen
 import com.mataku.scrobscrob.account.ui.screen.AccountScreen
@@ -20,43 +21,45 @@ import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.backgroundColor
 
 fun NavGraphBuilder.accountGraph(navController: NavController) {
-  composable(
-    ACCOUNT_DESTINATION,
-  ) {
-    val context = LocalContext.current
-    AccountScreen(state = rememberAccountState(navController = navController, context = context))
-  }
+  navigation(route = ACCOUNT_NAVIGATION_ROUTE, startDestination = ACCOUNT_DESTINATION) {
+    composable(
+      ACCOUNT_DESTINATION,
+    ) {
+      val context = LocalContext.current
+      AccountScreen(state = rememberAccountState(navController = navController, context = context))
+    }
 
-  composable(
-    SCROBBLE_SETTING_DESTINATION,
-  ) {
-    val systemUiController = rememberSystemUiController()
-    systemUiController.setNavigationBarColor(
-      color = if (LocalAppTheme.current == AppTheme.SUNSET) {
-        Colors.SunsetBlue
-      } else {
-        LocalAppTheme.current.backgroundColor()
-      }
-    )
-    ScrobbleSettingScreen()
-  }
-  composable(THEME_SELECTOR_DESTINATION) {
-    ThemeSelectorScreen(
-      state = rememberThemeSelectorState(
-        navController = navController
+    composable(
+      SCROBBLE_SETTING_DESTINATION,
+    ) {
+      val systemUiController = rememberSystemUiController()
+      systemUiController.setNavigationBarColor(
+        color = if (LocalAppTheme.current == AppTheme.SUNSET) {
+          Colors.SunsetBlue
+        } else {
+          LocalAppTheme.current.backgroundColor()
+        }
       )
-    )
-  }
-  composable(LICENSE_DESTINATION) {
-    LicenseScreen()
-  }
-  composable(PRIVACY_POLICY_DESTINATION) {
-    PrivacyPolicyScreen()
+      ScrobbleSettingScreen()
+    }
+    composable(THEME_SELECTOR_DESTINATION) {
+      ThemeSelectorScreen(
+        state = rememberThemeSelectorState(
+          navController = navController
+        )
+      )
+    }
+    composable(LICENSE_DESTINATION) {
+      LicenseScreen()
+    }
+    composable(PRIVACY_POLICY_DESTINATION) {
+      PrivacyPolicyScreen()
+    }
   }
 }
 
 fun NavController.navigateToAccount() {
-  navigate(ACCOUNT_DESTINATION) {
+  navigate(ACCOUNT_NAVIGATION_ROUTE) {
     popUpTo(graph.findStartDestination().id) {
       saveState = true
     }
@@ -78,6 +81,7 @@ fun NavController.navigateToLicense() {
 }
 
 private const val ACCOUNT_DESTINATION = "account"
+private const val ACCOUNT_NAVIGATION_ROUTE = "account_route"
 private const val SCROBBLE_SETTING_DESTINATION = "scrobble_setting"
 private const val THEME_SELECTOR_DESTINATION = "theme_selector"
 private const val LICENSE_DESTINATION = "license"

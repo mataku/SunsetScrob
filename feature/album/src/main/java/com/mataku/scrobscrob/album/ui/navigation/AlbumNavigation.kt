@@ -4,21 +4,24 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import androidx.navigation.navigation
 import com.mataku.scrobscrob.album.ui.screen.TopAlbumsScreen
 import com.mataku.scrobscrob.album.ui.state.rememberTopAlbumsScreenState
 
 fun NavGraphBuilder.albumGraph(navController: NavController) {
-  composable(
-    TOP_ALBUMS_DESTINATION
-  ) {
-    TopAlbumsScreen(
-      state = rememberTopAlbumsScreenState(navController = navController)
-    )
+  navigation(route = ALBUM_NAVIGATION_ROUTE, startDestination = TOP_ALBUMS_DESTINATION) {
+    composable(
+      TOP_ALBUMS_DESTINATION
+    ) {
+      TopAlbumsScreen(
+        state = rememberTopAlbumsScreenState(navController = navController)
+      )
+    }
   }
 }
 
 fun NavController.navigateToTopAlbums() {
-  navigate(TOP_ALBUMS_DESTINATION) {
+  navigate(ALBUM_NAVIGATION_ROUTE) {
     popUpTo(graph.findStartDestination().id) {
       saveState = true
     }
@@ -28,3 +31,4 @@ fun NavController.navigateToTopAlbums() {
 }
 
 private const val TOP_ALBUMS_DESTINATION = "top_albums"
+private const val ALBUM_NAVIGATION_ROUTE = "album_route"
