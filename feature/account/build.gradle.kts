@@ -60,7 +60,7 @@ dependencies {
   implementation(libs.coroutines)
   implementation(libs.timber)
 
-  implementation(libs.accompanist.navigation.animation)
+
   implementation(libs.accompanist.systemuicontroller)
 
   implementation(libs.aboutlibraries)
