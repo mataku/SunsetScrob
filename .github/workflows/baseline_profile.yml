@@ -55,6 +55,7 @@ jobs:
         with:
           commit-message: Generate baseline profiles
           title: Generate baseline profiles
+          body: Update baseline profiles by https://github.com/mataku/SunsetScrob/actions/workflows/baseline_profile.yml
           delete-branch: true
           branch: actions/update-baseline-profiles
           base: develop
