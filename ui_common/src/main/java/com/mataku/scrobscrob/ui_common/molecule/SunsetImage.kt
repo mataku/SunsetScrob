@@ -17,13 +17,12 @@ fun SunsetImage(
 ) {
   val imageRequestBuilder = ImageRequest.Builder(LocalContext.current)
     .data(imageData)
-
   if (size != null) {
     imageRequestBuilder.size(size)
   }
+
   AsyncImage(
-    model = imageRequestBuilder
-      .build(),
+    model = imageRequestBuilder.build(),
     contentDescription = contentDescription,
     modifier = modifier,
     contentScale = contentScale

@@ -3,6 +3,7 @@ package com.mataku.scrobscrob.artist.ui.molecule
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -55,7 +56,8 @@ fun TopArtist(
     SunsetImage(
       imageData = imageData,
       contentDescription = artist.name,
-      modifier = Modifier.fillMaxWidth(),
+      modifier = Modifier.fillMaxWidth()
+        .aspectRatio(1F),
       contentScale = ContentScale.FillWidth
     )
 
