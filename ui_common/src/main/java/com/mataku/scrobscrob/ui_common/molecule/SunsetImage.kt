@@ -17,7 +17,6 @@ fun SunsetImage(
 ) {
   val imageRequestBuilder = ImageRequest.Builder(LocalContext.current)
     .data(imageData)
-    .crossfade(300)
 
   if (size != null) {
     imageRequestBuilder.size(size)
