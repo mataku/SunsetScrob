@@ -24,6 +24,7 @@ import com.mataku.scrobscrob.data.api.model.TrackArtistBody
 import com.mataku.scrobscrob.data.api.model.UserTopAlbumsApiResponse
 import com.mataku.scrobscrob.data.api.model.UserTopArtistsApiResponse
 import com.mataku.scrobscrob.data.db.NowPlayingTrackEntity
+import kotlinx.collections.immutable.toImmutableList
 
 fun ArtistInfoApiResponse.toArtistInfo(): ArtistInfo {
   val body = this.artistInfo
@@ -105,7 +106,7 @@ fun RecentTracksApiResponse.toRecentTracks(): List<RecentTrack> {
     RecentTrack(
       artistName = it.artist.name,
       albumName = it.album.name,
-      images = it.images.toImageList(),
+      images = it.images.toImageList().toImmutableList(),
       name = it.name,
       url = it.url,
       date = it.date?.date

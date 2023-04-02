@@ -23,7 +23,7 @@ class TopAlbumsViewModel @Inject constructor(
   usernameRepository: UsernameRepository
 ) : ViewModel() {
 
-  var uiState: MutableStateFlow<UiState> = MutableStateFlow(UiState.initialized())
+  var uiState: MutableStateFlow<TopAlbumsUiState> = MutableStateFlow(TopAlbumsUiState.initialized())
     private set
 
   private val username: String = usernameRepository.username() ?: ""
@@ -126,15 +126,15 @@ class TopAlbumsViewModel @Inject constructor(
     fetchAlbums(timeRangeFilteringChanged = true)
   }
 
-  data class UiState(
+  data class TopAlbumsUiState(
     val isLoading: Boolean,
     val topAlbums: ImmutableSet<AlbumInfo>,
     val hasNext: Boolean,
     val timeRangeFiltering: TimeRangeFiltering
   ) {
     companion object {
-      fun initialized(): UiState =
-        UiState(
+      fun initialized(): TopAlbumsUiState =
+        TopAlbumsUiState(
           isLoading = false,
           topAlbums = emptyList<AlbumInfo>().toImmutableSet(),
           hasNext = true,

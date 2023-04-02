@@ -1,10 +1,14 @@
 package com.mataku.scrobscrob.scrobble.ui.viewmodel
 
+import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mataku.scrobscrob.core.entity.RecentTrack
 import com.mataku.scrobscrob.data.repository.ScrobbleRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onCompletion
@@ -18,7 +22,7 @@ class ScrobbleViewModel @Inject constructor(
   private val scrobbleRepository: ScrobbleRepository
 ) : ViewModel() {
 
-  var uiState = MutableStateFlow<UiState>(UiState.initialize())
+  var uiState = MutableStateFlow(ScrobbleUiState.initialize())
     private set
 
   private var page = 1
@@ -64,7 +68,7 @@ class ScrobbleViewModel @Inject constructor(
         uiState.update { state ->
           state.copy(
             isRefreshing = false,
-            recentTracks = it,
+            recentTracks = it.toImmutableList(),
             hasNext = it.isNotEmpty()
           )
         }
@@ -78,11 +82,11 @@ class ScrobbleViewModel @Inject constructor(
     viewModelScope.launch {
       scrobbleRepository.recentTracks(
         page = page
-      ).catch {
+      ).catch { e ->
         uiState.update { state ->
           state.copy(
             isLoading = false,
-            throwable = it,
+            uiEvents = (state.uiEvents.toMutableList() + ScrobbleUiEvent.Error(e)).toImmutableList(),
             hasNext = false
           )
         }
@@ -99,10 +103,12 @@ class ScrobbleViewModel @Inject constructor(
           )
         }
       }.collect {
+        val recentTracks = uiState.value.recentTracks.toMutableList()
+        recentTracks.addAll(it)
         uiState.update { state ->
           state.copy(
             isLoading = false,
-            recentTracks = state.recentTracks + it,
+            recentTracks = recentTracks.toImmutableList(),
             hasNext = it.isNotEmpty()
           )
         }
@@ -111,22 +117,29 @@ class ScrobbleViewModel @Inject constructor(
     }
   }
 
-  data class UiState(
+  @Immutable
+  data class ScrobbleUiState(
     val isLoading: Boolean,
     val isRefreshing: Boolean,
+    val uiEvents: ImmutableList<ScrobbleUiEvent>,
     val throwable: Throwable? = null,
-    val recentTracks: List<RecentTrack> = emptyList(),
+    val recentTracks: ImmutableList<RecentTrack>,
     val hasNext: Boolean = true
   ) {
     companion object {
-      fun initialize(): UiState {
-        return UiState(
+      fun initialize(): ScrobbleUiState {
+        return ScrobbleUiState(
           isLoading = false,
           isRefreshing = false,
           throwable = null,
-          recentTracks = emptyList()
+          recentTracks = persistentListOf(),
+          uiEvents = persistentListOf()
         )
       }
     }
+  }
+
+  sealed class ScrobbleUiEvent {
+    data class Error(val throwable: Throwable) : ScrobbleUiEvent()
   }
 }

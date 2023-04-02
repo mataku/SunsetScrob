@@ -26,7 +26,7 @@ class TopArtistsViewModel @Inject constructor(
 
   private val username: String = usernameRepository.username() ?: ""
 
-  var uiState = MutableStateFlow(UiState.initialize())
+  var uiState = MutableStateFlow(TopArtistsUiState.initialize())
     private set
 
   private var page: Int = 1
@@ -127,15 +127,15 @@ class TopArtistsViewModel @Inject constructor(
   }
 
   @Stable
-  data class UiState(
+  data class TopArtistsUiState(
     val isLoading: Boolean,
     val topArtists: ImmutableSet<ArtistInfo>,
     val hasNext: Boolean,
     val selectedTimeRangeFiltering: TimeRangeFiltering,
   ) {
     companion object {
-      fun initialize(): UiState =
-        UiState(
+      fun initialize(): TopArtistsUiState =
+        TopArtistsUiState(
           isLoading = false,
           topArtists = emptyList<ArtistInfo>().toImmutableSet(),
           hasNext = true,

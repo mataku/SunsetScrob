@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalMaterialApi::class)
-
 package com.mataku.scrobscrob.scrobble.ui.screen
 
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -35,6 +33,7 @@ import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import com.mataku.scrobscrob.ui_common.style.sunsetBackgroundGradient
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ScrobbleScreen(
   state: ScrobbleScreenState

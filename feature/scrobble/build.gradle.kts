@@ -33,4 +33,6 @@ dependencies {
 
   implementation(libs.lottie.compose)
   implementation(libs.timber)
+
+  implementation(libs.kotlinx.collection)
 }

@@ -41,7 +41,7 @@ class ApplicationConventionPlugin : Plugin<Project> {
             isDebuggable = false
           }
         }
-        kotlinConfiguration()
+        kotlinConfiguration(target.rootProject)
         androidLintConfiguration()
         packagingOptions {
           val excludePatterns = listOf(

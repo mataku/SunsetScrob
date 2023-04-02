@@ -15,7 +15,7 @@ class FeatureConventionPlugin : Plugin<Project> {
         apply("org.jetbrains.kotlin.kapt")
 
         extensions.configure<LibraryExtension> {
-          kotlinConfiguration()
+          kotlinConfiguration(target.rootProject)
           androidLintConfiguration()
           testConfiguration()
           buildTypes {

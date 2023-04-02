@@ -14,7 +14,7 @@ class TrackScreenState(
   private val artistName: String,
 ) {
 
-  val uiState: TrackViewModel.UiState
+  val uiState: TrackViewModel.TrackUiState
     @Composable get() = viewModel.state.collectAsState().value
 
   init {

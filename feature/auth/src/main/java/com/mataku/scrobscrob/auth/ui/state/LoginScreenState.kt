@@ -7,14 +7,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mataku.scrobscrob.auth.ui.viewmodel.LoginViewModel
 import com.mataku.scrobscrob.ui_common.navigateToPrivacyPolicy
-import com.mataku.scrobscrob.ui_common.navigateToScrobble
 import com.mataku.scrobscrob.ui_common.navigateToScrobbleFromAuth
 
 class LoginScreenState(
   private val navController: NavController,
   private val viewModel: LoginViewModel
 ) {
-  val uiState: LoginViewModel.UiState
+  val uiState: LoginViewModel.LoginUiState
     @Composable get() = viewModel.uiState.collectAsState().value
 
   fun login(username: String, password: String) {

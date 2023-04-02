@@ -18,7 +18,8 @@ class ThemeSelectorViewModel @Inject constructor(
   private val themeRepository: ThemeRepository
 ) : ViewModel() {
 
-  var uiState: MutableStateFlow<UiState> = MutableStateFlow(UiState.initialize())
+  var uiState: MutableStateFlow<ThemeSelectorUiState> =
+    MutableStateFlow(ThemeSelectorUiState.initialize())
     private set
 
   init {
@@ -60,12 +61,12 @@ class ThemeSelectorViewModel @Inject constructor(
     }
   }
 
-  data class UiState(
+  data class ThemeSelectorUiState(
     val theme: AppTheme?,
     val event: ThemeSelectorState.UiEvent?
   ) {
     companion object {
-      fun initialize() = UiState(
+      fun initialize() = ThemeSelectorUiState(
         theme = null,
         event = null
       )
