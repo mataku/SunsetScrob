@@ -41,7 +41,7 @@ private fun composeCompilerParameters(currentProject: Project): List<String> {
   val composeReportEnabled =
     currentProject.rootProject.providers.gradleProperty("sunsetscrob.composeCompilerReports").orNull == "true"
   if (composeReportEnabled) {
-    val reportsFolder = File(currentProject.buildDir, "compose_metrics")
+    val reportsFolder = File(currentProject.buildDir, "compose_reports")
     compilerParameters.add("-P")
     compilerParameters.add(
       "plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=" + reportsFolder.absolutePath,

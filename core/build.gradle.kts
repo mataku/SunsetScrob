@@ -17,6 +17,10 @@ dependencies {
   implementation(libs.okhttp.logging.interceptor)
   implementation(libs.serialization.json)
   implementation(libs.coroutines)
+
+  implementation(platform(libs.compose.bom))
+  implementation(libs.compose.runtime)
+  implementation(libs.kotlinx.collection)
 }
 
 repositories {
