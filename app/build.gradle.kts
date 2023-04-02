@@ -11,13 +11,13 @@ apply(from = "${project.rootDir}/gradle/test_dependencies.gradle")
 
 android {
   namespace = "com.mataku.scrobscrob"
-    buildTypes {
-        create("benchmark") {
-            signingConfig = signingConfigs.getByName("debug")
-            matchingFallbacks += listOf("release")
-            isDebuggable = false
-        }
+  buildTypes {
+    create("benchmark") {
+      signingConfig = signingConfigs.getByName("debug")
+      matchingFallbacks += listOf("release")
+      isDebuggable = false
     }
+  }
 }
 
 dependencies {
