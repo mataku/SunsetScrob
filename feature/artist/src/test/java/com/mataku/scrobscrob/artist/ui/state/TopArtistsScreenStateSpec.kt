@@ -5,7 +5,6 @@ import android.content.res.Resources
 import android.util.DisplayMetrics
 import androidx.navigation.NavHostController
 import com.mataku.scrobscrob.artist.ui.viewmodel.TopArtistsViewModel
-import com.mataku.scrobscrob.core.entity.ArtistInfo
 import com.mataku.scrobscrob.core.entity.TimeRangeFiltering
 import io.kotest.core.spec.style.DescribeSpec
 import io.mockk.coEvery
@@ -13,7 +12,7 @@ import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import kotlinx.collections.immutable.toImmutableSet
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class TopArtistsScreenStateSpec : DescribeSpec({
@@ -30,7 +29,7 @@ class TopArtistsScreenStateSpec : DescribeSpec({
       MutableStateFlow(
         TopArtistsViewModel.TopArtistsUiState(
           isLoading = false,
-          topArtists = emptyList<ArtistInfo>().toImmutableSet(),
+          topArtists = persistentListOf(),
           hasNext = false,
           selectedTimeRangeFiltering = TimeRangeFiltering.OVERALL
         )
