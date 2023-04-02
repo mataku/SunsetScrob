@@ -1,5 +1,6 @@
 plugins {
   id("sunsetscrob.android.feature")
+  id("sunsetscrob.android.compose")
   id("kotlinx-serialization")
 }
 

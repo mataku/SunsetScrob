@@ -26,6 +26,7 @@ import com.mataku.scrobscrob.scrobble.R
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.molecule.SunsetImage
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun TrackAlbum(
@@ -104,7 +105,7 @@ private fun TrackAlbumPreview() {
         album = TrackAlbumInfo(
           artist = "Perfume",
           title = "セラミックガール",
-          imageList = emptyList(),
+          imageList = persistentListOf(),
         )
       )
     }

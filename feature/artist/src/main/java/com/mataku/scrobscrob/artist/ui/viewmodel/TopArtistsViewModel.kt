@@ -1,6 +1,6 @@
 package com.mataku.scrobscrob.artist.ui.viewmodel
 
-import androidx.compose.runtime.Stable
+import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mataku.scrobscrob.core.entity.ArtistInfo
@@ -8,8 +8,9 @@ import com.mataku.scrobscrob.core.entity.TimeRangeFiltering
 import com.mataku.scrobscrob.data.repository.TopArtistsRepository
 import com.mataku.scrobscrob.data.repository.UsernameRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.collections.immutable.ImmutableSet
-import kotlinx.collections.immutable.toImmutableSet
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onCompletion
@@ -84,7 +85,7 @@ class TopArtistsViewModel @Inject constructor(
         .collect {
           if (it.isEmpty()) {
             val list = if (timeRangeChanged) {
-              emptyList<ArtistInfo>().toImmutableSet()
+              emptyList<ArtistInfo>().toImmutableList()
             } else {
               currentState.topArtists
             }
@@ -101,7 +102,7 @@ class TopArtistsViewModel @Inject constructor(
               val current = uiState.value.topArtists.toMutableList()
               current.addAll(it)
               current
-            }.toImmutableSet()
+            }.toImmutableList()
             uiState.update { state ->
               state.copy(
                 topArtists = artists,
@@ -126,10 +127,10 @@ class TopArtistsViewModel @Inject constructor(
     fetchTopArtists(timeRangeChanged = true)
   }
 
-  @Stable
+  @Immutable
   data class TopArtistsUiState(
     val isLoading: Boolean,
-    val topArtists: ImmutableSet<ArtistInfo>,
+    val topArtists: ImmutableList<ArtistInfo>,
     val hasNext: Boolean,
     val selectedTimeRangeFiltering: TimeRangeFiltering,
   ) {
@@ -137,7 +138,7 @@ class TopArtistsViewModel @Inject constructor(
       fun initialize(): TopArtistsUiState =
         TopArtistsUiState(
           isLoading = false,
-          topArtists = emptyList<ArtistInfo>().toImmutableSet(),
+          topArtists = persistentListOf(),
           hasNext = true,
           selectedTimeRangeFiltering = TimeRangeFiltering.OVERALL,
         )

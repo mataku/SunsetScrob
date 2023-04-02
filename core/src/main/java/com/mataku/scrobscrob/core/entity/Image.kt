@@ -1,5 +1,8 @@
 package com.mataku.scrobscrob.core.entity
 
+import androidx.compose.runtime.Immutable
+
+@Immutable
 data class Image(
   val size: String,
   val url: String

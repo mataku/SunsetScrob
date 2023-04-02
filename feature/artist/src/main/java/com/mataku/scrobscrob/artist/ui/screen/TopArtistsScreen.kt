@@ -36,6 +36,7 @@ import com.mataku.scrobscrob.ui_common.organism.FilteringBottomSheet
 import com.mataku.scrobscrob.ui_common.organism.InfiniteLoadingIndicator
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.sunsetBackgroundGradient
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.coroutines.launch
 
@@ -113,7 +114,7 @@ fun TopArtistsScreen(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun TopArtistsContent(
-  artists: ImmutableSet<ArtistInfo>,
+  artists: ImmutableList<ArtistInfo>,
   hasNext: Boolean,
   imageSize: Dp,
   padding: Dp,

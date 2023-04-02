@@ -1,5 +1,8 @@
 package com.mataku.scrobscrob.core.entity
 
+import androidx.compose.runtime.Immutable
+
+@Immutable
 enum class TimeRangeFiltering(
   val rawValue: String,
   val uiLabel: String

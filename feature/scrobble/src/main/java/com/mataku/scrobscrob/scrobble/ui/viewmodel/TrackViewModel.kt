@@ -1,5 +1,6 @@
 package com.mataku.scrobscrob.scrobble.ui.viewmodel
 
+import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mataku.scrobscrob.core.entity.ArtistInfo
@@ -73,6 +74,7 @@ class TrackViewModel @Inject constructor(
     }
   }
 
+  @Immutable
   data class TrackUiState(
     val isLoading: Boolean,
     val trackInfo: TrackInfo?,
