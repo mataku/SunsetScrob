@@ -28,7 +28,7 @@ class TopArtistsScreenStateSpec : DescribeSpec({
       viewModel.uiState
     }.returns(
       MutableStateFlow(
-        TopArtistsViewModel.UiState(
+        TopArtistsViewModel.TopArtistsUiState(
           isLoading = false,
           topArtists = emptyList<ArtistInfo>().toImmutableSet(),
           hasNext = false,

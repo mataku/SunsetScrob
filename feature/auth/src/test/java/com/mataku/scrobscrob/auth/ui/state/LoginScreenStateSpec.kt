@@ -19,7 +19,7 @@ class LoginScreenStateSpec : DescribeSpec({
       viewModel.uiState
     }.returns(
       MutableStateFlow(
-        LoginViewModel.UiState(
+        LoginViewModel.LoginUiState(
           isLoading = false,
           username = "",
           password = ""

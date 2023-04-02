@@ -28,7 +28,7 @@ class TopAlbumsScreenStateSpec : DescribeSpec({
       viewModel.uiState
     }.returns(
       MutableStateFlow(
-        TopAlbumsViewModel.UiState(
+        TopAlbumsViewModel.TopAlbumsUiState(
           isLoading = false,
           topAlbums = emptyList<AlbumInfo>().toImmutableSet(),
           hasNext = false,
