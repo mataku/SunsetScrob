@@ -28,7 +28,7 @@ android {
     // For non Android projects, execute `exportLibraryDefinitions`
     strictMode = com.mikepenz.aboutlibraries.plugin.StrictMode.FAIL
     // Allowed set of licenses, this project will be able to use without build failure
-    allowedLicenses = arrayOf("Apache-2.0", "asdkl", "mit", "mpl_2_0")
+    allowedLicenses = arrayOf("Apache-2.0", "asdkl", "mit", "mpl_2_0", "Play Core Software Development Kit Terms of Service")
     // Enable the duplication mode, allows to merge, or link dependencies which relate
     duplicationMode = com.mikepenz.aboutlibraries.plugin.DuplicateMode.MERGE
     // Configure the duplication rule, to match "duplicates" with
