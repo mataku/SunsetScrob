@@ -1,5 +1,6 @@
 package com.mataku.scrobscrob.scrobble.ui.viewmodel
 
+import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mataku.scrobscrob.core.entity.ArtistInfo
@@ -23,7 +24,7 @@ class TrackViewModel @Inject constructor(
   private val artistRepository: ArtistRepository
 ) : ViewModel() {
 
-  var state = MutableStateFlow<UiState>(UiState.initialize())
+  var state = MutableStateFlow<TrackUiState>(TrackUiState.initialize())
     private set
 
   fun fetchTrackInfo(
@@ -73,15 +74,16 @@ class TrackViewModel @Inject constructor(
     }
   }
 
-  data class UiState(
+  @Immutable
+  data class TrackUiState(
     val isLoading: Boolean,
     val trackInfo: TrackInfo?,
     val artistInfo: ArtistInfo?,
     val event: TrackScreenState.UiEvent?
   ) {
     companion object {
-      fun initialize(): UiState =
-        UiState(
+      fun initialize(): TrackUiState =
+        TrackUiState(
           isLoading = true,
           trackInfo = null,
           event = null,

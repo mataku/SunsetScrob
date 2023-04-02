@@ -17,6 +17,7 @@ fun CommonExtension<*, *, *, *>.kotlinConfiguration() {
   }
   (this as ExtensionAware).extensions.configure<KotlinJvmOptions>("kotlinOptions") {
     jvmTarget = "11"
-    freeCompilerArgs = freeCompilerArgs + listOf("-opt-in=kotlin.RequiresOptIn")
+    freeCompilerArgs =
+      freeCompilerArgs + listOf("-opt-in=kotlin.RequiresOptIn")
   }
 }

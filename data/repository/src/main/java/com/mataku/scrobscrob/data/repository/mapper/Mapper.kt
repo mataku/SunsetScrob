@@ -24,13 +24,15 @@ import com.mataku.scrobscrob.data.api.model.TrackArtistBody
 import com.mataku.scrobscrob.data.api.model.UserTopAlbumsApiResponse
 import com.mataku.scrobscrob.data.api.model.UserTopArtistsApiResponse
 import com.mataku.scrobscrob.data.db.NowPlayingTrackEntity
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 
 fun ArtistInfoApiResponse.toArtistInfo(): ArtistInfo {
   val body = this.artistInfo
   return ArtistInfo(
     name = body.name,
-    imageList = body.imageList?.toImageList() ?: emptyList(),
-    topTags = body.topTags.toTagList(),
+    imageList = body.imageList?.toImageList()?.toImmutableList() ?: persistentListOf(),
+    topTags = body.topTags.toTagList().toImmutableList(),
     playCount = body.stats.playCount,
     url = body.url
   )
@@ -49,7 +51,7 @@ fun TrackAlbumInfoBody.toTrackAlbumInfo(): TrackAlbumInfo {
   return TrackAlbumInfo(
     artist = this.artist,
     title = this.title,
-    imageList = this.imageList.toImageList(),
+    imageList = this.imageList.toImageList().toImmutableList(),
   )
 }
 
@@ -67,7 +69,7 @@ fun TrackInfoApiResponse.toTrackInfo(): TrackInfo {
     album = body.album?.toTrackAlbumInfo(),
     listeners = body.listeners,
     url = body.url,
-    topTags = body.topTags.toTagList(),
+    topTags = body.topTags.toTagList().toImmutableList(),
     artist = body.artist.toTrackArtist(),
     name = body.name
   )
@@ -79,7 +81,7 @@ fun UserTopAlbumsApiResponse.toTopAlbums(): List<AlbumInfo> {
     AlbumInfo(
       artist = it.artist.name,
       title = it.name,
-      imageList = it.imageList?.toImageList() ?: emptyList(),
+      imageList = it.imageList?.toImageList()?.toImmutableList() ?: persistentListOf(),
       playCount = it.playcount,
       url = it.url
     )
@@ -91,9 +93,9 @@ fun UserTopArtistsApiResponse.toTopArtists(): List<ArtistInfo> {
   return body.artists.map {
     ArtistInfo(
       name = it.name,
-      imageList = it.imageList?.toImageList() ?: emptyList(),
+      imageList = it.imageList?.toImageList()?.toImmutableList() ?: persistentListOf(),
       url = it.url,
-      topTags = emptyList(),
+      topTags = persistentListOf(),
       playCount = it.playcount
     )
   }
@@ -105,7 +107,7 @@ fun RecentTracksApiResponse.toRecentTracks(): List<RecentTrack> {
     RecentTrack(
       artistName = it.artist.name,
       albumName = it.album.name,
-      images = it.images.toImageList(),
+      images = it.images.toImageList().toImmutableList(),
       name = it.name,
       url = it.url,
       date = it.date?.date

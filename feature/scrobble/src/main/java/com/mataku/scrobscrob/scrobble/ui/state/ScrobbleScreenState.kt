@@ -12,7 +12,7 @@ class ScrobbleScreenState(
   private val navController: NavController,
   private val viewModel: ScrobbleViewModel
 ) {
-  val uiState: ScrobbleViewModel.UiState
+  val uiState: ScrobbleViewModel.ScrobbleUiState
     @Composable get() = viewModel.uiState.collectAsState().value
 
   fun onScrollEnd() {

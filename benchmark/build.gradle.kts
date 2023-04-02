@@ -28,7 +28,7 @@ android {
     // release build (for example, with minification on). It"s signed with a debug key
     // for easy local/CI testing.
     create("benchmark") {
-      isDebuggable = false
+      isDebuggable = true
       signingConfig = getByName("debug").signingConfig
       matchingFallbacks += listOf("release")
     }
@@ -49,9 +49,9 @@ android {
 }
 
 dependencies {
-  implementation("androidx.test.ext:junit:1.1.5")
-  implementation("androidx.test.uiautomator:uiautomator:2.2.0")
-  implementation("androidx.benchmark:benchmark-macro-junit4:1.1.1")
+  implementation(libs.androidx.test.ext.junit)
+  implementation(libs.androidx.test.uiautomator)
+  implementation(libs.androidx.benchmark.macro.junit4)
 }
 
 androidComponents {

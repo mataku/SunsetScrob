@@ -25,7 +25,7 @@ class AccountViewModel @Inject constructor(
   private val appUpdateManager: AppUpdateManager
 ) : ViewModel() {
 
-  var uiState: MutableStateFlow<UiState> = MutableStateFlow(UiState.initialize())
+  var uiState: MutableStateFlow<AccountUiState> = MutableStateFlow(AccountUiState.initialize())
     private set
 
   init {
@@ -93,14 +93,14 @@ class AccountViewModel @Inject constructor(
     }
   }
 
-  data class UiState(
+  data class AccountUiState(
     val theme: AppTheme?,
     val event: Event?,
     val appVersion: String,
     val appUpdateInfo: AppUpdateInfo?
   ) {
     companion object {
-      fun initialize() = UiState(
+      fun initialize() = AccountUiState(
         theme = null,
         event = null,
         appVersion = "",

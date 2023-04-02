@@ -1,6 +1,7 @@
 package com.mataku.scrobscrob.scrobble.ui.state
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -14,7 +15,7 @@ class TrackScreenState(
   private val artistName: String,
 ) {
 
-  val uiState: TrackViewModel.UiState
+  val uiState: TrackViewModel.TrackUiState
     @Composable get() = viewModel.state.collectAsState().value
 
   init {

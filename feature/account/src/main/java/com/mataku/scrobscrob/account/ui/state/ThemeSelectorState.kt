@@ -12,7 +12,7 @@ class ThemeSelectorState(
   private val navController: NavController,
   private val viewModel: ThemeSelectorViewModel
 ) {
-  val uiState: ThemeSelectorViewModel.UiState
+  val uiState: ThemeSelectorViewModel.ThemeSelectorUiState
     @Composable get() = viewModel.uiState.collectAsState().value
 
   fun changeTheme(theme: AppTheme) {

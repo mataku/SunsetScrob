@@ -22,6 +22,7 @@ import com.mataku.scrobscrob.scrobble.R
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.molecule.SunsetImage
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun TrackArtist(
@@ -72,8 +73,8 @@ private fun TrackArtistPreview() {
       TrackArtist(
         ArtistInfo(
           name = "Nayeon",
-          imageList = emptyList(),
-          topTags = emptyList(),
+          imageList = persistentListOf(),
+          topTags = persistentListOf(),
           playCount = "1",
           url = ""
         )

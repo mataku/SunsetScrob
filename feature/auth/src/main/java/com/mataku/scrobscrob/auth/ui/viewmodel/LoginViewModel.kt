@@ -16,7 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(private val repo: SessionRepository) : ViewModel() {
 
-  var uiState: MutableStateFlow<UiState> = MutableStateFlow(UiState.initialize())
+  var uiState: MutableStateFlow<LoginUiState> = MutableStateFlow(LoginUiState.initialize())
     private set
 
   fun popEvent() {
@@ -90,14 +90,14 @@ class LoginViewModel @Inject constructor(private val repo: SessionRepository) : 
     }
   }
 
-  data class UiState(
+  data class LoginUiState(
     val isLoading: Boolean,
     val event: LoginScreenState.UiEvent? = null,
     val username: String,
     val password: String
   ) {
     companion object {
-      fun initialize() = UiState(
+      fun initialize() = LoginUiState(
         isLoading = false,
         event = null,
         username = "",

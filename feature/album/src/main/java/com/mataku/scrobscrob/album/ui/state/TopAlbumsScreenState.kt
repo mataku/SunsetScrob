@@ -16,7 +16,7 @@ class TopAlbumsScreenState(
   private val viewModel: TopAlbumsViewModel,
   context: Context
 ) {
-  val uiState: TopAlbumsViewModel.UiState
+  val uiState: TopAlbumsViewModel.TopAlbumsUiState
     @Composable get() = viewModel.uiState.collectAsState().value
 
   private val displayMetrics = context.resources.displayMetrics

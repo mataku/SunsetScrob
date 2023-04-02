@@ -27,7 +27,7 @@ class AccountState(
   private val viewModel: AccountViewModel,
   private val coroutineScope: CoroutineScope
 ) {
-  val uiState: AccountViewModel.UiState
+  val uiState: AccountViewModel.AccountUiState
     @Composable get() = viewModel.uiState.collectAsState().value
 
   fun completeUpdate() {

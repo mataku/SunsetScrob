@@ -1,15 +1,18 @@
 package com.mataku.scrobscrob.artist.ui.screen
 
 import android.annotation.SuppressLint
+import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
@@ -18,11 +21,12 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.mataku.scrobscrob.artist.R
 import com.mataku.scrobscrob.artist.ui.molecule.TopArtist
@@ -36,7 +40,7 @@ import com.mataku.scrobscrob.ui_common.organism.FilteringBottomSheet
 import com.mataku.scrobscrob.ui_common.organism.InfiniteLoadingIndicator
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.sunsetBackgroundGradient
-import kotlinx.collections.immutable.ImmutableSet
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -45,11 +49,14 @@ import kotlinx.coroutines.launch
 fun TopArtistsScreen(
   state: TopArtistsScreenState
 ) {
-  val contentWidth = state.contentWidth
   val uiState = state.uiState
 
   val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
   val coroutineScope = rememberCoroutineScope()
+  val configuration = LocalConfiguration.current
+  val orientation = remember {
+    configuration.orientation
+  }
   BackHandler(sheetState.isVisible) {
     coroutineScope.launch {
       sheetState.hide()
@@ -86,13 +93,16 @@ fun TopArtistsScreen(
       TopArtistsContent(
         artists = uiState.topArtists,
         hasNext = uiState.hasNext,
-        imageSize = contentWidth.dp,
-        padding = contentWidth.dp - 20.dp,
         onUrlTap = {
           state.onTapArtist(it)
         },
         onScrollEnd = {
           state.onScrollEnd()
+        },
+        maxSpanCount = if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+          4
+        } else {
+          2
         }
       )
     }
@@ -110,41 +120,15 @@ fun TopArtistsScreen(
   }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun TopArtistsContent(
-  artists: ImmutableSet<ArtistInfo>,
+  artists: ImmutableList<ArtistInfo>,
   hasNext: Boolean,
-  imageSize: Dp,
-  padding: Dp,
+  maxSpanCount: Int,
   onUrlTap: (String) -> Unit,
   onScrollEnd: () -> Unit
 ) {
-  LazyColumn(
-    content = {
-      stickyHeader {
-        ContentHeader(text = stringResource(id = R.string.menu_top_artists))
-      }
-
-      items(artists.chunked(2)) {
-        val rightItem = if (it.size == 1) null else it[1]
-        TopArtistsGridRow(
-          leftArtist = it[0],
-          rightArtist = rightItem,
-          imageSize = imageSize - 24.dp,
-          onArtistTap = onUrlTap,
-          modifier = Modifier.padding(horizontal = 8.dp)
-        )
-      }
-      if (hasNext && artists.isNotEmpty()) {
-        item {
-          InfiniteLoadingIndicator(
-            onScrollEnd = onScrollEnd,
-            padding = padding
-          )
-        }
-      }
-    },
+  Column(
     modifier = if (LocalAppTheme.current == AppTheme.SUNSET) {
       Modifier
         .fillMaxSize()
@@ -155,36 +139,37 @@ private fun TopArtistsContent(
       Modifier
         .fillMaxSize()
     }
+  ) {
+    ContentHeader(text = stringResource(id = R.string.menu_top_artists))
 
-  )
-}
+    LazyVerticalGrid(
+      contentPadding = PaddingValues(horizontal = 8.dp),
+      columns = GridCells.Fixed(maxSpanCount),
+      content = {
+        itemsIndexed(
+          items = artists,
+          key = { index, artist ->
+            "${index}${artist.hashCode()}"
+          }
+        ) { _, artist ->
+          TopArtist(
+            artist = artist,
+            onArtistTap = {
+              onUrlTap.invoke(artist.url)
+            },
+            modifier = Modifier
+              .fillMaxWidth()
+          )
+        }
 
-@Composable
-private fun TopArtistsGridRow(
-  leftArtist: ArtistInfo,
-  rightArtist: ArtistInfo?,
-  imageSize: Dp,
-  onArtistTap: (String) -> Unit,
-  modifier: Modifier
-) {
-  Row(modifier = modifier.fillMaxSize()) {
-    TopArtist(
-      artist = leftArtist,
-      imageSize = imageSize,
-      onArtistTap = {
-        onArtistTap.invoke(leftArtist.url)
-      },
-      modifier = Modifier.weight(1F, fill = false)
-    )
-    rightArtist?.let {
-      TopArtist(
-        artist = it,
-        imageSize = imageSize,
-        onArtistTap = {
-          onArtistTap.invoke(it.url)
-        },
-        modifier = Modifier.weight(1F, fill = false)
-      )
-    }
+        if (hasNext && artists.isNotEmpty()) {
+          item(span = { GridItemSpan(2) }) {
+            InfiniteLoadingIndicator(
+              onScrollEnd = onScrollEnd,
+              modifier = Modifier
+            )
+          }
+        }
+      })
   }
 }

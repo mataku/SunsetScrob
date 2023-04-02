@@ -7,8 +7,9 @@ import com.mataku.scrobscrob.core.entity.TimeRangeFiltering
 import com.mataku.scrobscrob.data.repository.TopAlbumsRepository
 import com.mataku.scrobscrob.data.repository.UsernameRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.collections.immutable.ImmutableSet
-import kotlinx.collections.immutable.toImmutableSet
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onCompletion
@@ -23,7 +24,7 @@ class TopAlbumsViewModel @Inject constructor(
   usernameRepository: UsernameRepository
 ) : ViewModel() {
 
-  var uiState: MutableStateFlow<UiState> = MutableStateFlow(UiState.initialized())
+  var uiState: MutableStateFlow<TopAlbumsUiState> = MutableStateFlow(TopAlbumsUiState.initialized())
     private set
 
   private val username: String = usernameRepository.username() ?: ""
@@ -83,7 +84,7 @@ class TopAlbumsViewModel @Inject constructor(
         .collect { albums ->
           if (albums.isEmpty()) {
             val list = if (timeRangeFilteringChanged) {
-              emptyList<AlbumInfo>().toImmutableSet()
+              persistentListOf()
             } else {
               currentState.topAlbums
             }
@@ -100,7 +101,7 @@ class TopAlbumsViewModel @Inject constructor(
               val currentAlbums = uiState.value.topAlbums.toMutableList()
               currentAlbums.addAll(albums)
               currentAlbums
-            }.toImmutableSet()
+            }.toImmutableList()
 
             uiState.update {
               it.copy(
@@ -126,17 +127,17 @@ class TopAlbumsViewModel @Inject constructor(
     fetchAlbums(timeRangeFilteringChanged = true)
   }
 
-  data class UiState(
+  data class TopAlbumsUiState(
     val isLoading: Boolean,
-    val topAlbums: ImmutableSet<AlbumInfo>,
+    val topAlbums: ImmutableList<AlbumInfo>,
     val hasNext: Boolean,
     val timeRangeFiltering: TimeRangeFiltering
   ) {
     companion object {
-      fun initialized(): UiState =
-        UiState(
+      fun initialized(): TopAlbumsUiState =
+        TopAlbumsUiState(
           isLoading = false,
-          topAlbums = emptyList<AlbumInfo>().toImmutableSet(),
+          topAlbums = persistentListOf(),
           hasNext = true,
           timeRangeFiltering = TimeRangeFiltering.OVERALL
         )
