@@ -2,15 +2,15 @@ package com.mataku.scrobscrob.album.ui.screen
 
 import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
@@ -23,7 +23,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.mataku.scrobscrob.album.R
 import com.mataku.scrobscrob.album.ui.molecule.TopAlbum
@@ -37,7 +36,7 @@ import com.mataku.scrobscrob.ui_common.organism.FilteringBottomSheet
 import com.mataku.scrobscrob.ui_common.organism.InfiniteLoadingIndicator
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.sunsetBackgroundGradient
-import kotlinx.collections.immutable.ImmutableSet
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -47,8 +46,6 @@ fun TopAlbumsScreen(
   state: TopAlbumsScreenState
 ) {
   val uiState = state.uiState
-
-  val contentWidth = state.contentWidth
 
   val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
   val coroutineScope = rememberCoroutineScope()
@@ -89,8 +86,6 @@ fun TopAlbumsScreen(
       TopAlbumsContent(
         albums = uiState.topAlbums,
         hasNext = uiState.hasNext,
-        imageSize = contentWidth.dp,
-        padding = contentWidth.dp - 20.dp,
         onUrlTap = {
           state.onTapAlbum(it)
         },
@@ -113,41 +108,14 @@ fun TopAlbumsScreen(
   }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TopAlbumsContent(
-  albums: ImmutableSet<AlbumInfo>,
+  albums: ImmutableList<AlbumInfo>,
   hasNext: Boolean,
-  imageSize: Dp,
-  padding: Dp,
   onUrlTap: (String) -> Unit,
   onScrollEnd: () -> Unit,
 ) {
-  LazyColumn(
-    content = {
-      stickyHeader {
-        ContentHeader(text = stringResource(id = R.string.menu_top_albums))
-      }
-
-      items(albums.chunked(2)) {
-        val rightItem = if (it.size == 1) null else it[1]
-        TopAlbumsGridRow(
-          leftItem = it[0],
-          rightItem = rightItem,
-          imageSize = imageSize - 24.dp,
-          onAlbumTap = onUrlTap,
-          modifier = Modifier.padding(horizontal = 8.dp)
-        )
-      }
-      if (hasNext) {
-        item {
-          InfiniteLoadingIndicator(
-            onScrollEnd = onScrollEnd,
-            padding = padding
-          )
-        }
-      }
-    },
+  Column(
     modifier = if (LocalAppTheme.current == AppTheme.SUNSET) {
       Modifier
         .fillMaxSize()
@@ -158,31 +126,32 @@ fun TopAlbumsContent(
       Modifier
         .fillMaxSize()
     }
-  )
-}
+  ) {
+    ContentHeader(text = stringResource(id = R.string.menu_top_albums))
 
-@Composable
-private fun TopAlbumsGridRow(
-  leftItem: AlbumInfo,
-  rightItem: AlbumInfo?,
-  imageSize: Dp,
-  onAlbumTap: (String) -> Unit,
-  modifier: Modifier
-) {
-  Row(modifier = modifier.fillMaxWidth()) {
-    TopAlbum(
-      album = leftItem, imageSize = imageSize, onAlbumTap = {
-        onAlbumTap(leftItem.url)
+    LazyVerticalGrid(
+      contentPadding = PaddingValues(horizontal = 8.dp),
+      columns = GridCells.Fixed(2),
+      content = {
+        items(albums) { album ->
+          TopAlbum(
+            album = album,
+            onAlbumTap = {
+              onUrlTap.invoke(album.url)
+            },
+            modifier = Modifier.fillMaxWidth(),
+          )
+        }
+
+        if (hasNext && albums.isNotEmpty()) {
+          item {
+            InfiniteLoadingIndicator(
+              onScrollEnd = onScrollEnd,
+              modifier = Modifier
+            )
+          }
+        }
       },
-      modifier = Modifier.weight(1F, fill = false)
     )
-    rightItem?.let {
-      TopAlbum(
-        album = it, imageSize = imageSize, onAlbumTap = {
-          onAlbumTap(it.url)
-        },
-        modifier = Modifier.weight(1F, fill = false)
-      )
-    }
   }
 }
