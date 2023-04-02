@@ -9,7 +9,7 @@ jobs:
   generate-baseline-profile:
     # ubuntu-latest is enough, but needed for Android Emulator: https://issuetracker.google.com/issues/193118030
     runs-on: macos-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
 
     steps:
       - uses: actions/checkout@v3
@@ -57,4 +57,3 @@ jobs:
           base: develop
           add-paths: |
             app/src/main
-
