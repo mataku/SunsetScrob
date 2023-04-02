@@ -32,6 +32,7 @@ import com.mataku.scrobscrob.ui_common.style.Colors
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import com.mataku.scrobscrob.ui_common.style.sunsetBackgroundGradient
+import kotlinx.collections.immutable.ImmutableList
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -101,7 +102,7 @@ fun ScrobbleScreen(
 @Composable
 private fun ScrobbleContent(
   lazyListState: LazyListState,
-  recentTracks: List<RecentTrack>,
+  recentTracks: ImmutableList<RecentTrack>,
   hasNext: Boolean,
   onScrobbleTap: (RecentTrack, Int, Int, Int) -> Unit,
   onScrollEnd: () -> Unit
@@ -113,7 +114,12 @@ private fun ScrobbleContent(
         ContentHeader(text = stringResource(id = R.string.menu_scrobble))
       }
 
-      itemsIndexed(recentTracks) { index, track ->
+      itemsIndexed(
+        items = recentTracks,
+        key = { index, track ->
+          "${index}${track.hashCode()}"
+        }
+      ) { index, track ->
         Scrobble(
           recentTrack = track,
           onScrobbleTap = {
