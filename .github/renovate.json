@@ -6,6 +6,8 @@
     "androidx.compose.animation:animation",
     "androidx.compose:compose-bom",
     "androidx.compose.ui:ui-tooling",
+    "androidx.compose.ui:ui-test-junit4",
+    "androidx.compose.ui:ui-test-manifest",
     "com.google.accompanist:accompanist-navigation-animation",
     "com.google.accompanist:accompanist-systemuicontroller",
     "com.google.accompanist:accompanist-swiperefresh",
