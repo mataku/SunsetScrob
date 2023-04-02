@@ -55,4 +55,6 @@ jobs:
           delete-branch: true
           branch: actions/update-baseline-profiles
           base: develop
+          add-paths: |
+            app/src/main
 
