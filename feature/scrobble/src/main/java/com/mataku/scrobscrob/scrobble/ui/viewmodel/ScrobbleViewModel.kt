@@ -44,12 +44,12 @@ class ScrobbleViewModel @Inject constructor(
       }
       scrobbleRepository.recentTracks(
         page = page
-      ).catch {
+      ).catch { e ->
         uiState.update { state ->
           state.copy(
             isLoading = false,
-            throwable = it,
-            hasNext = false
+            hasNext = false,
+            uiEvents = (state.uiEvents.toMutableList() + ScrobbleUiEvent.Error(e)).toImmutableList(),
           )
         }
       }.onStart {
@@ -122,7 +122,6 @@ class ScrobbleViewModel @Inject constructor(
     val isLoading: Boolean,
     val isRefreshing: Boolean,
     val uiEvents: ImmutableList<ScrobbleUiEvent>,
-    val throwable: Throwable? = null,
     val recentTracks: ImmutableList<RecentTrack>,
     val hasNext: Boolean = true
   ) {
@@ -131,7 +130,6 @@ class ScrobbleViewModel @Inject constructor(
         return ScrobbleUiState(
           isLoading = false,
           isRefreshing = false,
-          throwable = null,
           recentTracks = persistentListOf(),
           uiEvents = persistentListOf()
         )
