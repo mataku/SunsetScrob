@@ -23,8 +23,6 @@ See more: [screenshots](./screenshot/README.md)
 - Autofill
 - Themed icon
 
-- - - 
-
 ## Libraries and tools
 - Jetpack Compose
 - Kotlin Coroutines
@@ -34,7 +32,6 @@ See more: [screenshots](./screenshot/README.md)
 - Gradle convention plugin
 - Fastlane
 - Kotest
-
 
 ## TODO
 - Show each content details
