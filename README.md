@@ -2,7 +2,16 @@
 
 Last.fm client on Android (mainly for my portfolio)
 
+- - - 
+
+
+![](./screenshot/features.jpg)
+
+See more: [screenshots](./screenshot/README.md)  
+
+
 ## Features
+
 - Show latest scrobbles
 - Show top albums
 - Filter top albums by time range
@@ -13,6 +22,8 @@ Last.fm client on Android (mainly for my portfolio)
 - Shared element transition
 - Autofill
 - Themed icon
+
+- - - 
 
 ## Libraries and tools
 - Jetpack Compose
@@ -27,7 +38,3 @@ Last.fm client on Android (mainly for my portfolio)
 
 ## TODO
 - Show each content details
-
-## Screenshots
-
-See [screenshots](./screenshot/README.md)
