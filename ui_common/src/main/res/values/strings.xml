@@ -22,41 +22,7 @@
         completions."
     </string>
 
-  <string name="menu_scrobble">Scrobble</string>
-  <string name="menu_top_artists">Top Artists</string>
-  <string name="menu_top_albums">Top Albums</string>
-  <string name="menu_account">Account</string>
-
   <string name="logout">Logout</string>
-  <string name="label_track_album">Album</string>
-
-  <string name="title_scrobble">Scrobble</string>
-  <string name="description_scrobble">Scrobble from selected apps</string>
-
-  <string name="label_scrobble_setting">Scrobble settings</string>
-  <string name="error_allow_scrobble_app">Failed to allow Scrobble App.</string>
-  <string name="dialog_notification_permission_required">Notification permission is required</string>
-  <string name="dialog_notification_permission_required_description">In order to retrieve information on the currently playing song, you must have permission to access the notification bar.</string>
-
-  <string name="button_back">No</string>
-  <string name="button_go_to_setting">Settings</string>
-
-  <string name="label_notification_permission_help">Check SunsetScrob</string>
-
-  <string name="item_clear_cache">Clear cache</string>
-
-  <string name="item_logout">Logout</string>
-  <string name="item_logout_description">Logout of Last.fm</string>
-
-  <string name="item_theme">Theme</string>
-  <string name="title_theme_selector">Theme</string>
-
-  <string name="item_license">Licenses</string>
-  <string name="item_privacy_policy">Privacy policy</string>
-
-  <string name="item_app_version">v%s</string>
-  <string name="label_update_available">Update Available</string>
-  <string name="label_start_update">Start app update. App will restart.</string>
 
   <string name="error_password_required">Password is required</string>
   <string name="error_username_required">Username is required</string>

@@ -1,2 +1,22 @@
 <resources>
+  <string name="title_scrobble" translatable="false">Scrobble</string>
+  <string name="description_scrobble">Scrobble from selected apps</string>
+  <string name="item_theme">Theme</string>
+  <string name="item_clear_cache">Clear cache</string>
+  <string name="item_logout" translatable="false">Logout</string>
+  <string name="item_logout_description">Logout of Last.fm</string>
+  <string name="item_license" translatable="false">Licenses</string>
+  <string name="item_privacy_policy">Privacy policy</string>
+  <string name="item_app_version" translatable="false">v%s</string>
+  <string name="title_theme_selector">Theme</string>
+  <string name="label_start_update">Start app update. App will restart.</string>
+  <string name="menu_account" translatable="false">Account</string>
+  <string name="label_update_available">Update Available</string>
+  <string name="dialog_notification_permission_required">Notification permission is required</string>
+  <string name="dialog_notification_permission_required_description">In order to retrieve information on the currently playing song, you must have permission to access the notification bar.</string>
+  <string name="button_back">No</string>
+  <string name="button_go_to_setting">Settings</string>
+  <string name="error_allow_scrobble_app">Failed to allow Scrobble App.</string>
+  <string name="label_notification_permission_help">Check SunsetScrob</string>
+  <string name="label_scrobble_setting">Scrobble settings</string>
 </resources>
