@@ -1,0 +1,4 @@
+<resources>
+  <string name="label_track_album" translatable="false">Album</string>
+  <string name="menu_scrobble" translatable="false">Scrobble</string>
+</resources>

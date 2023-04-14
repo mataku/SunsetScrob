@@ -39,7 +39,7 @@ fun TrackArtist(
     val imageUrl = artistInfo.imageList.imageUrl()
 
     val imageData = if (imageUrl == null || imageUrl.isBlank()) {
-      R.drawable.no_image
+      com.mataku.scrobscrob.ui_common.R.drawable.no_image
     } else {
       imageUrl
     }

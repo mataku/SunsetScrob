@@ -1,5 +1,6 @@
-package com.mataku.scrobscrob.data.repository
+package com.mataku.scrobscrob.data.api.endpoint
 
+import com.mataku.scrobscrob.data.api.BuildConfig
 import java.security.MessageDigest
 
 class ApiSignature {

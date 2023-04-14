@@ -33,6 +33,7 @@ local.properties
 .idea/kotlinScripting.xml
 .idea/jarRepositories.xml
 .idea/dictionaries/
+.idea/kotlinc.xml
 !.idea/codeStyles/
 .idea/inspectionProfiles/
 

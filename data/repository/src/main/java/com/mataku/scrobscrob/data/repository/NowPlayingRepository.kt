@@ -3,6 +3,7 @@ package com.mataku.scrobscrob.data.repository
 import com.mataku.scrobscrob.core.entity.NowPlayingTrack
 import com.mataku.scrobscrob.core.entity.TrackInfo
 import com.mataku.scrobscrob.data.api.LastFmService
+import com.mataku.scrobscrob.data.api.endpoint.ApiSignature
 import com.mataku.scrobscrob.data.api.endpoint.UpdateNowPlayingEndpoint
 import com.mataku.scrobscrob.data.db.NowPlayingDao
 import com.mataku.scrobscrob.data.db.SessionKeyDataStore

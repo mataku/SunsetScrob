@@ -1,0 +1,17 @@
+<resources>
+  <string name="description_scrobble">選択したアプリの曲を Last.fm へ Scrobble します</string>
+  <string name="item_theme">テーマ</string>
+  <string name="item_clear_cache">Clear cache</string>
+  <string name="item_logout_description">ログアウトする</string>
+  <string name="item_privacy_policy">プライバシーポリシー</string>
+  <string name="title_theme_selector">テーマ</string>
+  <string name="label_start_update">アップデートを開始します。アプリは再起動されます。</string>
+  <string name="label_update_available">アプリのアップデートが利用可能です</string>
+  <string name="dialog_notification_permission_required">通知バーへの権限付与が必要です</string>
+  <string name="dialog_notification_permission_required_description">現在再生している曲の情報を取得するために、通知情報へのアクセス権限が必要です。</string>
+  <string name="button_back">戻る</string>
+  <string name="button_go_to_setting">設定へ</string>
+  <string name="error_allow_scrobble_app">Scrobble するアプリの更新に失敗しました</string>
+  <string name="label_notification_permission_help">SunsetScrob の設定を確認してください</string>
+  <string name="label_scrobble_setting">Scrobble 設定</string>
+</resources>

@@ -8,6 +8,9 @@ plugins {
 }
 
 android {
+  buildFeatures {
+    buildConfig = true
+  }
   defaultConfig {
     val properties = gradleLocalProperties(rootDir)
     val apiKey = properties.getProperty("API_KEY")

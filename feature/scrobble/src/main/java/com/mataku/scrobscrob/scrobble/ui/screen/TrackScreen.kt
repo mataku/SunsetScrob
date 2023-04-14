@@ -82,7 +82,7 @@ fun TrackScreen(
           imageSize.dp + ((screenWidthDp - imageSize - horizontalPadding) * animateValue).dp
 
         val imageData = if (artworkUrl == null || artworkUrl.isBlank()) {
-          R.drawable.no_image
+          com.mataku.scrobscrob.ui_common.R.drawable.no_image
         } else {
           artworkUrl
         }

@@ -10,6 +10,10 @@ plugins {
 apply(from = "${project.rootDir}/gradle/test_dependencies.gradle")
 
 android {
+  buildFeatures {
+    buildConfig = true
+  }
+
   namespace = "com.mataku.scrobscrob"
   buildTypes {
     create("benchmark") {

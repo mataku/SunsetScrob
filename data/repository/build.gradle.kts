@@ -1,5 +1,3 @@
-import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
-
 plugins {
   id("sunsetscrob.android.feature")
   id("dagger.hilt.android.plugin")
@@ -7,13 +5,6 @@ plugins {
 }
 
 android {
-  defaultConfig {
-    val properties = gradleLocalProperties(rootDir)
-    val apiKey = properties.getProperty("API_KEY")
-    val sharedSecret = properties.getProperty("SHARED_SECRET")
-    buildConfigField("String", "API_KEY", apiKey)
-    buildConfigField("String", "SHARED_SECRET", sharedSecret)
-  }
   namespace = "com.mataku.scrobscrob.data.repository"
 }
 
