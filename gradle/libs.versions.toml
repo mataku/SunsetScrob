@@ -85,7 +85,7 @@ aboutlibraries-compose = { module = "com.mikepenz:aboutlibraries-compose", versi
 
 lottie-compose = { module = "com.airbnb.android:lottie-compose", version = "6.0.0" }
 
-app-update = { module = "com.google.android.play:app-update-ktx", version = "2.0.1" }
+app-update = { module = "com.google.android.play:app-update-ktx", version = "2.1.0" }
 
 timber = { module = "com.jakewharton.timber:timber", version = "5.0.1" }
 
