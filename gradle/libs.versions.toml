@@ -72,7 +72,7 @@ hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", ve
 
 datastore-preferences = { module = "androidx.datastore:datastore-preferences", version = "1.0.0" }
 
-android-gradle-plugin = { module = "com.android.tools.build:gradle", version = "8.0.1" }
+android-gradle-plugin = { module = "com.android.tools.build:gradle", version = "8.0.2" }
 crashlytics-gradle-plugin = { module = "com.google.firebase:firebase-crashlytics-gradle", version = "2.9.5" }
 hilt-gradle-plugin = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hilt" }
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
