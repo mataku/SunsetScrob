@@ -83,7 +83,7 @@ aboutlibraries-plugin = { module = "com.mikepenz.aboutlibraries.plugin:aboutlibr
 aboutlibraries = { module = "com.mikepenz:aboutlibraries", version.ref = "aboutlibraries" }
 aboutlibraries-compose = { module = "com.mikepenz:aboutlibraries-compose", version.ref = "aboutlibraries" }
 
-lottie-compose = { module = "com.airbnb.android:lottie-compose", version = "6.0.0" }
+lottie-compose = { module = "com.airbnb.android:lottie-compose", version = "6.0.1" }
 
 app-update = { module = "com.google.android.play:app-update-ktx", version = "2.1.0" }
 
