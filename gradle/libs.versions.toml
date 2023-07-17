@@ -1,6 +1,6 @@
 [versions]
 activity = "1.7.2"
-aboutlibraries = "10.8.2"
+aboutlibraries = "10.8.3"
 accompanist = "0.30.0"
 coil = "2.4.0"
 compose = "2023.03.00"
