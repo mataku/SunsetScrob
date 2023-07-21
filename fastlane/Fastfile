@@ -64,6 +64,15 @@ platform :android do
     )
   end
 
+  desc "Deploy a new version to the Google Play internal app sharing"
+  lane :deploy_internal_app_sharing do
+    # gradle(task: "bundleRelease")
+    upload_to_play_store_internal_app_sharing(
+      package_name: 'com.mataku.scrobscrob',
+      aab: 'app/build/outputs/bundle/release/app-release.aab',
+    )
+  end
+
   # To upload an aab, needs to link Google Play Account to your Firebase project, so upload an apk currently
   lane :deploy_to_firebase_app_distribution do
     gradle(task: "assembleDebug")
