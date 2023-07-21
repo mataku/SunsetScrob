@@ -1,7 +1,6 @@
 package com.mataku.scrobscrob.account.ui.state
 
 import android.content.Context
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -18,7 +17,6 @@ import com.mataku.scrobscrob.ui_common.navigateToLogin
 import com.mataku.scrobscrob.ui_common.navigateToPrivacyPolicy
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
 class AccountState(
