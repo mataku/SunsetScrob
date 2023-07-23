@@ -17,11 +17,20 @@ env:
 jobs:
   deploy-app-to-app-distribution:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
+    permissions:
+      id-token: write
+      contents: read
     steps:
     - uses: actions/checkout@v3
       with:
         ref: ${{ github.event.inputs.branch }}
+    - id: auth
+      uses: google-github-actions/auth@v1
+      with:
+        create_credentials_file: true
+        workload_identity_provider: ${{ secrets.WORKFLOW_IDENTITY_PROVIDER }}
+        service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT }}
     - name: set up JDK
       uses: actions/setup-java@v3
       with:
@@ -39,15 +48,16 @@ jobs:
     - uses: ruby/setup-ruby@v1
       with:
         bundler-cache: true
+    - name: Prepare release notes
+      run: |
+        echo "${{ github.event.inputs.release_notes }}" >> release_notes.txt
+        echo "${{ github.event.inputs.branch }}@$(git rev-parse HEAD)" >> release_notes.txt
     - name: Deploy to Firebase App Distribution
       env:
         LAST_FM_API_KEY: ${{ secrets.LAST_FM_API_KEY }}
         LAST_FM_SHARED_SECRET: ${{ secrets.LAST_FM_SHARED_SECRET }}
-        RELEASE_NOTES: ${{ github.event.inputs.release_notes }}
         GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON_DEV }}
         FIREBASE_DEV_APP_ID: ${{ secrets.FIREBASE_DEV_APP_ID }}
-        APP_DISTRIBUTION_JSON: ${{ secrets.APP_DISTRIBUTION_JSON }}
       run: |
-        echo -n $APP_DISTRIBUTION_JSON > app/app-distribution.json
         bundle exec fastlane android setup_for_ci
         bundle exec fastlane android deploy_to_firebase_app_distribution
