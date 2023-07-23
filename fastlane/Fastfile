@@ -66,7 +66,7 @@ platform :android do
 
   desc "Deploy a new version to the Google Play internal app sharing"
   lane :deploy_internal_app_sharing do
-    # gradle(task: "bundleRelease")
+    gradle(task: "bundleRelease")
     upload_to_play_store_internal_app_sharing(
       package_name: 'com.mataku.scrobscrob',
       aab: 'app/build/outputs/bundle/release/app-release.aab',
@@ -75,15 +75,17 @@ platform :android do
 
   # To upload an aab, needs to link Google Play Account to your Firebase project, so upload an apk currently
   lane :deploy_to_firebase_app_distribution do
-    gradle(task: "assembleDebug")
-    release_notes = ENV['RELEASE_NOTES'] || 'Deployed from GitHub Actions'
-    firebase_app_distribution(
-      app: ENV['FIREBASE_DEV_APP_ID'],
-      android_artifact_type: 'APK',
-      android_artifact_path: 'app/build/outputs/apk/debug/app-debug.apk',
-      release_notes: release_notes,
-      service_credentials_file: 'app/app-distribution.json',
-      groups: 'tester'
+    gradle(task: 'assembleDebug')
+    sh(
+      'firebase',
+      'appdistribution:distribute',
+      '../app/build/outputs/apk/debug/app-debug.apk',
+      '--app',
+      ENV['FIREBASE_DEV_APP_ID'],
+      '--release-notes-file',
+      '../release_notes.txt',
+      '--groups',
+      'tester'
     )
   end
 
