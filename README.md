@@ -2,12 +2,12 @@
 
 Last.fm client on Android (mainly for my portfolio)
 
-- - - 
+- - -
 
 
 ![](./screenshot/features.jpg)
 
-See more: [screenshots](./screenshot/README.md)  
+See more: [screenshots](./screenshot/README.md)
 
 
 ## Features
@@ -22,6 +22,19 @@ See more: [screenshots](./screenshot/README.md)
 - Shared element transition
 - Autofill
 - Themed icon
+
+## How to try
+
+Prepare local.properties and run `./gradlew installDebug`
+
+```
+API_KEY="your last.fm api key"
+SHARED_SECRET="your last.fm shared secret"
+```
+
+- - -
+
+or try via Google Play
 
 ## Libraries and tools
 - Jetpack Compose
