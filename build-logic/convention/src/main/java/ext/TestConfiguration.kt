@@ -2,7 +2,7 @@ package ext
 
 import com.android.build.api.dsl.CommonExtension
 
-fun CommonExtension<*, *, *, *>.testConfiguration() {
+fun CommonExtension<*, *, *, *, *>.testConfiguration() {
   testOptions {
     unitTests {
       isIncludeAndroidResources = true
