@@ -59,6 +59,5 @@ jobs:
         GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON_DEV }}
         FIREBASE_DEV_APP_ID: ${{ secrets.FIREBASE_DEV_APP_ID }}
       run: |
-        npm install -g firebase-tools
         bundle exec fastlane android setup_for_ci
         bundle exec fastlane android deploy_to_firebase_app_distribution
