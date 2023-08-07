@@ -5,7 +5,7 @@ import org.gradle.api.JavaVersion
 import org.gradle.api.plugins.ExtensionAware
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
 
-fun CommonExtension<*, *, *, *>.kotlinConfiguration() {
+fun CommonExtension<*, *, *, *, *>.kotlinConfiguration() {
   compileSdk = 33
   defaultConfig {
     minSdk = 29
