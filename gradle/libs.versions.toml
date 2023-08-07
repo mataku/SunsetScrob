@@ -6,9 +6,9 @@ coil = "2.4.0"
 compose = "2023.03.00"
 core-sprashscreen = "1.0.1"
 coroutines = "1.7.2"
-firebase = "32.2.0"
+firebase = "32.2.2"
 hilt = "2.47"
-ktor = "2.3.2"
+ktor = "2.3.3"
 kotlin = "1.8.10"
 kotlin-compiler-extension = "1.4.4"
 kotlinx-collections-immutable-jvm = "0.3.5"
@@ -73,7 +73,7 @@ hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", ve
 datastore-preferences = { module = "androidx.datastore:datastore-preferences", version = "1.0.0" }
 
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version = "8.1.0" }
-crashlytics-gradle-plugin = { module = "com.google.firebase:firebase-crashlytics-gradle", version = "2.9.7" }
+crashlytics-gradle-plugin = { module = "com.google.firebase:firebase-crashlytics-gradle", version = "2.9.8" }
 hilt-gradle-plugin = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hilt" }
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 google-services-plugin = { module = "com.google.gms:google-services", version = "4.3.15" }
