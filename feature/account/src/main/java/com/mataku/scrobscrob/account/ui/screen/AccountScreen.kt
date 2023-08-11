@@ -21,6 +21,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -30,6 +32,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.app.NotificationManagerCompat
+import androidx.navigation.NavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.google.android.play.core.appupdate.AppUpdateInfo
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
@@ -42,11 +45,15 @@ import com.google.android.play.core.ktx.requestAppUpdateInfo
 import com.google.android.play.core.ktx.requestCompleteUpdate
 import com.mataku.scrobscrob.account.AccountMenu
 import com.mataku.scrobscrob.account.R
-import com.mataku.scrobscrob.account.ui.state.AccountState
+import com.mataku.scrobscrob.account.ui.navigation.navigateToLicense
+import com.mataku.scrobscrob.account.ui.navigation.navigateToScrobbleSetting
+import com.mataku.scrobscrob.account.ui.navigation.navigateToThemeSelector
 import com.mataku.scrobscrob.account.ui.viewmodel.AccountViewModel
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.ui_common.SunsetAlertDialog
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
+import com.mataku.scrobscrob.ui_common.navigateToLogin
+import com.mataku.scrobscrob.ui_common.navigateToPrivacyPolicy
 import com.mataku.scrobscrob.ui_common.organism.ContentHeader
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.LocalSnackbarHostState
@@ -59,7 +66,9 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun AccountScreen(
-  state: AccountState
+  viewModel: AccountViewModel,
+  navController: NavController,
+  showPermissionHelp: () -> Unit
 ) {
   val systemUiController = rememberSystemUiController()
   val theme = LocalAppTheme.current
@@ -72,7 +81,7 @@ fun AccountScreen(
   val openDialog = remember {
     mutableStateOf(false)
   }
-  val uiState = state.uiState
+  val uiState by viewModel.uiState.collectAsState()
 
   val context = LocalContext.current
   val coroutineScope = rememberCoroutineScope()
@@ -81,7 +90,7 @@ fun AccountScreen(
       if (NotificationManagerCompat.getEnabledListenerPackages(context)
           .contains(context.packageName)
       ) {
-        state.navigateToScrobbleSetting()
+        navController.navigateToScrobbleSetting()
       }
     }
 
@@ -111,29 +120,29 @@ fun AccountScreen(
   uiState.theme?.let {
     AccountContent(
       theme = it,
-      navigateToThemeSelector = { state.navigateToThemeSelector() },
+      navigateToThemeSelector = { navController.navigateToThemeSelector() },
       navigateToLogoutConfirmation = {
         openDialog.value = true
       },
       navigateToLicenseList = {
-        state.navigateToLicenseScreen()
+        navController.navigateToLicense()
       },
       navigateToPrivacyPolicy = {
-        state.navigateToPrivacyPolicyScreen()
+        navController.navigateToPrivacyPolicy()
       },
       navigateToScrobbleSetting = {
-        state.navigateToScrobbleSetting()
+        navController.navigateToScrobbleSetting()
       },
       navigateToNotificationSetting = {
         val intent = Intent()
         intent.action = Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS
         notificationPermissionLauncher.launch(intent)
-        state.showPermissionHelp()
+        showPermissionHelp.invoke()
       },
       appUpdateInfo = uiState.appUpdateInfo,
       requestAppUpdate = { appUpdateInfo ->
         if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
-          state.completeUpdate()
+          viewModel.completeUpdate()
         } else {
           coroutineScope.launch {
             kotlin.runCatching {
@@ -150,7 +159,7 @@ fun AccountScreen(
         }
       },
       appVersion = uiState.appVersion,
-      clearCache = state::clearCache
+      clearCache = viewModel::clearCache
     )
   }
 
@@ -158,17 +167,17 @@ fun AccountScreen(
     when (it) {
       is AccountViewModel.Event.Logout -> {
         openDialog.value = false
-        state.navigateToLoginScreen()
+        navController.navigateToLogin()
       }
     }
-    state.popEvent()
+    viewModel.popEvent()
   }
 
   if (openDialog.value) {
     SunsetAlertDialog(
       title = "Logout?",
       onConfirmButton = {
-        state.logout()
+        viewModel.logout()
       },
       confirmButtonText = "Let me out!",
       dismissButtonText = "NO",

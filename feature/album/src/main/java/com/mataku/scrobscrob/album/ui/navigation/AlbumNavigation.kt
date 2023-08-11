@@ -1,12 +1,12 @@
 package com.mataku.scrobscrob.album.ui.navigation
 
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.mataku.scrobscrob.album.ui.screen.TopAlbumsScreen
-import com.mataku.scrobscrob.album.ui.state.rememberTopAlbumsScreenState
 
 fun NavGraphBuilder.albumGraph(navController: NavController) {
   navigation(route = ALBUM_NAVIGATION_ROUTE, startDestination = TOP_ALBUMS_DESTINATION) {
@@ -14,7 +14,8 @@ fun NavGraphBuilder.albumGraph(navController: NavController) {
       TOP_ALBUMS_DESTINATION
     ) {
       TopAlbumsScreen(
-        state = rememberTopAlbumsScreenState(navController = navController)
+        viewModel = hiltViewModel(),
+        navController = navController
       )
     }
   }

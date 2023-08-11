@@ -24,16 +24,26 @@ jobs:
       with:
         distribution: zulu
         java-version: 17
-    - name: Cache gradle dir
+    - name: Cache gradle wrapper
       uses: actions/cache@v3
       if: ${{ !startsWith(github.head_ref, 'dependabot') }}
       with:
         path: |
-          ~/.gradle/caches
           ~/.gradle/wrapper
-        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('**/gradle-wrapper.properties') }}
         restore-keys: |
-          ${{ runner.os }}-gradle-
+          ${{ runner.os }}-gradle-wrapper-
+
+    - name: Cache gradle build dir
+      uses: actions/cache@v3
+      if: ${{ !startsWith(github.head_ref, 'dependabot') }}
+      with:
+        path: |
+          ~/.gradle/caches/transforms-*
+          ~/.gradle/caches/modules-*
+        key: ${{ runner.os }}-gradle-build-${{ hashFiles('**/*.gradle.kts', 'gradle/libs.versions.toml') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-build-
     - uses: ruby/setup-ruby@v1
       with:
         bundler-cache: true

@@ -13,18 +13,22 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.core.entity.RecentTrack
 import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.scrobble.R
 import com.mataku.scrobscrob.scrobble.ui.molecule.Scrobble
-import com.mataku.scrobscrob.scrobble.ui.state.ScrobbleScreenState
+import com.mataku.scrobscrob.scrobble.ui.navigation.navigateToTrackDetail
+import com.mataku.scrobscrob.scrobble.ui.viewmodel.ScrobbleViewModel
 import com.mataku.scrobscrob.ui_common.molecule.LoadingIndicator
 import com.mataku.scrobscrob.ui_common.organism.ContentHeader
 import com.mataku.scrobscrob.ui_common.organism.InfiniteLoadingIndicator
@@ -37,17 +41,16 @@ import kotlinx.collections.immutable.ImmutableList
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ScrobbleScreen(
-  state: ScrobbleScreenState
+  viewModel: ScrobbleViewModel,
+  navController: NavController
 ) {
-  val uiState = state.uiState
+  val uiState by viewModel.uiState.collectAsState()
   val lazyListState = rememberLazyListState()
   val density = LocalContext.current.resources.displayMetrics.density
 
   val pullRefreshState = rememberPullRefreshState(
     refreshing = uiState.isRefreshing,
-    onRefresh = {
-      state.refresh()
-    }
+    onRefresh = viewModel::refresh
   )
 
   Box(
@@ -74,7 +77,7 @@ fun ScrobbleScreen(
           )
         }
 
-        state.navigateToTrackDetail(
+        navController.navigateToTrackDetail(
           trackName = track.name,
           artistName = track.artistName,
           imageUrl = track.images.imageUrl() ?: "",
@@ -82,9 +85,7 @@ fun ScrobbleScreen(
           y = topLeftCoordinate.second
         )
       },
-      onScrollEnd = {
-        state.onScrollEnd()
-      }
+      onScrollEnd = viewModel::fetchRecentTracks
     )
   }
 
