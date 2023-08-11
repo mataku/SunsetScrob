@@ -1,6 +1,7 @@
 package com.mataku.scrobscrob.account.ui.viewmodel
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.play.core.appupdate.AppUpdateInfo
 import com.google.android.play.core.appupdate.AppUpdateManager
@@ -22,8 +23,9 @@ class AccountViewModel @Inject constructor(
   private val themeRepository: ThemeRepository,
   private val sessionRepository: SessionRepository,
   private val appInfoProvider: AppInfoProvider,
-  private val appUpdateManager: AppUpdateManager
-) : ViewModel() {
+  private val appUpdateManager: AppUpdateManager,
+  private val application: Application
+) : AndroidViewModel(application) {
 
   var uiState: MutableStateFlow<AccountUiState> = MutableStateFlow(AccountUiState.initialize())
     private set
@@ -90,6 +92,17 @@ class AccountViewModel @Inject constructor(
       it.copy(
         event = null
       )
+    }
+  }
+
+  fun clearCache() {
+    val imageCacheDir = application.cacheDir.resolve("sunsetscrob_image")
+    viewModelScope.launch {
+      kotlin.runCatching {
+        if (imageCacheDir.exists()) {
+          imageCacheDir.deleteRecursively()
+        }
+      }
     }
   }
 

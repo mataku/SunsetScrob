@@ -2,7 +2,6 @@ package com.mataku.scrobscrob.auth.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mataku.scrobscrob.auth.ui.state.LoginScreenState
 import com.mataku.scrobscrob.data.repository.SessionRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,7 +30,7 @@ class LoginViewModel @Inject constructor(private val repo: SessionRepository) : 
     if (username.isBlank()) {
       uiState.update {
         it.copy(
-          event = LoginScreenState.UiEvent.EmptyUsernameError
+          event = UiEvent.EmptyUsernameError
         )
       }
       return
@@ -39,7 +38,7 @@ class LoginViewModel @Inject constructor(private val repo: SessionRepository) : 
 
     if (password.isBlank()) {
       uiState.update {
-        it.copy(event = LoginScreenState.UiEvent.EmptyPasswordError)
+        it.copy(event = UiEvent.EmptyPasswordError)
       }
       return
     }
@@ -66,13 +65,13 @@ class LoginViewModel @Inject constructor(private val repo: SessionRepository) : 
         .catch {
           uiState.update { state ->
             state.copy(
-              event = LoginScreenState.UiEvent.LoginFailed
+              event = UiEvent.LoginFailed
             )
           }
         }
         .collect {
           uiState.update { state ->
-            state.copy(isLoading = false, event = LoginScreenState.UiEvent.LoginSuccess)
+            state.copy(isLoading = false, event = UiEvent.LoginSuccess)
           }
         }
     }
@@ -92,7 +91,7 @@ class LoginViewModel @Inject constructor(private val repo: SessionRepository) : 
 
   data class LoginUiState(
     val isLoading: Boolean,
-    val event: LoginScreenState.UiEvent? = null,
+    val event: UiEvent? = null,
     val username: String,
     val password: String
   ) {
@@ -102,8 +101,14 @@ class LoginViewModel @Inject constructor(private val repo: SessionRepository) : 
         event = null,
         username = "",
         password = ""
-
       )
     }
+  }
+
+  sealed class UiEvent {
+    object LoginSuccess : UiEvent()
+    object LoginFailed : UiEvent()
+    object EmptyUsernameError : UiEvent()
+    object EmptyPasswordError : UiEvent()
   }
 }

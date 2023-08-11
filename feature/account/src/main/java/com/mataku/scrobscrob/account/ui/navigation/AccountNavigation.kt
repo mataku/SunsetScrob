@@ -1,19 +1,20 @@
 package com.mataku.scrobscrob.account.ui.navigation
 
+import android.widget.Toast
 import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.mataku.scrobscrob.account.R
 import com.mataku.scrobscrob.account.ui.ThemeSelectorScreen
 import com.mataku.scrobscrob.account.ui.screen.AccountScreen
 import com.mataku.scrobscrob.account.ui.screen.LicenseScreen
 import com.mataku.scrobscrob.account.ui.screen.PrivacyPolicyScreen
 import com.mataku.scrobscrob.account.ui.screen.ScrobbleSettingScreen
-import com.mataku.scrobscrob.account.ui.state.rememberAccountState
-import com.mataku.scrobscrob.account.ui.state.rememberThemeSelectorState
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.ui_common.PRIVACY_POLICY_DESTINATION
 import com.mataku.scrobscrob.ui_common.style.Colors
@@ -26,7 +27,17 @@ fun NavGraphBuilder.accountGraph(navController: NavController) {
       ACCOUNT_DESTINATION,
     ) {
       val context = LocalContext.current
-      AccountScreen(state = rememberAccountState(navController = navController, context = context))
+      AccountScreen(
+        viewModel = hiltViewModel(),
+        navController = navController,
+        showPermissionHelp = {
+          Toast.makeText(
+            context.applicationContext,
+            R.string.label_notification_permission_help,
+            Toast.LENGTH_LONG
+          ).show()
+        }
+      )
     }
 
     composable(
@@ -44,9 +55,8 @@ fun NavGraphBuilder.accountGraph(navController: NavController) {
     }
     composable(THEME_SELECTOR_DESTINATION) {
       ThemeSelectorScreen(
-        state = rememberThemeSelectorState(
-          navController = navController
-        )
+        viewModel = hiltViewModel(),
+        navController = navController
       )
     }
     composable(LICENSE_DESTINATION) {

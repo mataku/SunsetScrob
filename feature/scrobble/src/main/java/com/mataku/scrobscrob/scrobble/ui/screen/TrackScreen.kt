@@ -18,18 +18,20 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mataku.scrobscrob.core.entity.AppTheme
-import com.mataku.scrobscrob.scrobble.R
 import com.mataku.scrobscrob.scrobble.ui.molecule.TrackAlbum
 import com.mataku.scrobscrob.scrobble.ui.molecule.TrackArtist
-import com.mataku.scrobscrob.scrobble.ui.state.TrackScreenState
+import com.mataku.scrobscrob.scrobble.ui.viewmodel.TrackViewModel
 import com.mataku.scrobscrob.ui_common.molecule.SunsetImage
 import com.mataku.scrobscrob.ui_common.molecule.TopTags
 import com.mataku.scrobscrob.ui_common.organism.ContentHeader
@@ -45,8 +47,11 @@ fun TrackScreen(
   trackName: String,
   artworkUrl: String?,
   topLeftCoordinate: Pair<Int, Int>,
-  screenState: TrackScreenState
+  trackViewModel: TrackViewModel,
+  navController: NavController
 ) {
+  val uiState by trackViewModel.state.collectAsState()
+
   // TODO: Replace with LocalDensity
   val density = LocalContext.current.resources.displayMetrics.density
   val widthPixels = LocalContext.current.resources.displayMetrics.widthPixels
@@ -56,7 +61,6 @@ fun TrackScreen(
   }
   val coroutineScope = rememberCoroutineScope()
   val lazyListState = rememberLazyListState()
-  val uiState = screenState.uiState
   val systemUiController = rememberSystemUiController()
   val currentTheme = LocalAppTheme.current
   systemUiController.setNavigationBarColor(
@@ -157,12 +161,12 @@ fun TrackScreen(
 
   BackHandler() {
     coroutineScope.launch {
-      screenState.clearState()
+      trackViewModel.clearState()
       animateState.animateTo(
         0F,
         animationSpec = tween(durationMillis = ANIMATION_DURATION_MILLIS)
       )
-      screenState.popBackStack()
+      navController.popBackStack()
     }
   }
 }

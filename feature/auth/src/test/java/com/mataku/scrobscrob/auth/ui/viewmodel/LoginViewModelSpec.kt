@@ -1,6 +1,5 @@
 package com.mataku.scrobscrob.auth.ui.viewmodel
 
-import com.mataku.scrobscrob.auth.ui.state.LoginScreenState
 import com.mataku.scrobscrob.data.repository.SessionRepository
 import com.mataku.scrobscrob.test_helper.CoroutinesListener
 import io.kotest.core.spec.style.DescribeSpec
@@ -31,7 +30,7 @@ class LoginViewModelSpec : DescribeSpec({
     context("username is blank") {
       it("should return LoginScreenState.UiEvent.EmptyUsernameError") {
         viewModel.authorize(username = "", password = "password")
-        viewModel.uiState.value.event shouldBe LoginScreenState.UiEvent.EmptyUsernameError
+        viewModel.uiState.value.event shouldBe LoginViewModel.UiEvent.EmptyUsernameError
       }
     }
 
@@ -39,7 +38,7 @@ class LoginViewModelSpec : DescribeSpec({
       it("should return LoginScreenState.UiEvent.EmptyPasswordError") {
         viewModel.authorize(username = "username", password = "")
         viewModel.uiState.value.let {
-          it.event shouldBe LoginScreenState.UiEvent.EmptyPasswordError
+          it.event shouldBe LoginViewModel.UiEvent.EmptyPasswordError
           it.isLoading.shouldBeFalse()
         }
       }
@@ -59,7 +58,7 @@ class LoginViewModelSpec : DescribeSpec({
       it("should return LoginScreenState.UiEvent.LoginFailed") {
         viewModel.authorize(username, password)
         viewModel.uiState.value.let {
-          it.event shouldBe LoginScreenState.UiEvent.LoginFailed
+          it.event shouldBe LoginViewModel.UiEvent.LoginFailed
           it.isLoading.shouldBeFalse()
         }
       }
@@ -79,7 +78,7 @@ class LoginViewModelSpec : DescribeSpec({
       it("should return LoginScreenState.UiEvent.LoginSuccess") {
         viewModel.authorize(username, password)
         viewModel.uiState.value.let {
-          it.event shouldBe LoginScreenState.UiEvent.LoginSuccess
+          it.event shouldBe LoginViewModel.UiEvent.LoginSuccess
           it.isLoading.shouldBeFalse()
         }
       }
