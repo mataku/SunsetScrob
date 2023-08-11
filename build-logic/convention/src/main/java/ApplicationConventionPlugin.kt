@@ -1,5 +1,6 @@
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import ext.androidLintConfiguration
+import ext.androidSdkConfiguration
 import ext.kotlinConfiguration
 import ext.testConfiguration
 import org.gradle.api.Plugin
@@ -16,6 +17,7 @@ class ApplicationConventionPlugin : Plugin<Project> {
       }
 
       extensions.configure<BaseAppModuleExtension> {
+        androidSdkConfiguration()
         defaultConfig.targetSdk = 31
         signingConfigs {
           getByName("debug") {
@@ -30,7 +32,7 @@ class ApplicationConventionPlugin : Plugin<Project> {
         }
         buildTypes {
           getByName("debug") {
-            isMinifyEnabled = true
+            isMinifyEnabled = false
             applicationIdSuffix = ".dev"
             signingConfig = signingConfigs.getByName("debug")
             isDebuggable = true

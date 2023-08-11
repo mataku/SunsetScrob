@@ -1,7 +1,7 @@
 [versions]
 activity = "1.7.2"
 aboutlibraries = "10.8.3"
-accompanist = "0.30.0"
+accompanist = "0.30.1"
 coil = "2.4.0"
 compose = "2023.06.01"
 core-sprashscreen = "1.0.1"
@@ -10,6 +10,7 @@ firebase = "32.2.2"
 hilt = "2.47"
 ktor = "2.3.3"
 kotlin = "1.8.10"
+ksp = "1.8.10-1.0.9"
 kotlin-compiler-extension = "1.4.4"
 kotlinx-collections-immutable-jvm = "0.3.5"
 kotlinx-serialization-json = "1.5.1"
@@ -17,9 +18,10 @@ kotest = "5.6.2"
 lifecycle-viewmodel-compose = "2.6.1"
 material = "1.9.0"
 mockk = "1.13.5"
-navigation-compose = "2.6.0"
+navigation-compose = "2.7.0"
 okhttp = "4.11.0"
 room = "2.5.2"
+showkase = "1.0.0-beta18"
 
 [libraries]
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity" }
@@ -99,6 +101,10 @@ mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 mockk-agent-jvm = { module = "io.mockk:mockk-agent-jvm", version.ref = "mockk" }
 coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 
-
 compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
 compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
+
+showkase = { module = "com.airbnb.android:showkase", version.ref = "showkase" }
+showkase-annotation = { module = "com.airbnb.android:showkase-annotation", version.ref = "showkase" }
+showkase-processor = { module = "com.airbnb.android:showkase-processor", version.ref = "showkase" }
+

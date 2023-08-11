@@ -3,6 +3,7 @@ plugins {
   id("sunsetscrob.android.compose")
   id("kotlin-android")
   id("kotlin-kapt")
+  id("com.google.devtools.ksp")
 }
 
 android {
@@ -22,4 +23,11 @@ dependencies {
 
   implementation(libs.coil.compose)
   implementation(libs.compose.material.icons.extended)
+
+  implementation(libs.showkase.annotation)
+  ksp(libs.showkase.processor)
+}
+
+ksp {
+  arg("skipPrivatePreviews", "true")
 }
