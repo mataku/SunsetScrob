@@ -29,6 +29,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -56,11 +57,14 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mataku.scrobscrob.auth.R
-import com.mataku.scrobscrob.auth.ui.state.LoginScreenState
+import com.mataku.scrobscrob.auth.ui.viewmodel.LoginViewModel
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
+import com.mataku.scrobscrob.ui_common.navigateToPrivacyPolicy
+import com.mataku.scrobscrob.ui_common.navigateToScrobbleFromAuth
 import com.mataku.scrobscrob.ui_common.style.Colors
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.LocalSnackbarHostState
@@ -72,10 +76,11 @@ import com.mataku.scrobscrob.ui_common.R as uiCommonR
 
 @Composable
 fun LoginScreen(
-  stateHolder: LoginScreenState
+  viewModel: LoginViewModel,
+  navController: NavController
 ) {
   val coroutineScope = rememberCoroutineScope()
-  val uiState = stateHolder.uiState
+  val uiState by viewModel.uiState.collectAsState()
   val currentTheme = LocalAppTheme.current
   val systemUiController = rememberSystemUiController()
   systemUiController.setNavigationBarColor(
@@ -91,46 +96,45 @@ fun LoginScreen(
   val snackbarHostState = LocalSnackbarHostState.current
   uiState.event?.let {
     when (it) {
-      is LoginScreenState.UiEvent.LoginSuccess -> {
+      is LoginViewModel.UiEvent.LoginSuccess -> {
         systemUiController.setSystemBarsColor(color = systemBarColor)
         systemUiController.setNavigationBarColor(navigationBarColor)
-        stateHolder.navigateToTop()
+        navController.navigateToScrobbleFromAuth()
       }
-      is LoginScreenState.UiEvent.LoginFailed -> {
+
+      is LoginViewModel.UiEvent.LoginFailed -> {
         coroutineScope.launch {
           snackbarHostState.showSnackbar(context.getString(R.string.error_login_failed))
         }
       }
-      is LoginScreenState.UiEvent.EmptyPasswordError -> {
+
+      is LoginViewModel.UiEvent.EmptyPasswordError -> {
         coroutineScope.launch {
           snackbarHostState.showSnackbar(context.getString(R.string.error_password_required))
         }
       }
-      is LoginScreenState.UiEvent.EmptyUsernameError -> {
+
+      is LoginViewModel.UiEvent.EmptyUsernameError -> {
         coroutineScope.launch {
           snackbarHostState.showSnackbar(context.getString(R.string.error_username_required))
         }
       }
 
     }
-    stateHolder.popEvent()
+    viewModel.popEvent()
   }
   LoginContent(
     isLoading = uiState.isLoading,
     onLoginButtonTap = { id, password ->
-      stateHolder.login(id, password)
+      viewModel.authorize(id, password)
     },
     onPrivacyPolicyTap = {
-      stateHolder.navigateToPrivacyPolicy()
+      navController.navigateToPrivacyPolicy()
     },
     username = uiState.username,
     password = uiState.password,
-    onUsernameUpdate = {
-      stateHolder.onUsernameUpdate(it)
-    },
-    onPasswordUpdate = {
-      stateHolder.onPasswordUpdate(it)
-    }
+    onUsernameUpdate = viewModel::updateUsername,
+    onPasswordUpdate = viewModel::updatePassword
   )
 }
 
