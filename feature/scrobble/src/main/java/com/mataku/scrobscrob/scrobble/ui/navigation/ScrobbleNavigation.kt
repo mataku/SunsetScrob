@@ -11,7 +11,6 @@ import androidx.navigation.navigation
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mataku.scrobscrob.scrobble.ui.screen.ScrobbleScreen
 import com.mataku.scrobscrob.scrobble.ui.screen.TrackScreen
-import com.mataku.scrobscrob.scrobble.ui.state.rememberScrobbleScreenState
 
 fun NavGraphBuilder.scrobbleGraph(navController: NavController) {
   navigation(route = SCROBBLE_NAVIGATION_ROUTE, startDestination = "scrobble") {
@@ -21,7 +20,8 @@ fun NavGraphBuilder.scrobbleGraph(navController: NavController) {
       val systemUiController = rememberSystemUiController()
       systemUiController.setNavigationBarColor(MaterialTheme.colorScheme.primary)
       ScrobbleScreen(
-        state = rememberScrobbleScreenState(navController = navController)
+        viewModel = hiltViewModel(),
+        navController = navController
       )
     }
 
