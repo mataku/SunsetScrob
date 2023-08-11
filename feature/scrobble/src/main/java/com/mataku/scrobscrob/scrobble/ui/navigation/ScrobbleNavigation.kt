@@ -1,6 +1,7 @@
 package com.mataku.scrobscrob.scrobble.ui.navigation
 
 import androidx.compose.material3.MaterialTheme
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
@@ -11,7 +12,6 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mataku.scrobscrob.scrobble.ui.screen.ScrobbleScreen
 import com.mataku.scrobscrob.scrobble.ui.screen.TrackScreen
 import com.mataku.scrobscrob.scrobble.ui.state.rememberScrobbleScreenState
-import com.mataku.scrobscrob.scrobble.ui.state.rememberTrackScreenState
 
 fun NavGraphBuilder.scrobbleGraph(navController: NavController) {
   navigation(route = SCROBBLE_NAVIGATION_ROUTE, startDestination = "scrobble") {
@@ -50,17 +50,13 @@ fun NavGraphBuilder.scrobbleGraph(navController: NavController) {
         val y = arguments.getInt("y", 0)
 
         val trackName = arguments.getString("trackName", "")
-        val artistName = arguments.getString("artistName", "")
 
         TrackScreen(
           trackName = trackName,
           artworkUrl = arguments.getString("imageUrl", ""),
           topLeftCoordinate = Pair(x, y),
-          screenState = rememberTrackScreenState(
-            navController = navController,
-            trackName = trackName,
-            artistName = artistName
-          )
+          trackViewModel = hiltViewModel(),
+          navController = navController
         )
       }
     )
