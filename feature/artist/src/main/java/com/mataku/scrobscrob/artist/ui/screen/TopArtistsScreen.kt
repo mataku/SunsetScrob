@@ -21,6 +21,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -28,13 +30,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.mataku.scrobscrob.artist.R
 import com.mataku.scrobscrob.artist.ui.molecule.TopArtist
-import com.mataku.scrobscrob.artist.ui.state.TopArtistsScreenState
+import com.mataku.scrobscrob.artist.ui.viewmodel.TopArtistsViewModel
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.core.entity.ArtistInfo
 import com.mataku.scrobscrob.ui_common.molecule.FilteringFloatingButton
 import com.mataku.scrobscrob.ui_common.molecule.LoadingIndicator
+import com.mataku.scrobscrob.ui_common.navigateToWebView
 import com.mataku.scrobscrob.ui_common.organism.ContentHeader
 import com.mataku.scrobscrob.ui_common.organism.FilteringBottomSheet
 import com.mataku.scrobscrob.ui_common.organism.InfiniteLoadingIndicator
@@ -47,9 +51,10 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun TopArtistsScreen(
-  state: TopArtistsScreenState
+  viewModel: TopArtistsViewModel,
+  navController: NavController
 ) {
-  val uiState = state.uiState
+  val uiState by viewModel.uiState.collectAsState()
 
   val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
   val coroutineScope = rememberCoroutineScope()
@@ -70,7 +75,7 @@ fun TopArtistsScreen(
           coroutineScope.launch {
             sheetState.hide()
           }
-          state.updateTimeRange(it)
+          viewModel.updateTimeRange(it)
         },
         modifier = Modifier
       )
@@ -93,12 +98,8 @@ fun TopArtistsScreen(
       TopArtistsContent(
         artists = uiState.topArtists,
         hasNext = uiState.hasNext,
-        onUrlTap = {
-          state.onTapArtist(it)
-        },
-        onScrollEnd = {
-          state.onScrollEnd()
-        },
+        onUrlTap = navController::navigateToWebView,
+        onScrollEnd = viewModel::fetchTopArtists,
         maxSpanCount = if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
           4
         } else {
