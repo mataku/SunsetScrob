@@ -20,6 +20,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -27,13 +29,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.mataku.scrobscrob.album.R
 import com.mataku.scrobscrob.album.ui.molecule.TopAlbum
-import com.mataku.scrobscrob.album.ui.state.TopAlbumsScreenState
+import com.mataku.scrobscrob.album.ui.viewmodel.TopAlbumsViewModel
 import com.mataku.scrobscrob.core.entity.AlbumInfo
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.ui_common.molecule.FilteringFloatingButton
 import com.mataku.scrobscrob.ui_common.molecule.LoadingIndicator
+import com.mataku.scrobscrob.ui_common.navigateToWebView
 import com.mataku.scrobscrob.ui_common.organism.ContentHeader
 import com.mataku.scrobscrob.ui_common.organism.FilteringBottomSheet
 import com.mataku.scrobscrob.ui_common.organism.InfiniteLoadingIndicator
@@ -46,9 +50,10 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun TopAlbumsScreen(
-  state: TopAlbumsScreenState
+  viewModel: TopAlbumsViewModel,
+  navController: NavController
 ) {
-  val uiState = state.uiState
+  val uiState by viewModel.uiState.collectAsState()
 
   val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
   val coroutineScope = rememberCoroutineScope()
@@ -70,7 +75,7 @@ fun TopAlbumsScreen(
           coroutineScope.launch {
             sheetState.hide()
           }
-          state.updateTimeRangeFiltering(it)
+          viewModel.updateTimeRange(it)
         },
         modifier = Modifier
       )
@@ -93,12 +98,8 @@ fun TopAlbumsScreen(
       TopAlbumsContent(
         albums = uiState.topAlbums,
         hasNext = uiState.hasNext,
-        onUrlTap = {
-          state.onTapAlbum(it)
-        },
-        onScrollEnd = {
-          state.onScrollEnd()
-        },
+        onUrlTap = navController::navigateToWebView,
+        onScrollEnd = viewModel::fetchAlbums,
         maxSpanCount = if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
           4
         } else {
