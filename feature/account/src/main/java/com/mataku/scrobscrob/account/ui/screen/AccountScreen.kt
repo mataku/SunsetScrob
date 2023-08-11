@@ -44,6 +44,7 @@ import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.android.play.core.ktx.requestAppUpdateInfo
 import com.google.android.play.core.ktx.requestCompleteUpdate
 import com.mataku.scrobscrob.account.AccountMenu
+import com.mataku.scrobscrob.account.BuildConfig
 import com.mataku.scrobscrob.account.R
 import com.mataku.scrobscrob.account.ui.navigation.navigateToLicense
 import com.mataku.scrobscrob.account.ui.navigation.navigateToScrobbleSetting
@@ -159,7 +160,8 @@ fun AccountScreen(
         }
       },
       appVersion = uiState.appVersion,
-      clearCache = viewModel::clearCache
+      clearCache = viewModel::clearCache,
+      navigateToUiCatalog = viewModel::navigateToUiCatalog
     )
   }
 
@@ -204,7 +206,8 @@ private fun AccountContent(
   navigateToNotificationSetting: () -> Unit,
   requestAppUpdate: (AppUpdateInfo) -> Unit,
   appVersion: String,
-  appUpdateInfo: AppUpdateInfo?
+  appUpdateInfo: AppUpdateInfo?,
+  navigateToUiCatalog: () -> Unit
 ) {
   val context = LocalContext.current
   val openDialog = remember {
@@ -286,6 +289,14 @@ private fun AccountContent(
           enabled = updateAvailable
         ) {
           requestAppUpdate.invoke(appUpdateInfo!!)
+        }
+        if (BuildConfig.DEBUG) {
+          AccountMenuCell(
+            title = "UI Catalog",
+            description = "",
+          ) {
+            navigateToUiCatalog.invoke()
+          }
         }
       }
     },
@@ -391,7 +402,8 @@ private fun AccountContentPreview() {
         requestAppUpdate = {},
         appUpdateInfo = null,
         appVersion = "1.0.0",
-        clearCache = {}
+        clearCache = {},
+        navigateToUiCatalog = {}
       )
     }
   }
