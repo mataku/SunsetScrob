@@ -2,7 +2,6 @@ package com.mataku.scrobscrob.account.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mataku.scrobscrob.account.ui.state.ThemeSelectorState
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.data.repository.ThemeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -49,7 +48,7 @@ class ThemeSelectorViewModel @Inject constructor(
         }
         .collect {
           uiState.update {
-            it.copy(event = ThemeSelectorState.UiEvent.ThemeChanged(theme))
+            it.copy(event = UiEvent.ThemeChanged(theme))
           }
         }
     }
@@ -63,7 +62,7 @@ class ThemeSelectorViewModel @Inject constructor(
 
   data class ThemeSelectorUiState(
     val theme: AppTheme?,
-    val event: ThemeSelectorState.UiEvent?
+    val event: UiEvent?
   ) {
     companion object {
       fun initialize() = ThemeSelectorUiState(
@@ -71,5 +70,9 @@ class ThemeSelectorViewModel @Inject constructor(
         event = null
       )
     }
+  }
+
+  sealed class UiEvent {
+    data class ThemeChanged(val theme: AppTheme) : UiEvent()
   }
 }

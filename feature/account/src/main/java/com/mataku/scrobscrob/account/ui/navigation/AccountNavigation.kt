@@ -15,7 +15,6 @@ import com.mataku.scrobscrob.account.ui.screen.AccountScreen
 import com.mataku.scrobscrob.account.ui.screen.LicenseScreen
 import com.mataku.scrobscrob.account.ui.screen.PrivacyPolicyScreen
 import com.mataku.scrobscrob.account.ui.screen.ScrobbleSettingScreen
-import com.mataku.scrobscrob.account.ui.state.rememberThemeSelectorState
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.ui_common.PRIVACY_POLICY_DESTINATION
 import com.mataku.scrobscrob.ui_common.style.Colors
@@ -56,9 +55,8 @@ fun NavGraphBuilder.accountGraph(navController: NavController) {
     }
     composable(THEME_SELECTOR_DESTINATION) {
       ThemeSelectorScreen(
-        state = rememberThemeSelectorState(
-          navController = navController
-        )
+        viewModel = hiltViewModel(),
+        navController = navController
       )
     }
     composable(LICENSE_DESTINATION) {

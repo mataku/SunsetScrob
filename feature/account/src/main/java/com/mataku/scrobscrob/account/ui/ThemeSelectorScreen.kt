@@ -17,15 +17,18 @@ import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mataku.scrobscrob.account.R
-import com.mataku.scrobscrob.account.ui.state.ThemeSelectorState
+import com.mataku.scrobscrob.account.ui.viewmodel.ThemeSelectorViewModel
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.organism.ContentHeader
@@ -37,9 +40,10 @@ import com.mataku.scrobscrob.ui_common.style.sunsetBackgroundGradient
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ThemeSelectorScreen(
-  state: ThemeSelectorState
+  viewModel: ThemeSelectorViewModel,
+  navController: NavController
 ) {
-  val uiState = state.uiState
+  val uiState by viewModel.uiState.collectAsState()
   val systemUiController = rememberSystemUiController()
   val currentTheme = LocalAppTheme.current
   val initialState = remember {
@@ -61,7 +65,7 @@ fun ThemeSelectorScreen(
   // TODO
   uiState.event?.let {
     when (it) {
-      is ThemeSelectorState.UiEvent.ThemeChanged -> {
+      is ThemeSelectorViewModel.UiEvent.ThemeChanged -> {
         systemUiController.setNavigationBarColor(
           color = if (it.theme == AppTheme.SUNSET) {
             Colors.SunsetBlue
@@ -71,7 +75,7 @@ fun ThemeSelectorScreen(
         )
       }
     }
-    state.popEvent()
+    viewModel.popEvent()
   }
 
   uiState.theme?.let {
@@ -87,7 +91,7 @@ fun ThemeSelectorScreen(
             theme = it,
             selected = it == currentTheme,
             onTapTheme = { currentTheme ->
-              state.changeTheme(currentTheme)
+              viewModel.changeTheme(currentTheme)
             })
         }
       },
@@ -106,7 +110,7 @@ fun ThemeSelectorScreen(
   val navigationBarColor = MaterialTheme.colorScheme.primary
   BackHandler() {
     systemUiController.setNavigationBarColor(navigationBarColor)
-    state.back()
+    navController.popBackStack()
   }
 }
 
