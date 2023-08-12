@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Divider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -381,7 +382,11 @@ private fun AccountMenuCell(
   ) {
     Text(text = title, style = SunsetTextStyle.subtitle1)
     if (description.isNotBlank()) {
-      Text(text = description, style = SunsetTextStyle.caption)
+      Text(
+        text = description,
+        style = SunsetTextStyle.caption,
+        color = MaterialTheme.colorScheme.onSecondary
+      )
     }
   }
 }
