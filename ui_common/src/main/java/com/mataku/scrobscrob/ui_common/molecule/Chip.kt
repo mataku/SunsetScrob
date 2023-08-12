@@ -9,8 +9,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.airbnb.android.showkase.annotation.ShowkaseComposable
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
+import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 
 @Composable
 fun Chip(
@@ -40,5 +43,28 @@ fun Chip(
         modifier = Modifier.padding(8.dp)
       )
     }
+  }
+}
+
+@Preview
+@ShowkaseComposable(name = "Chip", group = "Common", defaultStyle = true)
+@Composable
+fun ChipPreview() {
+  SunsetThemePreview {
+    Chip(
+      name = "Dance"
+    )
+  }
+}
+
+@Preview
+@ShowkaseComposable(name = "Chip", group = "Common", styleName = "Selected")
+@Composable
+fun ChipSelectedPreview() {
+  SunsetThemePreview {
+    Chip(
+      name = "Dance",
+      isSelected = true
+    )
   }
 }
