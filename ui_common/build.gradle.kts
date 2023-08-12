@@ -26,6 +26,7 @@ dependencies {
 
   implementation(libs.showkase.annotation)
   ksp(libs.showkase.processor)
+  implementation(libs.showkase)
 }
 
 ksp {

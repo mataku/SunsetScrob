@@ -75,9 +75,11 @@ fun AppTheme.accentColor(): Color {
     AppTheme.DARK, AppTheme.LIGHT, AppTheme.MIDNIGHT, AppTheme.SUNSET -> {
       Colors.LightLime
     }
+
     AppTheme.OCEAN -> {
       Colors.DeepOcean
     }
+
     AppTheme.LASTFM_DARK -> {
       Colors.LastFmColor
     }
@@ -89,18 +91,23 @@ fun AppTheme.colorScheme(): ColorScheme {
     AppTheme.DARK -> {
       darkColorScheme
     }
+
     AppTheme.LIGHT -> {
       lightColorScheme
     }
+
     AppTheme.MIDNIGHT -> {
       midnightColorScheme
     }
+
     AppTheme.OCEAN -> {
       oceanColorScheme
     }
+
     AppTheme.LASTFM_DARK -> {
       lastFmDarkColorScheme
     }
+
     AppTheme.SUNSET -> {
       sunsetColorScheme
     }
