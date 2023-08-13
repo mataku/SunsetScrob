@@ -12,7 +12,10 @@
     "com.google.accompanist:accompanist-systemuicontroller",
     "com.google.accompanist:accompanist-swiperefresh",
     "org.jetbrains.kotlin:kotlin-gradle-plugin",
-    "org.jetbrains.kotlin:kotlin-serialization"
+    "org.jetbrains.kotlin:kotlin-serialization",
+    "com.airbnb.android:showkase",
+    "com.airbnb.android:showkase-annotation",
+    "com.airbnb.android:showkase-processor"
   ],
   "prConcurrentLimit": 5,
   "rebaseWhen": "never"

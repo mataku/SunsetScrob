@@ -10,6 +10,8 @@ on:
       release_notes:
         description: "Release notes"
         required: false
+  schedule:
+    - cron: '00 13 1 * *'
 
 env:
   FASTLANE_HIDE_CHANGELOG: true
