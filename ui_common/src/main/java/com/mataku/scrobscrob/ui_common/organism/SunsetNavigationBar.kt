@@ -22,6 +22,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.airbnb.android.showkase.annotation.ShowkaseComposable
+import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.ui_common.SunsetBottomNavItem
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
@@ -63,12 +65,15 @@ fun SunsetNavigationBar(
             SunsetBottomNavItem.SCROBBLE -> {
               navigateToScrobble.invoke()
             }
+
             SunsetBottomNavItem.ACCOUNT -> {
               navigateToAccount.invoke()
             }
+
             SunsetBottomNavItem.TOP_ARTISTS -> {
               navigateToTopArtists.invoke()
             }
+
             SunsetBottomNavItem.TOP_ALBUMS -> {
               navigateToTopAlbums.invoke()
             }
@@ -92,6 +97,7 @@ fun SunsetNavigationBar(
                 tint = iconColor
               )
             }
+
             SunsetBottomNavItem.TOP_ALBUMS -> {
               Icon(
                 imageVector = Icons.Default.LibraryMusic,
@@ -99,6 +105,7 @@ fun SunsetNavigationBar(
                 tint = iconColor
               )
             }
+
             SunsetBottomNavItem.TOP_ARTISTS -> {
               Icon(
                 imageVector = Icons.Default.AccountCircle,
@@ -106,6 +113,7 @@ fun SunsetNavigationBar(
                 tint = iconColor
               )
             }
+
             SunsetBottomNavItem.ACCOUNT -> {
               Icon(
                 imageVector = Icons.Default.Settings,
@@ -120,10 +128,28 @@ fun SunsetNavigationBar(
   }
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
-private fun SunsetNavigationBar3Preview() {
+@ShowkaseComposable(name = "SunsetNavigationBar", group = "Navigation bar")
+fun SunsetNavigationBarPreview() {
   SunsetThemePreview {
+    Surface {
+      SunsetNavigationBar(
+        navController = NavHostController(LocalContext.current),
+        navigateToScrobble = {},
+        navigateToAccount = {},
+        navigateToTopAlbums = {},
+        navigateToTopArtists = {}
+      )
+    }
+  }
+}
+
+@Preview
+@Composable
+@ShowkaseComposable(name = "SunsetNavigationBar", group = "Navigation bar", styleName = "Light")
+fun SunsetNavigationBarLightPreview() {
+  SunsetThemePreview(theme = AppTheme.LIGHT) {
     Surface {
       SunsetNavigationBar(
         navController = NavHostController(LocalContext.current),

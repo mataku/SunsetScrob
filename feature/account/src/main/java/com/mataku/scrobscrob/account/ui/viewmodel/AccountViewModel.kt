@@ -106,6 +106,10 @@ class AccountViewModel @Inject constructor(
     }
   }
 
+  fun navigateToUiCatalog() {
+    appInfoProvider.navigateToUiCatalogIntent(application)
+  }
+
   data class AccountUiState(
     val theme: AppTheme?,
     val event: Event?,

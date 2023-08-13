@@ -5,6 +5,7 @@ plugins {
   id("com.google.dagger.hilt.android")
   id("com.google.firebase.crashlytics")
   id("com.google.gms.google-services")
+  id("com.google.devtools.ksp")
 }
 
 apply(from = "${project.rootDir}/gradle/test_dependencies.gradle")
@@ -42,7 +43,7 @@ dependencies {
   implementation(libs.firebase.crashlytics)
 
   implementation(libs.room.runtime)
-  kapt(libs.room.compiler)
+  ksp(libs.room.compiler)
 
   implementation(libs.hilt.android)
   kapt(libs.hilt.compiler)
@@ -63,6 +64,9 @@ dependencies {
   implementation(libs.timber)
 
   implementation(libs.compose.material.icons.extended)
+  debugImplementation(libs.showkase)
+  implementation(libs.showkase.annotation)
+  kspDebug(libs.showkase.processor)
 }
 
 kapt {
@@ -70,6 +74,10 @@ kapt {
   javacOptions {
     option("-Xmaxerrs", 1000)
   }
+}
+
+ksp {
+  arg("skipPrivatePreviews", "true")
 }
 
 hilt {

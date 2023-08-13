@@ -1,6 +1,7 @@
 package com.mataku.scrobscrob.ui_common.style
 
 import androidx.compose.ui.graphics.Color
+import com.airbnb.android.showkase.annotation.ShowkaseColor
 
 object Colors {
   val ContentBackground = Color(0xFF263238)
@@ -16,5 +17,83 @@ object Colors {
   val SunsetOrange = Color(0xFFFFB74D)
   val SunsetBlue = Color(0xFF90CAF9)
   val SunsetBackground = Color(0xFFf5b95c)
+}
+
+object DarkColor {
+  @ShowkaseColor(name = "primary", group = "Dark")
+  val primary = Color.DarkGray
+
+  @ShowkaseColor(name = "onPrimary", group = "Dark")
+  val onPrimary = Color.White
+
+  @ShowkaseColor(name = "secondary", group = "Dark")
+  val secondary = Color.White
+
+  @ShowkaseColor(name = "onSecondary", group = "Dark")
+  val onSecondary = Colors.textSecondary
+
+  @ShowkaseColor(name = "surface", group = "Dark")
+  val surface = Color(0xFF37474F)
+
+  @ShowkaseColor(name = "onSurface", group = "Dark")
+  val onSurface = Color.White
+
+  @ShowkaseColor(name = "background", group = "Dark")
+  val background = Colors.ContentBackground
+
+  @ShowkaseColor(name = "onBackground", group = "Dark")
+  val onBackground = Color.White
+}
+
+object LightColor {
+  @ShowkaseColor(name = "primary", group = "Light")
+  val primary = Color(0xFFE0E0E0)
+
+  @ShowkaseColor(name = "onPrimary", group = "Light")
+  val onPrimary = Color.Black
+
+  @ShowkaseColor(name = "secondary", group = "Light")
+  val secondary = Color.White
+
+  @ShowkaseColor(name = "onSecondary", group = "Light")
+  val onSecondary = Colors.textSecondary
+
+  @ShowkaseColor(name = "surface", group = "Light")
+  val surface = Color(0xFFF5F5F5)
+
+  @ShowkaseColor(name = "onSurface", group = "Light")
+  val onSurface = Color.Black
+
+  @ShowkaseColor(name = "background", group = "Light")
+  val background = Color(0xFFF5F5F5)
+
+  @ShowkaseColor(name = "onBackground", group = "Light")
+  val onBackground = Color.Black
+}
+
+object LastFmDarkColor {
+  @ShowkaseColor(name = "primary", group = "Last.fm Dark")
+  val primary = Color.DarkGray
+
+  @ShowkaseColor(name = "onPrimary", group = "Last.fm Dark")
+  val onPrimary = Color.White
+
+  @ShowkaseColor(name = "secondary", group = "Last.fm Dark")
+  val secondary = Color.White
+
+  @ShowkaseColor(name = "onSecondary", group = "Last.fm Dark")
+  val onSecondary = Colors.textSecondary
+
+  @ShowkaseColor(name = "surface", group = "Last.fm Dark")
+  val surface = Color(0xFF37474F)
+
+  @ShowkaseColor(name = "onSurface", group = "Last.fm Dark")
+  val onSurface = Color.White
+
+  @ShowkaseColor(name = "background", group = "Last.fm Dark")
+  val background = Colors.ContentBackground
+
+  @ShowkaseColor(name = "onBackground", group = "Last.fm Dark")
+  val onBackground = Color.White
 }
 

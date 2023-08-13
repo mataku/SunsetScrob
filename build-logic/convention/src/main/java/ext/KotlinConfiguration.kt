@@ -6,11 +6,6 @@ import org.gradle.api.plugins.ExtensionAware
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
 
 fun CommonExtension<*, *, *, *, *>.kotlinConfiguration() {
-  compileSdk = 33
-  defaultConfig {
-    minSdk = 29
-  }
-
   compileOptions {
     sourceCompatibility = JavaVersion.VERSION_11
     targetCompatibility = JavaVersion.VERSION_11

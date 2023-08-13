@@ -17,6 +17,10 @@ buildscript {
   }
 }
 
+plugins {
+  id("com.google.devtools.ksp") version libs.versions.ksp.get() apply false
+}
+
 allprojects {
   repositories {
     google()

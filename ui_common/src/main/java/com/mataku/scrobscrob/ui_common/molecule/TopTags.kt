@@ -6,10 +6,14 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.airbnb.android.showkase.annotation.ShowkaseComposable
 import com.mataku.scrobscrob.core.entity.Tag
+import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 
 @Composable
 fun TopTags(
@@ -30,4 +34,21 @@ fun TopTags(
 @Composable
 private fun Tag(name: String) {
   Chip(name = name, toggleable = false)
+}
+
+@Preview
+@Composable
+@ShowkaseComposable(name = "TagList", group = "TagList")
+fun TopTagsPreview() {
+  SunsetThemePreview {
+    Surface {
+      val tagList = listOf("Dance", "Rock", "Jazz").map {
+        com.mataku.scrobscrob.core.entity.Tag(
+          name = it,
+          url = ""
+        )
+      }
+      TopTags(tagList = tagList)
+    }
+  }
 }

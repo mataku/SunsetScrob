@@ -1,5 +1,6 @@
 import com.android.build.gradle.LibraryExtension
 import ext.androidLintConfiguration
+import ext.androidSdkConfiguration
 import ext.kotlinConfiguration
 import ext.testConfiguration
 import org.gradle.api.Plugin
@@ -15,6 +16,7 @@ class FeatureConventionPlugin : Plugin<Project> {
         apply("org.jetbrains.kotlin.kapt")
 
         extensions.configure<LibraryExtension> {
+          androidSdkConfiguration()
           kotlinConfiguration()
           androidLintConfiguration()
           testConfiguration()

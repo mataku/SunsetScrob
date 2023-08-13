@@ -21,6 +21,7 @@ class ComposeConventionPlugin : Plugin<Project> {
           composeConfiguration(libs, target)
         }
       }
+
       dependencies {
         val composeBom = libs.findLibrary("compose-bom").get()
         add("implementation", platform(composeBom))

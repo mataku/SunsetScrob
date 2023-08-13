@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Divider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -44,6 +45,7 @@ import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.android.play.core.ktx.requestAppUpdateInfo
 import com.google.android.play.core.ktx.requestCompleteUpdate
 import com.mataku.scrobscrob.account.AccountMenu
+import com.mataku.scrobscrob.account.BuildConfig
 import com.mataku.scrobscrob.account.R
 import com.mataku.scrobscrob.account.ui.navigation.navigateToLicense
 import com.mataku.scrobscrob.account.ui.navigation.navigateToScrobbleSetting
@@ -159,7 +161,8 @@ fun AccountScreen(
         }
       },
       appVersion = uiState.appVersion,
-      clearCache = viewModel::clearCache
+      clearCache = viewModel::clearCache,
+      navigateToUiCatalog = viewModel::navigateToUiCatalog
     )
   }
 
@@ -204,7 +207,8 @@ private fun AccountContent(
   navigateToNotificationSetting: () -> Unit,
   requestAppUpdate: (AppUpdateInfo) -> Unit,
   appVersion: String,
-  appUpdateInfo: AppUpdateInfo?
+  appUpdateInfo: AppUpdateInfo?,
+  navigateToUiCatalog: () -> Unit
 ) {
   val context = LocalContext.current
   val openDialog = remember {
@@ -286,6 +290,14 @@ private fun AccountContent(
           enabled = updateAvailable
         ) {
           requestAppUpdate.invoke(appUpdateInfo!!)
+        }
+        if (BuildConfig.DEBUG) {
+          AccountMenuCell(
+            title = "UI Catalog",
+            description = "",
+          ) {
+            navigateToUiCatalog.invoke()
+          }
         }
       }
     },
@@ -370,7 +382,11 @@ private fun AccountMenuCell(
   ) {
     Text(text = title, style = SunsetTextStyle.subtitle1)
     if (description.isNotBlank()) {
-      Text(text = description, style = SunsetTextStyle.caption)
+      Text(
+        text = description,
+        style = SunsetTextStyle.caption,
+        color = MaterialTheme.colorScheme.onSecondary
+      )
     }
   }
 }
@@ -391,7 +407,8 @@ private fun AccountContentPreview() {
         requestAppUpdate = {},
         appUpdateInfo = null,
         appVersion = "1.0.0",
-        clearCache = {}
+        clearCache = {},
+        navigateToUiCatalog = {}
       )
     }
   }
