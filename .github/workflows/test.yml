@@ -18,71 +18,78 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - name: set up JDK
-      uses: actions/setup-java@v3
-      with:
-        distribution: zulu
-        java-version: 17
-    - name: Cache gradle wrapper
-      uses: actions/cache@v3
-      if: ${{ !startsWith(github.head_ref, 'dependabot') }}
-      with:
-        path: |
-          ~/.gradle/wrapper
-        key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('**/gradle-wrapper.properties') }}
-        restore-keys: |
-          ${{ runner.os }}-gradle-wrapper-
+      - uses: actions/checkout@v3
+      - name: set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: zulu
+          java-version: 17
+      - name: Cache gradle wrapper
+        uses: actions/cache@v3
+        if: ${{ !startsWith(github.head_ref, 'dependabot') }}
+        with:
+          path: |
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-wrapper-
 
-    - name: Cache gradle build dir
-      uses: actions/cache@v3
-      if: ${{ !startsWith(github.head_ref, 'dependabot') }}
-      with:
-        path: |
-          ~/.gradle/caches/transforms-*
-          ~/.gradle/caches/modules-*
-        key: ${{ runner.os }}-gradle-build-${{ hashFiles('**/*.gradle.kts', 'gradle/libs.versions.toml') }}
-        restore-keys: |
-          ${{ runner.os }}-gradle-build-
-    - uses: ruby/setup-ruby@v1
-      with:
-        bundler-cache: true
-    - name: Build with Gradle
-      env:
-        LAST_FM_API_KEY: ${{ secrets.LAST_FM_API_KEY }}
-        LAST_FM_SHARED_SECRET: ${{ secrets.LAST_FM_SHARED_SECRET }}
-        GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON_DEV }}
-      run: |
-        bundle exec fastlane android setup_for_ci
-        bundle exec fastlane android build
+      - name: Cache gradle build dir
+        uses: actions/cache@v3
+        if: ${{ !startsWith(github.head_ref, 'dependabot') }}
+        with:
+          path: |
+            ~/.gradle/caches/transforms-*
+            ~/.gradle/caches/modules-*
+          key: ${{ runner.os }}-gradle-build-${{ hashFiles('**/*.gradle.kts', 'gradle/libs.versions.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-build-
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - name: Setup
+        run: |
+          echo -n "${{ secrets.SUNSETSCROB_KEYSTORE }}" | base64 -d > SunsetScrob.jks
+          echo -n "${{ secrets.APP_PUBLISHER_JSON }}" | base64 -d > app/app-publisher.json
+      - name: Build with Gradle
+        env:
+          LAST_FM_API_KEY: ${{ secrets.LAST_FM_API_KEY }}
+          LAST_FM_SHARED_SECRET: ${{ secrets.LAST_FM_SHARED_SECRET }}
+          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
+          SUNSET_KEY_ALIAS: ${{ secrets.SUNSET_KEY_ALIAS }}
+          SUNSET_KEY_PASSWORD: ${{ secrets.SUNSET_KEY_PASSWORD }}
+          SUNSET_STORE_PASSWORD: ${{ secrets.SUNSET_STORE_PASSWORD }}
+        run: |
+          bundle exec fastlane android setup_for_ci
+          bundle exec fastlane android build
   test:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - name: set up JDK
-      uses: actions/setup-java@v3
-      with:
-        distribution: zulu
-        java-version: 17
-    - name: Cache gradle dir
-      uses: actions/cache@v3
-      if: ${{ !startsWith(github.head_ref, 'dependabot') }}
-      with:
-        path: |
-          ~/.gradle/caches
-          ~/.gradle/wrapper
-        key: ${{ runner.os }}-gradle-test-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-        restore-keys: |
-          ${{ runner.os }}-gradle-test-
-    - uses: ruby/setup-ruby@v1
-      with:
-        bundler-cache: true
-    - name: Run tests
-      env:
-        LAST_FM_API_KEY: ${{ secrets.LAST_FM_API_KEY }}
-        LAST_FM_SHARED_SECRET: ${{ secrets.LAST_FM_SHARED_SECRET }}
-        GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON_DEV }}
-      run: |
-        bundle exec fastlane android setup_for_ci
-        bundle exec fastlane android test
+      - uses: actions/checkout@v3
+      - name: set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: zulu
+          java-version: 17
+      - name: Cache gradle dir
+        uses: actions/cache@v3
+        if: ${{ !startsWith(github.head_ref, 'dependabot') }}
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-test-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-test-
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - name: Run tests
+        env:
+          LAST_FM_API_KEY: ${{ secrets.LAST_FM_API_KEY }}
+          LAST_FM_SHARED_SECRET: ${{ secrets.LAST_FM_SHARED_SECRET }}
+          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON_DEV }}
+        run: |
+          bundle exec fastlane android setup_for_ci
+          bundle exec fastlane android test
