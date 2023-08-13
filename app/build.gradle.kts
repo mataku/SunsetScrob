@@ -64,9 +64,9 @@ dependencies {
   implementation(libs.timber)
 
   implementation(libs.compose.material.icons.extended)
-  implementation(libs.showkase)
+  debugImplementation(libs.showkase)
   implementation(libs.showkase.annotation)
-  ksp(libs.showkase.processor)
+  kspDebug(libs.showkase.processor)
 }
 
 kapt {
