@@ -115,25 +115,25 @@ fun AppTheme.colorScheme(): ColorScheme {
 }
 
 private val lightColorScheme = lightColorScheme(
-  primary = Color(0xFFE0E0E0),
-  onPrimary = Color.Black,
-  secondary = Color.White,
-  onSecondary = Colors.textSecondary,
-  surface = Color(0xFFF5F5F5),
-  onSurface = Color.Black,
-  background = Color(0xFFF5F5F5),
-  onBackground = Color.Black,
+  primary = LightColor.primary,
+  onPrimary = LightColor.onPrimary,
+  secondary = LightColor.secondary,
+  onSecondary = LightColor.onSecondary,
+  surface = LightColor.surface,
+  onSurface = LightColor.onSurface,
+  background = LightColor.background,
+  onBackground = LightColor.onBackground,
 )
 
 private val darkColorScheme = darkColorScheme(
-  primary = Color.DarkGray,
-  onPrimary = Color.White,
-  secondary = Color.White,
-  onSecondary = Colors.textSecondary,
-  surface = Color(0xFF37474F),
-  onSurface = Color.White,
-  background = Colors.ContentBackground,
-  onBackground = Color.White
+  primary = DarkColor.primary,
+  onPrimary = DarkColor.onPrimary,
+  secondary = DarkColor.secondary,
+  onSecondary = DarkColor.onSecondary,
+  surface = DarkColor.surface,
+  onSurface = DarkColor.onSurface,
+  background = DarkColor.background,
+  onBackground = DarkColor.onBackground
 )
 
 private val oceanColorScheme = darkColorScheme(
@@ -148,14 +148,14 @@ private val oceanColorScheme = darkColorScheme(
 )
 
 private val lastFmDarkColorScheme = darkColorScheme(
-  primary = Color.DarkGray,
-  onPrimary = Color.White,
-  secondary = Color.White,
-  onSecondary = Colors.textSecondary,
-  surface = Color(0xFF37474F),
-  onSurface = Color.White,
-  background = Colors.ContentBackground,
-  onBackground = Color.White
+  primary = LastFmDarkColor.primary,
+  onPrimary = LastFmDarkColor.onPrimary,
+  secondary = LastFmDarkColor.secondary,
+  onSecondary = LastFmDarkColor.onSecondary,
+  surface = LastFmDarkColor.surface,
+  onSurface = LastFmDarkColor.onSurface,
+  background = LastFmDarkColor.background,
+  onBackground = LastFmDarkColor.onBackground
 )
 
 private val midnightColorScheme = darkColorScheme(

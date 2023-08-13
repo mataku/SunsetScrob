@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.airbnb.android.showkase.annotation.ShowkaseComposable
+import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.ui_common.SunsetBottomNavItem
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
@@ -127,11 +128,28 @@ fun SunsetNavigationBar(
   }
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
 @ShowkaseComposable(name = "SunsetNavigationBar", group = "Navigation bar")
 fun SunsetNavigationBarPreview() {
   SunsetThemePreview {
+    Surface {
+      SunsetNavigationBar(
+        navController = NavHostController(LocalContext.current),
+        navigateToScrobble = {},
+        navigateToAccount = {},
+        navigateToTopAlbums = {},
+        navigateToTopArtists = {}
+      )
+    }
+  }
+}
+
+@Preview
+@Composable
+@ShowkaseComposable(name = "SunsetNavigationBar", group = "Navigation bar", styleName = "Light")
+fun SunsetNavigationBarLightPreview() {
+  SunsetThemePreview(theme = AppTheme.LIGHT) {
     Surface {
       SunsetNavigationBar(
         navController = NavHostController(LocalContext.current),
