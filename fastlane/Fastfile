@@ -14,8 +14,7 @@ platform :android do
     end
   end
 
-  desc "Build an aab"
-  lane :build do
+  lane :build_debug do
     gradle(task: "bundleDebug")
   end
 
@@ -28,7 +27,8 @@ platform :android do
     gradle(task: 'assembleDebug')
   end
 
-  lane :bundle_release do
+  desc "Build an aab"
+  lane :build do
     gradle(task: 'bundleRelease')
   end
 
