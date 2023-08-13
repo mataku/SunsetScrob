@@ -69,8 +69,8 @@ class ApplicationConventionPlugin : Plugin<Project> {
             "proguard-rules.pro"
           )
         }
-        testConfiguration()
       }
+      testConfiguration()
     }
   }
 }

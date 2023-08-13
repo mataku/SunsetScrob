@@ -6,8 +6,6 @@ plugins {
   id("com.mikepenz.aboutlibraries.plugin")
 }
 
-apply(from = "${project.rootDir}/gradle/test_dependencies.gradle")
-
 android {
   buildFeatures {
     buildConfig = true

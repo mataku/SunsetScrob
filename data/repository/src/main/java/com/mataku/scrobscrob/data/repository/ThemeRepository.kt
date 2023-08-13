@@ -6,12 +6,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
+import javax.inject.Singleton
 
 interface ThemeRepository {
   suspend fun currentTheme(): Flow<AppTheme>
   suspend fun storeTheme(theme: AppTheme): Flow<Unit>
 }
 
+@Singleton
 class ThemeRepositoryImpl @Inject constructor(
   private val themeDataStore: ThemeDataStore
 ) : ThemeRepository {
