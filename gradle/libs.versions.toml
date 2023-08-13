@@ -21,7 +21,7 @@ mockk = "1.13.5"
 navigation-compose = "2.7.0"
 okhttp = "4.11.0"
 room = "2.5.2"
-showkase = "1.0.0-beta18"
+showkase = "1.0.0-kotlin1.5.30-1"
 
 [libraries]
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity" }
