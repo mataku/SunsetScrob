@@ -9,7 +9,7 @@ on:
       - develop
 
 concurrency:
-  group: ${{ github.head_ref }}
+  group: ${{ github.head_ref || 'develop' }}
   cancel-in-progress: true
 
 env:
