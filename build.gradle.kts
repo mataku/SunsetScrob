@@ -31,7 +31,7 @@ allprojects {
 subprojects {
   tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     kotlinOptions {
-      jvmTarget = "11"
+      jvmTarget = JavaVersion.VERSION_17.toString()
     }
   }
 }

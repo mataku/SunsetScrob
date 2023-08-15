@@ -7,11 +7,11 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
 
 fun CommonExtension<*, *, *, *, *>.kotlinConfiguration() {
   compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
   }
   (this as ExtensionAware).extensions.configure<KotlinJvmOptions>("kotlinOptions") {
-    jvmTarget = "11"
+    jvmTarget = JavaVersion.VERSION_17.toString()
     freeCompilerArgs =
       freeCompilerArgs + listOf("-opt-in=kotlin.RequiresOptIn")
   }
