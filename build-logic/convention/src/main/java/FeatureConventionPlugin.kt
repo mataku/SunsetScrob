@@ -19,7 +19,6 @@ class FeatureConventionPlugin : Plugin<Project> {
           androidSdkConfiguration()
           kotlinConfiguration()
           androidLintConfiguration()
-          testConfiguration()
           buildTypes {
             getByName("debug") {
             }
@@ -28,6 +27,7 @@ class FeatureConventionPlugin : Plugin<Project> {
           }
         }
       }
+      testConfiguration()
     }
   }
 }

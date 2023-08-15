@@ -5,8 +5,6 @@ plugins {
   id("com.google.dagger.hilt.android")
 }
 
-apply(from = "${project.rootDir}/gradle/test_dependencies.gradle")
-
 android {
   namespace = "com.mataku.scrobscrob.artist"
 }

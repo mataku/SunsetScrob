@@ -8,8 +8,6 @@ plugins {
   id("com.google.devtools.ksp")
 }
 
-apply(from = "${project.rootDir}/gradle/test_dependencies.gradle")
-
 android {
   buildFeatures {
     buildConfig = true
