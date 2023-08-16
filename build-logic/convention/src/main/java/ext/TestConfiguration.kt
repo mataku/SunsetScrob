@@ -18,7 +18,7 @@ fun Project.testConfiguration() {
       unitTests {
         isIncludeAndroidResources = true
         all {
-          it.maxParallelForks = 2
+          it.maxParallelForks = Runtime.getRuntime().availableProcessors()
           it.useJUnitPlatform()
         }
       }

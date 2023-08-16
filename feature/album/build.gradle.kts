@@ -3,7 +3,6 @@ plugins {
   id("sunsetscrob.android.compose")
   id("dagger.hilt.android.plugin")
   id("com.google.dagger.hilt.android")
-  id("sunsetscrob.android.unittest")
 }
 
 android {
