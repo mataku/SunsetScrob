@@ -20,6 +20,8 @@ class TestConventionPlugin : Plugin<Project> {
           unitTests {
             all {
               it.useJUnitPlatform()
+              isIncludeAndroidResources = true
+              it.maxParallelForks = Runtime.getRuntime().availableProcessors()
             }
           }
         }
