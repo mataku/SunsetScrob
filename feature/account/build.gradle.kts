@@ -4,6 +4,7 @@ plugins {
   id("dagger.hilt.android.plugin")
   id("com.google.dagger.hilt.android")
   id("com.mikepenz.aboutlibraries.plugin")
+  id("sunsetscrob.android.unittest")
 }
 
 android {

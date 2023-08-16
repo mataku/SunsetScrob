@@ -30,5 +30,9 @@ gradlePlugin {
       id = "sunsetscrob.android.compose"
       implementationClass = "ComposeConventionPlugin"
     }
+    register("androidUnitTest") {
+      id = "sunsetscrob.android.unittest"
+      implementationClass = "TestConventionPlugin"
+    }
   }
 }
