@@ -2,7 +2,6 @@ plugins {
   id("sunsetscrob.android.feature")
   id("sunsetscrob.android.compose")
   id("kotlin-android")
-  id("kotlin-kapt")
   id("com.google.devtools.ksp")
 }
 

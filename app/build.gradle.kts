@@ -62,13 +62,6 @@ dependencies {
   kspDebug(libs.showkase.processor)
 }
 
-kapt {
-  correctErrorTypes = true
-  javacOptions {
-    option("-Xmaxerrs", 1000)
-  }
-}
-
 ksp {
   arg("skipPrivatePreviews", "true")
 }
