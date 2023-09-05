@@ -1,8 +1,7 @@
 plugins {
   id("sunsetscrob.android.feature")
   id("sunsetscrob.android.compose")
-  id("dagger.hilt.android.plugin")
-  id("com.google.dagger.hilt.android")
+  id("sunsetscrob.android.dagger")
   id("com.mikepenz.aboutlibraries.plugin")
 }
 
@@ -59,10 +58,6 @@ dependencies {
   implementation(libs.compose.material.icons.extended)
 
   implementation(libs.hilt.navigation.compose)
-
-  implementation(libs.hilt.android)
-  kapt(libs.hilt.compiler)
-  kapt(libs.hilt.android.compiler)
 
   implementation(libs.coroutines)
   implementation(libs.timber)

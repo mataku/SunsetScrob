@@ -1,8 +1,7 @@
 plugins {
   id("sunsetscrob.android.application")
   id("sunsetscrob.android.compose")
-  id("dagger.hilt.android.plugin")
-  id("com.google.dagger.hilt.android")
+  id("sunsetscrob.android.dagger")
   id("com.google.firebase.crashlytics")
   id("com.google.gms.google-services")
   id("com.google.devtools.ksp")
@@ -42,10 +41,6 @@ dependencies {
 
   implementation(libs.room.runtime)
   ksp(libs.room.compiler)
-
-  implementation(libs.hilt.android)
-  kapt(libs.hilt.compiler)
-  kapt(libs.hilt.android.compiler)
 
   implementation(project(":ui_common"))
   implementation(libs.activity.compose)

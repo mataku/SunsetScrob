@@ -3,7 +3,7 @@ import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 plugins {
   id("sunsetscrob.android.feature")
   id("dagger.hilt.android.plugin")
-  id("com.google.dagger.hilt.android")
+  id("sunsetscrob.android.dagger")
   id("kotlinx-serialization")
 }
 
@@ -22,8 +22,6 @@ android {
 }
 
 dependencies {
-  implementation(libs.hilt.android)
-  kapt(libs.hilt.compiler)
   implementation(libs.coroutines)
   implementation(libs.serialization.json)
   implementation(platform(libs.okhttp.bom))

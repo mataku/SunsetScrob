@@ -30,5 +30,9 @@ gradlePlugin {
       id = "sunsetscrob.android.compose"
       implementationClass = "ComposeConventionPlugin"
     }
+    register("androidDagger") {
+      id = "sunsetscrob.android.dagger"
+      implementationClass = "DaggerConventionPlugin"
+    }
   }
 }
