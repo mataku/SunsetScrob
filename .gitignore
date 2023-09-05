@@ -43,6 +43,9 @@ local.properties
 # Keystore files
 *.jks
 
+# Baseline profile
+app/src/main/baseline-prof.txt
+
 # OS-specific files
 .DS_Store
 .DS_Store?
