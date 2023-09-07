@@ -7,7 +7,9 @@ import com.mataku.scrobscrob.BuildConfig
 import com.mataku.scrobscrob.account.AppInfoProvider
 import com.mataku.scrobscrob.app.ui.getBrowserIntent
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class AppInfoProviderImpl @Inject constructor() : AppInfoProvider {
   override fun appVersion(): String = BuildConfig.VERSION_NAME
 
