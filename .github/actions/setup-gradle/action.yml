@@ -1,3 +1,6 @@
+name: "Setup Gradle"
+description: "Setup Gradle and cache"
+
 runs:
   using: "composite"
   steps:
@@ -23,7 +26,6 @@ runs:
         path: |
           ~/.gradle/caches/transforms-*
           ~/.gradle/caches/modules-*
-        key: ${{ runner.os }}-gradle-build-${{ hashFiles('**/*.gradle.kts', 'gradle/libs.versions.toml') }}
+        key: ${{ runner.os }}-gradle-build-${{ github.job }}-${{ hashFiles('**/*.gradle.kts', 'gradle/libs.versions.toml') }}
         restore-keys: |
-          ${{ runner.os }}-gradle-build-
-
+          ${{ runner.os }}-gradle-build-${{ github.job }}-
