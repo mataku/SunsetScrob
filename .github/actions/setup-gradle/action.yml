@@ -11,7 +11,7 @@ runs:
         java-version: 17
     - name: Cache gradle wrapper
       uses: actions/cache@v3
-      if: ${{ !startsWith(github.head_ref, 'dependabot') }}
+      if: ${{ !startsWith(github.head_ref, 'renovate') }}
       with:
         path: |
           ~/.gradle/wrapper
@@ -21,7 +21,7 @@ runs:
 
     - name: Cache gradle build dir
       uses: actions/cache@v3
-      if: ${{ !startsWith(github.head_ref, 'dependabot') }}
+      if: ${{ !startsWith(github.head_ref, 'renovate') }}
       with:
         path: |
           ~/.gradle/caches/transforms-*
