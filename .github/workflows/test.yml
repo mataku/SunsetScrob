@@ -22,31 +22,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - name: set up JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: zulu
-          java-version: 17
-      - name: Cache gradle wrapper
-        uses: actions/cache@v3
-        if: ${{ !startsWith(github.head_ref, 'dependabot') }}
-        with:
-          path: |
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-wrapper-
+      - uses: ./.github/actions/setup-gradle
 
-      - name: Cache gradle build dir
-        uses: actions/cache@v3
-        if: ${{ !startsWith(github.head_ref, 'dependabot') }}
-        with:
-          path: |
-            ~/.gradle/caches/transforms-*
-            ~/.gradle/caches/modules-*
-          key: ${{ runner.os }}-gradle-build-${{ hashFiles('**/*.gradle.kts', 'gradle/libs.versions.toml') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-build-
       - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
@@ -70,21 +47,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - name: set up JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: zulu
-          java-version: 17
-      - name: Cache gradle dir
-        uses: actions/cache@v3
-        if: ${{ !startsWith(github.head_ref, 'dependabot') }}
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-test-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-test-
+      - uses: ./.github/actions/setup-gradle
       - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true

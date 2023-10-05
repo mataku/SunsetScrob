@@ -34,20 +34,7 @@ jobs:
         create_credentials_file: true
         workload_identity_provider: ${{ secrets.WORKFLOW_IDENTITY_PROVIDER }}
         service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT }}
-    - name: set up JDK
-      uses: actions/setup-java@v3
-      with:
-        distribution: zulu
-        java-version: 17
-    - name: Cache gradle dir
-      uses: actions/cache@v3
-      with:
-        path: |
-          ~/.gradle/caches
-          ~/.gradle/wrapper
-        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-        restore-keys: |
-          ${{ runner.os }}-gradle-
+    - uses: ./.github/actions/setup-gradle
     - uses: ruby/setup-ruby@v1
       with:
         bundler-cache: true
