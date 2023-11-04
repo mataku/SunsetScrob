@@ -16,7 +16,7 @@ fun CommonExtension<*, *, *, *, *>.composeConfiguration(
   }
   composeOptions {
     kotlinCompilerExtensionVersion =
-      libs.findVersion("kotlin.compiler.extension").get().toString()
+      libs.findVersion("compose.compiler.extension").get().toString()
   }
 
   (this as ExtensionAware).extensions.configure<KotlinJvmOptions>("kotlinOptions") {
