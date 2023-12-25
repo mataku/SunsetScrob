@@ -19,13 +19,23 @@ runs:
         restore-keys: |
           ${{ runner.os }}-gradle-wrapper-
 
-    - name: Cache gradle build dir
+    - name: Cache gradle dependencies dir
       uses: actions/cache@v3
       if: ${{ !startsWith(github.head_ref, 'renovate') }}
       with:
         path: |
+          ~/.gradle/caches/jars-*
           ~/.gradle/caches/transforms-*
           ~/.gradle/caches/modules-*
-        key: ${{ runner.os }}-gradle-build-${{ github.job }}-${{ hashFiles('**/*.gradle.kts', 'gradle/libs.versions.toml') }}
+        key: ${{ runner.os }}-gradle-dependencies-${{ hashFiles('gradle/libs.versions.toml') }}
         restore-keys: |
-          ${{ runner.os }}-gradle-build-${{ github.job }}-
+          ${{ runner.os }}-gradle-dependencies-
+    - name: Cache gradle build results
+      uses: actions/cache@v3
+      with:
+        path: |
+          .gradle
+          ~/.gradle/caches/build-cache-*
+          ~/.gradle/caches/[0-9]*.* # TODO: specify latest only
+        key: gradle-build-cache-${{ github.sha }}
+        restore-keys: ${{ runner.os }}-gradle-build-cache-
