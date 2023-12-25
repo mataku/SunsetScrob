@@ -37,5 +37,5 @@ runs:
           .gradle
           ~/.gradle/caches/build-cache-*
           ~/.gradle/caches/[0-9]*.* # TODO: specify latest only
-        key: gradle-build-cache-${{ github.sha }}
+        key: ${{ runner.os }}-gradle-build-cache-${{ github.job }}-${{ github.sha }}
         restore-keys: ${{ runner.os }}-gradle-build-cache-${{ github.job }}-
