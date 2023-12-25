@@ -27,9 +27,9 @@ runs:
           ~/.gradle/caches/jars-*
           ~/.gradle/caches/transforms-*
           ~/.gradle/caches/modules-*
-        key: ${{ runner.os }}-gradle-dependencies-${{ github.job }}-${{ hashFiles('gradle/libs.versions.toml') }}
+        key: ${{ runner.os }}-gradle-dependencies-${{ env.GITHUB_JOB }}-${{ hashFiles('gradle/libs.versions.toml') }}
         restore-keys: |
-          ${{ runner.os }}-gradle-dependencies-${{ github.job }}-
+          ${{ runner.os }}-gradle-dependencies-${{ env.GITHUB_JOB }}-
     - name: Cache gradle build results
       uses: actions/cache@v3
       with:
@@ -37,5 +37,5 @@ runs:
           .gradle
           ~/.gradle/caches/build-cache-*
           ~/.gradle/caches/[0-9]*.* # TODO: specify latest only
-        key: ${{ runner.os }}-gradle-build-cache-${{ github.job }}-${{ github.sha }}
-        restore-keys: ${{ runner.os }}-gradle-build-cache-${{ github.job }}-
+        key: ${{ runner.os }}-gradle-build-cache-${{ env.GITHUB_JOB }}-${{ github.sha }}
+        restore-keys: ${{ runner.os }}-gradle-build-cache-${{ env.GITHUB_JOB }}-
