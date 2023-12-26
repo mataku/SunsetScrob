@@ -1,10 +1,10 @@
 package com.mataku.scrobscrob.data.repository
 
+import com.mataku.scrobscrob.core.entity.NowPlayingTrackEntity
 import com.mataku.scrobscrob.core.entity.TrackInfo
 import com.mataku.scrobscrob.data.api.LastFmService
 import com.mataku.scrobscrob.data.api.endpoint.ApiSignature
 import com.mataku.scrobscrob.data.api.endpoint.UpdateNowPlayingEndpoint
-import com.mataku.scrobscrob.data.db.NowPlayingTrackEntity
 import com.mataku.scrobscrob.data.db.SessionKeyDataStore
 import com.mataku.scrobscrob.data.repository.mapper.toNowPlayingTrackEntity
 import kotlinx.coroutines.flow.Flow

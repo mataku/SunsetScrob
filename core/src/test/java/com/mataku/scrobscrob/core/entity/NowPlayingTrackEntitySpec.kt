@@ -1,4 +1,4 @@
-package com.mataku.scrobscrob.data.db
+package com.mataku.scrobscrob.core.entity
 
 import io.kotest.core.annotation.Ignored
 import io.kotest.core.spec.style.DescribeSpec

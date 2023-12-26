@@ -15,9 +15,8 @@ runs:
       with:
         path: |
           ~/.gradle/wrapper
-        key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('**/gradle-wrapper.properties') }}
-        restore-keys: |
-          ${{ runner.os }}-gradle-wrapper-
+        key: gradle-wrapper-${{ hashFiles('**/gradle-wrapper.properties') }}
+        restore-keys: gradle-wrapper-
 
     - name: Cache gradle dependencies dir
       uses: actions/cache@v3
@@ -27,9 +26,8 @@ runs:
           ~/.gradle/caches/jars-*
           ~/.gradle/caches/transforms-*
           ~/.gradle/caches/modules-*
-        key: ${{ runner.os }}-gradle-dependencies-${{ env.GITHUB_JOB }}-${{ hashFiles('gradle/libs.versions.toml') }}
-        restore-keys: |
-          ${{ runner.os }}-gradle-dependencies-${{ env.GITHUB_JOB }}-
+        key: gradle-dependencies-${{ hashFiles('gradle/libs.versions.toml') }}
+        restore-keys: gradle-dependencies-
     - name: Cache gradle build results
       uses: actions/cache@v3
       with:
@@ -37,5 +35,5 @@ runs:
           .gradle
           ~/.gradle/caches/build-cache-*
           ~/.gradle/caches/[0-9]*.* # TODO: specify latest only
-        key: ${{ runner.os }}-gradle-build-cache-${{ env.GITHUB_JOB }}-${{ github.sha }}
-        restore-keys: ${{ runner.os }}-gradle-build-cache-${{ env.GITHUB_JOB }}-
+        key: gradle-build-cache-${{ github.workflow }}-${{ github.sha }}
+        restore-keys: gradle-build-cache-${{ github.workflow }}-
