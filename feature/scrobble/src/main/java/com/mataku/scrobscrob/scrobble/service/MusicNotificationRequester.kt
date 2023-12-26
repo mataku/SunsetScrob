@@ -67,8 +67,8 @@ class MusicNotificationRequester(
         .catch {
           isLoading = false
         }.collect {
-          currentNowPlaying?.let {
-            scrobbleRepository.scrobble().catch {}.collect()
+          currentNowPlaying?.let { track ->
+            scrobbleRepository.scrobble(track).catch {}.collect()
           }
 
           nowPlayingRepository.update(it)

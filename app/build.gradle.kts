@@ -39,9 +39,6 @@ dependencies {
   implementation(platform(libs.firebase.bom))
   implementation(libs.firebase.crashlytics)
 
-  implementation(libs.room.runtime)
-  ksp(libs.room.compiler)
-
   implementation(project(":ui_common"))
   implementation(libs.activity.compose)
   implementation(libs.compose.ui.tooling)

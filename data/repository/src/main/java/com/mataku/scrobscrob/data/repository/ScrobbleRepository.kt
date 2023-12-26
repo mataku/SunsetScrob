@@ -6,7 +6,7 @@ import com.mataku.scrobscrob.data.api.LastFmService
 import com.mataku.scrobscrob.data.api.endpoint.ApiSignature
 import com.mataku.scrobscrob.data.api.endpoint.ScrobbleEndpoint
 import com.mataku.scrobscrob.data.api.endpoint.UserRecentTracksEndpoint
-import com.mataku.scrobscrob.data.db.NowPlayingDao
+import com.mataku.scrobscrob.data.db.NowPlayingTrackEntity
 import com.mataku.scrobscrob.data.db.SessionKeyDataStore
 import com.mataku.scrobscrob.data.db.UsernameDataStore
 import com.mataku.scrobscrob.data.db.overScrobblePoint
@@ -22,7 +22,7 @@ import javax.inject.Singleton
 interface ScrobbleRepository {
   suspend fun recentTracks(page: Int): Flow<List<RecentTrack>>
 
-  suspend fun scrobble(): Flow<ScrobbleResult>
+  suspend fun scrobble(currentTrack: NowPlayingTrackEntity): Flow<ScrobbleResult>
 }
 
 @Singleton
@@ -30,7 +30,6 @@ class ScrobbleRepositoryImpl @Inject constructor(
   private val lastFmService: LastFmService,
   private val usernameDataStore: UsernameDataStore,
   private val sessionDataStore: SessionKeyDataStore,
-  private val nowPlayingDao: NowPlayingDao
 ) : ScrobbleRepository {
   override suspend fun recentTracks(page: Int): Flow<List<RecentTrack>> = flow {
     val username = usernameDataStore.username() ?: emit(emptyList())
@@ -49,10 +48,9 @@ class ScrobbleRepositoryImpl @Inject constructor(
     emit(response.toRecentTracks())
   }
 
-  override suspend fun scrobble() = flow {
-    val currentTrack = nowPlayingDao.nowPlaying()
+  override suspend fun scrobble(currentTrack: NowPlayingTrackEntity) = flow {
     val sessionKey = sessionDataStore.sessionKey()
-    if (currentTrack == null || sessionKey == null) {
+    if (sessionKey == null) {
       emit(ScrobbleResult(accepted = false))
       return@flow
     }
