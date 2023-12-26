@@ -1,13 +1,11 @@
 package com.mataku.scrobscrob.data.repository
 
-import com.mataku.scrobscrob.core.entity.NowPlayingTrack
 import com.mataku.scrobscrob.core.entity.TrackInfo
 import com.mataku.scrobscrob.data.api.LastFmService
 import com.mataku.scrobscrob.data.api.endpoint.ApiSignature
 import com.mataku.scrobscrob.data.api.endpoint.UpdateNowPlayingEndpoint
-import com.mataku.scrobscrob.data.db.NowPlayingDao
+import com.mataku.scrobscrob.data.db.NowPlayingTrackEntity
 import com.mataku.scrobscrob.data.db.SessionKeyDataStore
-import com.mataku.scrobscrob.data.repository.mapper.toNowPlayingTrack
 import com.mataku.scrobscrob.data.repository.mapper.toNowPlayingTrackEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -17,22 +15,21 @@ import javax.inject.Singleton
 interface NowPlayingRepository {
   suspend fun update(trackInfo: TrackInfo): Flow<Unit>
 
-  suspend fun current(): NowPlayingTrack?
+  suspend fun current(): NowPlayingTrackEntity?
 }
 
 @Singleton
 class NowPlayingRepositoryImpl @Inject constructor(
   private val lastFmService: LastFmService,
   private val sessionKeyDataStore: SessionKeyDataStore,
-  private val nowPlayingDao: NowPlayingDao
 ) : NowPlayingRepository {
 
-  override suspend fun current(): NowPlayingTrack? =
-    nowPlayingDao.nowPlaying()?.toNowPlayingTrack()
+  private var currentNowPlayingTrackInfo: NowPlayingTrackEntity? = null
+
+  override suspend fun current(): NowPlayingTrackEntity? = currentNowPlayingTrackInfo
 
   override suspend fun update(trackInfo: TrackInfo) = flow {
-    val entity = trackInfo.toNowPlayingTrackEntity()
-    nowPlayingDao.insert(entity)
+    currentNowPlayingTrackInfo = trackInfo.toNowPlayingTrackEntity()
     updateNowPlaying(
       trackName = trackInfo.name,
       artistName = trackInfo.artist.name,
