@@ -1,15 +1,15 @@
 package com.mataku.scrobscrob.data.repository
 
+import com.mataku.scrobscrob.core.entity.NowPlayingTrackEntity
 import com.mataku.scrobscrob.core.entity.RecentTrack
 import com.mataku.scrobscrob.core.entity.ScrobbleResult
+import com.mataku.scrobscrob.core.entity.overScrobblePoint
 import com.mataku.scrobscrob.data.api.LastFmService
 import com.mataku.scrobscrob.data.api.endpoint.ApiSignature
 import com.mataku.scrobscrob.data.api.endpoint.ScrobbleEndpoint
 import com.mataku.scrobscrob.data.api.endpoint.UserRecentTracksEndpoint
-import com.mataku.scrobscrob.data.db.NowPlayingTrackEntity
 import com.mataku.scrobscrob.data.db.SessionKeyDataStore
 import com.mataku.scrobscrob.data.db.UsernameDataStore
-import com.mataku.scrobscrob.data.db.overScrobblePoint
 import com.mataku.scrobscrob.data.repository.mapper.toRecentTracks
 import com.mataku.scrobscrob.data.repository.mapper.toScrobbleResult
 import kotlinx.coroutines.Dispatchers

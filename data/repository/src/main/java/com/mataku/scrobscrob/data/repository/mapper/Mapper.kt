@@ -5,6 +5,7 @@ import com.mataku.scrobscrob.core.entity.ArtistInfo
 import com.mataku.scrobscrob.core.entity.Image
 import com.mataku.scrobscrob.core.entity.NowPlaying
 import com.mataku.scrobscrob.core.entity.NowPlayingTrack
+import com.mataku.scrobscrob.core.entity.NowPlayingTrackEntity
 import com.mataku.scrobscrob.core.entity.RecentTrack
 import com.mataku.scrobscrob.core.entity.ScrobbleResult
 import com.mataku.scrobscrob.core.entity.Tag
@@ -23,7 +24,6 @@ import com.mataku.scrobscrob.data.api.model.TrackAlbumInfoBody
 import com.mataku.scrobscrob.data.api.model.TrackArtistBody
 import com.mataku.scrobscrob.data.api.model.UserTopAlbumsApiResponse
 import com.mataku.scrobscrob.data.api.model.UserTopArtistsApiResponse
-import com.mataku.scrobscrob.data.db.NowPlayingTrackEntity
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 
