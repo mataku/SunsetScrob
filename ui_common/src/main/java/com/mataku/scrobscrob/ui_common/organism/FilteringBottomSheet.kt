@@ -27,7 +27,7 @@ import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 fun FilteringBottomSheet(
   selectedTimeRangeFiltering: TimeRangeFiltering,
   onClick: (TimeRangeFiltering) -> Unit,
-  modifier: Modifier
+  modifier: Modifier = Modifier
 ) {
   Column(
     modifier = modifier
