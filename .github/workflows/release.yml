@@ -3,7 +3,7 @@ name: Release to Google Play Console internal track
 on:
   push:
     branches:
-      - master
+      - main
 
 concurrency:
   group: release
