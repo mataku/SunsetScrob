@@ -15,7 +15,8 @@
     "org.jetbrains.kotlin:kotlin-serialization",
     "com.airbnb.android:showkase",
     "com.airbnb.android:showkase-annotation",
-    "com.airbnb.android:showkase-processor"
+    "com.airbnb.android:showkase-processor",
+    "androidx.benchmark:benchmark-macro-junit4"
   ],
   "prConcurrentLimit": 5,
   "rebaseWhen": "never"

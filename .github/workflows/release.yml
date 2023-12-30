@@ -15,7 +15,6 @@ env:
 
 jobs:
   release:
-    # ubuntu-latest is enough, but needed for Android Emulator: https://issuetracker.google.com/issues/193118030
     runs-on: macos-latest
     timeout-minutes: 25
 
