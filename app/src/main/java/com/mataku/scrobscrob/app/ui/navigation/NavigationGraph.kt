@@ -1,7 +1,6 @@
 package com.mataku.scrobscrob.app.ui.navigation
 
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -18,12 +17,12 @@ import com.mataku.scrobscrob.ui_common.commonGraph
 fun NavigationGraph(
   navController: NavHostController,
   isLoggedIn: Boolean,
-  paddingValues: PaddingValues
+  paddingValues: PaddingValues,
 ) {
   NavHost(
     navController = navController,
     startDestination = if (isLoggedIn) SCROBBLE_NAVIGATION_ROUTE else "login",
-    modifier = Modifier.padding(paddingValues)
+    modifier = Modifier
   ) {
     scrobbleGraph(navController)
     albumGraph(navController)
