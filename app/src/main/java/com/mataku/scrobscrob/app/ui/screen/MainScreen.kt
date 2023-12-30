@@ -4,6 +4,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.mataku.scrobscrob.account.ui.navigation.navigateToAccount
@@ -22,18 +23,19 @@ fun MainScreen(username: String?) {
   val currentRoute = navBackStackEntry?.destination?.route
 
   Scaffold(
+    modifier = Modifier,
     snackbarHost = {
       SnackbarHost(hostState = LocalSnackbarHostState.current)
     },
     topBar = {},
     bottomBar = {
-      if (SunsetBottomNavItem.values().map { it.screenRoute }.contains(currentRoute)) {
+      if (SunsetBottomNavItem.entries.map { it.screenRoute }.contains(currentRoute)) {
         SunsetNavigationBar(
           navController = navController,
+          navigateToScrobble = navController::navigateToScrobble,
           navigateToTopAlbums = navController::navigateToTopAlbums,
           navigateToTopArtists = navController::navigateToTopArtists,
           navigateToAccount = navController::navigateToAccount,
-          navigateToScrobble = navController::navigateToScrobble
         )
       }
     },
@@ -41,7 +43,7 @@ fun MainScreen(username: String?) {
     NavigationGraph(
       navController,
       isLoggedIn = username != null,
-      paddingValues = it
+      paddingValues = it,
     )
   }
 }
