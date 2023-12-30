@@ -1,0 +1,53 @@
+name: Generate baseline profile txt
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "Branch"
+        required: true
+        default: "develop"
+
+concurrency:
+  group: release
+  cancel-in-progress: true
+
+env:
+  FASTLANE_HIDE_CHANGELOG: true
+  GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx8g -XX:+UseParallelGC -XX:MaxMetaspaceSize=1g"
+
+jobs:
+  baseline_profile:
+    # ubuntu-latest is enough, but needed for Android Emulator: https://issuetracker.google.com/issues/193118030
+    runs-on: macos-latest
+    timeout-minutes: 25
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.branch }}
+      - uses: ./.github/actions/setup-gradle
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - name: Setup
+        env:
+          LAST_FM_API_KEY: ${{ secrets.LAST_FM_API_KEY }}
+          LAST_FM_SHARED_SECRET: ${{ secrets.LAST_FM_SHARED_SECRET }}
+          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON_DEV }}
+        run: |
+          bundle exec fastlane android setup_for_ci
+      - name: Generate benchmark profile
+        run: |
+          ./gradlew :benchmark:cleanManagedDevices --unused-only
+          ./gradlew :benchmark:pixel4Api31BenchmarkAndroidTest -Pandroid.testoptions.manageddevices.emulator.gpu="swiftshader_indirect" -Pandroid.testInstrumentationRunnerArguments.androidx.benchmark.enabledRules=BaselineProfile
+      - name: Move baseline profile file
+        run: |
+          mv benchmark/build/outputs/managed_device_android_test_additional_output/pixel4Api31/BaselineProfileGenerator_generateBaselineProfile-baseline-prof.txt app/src/main/baseline-prof.txt
