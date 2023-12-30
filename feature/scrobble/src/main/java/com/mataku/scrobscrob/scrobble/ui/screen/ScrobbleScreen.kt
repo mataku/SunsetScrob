@@ -42,7 +42,7 @@ import kotlinx.collections.immutable.ImmutableList
 @Composable
 fun ScrobbleScreen(
   viewModel: ScrobbleViewModel,
-  navController: NavController
+  navController: NavController,
 ) {
   val uiState by viewModel.uiState.collectAsState()
   val lazyListState = rememberLazyListState()
@@ -54,9 +54,11 @@ fun ScrobbleScreen(
   )
 
   Box(
-    modifier = Modifier.pullRefresh(
-      state = pullRefreshState,
-    )
+    modifier = Modifier
+      .pullRefresh(
+        state = pullRefreshState,
+      )
+      .fillMaxSize()
   ) {
     ScrobbleContent(
       lazyListState = lazyListState,
@@ -85,7 +87,7 @@ fun ScrobbleScreen(
           y = topLeftCoordinate.second
         )
       },
-      onScrollEnd = viewModel::fetchRecentTracks
+      onScrollEnd = viewModel::fetchRecentTracks,
     )
   }
 
