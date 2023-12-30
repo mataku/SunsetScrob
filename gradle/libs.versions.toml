@@ -88,7 +88,7 @@ timber = { module = "com.jakewharton.timber:timber", version = "5.0.1" }
 androidx-test-core = { module = "androidx.test:core", version = "1.5.0" }
 androidx-test-ext-junit = { module = "androidx.test.ext:junit", version = "1.1.5" }
 androidx-test-uiautomator = { module = "androidx.test.uiautomator:uiautomator", version = "2.2.0" }
-androidx-benchmark-macro-junit4 = { module = "androidx.benchmark:benchmark-macro-junit4", version = "1.2.2" }
+androidx-benchmark-macro-junit4 = { module = "androidx.benchmark:benchmark-macro-junit4", version = "1.1.1" }
 kotest-runner-junit5 = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest" }
 kotest-assertions = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
@@ -104,4 +104,4 @@ showkase-processor = { module = "com.airbnb.android:showkase-processor", version
 
 turbine = { module = "app.cash.turbine:turbine", version = "1.0.0" }
 
-haze = { module = "dev.chrisbanes.haze:haze", version = "0.4.1"}
+haze = { module = "dev.chrisbanes.haze:haze", version = "0.4.1" }

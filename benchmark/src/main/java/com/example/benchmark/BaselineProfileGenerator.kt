@@ -13,10 +13,11 @@ class BaselineProfileGenerator {
 
   @Test
   fun generateBaselineProfile() {
-    baselineProfileRule.collect(packageName = "com.mataku.scrobscrob") {
-      pressHome()
-      startActivityAndWait()
-      device.waitForIdle()
-    }
+    baselineProfileRule.collect(
+      packageName = "com.mataku.scrobscrob",
+      profileBlock = {
+        startActivityAndWait()
+      }
+    )
   }
 }
