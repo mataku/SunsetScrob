@@ -137,7 +137,7 @@ fun SunsetBottomNavigation(
 ) {
   Box(
     modifier = modifier
-      .padding(vertical = 24.dp, horizontal = 48.dp)
+      .padding(vertical = 16.dp, horizontal = 48.dp)
       .fillMaxWidth()
       .height(64.dp)
       .border(
