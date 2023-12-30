@@ -1,0 +1,2 @@
+- Change bottom navigation bar to floating
+- Update dependencies
