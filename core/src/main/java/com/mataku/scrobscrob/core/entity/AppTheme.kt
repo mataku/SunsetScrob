@@ -19,7 +19,7 @@ enum class AppTheme(
     ): AppTheme {
       rawPrimaryId ?: return DARK
 
-      return AppTheme.values().find {
+      return AppTheme.entries.find {
         it.primaryId == rawPrimaryId
       } ?: DARK
     }
