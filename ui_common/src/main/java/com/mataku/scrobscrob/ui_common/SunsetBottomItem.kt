@@ -22,13 +22,13 @@ enum class SunsetBottomNavItem(
   ),
   TOP_ALBUMS(
     R.drawable.ic_album_black_24px,
-    "Top Albums",
+    "Album",
     "top_albums",
     Icons.Default.LibraryMusic
   ),
   TOP_ARTISTS(
     R.drawable.ic_account_circle_black,
-    "Top Artists",
+    "Artist",
     "top_artists",
     Icons.Default.AccountCircle
   ),
