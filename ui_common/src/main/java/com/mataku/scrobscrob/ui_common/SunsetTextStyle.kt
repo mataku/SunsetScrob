@@ -9,10 +9,12 @@ import com.airbnb.android.showkase.annotation.ShowkaseTypography
 
 object SunsetTextStyle {
   // TODO: font
-  @ShowkaseTypography(name = "caption")
-  val caption = TextStyle(
-    fontSize = 13.sp,
-  )
+  val caption
+    @Composable
+    get() = TextStyle(
+      fontSize = 13.sp,
+      color = MaterialTheme.colorScheme.onSecondary
+    )
 
   @ShowkaseTypography(name = "body1")
   val body1 = TextStyle(

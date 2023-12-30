@@ -84,11 +84,7 @@ fun LoginScreen(
   val currentTheme = LocalAppTheme.current
   val systemUiController = rememberSystemUiController()
   systemUiController.setNavigationBarColor(
-    color = if (currentTheme == AppTheme.SUNSET) {
-      Colors.SunsetBlue
-    } else {
-      currentTheme.backgroundColor()
-    }
+    color = currentTheme.backgroundColor()
   )
   val navigationBarColor = MaterialTheme.colorScheme.primary
   val systemBarColor = LocalAppTheme.current.backgroundColor()

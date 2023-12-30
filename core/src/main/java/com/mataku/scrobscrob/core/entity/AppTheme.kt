@@ -10,8 +10,7 @@ enum class AppTheme(
   LIGHT("Light", true, 2, 5),
   MIDNIGHT("Midnight", false, 3, 2),
   OCEAN("Ocean", false, 4, 3),
-  LASTFM_DARK("Last.fm Dark", false, 5, 4),
-  SUNSET("Sunset", true, 6, 6);
+  LASTFM_DARK("Last.fm Dark", false, 5, 4);
 
   companion object {
     fun find(
@@ -19,7 +18,7 @@ enum class AppTheme(
     ): AppTheme {
       rawPrimaryId ?: return DARK
 
-      return AppTheme.values().find {
+      return AppTheme.entries.find {
         it.primaryId == rawPrimaryId
       } ?: DARK
     }

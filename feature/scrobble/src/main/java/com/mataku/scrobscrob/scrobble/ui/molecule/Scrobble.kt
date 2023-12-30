@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -94,7 +93,7 @@ private fun ScrobbleContent(
           maxLines = 1,
           overflow = TextOverflow.Ellipsis,
           style = SunsetTextStyle.body1.copy(
-            fontWeight = FontWeight.Medium
+            fontWeight = FontWeight.Bold
           )
         )
 
@@ -105,9 +104,7 @@ private fun ScrobbleContent(
           modifier = Modifier.wrapContentSize(),
           maxLines = 1,
           overflow = TextOverflow.Ellipsis,
-          style = SunsetTextStyle.caption.copy(
-            color = MaterialTheme.colorScheme.onSurface
-          )
+          style = SunsetTextStyle.caption
         )
       }
     }

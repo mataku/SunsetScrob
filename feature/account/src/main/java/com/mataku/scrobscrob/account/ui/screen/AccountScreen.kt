@@ -6,7 +6,6 @@ import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -61,8 +60,6 @@ import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.LocalSnackbarHostState
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import com.mataku.scrobscrob.ui_common.style.backgroundColor
-import com.mataku.scrobscrob.ui_common.style.colorScheme
-import com.mataku.scrobscrob.ui_common.style.sunsetBackgroundGradient
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -76,9 +73,6 @@ fun AccountScreen(
   val theme = LocalAppTheme.current
   systemUiController.setSystemBarsColor(
     theme.backgroundColor()
-  )
-  systemUiController.setNavigationBarColor(
-    theme.colorScheme().primary
   )
   val openDialog = remember {
     mutableStateOf(false)
@@ -301,16 +295,8 @@ private fun AccountContent(
         }
       }
     },
-    modifier = if (LocalAppTheme.current == AppTheme.SUNSET) {
-      Modifier
-        .fillMaxSize()
-        .background(
-          brush = sunsetBackgroundGradient
-        )
-    } else {
-      Modifier
-        .fillMaxSize()
-    }
+    modifier = Modifier
+      .fillMaxSize()
   )
 
   if (openDialog.value) {

@@ -18,7 +18,7 @@ fun NavGraphBuilder.scrobbleGraph(navController: NavController) {
       SCROBBLE_DESTINATION,
     ) {
       val systemUiController = rememberSystemUiController()
-      systemUiController.setNavigationBarColor(MaterialTheme.colorScheme.primary)
+      systemUiController.setSystemBarsColor(MaterialTheme.colorScheme.background)
       ScrobbleScreen(
         viewModel = hiltViewModel(),
         navController = navController

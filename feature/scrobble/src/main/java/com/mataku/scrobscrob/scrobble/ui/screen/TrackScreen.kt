@@ -64,11 +64,7 @@ fun TrackScreen(
   val systemUiController = rememberSystemUiController()
   val currentTheme = LocalAppTheme.current
   systemUiController.setNavigationBarColor(
-    color = if (currentTheme == AppTheme.SUNSET) {
-      Colors.SunsetBlue
-    } else {
-      currentTheme.backgroundColor()
-    }
+    color = currentTheme.backgroundColor()
   )
 
   LazyColumn(
