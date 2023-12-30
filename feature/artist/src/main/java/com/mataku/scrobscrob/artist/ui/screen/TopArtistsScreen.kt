@@ -76,7 +76,7 @@ fun TopArtistsScreen(
         },
         modifier = Modifier
           .padding(
-            bottom = 84.dp
+            bottom = 80.dp
           )
       )
     }
