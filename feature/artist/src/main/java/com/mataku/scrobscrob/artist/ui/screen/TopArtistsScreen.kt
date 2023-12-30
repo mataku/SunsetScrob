@@ -3,7 +3,6 @@ package com.mataku.scrobscrob.artist.ui.screen
 import android.annotation.SuppressLint
 import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -34,7 +33,6 @@ import androidx.navigation.NavController
 import com.mataku.scrobscrob.artist.R
 import com.mataku.scrobscrob.artist.ui.molecule.TopArtist
 import com.mataku.scrobscrob.artist.ui.viewmodel.TopArtistsViewModel
-import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.core.entity.ArtistInfo
 import com.mataku.scrobscrob.ui_common.molecule.FilteringFloatingButton
 import com.mataku.scrobscrob.ui_common.molecule.LoadingIndicator
@@ -42,8 +40,6 @@ import com.mataku.scrobscrob.ui_common.navigateToWebView
 import com.mataku.scrobscrob.ui_common.organism.ContentHeader
 import com.mataku.scrobscrob.ui_common.organism.FilteringBottomSheet
 import com.mataku.scrobscrob.ui_common.organism.InfiniteLoadingIndicator
-import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
-import com.mataku.scrobscrob.ui_common.style.sunsetBackgroundGradient
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.launch
 
@@ -132,16 +128,8 @@ private fun TopArtistsContent(
   onScrollEnd: () -> Unit
 ) {
   Column(
-    modifier = if (LocalAppTheme.current == AppTheme.SUNSET) {
-      Modifier
-        .fillMaxSize()
-        .background(
-          brush = sunsetBackgroundGradient
-        )
-    } else {
-      Modifier
-        .fillMaxSize()
-    }
+    modifier = Modifier
+      .fillMaxSize()
   ) {
     ContentHeader(text = stringResource(id = R.string.menu_top_artists))
 

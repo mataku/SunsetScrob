@@ -8,9 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mataku.scrobscrob.account.R
-import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.ui_common.organism.ContentHeader
-import com.mataku.scrobscrob.ui_common.style.Colors
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.backgroundColor
 import com.mikepenz.aboutlibraries.ui.compose.LibrariesContainer
@@ -21,11 +19,7 @@ import com.mikepenz.aboutlibraries.ui.compose.LibraryDefaults
 fun LicenseScreen() {
   val systemUiController = rememberSystemUiController()
   systemUiController.setSystemBarsColor(
-    color = if (LocalAppTheme.current == AppTheme.SUNSET) {
-      Colors.SunsetBlue
-    } else {
-      LocalAppTheme.current.backgroundColor()
-    }
+    color = LocalAppTheme.current.backgroundColor()
   )
   LibrariesContainer(
     modifier = Modifier.fillMaxSize(),

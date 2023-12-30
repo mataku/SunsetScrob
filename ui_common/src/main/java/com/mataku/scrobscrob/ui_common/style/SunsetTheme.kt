@@ -11,7 +11,6 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.staticCompositionLocalOf
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -72,7 +71,7 @@ fun AppTheme.backgroundColor(): Color {
 
 fun AppTheme.accentColor(): Color {
   return when (this) {
-    AppTheme.DARK, AppTheme.LIGHT, AppTheme.MIDNIGHT, AppTheme.SUNSET -> {
+    AppTheme.DARK, AppTheme.LIGHT, AppTheme.MIDNIGHT -> {
       Colors.LightLime
     }
 
@@ -106,10 +105,6 @@ fun AppTheme.colorScheme(): ColorScheme {
 
     AppTheme.LASTFM_DARK -> {
       lastFmDarkColorScheme
-    }
-
-    AppTheme.SUNSET -> {
-      sunsetColorScheme
     }
   }
 }
@@ -167,21 +162,6 @@ private val midnightColorScheme = darkColorScheme(
   onSurface = Color.White,
   background = Color.Black,
   onBackground = Color.White
-)
-
-private val sunsetColorScheme = lightColorScheme(
-  primary = Color(0xFFE0E0E0),
-  onPrimary = Color.Black,
-  secondary = Colors.SunsetTextSecondary,
-  onSecondary = Colors.SunsetTextSecondary,
-  surface = Color.White,
-  onSurface = Color.Black,
-  background = Colors.SunsetBackground,
-  onBackground = Color.Black
-)
-
-val sunsetBackgroundGradient = Brush.verticalGradient(
-  colors = listOf(Colors.SunsetOrange, Colors.SunsetBlue)
 )
 
 private class SunsetRippleTheme(

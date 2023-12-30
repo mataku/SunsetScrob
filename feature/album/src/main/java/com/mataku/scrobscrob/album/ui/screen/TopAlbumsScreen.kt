@@ -3,7 +3,6 @@ package com.mataku.scrobscrob.album.ui.screen
 import android.annotation.SuppressLint
 import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -34,15 +33,12 @@ import com.mataku.scrobscrob.album.R
 import com.mataku.scrobscrob.album.ui.molecule.TopAlbum
 import com.mataku.scrobscrob.album.ui.viewmodel.TopAlbumsViewModel
 import com.mataku.scrobscrob.core.entity.AlbumInfo
-import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.ui_common.molecule.FilteringFloatingButton
 import com.mataku.scrobscrob.ui_common.molecule.LoadingIndicator
 import com.mataku.scrobscrob.ui_common.navigateToWebView
 import com.mataku.scrobscrob.ui_common.organism.ContentHeader
 import com.mataku.scrobscrob.ui_common.organism.FilteringBottomSheet
 import com.mataku.scrobscrob.ui_common.organism.InfiniteLoadingIndicator
-import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
-import com.mataku.scrobscrob.ui_common.style.sunsetBackgroundGradient
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.launch
 
@@ -140,16 +136,8 @@ fun TopAlbumsContent(
   onScrollEnd: () -> Unit,
 ) {
   Column(
-    modifier = if (LocalAppTheme.current == AppTheme.SUNSET) {
-      Modifier
-        .fillMaxSize()
-        .background(
-          brush = sunsetBackgroundGradient
-        )
-    } else {
-      Modifier
-        .fillMaxSize()
-    }
+    modifier = Modifier
+      .fillMaxSize()
   ) {
     ContentHeader(text = stringResource(id = R.string.menu_top_albums))
 

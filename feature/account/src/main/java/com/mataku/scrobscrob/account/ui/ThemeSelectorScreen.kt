@@ -3,7 +3,6 @@ package com.mataku.scrobscrob.account.ui
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -32,10 +31,8 @@ import com.mataku.scrobscrob.account.ui.viewmodel.ThemeSelectorViewModel
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.organism.ContentHeader
-import com.mataku.scrobscrob.ui_common.style.Colors
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.backgroundColor
-import com.mataku.scrobscrob.ui_common.style.sunsetBackgroundGradient
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -52,11 +49,7 @@ fun ThemeSelectorScreen(
 
   if (initialState.value) {
     systemUiController.setSystemBarsColor(
-      color = if (currentTheme == AppTheme.SUNSET) {
-        Colors.SunsetBlue
-      } else {
-        currentTheme.backgroundColor()
-      }
+      currentTheme.backgroundColor()
     )
     initialState.value = false
   }
@@ -67,11 +60,7 @@ fun ThemeSelectorScreen(
     when (it) {
       is ThemeSelectorViewModel.UiEvent.ThemeChanged -> {
         systemUiController.setSystemBarsColor(
-          color = if (it.theme == AppTheme.SUNSET) {
-            Colors.SunsetBlue
-          } else {
-            it.theme.backgroundColor()
-          }
+          it.theme.backgroundColor()
         )
       }
     }
@@ -95,16 +84,8 @@ fun ThemeSelectorScreen(
             })
         }
       },
-      modifier = if (LocalAppTheme.current == AppTheme.SUNSET) {
-        Modifier
-          .fillMaxSize()
-          .background(
-            brush = sunsetBackgroundGradient
-          )
-      } else {
-        Modifier
-          .fillMaxSize()
-      }
+      modifier = Modifier
+        .fillMaxSize()
     )
   }
   val navigationBarColor = MaterialTheme.colorScheme.primary

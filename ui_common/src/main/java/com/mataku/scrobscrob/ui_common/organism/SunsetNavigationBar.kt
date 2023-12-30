@@ -190,7 +190,7 @@ fun SunsetBottomNavigation(
       modifier = Modifier
         .fillMaxSize()
         .clip(CircleShape)
-        .alpha(.90F)
+        .alpha(.95F)
         .background(MaterialTheme.colorScheme.primary)
     ) {
       val path = Path().apply {

@@ -15,9 +15,7 @@ import com.mataku.scrobscrob.account.ui.screen.AccountScreen
 import com.mataku.scrobscrob.account.ui.screen.LicenseScreen
 import com.mataku.scrobscrob.account.ui.screen.PrivacyPolicyScreen
 import com.mataku.scrobscrob.account.ui.screen.ScrobbleSettingScreen
-import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.ui_common.PRIVACY_POLICY_DESTINATION
-import com.mataku.scrobscrob.ui_common.style.Colors
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.backgroundColor
 
@@ -45,11 +43,7 @@ fun NavGraphBuilder.accountGraph(navController: NavController) {
     ) {
       val systemUiController = rememberSystemUiController()
       systemUiController.setNavigationBarColor(
-        color = if (LocalAppTheme.current == AppTheme.SUNSET) {
-          Colors.SunsetBlue
-        } else {
-          LocalAppTheme.current.backgroundColor()
-        }
+        color = LocalAppTheme.current.backgroundColor()
       )
       ScrobbleSettingScreen()
     }
