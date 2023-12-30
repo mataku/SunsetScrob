@@ -46,7 +46,7 @@ fun FilteringBottomSheet(
     )
 
     Spacer(modifier = Modifier.height(16.dp))
-    TimeRangeFiltering.values().forEach {
+    TimeRangeFiltering.entries.forEach {
       TimeRangeCell(
         timeRangeValue = it.uiLabel,
         selected = it == selectedTimeRangeFiltering,

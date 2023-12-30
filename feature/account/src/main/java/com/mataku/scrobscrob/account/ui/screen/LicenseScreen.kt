@@ -20,7 +20,7 @@ import com.mikepenz.aboutlibraries.ui.compose.LibraryDefaults
 @Composable
 fun LicenseScreen() {
   val systemUiController = rememberSystemUiController()
-  systemUiController.setNavigationBarColor(
+  systemUiController.setSystemBarsColor(
     color = if (LocalAppTheme.current == AppTheme.SUNSET) {
       Colors.SunsetBlue
     } else {

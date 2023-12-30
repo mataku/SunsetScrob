@@ -51,7 +51,7 @@ fun ThemeSelectorScreen(
   }
 
   if (initialState.value) {
-    systemUiController.setNavigationBarColor(
+    systemUiController.setSystemBarsColor(
       color = if (currentTheme == AppTheme.SUNSET) {
         Colors.SunsetBlue
       } else {
@@ -66,7 +66,7 @@ fun ThemeSelectorScreen(
   uiState.event?.let {
     when (it) {
       is ThemeSelectorViewModel.UiEvent.ThemeChanged -> {
-        systemUiController.setNavigationBarColor(
+        systemUiController.setSystemBarsColor(
           color = if (it.theme == AppTheme.SUNSET) {
             Colors.SunsetBlue
           } else {
@@ -84,7 +84,7 @@ fun ThemeSelectorScreen(
         stickyHeader {
           ContentHeader(text = stringResource(id = R.string.title_theme_selector))
         }
-        items(AppTheme.values().sortedBy {
+        items(AppTheme.entries.sortedBy {
           it.priority
         }) {
           ThemeCell(

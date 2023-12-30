@@ -79,7 +79,9 @@ fun TopArtistsScreen(
           }
         },
         modifier = Modifier
-          .padding(84.dp)
+          .padding(
+            bottom = 84.dp
+          )
       )
     }
   ) {
