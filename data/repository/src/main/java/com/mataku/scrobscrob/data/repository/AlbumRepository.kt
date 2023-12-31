@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 import javax.inject.Singleton
 
-interface TopAlbumsRepository {
+interface AlbumRepository {
   suspend fun fetchTopAlbums(
     page: Int,
     username: String,
@@ -21,9 +21,9 @@ interface TopAlbumsRepository {
 }
 
 @Singleton
-class TopAlbumsRepositoryImpl @Inject constructor(
+class AlbumRepositoryImpl @Inject constructor(
   private val lastFmService: LastFmService
-) : TopAlbumsRepository {
+) : AlbumRepository {
   override suspend fun fetchTopAlbums(
     page: Int,
     username: String,
