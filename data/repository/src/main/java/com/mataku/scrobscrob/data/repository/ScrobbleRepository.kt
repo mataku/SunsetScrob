@@ -3,7 +3,6 @@ package com.mataku.scrobscrob.data.repository
 import com.mataku.scrobscrob.core.entity.NowPlayingTrackEntity
 import com.mataku.scrobscrob.core.entity.RecentTrack
 import com.mataku.scrobscrob.core.entity.ScrobbleResult
-import com.mataku.scrobscrob.core.entity.overScrobblePoint
 import com.mataku.scrobscrob.data.api.LastFmService
 import com.mataku.scrobscrob.data.api.endpoint.ApiSignature
 import com.mataku.scrobscrob.data.api.endpoint.ScrobbleEndpoint
@@ -50,7 +49,7 @@ class ScrobbleRepositoryImpl @Inject constructor(
 
   override suspend fun scrobble(currentTrack: NowPlayingTrackEntity) = flow {
     val sessionKey = sessionDataStore.sessionKey()
-    if (sessionKey == null) {
+    if (sessionKey.isNullOrEmpty()) {
       emit(ScrobbleResult(accepted = false))
       return@flow
     }

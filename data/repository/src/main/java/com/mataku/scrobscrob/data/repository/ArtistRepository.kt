@@ -4,8 +4,10 @@ import com.mataku.scrobscrob.core.entity.ArtistInfo
 import com.mataku.scrobscrob.data.api.LastFmService
 import com.mataku.scrobscrob.data.api.endpoint.ArtistInfoEndpoint
 import com.mataku.scrobscrob.data.repository.mapper.toArtistInfo
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -28,5 +30,5 @@ class ArtistRepositoryImpl @Inject constructor(
     )
     val response = lastFmService.request(endpoint)
     emit(response.toArtistInfo())
-  }
+  }.flowOn(Dispatchers.IO)
 }
