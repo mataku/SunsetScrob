@@ -2,6 +2,8 @@ package com.mataku.scrobscrob.data.repository.di
 
 import com.mataku.scrobscrob.data.api.di.ApiModule
 import com.mataku.scrobscrob.data.db.di.DatabaseModule
+import com.mataku.scrobscrob.data.repository.AlbumRepository
+import com.mataku.scrobscrob.data.repository.AlbumRepositoryImpl
 import com.mataku.scrobscrob.data.repository.ArtistRepository
 import com.mataku.scrobscrob.data.repository.ArtistRepositoryImpl
 import com.mataku.scrobscrob.data.repository.NowPlayingRepository
@@ -14,8 +16,6 @@ import com.mataku.scrobscrob.data.repository.SessionRepository
 import com.mataku.scrobscrob.data.repository.SessionRepositoryImpl
 import com.mataku.scrobscrob.data.repository.ThemeRepository
 import com.mataku.scrobscrob.data.repository.ThemeRepositoryImpl
-import com.mataku.scrobscrob.data.repository.TopAlbumsRepository
-import com.mataku.scrobscrob.data.repository.TopAlbumsRepositoryImpl
 import com.mataku.scrobscrob.data.repository.TopArtistsRepository
 import com.mataku.scrobscrob.data.repository.TopArtistsRepositoryImpl
 import com.mataku.scrobscrob.data.repository.TrackRepository
@@ -42,7 +42,7 @@ abstract class RepositoryModule {
 
   @Singleton
   @Binds
-  abstract fun provideTopAlbumsRepository(repository: TopAlbumsRepositoryImpl): TopAlbumsRepository
+  abstract fun provideTopAlbumsRepository(repository: AlbumRepositoryImpl): AlbumRepository
 
   @Singleton
   @Binds
