@@ -9,7 +9,9 @@ import io.kotest.matchers.shouldBe
 import io.ktor.client.engine.mock.MockEngine
 import io.ktor.client.engine.mock.respond
 import io.ktor.http.HttpHeaders
+import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
+import io.ktor.http.fullPath
 import io.ktor.http.headersOf
 import io.ktor.utils.io.ByteReadChannel
 
@@ -66,7 +68,9 @@ class AlbumRepositorySpec : DescribeSpec({
           }
         }
       """.trimIndent()
-      val mockEngine = MockEngine {
+      val mockEngine = MockEngine { request ->
+        request.url.fullPath shouldBe "/2.0/?method=user.getTopAlbums&format=json&limit=20&page=${page}&period=${timeRangeFiltering.rawValue}&user=${username}"
+        request.method shouldBe HttpMethod.Get
         respond(
           content = ByteReadChannel(response),
           status = HttpStatusCode.OK,
