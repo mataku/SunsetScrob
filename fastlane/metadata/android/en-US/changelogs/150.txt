@@ -1,0 +1,1 @@
+- Fix unexpected transition animation when account setting screen is opened
