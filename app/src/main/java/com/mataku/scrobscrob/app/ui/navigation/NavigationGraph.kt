@@ -1,7 +1,13 @@
 package com.mataku.scrobscrob.app.ui.navigation
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -22,7 +28,20 @@ fun NavigationGraph(
   NavHost(
     navController = navController,
     startDestination = if (isLoggedIn) SCROBBLE_NAVIGATION_ROUTE else "login",
-    modifier = Modifier
+    modifier = Modifier,
+    enterTransition = {
+      fadeIn(tween(250))
+    },
+    exitTransition = {
+      fadeOut(tween(250))
+    },
+    popEnterTransition = {
+      EnterTransition.None
+    },
+    popExitTransition = {
+      ExitTransition.None
+    },
+    contentAlignment = Alignment.TopStart // Workaround for default TopStart animation issue
   ) {
     scrobbleGraph(navController)
     albumGraph(navController)
