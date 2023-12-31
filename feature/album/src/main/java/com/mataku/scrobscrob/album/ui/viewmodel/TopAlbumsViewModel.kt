@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mataku.scrobscrob.core.entity.AlbumInfo
 import com.mataku.scrobscrob.core.entity.TimeRangeFiltering
-import com.mataku.scrobscrob.data.repository.TopAlbumsRepository
+import com.mataku.scrobscrob.data.repository.AlbumRepository
 import com.mataku.scrobscrob.data.repository.UsernameRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.ImmutableList
@@ -20,7 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TopAlbumsViewModel @Inject constructor(
-  private val topAlbumsRepository: TopAlbumsRepository,
+  private val topAlbumsRepository: AlbumRepository,
   usernameRepository: UsernameRepository
 ) : ViewModel() {
 
