@@ -13,10 +13,9 @@ dependencies {
   implementation(project(":data:api"))
   implementation(project(":data:db"))
 
-  // TODO: Endpoint の requestType を独自の enum にして ktor に依存しないようにした上で消す
   implementation(libs.ktor.client.core)
-
   implementation(libs.timber)
-
   implementation(libs.kotlinx.collection)
+  testImplementation(libs.ktor.client.mock)
+  testImplementation(libs.turbine)
 }
