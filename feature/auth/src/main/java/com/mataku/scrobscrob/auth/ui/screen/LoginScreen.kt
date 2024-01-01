@@ -19,7 +19,6 @@ import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -61,11 +60,9 @@ import androidx.navigation.NavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mataku.scrobscrob.auth.R
 import com.mataku.scrobscrob.auth.ui.viewmodel.LoginViewModel
-import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.navigateToPrivacyPolicy
 import com.mataku.scrobscrob.ui_common.navigateToScrobbleFromAuth
-import com.mataku.scrobscrob.ui_common.style.Colors
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.LocalSnackbarHostState
 import com.mataku.scrobscrob.ui_common.style.SunsetTheme
@@ -134,7 +131,7 @@ fun LoginScreen(
   )
 }
 
-@OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun LoginContent(
   isLoading: Boolean,

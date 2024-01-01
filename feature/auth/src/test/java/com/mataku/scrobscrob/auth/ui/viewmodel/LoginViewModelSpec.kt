@@ -1,7 +1,7 @@
 package com.mataku.scrobscrob.auth.ui.viewmodel
 
 import com.mataku.scrobscrob.data.repository.SessionRepository
-import com.mataku.scrobscrob.test_helper.CoroutinesListener
+import com.mataku.scrobscrob.test_helper.unit.CoroutinesListener
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.nulls.shouldBeNull
@@ -14,7 +14,7 @@ import java.util.concurrent.TimeoutException
 
 class LoginViewModelSpec : DescribeSpec({
 
-  extension(CoroutinesListener())
+  extension(com.mataku.scrobscrob.test_helper.unit.CoroutinesListener())
 
   val sessionRepository = mockk<SessionRepository>()
   val viewModel = LoginViewModel(sessionRepository)
