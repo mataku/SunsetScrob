@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-  namespace = "com.mataku.scrobscrob.test_helper"
+  namespace = "com.mataku.scrobscrob.test_helper.unit"
 }
 
 dependencies {

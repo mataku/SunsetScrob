@@ -1,4 +1,4 @@
-package com.mataku.scrobscrob.test_helper
+package com.mataku.scrobscrob.test_helper.unit
 
 import io.kotest.core.listeners.TestListener
 import io.kotest.core.spec.Spec
