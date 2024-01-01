@@ -1,0 +1,26 @@
+plugins {
+  id("sunsetscrob.android.feature")
+  id("sunsetscrob.android.compose")
+  id("sunsetscrob.android.dagger")
+}
+
+android {
+  namespace = "com.mataku.scrobscrob.chart"
+}
+
+dependencies {
+  implementation(project(":ui_common"))
+  implementation(project(":core"))
+  implementation(project(":data:repository"))
+  implementation(libs.activity.compose)
+  debugImplementation(libs.compose.ui.tooling)
+  implementation(libs.compose.animation)
+  implementation(libs.compose.material3)
+  implementation(libs.compose.navigation)
+
+  implementation(libs.accompanist.systemuicontroller)
+  implementation(libs.hilt.navigation.compose)
+
+  implementation(libs.coroutines)
+  implementation(libs.kotlinx.collection)
+}
