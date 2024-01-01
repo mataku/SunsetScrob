@@ -2,10 +2,16 @@ package com.mataku.scrobscrob.data.repository.mapper
 
 import com.mataku.scrobscrob.core.entity.AlbumInfo
 import com.mataku.scrobscrob.core.entity.ArtistInfo
+import com.mataku.scrobscrob.core.entity.ChartArtist
+import com.mataku.scrobscrob.core.entity.ChartTopArtists
+import com.mataku.scrobscrob.core.entity.ChartTopTracks
+import com.mataku.scrobscrob.core.entity.ChartTrack
+import com.mataku.scrobscrob.core.entity.ChartTrackArtist
 import com.mataku.scrobscrob.core.entity.Image
 import com.mataku.scrobscrob.core.entity.NowPlaying
 import com.mataku.scrobscrob.core.entity.NowPlayingTrack
 import com.mataku.scrobscrob.core.entity.NowPlayingTrackEntity
+import com.mataku.scrobscrob.core.entity.PagingAttr
 import com.mataku.scrobscrob.core.entity.RecentTrack
 import com.mataku.scrobscrob.core.entity.ScrobbleResult
 import com.mataku.scrobscrob.core.entity.Tag
@@ -15,8 +21,11 @@ import com.mataku.scrobscrob.core.entity.TrackInfo
 import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.data.api.endpoint.TrackInfoApiResponse
 import com.mataku.scrobscrob.data.api.model.ArtistInfoApiResponse
+import com.mataku.scrobscrob.data.api.model.ChartTopArtistsResponse
+import com.mataku.scrobscrob.data.api.model.ChartTopTracksResponse
 import com.mataku.scrobscrob.data.api.model.ImageBody
 import com.mataku.scrobscrob.data.api.model.NowPlayingApiResponse
+import com.mataku.scrobscrob.data.api.model.PagingAttrBody
 import com.mataku.scrobscrob.data.api.model.RecentTracksApiResponse
 import com.mataku.scrobscrob.data.api.model.ScrobbleApiResponse
 import com.mataku.scrobscrob.data.api.model.TopTagsBody
@@ -162,6 +171,56 @@ fun ScrobbleApiResponse.toScrobbleResult(): ScrobbleResult {
   val body = this.scrobbleResult
   return ScrobbleResult(
     accepted = body.attr.accepted == 1
+  )
+}
+
+fun PagingAttrBody.toPagingAttr(): PagingAttr {
+  return PagingAttr(
+    page = this.page,
+    perPage = this.perPage,
+    total = this.total,
+    totalPages = this.totalPages
+  )
+}
+
+fun ChartTopArtistsResponse.toChartTopArtists(): ChartTopArtists {
+  val body = this.chartTopArtistsBody
+  val topArtists = body.topArtists.map { chartArtist ->
+    ChartArtist(
+      name = chartArtist.name,
+      playCount = chartArtist.playCount,
+      listeners = chartArtist.listeners,
+      url = chartArtist.url,
+      imageList = chartArtist.imageList.toImageList()
+    )
+  }
+  val pagingAttr = body.pagingAttrBody.toPagingAttr()
+  return ChartTopArtists(
+    topArtists = topArtists,
+    pagingAttr = pagingAttr
+  )
+}
+
+fun ChartTopTracksResponse.toChartTopTracks(): ChartTopTracks {
+  val body = this.chartTopTracksBody
+  val topTracks = body.topTracks.map {
+    ChartTrack(
+      name = it.name,
+      playCount = it.playCount,
+      listeners = it.listeners,
+      url = it.url,
+      artist = ChartTrackArtist(
+        name = it.artist.name,
+        url = it.artist.url
+      ),
+      imageList = it.imageList.toImageList()
+    )
+  }
+  val pagingAttr = body.pagingAttrBody.toPagingAttr()
+
+  return ChartTopTracks(
+    topTracks = topTracks,
+    pagingAttr = pagingAttr
   )
 }
 
