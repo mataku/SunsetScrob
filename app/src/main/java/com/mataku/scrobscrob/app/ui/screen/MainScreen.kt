@@ -1,5 +1,6 @@
 package com.mataku.scrobscrob.app.ui.screen
 
+import android.annotation.SuppressLint
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.runtime.Composable
@@ -16,6 +17,8 @@ import com.mataku.scrobscrob.ui_common.navigateToScrobble
 import com.mataku.scrobscrob.ui_common.organism.SunsetNavigationBar
 import com.mataku.scrobscrob.ui_common.style.LocalSnackbarHostState
 
+// Suppress warning because of custom transparent background bottom nav
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MainScreen(username: String?) {
   val navController = rememberNavController()
@@ -43,7 +46,6 @@ fun MainScreen(username: String?) {
     NavigationGraph(
       navController,
       isLoggedIn = username != null,
-      paddingValues = it,
     )
   }
 }

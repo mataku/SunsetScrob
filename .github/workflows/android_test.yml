@@ -7,6 +7,9 @@ on:
         description: "Branch"
         required: true
         default: "develop"
+  pull_request:
+    branches:
+      - '**'
 
 concurrency:
   group: ${{ github.head_ref || 'develop' }}-integration
@@ -14,11 +17,13 @@ concurrency:
 
 env:
   FASTLANE_HIDE_CHANGELOG: true
+  FASTLANE_SKIP_UPDATE_CHECK: true
   GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx8g -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -XX:+UseParallelGC -XX:MaxMetaspaceSize=1g"
 
 jobs:
   android_test:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
+    timeout-minutes: 25
 
     steps:
       - uses: actions/checkout@v4
@@ -28,13 +33,25 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
-      - name: Run android tests
+      - name: Setup env
         env:
           LAST_FM_API_KEY: ${{ secrets.LAST_FM_API_KEY }}
           LAST_FM_SHARED_SECRET: ${{ secrets.LAST_FM_SHARED_SECRET }}
           GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON_DEV }}
         run: |
           bundle exec fastlane android setup_for_ci
-          bundle exec fastlane android android_test
-          brew install tree
-          tree feature/account/build/reports/
+      - name: Run instrumentation tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 31
+          arch: x86_64
+          disable-animations: true
+          disk-size: 6000M
+          heap-size: 800M
+          script: bundle exec fastlane android android_test
+      - name: Upload test reports
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-test-reports
+          path: '**/build/reports/androidTests'
