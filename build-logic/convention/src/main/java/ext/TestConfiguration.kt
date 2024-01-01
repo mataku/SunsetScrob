@@ -31,14 +31,12 @@ fun Project.testConfiguration() {
     val kotestRunner = libs.findLibrary("kotest-runner-junit5").get()
     val kotestAssertions = libs.findLibrary("kotest-assertions").get()
     val mockk = libs.findLibrary("mockk").get()
-    val mockkAgentJvm = libs.findLibrary("mockk-agent-jvm").get()
     val turbine = libs.findLibrary("turbine").get()
     listOf(
       androidxTestCore,
       kotestRunner,
       kotestAssertions,
       mockk,
-      mockkAgentJvm,
       turbine
     ).forEach {
       add("testImplementation", it)
