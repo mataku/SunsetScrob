@@ -18,7 +18,7 @@ env:
 
 jobs:
   android_test:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
 
     steps:
       - uses: actions/checkout@v4
@@ -28,13 +28,27 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
-      - name: Run android tests
+      - name: Setup env
         env:
           LAST_FM_API_KEY: ${{ secrets.LAST_FM_API_KEY }}
           LAST_FM_SHARED_SECRET: ${{ secrets.LAST_FM_SHARED_SECRET }}
           GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON_DEV }}
         run: |
           bundle exec fastlane android setup_for_ci
-          bundle exec fastlane android android_test
+      - name: Run instrumentation tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 31
+          arch: x86_64
+          disable-animations: true
+          disk-size: 6000M
+          heap-size: 800M
+          script: bundle exec fastlane android android_test
+      - name: Run debug
+        env:
+          LAST_FM_API_KEY: ${{ secrets.LAST_FM_API_KEY }}
+          LAST_FM_SHARED_SECRET: ${{ secrets.LAST_FM_SHARED_SECRET }}
+          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON_DEV }}
+        run: |
           brew install tree
           tree feature/account/build/reports/
