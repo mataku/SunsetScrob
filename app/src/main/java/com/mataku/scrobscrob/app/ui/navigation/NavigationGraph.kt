@@ -5,7 +5,6 @@ import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,7 +22,6 @@ import com.mataku.scrobscrob.ui_common.commonGraph
 fun NavigationGraph(
   navController: NavHostController,
   isLoggedIn: Boolean,
-  paddingValues: PaddingValues,
 ) {
   NavHost(
     navController = navController,
