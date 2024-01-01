@@ -55,7 +55,9 @@ class ApplicationConventionPlugin : Plugin<Project> {
             "META-INF/ktor-utils.kotlin_module",
             "META-INF/kotlinx-coroutines-core.kotlin_module",
             "META-INF/kotlinx-serialization-runtime.kotlin_module",
-            "META-INF/gradle/incremental.annotation.processors"
+            "META-INF/gradle/incremental.annotation.processors",
+            "META-INF/LICENSE.md",
+            "META-INF/LICENSE-notice.md"
           )
           resources.excludes.addAll(excludePatterns)
         }

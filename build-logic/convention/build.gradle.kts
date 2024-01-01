@@ -34,5 +34,9 @@ gradlePlugin {
       id = "sunsetscrob.android.dagger"
       implementationClass = "DaggerConventionPlugin"
     }
+    register("androidTest") {
+      id = "sunsetscrob.android.test.integration"
+      implementationClass = "AndroidTestConventionPlugin"
+    }
   }
 }

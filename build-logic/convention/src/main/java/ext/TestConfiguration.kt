@@ -36,7 +36,6 @@ fun Project.testConfiguration() {
     val mockk = libs.findLibrary("mockk").get()
     val mockkAgentJvm = libs.findLibrary("mockk-agent-jvm").get()
     val turbine = libs.findLibrary("turbine").get()
-    val testHelper = project(":test_helper")
     listOf(
       androidxTestCore,
       kotestRunner,
@@ -47,6 +46,6 @@ fun Project.testConfiguration() {
     ).forEach {
       add("testImplementation", it)
     }
-    add("testImplementation", testHelper)
+    add("testImplementation", project(":test_helper:unit"))
   }
 }
