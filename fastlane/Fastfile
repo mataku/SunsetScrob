@@ -23,6 +23,12 @@ platform :android do
     gradle(task: "testDebugUnitTest")
   end
 
+  desc "Run androidTest on Pixel4 api 31"
+  lane :android_test do
+    gradle(task: 'cleanManagedDevices')
+    gradle(task: 'pixel4Api31DebugAndroidTest')
+  end
+
   lane :debugbuild do
     gradle(task: 'assembleDebug')
   end
