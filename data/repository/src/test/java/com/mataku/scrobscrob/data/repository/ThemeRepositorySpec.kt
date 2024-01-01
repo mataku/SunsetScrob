@@ -2,7 +2,7 @@ package com.mataku.scrobscrob.data.repository
 
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.data.db.ThemeDataStore
-import com.mataku.scrobscrob.test_helper.CoroutinesListener
+import com.mataku.scrobscrob.test_helper.unit.CoroutinesListener
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.coEvery
@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOf
 
 class ThemeRepositorySpec : DescribeSpec({
-  extension(CoroutinesListener())
+  extension(com.mataku.scrobscrob.test_helper.unit.CoroutinesListener())
 
   val themeDataStore = mockk<ThemeDataStore>()
   val repository = ThemeRepositoryImpl(themeDataStore)
