@@ -22,7 +22,8 @@ class AndroidTestConventionPlugin : Plugin<Project> {
             val excludePatterns = listOf(
               "META-INF/LICENSE.md",
               "META-INF/LICENSE-notice.md",
-              "win32-x86-64/attach_hotspot_windows.dll"
+              "win32-x86-64/attach_hotspot_windows.dll",
+              "META-INF/AL2.0",
             )
             resources.excludes.addAll(excludePatterns)
           }
@@ -48,6 +49,9 @@ class AndroidTestConventionPlugin : Plugin<Project> {
               systemImageSource = "aosp"
             }
           }
+        }
+        defaultConfig {
+          testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         }
       }
     }

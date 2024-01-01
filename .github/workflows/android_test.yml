@@ -44,11 +44,9 @@ jobs:
           disk-size: 6000M
           heap-size: 800M
           script: bundle exec fastlane android android_test
-      - name: Run debug
-        env:
-          LAST_FM_API_KEY: ${{ secrets.LAST_FM_API_KEY }}
-          LAST_FM_SHARED_SECRET: ${{ secrets.LAST_FM_SHARED_SECRET }}
-          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON_DEV }}
-        run: |
-          brew install tree
-          tree feature/account/build/reports/
+      - name: Upload test reports
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-test-reports
+          path: '**/build/reports/androidTests'

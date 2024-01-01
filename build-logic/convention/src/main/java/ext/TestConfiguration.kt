@@ -23,9 +23,6 @@ fun Project.testConfiguration() {
         }
       }
     }
-    defaultConfig {
-      testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
   }
 
   val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
@@ -46,6 +43,6 @@ fun Project.testConfiguration() {
     ).forEach {
       add("testImplementation", it)
     }
-    add("testImplementation", project(":test_helper:unit"))
+    add("testDebugImplementation", project(":test_helper:unit"))
   }
 }

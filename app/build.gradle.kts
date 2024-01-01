@@ -2,6 +2,7 @@ plugins {
   id("sunsetscrob.android.application")
   id("sunsetscrob.android.compose")
   id("sunsetscrob.android.dagger")
+  id("sunsetscrob.android.test.integration")
   id("com.google.firebase.crashlytics")
   id("com.google.gms.google-services")
   id("com.google.devtools.ksp")
