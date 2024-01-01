@@ -40,14 +40,6 @@ jobs:
           GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON_DEV }}
         run: |
           bundle exec fastlane android setup_for_ci
-      - name: Cache avd
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.android/avd/*
-            ~/.android/adb*
-          key: android-test-avd
-
       - name: Run instrumentation tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
