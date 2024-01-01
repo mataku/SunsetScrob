@@ -31,10 +31,6 @@ platform :android do
     gradle(task: android_test_gradle_tasks)
   end
 
-  lane :debugbuild do
-    gradle(task: 'assembleDebug')
-  end
-
   desc "Build an aab"
   lane :build do
     gradle(task: 'bundleRelease')
@@ -43,19 +39,6 @@ platform :android do
   lane :fetch_metadata do
     download_from_play_store(
       package_name: 'com.mataku.scrobscrob'
-    )
-  end
-
-  desc "Deploy a new version to the Google Play"
-  lane :deploy do
-    gradle(task: "bundleRelease")
-    supply(
-      aab: 'app/build/outputs/bundle/release/app-release.aab',
-      skip_upload_metadata: false,
-      skip_upload_images: true,
-      skip_upload_screenshots: true,
-      skip_upload_apk: true,
-      track: 'internal'
     )
   end
 
