@@ -6,6 +6,8 @@ import com.mataku.scrobscrob.data.repository.AlbumRepository
 import com.mataku.scrobscrob.data.repository.AlbumRepositoryImpl
 import com.mataku.scrobscrob.data.repository.ArtistRepository
 import com.mataku.scrobscrob.data.repository.ArtistRepositoryImpl
+import com.mataku.scrobscrob.data.repository.ChartRepository
+import com.mataku.scrobscrob.data.repository.ChartRepositoryImpl
 import com.mataku.scrobscrob.data.repository.NowPlayingRepository
 import com.mataku.scrobscrob.data.repository.NowPlayingRepositoryImpl
 import com.mataku.scrobscrob.data.repository.ScrobbleRepository
@@ -71,4 +73,8 @@ abstract class RepositoryModule {
   @Singleton
   @Binds
   abstract fun provideScrobbleSettingRepository(repository: ScrobbleSettingRepositoryImpl): ScrobbleSettingRepository
+
+  @Singleton
+  @Binds
+  abstract fun provideChartRepository(repository: ChartRepositoryImpl): ChartRepository
 }
