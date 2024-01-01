@@ -25,7 +25,10 @@ platform :android do
 
   desc "Run androidTest on connected device"
   lane :android_test do
-    gradle(task: 'connectedDebugAndroidTest')
+    android_test_gradle_tasks = android_test_dirs.map do |dir|
+      "#{dir}:connectedDebugAndroidTest"
+    end.join(' ')
+    gradle(task: android_test_gradle_tasks)
   end
 
   lane :debugbuild do
@@ -96,5 +99,14 @@ platform :android do
     #   message: exception.message,
     #   success: false
     # )
+  end
+
+  def android_test_dirs
+    Dir.chdir '..' do
+      raw_android_test_dirs = `find . -name 'androidTest' -type d | grep 'src'`
+      raw_android_test_dirs.split("\n").map do |dir|
+        dir.split('/src')[0].gsub(/\./, '').gsub(/\//, ':')
+      end
+    end
   end
 end
