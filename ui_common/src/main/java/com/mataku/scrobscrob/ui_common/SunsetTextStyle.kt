@@ -17,7 +17,6 @@ object SunsetTextStyle {
     Font(R.font.notosansjp_medium, FontWeight.Medium),
   )
 
-  // TODO: font
   val caption
     @Composable
     get() = TextStyle(
@@ -30,7 +29,7 @@ object SunsetTextStyle {
     )
 
   @ShowkaseTypography(name = "body1")
-  val body1 = TextStyle(
+  val body = TextStyle(
     fontSize = 16.sp,
     fontFamily = notoSansJpFamily,
     platformStyle = PlatformTextStyle(
@@ -39,7 +38,7 @@ object SunsetTextStyle {
   )
 
   @ShowkaseTypography(name = "body2")
-  val body2 = TextStyle(
+  val label = TextStyle(
     fontSize = 14.sp,
     fontFamily = notoSansJpFamily,
     platformStyle = PlatformTextStyle(
@@ -60,7 +59,7 @@ object SunsetTextStyle {
     )
 
   @ShowkaseTypography(name = "header title")
-  val h6 = TextStyle(
+  val title = TextStyle(
     fontWeight = FontWeight.Medium,
     fontSize = 20.sp,
     letterSpacing = 0.15.sp,
@@ -70,7 +69,7 @@ object SunsetTextStyle {
     )
   )
 
-  val h7 = TextStyle(
+  val headline = TextStyle(
     fontWeight = FontWeight.Medium,
     fontSize = 18.sp,
     letterSpacing = 0.15.sp,
@@ -81,7 +80,7 @@ object SunsetTextStyle {
   )
 
   @ShowkaseTypography(name = "subtitle")
-  val subtitle1 = TextStyle(
+  val subtitle = TextStyle(
     fontWeight = FontWeight.Medium,
     fontSize = 16.sp,
     letterSpacing = 0.15.sp,

@@ -92,7 +92,7 @@ private fun ScrobbleContent(
           modifier = Modifier.wrapContentSize(),
           maxLines = 1,
           overflow = TextOverflow.Ellipsis,
-          style = SunsetTextStyle.body1.copy(
+          style = SunsetTextStyle.body.copy(
             fontWeight = FontWeight.Bold
           )
         )

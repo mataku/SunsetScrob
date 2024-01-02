@@ -40,7 +40,7 @@ fun TrackAlbum(
 
     Text(
       text = stringResource(id = R.string.label_track_album),
-      style = SunsetTextStyle.h7
+      style = SunsetTextStyle.headline
     )
 
     Row(
@@ -77,7 +77,7 @@ fun TrackAlbum(
           modifier = Modifier.wrapContentSize(),
           maxLines = 1,
           overflow = TextOverflow.Ellipsis,
-          style = SunsetTextStyle.body1.copy(
+          style = SunsetTextStyle.body.copy(
             fontWeight = FontWeight.Bold
           )
         )
@@ -89,7 +89,7 @@ fun TrackAlbum(
           modifier = Modifier.wrapContentSize(),
           maxLines = 1,
           overflow = TextOverflow.Ellipsis,
-          style = SunsetTextStyle.body2
+          style = SunsetTextStyle.label
         )
       }
     }

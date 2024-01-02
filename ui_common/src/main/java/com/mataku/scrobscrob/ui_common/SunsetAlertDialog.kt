@@ -29,7 +29,7 @@ fun SunsetAlertDialog(
         onConfirmButton.invoke()
       }) {
         Text(
-          text = confirmButtonText, style = SunsetTextStyle.body1.copy(
+          text = confirmButtonText, style = SunsetTextStyle.body.copy(
             MaterialTheme.colorScheme.onSurface
           )
         )
@@ -41,7 +41,7 @@ fun SunsetAlertDialog(
           onDismissButton.invoke()
         }) {
           Text(
-            text = dismissButtonText, style = SunsetTextStyle.body1.copy(
+            text = dismissButtonText, style = SunsetTextStyle.body.copy(
               MaterialTheme.colorScheme.onSurface
             )
           )

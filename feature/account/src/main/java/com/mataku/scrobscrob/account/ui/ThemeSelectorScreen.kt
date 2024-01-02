@@ -111,7 +111,7 @@ private fun ThemeCell(
   ) {
     Text(
       text = theme.displayName,
-      style = SunsetTextStyle.body1,
+      style = SunsetTextStyle.body,
       modifier = Modifier.weight(1F)
     )
 
