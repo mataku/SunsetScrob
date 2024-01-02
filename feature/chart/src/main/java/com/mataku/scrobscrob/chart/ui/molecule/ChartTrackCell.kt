@@ -30,7 +30,7 @@ import com.mataku.scrobscrob.ui_common.molecule.SunsetImage
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 
 @Composable
-fun ChartTrackCell(
+internal fun ChartTrackCell(
   chartTrack: ChartTrack,
   rank: Int,
   modifier: Modifier = Modifier,
