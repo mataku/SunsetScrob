@@ -71,7 +71,7 @@ fun SunsetNavigationBar(
     SunsetBottomNavItem.entries.find { it.screenRoute == route } ?: SunsetBottomNavItem.SCROBBLE
 
   SunsetBottomNavigation(
-    tabs = SunsetBottomNavItem.entries,
+    tabs = SunsetBottomNavItem.entries.filter { it != SunsetBottomNavItem.CHART },
     selectedItem = selectedItem,
     onTabSelected = { item ->
       if (item == selectedItem) return@SunsetBottomNavigation
