@@ -36,7 +36,10 @@ data class ChartTrack(
   val artist: ChartTrackArtist,
 
   @SerialName("image")
-  val imageList: List<ImageBody>
+  val imageList: List<ImageBody>,
+
+  @SerialName("mbid")
+  val mbid: String = ""
 )
 
 @Serializable
