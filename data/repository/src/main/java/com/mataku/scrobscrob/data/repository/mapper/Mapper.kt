@@ -213,7 +213,8 @@ fun ChartTopTracksResponse.toChartTopTracks(): ChartTopTracks {
         name = it.artist.name,
         url = it.artist.url
       ),
-      imageList = it.imageList.toImageList()
+      imageList = it.imageList.toImageList(),
+      mbid = it.mbid
     )
   }
   val pagingAttr = body.pagingAttrBody.toPagingAttr()
