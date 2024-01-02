@@ -2,8 +2,8 @@ plugins {
   id("sunsetscrob.android.feature")
   id("sunsetscrob.android.compose")
   id("sunsetscrob.android.dagger")
-  id("sunsetscrob.android.test.integration")
   id("com.mikepenz.aboutlibraries.plugin")
+  id("io.github.takahirom.roborazzi")
 }
 
 android {
@@ -69,4 +69,13 @@ dependencies {
   implementation(libs.aboutlibraries.compose)
 
   implementation(libs.app.update)
+
+  testImplementation(libs.robolectric)
+  testImplementation(libs.roborazzi)
+  testImplementation(libs.androidx.test.ext.junit)
+  testImplementation(libs.compose.ui.test.junit4)
+  testImplementation(libs.junit.vintage.engine)
+
+  // for robolectric
+  debugImplementation(libs.compose.ui.test.manifest)
 }

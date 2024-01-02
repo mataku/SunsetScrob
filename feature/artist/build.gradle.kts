@@ -2,7 +2,8 @@ plugins {
   id("sunsetscrob.android.feature")
   id("sunsetscrob.android.compose")
   id("sunsetscrob.android.dagger")
-  id("sunsetscrob.android.test.integration")
+  id("sunsetscrob.android.test.screenshot")
+  id("io.github.takahirom.roborazzi")
 }
 
 android {
