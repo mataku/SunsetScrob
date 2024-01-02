@@ -1,7 +1,6 @@
 -keepattributes SourceFile,LineNumberTable
 -keepattributes *Annotation*, InnerClasses
 -keepattributes Signature, Exception
--keepnames class ** { *; }
 
 -keep class kotlin.reflect.** { *; }
 -keep interface kotlin.reflect.** { *; }
@@ -16,23 +15,6 @@
 -keepclasseswithmembers class com.mataku.scrobscrob.** {
     kotlinx.serialization.KSerializer serializer(...);
 }
-
-# Material components
--dontwarn com.google.android.material.**
--keep class com.google.android.material.** { *; }
-
-# AndroidX
--dontwarn androidx.**
--keep class androidx.** { *; }
--keepclassmembers class androidx.** { *; }
--keep interface androidx.* { *; }
-
-# Okhttp
--dontwarn okio.**
--dontwarn com.squareup.okhttp.**
-
--keep class com.squareup.okhttp.** { *; }
--keep interface com.squareup.okhttp.* { *; }
 
 # Ktor
 -keep class io.ktor.** { *; }

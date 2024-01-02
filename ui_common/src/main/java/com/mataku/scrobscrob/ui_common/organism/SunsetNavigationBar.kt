@@ -144,7 +144,7 @@ fun SunsetBottomNavigation(
 ) {
   Box(
     modifier = modifier
-      .padding(vertical = 16.dp, horizontal = 30.dp)
+      .padding(vertical = 16.dp, horizontal = 24.dp)
       .fillMaxWidth()
       .height(64.dp)
       .border(
@@ -242,7 +242,10 @@ private fun BottomBarTabs(
 ) {
   Row(
     modifier = Modifier
-      .fillMaxSize(),
+      .fillMaxSize()
+      .padding(
+        horizontal = 8.dp
+      ),
   ) {
     for (tab in tabs) {
       val alpha by animateFloatAsState(
