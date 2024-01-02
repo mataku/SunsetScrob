@@ -8,6 +8,7 @@
     "androidx.compose.ui:ui-tooling",
     "androidx.compose.ui:ui-test-junit4",
     "androidx.compose.ui:ui-test-manifest",
+    "androidx.test.uiautomator:uiautomator",
     "com.google.accompanist:accompanist-navigation-animation",
     "com.google.accompanist:accompanist-systemuicontroller",
     "com.google.accompanist:accompanist-swiperefresh",
@@ -16,7 +17,15 @@
     "com.airbnb.android:showkase",
     "com.airbnb.android:showkase-annotation",
     "com.airbnb.android:showkase-processor",
-    "androidx.benchmark:benchmark-macro-junit4"
+    "androidx.benchmark:benchmark-macro-junit4",
+    "org.junit.vintage:junit-vintage-engine",
+    "app.cash.turbine:turbine",
+    "org.robolectric:robolectric",
+    "io.github.takahirom.roborazzi:roborazzi",
+    "com.jakewharton.timber:timber",
+    "com.mikepenz:aboutlibraries",
+    "com.mikepenz:aboutlibraries-compose",
+    "com.mikepenz.aboutlibraries.plugin:aboutlibraries-plugin"
   ],
   "prConcurrentLimit": 5,
   "rebaseWhen": "never"
