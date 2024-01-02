@@ -18,7 +18,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -69,19 +68,14 @@ fun TopAlbum(
     Spacer(modifier = Modifier.height(8.dp))
     Text(
       album.title,
-      fontSize = 16.sp,
-      modifier = Modifier
-        .wrapContentSize(),
-      fontWeight = FontWeight.Bold,
       maxLines = 1,
-      overflow = TextOverflow.Ellipsis
+      overflow = TextOverflow.Ellipsis,
+      style = SunsetTextStyle.body
     )
     Text(
       album.artist,
-      fontSize = 14.sp,
-      modifier = Modifier
-        .wrapContentSize(),
-      maxLines = 1
+      maxLines = 1,
+      style = SunsetTextStyle.label
     )
     Spacer(modifier = Modifier.height(2.dp))
     val playCountResource = if (album.playCount == "1") {
@@ -124,5 +118,4 @@ fun TopAlbumPreview() {
         .wrapContentSize()
     )
   }
-
 }

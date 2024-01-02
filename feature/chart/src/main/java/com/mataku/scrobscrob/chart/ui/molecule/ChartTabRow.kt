@@ -19,6 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mataku.scrobscrob.chart.ui.ChartType
+import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import com.mataku.scrobscrob.ui_common.style.accentColor
@@ -69,13 +70,16 @@ internal fun ChartTabRow(
           ) {
             Text(
               text = chartType.tabName,
+              style = SunsetTextStyle.label,
               color = MaterialTheme.colorScheme.onSurface,
-              modifier = Modifier
+              modifier = Modifier,
+              fontWeight = FontWeight.Medium
             )
           }
         } else {
           Text(
             text = ChartType.findByIndex(it).tabName,
+            style = SunsetTextStyle.label,
             color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier
               .align(
