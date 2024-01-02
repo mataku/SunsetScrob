@@ -18,7 +18,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mataku.scrobscrob.core.entity.ArtistInfo
 import com.mataku.scrobscrob.core.entity.imageUrl
-import com.mataku.scrobscrob.scrobble.R
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.molecule.SunsetImage
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
@@ -58,7 +57,7 @@ fun TrackArtist(
       modifier = Modifier.wrapContentSize(),
       maxLines = 2,
       overflow = TextOverflow.Ellipsis,
-      style = SunsetTextStyle.body1.copy(
+      style = SunsetTextStyle.body.copy(
         fontWeight = FontWeight.Bold
       )
     )

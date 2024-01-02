@@ -39,7 +39,7 @@ fun Chip(
     ) {
       Text(
         text = name,
-        style = SunsetTextStyle.body2,
+        style = SunsetTextStyle.label,
         modifier = Modifier.padding(8.dp)
       )
     }

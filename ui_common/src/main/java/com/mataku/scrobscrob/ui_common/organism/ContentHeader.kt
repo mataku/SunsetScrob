@@ -32,7 +32,7 @@ fun ContentHeader(
     ) {
       Text(
         text = text,
-        style = SunsetTextStyle.h6,
+        style = SunsetTextStyle.title,
         modifier = Modifier
           .padding(16.dp)
       )

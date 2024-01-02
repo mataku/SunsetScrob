@@ -366,7 +366,7 @@ private fun AccountMenuCell(
     .padding(horizontal = 16.dp),
     verticalArrangement = Arrangement.SpaceEvenly
   ) {
-    Text(text = title, style = SunsetTextStyle.subtitle1)
+    Text(text = title, style = SunsetTextStyle.subtitle)
     if (description.isNotBlank()) {
       Text(
         text = description,
