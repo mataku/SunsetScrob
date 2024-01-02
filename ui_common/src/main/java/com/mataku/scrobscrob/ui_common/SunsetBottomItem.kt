@@ -32,6 +32,12 @@ enum class SunsetBottomNavItem(
     "top_artists",
     Icons.Default.AccountCircle
   ),
+  CHART(
+    R.drawable.ic_account_circle_black,
+    "Chart",
+    "chart",
+    Icons.Default.AccountCircle
+  ),
   ACCOUNT(
     null,
     "Account",
