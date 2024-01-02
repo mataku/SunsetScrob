@@ -13,7 +13,7 @@ dependencies {
   implementation(project(":core"))
   implementation(project(":data:repository"))
   implementation(libs.activity.compose)
-  debugImplementation(libs.compose.ui.tooling)
+  implementation(libs.compose.ui.tooling)
   implementation(libs.compose.animation)
   implementation(libs.compose.material3)
   implementation(libs.compose.navigation)
