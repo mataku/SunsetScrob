@@ -1,5 +1,6 @@
 package com.mataku.scrobscrob.chart.ui.screen
 
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -44,7 +45,10 @@ fun ChartScreen(
       selectedChartIndex = pagerState.currentPage,
       onChartTypeTap = { index, chartType ->
         coroutineScope.launch {
-          pagerState.scrollToPage(index)
+          pagerState.animateScrollToPage(
+            index,
+            animationSpec = tween(500)
+          )
         }
         viewModel.changeSelectedChartType(chartType)
       },
