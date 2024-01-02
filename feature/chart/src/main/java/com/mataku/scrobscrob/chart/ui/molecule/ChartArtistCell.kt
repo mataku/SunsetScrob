@@ -55,7 +55,7 @@ fun ChartArtistCell(
       imageUrl
     }
 
-    Spacer(modifier = Modifier.width(16.dp))
+    Spacer(modifier = Modifier.width(8.dp))
 
     SunsetImage(
       imageData = imageData,
