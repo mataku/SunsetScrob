@@ -112,7 +112,6 @@ showkase-processor = { module = "com.airbnb.android:showkase-processor", version
 
 turbine = { module = "app.cash.turbine:turbine", version = "1.0.0" }
 
-haze = { module = "dev.chrisbanes.haze:haze", version = "0.4.1" }
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }

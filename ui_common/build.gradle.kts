@@ -24,9 +24,8 @@ dependencies {
   implementation(libs.compose.material.icons.extended)
 
   implementation(libs.showkase.annotation)
-  ksp(libs.showkase.processor)
+  kspDebug(libs.showkase.processor)
   implementation(libs.showkase)
-  implementation(libs.haze)
 }
 
 ksp {
