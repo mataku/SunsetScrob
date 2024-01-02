@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -46,7 +47,8 @@ fun ChartArtistCell(
     Text(
       text = rank.toString(),
       style = SunsetTextStyle.caption,
-      modifier = Modifier.width(24.dp)
+      modifier = Modifier.width(24.dp),
+      textAlign = TextAlign.Center
     )
     val imageUrl = chartArtist.imageList.imageUrl()
     val imageData = if (imageUrl == null || imageUrl.isBlank()) {
