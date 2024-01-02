@@ -19,7 +19,10 @@ fun Project.testConfiguration() {
         isIncludeAndroidResources = true
         all {
           it.maxParallelForks = Runtime.getRuntime().availableProcessors()
-          it.useJUnitPlatform()
+          it.useJUnitPlatform {
+            // for junit 4 tests
+            includeEngines("junit-vintage")
+          }
         }
       }
     }
