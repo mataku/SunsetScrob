@@ -32,6 +32,7 @@ dependencies {
   implementation(project(":feature:auth"))
   implementation(project(":feature:scrobble"))
   implementation(project(":feature:account"))
+  implementation(project(":feature:chart"))
 
   implementation(libs.activity.ktx)
   implementation(libs.material)

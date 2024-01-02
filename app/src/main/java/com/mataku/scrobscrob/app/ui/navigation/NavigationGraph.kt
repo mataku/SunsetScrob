@@ -14,6 +14,7 @@ import com.mataku.scrobscrob.account.ui.navigation.accountGraph
 import com.mataku.scrobscrob.album.ui.navigation.albumGraph
 import com.mataku.scrobscrob.artist.ui.navigation.artistGraph
 import com.mataku.scrobscrob.auth.ui.navigation.authGraph
+import com.mataku.scrobscrob.chart.ui.navigation.chartGraph
 import com.mataku.scrobscrob.scrobble.ui.navigation.SCROBBLE_NAVIGATION_ROUTE
 import com.mataku.scrobscrob.scrobble.ui.navigation.scrobbleGraph
 import com.mataku.scrobscrob.ui_common.commonGraph
@@ -44,8 +45,8 @@ fun NavigationGraph(
     scrobbleGraph(navController)
     albumGraph(navController)
     artistGraph(navController)
-
     accountGraph(navController)
+    chartGraph(navController)
     authGraph(navController)
     commonGraph()
   }
