@@ -73,7 +73,7 @@ internal fun ChartTabRow(
               style = SunsetTextStyle.label,
               color = MaterialTheme.colorScheme.onSurface,
               modifier = Modifier,
-              fontWeight = FontWeight.Medium
+              fontWeight = FontWeight.Bold
             )
           }
         } else {
@@ -93,7 +93,7 @@ internal fun ChartTabRow(
                 horizontal = 16.dp,
                 vertical = 8.dp
               ),
-            fontWeight = FontWeight.Medium
+            fontWeight = FontWeight.Bold
           )
         }
       }

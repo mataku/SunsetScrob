@@ -21,6 +21,7 @@ import com.mataku.scrobscrob.chart.ui.molecule.ChartArtistList
 import com.mataku.scrobscrob.chart.ui.molecule.ChartTabRow
 import com.mataku.scrobscrob.chart.ui.molecule.ChartTrackList
 import com.mataku.scrobscrob.chart.ui.viewmodel.ChartViewModel
+import com.mataku.scrobscrob.ui_common.navigateToWebView
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -63,12 +64,16 @@ fun ChartScreen(
         if (page == 0) {
           ChartArtistList(
             chartArtistList = uiState.topArtists,
-            onChartArtistTap = {}
+            onChartArtistTap = {
+              navController.navigateToWebView(it.url)
+            }
           )
         } else {
           ChartTrackList(
             chartTrackList = uiState.topTracks,
-            onChartTrackTap = {}
+            onChartTrackTap = {
+              navController.navigateToWebView(it.url)
+            }
           )
         }
       }
