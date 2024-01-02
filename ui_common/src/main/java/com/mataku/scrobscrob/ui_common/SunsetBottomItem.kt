@@ -4,6 +4,7 @@ import androidx.annotation.DrawableRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.LibraryMusic
+import androidx.compose.material.icons.filled.Public
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.ui.graphics.vector.ImageVector
 
@@ -21,22 +22,22 @@ enum class SunsetBottomNavItem(
     null
   ),
   TOP_ALBUMS(
-    R.drawable.ic_album_black_24px,
+   null,
     "Album",
     "top_albums",
     Icons.Default.LibraryMusic
   ),
   TOP_ARTISTS(
-    R.drawable.ic_account_circle_black,
+    null,
     "Artist",
     "top_artists",
     Icons.Default.AccountCircle
   ),
   CHART(
-    R.drawable.ic_account_circle_black,
+    null,
     "Chart",
     "chart",
-    Icons.Default.AccountCircle
+    Icons.Default.Public
   ),
   ACCOUNT(
     null,
