@@ -19,6 +19,7 @@ buildscript {
 
 plugins {
   id("com.google.devtools.ksp") version libs.versions.ksp.get() apply false
+  alias(libs.plugins.roborazzi) apply false
 }
 
 allprojects {

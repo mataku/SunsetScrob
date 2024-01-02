@@ -20,13 +20,9 @@ material = "1.11.0"
 mockk = "1.13.8"
 navigation-compose = "2.7.6"
 okhttp = "4.12.0"
+robolectric = "4.11.1"
+roborazzi = "1.7.0"
 showkase = "1.0.0-beta18"
-agp = "8.2.0"
-kotlin1910 = "1.9.10"
-core-ktx = "1.12.0"
-junit = "4.13.2"
-espresso-core = "3.5.1"
-appcompat = "1.6.1"
 
 [libraries]
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity" }
@@ -111,8 +107,11 @@ showkase-annotation = { module = "com.airbnb.android:showkase-annotation", versi
 showkase-processor = { module = "com.airbnb.android:showkase-processor", version.ref = "showkase" }
 
 turbine = { module = "app.cash.turbine:turbine", version = "1.0.0" }
+robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
+roborazzi = { module = "io.github.takahirom.roborazzi:roborazzi", version.ref = "roborazzi" }
+roborazzi-compose = { module = "io.github.takahirom.roborazzi:roborazzi-compose", version.ref = "roborazzi" }
 
-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
-junit = { group = "junit", name = "junit", version.ref = "junit" }
-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+junit-vintage-engine = { module = "org.junit.vintage:junit-vintage-engine", version = "5.8.2" }
+
+[plugins]
+roborazzi = { id = "io.github.takahirom.roborazzi", version.ref = "roborazzi" }
