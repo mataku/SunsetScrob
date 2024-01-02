@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,9 +16,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.mataku.scrobscrob.core.entity.ArtistInfo
 import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.ui_common.R
@@ -57,7 +53,8 @@ fun TopArtist(
     SunsetImage(
       imageData = imageData,
       contentDescription = artist.name,
-      modifier = Modifier.fillMaxWidth()
+      modifier = Modifier
+        .fillMaxWidth()
         .aspectRatio(1F),
       contentScale = ContentScale.FillWidth
     )
@@ -65,9 +62,8 @@ fun TopArtist(
     Spacer(modifier = Modifier.height(8.dp))
     Text(
       artist.name,
-      fontSize = 16.sp,
-      modifier = Modifier
-        .wrapContentSize(),
+      modifier = Modifier,
+      style = SunsetTextStyle.body,
       fontWeight = FontWeight.Bold,
       maxLines = 1,
       overflow = TextOverflow.Ellipsis

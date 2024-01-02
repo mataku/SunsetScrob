@@ -173,6 +173,7 @@ private fun LoginContent(
     Text(
       text = stringResource(id = uiCommonR.string.login_to_last_fm),
       fontSize = 20.sp,
+      style = SunsetTextStyle.title,
       fontWeight = FontWeight.Bold,
       modifier = Modifier.align(Alignment.CenterHorizontally)
     )
@@ -189,7 +190,12 @@ private fun LoginContent(
         imeAction = ImeAction.Next
       ),
       singleLine = true,
-      label = { Text(text = "Username") },
+      label = {
+        Text(
+          text = "Username",
+          style = SunsetTextStyle.label
+        )
+      },
       modifier = Modifier
         .onGloballyPositioned {
           usernameAutofillNode.boundingBox = it.boundsInWindow()
@@ -238,7 +244,12 @@ private fun LoginContent(
           focusManager.clearFocus()
         }
       ),
-      label = { Text(text = "Password") },
+      label = {
+        Text(
+          text = "Password",
+          style = SunsetTextStyle.label
+        )
+      },
       modifier = Modifier
         .onGloballyPositioned {
           passwordAutofillNode.boundingBox = it.boundsInWindow()
@@ -278,7 +289,10 @@ private fun LoginContent(
             .align(alignment = Alignment.CenterVertically)
         )
       } else {
-        Text(text = "Let me in!")
+        Text(
+          text = "Let me in!",
+          style = SunsetTextStyle.label
+        )
       }
     }
 

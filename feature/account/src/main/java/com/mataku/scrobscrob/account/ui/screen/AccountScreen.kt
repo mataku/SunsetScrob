@@ -305,7 +305,9 @@ private fun AccountContent(
         openDialog.value = false
       },
       title = {
-        Text(text = stringResource(id = R.string.dialog_notification_permission_required))
+        Text(
+          text = stringResource(id = R.string.dialog_notification_permission_required),
+        )
       },
       text = {
         Text(text = stringResource(id = R.string.dialog_notification_permission_required_description))
