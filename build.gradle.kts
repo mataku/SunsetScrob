@@ -4,22 +4,19 @@ buildscript {
     mavenCentral()
     maven("https://plugins.gradle.org/m2/")
   }
-  dependencies {
-    classpath(libs.android.gradle.plugin)
-    classpath(libs.kotlin.gradle.plugin)
-    classpath(libs.serialization.plugin)
-    classpath(libs.crashlytics.gradle.plugin)
-    classpath(libs.google.services.plugin)
-    classpath(libs.hilt.gradle.plugin)
-    classpath(libs.aboutlibraries.plugin)
-    // NOTE: Do not place your application dependencies here; they belong
-    // in the individual module build.gradle files
-  }
 }
 
 plugins {
-  id("com.google.devtools.ksp") version libs.versions.ksp.get() apply false
+  alias(libs.plugins.android.application) apply false
+  alias(libs.plugins.android.library) apply false
+  alias(libs.plugins.kotlin) apply false
+  alias(libs.plugins.kotlin.serialization) apply false
+  alias(libs.plugins.ksp) apply false
+  alias(libs.plugins.hilt) apply false
+  alias(libs.plugins.crashlytics) apply false
+  alias(libs.plugins.google.services) apply false
   alias(libs.plugins.roborazzi) apply false
+  alias(libs.plugins.licensee) apply false
 }
 
 allprojects {

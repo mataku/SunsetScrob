@@ -20,8 +20,6 @@ fun Project.testConfiguration() {
         all {
           it.maxParallelForks = Runtime.getRuntime().availableProcessors()
           it.useJUnitPlatform {
-            // for junit 4 tests
-            includeEngines("junit-vintage")
           }
         }
       }
@@ -36,13 +34,17 @@ fun Project.testConfiguration() {
     val mockk = libs.findLibrary("mockk").get()
     val turbine = libs.findLibrary("turbine").get()
     val coroutinesTest = libs.findLibrary("coroutines-test").get()
+    val junitVintageEngine = libs.findLibrary("junit-vintage-engine").get()
+    val junitJupiter = libs.findLibrary("junit-jupiter").get()
     listOf(
       androidxTestCore,
       kotestRunner,
       kotestAssertions,
       mockk,
       turbine,
-      coroutinesTest
+      coroutinesTest,
+      junitVintageEngine,
+      junitJupiter
     ).forEach {
       add("testImplementation", it)
     }

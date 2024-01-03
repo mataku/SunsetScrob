@@ -8,12 +8,15 @@ import com.mataku.scrobscrob.core.entity.ChartTopTracks
 import com.mataku.scrobscrob.core.entity.ChartTrack
 import com.mataku.scrobscrob.core.entity.ChartTrackArtist
 import com.mataku.scrobscrob.core.entity.Image
+import com.mataku.scrobscrob.core.entity.LicenseArtifact
 import com.mataku.scrobscrob.core.entity.NowPlaying
 import com.mataku.scrobscrob.core.entity.NowPlayingTrack
 import com.mataku.scrobscrob.core.entity.NowPlayingTrackEntity
 import com.mataku.scrobscrob.core.entity.PagingAttr
 import com.mataku.scrobscrob.core.entity.RecentTrack
+import com.mataku.scrobscrob.core.entity.Scm
 import com.mataku.scrobscrob.core.entity.ScrobbleResult
+import com.mataku.scrobscrob.core.entity.SpdxLicense
 import com.mataku.scrobscrob.core.entity.Tag
 import com.mataku.scrobscrob.core.entity.TrackAlbumInfo
 import com.mataku.scrobscrob.core.entity.TrackArtist
@@ -33,6 +36,9 @@ import com.mataku.scrobscrob.data.api.model.TrackAlbumInfoBody
 import com.mataku.scrobscrob.data.api.model.TrackArtistBody
 import com.mataku.scrobscrob.data.api.model.UserTopAlbumsApiResponse
 import com.mataku.scrobscrob.data.api.model.UserTopArtistsApiResponse
+import com.mataku.scrobscrob.data.db.entity.LicenseArtifactDefinitionEntity
+import com.mataku.scrobscrob.data.db.entity.ScmEntity
+import com.mataku.scrobscrob.data.db.entity.SpdxLicenseEntity
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 
@@ -223,6 +229,34 @@ fun ChartTopTracksResponse.toChartTopTracks(): ChartTopTracks {
     topTracks = topTracks,
     pagingAttr = pagingAttr
   )
+}
+
+fun ScmEntity?.toScm(): Scm? {
+  this ?: return null
+  return Scm(url = this.url)
+}
+
+fun List<SpdxLicenseEntity>.toSpdxLicenseList(): List<SpdxLicense> {
+  return this.map {
+    SpdxLicense(
+      identifier = it.identifier,
+      name = it.name,
+      url = it.url
+    )
+  }
+}
+
+fun List<LicenseArtifactDefinitionEntity>.toLicenseArtifactList(): List<LicenseArtifact> {
+  return this.map {
+    LicenseArtifact(
+      artifactId = it.artifactId,
+      groupId = it.groupId,
+      name = it.name,
+      scm = it.scm.toScm(),
+      spdxLicenses = it.spdxLicenses.toSpdxLicenseList(),
+      version = it.version
+    )
+  }
 }
 
 

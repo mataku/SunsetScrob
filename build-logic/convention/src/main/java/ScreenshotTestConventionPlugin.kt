@@ -36,7 +36,6 @@ class ScreenshotTestConventionPlugin : Plugin<Project> {
           listOf(
             "androidx-test-ext-junit",
             "compose-ui-test-junit4",
-            "junit-vintage-engine",
             "robolectric",
             "roborazzi",
           ).forEach {
