@@ -279,7 +279,7 @@ private fun AccountContent(
           description = if (updateAvailable) {
             stringResource(id = R.string.label_update_available)
           } else {
-            ""
+            "Thank you for using the latest version!"
           },
           enabled = updateAvailable
         ) {
