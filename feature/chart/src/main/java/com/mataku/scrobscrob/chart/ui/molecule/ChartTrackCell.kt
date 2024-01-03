@@ -85,7 +85,7 @@ internal fun ChartTrackCell(
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
         style = SunsetTextStyle.body.copy(
-          fontWeight = FontWeight.Bold
+          fontWeight = FontWeight.Medium
         )
       )
 

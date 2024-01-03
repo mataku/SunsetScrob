@@ -64,7 +64,7 @@ fun TopArtist(
       artist.name,
       modifier = Modifier,
       style = SunsetTextStyle.body,
-      fontWeight = FontWeight.Bold,
+      fontWeight = FontWeight.Medium,
       maxLines = 1,
       overflow = TextOverflow.Ellipsis
     )
