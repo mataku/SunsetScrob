@@ -3,6 +3,7 @@ plugins {
   id("dagger.hilt.android.plugin")
   id("sunsetscrob.android.dagger")
   id("com.google.devtools.ksp")
+  id("kotlinx-serialization")
 }
 
 android {
@@ -12,4 +13,5 @@ android {
 dependencies {
   implementation(project(":core"))
   implementation(libs.datastore.preferences)
+  implementation(libs.serialization.json)
 }
