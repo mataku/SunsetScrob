@@ -27,8 +27,15 @@ platform :android do
   lane :android_test do
     android_test_gradle_tasks = android_test_dirs.map do |dir|
       "#{dir}:connectedDebugAndroidTest"
-    end.join(' ')
-    gradle(task: android_test_gradle_tasks)
+    end
+    unless android_test_gradle_tasks.empty?
+      gradle(task: android_test_gradle_tasks.join(' '))
+    end
+  end
+
+  desc "Run screenshot test"
+  lane :screenshot_test do
+    gradle(task: 'verifyRoborazziDebug --no-configuration-cache')
   end
 
   desc "Build an aab"

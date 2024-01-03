@@ -21,5 +21,5 @@ android {
 
 dependencies {
   implementation(libs.kotest.runner.junit5)
-  implementation(libs.coroutines)
+  implementation(libs.coroutines.test)
 }
