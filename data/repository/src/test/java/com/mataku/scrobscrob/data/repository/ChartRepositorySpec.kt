@@ -84,6 +84,7 @@ class ChartRepositorySpec : DescribeSpec({
       repository.topArtists(page)
         .test {
           awaitItem().topArtists.isNotEmpty() shouldBe true
+          awaitComplete()
         }
     }
   }
@@ -158,6 +159,7 @@ class ChartRepositorySpec : DescribeSpec({
       repository.topTracks(page)
         .test {
           awaitItem().topTracks.isNotEmpty() shouldBe true
+          awaitComplete()
         }
     }
   }
