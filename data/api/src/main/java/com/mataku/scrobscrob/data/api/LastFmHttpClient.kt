@@ -25,9 +25,6 @@ object LastFmHttpClient {
         url {
           protocol = URLProtocol.HTTPS
           host = LASTFM_HOST
-          parameters.append(
-            "api_key", BuildConfig.API_KEY
-          )
         }
       }
     }

@@ -4,6 +4,7 @@ import android.content.Context
 import com.mataku.scrobscrob.data.api.BuildConfig
 import com.mataku.scrobscrob.data.api.LastFmHttpClient
 import com.mataku.scrobscrob.data.api.LastFmService
+import com.mataku.scrobscrob.data.api.okhttp.LastfmApiAuthInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -35,6 +36,8 @@ class ApiModule {
           maxSize = 512L * 1024L * 1024L // 512MB
         )
       )
+
+    okhttpClientBuilder.addInterceptor(LastfmApiAuthInterceptor())
 
     if (BuildConfig.DEBUG) {
       okhttpClientBuilder.addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
