@@ -19,7 +19,6 @@ See more: [screenshots](./screenshot/README.md)
 - Filter top artists by time range
 - Update NowPlaying and Scrobbling (for Apple Music, Spotify, and YouTube Music only)
 - Switch themes
-- Shared element transition
 - Autofill
 - Themed icon
 

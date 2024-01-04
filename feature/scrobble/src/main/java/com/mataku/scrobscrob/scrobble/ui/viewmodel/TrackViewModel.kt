@@ -25,7 +25,7 @@ class TrackViewModel @Inject constructor(
   savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-  var state = MutableStateFlow<TrackUiState>(TrackUiState.initialize())
+  var state = MutableStateFlow(TrackUiState.initialize())
     private set
 
   private val trackName: String? = savedStateHandle["trackName"]
@@ -76,16 +76,6 @@ class TrackViewModel @Inject constructor(
           )
         }
       }
-    }
-  }
-
-  fun clearState() {
-    state.update {
-      it.copy(
-        trackInfo = null,
-        artistInfo = null,
-        event = null
-      )
     }
   }
 
