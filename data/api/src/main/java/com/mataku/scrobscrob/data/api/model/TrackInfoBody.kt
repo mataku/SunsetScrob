@@ -12,6 +12,8 @@ data class TrackInfoBody(
   val album: TrackAlbumInfoBody? = null,
   @SerialName("listeners")
   val listeners: String,
+  @SerialName("playcount")
+  val playCount: String,
   @SerialName("url")
   val url: String,
   @SerialName("toptags")
@@ -19,7 +21,7 @@ data class TrackInfoBody(
   @SerialName("artist")
   val artist: TrackArtistBody,
   @SerialName("name")
-  val name: String
+  val name: String,
 )
 
 @Serializable
@@ -38,5 +40,11 @@ data class TrackAlbumInfoBody(
 data class TrackArtistBody(
   val name: String,
   val url: String
+)
+
+// val hoge = SimpleDateFormat("E, dd MMM yyyy HH:mm:ss Z", Locale.US)
+@Serializable
+data class TrackArtistWiki(
+  val published: String
 )
 

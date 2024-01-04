@@ -86,7 +86,8 @@ fun TrackInfoApiResponse.toTrackInfo(): TrackInfo {
     url = body.url,
     topTags = body.topTags.toTagList().toImmutableList(),
     artist = body.artist.toTrackArtist(),
-    name = body.name
+    name = body.name,
+    playCount = body.playCount
   )
 }
 

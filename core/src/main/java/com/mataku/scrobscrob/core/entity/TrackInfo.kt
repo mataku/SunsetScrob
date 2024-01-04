@@ -8,6 +8,7 @@ data class TrackInfo(
   val artist: TrackArtist,
   val album: TrackAlbumInfo? = null,
   val listeners: String,
+  val playCount: String,
   val url: String,
   val topTags: ImmutableList<Tag> = persistentListOf(),
   val name: String
