@@ -19,7 +19,7 @@ data class TrackInfoBody(
   @SerialName("url")
   val url: String,
   @SerialName("toptags")
-  val topTags: TopTagsBody,
+  val topTags: TagsBody,
   @SerialName("artist")
   val artist: TrackArtistBody,
   @SerialName("name")

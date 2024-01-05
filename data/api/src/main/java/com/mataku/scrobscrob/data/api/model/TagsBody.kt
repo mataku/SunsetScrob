@@ -4,9 +4,9 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class TopTagsBody(
+data class TagsBody(
   @SerialName("tag")
-  val tagList: List<TagBody>
+  val tagList: List<TagBody> = emptyList()
 )
 
 @Serializable

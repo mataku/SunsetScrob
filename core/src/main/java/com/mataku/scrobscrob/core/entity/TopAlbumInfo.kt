@@ -4,7 +4,7 @@ import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
 
 @Immutable
-data class AlbumInfo(
+data class TopAlbumInfo(
   val artist: String,
   val title: String,
   val imageList: ImmutableList<Image>,

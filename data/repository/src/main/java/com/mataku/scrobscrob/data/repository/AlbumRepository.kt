@@ -2,8 +2,11 @@ package com.mataku.scrobscrob.data.repository
 
 import com.mataku.scrobscrob.core.entity.AlbumInfo
 import com.mataku.scrobscrob.core.entity.TimeRangeFiltering
+import com.mataku.scrobscrob.core.entity.TopAlbumInfo
 import com.mataku.scrobscrob.data.api.LastFmService
+import com.mataku.scrobscrob.data.api.endpoint.AlbumInfoEndpoint
 import com.mataku.scrobscrob.data.api.endpoint.UserTopAlbumsEndpoint
+import com.mataku.scrobscrob.data.repository.mapper.toAlbumInfo
 import com.mataku.scrobscrob.data.repository.mapper.toTopAlbums
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -17,7 +20,12 @@ interface AlbumRepository {
     page: Int,
     username: String,
     timeRangeFiltering: TimeRangeFiltering
-  ): Flow<List<AlbumInfo>>
+  ): Flow<List<TopAlbumInfo>>
+
+  suspend fun albumInfo(
+    albumName: String,
+    artistName: String,
+  ): Flow<AlbumInfo>
 }
 
 @Singleton
@@ -28,7 +36,7 @@ class AlbumRepositoryImpl @Inject constructor(
     page: Int,
     username: String,
     timeRangeFiltering: TimeRangeFiltering
-  ): Flow<List<AlbumInfo>> = flow {
+  ): Flow<List<TopAlbumInfo>> = flow {
     val params = mapOf(
       "limit" to 20,
       "page" to page,
@@ -40,5 +48,18 @@ class AlbumRepositoryImpl @Inject constructor(
     )
     val response = lastFmService.request(endpoint)
     emit(response.toTopAlbums())
+  }.flowOn(Dispatchers.IO)
+
+  override suspend fun albumInfo(
+    albumName: String,
+    artistName: String
+  ): Flow<AlbumInfo> = flow<AlbumInfo> {
+    val params = mapOf(
+      "album" to albumName,
+      "artist" to artistName
+    )
+    val endpoint = AlbumInfoEndpoint(params = params)
+    val response = lastFmService.request(endpoint)
+    emit(response.albumInfoBody.toAlbumInfo())
   }.flowOn(Dispatchers.IO)
 }

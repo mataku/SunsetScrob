@@ -33,7 +33,7 @@ import androidx.navigation.NavController
 import com.mataku.scrobscrob.album.R
 import com.mataku.scrobscrob.album.ui.molecule.TopAlbum
 import com.mataku.scrobscrob.album.ui.viewmodel.TopAlbumsViewModel
-import com.mataku.scrobscrob.core.entity.AlbumInfo
+import com.mataku.scrobscrob.core.entity.TopAlbumInfo
 import com.mataku.scrobscrob.ui_common.molecule.FilteringFloatingButton
 import com.mataku.scrobscrob.ui_common.molecule.LoadingIndicator
 import com.mataku.scrobscrob.ui_common.navigateToWebView
@@ -130,7 +130,7 @@ fun TopAlbumsScreen(
 
 @Composable
 fun TopAlbumsContent(
-  albums: ImmutableList<AlbumInfo>,
+  albums: ImmutableList<TopAlbumInfo>,
   hasNext: Boolean,
   maxSpanCount: Int,
   onUrlTap: (String) -> Unit,

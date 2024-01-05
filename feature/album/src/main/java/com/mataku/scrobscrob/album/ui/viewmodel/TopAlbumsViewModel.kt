@@ -2,8 +2,8 @@ package com.mataku.scrobscrob.album.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mataku.scrobscrob.core.entity.AlbumInfo
 import com.mataku.scrobscrob.core.entity.TimeRangeFiltering
+import com.mataku.scrobscrob.core.entity.TopAlbumInfo
 import com.mataku.scrobscrob.data.repository.AlbumRepository
 import com.mataku.scrobscrob.data.repository.UsernameRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -129,7 +129,7 @@ class TopAlbumsViewModel @Inject constructor(
 
   data class TopAlbumsUiState(
     val isLoading: Boolean,
-    val topAlbums: ImmutableList<AlbumInfo>,
+    val topAlbums: ImmutableList<TopAlbumInfo>,
     val hasNext: Boolean,
     val timeRangeFiltering: TimeRangeFiltering
   ) {

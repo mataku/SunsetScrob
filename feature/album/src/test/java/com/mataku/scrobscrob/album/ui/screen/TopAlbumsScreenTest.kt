@@ -7,8 +7,8 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
 import com.github.takahirom.roborazzi.captureRoboImage
 import com.mataku.scrobscrob.album.ui.viewmodel.TopAlbumsViewModel
-import com.mataku.scrobscrob.core.entity.AlbumInfo
 import com.mataku.scrobscrob.core.entity.TimeRangeFiltering
+import com.mataku.scrobscrob.core.entity.TopAlbumInfo
 import com.mataku.scrobscrob.data.repository.AlbumRepository
 import com.mataku.scrobscrob.data.repository.UsernameRepository
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
@@ -41,7 +41,7 @@ class TopAlbumsScreenTest {
   private val timeRangeFiltering = TimeRangeFiltering.OVERALL
 
   private val topAlbums = (1..20).map {
-    AlbumInfo(
+    TopAlbumInfo(
       artist = "SooooooooooooooooooooooLongArtistname ${it}",
       title = "SooooooooooooooooooooooLongAlbumname ${it}",
       imageList = persistentListOf(),
@@ -51,7 +51,7 @@ class TopAlbumsScreenTest {
   }
 
   private val topAlbumsPage2 = (21..40).map {
-    AlbumInfo(
+    TopAlbumInfo(
       artist = "SooooooooooooooooooooooLongArtistname ${it}",
       title = "SooooooooooooooooooooooLongAlbumname ${it}",
       imageList = persistentListOf(),
