@@ -21,6 +21,7 @@ import com.mataku.scrobscrob.core.entity.Tag
 import com.mataku.scrobscrob.core.entity.TrackAlbumInfo
 import com.mataku.scrobscrob.core.entity.TrackArtist
 import com.mataku.scrobscrob.core.entity.TrackInfo
+import com.mataku.scrobscrob.core.entity.TrackWiki
 import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.data.api.endpoint.TrackInfoApiResponse
 import com.mataku.scrobscrob.data.api.model.ArtistInfoApiResponse
@@ -34,6 +35,7 @@ import com.mataku.scrobscrob.data.api.model.ScrobbleApiResponse
 import com.mataku.scrobscrob.data.api.model.TopTagsBody
 import com.mataku.scrobscrob.data.api.model.TrackAlbumInfoBody
 import com.mataku.scrobscrob.data.api.model.TrackArtistBody
+import com.mataku.scrobscrob.data.api.model.TrackArtistWikiBody
 import com.mataku.scrobscrob.data.api.model.UserTopAlbumsApiResponse
 import com.mataku.scrobscrob.data.api.model.UserTopArtistsApiResponse
 import com.mataku.scrobscrob.data.db.entity.LicenseArtifactDefinitionEntity
@@ -87,7 +89,8 @@ fun TrackInfoApiResponse.toTrackInfo(): TrackInfo {
     topTags = body.topTags.toTagList().toImmutableList(),
     artist = body.artist.toTrackArtist(),
     name = body.name,
-    playCount = body.playCount
+    playCount = body.playCount,
+    wiki = body.wiki.toTrackArtistWiki()
   )
 }
 
@@ -258,6 +261,16 @@ fun List<LicenseArtifactDefinitionEntity>.toLicenseArtifactList(): List<LicenseA
       version = it.version
     )
   }
+}
+
+fun TrackArtistWikiBody?.toTrackArtistWiki(): TrackWiki? {
+  this ?: return null
+
+  return TrackWiki(
+    published = this.published,
+    summary = this.summary,
+    content = this.content
+  )
 }
 
 
