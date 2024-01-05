@@ -30,7 +30,10 @@ data class AlbumInfoBody(
   val playCount: String,
 
   @SerialName("tracks")
-  val tracks: AlbumInfoTrackBody
+  val tracks: AlbumInfoTrackBody,
+
+  @SerialName("tags")
+  val tagsBody: TagsBody
 )
 
 @Serializable

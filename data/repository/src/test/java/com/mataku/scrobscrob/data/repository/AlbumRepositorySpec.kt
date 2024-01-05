@@ -108,10 +108,28 @@ class AlbumRepositorySpec : DescribeSpec({
           "artist": "aespa",
           "mbid": "ebd108fe-3c3f-4eb8-ac58-89fea95016b8",
           "tags": {
-            "tag": {
-              "url": "https://www.last.fm/tag/2023",
-              "name": "2023"
-            }
+            "tag": [
+              {
+                "url": "https://www.last.fm/tag/rock",
+                "name": "rock"
+              },
+              {
+                "url": "https://www.last.fm/tag/alternative",
+                "name": "alternative"
+              },
+              {
+                "url": "https://www.last.fm/tag/britpop",
+                "name": "britpop"
+              },
+              {
+                "url": "https://www.last.fm/tag/coldplay",
+                "name": "coldplay"
+              },
+              {
+                "url": "https://www.last.fm/tag/alternative+rock",
+                "name": "alternative rock"
+              }
+            ]
           },
           "name": "Drama",
           "image": [
@@ -280,6 +298,7 @@ class AlbumRepositorySpec : DescribeSpec({
             it.tracks.isNotEmpty() shouldBe true
             it.listeners shouldBe "1594"
             it.playCount shouldBe "170051"
+            it.tags.isNotEmpty() shouldBe true
           }
           awaitComplete()
         }

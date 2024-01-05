@@ -313,7 +313,8 @@ fun AlbumInfoBody.toAlbumInfo(): AlbumInfo {
     images = this.images.toImageList().toImmutableList(),
     listeners = this.listeners,
     playCount = this.playCount,
-    tracks = this.tracks.toTrackList().toImmutableList()
+    tracks = this.tracks.toTrackList().toImmutableList(),
+    tags = this.tagsBody.tagList.toTagList().toImmutableList()
   )
 }
 

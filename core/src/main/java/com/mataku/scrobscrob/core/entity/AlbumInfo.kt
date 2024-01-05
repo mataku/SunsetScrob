@@ -20,7 +20,7 @@ data class AlbumInfo(
   // "tags": {
   //   "tag": {
   // Therefore, TODO...
-  //  val tags: ImmutableList<Tag>,
+  val tags: ImmutableList<Tag>,
   val tracks: ImmutableList<AlbumInfoTrack>
 )
 
