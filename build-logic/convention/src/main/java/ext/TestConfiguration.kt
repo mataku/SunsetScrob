@@ -21,6 +21,9 @@ fun Project.testConfiguration() {
           it.maxParallelForks = Runtime.getRuntime().availableProcessors()
           it.useJUnitPlatform {
           }
+          if (project.hasProperty("excludeScreenshotTest")) {
+            it.exclude("**/*ScreenTest.class")
+          }
         }
       }
     }

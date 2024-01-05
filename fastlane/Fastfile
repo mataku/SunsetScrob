@@ -20,7 +20,7 @@ platform :android do
 
   desc "Run unit tests"
   lane :test do
-    gradle(task: "testDebugUnitTest")
+    gradle(task: "testDebugUnitTest -PexcludeScreenshotTest=true")
   end
 
   desc "Run androidTest on connected device"
