@@ -1,5 +1,8 @@
 package com.mataku.scrobscrob.scrobble.ui.navigation
 
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.material3.MaterialTheme
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -49,7 +52,14 @@ fun NavGraphBuilder.scrobbleGraph(navController: NavController) {
           artworkUrl = arguments.getString("imageUrl", ""),
           artistName = artistName,
           trackViewModel = hiltViewModel(),
+          navController = navController
         )
+      },
+      enterTransition = {
+        fadeIn(tween(300))
+      },
+      exitTransition = {
+        fadeOut(tween(300))
       }
     )
   }
