@@ -1,5 +1,6 @@
 package com.mataku.scrobscrob.scrobble.ui.screen
 
+import android.text.SpannableStringBuilder
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -30,24 +31,29 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.text.HtmlCompat
 import androidx.navigation.NavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.mataku.scrobscrob.core.entity.ArtistInfo
 import com.mataku.scrobscrob.core.entity.Tag
 import com.mataku.scrobscrob.core.entity.TrackAlbumInfo
 import com.mataku.scrobscrob.core.entity.TrackInfo
+import com.mataku.scrobscrob.core.entity.TrackWiki
 import com.mataku.scrobscrob.core.entity.presentation.toReadableIntValue
 import com.mataku.scrobscrob.scrobble.ui.molecule.TrackAlbum
 import com.mataku.scrobscrob.scrobble.ui.viewmodel.TrackViewModel
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
+import com.mataku.scrobscrob.ui_common.molecule.SimpleWiki
 import com.mataku.scrobscrob.ui_common.molecule.SunsetImage
 import com.mataku.scrobscrob.ui_common.molecule.TopTags
 import com.mataku.scrobscrob.ui_common.molecule.ValueDescription
+import com.mataku.scrobscrob.ui_common.molecule.Wiki
 import com.mataku.scrobscrob.ui_common.navigateToWebView
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import com.mataku.scrobscrob.ui_common.style.backgroundColor
+import com.mataku.scrobscrob.ui_common.toAnnotatedString
 import kotlinx.collections.immutable.persistentListOf
+import java.util.Date
 
 @Composable
 fun TrackScreen(
@@ -68,7 +74,6 @@ fun TrackScreen(
   TrackContent(
     artworkUrl = artworkUrl,
     trackInfo = uiState.trackInfo,
-    artistInfo = uiState.artistInfo,
     onUrlTap = navController::navigateToWebView,
     artistName = artistName,
     trackName = trackName
@@ -82,7 +87,6 @@ private fun TrackContent(
   trackName: String,
   artistName: String,
   trackInfo: TrackInfo?,
-  artistInfo: ArtistInfo?,
   onUrlTap: (String) -> Unit
 ) {
   val screenWidth = LocalConfiguration.current.screenWidthDp
@@ -145,10 +149,39 @@ private fun TrackContent(
           track.album?.let { album ->
             Spacer(modifier = Modifier.height(16.dp))
             TrackAlbum(album = album)
-            TopTags(
-              tagList = track.topTags,
+            if (track.topTags.isNotEmpty()) {
+              TopTags(
+                tagList = track.topTags,
+                modifier = Modifier
+                  .fillMaxWidth()
+                  .padding(
+                    16.dp
+                  )
+              )
+            } else {
+              Spacer(modifier = Modifier.height(16.dp))
+            }
+          }
+          Divider()
+          val wiki = track.wiki
+          if (wiki == null) {
+            SimpleWiki(
+              name = trackName,
+              url = track.url,
+              onUrlTap = onUrlTap,
               modifier = Modifier
-                .fillMaxWidth()
+                .padding(
+                  start = 16.dp,
+                  end = 16.dp,
+                  top = 16.dp,
+                  bottom = 24.dp
+                )
+            )
+          } else {
+            Wiki(
+              wiki = wiki,
+              name = trackName,
+              modifier = Modifier
                 .padding(
                   16.dp
                 )
@@ -203,16 +236,12 @@ private fun TrackContentPreview() {
               name = "K-POP",
               url = ""
             )
-          )
-        ),
-        artistInfo = ArtistInfo(
-          name = "aespaaespaaespaaespaaespaaespa",
-          imageList = persistentListOf(),
-          playCount = "1000",
-          topTags = persistentListOf(
-            Tag("K-POP", "")
           ),
-          url = "",
+          wiki = TrackWiki(
+            published = Date(),
+            content = "\"Clocks\" emerged in <b>conception during the late</b>stages into the production of Coldplay's second album, A Rush of Blood to the Head. The band's vocalist, Chris Martin, came in studio late one night. A riff popped  up in Martin's mind and wrote it on the  piano. Martin presented the riff to the band's guitarist, Jonny Buckland, who then added guitar chords on the basic track.\n\nDuring the writing of \"Clocks\", the band had already made 10 songs for the album. With this, they thought it was too late for the song's inclusion in the albumclude contrast, contradictions and urgency. Chris Martin sings of being in the state of \"helplessness ...",
+            summary = "\"Clocks\" emerged in <b>conception during the late stages</b> into the production of Coldplay's second album, A Rush of Blood to the Head. The band's vocalist, Chris Martin, came in studio late one night. A riff popped  up in Martin's mind and wrote it on the  piano. Martin presented the riff to the band's guitarist, Jonny Buckland, who then added guitar chords on the basic track.\n\nDuring the writing of \"Clocks\", the band had already made 10 songs for the album. <a href=\"http://www.last.fm/music/Coldplay/_/Clocks\">Read more on Last.fm</a>.",
+          )
         ),
         onUrlTap = {},
         artistName = "aespa",
@@ -262,7 +291,7 @@ private fun TrackDetail2(
         .width(32.dp)
     )
 
-    TrackMetaData2(
+    TrackMetaData(
       listeners = listeners,
       playCount = playCount,
       modifier = Modifier
@@ -315,7 +344,7 @@ private fun TrackDetail(
 }
 
 @Composable
-private fun TrackMetaData2(
+private fun TrackMetaData(
   listeners: String?,
   playCount: String?,
   modifier: Modifier = Modifier
@@ -357,5 +386,39 @@ private fun TrackMetaData(
       value = trackInfo.playCount.toReadableIntValue(),
       label = "Plays"
     )
+  }
+}
+
+@Composable
+private fun ArtistWiki(
+  trackWiki: TrackWiki,
+  artistName: String,
+  modifier: Modifier
+) {
+  Column(
+    modifier = modifier
+      .fillMaxWidth()
+  ) {
+    Text(
+      text = "About $artistName",
+      style = SunsetTextStyle.headline
+    )
+
+    Spacer(modifier = Modifier.height(16.dp))
+
+    trackWiki.summary?.let { content ->
+      val spannable = SpannableStringBuilder(content).toString()
+      val spanned = HtmlCompat.fromHtml(
+        spannable,
+        HtmlCompat.FROM_HTML_MODE_COMPACT
+      )
+
+      Text(
+        text = spanned.toAnnotatedString(),
+        style = SunsetTextStyle.label.copy(
+          color = MaterialTheme.colorScheme.onSecondary
+        )
+      )
+    }
   }
 }
