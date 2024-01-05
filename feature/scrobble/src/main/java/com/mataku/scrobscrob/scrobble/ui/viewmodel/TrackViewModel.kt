@@ -5,7 +5,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mataku.scrobscrob.core.entity.TrackInfo
-import com.mataku.scrobscrob.data.repository.ArtistRepository
 import com.mataku.scrobscrob.data.repository.TrackRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,7 +18,6 @@ import javax.inject.Inject
 @HiltViewModel
 class TrackViewModel @Inject constructor(
   private val trackRepository: TrackRepository,
-  private val artistRepository: ArtistRepository,
   savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -36,7 +34,7 @@ class TrackViewModel @Inject constructor(
     )
   }
 
-  fun fetchTrackInfo(
+  private fun fetchTrackInfo(
     trackName: String?,
     artistName: String?
   ) {

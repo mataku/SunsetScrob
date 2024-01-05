@@ -1,6 +1,5 @@
 package com.mataku.scrobscrob.scrobble.ui.screen
 
-import android.text.SpannableStringBuilder
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -31,7 +30,6 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.text.HtmlCompat
 import androidx.navigation.NavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mataku.scrobscrob.core.entity.Tag
@@ -51,7 +49,6 @@ import com.mataku.scrobscrob.ui_common.navigateToWebView
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import com.mataku.scrobscrob.ui_common.style.backgroundColor
-import com.mataku.scrobscrob.ui_common.toAnnotatedString
 import kotlinx.collections.immutable.persistentListOf
 import java.util.Date
 
@@ -386,39 +383,5 @@ private fun TrackMetaData(
       value = trackInfo.playCount.toReadableIntValue(),
       label = "Plays"
     )
-  }
-}
-
-@Composable
-private fun ArtistWiki(
-  trackWiki: TrackWiki,
-  artistName: String,
-  modifier: Modifier
-) {
-  Column(
-    modifier = modifier
-      .fillMaxWidth()
-  ) {
-    Text(
-      text = "About $artistName",
-      style = SunsetTextStyle.headline
-    )
-
-    Spacer(modifier = Modifier.height(16.dp))
-
-    trackWiki.summary?.let { content ->
-      val spannable = SpannableStringBuilder(content).toString()
-      val spanned = HtmlCompat.fromHtml(
-        spannable,
-        HtmlCompat.FROM_HTML_MODE_COMPACT
-      )
-
-      Text(
-        text = spanned.toAnnotatedString(),
-        style = SunsetTextStyle.label.copy(
-          color = MaterialTheme.colorScheme.onSecondary
-        )
-      )
-    }
   }
 }
