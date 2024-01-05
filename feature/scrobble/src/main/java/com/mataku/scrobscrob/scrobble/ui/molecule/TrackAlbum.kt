@@ -46,7 +46,7 @@ fun TrackAlbum(
     Row(
       modifier = Modifier
         .fillMaxWidth()
-        .padding(vertical = 8.dp)
+        .padding(vertical = 16.dp)
     ) {
       val imageUrl = album.imageList.imageUrl()
       val height = 80.dp

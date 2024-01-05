@@ -16,32 +16,36 @@ import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 
 @Composable
-fun Chip(
+fun SunsetChip(
   name: String,
   isSelected: Boolean = false,
   toggleable: Boolean = true,
   onSelectionChanged: (String) -> Unit = {},
 ) {
-  Surface(
-    modifier = Modifier.padding(4.dp),
-    shadowElevation = 8.dp,
-    shape = MaterialTheme.shapes.medium,
-    color = if (isSelected) Color.LightGray else MaterialTheme.colorScheme.primary
-  ) {
-    Row(modifier = Modifier
-      .toggleable(
-        value = isSelected,
-        enabled = toggleable,
-        onValueChange = {
-          onSelectionChanged(name)
-        }
-      )
+  if (true) {
+    
+  } else {
+    Surface(
+      modifier = Modifier.padding(4.dp),
+      shadowElevation = 8.dp,
+      shape = MaterialTheme.shapes.medium,
+      color = if (isSelected) Color.LightGray else MaterialTheme.colorScheme.primary
     ) {
-      Text(
-        text = name,
-        style = SunsetTextStyle.label,
-        modifier = Modifier.padding(8.dp)
-      )
+      Row(modifier = Modifier
+        .toggleable(
+          value = isSelected,
+          enabled = toggleable,
+          onValueChange = {
+            onSelectionChanged(name)
+          }
+        )
+      ) {
+        Text(
+          text = name,
+          style = SunsetTextStyle.label,
+          modifier = Modifier.padding(8.dp)
+        )
+      }
     }
   }
 }
@@ -51,7 +55,7 @@ fun Chip(
 @Composable
 fun ChipPreview() {
   SunsetThemePreview {
-    Chip(
+    SunsetChip(
       name = "Dance"
     )
   }
@@ -62,7 +66,7 @@ fun ChipPreview() {
 @Composable
 fun ChipSelectedPreview() {
   SunsetThemePreview {
-    Chip(
+    SunsetChip(
       name = "Dance",
       isSelected = true
     )
