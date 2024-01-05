@@ -1,7 +1,9 @@
 package com.mataku.scrobscrob.data.api.model
 
+import com.mataku.scrobscrob.data.api.serializer.DateSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import java.util.Date
 
 @Serializable
 data class TrackInfoBody(
@@ -12,6 +14,8 @@ data class TrackInfoBody(
   val album: TrackAlbumInfoBody? = null,
   @SerialName("listeners")
   val listeners: String,
+  @SerialName("playcount")
+  val playCount: String,
   @SerialName("url")
   val url: String,
   @SerialName("toptags")
@@ -19,7 +23,9 @@ data class TrackInfoBody(
   @SerialName("artist")
   val artist: TrackArtistBody,
   @SerialName("name")
-  val name: String
+  val name: String,
+  @SerialName("wiki")
+  val wiki: TrackArtistWikiBody? = null
 )
 
 @Serializable
@@ -38,5 +44,17 @@ data class TrackAlbumInfoBody(
 data class TrackArtistBody(
   val name: String,
   val url: String
+)
+
+@Serializable
+data class TrackArtistWikiBody(
+  @Serializable(DateSerializer::class)
+  val published: Date,
+
+  @SerialName("summary")
+  val summary: String? = null,
+
+  @SerialName("content")
+  val content: String? = null
 )
 

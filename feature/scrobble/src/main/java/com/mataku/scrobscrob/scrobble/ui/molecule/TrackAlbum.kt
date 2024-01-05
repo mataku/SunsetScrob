@@ -43,10 +43,11 @@ fun TrackAlbum(
       style = SunsetTextStyle.headline
     )
 
+    Spacer(modifier = Modifier.height(16.dp))
+
     Row(
       modifier = Modifier
         .fillMaxWidth()
-        .padding(vertical = 8.dp)
     ) {
       val imageUrl = album.imageList.imageUrl()
       val height = 80.dp

@@ -4,9 +4,7 @@ import androidx.compose.runtime.Immutable
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mataku.scrobscrob.core.entity.ArtistInfo
 import com.mataku.scrobscrob.core.entity.TrackInfo
-import com.mataku.scrobscrob.data.repository.ArtistRepository
 import com.mataku.scrobscrob.data.repository.TrackRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,14 +12,12 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class TrackViewModel @Inject constructor(
   private val trackRepository: TrackRepository,
-  private val artistRepository: ArtistRepository,
   savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -38,7 +34,7 @@ class TrackViewModel @Inject constructor(
     )
   }
 
-  fun fetchTrackInfo(
+  private fun fetchTrackInfo(
     trackName: String?,
     artistName: String?
   ) {
@@ -50,11 +46,7 @@ class TrackViewModel @Inject constructor(
       trackRepository.getInfo(
         trackName = trackName,
         artistName = artistName
-      ).zip(
-        artistRepository.artistInfo(artistName)
-      ) { track, artist ->
-        Pair(track, artist)
-      }.onStart {
+      ).onStart {
         state.update {
           it.copy(isLoading = true)
         }
@@ -71,8 +63,7 @@ class TrackViewModel @Inject constructor(
       }.collect { result ->
         state.update {
           it.copy(
-            trackInfo = result.first,
-            artistInfo = result.second
+            trackInfo = result
           )
         }
       }
@@ -83,7 +74,6 @@ class TrackViewModel @Inject constructor(
   data class TrackUiState(
     val isLoading: Boolean,
     val trackInfo: TrackInfo?,
-    val artistInfo: ArtistInfo?,
     val event: UiEvent?
   ) {
     companion object {
@@ -92,7 +82,6 @@ class TrackViewModel @Inject constructor(
           isLoading = true,
           trackInfo = null,
           event = null,
-          artistInfo = null
         )
     }
   }

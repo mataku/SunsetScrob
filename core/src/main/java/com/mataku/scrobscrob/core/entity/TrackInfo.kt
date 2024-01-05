@@ -2,18 +2,27 @@ package com.mataku.scrobscrob.core.entity
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import java.util.Date
 
 data class TrackInfo(
   val duration: Long = 0L,
   val artist: TrackArtist,
   val album: TrackAlbumInfo? = null,
   val listeners: String,
+  val playCount: String,
   val url: String,
   val topTags: ImmutableList<Tag> = persistentListOf(),
-  val name: String
+  val name: String,
+  val wiki: TrackWiki? = null
 )
 
 data class TrackArtist(
   val name: String,
   val url: String
+)
+
+data class TrackWiki(
+  val published: Date,
+  val summary: String?,
+  val content: String?
 )
