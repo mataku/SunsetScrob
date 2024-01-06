@@ -23,7 +23,7 @@ import com.mataku.scrobscrob.core.entity.TopAlbumInfo
 import com.mataku.scrobscrob.core.entity.TrackAlbumInfo
 import com.mataku.scrobscrob.core.entity.TrackArtist
 import com.mataku.scrobscrob.core.entity.TrackInfo
-import com.mataku.scrobscrob.core.entity.TrackWiki
+import com.mataku.scrobscrob.core.entity.Wiki
 import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.data.api.endpoint.TrackInfoApiResponse
 import com.mataku.scrobscrob.data.api.model.AlbumInfoBody
@@ -40,7 +40,7 @@ import com.mataku.scrobscrob.data.api.model.TagBody
 import com.mataku.scrobscrob.data.api.model.TagsBody
 import com.mataku.scrobscrob.data.api.model.TrackAlbumInfoBody
 import com.mataku.scrobscrob.data.api.model.TrackArtistBody
-import com.mataku.scrobscrob.data.api.model.TrackArtistWikiBody
+import com.mataku.scrobscrob.data.api.model.WikiBody
 import com.mataku.scrobscrob.data.api.model.UserTopAlbumsApiResponse
 import com.mataku.scrobscrob.data.api.model.UserTopArtistsApiResponse
 import com.mataku.scrobscrob.data.db.entity.LicenseArtifactDefinitionEntity
@@ -95,7 +95,7 @@ fun TrackInfoApiResponse.toTrackInfo(): TrackInfo {
     artist = body.artist.toTrackArtist(),
     name = body.name,
     playCount = body.playCount,
-    wiki = body.wiki.toTrackArtistWiki()
+    wiki = body.wiki.toWiki()
   )
 }
 
@@ -268,10 +268,10 @@ fun List<LicenseArtifactDefinitionEntity>.toLicenseArtifactList(): List<LicenseA
   }
 }
 
-fun TrackArtistWikiBody?.toTrackArtistWiki(): TrackWiki? {
+fun WikiBody?.toWiki(): Wiki? {
   this ?: return null
 
-  return TrackWiki(
+  return Wiki(
     published = this.published,
     summary = this.summary,
     content = this.content
@@ -314,7 +314,8 @@ fun AlbumInfoBody.toAlbumInfo(): AlbumInfo {
     listeners = this.listeners,
     playCount = this.playCount,
     tracks = this.tracks.toTrackList().toImmutableList(),
-    tags = this.tagsBody.tagList.toTagList().toImmutableList()
+    tags = this.tagsBody.tagList.toTagList().toImmutableList(),
+    wiki = this.wiki.toWiki()
   )
 }
 

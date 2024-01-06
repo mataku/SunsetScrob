@@ -33,7 +33,10 @@ data class AlbumInfoBody(
   val tracks: AlbumInfoTrackBody,
 
   @SerialName("tags")
-  val tagsBody: TagsBody
+  val tagsBody: TagsBody,
+
+  @SerialName("wiki")
+  val wiki: WikiBody? = null
 )
 
 @Serializable
@@ -44,7 +47,7 @@ data class AlbumInfoTrackBody(
   @Serializable
   data class AlbumInfoTrackEntity(
     @SerialName("duration")
-    val duration: String,
+    val duration: String? = null,
 
     @SerialName("url")
     val url: String,

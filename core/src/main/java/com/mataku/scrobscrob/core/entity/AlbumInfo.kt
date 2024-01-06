@@ -21,11 +21,12 @@ data class AlbumInfo(
   //   "tag": {
   // Therefore, TODO...
   val tags: ImmutableList<Tag>,
-  val tracks: ImmutableList<AlbumInfoTrack>
+  val tracks: ImmutableList<AlbumInfoTrack>,
+  val wiki: Wiki? = null
 )
 
 data class AlbumInfoTrack(
-  val duration: String,
+  val duration: String?,
   val url: String,
   val name: String
 )
