@@ -76,7 +76,6 @@ private fun AlbumContent(
   val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Revealed)
 
   BackdropScaffold(
-    peekHeight = 0.dp,
     appBar = {},
     headerHeight = screenWidth.dp,
     backLayerContent = {
@@ -169,8 +168,7 @@ private fun AlbumContent(
       .fillMaxSize()
       .background(
         color = MaterialTheme.colorScheme.background
-      )
-    ,
+      ),
     scaffoldState = scaffoldState,
     frontLayerBackgroundColor = MaterialTheme.colorScheme.background,
     frontLayerScrimColor = Color.Transparent
