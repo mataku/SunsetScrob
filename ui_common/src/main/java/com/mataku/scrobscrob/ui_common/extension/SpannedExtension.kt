@@ -1,4 +1,4 @@
-package com.mataku.scrobscrob.ui_common
+package com.mataku.scrobscrob.ui_common.extension
 
 import android.graphics.Typeface
 import android.text.Spanned
