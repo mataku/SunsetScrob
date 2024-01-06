@@ -168,8 +168,9 @@ private fun AlbumContent(
     modifier = Modifier
       .fillMaxSize()
       .background(
-        color = Color.White
-      ),
+        color = MaterialTheme.colorScheme.background
+      )
+    ,
     scaffoldState = scaffoldState,
     frontLayerBackgroundColor = MaterialTheme.colorScheme.background,
     frontLayerScrimColor = Color.Transparent
