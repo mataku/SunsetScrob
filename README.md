@@ -14,6 +14,8 @@ See more: [screenshots](./screenshot/README.md)
 
 - Show latest scrobbles
 - Show top albums
+- Show track content details
+- Show album content details
 - Filter top albums by time range
 - Show top artists
 - Filter top artists by time range
@@ -42,8 +44,8 @@ or try via Google Play
 - Coil
 - Gradle version catalog
 - Gradle convention plugin
-- Fastlane
+- fastlane
 - Kotest
 
 ## TODO
-- Show each content details
+- Show artist content details
