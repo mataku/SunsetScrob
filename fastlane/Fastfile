@@ -35,7 +35,7 @@ platform :android do
 
   desc "Run screenshot test"
   lane :screenshot_test do
-    gradle(task: 'verifyRoborazziDebug --no-configuration-cache')
+    gradle(task: 'verifyRoborazziDebug --no-configuration-cache -PonlyScreenshotTest=true')
   end
 
   desc "Build an aab"

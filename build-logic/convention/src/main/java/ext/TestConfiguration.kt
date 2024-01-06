@@ -24,6 +24,9 @@ fun Project.testConfiguration() {
           if (project.hasProperty("excludeScreenshotTest")) {
             it.exclude("**/*ScreenTest.class")
           }
+          if (project.hasProperty("onlyScreenshotTest")) {
+            it.include("**/*ScreenTest.class")
+          }
         }
       }
     }
