@@ -11,7 +11,7 @@ data class ArtistInfoBody(
   val imageList: List<ImageBody>? = null,
 
   @SerialName("tags")
-  val topTags: TagsBody,
+  val topTags: TagListBody? = null,
 
   @SerialName("stats")
   val stats: ArtistStatsBody,
