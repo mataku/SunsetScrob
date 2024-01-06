@@ -155,7 +155,7 @@ private fun TrackContent(
                 modifier = Modifier
                   .fillMaxWidth()
                   .padding(
-                    16.dp
+                    vertical = 16.dp
                   )
               )
             } else {

@@ -11,15 +11,6 @@ data class AlbumInfo(
   val images: ImmutableList<Image>,
   val listeners: String,
   val playCount: String,
-  // last.fm album.getInfo endpoint returns weird tag response
-  // when multiple:
-  // "tags": {
-  //    "tag": [
-  //
-  // when single:
-  // "tags": {
-  //   "tag": {
-  // Therefore, TODO...
   val tags: ImmutableList<Tag>,
   val tracks: ImmutableList<AlbumInfoTrack>,
   val wiki: Wiki? = null

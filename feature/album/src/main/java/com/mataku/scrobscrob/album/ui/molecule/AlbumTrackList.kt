@@ -29,22 +29,25 @@ fun AlbumTrackList(
   tracks: ImmutableList<AlbumInfoTrack>,
   modifier: Modifier = Modifier
 ) {
-  Column(
-    modifier = modifier
-  ) {
-    Text(
-      text = "Track list",
-      style = SunsetTextStyle.headline,
-      maxLines = 1,
-      modifier = Modifier
-    )
-    Spacer(modifier = Modifier.height(8.dp))
-    tracks.forEachIndexed { index, track ->
-      AlbumTrack(
-        trackName = track.name,
-        duration = track.duration,
-        index = index + 1
+  if (tracks.isNotEmpty()) {
+
+    Column(
+      modifier = modifier
+    ) {
+      Text(
+        text = "Track list",
+        style = SunsetTextStyle.headline,
+        maxLines = 1,
+        modifier = Modifier
       )
+      Spacer(modifier = Modifier.height(8.dp))
+      tracks.forEachIndexed { index, track ->
+        AlbumTrack(
+          trackName = track.name,
+          duration = track.duration,
+          index = index + 1
+        )
+      }
     }
   }
 }

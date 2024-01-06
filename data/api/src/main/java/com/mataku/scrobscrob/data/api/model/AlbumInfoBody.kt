@@ -30,10 +30,10 @@ data class AlbumInfoBody(
   val playCount: String,
 
   @SerialName("tracks")
-  val tracks: AlbumInfoTrackBody,
+  val tracks: AlbumInfoTrackBody? = null,
 
   @SerialName("tags")
-  val tagsBody: TagsBody,
+  val tagsBody: TagListBody? = null,
 
   @SerialName("wiki")
   val wiki: WikiBody? = null

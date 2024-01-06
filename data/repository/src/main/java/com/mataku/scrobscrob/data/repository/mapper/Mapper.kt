@@ -32,17 +32,19 @@ import com.mataku.scrobscrob.data.api.model.ArtistInfoApiResponse
 import com.mataku.scrobscrob.data.api.model.ChartTopArtistsResponse
 import com.mataku.scrobscrob.data.api.model.ChartTopTracksResponse
 import com.mataku.scrobscrob.data.api.model.ImageBody
+import com.mataku.scrobscrob.data.api.model.MultipleTag
 import com.mataku.scrobscrob.data.api.model.NowPlayingApiResponse
 import com.mataku.scrobscrob.data.api.model.PagingAttrBody
 import com.mataku.scrobscrob.data.api.model.RecentTracksApiResponse
 import com.mataku.scrobscrob.data.api.model.ScrobbleApiResponse
+import com.mataku.scrobscrob.data.api.model.SingleTag
 import com.mataku.scrobscrob.data.api.model.TagBody
-import com.mataku.scrobscrob.data.api.model.TagsBody
+import com.mataku.scrobscrob.data.api.model.TagListBody
 import com.mataku.scrobscrob.data.api.model.TrackAlbumInfoBody
 import com.mataku.scrobscrob.data.api.model.TrackArtistBody
-import com.mataku.scrobscrob.data.api.model.WikiBody
 import com.mataku.scrobscrob.data.api.model.UserTopAlbumsApiResponse
 import com.mataku.scrobscrob.data.api.model.UserTopArtistsApiResponse
+import com.mataku.scrobscrob.data.api.model.WikiBody
 import com.mataku.scrobscrob.data.db.entity.LicenseArtifactDefinitionEntity
 import com.mataku.scrobscrob.data.db.entity.ScmEntity
 import com.mataku.scrobscrob.data.db.entity.SpdxLicenseEntity
@@ -148,12 +150,20 @@ fun NowPlayingApiResponse.toNowPlaying(): NowPlaying {
   )
 }
 
-fun TagsBody.toTagList(): List<Tag> {
-  return this.tagList.map {
-    Tag(
-      name = it.name,
-      url = it.url
-    )
+fun TagListBody?.toTagList(): List<Tag> {
+  this ?: return emptyList()
+  return when (this) {
+    is SingleTag -> {
+      listOf(
+        Tag(name = this.name, url = "")
+      )
+    }
+
+    is MultipleTag -> {
+      this.tagList.toTagList()
+    }
+
+    else -> emptyList<Tag>()
   }
 }
 
@@ -295,7 +305,8 @@ fun List<TagBody>.toTagList(): List<Tag> {
   }
 }
 
-fun AlbumInfoTrackBody.toTrackList(): List<AlbumInfoTrack> {
+fun AlbumInfoTrackBody?.toTrackList(): List<AlbumInfoTrack> {
+  this ?: return emptyList()
   return this.tracks.map {
     AlbumInfoTrack(
       duration = it.duration,
@@ -306,6 +317,7 @@ fun AlbumInfoTrackBody.toTrackList(): List<AlbumInfoTrack> {
 }
 
 fun AlbumInfoBody.toAlbumInfo(): AlbumInfo {
+  val tagList = this.tagsBody.toTagList().toImmutableList()
   return AlbumInfo(
     albumName = this.albumName,
     artistName = this.artistName,
@@ -314,7 +326,7 @@ fun AlbumInfoBody.toAlbumInfo(): AlbumInfo {
     listeners = this.listeners,
     playCount = this.playCount,
     tracks = this.tracks.toTrackList().toImmutableList(),
-    tags = this.tagsBody.tagList.toTagList().toImmutableList(),
+    tags = tagList,
     wiki = this.wiki.toWiki()
   )
 }

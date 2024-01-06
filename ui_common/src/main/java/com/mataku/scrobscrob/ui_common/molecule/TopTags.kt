@@ -1,9 +1,12 @@
 package com.mataku.scrobscrob.ui_common.molecule
 
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.Surface
@@ -17,19 +20,21 @@ import com.mataku.scrobscrob.core.entity.Tag
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun TopTags(
   tagList: List<Tag>,
   modifier: Modifier = Modifier
 ) {
-  FlowRow(
-    horizontalArrangement = Arrangement.spacedBy(8.dp),
+  Row(
     modifier = modifier
+      .horizontalScroll(rememberScrollState()),
+    horizontalArrangement = Arrangement.spacedBy(8.dp),
   ) {
+    Spacer(modifier = Modifier.width(8.dp))
     tagList.map {
       Tag(name = it.name)
     }
+    Spacer(modifier = Modifier.width(8.dp))
   }
 }
 

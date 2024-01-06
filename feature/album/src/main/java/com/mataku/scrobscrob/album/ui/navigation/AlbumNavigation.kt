@@ -1,8 +1,5 @@
 package com.mataku.scrobscrob.album.ui.navigation
 
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -46,12 +43,6 @@ fun NavGraphBuilder.albumGraph(navController: NavController) {
           type = NavType.StringType
         }
       ),
-      enterTransition = {
-        fadeIn(tween(300))
-      },
-      exitTransition = {
-        fadeOut(tween(300))
-      }
     ) {
       AlbumScreen(
         viewModel = hiltViewModel(),

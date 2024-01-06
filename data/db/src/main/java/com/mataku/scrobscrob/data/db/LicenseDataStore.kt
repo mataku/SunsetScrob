@@ -15,8 +15,6 @@ object LicenseDataStore {
       json.decodeFromString<List<LicenseArtifactDefinitionEntity>>(
         rawLicenseString
       )
-    }.onFailure {
-      println("MATAKUDEBUG $it")
     }.getOrNull() ?: emptyList()
   }
 }
