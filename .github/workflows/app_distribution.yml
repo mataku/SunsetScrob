@@ -36,6 +36,9 @@ jobs:
     #     workload_identity_provider: ${{ secrets.WORKFLOW_IDENTITY_PROVIDER }}
     #     service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT }}
     - uses: ./.github/actions/setup-gradle
+      with:
+        use-build-cache: 'true'
+
     - uses: ruby/setup-ruby@v1
       with:
         bundler-cache: true

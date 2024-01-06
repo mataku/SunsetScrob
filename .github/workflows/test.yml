@@ -24,6 +24,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-gradle
+        with:
+          use-build-cache: 'true'
 
       - uses: ruby/setup-ruby@v1
         with:
@@ -49,6 +51,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-gradle
+        with:
+          use-build-cache: 'true'
       - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true

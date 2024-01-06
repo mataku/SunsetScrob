@@ -3,7 +3,7 @@ description: "Setup Gradle and cache"
 inputs:
   use-build-cache:
     description: 'Boolean value whether to use build cache'
-    default: 'true'
+    required: true
 
 runs:
   using: "composite"
