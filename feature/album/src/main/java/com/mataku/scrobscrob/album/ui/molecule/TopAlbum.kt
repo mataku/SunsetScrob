@@ -19,7 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.mataku.scrobscrob.core.entity.AlbumInfo
+import com.mataku.scrobscrob.core.entity.TopAlbumInfo
 import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.molecule.SunsetImage
@@ -29,7 +29,7 @@ import com.mataku.scrobscrob.ui_common.R as uiCommonR
 
 @Composable
 fun TopAlbum(
-  album: AlbumInfo,
+  album: TopAlbumInfo,
   onAlbumTap: () -> Unit,
   modifier: Modifier = Modifier
 ) {
@@ -99,7 +99,7 @@ fun TopAlbumPreview() {
   SunsetThemePreview {
     Surface {
       TopAlbum(
-        album = AlbumInfo(
+        album = TopAlbumInfo(
           artist = "乃木坂46",
           title = "生まれてから初めて見た夢",
           imageList = persistentListOf(),

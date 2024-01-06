@@ -6,6 +6,10 @@ plugins {
 
 android {
   namespace = "com.mataku.scrobscrob.data.repository"
+
+  sourceSets {
+    getByName("test").resources.srcDirs("src/test/assets")
+  }
 }
 
 dependencies {

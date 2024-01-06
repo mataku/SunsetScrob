@@ -29,14 +29,12 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.mataku.scrobscrob.album.R
 import com.mataku.scrobscrob.album.ui.molecule.TopAlbum
 import com.mataku.scrobscrob.album.ui.viewmodel.TopAlbumsViewModel
-import com.mataku.scrobscrob.core.entity.AlbumInfo
+import com.mataku.scrobscrob.core.entity.TopAlbumInfo
 import com.mataku.scrobscrob.ui_common.molecule.FilteringFloatingButton
 import com.mataku.scrobscrob.ui_common.molecule.LoadingIndicator
-import com.mataku.scrobscrob.ui_common.navigateToWebView
 import com.mataku.scrobscrob.ui_common.organism.ContentHeader
 import com.mataku.scrobscrob.ui_common.organism.FilteringBottomSheet
 import com.mataku.scrobscrob.ui_common.organism.InfiniteLoadingIndicator
@@ -48,7 +46,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun TopAlbumsScreen(
   viewModel: TopAlbumsViewModel,
-  navController: NavController
+  navigateToAlbumInfo: (TopAlbumInfo) -> Unit
 ) {
   val uiState by viewModel.uiState.collectAsState()
 
@@ -85,13 +83,13 @@ fun TopAlbumsScreen(
     TopAlbumsContent(
       albums = uiState.topAlbums,
       hasNext = uiState.hasNext,
-      onUrlTap = navController::navigateToWebView,
       onScrollEnd = viewModel::fetchAlbums,
       maxSpanCount = if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
         4
       } else {
         2
-      }
+      },
+      onAlbumTap = navigateToAlbumInfo
     )
 
     if (showBottomSheet) {
@@ -130,10 +128,10 @@ fun TopAlbumsScreen(
 
 @Composable
 fun TopAlbumsContent(
-  albums: ImmutableList<AlbumInfo>,
+  albums: ImmutableList<TopAlbumInfo>,
   hasNext: Boolean,
   maxSpanCount: Int,
-  onUrlTap: (String) -> Unit,
+  onAlbumTap: (TopAlbumInfo) -> Unit,
   onScrollEnd: () -> Unit,
 ) {
   Column(
@@ -150,7 +148,7 @@ fun TopAlbumsContent(
           TopAlbum(
             album = album,
             onAlbumTap = {
-              onUrlTap.invoke(album.url)
+              onAlbumTap.invoke(album)
             },
             modifier = Modifier.fillMaxWidth(),
           )

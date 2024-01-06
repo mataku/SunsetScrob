@@ -1,6 +1,7 @@
 package com.mataku.scrobscrob.data.repository.mapper
 
 import com.mataku.scrobscrob.core.entity.AlbumInfo
+import com.mataku.scrobscrob.core.entity.AlbumInfoTrack
 import com.mataku.scrobscrob.core.entity.ArtistInfo
 import com.mataku.scrobscrob.core.entity.ChartArtist
 import com.mataku.scrobscrob.core.entity.ChartTopArtists
@@ -18,12 +19,15 @@ import com.mataku.scrobscrob.core.entity.Scm
 import com.mataku.scrobscrob.core.entity.ScrobbleResult
 import com.mataku.scrobscrob.core.entity.SpdxLicense
 import com.mataku.scrobscrob.core.entity.Tag
+import com.mataku.scrobscrob.core.entity.TopAlbumInfo
 import com.mataku.scrobscrob.core.entity.TrackAlbumInfo
 import com.mataku.scrobscrob.core.entity.TrackArtist
 import com.mataku.scrobscrob.core.entity.TrackInfo
-import com.mataku.scrobscrob.core.entity.TrackWiki
+import com.mataku.scrobscrob.core.entity.Wiki
 import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.data.api.endpoint.TrackInfoApiResponse
+import com.mataku.scrobscrob.data.api.model.AlbumInfoBody
+import com.mataku.scrobscrob.data.api.model.AlbumInfoTrackBody
 import com.mataku.scrobscrob.data.api.model.ArtistInfoApiResponse
 import com.mataku.scrobscrob.data.api.model.ChartTopArtistsResponse
 import com.mataku.scrobscrob.data.api.model.ChartTopTracksResponse
@@ -32,10 +36,11 @@ import com.mataku.scrobscrob.data.api.model.NowPlayingApiResponse
 import com.mataku.scrobscrob.data.api.model.PagingAttrBody
 import com.mataku.scrobscrob.data.api.model.RecentTracksApiResponse
 import com.mataku.scrobscrob.data.api.model.ScrobbleApiResponse
-import com.mataku.scrobscrob.data.api.model.TopTagsBody
+import com.mataku.scrobscrob.data.api.model.TagBody
+import com.mataku.scrobscrob.data.api.model.TagsBody
 import com.mataku.scrobscrob.data.api.model.TrackAlbumInfoBody
 import com.mataku.scrobscrob.data.api.model.TrackArtistBody
-import com.mataku.scrobscrob.data.api.model.TrackArtistWikiBody
+import com.mataku.scrobscrob.data.api.model.WikiBody
 import com.mataku.scrobscrob.data.api.model.UserTopAlbumsApiResponse
 import com.mataku.scrobscrob.data.api.model.UserTopArtistsApiResponse
 import com.mataku.scrobscrob.data.db.entity.LicenseArtifactDefinitionEntity
@@ -90,14 +95,14 @@ fun TrackInfoApiResponse.toTrackInfo(): TrackInfo {
     artist = body.artist.toTrackArtist(),
     name = body.name,
     playCount = body.playCount,
-    wiki = body.wiki.toTrackArtistWiki()
+    wiki = body.wiki.toWiki()
   )
 }
 
-fun UserTopAlbumsApiResponse.toTopAlbums(): List<AlbumInfo> {
+fun UserTopAlbumsApiResponse.toTopAlbums(): List<TopAlbumInfo> {
   val body = this.topAlbums
   return body.albums.map {
-    AlbumInfo(
+    TopAlbumInfo(
       artist = it.artist.name,
       title = it.name,
       imageList = it.imageList?.toImageList()?.toImmutableList() ?: persistentListOf(),
@@ -143,7 +148,7 @@ fun NowPlayingApiResponse.toNowPlaying(): NowPlaying {
   )
 }
 
-fun TopTagsBody.toTagList(): List<Tag> {
+fun TagsBody.toTagList(): List<Tag> {
   return this.tagList.map {
     Tag(
       name = it.name,
@@ -263,13 +268,54 @@ fun List<LicenseArtifactDefinitionEntity>.toLicenseArtifactList(): List<LicenseA
   }
 }
 
-fun TrackArtistWikiBody?.toTrackArtistWiki(): TrackWiki? {
+fun WikiBody?.toWiki(): Wiki? {
   this ?: return null
 
-  return TrackWiki(
+  return Wiki(
     published = this.published,
     summary = this.summary,
     content = this.content
+  )
+}
+
+fun AlbumInfoTrackBody.AlbumInfoTrackEntity.toAlbumInfoTrack(): AlbumInfoTrack {
+  return AlbumInfoTrack(
+    duration = this.duration,
+    url = this.url,
+    name = this.name
+  )
+}
+
+fun List<TagBody>.toTagList(): List<Tag> {
+  return this.map {
+    Tag(
+      name = it.name,
+      url = it.url
+    )
+  }
+}
+
+fun AlbumInfoTrackBody.toTrackList(): List<AlbumInfoTrack> {
+  return this.tracks.map {
+    AlbumInfoTrack(
+      duration = it.duration,
+      name = it.name,
+      url = it.url
+    )
+  }
+}
+
+fun AlbumInfoBody.toAlbumInfo(): AlbumInfo {
+  return AlbumInfo(
+    albumName = this.albumName,
+    artistName = this.artistName,
+    url = this.url,
+    images = this.images.toImageList().toImmutableList(),
+    listeners = this.listeners,
+    playCount = this.playCount,
+    tracks = this.tracks.toTrackList().toImmutableList(),
+    tags = this.tagsBody.tagList.toTagList().toImmutableList(),
+    wiki = this.wiki.toWiki()
   )
 }
 

@@ -1,12 +1,14 @@
 package com.mataku.scrobscrob.data.api.model
 
+import com.mataku.scrobscrob.data.api.serializer.TagListSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class TopTagsBody(
+data class TagsBody(
   @SerialName("tag")
-  val tagList: List<TagBody>
+  @Serializable(TagListSerializer::class)
+  val tagList: List<TagBody> = emptyList()
 )
 
 @Serializable

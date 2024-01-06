@@ -24,4 +24,6 @@ dependencies {
   implementation(libs.coroutines)
 
   implementation(libs.kotlinx.collection)
+
+  implementation(libs.accompanist.systemuicontroller)
 }

@@ -4,13 +4,56 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class AlbumInfoBody(
-  @SerialName("artist")
-  val artist: String,
+data class AlbumInfoResponse(
+  @SerialName("album")
+  val albumInfoBody: AlbumInfoBody
+)
 
-  @SerialName("title")
-  val title: String,
+@Serializable
+data class AlbumInfoBody(
+  @SerialName("name")
+  val albumName: String,
+
+  @SerialName("artist")
+  val artistName: String,
+
+  @SerialName("url")
+  val url: String,
 
   @SerialName("image")
-  val imageList: List<ImageBody>
+  val images: List<ImageBody>,
+
+  @SerialName("listeners")
+  val listeners: String,
+
+  @SerialName("playcount")
+  val playCount: String,
+
+  @SerialName("tracks")
+  val tracks: AlbumInfoTrackBody,
+
+  @SerialName("tags")
+  val tagsBody: TagsBody,
+
+  @SerialName("wiki")
+  val wiki: WikiBody? = null
 )
+
+@Serializable
+data class AlbumInfoTrackBody(
+  @SerialName("track")
+  val tracks: List<AlbumInfoTrackEntity>
+) {
+  @Serializable
+  data class AlbumInfoTrackEntity(
+    @SerialName("duration")
+    val duration: String? = null,
+
+    @SerialName("url")
+    val url: String,
+
+    @SerialName("name")
+    val name: String
+  )
+}
+

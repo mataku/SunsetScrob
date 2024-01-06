@@ -1,0 +1,239 @@
+{
+  "album": {
+    "artist": "Coldplay",
+    "mbid": "0ec052ee-8c50-48f3-8682-501778dfc823",
+    "tags": {
+      "tag": [
+        {
+          "url": "https://www.last.fm/tag/rock",
+          "name": "rock"
+        },
+        {
+          "url": "https://www.last.fm/tag/alternative",
+          "name": "alternative"
+        },
+        {
+          "url": "https://www.last.fm/tag/britpop",
+          "name": "britpop"
+        },
+        {
+          "url": "https://www.last.fm/tag/coldplay",
+          "name": "coldplay"
+        },
+        {
+          "url": "https://www.last.fm/tag/alternative+rock",
+          "name": "alternative rock"
+        }
+      ]
+    },
+    "playcount": "77458187",
+    "image": [
+      {
+        "size": "small",
+        "#text": "https://lastfm.freetls.fastly.net/i/u/34s/5fbcfb7258117e88cb73b45e25c88b01.jpg"
+      },
+      {
+        "size": "medium",
+        "#text": "https://lastfm.freetls.fastly.net/i/u/64s/5fbcfb7258117e88cb73b45e25c88b01.jpg"
+      },
+      {
+        "size": "large",
+        "#text": "https://lastfm.freetls.fastly.net/i/u/174s/5fbcfb7258117e88cb73b45e25c88b01.jpg"
+      },
+      {
+        "size": "extralarge",
+        "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/5fbcfb7258117e88cb73b45e25c88b01.jpg"
+      },
+      {
+        "size": "mega",
+        "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/5fbcfb7258117e88cb73b45e25c88b01.jpg"
+      },
+      {
+        "size": "",
+        "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/5fbcfb7258117e88cb73b45e25c88b01.jpg"
+      }
+    ],
+    "tracks": {
+      "track": [
+        {
+          "streamable": {
+            "fulltrack": "0",
+            "#text": "0"
+          },
+          "duration": 136,
+          "url": "https://www.last.fm/music/Coldplay/Parachutes/Don%27t+Panic",
+          "name": "Don't Panic",
+          "@attr": {
+            "rank": 1
+          },
+          "artist": {
+            "url": "https://www.last.fm/music/Coldplay",
+            "name": "Coldplay",
+            "mbid": "cc197bad-dc9c-440d-a5b5-d52ba2e14234"
+          }
+        },
+        {
+          "streamable": {
+            "fulltrack": "0",
+            "#text": "0"
+          },
+          "duration": 301,
+          "url": "https://www.last.fm/music/Coldplay/Parachutes/Shiver",
+          "name": "Shiver",
+          "@attr": {
+            "rank": 2
+          },
+          "artist": {
+            "url": "https://www.last.fm/music/Coldplay",
+            "name": "Coldplay",
+            "mbid": "cc197bad-dc9c-440d-a5b5-d52ba2e14234"
+          }
+        },
+        {
+          "streamable": {
+            "fulltrack": "0",
+            "#text": "0"
+          },
+          "duration": 380,
+          "url": "https://www.last.fm/music/Coldplay/Parachutes/Spies",
+          "name": "Spies",
+          "@attr": {
+            "rank": 3
+          },
+          "artist": {
+            "url": "https://www.last.fm/music/Coldplay",
+            "name": "Coldplay",
+            "mbid": "cc197bad-dc9c-440d-a5b5-d52ba2e14234"
+          }
+        },
+        {
+          "streamable": {
+            "fulltrack": "0",
+            "#text": "0"
+          },
+          "duration": 227,
+          "url": "https://www.last.fm/music/Coldplay/Parachutes/Sparks",
+          "name": "Sparks",
+          "@attr": {
+            "rank": 4
+          },
+          "artist": {
+            "url": "https://www.last.fm/music/Coldplay",
+            "name": "Coldplay",
+            "mbid": "cc197bad-dc9c-440d-a5b5-d52ba2e14234"
+          }
+        },
+        {
+          "streamable": {
+            "fulltrack": "0",
+            "#text": "0"
+          },
+          "duration": 269,
+          "url": "https://www.last.fm/music/Coldplay/Parachutes/Yellow",
+          "name": "Yellow",
+          "@attr": {
+            "rank": 5
+          },
+          "artist": {
+            "url": "https://www.last.fm/music/Coldplay",
+            "name": "Coldplay",
+            "mbid": "cc197bad-dc9c-440d-a5b5-d52ba2e14234"
+          }
+        },
+        {
+          "streamable": {
+            "fulltrack": "0",
+            "#text": "0"
+          },
+          "duration": 273,
+          "url": "https://www.last.fm/music/Coldplay/Parachutes/Trouble",
+          "name": "Trouble",
+          "@attr": {
+            "rank": 6
+          },
+          "artist": {
+            "url": "https://www.last.fm/music/Coldplay",
+            "name": "Coldplay",
+            "mbid": "cc197bad-dc9c-440d-a5b5-d52ba2e14234"
+          }
+        },
+        {
+          "streamable": {
+            "fulltrack": "0",
+            "#text": "0"
+          },
+          "duration": 70,
+          "url": "https://www.last.fm/music/Coldplay/Parachutes/Parachutes",
+          "name": "Parachutes",
+          "@attr": {
+            "rank": 7
+          },
+          "artist": {
+            "url": "https://www.last.fm/music/Coldplay",
+            "name": "Coldplay",
+            "mbid": "cc197bad-dc9c-440d-a5b5-d52ba2e14234"
+          }
+        },
+        {
+          "streamable": {
+            "fulltrack": "0",
+            "#text": "0"
+          },
+          "duration": 257,
+          "url": "https://www.last.fm/music/Coldplay/Parachutes/High+Speed",
+          "name": "High Speed",
+          "@attr": {
+            "rank": 8
+          },
+          "artist": {
+            "url": "https://www.last.fm/music/Coldplay",
+            "name": "Coldplay",
+            "mbid": "cc197bad-dc9c-440d-a5b5-d52ba2e14234"
+          }
+        },
+        {
+          "streamable": {
+            "fulltrack": "0",
+            "#text": "0"
+          },
+          "duration": 249,
+          "url": "https://www.last.fm/music/Coldplay/Parachutes/We+Never+Change",
+          "name": "We Never Change",
+          "@attr": {
+            "rank": 9
+          },
+          "artist": {
+            "url": "https://www.last.fm/music/Coldplay",
+            "name": "Coldplay",
+            "mbid": "cc197bad-dc9c-440d-a5b5-d52ba2e14234"
+          }
+        },
+        {
+          "streamable": {
+            "fulltrack": "0",
+            "#text": "0"
+          },
+          "duration": 436,
+          "url": "https://www.last.fm/music/Coldplay/Parachutes/Everything%27s+Not+Lost+%2F+Life+Is+for+Living",
+          "name": "Everything's Not Lost / Life Is for Living",
+          "@attr": {
+            "rank": 10
+          },
+          "artist": {
+            "url": "https://www.last.fm/music/Coldplay",
+            "name": "Coldplay",
+            "mbid": "cc197bad-dc9c-440d-a5b5-d52ba2e14234"
+          }
+        }
+      ]
+    },
+    "url": "https://www.last.fm/music/Coldplay/Parachutes",
+    "name": "Parachutes",
+    "listeners": "3434647",
+    "wiki": {
+      "published": "07 Jul 2022, 02:10",
+      "summary": "\"Parachutes\" is the Grammy award-winning debut album by English rock band Coldplay, released on July 10, 2000 in the UK and on November 7 in the U.S.. Parachutes quickly shot to number one in the United Kingdom, staying in the top ten for thirty-three weeks. The album produced four hit singles: \"Shiver\", \"Yellow\", \"Trouble\", and \"Don't Panic\". In the United States, the album peaked at only fifty-one on the Billboard 200 yet, it still managed to sell over two million copies within a year. \"Parachutes\" won the Grammy Award for Best Alternative Music Album in 2002. It was placed at <a href=\"https://www.last.fm/music/Coldplay/Parachutes\">Read more on Last.fm</a>.",
+      "content": "\"Parachutes\" is the Grammy award-winning debut album by English rock band Coldplay, released on July 10, 2000 in the UK and on November 7 in the U.S.. Parachutes quickly shot to number one in the United Kingdom, staying in the top ten for thirty-three weeks.\n\nThe album produced four hit singles: \"Shiver\", \"Yellow\", \"Trouble\", and \"Don't Panic\". In the United States, the album peaked at only fifty-one on the Billboard 200 yet, it still managed to sell over two million copies within a year.\n\n\"Parachutes\" won the Grammy Award for Best Alternative Music Album in 2002. It was placed at #14 in Channel 4's 100 greatest albums of all time and in 2006 at #33 in NME's 100 greatest British albums. Despite the album's critical and commercial success, lead singer Chris Martin said that Coldplay looks beyond \"Parachutes\". \"We know that's terrible music,\" he said, \"and we always try to think about what we can do next.\" <a href=\"https://www.last.fm/music/Coldplay/Parachutes\">Read more on Last.fm</a>. User-contributed text is available under the Creative Commons By-SA License; additional terms may apply."
+    }
+  }
+}
