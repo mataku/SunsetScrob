@@ -123,9 +123,6 @@ private fun TrackContent(
       Column(
         modifier = Modifier
           .fillMaxWidth()
-          .padding(
-            bottom = 32.dp
-          )
           .verticalScroll(rememberScrollState())
       ) {
         if (trackInfo == null) {
@@ -191,6 +188,7 @@ private fun TrackContent(
             )
           }
         }
+        Spacer(modifier = Modifier.height(32.dp))
       }
     },
     modifier = Modifier
