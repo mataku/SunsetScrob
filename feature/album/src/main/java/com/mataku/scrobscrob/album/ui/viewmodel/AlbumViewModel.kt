@@ -50,9 +50,7 @@ class AlbumViewModel @Inject constructor(
     albumRepository.albumInfo(
       albumName = albumName,
       artistName = artistName
-    ).catch {
-
-    }.onStart {
+    ).catch {}.onStart {
       uiState.update {
         it.copy(
           isLoading = true
