@@ -61,7 +61,7 @@ class AlbumViewModel @Inject constructor(
     }.onCompletion {
       uiState.update {
         it.copy(
-          isLoading = true
+          isLoading = false
         )
       }
     }.onEach { albumInfo ->
