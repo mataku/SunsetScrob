@@ -35,6 +35,7 @@ import com.mataku.scrobscrob.core.entity.Tag
 import com.mataku.scrobscrob.core.entity.Wiki
 import com.mataku.scrobscrob.ui_common.molecule.SimpleWiki
 import com.mataku.scrobscrob.ui_common.molecule.SunsetImage
+import com.mataku.scrobscrob.ui_common.molecule.TopTags
 import com.mataku.scrobscrob.ui_common.molecule.WikiCell
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import kotlinx.collections.immutable.persistentListOf
@@ -116,6 +117,17 @@ private fun AlbumContent(
           modifier = Modifier
             .padding(16.dp)
         )
+        val tags = albumInfo?.tags
+        if (tags?.isNotEmpty() == true) {
+          TopTags(
+            tagList = tags,
+            modifier = Modifier
+              .padding(
+                vertical = 16.dp
+              )
+          )
+        }
+
         Divider()
 
         albumInfo?.let { album ->
@@ -145,7 +157,8 @@ private fun AlbumContent(
               modifier = Modifier
                 .padding(
                   16.dp
-                )
+                ),
+              onUrlTap = onAlbumLoadMoreTap
             )
           }
         }

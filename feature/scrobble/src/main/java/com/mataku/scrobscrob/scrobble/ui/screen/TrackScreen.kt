@@ -155,7 +155,7 @@ private fun TrackContent(
                 modifier = Modifier
                   .fillMaxWidth()
                   .padding(
-                    16.dp
+                    vertical = 16.dp
                   )
               )
             } else {
@@ -184,7 +184,8 @@ private fun TrackContent(
               modifier = Modifier
                 .padding(
                   16.dp
-                )
+                ),
+              onUrlTap = onUrlTap
             )
           }
         }
