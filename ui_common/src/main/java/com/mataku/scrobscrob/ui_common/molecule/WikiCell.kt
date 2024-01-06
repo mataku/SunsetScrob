@@ -1,7 +1,6 @@
 package com.mataku.scrobscrob.ui_common.molecule
 
 import android.text.SpannableStringBuilder
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,7 +11,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.tooling.preview.Preview
@@ -20,8 +18,9 @@ import androidx.compose.ui.unit.dp
 import androidx.core.text.HtmlCompat
 import com.mataku.scrobscrob.core.entity.Wiki
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
-import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import com.mataku.scrobscrob.ui_common.extension.toAnnotatedString
+import com.mataku.scrobscrob.ui_common.extension.url
+import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import java.util.Date
 
 @Composable
@@ -54,8 +53,7 @@ fun WikiCell(
       ClickableText(
         text = text,
         onClick = { position ->
-          text.url(position
-          ) {
+          text.url(position) {
             onUrlTap.invoke(it)
           }
         },
