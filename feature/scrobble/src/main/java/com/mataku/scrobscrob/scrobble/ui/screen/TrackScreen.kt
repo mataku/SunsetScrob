@@ -334,7 +334,7 @@ private fun TrackDetail(
 
     Spacer(
       modifier = Modifier
-        .width(32.dp)
+        .width(16.dp)
     )
 
     TrackMetaData(
