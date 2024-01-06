@@ -1,29 +1,53 @@
 package com.mataku.scrobscrob.data.repository.mapper
 
 import com.mataku.scrobscrob.core.entity.AlbumInfo
+import com.mataku.scrobscrob.core.entity.AlbumInfoTrack
 import com.mataku.scrobscrob.core.entity.ArtistInfo
+import com.mataku.scrobscrob.core.entity.ChartArtist
+import com.mataku.scrobscrob.core.entity.ChartTopArtists
+import com.mataku.scrobscrob.core.entity.ChartTopTracks
+import com.mataku.scrobscrob.core.entity.ChartTrack
+import com.mataku.scrobscrob.core.entity.ChartTrackArtist
 import com.mataku.scrobscrob.core.entity.Image
+import com.mataku.scrobscrob.core.entity.LicenseArtifact
 import com.mataku.scrobscrob.core.entity.NowPlaying
 import com.mataku.scrobscrob.core.entity.NowPlayingTrack
 import com.mataku.scrobscrob.core.entity.NowPlayingTrackEntity
+import com.mataku.scrobscrob.core.entity.PagingAttr
 import com.mataku.scrobscrob.core.entity.RecentTrack
+import com.mataku.scrobscrob.core.entity.Scm
 import com.mataku.scrobscrob.core.entity.ScrobbleResult
+import com.mataku.scrobscrob.core.entity.SpdxLicense
 import com.mataku.scrobscrob.core.entity.Tag
+import com.mataku.scrobscrob.core.entity.TopAlbumInfo
 import com.mataku.scrobscrob.core.entity.TrackAlbumInfo
 import com.mataku.scrobscrob.core.entity.TrackArtist
 import com.mataku.scrobscrob.core.entity.TrackInfo
+import com.mataku.scrobscrob.core.entity.Wiki
 import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.data.api.endpoint.TrackInfoApiResponse
+import com.mataku.scrobscrob.data.api.model.AlbumInfoBody
+import com.mataku.scrobscrob.data.api.model.AlbumInfoTrackBody
 import com.mataku.scrobscrob.data.api.model.ArtistInfoApiResponse
+import com.mataku.scrobscrob.data.api.model.ChartTopArtistsResponse
+import com.mataku.scrobscrob.data.api.model.ChartTopTracksResponse
 import com.mataku.scrobscrob.data.api.model.ImageBody
+import com.mataku.scrobscrob.data.api.model.MultipleTag
 import com.mataku.scrobscrob.data.api.model.NowPlayingApiResponse
+import com.mataku.scrobscrob.data.api.model.PagingAttrBody
 import com.mataku.scrobscrob.data.api.model.RecentTracksApiResponse
 import com.mataku.scrobscrob.data.api.model.ScrobbleApiResponse
-import com.mataku.scrobscrob.data.api.model.TopTagsBody
+import com.mataku.scrobscrob.data.api.model.SingleTag
+import com.mataku.scrobscrob.data.api.model.TagBody
+import com.mataku.scrobscrob.data.api.model.TagListBody
 import com.mataku.scrobscrob.data.api.model.TrackAlbumInfoBody
 import com.mataku.scrobscrob.data.api.model.TrackArtistBody
 import com.mataku.scrobscrob.data.api.model.UserTopAlbumsApiResponse
 import com.mataku.scrobscrob.data.api.model.UserTopArtistsApiResponse
+import com.mataku.scrobscrob.data.api.model.WikiBody
+import com.mataku.scrobscrob.data.db.entity.LicenseArtifactDefinitionEntity
+import com.mataku.scrobscrob.data.db.entity.ScmEntity
+import com.mataku.scrobscrob.data.db.entity.SpdxLicenseEntity
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 
@@ -71,14 +95,16 @@ fun TrackInfoApiResponse.toTrackInfo(): TrackInfo {
     url = body.url,
     topTags = body.topTags.toTagList().toImmutableList(),
     artist = body.artist.toTrackArtist(),
-    name = body.name
+    name = body.name,
+    playCount = body.playCount,
+    wiki = body.wiki.toWiki()
   )
 }
 
-fun UserTopAlbumsApiResponse.toTopAlbums(): List<AlbumInfo> {
+fun UserTopAlbumsApiResponse.toTopAlbums(): List<TopAlbumInfo> {
   val body = this.topAlbums
   return body.albums.map {
-    AlbumInfo(
+    TopAlbumInfo(
       artist = it.artist.name,
       title = it.name,
       imageList = it.imageList?.toImageList()?.toImmutableList() ?: persistentListOf(),
@@ -124,12 +150,20 @@ fun NowPlayingApiResponse.toNowPlaying(): NowPlaying {
   )
 }
 
-fun TopTagsBody.toTagList(): List<Tag> {
-  return this.tagList.map {
-    Tag(
-      name = it.name,
-      url = it.url
-    )
+fun TagListBody?.toTagList(): List<Tag> {
+  this ?: return emptyList()
+  return when (this) {
+    is SingleTag -> {
+      listOf(
+        Tag(name = this.name, url = "")
+      )
+    }
+
+    is MultipleTag -> {
+      this.tagList.toTagList()
+    }
+
+    else -> emptyList<Tag>()
   }
 }
 
@@ -162,6 +196,138 @@ fun ScrobbleApiResponse.toScrobbleResult(): ScrobbleResult {
   val body = this.scrobbleResult
   return ScrobbleResult(
     accepted = body.attr.accepted == 1
+  )
+}
+
+fun PagingAttrBody.toPagingAttr(): PagingAttr {
+  return PagingAttr(
+    page = this.page,
+    perPage = this.perPage,
+    total = this.total,
+    totalPages = this.totalPages
+  )
+}
+
+fun ChartTopArtistsResponse.toChartTopArtists(): ChartTopArtists {
+  val body = this.chartTopArtistsBody
+  val topArtists = body.topArtists.map { chartArtist ->
+    ChartArtist(
+      name = chartArtist.name,
+      playCount = chartArtist.playCount,
+      listeners = chartArtist.listeners,
+      url = chartArtist.url,
+      imageList = chartArtist.imageList.toImageList()
+    )
+  }
+  val pagingAttr = body.pagingAttrBody.toPagingAttr()
+  return ChartTopArtists(
+    topArtists = topArtists,
+    pagingAttr = pagingAttr
+  )
+}
+
+fun ChartTopTracksResponse.toChartTopTracks(): ChartTopTracks {
+  val body = this.chartTopTracksBody
+  val topTracks = body.topTracks.map {
+    ChartTrack(
+      name = it.name,
+      playCount = it.playCount,
+      listeners = it.listeners,
+      url = it.url,
+      artist = ChartTrackArtist(
+        name = it.artist.name,
+        url = it.artist.url
+      ),
+      imageList = it.imageList.toImageList(),
+      mbid = it.mbid
+    )
+  }
+  val pagingAttr = body.pagingAttrBody.toPagingAttr()
+
+  return ChartTopTracks(
+    topTracks = topTracks,
+    pagingAttr = pagingAttr
+  )
+}
+
+fun ScmEntity?.toScm(): Scm? {
+  this ?: return null
+  return Scm(url = this.url)
+}
+
+fun List<SpdxLicenseEntity>.toSpdxLicenseList(): List<SpdxLicense> {
+  return this.map {
+    SpdxLicense(
+      identifier = it.identifier,
+      name = it.name,
+      url = it.url
+    )
+  }
+}
+
+fun List<LicenseArtifactDefinitionEntity>.toLicenseArtifactList(): List<LicenseArtifact> {
+  return this.map {
+    LicenseArtifact(
+      artifactId = it.artifactId,
+      groupId = it.groupId,
+      name = it.name,
+      scm = it.scm.toScm(),
+      spdxLicenses = it.spdxLicenses.toSpdxLicenseList(),
+      version = it.version
+    )
+  }
+}
+
+fun WikiBody?.toWiki(): Wiki? {
+  this ?: return null
+
+  return Wiki(
+    published = this.published,
+    summary = this.summary,
+    content = this.content
+  )
+}
+
+fun AlbumInfoTrackBody.AlbumInfoTrackEntity.toAlbumInfoTrack(): AlbumInfoTrack {
+  return AlbumInfoTrack(
+    duration = this.duration,
+    url = this.url,
+    name = this.name
+  )
+}
+
+fun List<TagBody>.toTagList(): List<Tag> {
+  return this.map {
+    Tag(
+      name = it.name,
+      url = it.url
+    )
+  }
+}
+
+fun AlbumInfoTrackBody?.toTrackList(): List<AlbumInfoTrack> {
+  this ?: return emptyList()
+  return this.tracks.map {
+    AlbumInfoTrack(
+      duration = it.duration,
+      name = it.name,
+      url = it.url
+    )
+  }
+}
+
+fun AlbumInfoBody.toAlbumInfo(): AlbumInfo {
+  val tagList = this.tagsBody.toTagList().toImmutableList()
+  return AlbumInfo(
+    albumName = this.albumName,
+    artistName = this.artistName,
+    url = this.url,
+    images = this.images.toImageList().toImmutableList(),
+    listeners = this.listeners,
+    playCount = this.playCount,
+    tracks = this.tracks.toTrackList().toImmutableList(),
+    tags = tagList,
+    wiki = this.wiki.toWiki()
   )
 }
 

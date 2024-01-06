@@ -34,5 +34,9 @@ gradlePlugin {
       id = "sunsetscrob.android.dagger"
       implementationClass = "DaggerConventionPlugin"
     }
+    register("androidScreenshotTest") {
+      id = "sunsetscrob.android.test.screenshot"
+      implementationClass = "ScreenshotTestConventionPlugin"
+    }
   }
 }

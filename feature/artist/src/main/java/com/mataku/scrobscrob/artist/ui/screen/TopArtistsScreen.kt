@@ -13,10 +13,10 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ModalBottomSheetValue
-import androidx.compose.material.rememberModalBottomSheetState
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -27,6 +27,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -44,7 +45,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopArtistsScreen(
   viewModel: TopArtistsViewModel,
@@ -52,7 +53,7 @@ fun TopArtistsScreen(
 ) {
   val uiState by viewModel.uiState.collectAsState()
 
-  val bottomSheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
+  val bottomSheetState = rememberModalBottomSheetState()
   var showBottomSheet by remember {
     mutableStateOf(false)
   }
@@ -71,7 +72,7 @@ fun TopArtistsScreen(
       FilteringFloatingButton(
         onClick = {
           coroutineScope.launch {
-            bottomSheetState.show()
+            showBottomSheet = true
           }
         },
         modifier = Modifier
@@ -93,17 +94,24 @@ fun TopArtistsScreen(
       }
     )
     if (showBottomSheet) {
-      FilteringBottomSheet(
-        selectedTimeRangeFiltering = uiState.selectedTimeRangeFiltering,
-        onClick = {
-          viewModel.updateTimeRange(it)
-          coroutineScope.launch {
-            bottomSheetState.hide()
-          }.invokeOnCompletion {
-            showBottomSheet = false
+      ModalBottomSheet(
+        onDismissRequest = {
+          showBottomSheet = false
+        },
+        sheetState = bottomSheetState
+      ) {
+        FilteringBottomSheet(
+          selectedTimeRangeFiltering = uiState.selectedTimeRangeFiltering,
+          onClick = {
+            viewModel.updateTimeRange(it)
+            coroutineScope.launch {
+              bottomSheetState.hide()
+            }.invokeOnCompletion {
+              showBottomSheet = false
+            }
           }
-        }
-      )
+        )
+      }
     }
   }
 
@@ -161,6 +169,9 @@ private fun TopArtistsContent(
             )
           }
         }
-      })
+      },
+      modifier = Modifier
+        .testTag("artists_list")
+    )
   }
 }

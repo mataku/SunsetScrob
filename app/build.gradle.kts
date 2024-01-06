@@ -5,6 +5,7 @@ plugins {
   id("com.google.firebase.crashlytics")
   id("com.google.gms.google-services")
   id("com.google.devtools.ksp")
+  id("app.cash.licensee")
 }
 
 android {
@@ -31,6 +32,7 @@ dependencies {
   implementation(project(":feature:auth"))
   implementation(project(":feature:scrobble"))
   implementation(project(":feature:account"))
+  implementation(project(":feature:chart"))
 
   implementation(libs.activity.ktx)
   implementation(libs.material)
@@ -65,4 +67,11 @@ ksp {
 
 hilt {
   enableAggregatingTask = true
+}
+
+licensee {
+  allow("Apache-2.0")
+  allow("MIT")
+  allowUrl("https://developer.android.com/guide/playcore/license")
+  allowUrl("https://developer.android.com/studio/terms.html")
 }

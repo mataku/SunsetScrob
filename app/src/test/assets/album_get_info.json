@@ -1,62 +1,148 @@
 {
   "album": {
-    "name": "Miss Unlimited",
-    "artist": "PassCode",
-    "url": "https://www.last.fm/music/PassCode/Miss+Unlimited",
+    "artist": "aespa",
+    "mbid": "ebd108fe-3c3f-4eb8-ac58-89fea95016b8",
+    "tags": {
+      "tag": {
+        "url": "https://www.last.fm/tag/2023",
+        "name": "2023"
+      }
+    },
+    "name": "Drama",
     "image": [
       {
-        "#text": "https://lastfm-img2.akamaized.net/i/u/34s/41e155fd7471c04b59c2dab697b6827d.png",
-        "size": "small"
+        "size": "small",
+        "#text": "https://lastfm.freetls.fastly.net/i/u/34s/5fd2847728aa1c914250ca324cb501bf.jpg"
       },
       {
-        "#text": "https://lastfm-img2.akamaized.net/i/u/64s/41e155fd7471c04b59c2dab697b6827d.png",
-        "size": "medium"
+        "size": "medium",
+        "#text": "https://lastfm.freetls.fastly.net/i/u/64s/5fd2847728aa1c914250ca324cb501bf.jpg"
       },
       {
-        "#text": "https://lastfm-img2.akamaized.net/i/u/174s/41e155fd7471c04b59c2dab697b6827d.png",
-        "size": "large"
+        "size": "large",
+        "#text": "https://lastfm.freetls.fastly.net/i/u/174s/5fd2847728aa1c914250ca324cb501bf.jpg"
       },
       {
-        "#text": "https://lastfm-img2.akamaized.net/i/u/300x300/41e155fd7471c04b59c2dab697b6827d.png",
-        "size": "extralarge"
+        "size": "extralarge",
+        "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/5fd2847728aa1c914250ca324cb501bf.jpg"
       },
       {
-        "#text": "https://lastfm-img2.akamaized.net/i/u/41e155fd7471c04b59c2dab697b6827d.png",
-        "size": "mega"
+        "size": "mega",
+        "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/5fd2847728aa1c914250ca324cb501bf.jpg"
       },
       {
-        "#text": "https://lastfm-img2.akamaized.net/i/u/arQ/41e155fd7471c04b59c2dab697b6827d.png",
-        "size": ""
+        "size": "",
+        "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/5fd2847728aa1c914250ca324cb501bf.jpg"
       }
     ],
-    "listeners": "493",
-    "playcount": "11813",
     "tracks": {
-      "track": []
-    },
-    "tags": {
-      "tag": [
+      "track": [
         {
-          "name": "metal",
-          "url": "https://www.last.fm/tag/metal"
+          "streamable": {
+            "fulltrack": "0",
+            "#text": "0"
+          },
+          "duration": 214,
+          "url": "https://www.last.fm/music/aespa/Drama/Drama",
+          "name": "Drama",
+          "@attr": {
+            "rank": 1
+          },
+          "artist": {
+            "url": "https://www.last.fm/music/aespa",
+            "name": "aespa",
+            "mbid": "b51c672b-85e0-48fe-8648-470a2422229f"
+          }
         },
         {
-          "name": "japanese",
-          "url": "https://www.last.fm/tag/japanese"
+          "streamable": {
+            "fulltrack": "0",
+            "#text": "0"
+          },
+          "duration": 175,
+          "url": "https://www.last.fm/music/aespa/Drama/Trick+or+Trick",
+          "name": "Trick or Trick",
+          "@attr": {
+            "rank": 2
+          },
+          "artist": {
+            "url": "https://www.last.fm/music/aespa",
+            "name": "aespa",
+            "mbid": "b51c672b-85e0-48fe-8648-470a2422229f"
+          }
         },
         {
-          "name": "girls",
-          "url": "https://www.last.fm/tag/girls"
+          "streamable": {
+            "fulltrack": "0",
+            "#text": "0"
+          },
+          "duration": 169,
+          "url": "https://www.last.fm/music/aespa/Drama/Don%27t+Blink",
+          "name": "Don't Blink",
+          "@attr": {
+            "rank": 3
+          },
+          "artist": {
+            "url": "https://www.last.fm/music/aespa",
+            "name": "aespa",
+            "mbid": "b51c672b-85e0-48fe-8648-470a2422229f"
+          }
         },
         {
-          "name": "JPop",
-          "url": "https://www.last.fm/tag/JPop"
+          "streamable": {
+            "fulltrack": "0",
+            "#text": "0"
+          },
+          "duration": 198,
+          "url": "https://www.last.fm/music/aespa/Drama/Hot+Air+Balloon",
+          "name": "Hot Air Balloon",
+          "@attr": {
+            "rank": 4
+          },
+          "artist": {
+            "url": "https://www.last.fm/music/aespa",
+            "name": "aespa",
+            "mbid": "b51c672b-85e0-48fe-8648-470a2422229f"
+          }
         },
         {
-          "name": "Asian",
-          "url": "https://www.last.fm/tag/Asian"
+          "streamable": {
+            "fulltrack": "0",
+            "#text": "0"
+          },
+          "duration": 189,
+          "url": "https://www.last.fm/music/aespa/Drama/YOLO",
+          "name": "YOLO",
+          "@attr": {
+            "rank": 5
+          },
+          "artist": {
+            "url": "https://www.last.fm/music/aespa",
+            "name": "aespa",
+            "mbid": "b51c672b-85e0-48fe-8648-470a2422229f"
+          }
+        },
+        {
+          "streamable": {
+            "fulltrack": "0",
+            "#text": "0"
+          },
+          "duration": 203,
+          "url": "https://www.last.fm/music/aespa/Drama/You",
+          "name": "You",
+          "@attr": {
+            "rank": 6
+          },
+          "artist": {
+            "url": "https://www.last.fm/music/aespa",
+            "name": "aespa",
+            "mbid": "b51c672b-85e0-48fe-8648-470a2422229f"
+          }
         }
       ]
-    }
+    },
+    "listeners": "1594",
+    "playcount": "170051",
+    "url": "https://www.last.fm/music/aespa/Drama"
   }
 }

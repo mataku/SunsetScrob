@@ -63,6 +63,7 @@ fun SunsetNavigationBar(
   navigateToTopAlbums: () -> Unit,
   navigateToTopArtists: () -> Unit,
   navigateToAccount: () -> Unit,
+  navigateToChart: () -> Unit
 ) {
   val backStackEntry = navController.currentBackStackEntryAsState()
   val route = backStackEntry.value?.destination?.route
@@ -70,7 +71,7 @@ fun SunsetNavigationBar(
     SunsetBottomNavItem.entries.find { it.screenRoute == route } ?: SunsetBottomNavItem.SCROBBLE
 
   SunsetBottomNavigation(
-    tabs = SunsetBottomNavItem.entries,
+    tabs = SunsetBottomNavItem.entries.filter { it != SunsetBottomNavItem.CHART },
     selectedItem = selectedItem,
     onTabSelected = { item ->
       if (item == selectedItem) return@SunsetBottomNavigation
@@ -91,6 +92,10 @@ fun SunsetNavigationBar(
         SunsetBottomNavItem.TOP_ALBUMS -> {
           navigateToTopAlbums.invoke()
         }
+
+        SunsetBottomNavItem.CHART -> {
+          navigateToChart.invoke()
+        }
       }
     }
   )
@@ -107,6 +112,7 @@ fun SunsetNavigationBarPreview() {
         navigateToAccount = {},
         navigateToTopAlbums = {},
         navigateToTopArtists = {},
+        navigateToChart = {}
       )
     }
   }
@@ -123,6 +129,7 @@ fun SunsetNavigationBarLightPreview() {
         navigateToAccount = {},
         navigateToTopAlbums = {},
         navigateToTopArtists = {},
+        navigateToChart = {}
       )
     }
   }
@@ -137,7 +144,7 @@ fun SunsetBottomNavigation(
 ) {
   Box(
     modifier = modifier
-      .padding(vertical = 16.dp, horizontal = 48.dp)
+      .padding(vertical = 16.dp, horizontal = 24.dp)
       .fillMaxWidth()
       .height(64.dp)
       .border(
@@ -235,7 +242,10 @@ private fun BottomBarTabs(
 ) {
   Row(
     modifier = Modifier
-      .fillMaxSize(),
+      .fillMaxSize()
+      .padding(
+        horizontal = 8.dp
+      ),
   ) {
     for (tab in tabs) {
       val alpha by animateFloatAsState(

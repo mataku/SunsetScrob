@@ -1,5 +1,8 @@
 package com.mataku.scrobscrob.scrobble.ui.navigation
 
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.material3.MaterialTheme
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -26,7 +29,7 @@ fun NavGraphBuilder.scrobbleGraph(navController: NavController) {
     }
 
     composable(
-      "track_detail?trackName={trackName}&artistName={artistName}&imageUrl={imageUrl}&upperLeftCoordinatorX={x}&upperLeftCoordinatorY={y}",
+      "track_detail?trackName={trackName}&artistName={artistName}&imageUrl={imageUrl}",
       arguments = listOf(
         navArgument("trackName") {
           type = NavType.StringType
@@ -37,27 +40,26 @@ fun NavGraphBuilder.scrobbleGraph(navController: NavController) {
         navArgument("imageUrl") {
           type = NavType.StringType
         },
-        navArgument("x") {
-          type = NavType.IntType
-        },
-        navArgument("y") {
-          type = NavType.IntType
-        }
       ),
       content = {
         val arguments = it.arguments ?: return@composable
-        val x = arguments.getInt("x", 0)
-        val y = arguments.getInt("y", 0)
 
         val trackName = arguments.getString("trackName", "")
+        val artistName = arguments.getString("artistName", "")
 
         TrackScreen(
           trackName = trackName,
           artworkUrl = arguments.getString("imageUrl", ""),
-          topLeftCoordinate = Pair(x, y),
+          artistName = artistName,
           trackViewModel = hiltViewModel(),
           navController = navController
         )
+      },
+      enterTransition = {
+        fadeIn(tween(300))
+      },
+      exitTransition = {
+        fadeOut(tween(300))
       }
     )
   }
@@ -67,11 +69,9 @@ fun NavController.navigateToTrackDetail(
   trackName: String,
   artistName: String,
   imageUrl: String,
-  x: Int,
-  y: Int
 ) {
   val destination =
-    "track_detail?trackName=$trackName&artistName=$artistName&imageUrl=$imageUrl&upperLeftCoordinatorX=$x&upperLeftCoordinatorY=$y"
+    "track_detail?trackName=$trackName&artistName=$artistName&imageUrl=$imageUrl"
   navigate(destination)
 }
 

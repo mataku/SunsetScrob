@@ -60,4 +60,4 @@ jobs:
           SUNSET_STORE_PASSWORD: ${{ secrets.SUNSET_STORE_PASSWORD }}
         run: |
           bundle exec fastlane android setup_for_ci
-          bundle exec fastlane android deploy
+          bundle exec fastlane android deploy_internal

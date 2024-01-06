@@ -2,6 +2,7 @@ plugins {
   id("sunsetscrob.android.feature")
   id("sunsetscrob.android.compose")
   id("sunsetscrob.android.dagger")
+  id("sunsetscrob.android.test.screenshot")
 }
 
 android {
@@ -23,4 +24,6 @@ dependencies {
   implementation(libs.coroutines)
 
   implementation(libs.kotlinx.collection)
+
+  implementation(libs.accompanist.systemuicontroller)
 }

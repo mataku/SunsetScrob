@@ -5,17 +5,19 @@ import kotlinx.collections.immutable.ImmutableList
 
 @Immutable
 data class AlbumInfo(
-  val artist: String,
-  val title: String,
-  val imageList: ImmutableList<Image>,
+  val albumName: String,
+  val artistName: String,
+  val url: String,
+  val images: ImmutableList<Image>,
+  val listeners: String,
   val playCount: String,
-  val url: String
+  val tags: ImmutableList<Tag>,
+  val tracks: ImmutableList<AlbumInfoTrack>,
+  val wiki: Wiki? = null
 )
 
-data class TrackAlbumInfo(
-  val artist: String,
-  val title: String,
-  val imageList: ImmutableList<Image>
-  // playCount is missing in track.getInfo
-  // https://www.last.fm/api/show/track.getInfo
+data class AlbumInfoTrack(
+  val duration: String?,
+  val url: String,
+  val name: String
 )

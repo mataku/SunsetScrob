@@ -55,14 +55,21 @@ class ApplicationConventionPlugin : Plugin<Project> {
             "META-INF/ktor-utils.kotlin_module",
             "META-INF/kotlinx-coroutines-core.kotlin_module",
             "META-INF/kotlinx-serialization-runtime.kotlin_module",
-            "META-INF/gradle/incremental.annotation.processors"
+            "META-INF/gradle/incremental.annotation.processors",
+            "META-INF/LICENSE.md",
+            "META-INF/LICENSE-notice.md",
+            "META-INF/AL2.0",
+            "win32-x86-64/attach_hotspot_windows.dll",
+            "win32-x86/attach_hotspot_windows.dll",
+            "META-INF/licenses/ASM",
+            "META-INF/LGPL2.1"
           )
           resources.excludes.addAll(excludePatterns)
         }
         defaultConfig {
           applicationId = "com.mataku.scrobscrob"
-          versionCode = 150
-          versionName = "1.5.0"
+          versionCode = 160
+          versionName = "1.6.0"
           proguardFiles(
             getDefaultProguardFile("proguard-android.txt"),
             "proguard-rules.pro"

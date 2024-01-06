@@ -19,12 +19,16 @@ fun Project.testConfiguration() {
         isIncludeAndroidResources = true
         all {
           it.maxParallelForks = Runtime.getRuntime().availableProcessors()
-          it.useJUnitPlatform()
+          it.useJUnitPlatform {
+          }
+          if (project.hasProperty("excludeScreenshotTest")) {
+            it.exclude("**/*ScreenTest.class")
+          }
+          if (project.hasProperty("onlyScreenshotTest")) {
+            it.include("**/*ScreenTest.class")
+          }
         }
       }
-    }
-    defaultConfig {
-      testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
   }
 
@@ -34,19 +38,22 @@ fun Project.testConfiguration() {
     val kotestRunner = libs.findLibrary("kotest-runner-junit5").get()
     val kotestAssertions = libs.findLibrary("kotest-assertions").get()
     val mockk = libs.findLibrary("mockk").get()
-    val mockkAgentJvm = libs.findLibrary("mockk-agent-jvm").get()
     val turbine = libs.findLibrary("turbine").get()
-    val testHelper = project(":test_helper")
+    val coroutinesTest = libs.findLibrary("coroutines-test").get()
+    val junitVintageEngine = libs.findLibrary("junit-vintage-engine").get()
+    val junitJupiter = libs.findLibrary("junit-jupiter").get()
     listOf(
       androidxTestCore,
       kotestRunner,
       kotestAssertions,
       mockk,
-      mockkAgentJvm,
-      turbine
+      turbine,
+      coroutinesTest,
+      junitVintageEngine,
+      junitJupiter
     ).forEach {
       add("testImplementation", it)
     }
-    add("testImplementation", testHelper)
+    add("testDebugImplementation", project(":test_helper:unit"))
   }
 }

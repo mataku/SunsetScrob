@@ -16,7 +16,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import com.mataku.scrobscrob.core.entity.RecentTrack
@@ -38,7 +38,6 @@ fun ScrobbleScreen(
 ) {
   val uiState by viewModel.uiState.collectAsState()
   val lazyListState = rememberLazyListState()
-  val density = LocalContext.current.resources.displayMetrics.density
 
   val pullRefreshState = rememberPullRefreshState(
     refreshing = uiState.isRefreshing,
@@ -56,27 +55,11 @@ fun ScrobbleScreen(
       lazyListState = lazyListState,
       recentTracks = uiState.recentTracks,
       hasNext = uiState.hasNext,
-      onScrobbleTap = { track, firstVisibleIndex, tappedItemIndex, firstVisibleItemScrollOffset ->
-        val topLeftCoordinate = if (firstVisibleIndex == tappedItemIndex) {
-          Pair(0, 0)
-        } else {
-          val cellHeight = density * 72
-          val betweenCellCount = tappedItemIndex - firstVisibleIndex - 1
-          val heightPxBetweenTappedItemAndFirstVisibleItem = cellHeight * betweenCellCount
-          val firstVisibleItemRemainingHeightPx = cellHeight - firstVisibleItemScrollOffset
-
-          Pair(
-            0,
-            ((firstVisibleItemRemainingHeightPx + heightPxBetweenTappedItemAndFirstVisibleItem) / density).toInt()
-          )
-        }
-
+      onScrobbleTap = { track ->
         navController.navigateToTrackDetail(
           trackName = track.name,
           artistName = track.artistName,
           imageUrl = track.images.imageUrl() ?: "",
-          x = topLeftCoordinate.first,
-          y = topLeftCoordinate.second
         )
       },
       onScrollEnd = viewModel::fetchRecentTracks,
@@ -99,7 +82,7 @@ private fun ScrobbleContent(
   lazyListState: LazyListState,
   recentTracks: ImmutableList<RecentTrack>,
   hasNext: Boolean,
-  onScrobbleTap: (RecentTrack, Int, Int, Int) -> Unit,
+  onScrobbleTap: (RecentTrack) -> Unit,
   onScrollEnd: () -> Unit
 ) {
   LazyColumn(
@@ -114,15 +97,12 @@ private fun ScrobbleContent(
         key = { index, track ->
           "${index}${track.hashCode()}"
         }
-      ) { index, track ->
+      ) { _, track ->
         Scrobble(
           recentTrack = track,
           onScrobbleTap = {
             onScrobbleTap(
-              track,
-              lazyListState.firstVisibleItemIndex,
-              index,
-              lazyListState.firstVisibleItemScrollOffset
+              track
             )
           }
         )
@@ -140,5 +120,6 @@ private fun ScrobbleContent(
     },
     modifier = Modifier
       .fillMaxSize()
+      .testTag("scrobble_list")
   )
 }

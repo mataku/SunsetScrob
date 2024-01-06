@@ -12,14 +12,18 @@ data class TrackInfoBody(
   val album: TrackAlbumInfoBody? = null,
   @SerialName("listeners")
   val listeners: String,
+  @SerialName("playcount")
+  val playCount: String,
   @SerialName("url")
   val url: String,
   @SerialName("toptags")
-  val topTags: TopTagsBody,
+  val topTags: TagListBody? = null,
   @SerialName("artist")
   val artist: TrackArtistBody,
   @SerialName("name")
-  val name: String
+  val name: String,
+  @SerialName("wiki")
+  val wiki: WikiBody? = null
 )
 
 @Serializable

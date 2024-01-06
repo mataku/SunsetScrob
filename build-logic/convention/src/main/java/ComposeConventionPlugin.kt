@@ -23,6 +23,7 @@ class ComposeConventionPlugin : Plugin<Project> {
       dependencies {
         val composeBom = libs.findLibrary("compose-bom").get()
         add("implementation", platform(composeBom))
+        add("androidTestImplementation", platform(composeBom))
       }
     }
   }

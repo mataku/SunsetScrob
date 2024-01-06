@@ -38,7 +38,7 @@ fun FilteringBottomSheet(
   ) {
     Text(
       text = "Select time-range",
-      style = SunsetTextStyle.h7,
+      style = SunsetTextStyle.headline,
       modifier = Modifier
         .padding(
           horizontal = 16.dp,
@@ -81,7 +81,7 @@ private fun TimeRangeCell(
   ) {
     Text(
       text = timeRangeValue,
-      style = SunsetTextStyle.body1,
+      style = SunsetTextStyle.body,
       modifier = Modifier.weight(1F)
     )
 

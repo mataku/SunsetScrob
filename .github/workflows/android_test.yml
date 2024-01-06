@@ -1,0 +1,56 @@
+name: Run layout test
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "Branch"
+        required: true
+        default: "develop"
+  pull_request:
+    branches:
+      - '**'
+
+concurrency:
+  group: ${{ github.head_ref || 'develop' }}-integration
+  cancel-in-progress: true
+
+env:
+  FASTLANE_HIDE_CHANGELOG: true
+  FASTLANE_SKIP_UPDATE_CHECK: true
+  GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx8g -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -XX:+UseParallelGC -XX:MaxMetaspaceSize=1g"
+
+jobs:
+  screenshot_test:
+    runs-on: macos-13
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.branch }}
+      - uses: ./.github/actions/setup-gradle
+        with:
+          use-build-cache: 'false'
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - name: Setup env
+        env:
+          LAST_FM_API_KEY: ${{ secrets.LAST_FM_API_KEY }}
+          LAST_FM_SHARED_SECRET: ${{ secrets.LAST_FM_SHARED_SECRET }}
+          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON_DEV }}
+        run: |
+          bundle exec fastlane android setup_for_ci
+      - name: Run screenshot tests
+        run: |
+          bundle exec fastlane android screenshot_test
+      - name: Upload test reports
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-test-reports
+          path: |
+            '**/build/reports/'
+            '**/build/outputs/'
+          retention-days: 7

@@ -279,7 +279,7 @@ private fun AccountContent(
           description = if (updateAvailable) {
             stringResource(id = R.string.label_update_available)
           } else {
-            ""
+            "Thank you for using the latest version!"
           },
           enabled = updateAvailable
         ) {
@@ -305,7 +305,9 @@ private fun AccountContent(
         openDialog.value = false
       },
       title = {
-        Text(text = stringResource(id = R.string.dialog_notification_permission_required))
+        Text(
+          text = stringResource(id = R.string.dialog_notification_permission_required),
+        )
       },
       text = {
         Text(text = stringResource(id = R.string.dialog_notification_permission_required_description))
@@ -366,7 +368,7 @@ private fun AccountMenuCell(
     .padding(horizontal = 16.dp),
     verticalArrangement = Arrangement.SpaceEvenly
   ) {
-    Text(text = title, style = SunsetTextStyle.subtitle1)
+    Text(text = title, style = SunsetTextStyle.subtitle)
     if (description.isNotBlank()) {
       Text(
         text = description,

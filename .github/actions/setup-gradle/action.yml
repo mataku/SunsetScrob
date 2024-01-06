@@ -1,5 +1,9 @@
 name: "Setup Gradle"
 description: "Setup Gradle and cache"
+inputs:
+  use-build-cache:
+    description: 'Boolean value whether to use build cache'
+    default: 'true'
 
 runs:
   using: "composite"
@@ -30,6 +34,7 @@ runs:
         restore-keys: gradle-dependencies-
     - name: Cache gradle build results
       uses: actions/cache@v3
+      if: ${{ inputs.use-build-cache == 'true' }}
       with:
         path: |
           .gradle

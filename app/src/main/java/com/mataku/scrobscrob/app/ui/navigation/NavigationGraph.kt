@@ -5,7 +5,6 @@ import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -15,6 +14,7 @@ import com.mataku.scrobscrob.account.ui.navigation.accountGraph
 import com.mataku.scrobscrob.album.ui.navigation.albumGraph
 import com.mataku.scrobscrob.artist.ui.navigation.artistGraph
 import com.mataku.scrobscrob.auth.ui.navigation.authGraph
+import com.mataku.scrobscrob.chart.ui.navigation.chartGraph
 import com.mataku.scrobscrob.scrobble.ui.navigation.SCROBBLE_NAVIGATION_ROUTE
 import com.mataku.scrobscrob.scrobble.ui.navigation.scrobbleGraph
 import com.mataku.scrobscrob.ui_common.commonGraph
@@ -23,7 +23,6 @@ import com.mataku.scrobscrob.ui_common.commonGraph
 fun NavigationGraph(
   navController: NavHostController,
   isLoggedIn: Boolean,
-  paddingValues: PaddingValues,
 ) {
   NavHost(
     navController = navController,
@@ -46,8 +45,8 @@ fun NavigationGraph(
     scrobbleGraph(navController)
     albumGraph(navController)
     artistGraph(navController)
-
     accountGraph(navController)
+    chartGraph(navController)
     authGraph(navController)
     commonGraph()
   }

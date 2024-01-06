@@ -1,6 +1,6 @@
 [versions]
 activity = "1.8.2"
-aboutlibraries = "10.9.2"
+agp = "8.2.1"
 accompanist = "0.32.0"
 coil = "2.5.0"
 compose = "2023.10.01"
@@ -11,6 +11,7 @@ hilt = "2.50"
 ktor = "2.3.7"
 kotlin = "1.9.10"
 ksp = "1.9.10-1.0.13"
+licensee = "1.8.0"
 compose-compiler-extension = "1.5.3"
 kotlinx-collections-immutable-jvm = "0.3.7"
 kotlinx-serialization-json = "1.6.2"
@@ -20,6 +21,8 @@ material = "1.11.0"
 mockk = "1.13.8"
 navigation-compose = "2.7.6"
 okhttp = "4.12.0"
+robolectric = "4.11.1"
+roborazzi = "1.7.0"
 showkase = "1.0.0-beta18"
 
 [libraries]
@@ -30,7 +33,6 @@ compose-material3 = { module = "androidx.compose.material3:material3" }
 compose-animation = { module = "androidx.compose.animation:animation" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 compose-runtime = { module = "androidx.compose.runtime:runtime" }
-compose-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle-viewmodel-compose" }
 compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
 compose-navigation = { module = "androidx.navigation:navigation-compose", version.ref = "navigation-compose" }
 
@@ -69,16 +71,8 @@ hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", ve
 
 datastore-preferences = { module = "androidx.datastore:datastore-preferences", version = "1.0.0" }
 
-android-gradle-plugin = { module = "com.android.tools.build:gradle", version = "8.2.0" }
-crashlytics-gradle-plugin = { module = "com.google.firebase:firebase-crashlytics-gradle", version = "2.9.9" }
-hilt-gradle-plugin = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hilt" }
+android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
-google-services-plugin = { module = "com.google.gms:google-services", version = "4.4.0" }
-serialization-plugin = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin" }
-aboutlibraries-plugin = { module = "com.mikepenz.aboutlibraries.plugin:aboutlibraries-plugin", version.ref = "aboutlibraries" }
-
-aboutlibraries = { module = "com.mikepenz:aboutlibraries", version.ref = "aboutlibraries" }
-aboutlibraries-compose = { module = "com.mikepenz:aboutlibraries-compose", version.ref = "aboutlibraries" }
 
 lottie-compose = { module = "com.airbnb.android:lottie-compose", version = "6.3.0" }
 
@@ -93,16 +87,31 @@ androidx-benchmark-macro-junit4 = { module = "androidx.benchmark:benchmark-macro
 kotest-runner-junit5 = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest" }
 kotest-assertions = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
-mockk-agent-jvm = { module = "io.mockk:mockk-agent-jvm", version.ref = "mockk" }
 coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 
 compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
 compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
+compose-ui-test-android = { module = "androidx.compose.ui:ui-test" }
 
 showkase = { module = "com.airbnb.android:showkase", version.ref = "showkase" }
 showkase-annotation = { module = "com.airbnb.android:showkase-annotation", version.ref = "showkase" }
 showkase-processor = { module = "com.airbnb.android:showkase-processor", version.ref = "showkase" }
 
 turbine = { module = "app.cash.turbine:turbine", version = "1.0.0" }
+robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
+roborazzi = { module = "io.github.takahirom.roborazzi:roborazzi", version.ref = "roborazzi" }
 
-haze = { module = "dev.chrisbanes.haze:haze", version = "0.4.1" }
+junit-vintage-engine = { module = "org.junit.vintage:junit-vintage-engine", version = "5.8.2" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version = "5.8.2" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+roborazzi = { id = "io.github.takahirom.roborazzi", version.ref = "roborazzi" }
+licensee = { id = "app.cash.licensee", version.ref = "licensee" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+crashlytics = { id = "com.google.firebase.crashlytics", version = "2.9.9" }
+google-services = { id = "com.google.gms.google-services", version = "4.4.0" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }

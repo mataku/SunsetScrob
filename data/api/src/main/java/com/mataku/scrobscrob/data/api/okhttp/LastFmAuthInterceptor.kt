@@ -9,9 +9,11 @@ class LastfmApiAuthInterceptor : Interceptor {
     val url = chain.request().url.newBuilder()
       .addQueryParameter("api_key", BuildConfig.API_KEY)
       .build()
+
     val request = chain.request().newBuilder()
       .url(url)
       .build()
+
     return chain.proceed(request)
   }
 }

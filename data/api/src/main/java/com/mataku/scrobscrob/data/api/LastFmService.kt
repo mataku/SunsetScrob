@@ -21,12 +21,15 @@ class LastFmService @Inject constructor(val httpClient: HttpClient) {
       HttpMethod.Get -> {
         get(endpoint)
       }
+
       HttpMethod.Post -> {
         post(endpoint)
       }
+
       HttpMethod.Put -> {
         put(endpoint)
       }
+
       else -> {
         throw IllegalStateException("No handleable method: $requestType")
       }
@@ -35,7 +38,7 @@ class LastFmService @Inject constructor(val httpClient: HttpClient) {
 
   suspend inline fun <reified T> get(endpoint: Endpoint<T>): T {
     val response = httpClient.get {
-      url(BASE_URL + endpoint.path)
+      url(endpoint.path)
       if (endpoint.params.isNotEmpty()) {
         endpoint.params.forEach { (k, v) ->
           parameter(k, v)
@@ -47,7 +50,7 @@ class LastFmService @Inject constructor(val httpClient: HttpClient) {
 
   suspend inline fun <reified T> post(endpoint: Endpoint<T>): T {
     val response = httpClient.post {
-      url(BASE_URL + endpoint.path)
+      url(endpoint.path)
       setBody("")
       endpoint.params.forEach { (k, v) ->
         parameter(k, v)
@@ -59,7 +62,7 @@ class LastFmService @Inject constructor(val httpClient: HttpClient) {
 
   suspend inline fun <reified T> put(endpoint: Endpoint<T>): T {
     val response = httpClient.put {
-      url(BASE_URL + endpoint.path)
+      url(endpoint.path)
       setBody("")
       endpoint.params.forEach { (k, v) ->
         parameter(k, v)
@@ -67,9 +70,5 @@ class LastFmService @Inject constructor(val httpClient: HttpClient) {
     }
 
     return response.body()
-  }
-
-  companion object {
-    const val BASE_URL = "https://ws.audioscrobbler.com"
   }
 }

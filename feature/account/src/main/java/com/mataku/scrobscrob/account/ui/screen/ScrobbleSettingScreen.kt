@@ -43,6 +43,7 @@ fun ScrobbleSettingScreen(
           )
         }
       }
+
       else -> Unit
     }
     viewModel.popEvent()
@@ -100,7 +101,7 @@ private fun ScrobbleSettingCell(
   ) {
     Text(
       text = title,
-      style = SunsetTextStyle.subtitle1,
+      style = SunsetTextStyle.subtitle,
       modifier = Modifier.weight(1F)
     )
 
@@ -113,12 +114,15 @@ internal fun String.mappedApp(): String? {
     APPLE_MUSIC_NAME -> {
       "com.apple.android.music"
     }
+
     SPOTIFY_NAME -> {
       "com.spotify.music"
     }
+
     YOUTUBE_MUSIC_NAME -> {
       "com.google.android.apps.youtube.music"
     }
+
     else -> null
   }
 }

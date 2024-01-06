@@ -20,11 +20,22 @@ platform :android do
 
   desc "Run unit tests"
   lane :test do
-    gradle(task: "testDebugUnitTest")
+    gradle(task: "testDebugUnitTest -PexcludeScreenshotTest=true")
   end
 
-  lane :debugbuild do
-    gradle(task: 'assembleDebug')
+  desc "Run androidTest on connected device"
+  lane :android_test do
+    android_test_gradle_tasks = android_test_dirs.map do |dir|
+      "#{dir}:connectedDebugAndroidTest"
+    end
+    unless android_test_gradle_tasks.empty?
+      gradle(task: android_test_gradle_tasks.join(' '))
+    end
+  end
+
+  desc "Run screenshot test"
+  lane :screenshot_test do
+    gradle(task: 'verifyRoborazziDebug --no-configuration-cache -PonlyScreenshotTest=true')
   end
 
   desc "Build an aab"
@@ -35,19 +46,6 @@ platform :android do
   lane :fetch_metadata do
     download_from_play_store(
       package_name: 'com.mataku.scrobscrob'
-    )
-  end
-
-  desc "Deploy a new version to the Google Play"
-  lane :deploy do
-    gradle(task: "bundleRelease")
-    supply(
-      aab: 'app/build/outputs/bundle/release/app-release.aab',
-      skip_upload_metadata: false,
-      skip_upload_images: true,
-      skip_upload_screenshots: true,
-      skip_upload_apk: true,
-      track: 'internal'
     )
   end
 
@@ -76,16 +74,13 @@ platform :android do
   # To upload an aab, needs to link Google Play Account to your Firebase project, so upload an apk currently
   lane :deploy_to_firebase_app_distribution do
     gradle(task: 'assembleDebug')
-    sh(
-      'firebase',
-      'appdistribution:distribute',
-      '../app/build/outputs/apk/debug/app-debug.apk',
-      '--app',
-      ENV['FIREBASE_DEV_APP_ID'],
-      '--release-notes-file',
-      '../release_notes.txt',
-      '--groups',
-      'tester'
+    firebase_app_distribution(
+      app: ENV['FIREBASE_DEV_APP_ID'],
+      android_artifact_type: 'APK',
+      android_artifact_path: 'app/build/outputs/apk/debug/app-debug.apk',
+      release_notes_file: './release_notes.txt',
+      service_credentials_file: 'app/app-distribution.json',
+      groups: 'tester'
     )
   end
 
@@ -94,5 +89,14 @@ platform :android do
     #   message: exception.message,
     #   success: false
     # )
+  end
+
+  def android_test_dirs
+    Dir.chdir '..' do
+      raw_android_test_dirs = `find . -name 'androidTest' -type d | grep 'src'`
+      raw_android_test_dirs.split("\n").map do |dir|
+        dir.split('/src')[0].gsub(/\./, '').gsub(/\//, ':')
+      end
+    end
   end
 end
