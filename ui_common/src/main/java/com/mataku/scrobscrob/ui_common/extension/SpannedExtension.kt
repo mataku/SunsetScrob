@@ -15,6 +15,8 @@ import androidx.compose.ui.text.style.TextDecoration
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.accentColor
 
+private const val URL_TAG = "tag"
+
 @Composable
 fun Spanned.toAnnotatedString(): AnnotatedString = buildAnnotatedString {
   val spanned = this@toAnnotatedString
@@ -26,7 +28,7 @@ fun Spanned.toAnnotatedString(): AnnotatedString = buildAnnotatedString {
       is URLSpan -> {
         addStyle(SpanStyle(color = LocalAppTheme.current.accentColor()), start, end)
         addStringAnnotation(
-          tag = "URL",
+          tag = URL_TAG,
           annotation = span.url,
           start,
           end
@@ -53,7 +55,7 @@ fun Spanned.toAnnotatedString(): AnnotatedString = buildAnnotatedString {
 
 fun AnnotatedString.url(position: Int, onInvoke: (String) -> Unit) =
   getStringAnnotations(
-    tag = "URL",
+    tag = URL_TAG,
     start = position,
     end = position
   ).firstOrNull()?.item?.let { item ->
