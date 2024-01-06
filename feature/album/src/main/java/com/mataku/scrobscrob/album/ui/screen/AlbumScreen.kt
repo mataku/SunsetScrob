@@ -145,7 +145,8 @@ private fun AlbumContent(
               modifier = Modifier
                 .padding(
                   16.dp
-                )
+                ),
+              onUrlTap = onAlbumLoadMoreTap
             )
           }
         }

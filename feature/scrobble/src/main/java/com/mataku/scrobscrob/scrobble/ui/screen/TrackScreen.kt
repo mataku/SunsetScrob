@@ -184,7 +184,8 @@ private fun TrackContent(
               modifier = Modifier
                 .padding(
                   16.dp
-                )
+                ),
+              onUrlTap = onUrlTap
             )
           }
         }

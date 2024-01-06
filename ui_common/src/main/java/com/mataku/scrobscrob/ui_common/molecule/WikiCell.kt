@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -15,15 +16,17 @@ import androidx.compose.ui.unit.dp
 import androidx.core.text.HtmlCompat
 import com.mataku.scrobscrob.core.entity.Wiki
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
-import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import com.mataku.scrobscrob.ui_common.extension.toAnnotatedString
+import com.mataku.scrobscrob.ui_common.extension.url
+import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import java.util.Date
 
 @Composable
 fun WikiCell(
   wiki: Wiki,
   name: String,
-  modifier: Modifier = Modifier
+  modifier: Modifier = Modifier,
+  onUrlTap: (String) -> Unit
 ) {
   Column(
     modifier = modifier
@@ -43,8 +46,15 @@ fun WikiCell(
         HtmlCompat.FROM_HTML_MODE_COMPACT
       )
 
-      Text(
-        text = spanned.toAnnotatedString(),
+      val text = spanned.toAnnotatedString()
+
+      ClickableText(
+        text = text,
+        onClick = { position ->
+          text.url(position) {
+            onUrlTap.invoke(it)
+          }
+        },
         style = SunsetTextStyle.label.copy(
           color = MaterialTheme.colorScheme.onSecondary
         )
@@ -66,7 +76,8 @@ private fun WikiPreview() {
       WikiCell(
         wiki = trackWiki,
         name = "Clocks",
-        modifier = Modifier
+        modifier = Modifier,
+        onUrlTap = {}
       )
     }
   }

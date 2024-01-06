@@ -23,7 +23,16 @@ fun Spanned.toAnnotatedString(): AnnotatedString = buildAnnotatedString {
     val start = getSpanStart(span)
     val end = getSpanEnd(span)
     when (span) {
-      is URLSpan -> addStyle(SpanStyle(color = LocalAppTheme.current.accentColor()), start, end)
+      is URLSpan -> {
+        addStyle(SpanStyle(color = LocalAppTheme.current.accentColor()), start, end)
+        addStringAnnotation(
+          tag = "URL",
+          annotation = span.url,
+          start,
+          end
+        )
+      }
+
       is StyleSpan -> when (span.style) {
         Typeface.BOLD -> addStyle(SpanStyle(fontWeight = FontWeight.Bold), start, end)
         Typeface.ITALIC -> addStyle(SpanStyle(fontStyle = FontStyle.Italic), start, end)
@@ -41,3 +50,12 @@ fun Spanned.toAnnotatedString(): AnnotatedString = buildAnnotatedString {
     }
   }
 }
+
+fun AnnotatedString.url(position: Int, onInvoke: (String) -> Unit) =
+  getStringAnnotations(
+    tag = "URL",
+    start = position,
+    end = position
+  ).firstOrNull()?.item?.let { item ->
+    onInvoke.invoke(item)
+  }
