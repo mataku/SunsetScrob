@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.BackdropScaffold
 import androidx.compose.material.BackdropValue
 import androidx.compose.material.ExperimentalMaterialApi
@@ -35,7 +37,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mataku.scrobscrob.core.entity.Tag
 import com.mataku.scrobscrob.core.entity.TrackAlbumInfo
 import com.mataku.scrobscrob.core.entity.TrackInfo
-import com.mataku.scrobscrob.core.entity.TrackWiki
+import com.mataku.scrobscrob.core.entity.Wiki
 import com.mataku.scrobscrob.core.entity.presentation.toReadableIntValue
 import com.mataku.scrobscrob.scrobble.ui.molecule.TrackAlbum
 import com.mataku.scrobscrob.scrobble.ui.viewmodel.TrackViewModel
@@ -44,7 +46,7 @@ import com.mataku.scrobscrob.ui_common.molecule.SimpleWiki
 import com.mataku.scrobscrob.ui_common.molecule.SunsetImage
 import com.mataku.scrobscrob.ui_common.molecule.TopTags
 import com.mataku.scrobscrob.ui_common.molecule.ValueDescription
-import com.mataku.scrobscrob.ui_common.molecule.Wiki
+import com.mataku.scrobscrob.ui_common.molecule.WikiCell
 import com.mataku.scrobscrob.ui_common.navigateToWebView
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
@@ -121,6 +123,10 @@ private fun TrackContent(
       Column(
         modifier = Modifier
           .fillMaxWidth()
+          .padding(
+            bottom = 32.dp
+          )
+          .verticalScroll(rememberScrollState())
       ) {
         if (trackInfo == null) {
           TrackDetail2(
@@ -175,7 +181,7 @@ private fun TrackContent(
                 )
             )
           } else {
-            Wiki(
+            WikiCell(
               wiki = wiki,
               name = trackName,
               modifier = Modifier
@@ -194,7 +200,6 @@ private fun TrackContent(
       ),
     scaffoldState = scaffoldState,
     frontLayerBackgroundColor = MaterialTheme.colorScheme.background,
-    frontLayerContentColor = Color.Blue,
     frontLayerScrimColor = Color.Transparent
   )
 }
@@ -234,7 +239,7 @@ private fun TrackContentPreview() {
               url = ""
             )
           ),
-          wiki = TrackWiki(
+          wiki = Wiki(
             published = Date(),
             content = "\"Clocks\" emerged in <b>conception during the late</b>stages into the production of Coldplay's second album, A Rush of Blood to the Head. The band's vocalist, Chris Martin, came in studio late one night. A riff popped  up in Martin's mind and wrote it on the  piano. Martin presented the riff to the band's guitarist, Jonny Buckland, who then added guitar chords on the basic track.\n\nDuring the writing of \"Clocks\", the band had already made 10 songs for the album. With this, they thought it was too late for the song's inclusion in the albumclude contrast, contradictions and urgency. Chris Martin sings of being in the state of \"helplessness ...",
             summary = "\"Clocks\" emerged in <b>conception during the late stages</b> into the production of Coldplay's second album, A Rush of Blood to the Head. The band's vocalist, Chris Martin, came in studio late one night. A riff popped  up in Martin's mind and wrote it on the  piano. Martin presented the riff to the band's guitarist, Jonny Buckland, who then added guitar chords on the basic track.\n\nDuring the writing of \"Clocks\", the band had already made 10 songs for the album. <a href=\"http://www.last.fm/music/Coldplay/_/Clocks\">Read more on Last.fm</a>.",

@@ -22,7 +22,7 @@ interface AlbumRepository {
     timeRangeFiltering: TimeRangeFiltering
   ): Flow<List<TopAlbumInfo>>
 
-  suspend fun albumInfo(
+  fun albumInfo(
     albumName: String,
     artistName: String,
   ): Flow<AlbumInfo>
@@ -50,7 +50,7 @@ class AlbumRepositoryImpl @Inject constructor(
     emit(response.toTopAlbums())
   }.flowOn(Dispatchers.IO)
 
-  override suspend fun albumInfo(
+  override fun albumInfo(
     albumName: String,
     artistName: String
   ): Flow<AlbumInfo> = flow<AlbumInfo> {

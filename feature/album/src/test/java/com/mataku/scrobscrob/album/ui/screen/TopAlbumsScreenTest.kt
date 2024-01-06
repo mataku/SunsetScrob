@@ -100,7 +100,7 @@ class TopAlbumsScreenTest {
             topAlbumsRepository = albumRepository,
             usernameRepository = usernameRepository
           ),
-          navController = navController
+          navigateToAlbumInfo = {}
         )
       }
     }
