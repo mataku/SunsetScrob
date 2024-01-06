@@ -1,15 +1,20 @@
 package com.mataku.scrobscrob.ui_common.molecule
 
 import android.text.SpannableStringBuilder
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.text.HtmlCompat
@@ -23,7 +28,8 @@ import java.util.Date
 fun WikiCell(
   wiki: Wiki,
   name: String,
-  modifier: Modifier = Modifier
+  modifier: Modifier = Modifier,
+  onUrlTap: (String) -> Unit
 ) {
   Column(
     modifier = modifier
@@ -43,8 +49,16 @@ fun WikiCell(
         HtmlCompat.FROM_HTML_MODE_COMPACT
       )
 
-      Text(
-        text = spanned.toAnnotatedString(),
+      val text = spanned.toAnnotatedString()
+
+      ClickableText(
+        text = text,
+        onClick = { position ->
+          text.url(position
+          ) {
+            onUrlTap.invoke(it)
+          }
+        },
         style = SunsetTextStyle.label.copy(
           color = MaterialTheme.colorScheme.onSecondary
         )
@@ -52,6 +66,12 @@ fun WikiCell(
     }
   }
 }
+
+@OptIn(ExperimentalTextApi::class)
+fun AnnotatedString.url(position: Int, onInvoke: (String) -> Unit) =
+  getUrlAnnotations(position, position).firstOrNull()?.item?.let {
+    onInvoke.invoke(it.url)
+  }
 
 @Preview(showBackground = true)
 @Composable
@@ -66,7 +86,8 @@ private fun WikiPreview() {
       WikiCell(
         wiki = trackWiki,
         name = "Clocks",
-        modifier = Modifier
+        modifier = Modifier,
+        onUrlTap = {}
       )
     }
   }
