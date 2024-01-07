@@ -8,7 +8,10 @@ android {
 }
 
 dependencies {
+  implementation(project(":core"))
+  implementation(project(":ui_common"))
   implementation(libs.compose.ui.test.android)
+  implementation(libs.compose.material3)
 
   implementation(libs.robolectric)
   implementation(libs.roborazzi)
