@@ -47,5 +47,12 @@ or try via Google Play
 - fastlane
 - Kotest
 
+<details>
+<summary> module graph </summary>
+
+![](./screenshot/module_graph.png)
+
+</details>
+
 ## TODO
 - Show artist content details
