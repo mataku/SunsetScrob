@@ -3,13 +3,12 @@ package com.mataku.scrobscrob.artist.ui.screen
 import androidx.compose.material3.Surface
 import androidx.compose.ui.test.isRoot
 import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.navigation.NavController
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
 import com.github.takahirom.roborazzi.captureRoboImage
 import com.mataku.scrobscrob.artist.ui.viewmodel.TopArtistsViewModel
-import com.mataku.scrobscrob.core.entity.ArtistInfo
 import com.mataku.scrobscrob.core.entity.TimeRangeFiltering
+import com.mataku.scrobscrob.core.entity.TopArtistInfo
 import com.mataku.scrobscrob.data.repository.TopArtistsRepository
 import com.mataku.scrobscrob.data.repository.UsernameRepository
 import com.mataku.scrobscrob.ui_common.style.SunsetTheme
@@ -37,12 +36,11 @@ class TopArtistsScreenTest {
 
   private val artistRepository = mockk<TopArtistsRepository>()
   private val usernameRepository = mockk<UsernameRepository>()
-  private val navController = mockk<NavController>()
   private val username = "sunsetscrob"
   private val timeRangeFiltering = TimeRangeFiltering.OVERALL
 
   private val artistInfoList = (1..20).map {
-    ArtistInfo(
+    TopArtistInfo(
       name = "SoooooooooooooooLoooooooooooooooongName ${it}",
       imageList = persistentListOf(),
       topTags = persistentListOf(),
@@ -52,7 +50,7 @@ class TopArtistsScreenTest {
   }
 
   private val artistInfoListPage2 = (21..40).map {
-    ArtistInfo(
+    TopArtistInfo(
       name = "SoooooooooooooooLoooooooooooooooongName ${it}",
       imageList = persistentListOf(),
       topTags = persistentListOf(),
@@ -103,7 +101,7 @@ class TopArtistsScreenTest {
         Surface {
           TopArtistsScreen(
             viewModel = viewModel,
-            navController = navController
+            onArtistTap = {}
           )
         }
       }

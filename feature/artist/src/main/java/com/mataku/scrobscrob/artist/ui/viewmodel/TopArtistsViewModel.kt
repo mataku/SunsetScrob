@@ -3,8 +3,8 @@ package com.mataku.scrobscrob.artist.ui.viewmodel
 import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mataku.scrobscrob.core.entity.ArtistInfo
 import com.mataku.scrobscrob.core.entity.TimeRangeFiltering
+import com.mataku.scrobscrob.core.entity.TopArtistInfo
 import com.mataku.scrobscrob.data.repository.TopArtistsRepository
 import com.mataku.scrobscrob.data.repository.UsernameRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -85,7 +85,7 @@ class TopArtistsViewModel @Inject constructor(
         .collect {
           if (it.isEmpty()) {
             val list = if (timeRangeChanged) {
-              emptyList<ArtistInfo>().toImmutableList()
+              emptyList<TopArtistInfo>().toImmutableList()
             } else {
               currentState.topArtists
             }
@@ -130,7 +130,7 @@ class TopArtistsViewModel @Inject constructor(
   @Immutable
   data class TopArtistsUiState(
     val isLoading: Boolean,
-    val topArtists: ImmutableList<ArtistInfo>,
+    val topArtists: ImmutableList<TopArtistInfo>,
     val hasNext: Boolean,
     val selectedTimeRangeFiltering: TimeRangeFiltering,
   ) {

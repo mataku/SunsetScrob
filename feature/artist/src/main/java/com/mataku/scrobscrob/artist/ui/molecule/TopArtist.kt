@@ -17,7 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.mataku.scrobscrob.core.entity.ArtistInfo
+import com.mataku.scrobscrob.core.entity.TopArtistInfo
 import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.ui_common.R
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
@@ -26,7 +26,7 @@ import com.mataku.scrobscrob.ui_common.R as uiCommonR
 
 @Composable
 fun TopArtist(
-  artist: ArtistInfo,
+  artist: TopArtistInfo,
   onArtistTap: () -> Unit,
   modifier: Modifier
 ) {
