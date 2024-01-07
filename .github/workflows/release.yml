@@ -22,6 +22,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-gradle
+        with:
+          use-build-cache: 'false'
 
       - uses: ruby/setup-ruby@v1
         with:
