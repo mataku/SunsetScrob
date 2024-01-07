@@ -20,12 +20,12 @@ class ArtistViewModel @Inject constructor(
 ) : ViewModel() {
 
   private val artistName = savedStateHandle.get<String>("artistName")
-  private val artworkUrl = savedStateHandle.get<String>("artworkUrl")
+  private val artworkUrl = savedStateHandle.get<String>("artworkUrl") ?: ""
 
   var uiState = MutableStateFlow(ArtistUiState())
 
   init {
-    if (!artistName.isNullOrEmpty() && !artworkUrl.isNullOrEmpty()) {
+    if (!artistName.isNullOrEmpty()) {
       uiState.update {
         it.copy(
           preloadArtistName = artistName,
@@ -39,7 +39,6 @@ class ArtistViewModel @Inject constructor(
   private fun fetchArtistDetail(artistName: String) {
     artistRepository.artistInfo(artistName)
       .catch {
-        println("MATAKUDEBUG artist $it")
       }
       .onEach { artistInfo ->
         uiState.update { state ->
