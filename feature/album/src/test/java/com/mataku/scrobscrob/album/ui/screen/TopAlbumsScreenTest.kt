@@ -7,6 +7,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
 import com.github.takahirom.roborazzi.captureRoboImage
 import com.mataku.scrobscrob.album.ui.viewmodel.TopAlbumsViewModel
+import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.core.entity.TimeRangeFiltering
 import com.mataku.scrobscrob.core.entity.TopAlbumInfo
 import com.mataku.scrobscrob.data.repository.AlbumRepository
@@ -106,6 +107,24 @@ class TopAlbumsScreenTest {
     }
     composeRule.onNode(isRoot()).captureRoboImage(
       filePath = "screenshot/top_albums_screen.png",
+    )
+  }
+
+  @Test
+  fun layout_light() {
+    composeRule.setContent {
+      SunsetThemePreview(theme = AppTheme.LIGHT) {
+        TopAlbumsScreen(
+          viewModel = TopAlbumsViewModel(
+            topAlbumsRepository = albumRepository,
+            usernameRepository = usernameRepository
+          ),
+          navigateToAlbumInfo = {}
+        )
+      }
+    }
+    composeRule.onNode(isRoot()).captureRoboImage(
+      filePath = "screenshot/top_albums_screen_light.png",
     )
   }
 }

@@ -6,6 +6,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
 import com.github.takahirom.roborazzi.captureRoboImage
+import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.core.entity.RecentTrack
 import com.mataku.scrobscrob.data.repository.ScrobbleRepository
 import com.mataku.scrobscrob.scrobble.ui.viewmodel.ScrobbleViewModel
@@ -85,6 +86,24 @@ class ScrobbleScreenTest {
     }
     composeRule.onNode(isRoot()).captureRoboImage(
       filePath = "screenshot/scrobble_screen.png",
+    )
+  }
+
+  @Test
+  fun layout_light() {
+    val viewModel = ScrobbleViewModel(scrobbleRepository)
+    composeRule.setContent {
+      SunsetThemePreview(theme = AppTheme.LIGHT) {
+        Surface {
+          ScrobbleScreen(
+            viewModel = viewModel,
+            navController = mockk()
+          )
+        }
+      }
+    }
+    composeRule.onNode(isRoot()).captureRoboImage(
+      filePath = "screenshot/scrobble_screen_light.png",
     )
   }
 }

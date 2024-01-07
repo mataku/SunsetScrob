@@ -7,6 +7,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
 import com.github.takahirom.roborazzi.captureRoboImage
+import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.core.entity.Tag
 import com.mataku.scrobscrob.core.entity.TrackAlbumInfo
 import com.mataku.scrobscrob.core.entity.TrackArtist
@@ -89,17 +90,17 @@ class TrackScreenTest {
     every {
       savedStateHandle.get<String>("trackName")
     }.returns(trackName)
-  }
 
-  @Test
-  fun layout() {
     coEvery {
       trackRepository.getInfo(
         trackName = trackName,
         artistName = artistName
       )
     }.returns(flowOf(trackInfo))
+  }
 
+  @Test
+  fun layout() {
     val viewModel = TrackViewModel(
       trackRepository = trackRepository,
       savedStateHandle = savedStateHandle
@@ -120,6 +121,31 @@ class TrackScreenTest {
     }
     composeRule.onNode(isRoot()).captureRoboImage(
       filePath = "screenshot/track_screen.png",
+    )
+  }
+
+  @Test
+  fun layout_light() {
+    val viewModel = TrackViewModel(
+      trackRepository = trackRepository,
+      savedStateHandle = savedStateHandle
+    )
+
+    composeRule.setContent {
+      SunsetThemePreview(theme = AppTheme.LIGHT) {
+        Surface {
+          TrackScreen(
+            trackName = trackName,
+            artistName = artistName,
+            artworkUrl = artworkUrl,
+            trackViewModel = viewModel,
+            navController = mockk()
+          )
+        }
+      }
+    }
+    composeRule.onNode(isRoot()).captureRoboImage(
+      filePath = "screenshot/track_screen_light.png",
     )
   }
 }

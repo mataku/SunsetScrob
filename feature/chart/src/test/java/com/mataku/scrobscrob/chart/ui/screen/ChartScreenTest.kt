@@ -10,6 +10,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
 import com.github.takahirom.roborazzi.captureRoboImage
 import com.mataku.scrobscrob.chart.ui.viewmodel.ChartViewModel
+import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.core.entity.ChartArtist
 import com.mataku.scrobscrob.core.entity.ChartTopArtists
 import com.mataku.scrobscrob.core.entity.ChartTopTracks
@@ -119,6 +120,24 @@ class ChartScreenTest {
   }
 
   @Test
+  fun layout_artist_light() {
+    val viewModel = ChartViewModel(chartRepository)
+    composeTestRule.setContent {
+      SunsetThemePreview(theme = AppTheme.LIGHT) {
+        Surface {
+          ChartScreen(
+            viewModel = viewModel,
+            navController = mockk()
+          )
+        }
+      }
+    }
+    composeTestRule.onNode(isRoot()).captureRoboImage(
+      filePath = "screenshot/chart_screen_artist_light.png",
+    )
+  }
+
+  @Test
   fun layout_track() {
     val viewModel = ChartViewModel(chartRepository)
     composeTestRule.setContent {
@@ -135,6 +154,26 @@ class ChartScreenTest {
 
     composeTestRule.onRoot().captureRoboImage(
       filePath = "screenshot/chart_screen_track.png",
+    )
+  }
+
+  @Test
+  fun layout_track_light() {
+    val viewModel = ChartViewModel(chartRepository)
+    composeTestRule.setContent {
+      SunsetThemePreview(theme = AppTheme.LIGHT) {
+        Surface {
+          ChartScreen(
+            viewModel = viewModel,
+            navController = mockk()
+          )
+        }
+      }
+    }
+    composeTestRule.onNodeWithText("Track").performClick()
+
+    composeTestRule.onRoot().captureRoboImage(
+      filePath = "screenshot/chart_screen_track_light.png",
     )
   }
 }

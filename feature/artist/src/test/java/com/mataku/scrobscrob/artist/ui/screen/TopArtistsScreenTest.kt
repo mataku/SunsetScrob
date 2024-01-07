@@ -7,11 +7,12 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
 import com.github.takahirom.roborazzi.captureRoboImage
 import com.mataku.scrobscrob.artist.ui.viewmodel.TopArtistsViewModel
+import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.core.entity.TimeRangeFiltering
 import com.mataku.scrobscrob.core.entity.TopArtistInfo
 import com.mataku.scrobscrob.data.repository.TopArtistsRepository
 import com.mataku.scrobscrob.data.repository.UsernameRepository
-import com.mataku.scrobscrob.ui_common.style.SunsetTheme
+import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
@@ -97,7 +98,7 @@ class TopArtistsScreenTest {
       usernameRepository = usernameRepository
     )
     composeRule.setContent {
-      SunsetTheme {
+      SunsetThemePreview {
         Surface {
           TopArtistsScreen(
             viewModel = viewModel,
@@ -108,6 +109,27 @@ class TopArtistsScreenTest {
     }
     composeRule.onNode(isRoot()).captureRoboImage(
       filePath = "screenshot/top_artists_screen.png",
+    )
+  }
+
+  @Test
+  fun layout_light() {
+    val viewModel = TopArtistsViewModel(
+      topArtistsRepository = artistRepository,
+      usernameRepository = usernameRepository
+    )
+    composeRule.setContent {
+      SunsetThemePreview(theme = AppTheme.LIGHT) {
+        Surface {
+          TopArtistsScreen(
+            viewModel = viewModel,
+            onArtistTap = {}
+          )
+        }
+      }
+    }
+    composeRule.onNode(isRoot()).captureRoboImage(
+      filePath = "screenshot/top_artists_screen_light.png",
     )
   }
 }
