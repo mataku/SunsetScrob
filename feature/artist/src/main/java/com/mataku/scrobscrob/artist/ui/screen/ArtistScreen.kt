@@ -1,5 +1,6 @@
 package com.mataku.scrobscrob.artist.ui.screen
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.BackdropScaffold
+import androidx.compose.material.BackdropScaffoldDefaults
 import androidx.compose.material.BackdropValue
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.rememberBackdropScaffoldState
@@ -62,11 +64,16 @@ private fun ArtistContent(
   onArtistLoadMoreTap: (String) -> Unit
 ) {
   val screenWidth = LocalConfiguration.current.screenWidthDp
+  val screenHeight = LocalConfiguration.current.screenHeightDp
   val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Revealed)
 
   BackdropScaffold(
     appBar = {},
-    headerHeight = screenWidth.dp,
+    headerHeight = if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT) {
+      (screenHeight - screenWidth).dp
+    } else {
+      BackdropScaffoldDefaults.HeaderHeight
+    },
     backLayerContent = {
       val imageData = artworkUrl.ifBlank {
         com.mataku.scrobscrob.ui_common.R.drawable.no_image
