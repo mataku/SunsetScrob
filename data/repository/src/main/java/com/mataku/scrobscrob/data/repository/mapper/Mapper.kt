@@ -2,6 +2,7 @@ package com.mataku.scrobscrob.data.repository.mapper
 
 import com.mataku.scrobscrob.core.entity.AlbumInfo
 import com.mataku.scrobscrob.core.entity.AlbumInfoTrack
+import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.core.entity.ArtistInfo
 import com.mataku.scrobscrob.core.entity.ChartArtist
 import com.mataku.scrobscrob.core.entity.ChartTopArtists
@@ -45,6 +46,7 @@ import com.mataku.scrobscrob.data.api.model.TrackArtistBody
 import com.mataku.scrobscrob.data.api.model.UserTopAlbumsApiResponse
 import com.mataku.scrobscrob.data.api.model.UserTopArtistsApiResponse
 import com.mataku.scrobscrob.data.api.model.WikiBody
+import com.mataku.scrobscrob.data.db.entity.AppThemeEntity
 import com.mataku.scrobscrob.data.db.entity.LicenseArtifactDefinitionEntity
 import com.mataku.scrobscrob.data.db.entity.ScmEntity
 import com.mataku.scrobscrob.data.db.entity.SpdxLicenseEntity
@@ -331,4 +333,23 @@ fun AlbumInfoBody.toAlbumInfo(): AlbumInfo {
   )
 }
 
+fun AppThemeEntity.toAppTheme(): AppTheme {
+  return when (this) {
+    AppThemeEntity.DARK -> AppTheme.DARK
+    AppThemeEntity.LIGHT -> AppTheme.LIGHT
+    AppThemeEntity.MIDNIGHT -> AppTheme.MIDNIGHT
+    AppThemeEntity.OCEAN -> AppTheme.OCEAN
+    AppThemeEntity.LASTFM_DARK -> AppTheme.LASTFM_DARK
+  }
+}
+
+fun AppTheme.toAppThemeEntity(): AppThemeEntity {
+  return when (this) {
+    AppTheme.DARK -> AppThemeEntity.DARK
+    AppTheme.LIGHT -> AppThemeEntity.LIGHT
+    AppTheme.MIDNIGHT -> AppThemeEntity.MIDNIGHT
+    AppTheme.OCEAN -> AppThemeEntity.OCEAN
+    AppTheme.LASTFM_DARK -> AppThemeEntity.LASTFM_DARK
+  }
+}
 
