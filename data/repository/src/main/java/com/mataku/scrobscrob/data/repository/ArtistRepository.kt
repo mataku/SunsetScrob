@@ -12,7 +12,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 interface ArtistRepository {
-  suspend fun artistInfo(
+  fun artistInfo(
     name: String
   ): Flow<ArtistInfo>
 }
@@ -21,7 +21,7 @@ interface ArtistRepository {
 class ArtistRepositoryImpl @Inject constructor(
   private val lastFmService: LastFmService
 ) : ArtistRepository {
-  override suspend fun artistInfo(name: String): Flow<ArtistInfo> = flow {
+  override fun artistInfo(name: String): Flow<ArtistInfo> = flow {
     val params = mapOf(
       "artist" to name
     )

@@ -1,0 +1,228 @@
+{
+  "artist": {
+    "name": "aespa",
+    "url": "https://www.last.fm/music/aespa",
+    "image": [
+      {
+        "#text": "https://lastfm.freetls.fastly.net/i/u/34s/2a96cbd8b46e442fc41c2b86b821562f.png",
+        "size": "small"
+      },
+      {
+        "#text": "https://lastfm.freetls.fastly.net/i/u/64s/2a96cbd8b46e442fc41c2b86b821562f.png",
+        "size": "medium"
+      },
+      {
+        "#text": "https://lastfm.freetls.fastly.net/i/u/174s/2a96cbd8b46e442fc41c2b86b821562f.png",
+        "size": "large"
+      },
+      {
+        "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png",
+        "size": "extralarge"
+      },
+      {
+        "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png",
+        "size": "mega"
+      },
+      {
+        "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png",
+        "size": ""
+      }
+    ],
+    "streamable": "0",
+    "ontour": "1",
+    "stats": {
+      "listeners": "646792",
+      "playcount": "88649219"
+    },
+    "similar": {
+      "artist": [
+        {
+          "name": "IVE",
+          "url": "https://www.last.fm/music/IVE",
+          "image": [
+            {
+              "#text": "https://lastfm.freetls.fastly.net/i/u/34s/2a96cbd8b46e442fc41c2b86b821562f.png",
+              "size": "small"
+            },
+            {
+              "#text": "https://lastfm.freetls.fastly.net/i/u/64s/2a96cbd8b46e442fc41c2b86b821562f.png",
+              "size": "medium"
+            },
+            {
+              "#text": "https://lastfm.freetls.fastly.net/i/u/174s/2a96cbd8b46e442fc41c2b86b821562f.png",
+              "size": "large"
+            },
+            {
+              "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png",
+              "size": "extralarge"
+            },
+            {
+              "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png",
+              "size": "mega"
+            },
+            {
+              "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png",
+              "size": ""
+            }
+          ]
+        },
+        {
+          "name": "GOT the beat",
+          "url": "https://www.last.fm/music/GOT+the+beat",
+          "image": [
+            {
+              "#text": "https://lastfm.freetls.fastly.net/i/u/34s/2a96cbd8b46e442fc41c2b86b821562f.png",
+              "size": "small"
+            },
+            {
+              "#text": "https://lastfm.freetls.fastly.net/i/u/64s/2a96cbd8b46e442fc41c2b86b821562f.png",
+              "size": "medium"
+            },
+            {
+              "#text": "https://lastfm.freetls.fastly.net/i/u/174s/2a96cbd8b46e442fc41c2b86b821562f.png",
+              "size": "large"
+            },
+            {
+              "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png",
+              "size": "extralarge"
+            },
+            {
+              "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png",
+              "size": "mega"
+            },
+            {
+              "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png",
+              "size": ""
+            }
+          ]
+        },
+        {
+          "name": "NMIXX",
+          "url": "https://www.last.fm/music/NMIXX",
+          "image": [
+            {
+              "#text": "https://lastfm.freetls.fastly.net/i/u/34s/2a96cbd8b46e442fc41c2b86b821562f.png",
+              "size": "small"
+            },
+            {
+              "#text": "https://lastfm.freetls.fastly.net/i/u/64s/2a96cbd8b46e442fc41c2b86b821562f.png",
+              "size": "medium"
+            },
+            {
+              "#text": "https://lastfm.freetls.fastly.net/i/u/174s/2a96cbd8b46e442fc41c2b86b821562f.png",
+              "size": "large"
+            },
+            {
+              "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png",
+              "size": "extralarge"
+            },
+            {
+              "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png",
+              "size": "mega"
+            },
+            {
+              "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png",
+              "size": ""
+            }
+          ]
+        },
+        {
+          "name": "LE SSERAFIM",
+          "url": "https://www.last.fm/music/LE+SSERAFIM",
+          "image": [
+            {
+              "#text": "https://lastfm.freetls.fastly.net/i/u/34s/2a96cbd8b46e442fc41c2b86b821562f.png",
+              "size": "small"
+            },
+            {
+              "#text": "https://lastfm.freetls.fastly.net/i/u/64s/2a96cbd8b46e442fc41c2b86b821562f.png",
+              "size": "medium"
+            },
+            {
+              "#text": "https://lastfm.freetls.fastly.net/i/u/174s/2a96cbd8b46e442fc41c2b86b821562f.png",
+              "size": "large"
+            },
+            {
+              "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png",
+              "size": "extralarge"
+            },
+            {
+              "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png",
+              "size": "mega"
+            },
+            {
+              "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png",
+              "size": ""
+            }
+          ]
+        },
+        {
+          "name": "Kiss of Life",
+          "url": "https://www.last.fm/music/Kiss+of+Life",
+          "image": [
+            {
+              "#text": "https://lastfm.freetls.fastly.net/i/u/34s/2a96cbd8b46e442fc41c2b86b821562f.png",
+              "size": "small"
+            },
+            {
+              "#text": "https://lastfm.freetls.fastly.net/i/u/64s/2a96cbd8b46e442fc41c2b86b821562f.png",
+              "size": "medium"
+            },
+            {
+              "#text": "https://lastfm.freetls.fastly.net/i/u/174s/2a96cbd8b46e442fc41c2b86b821562f.png",
+              "size": "large"
+            },
+            {
+              "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png",
+              "size": "extralarge"
+            },
+            {
+              "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png",
+              "size": "mega"
+            },
+            {
+              "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png",
+              "size": ""
+            }
+          ]
+        }
+      ]
+    },
+    "tags": {
+      "tag": [
+        {
+          "name": "k-pop",
+          "url": "https://www.last.fm/tag/k-pop"
+        },
+        {
+          "name": "Kpop",
+          "url": "https://www.last.fm/tag/Kpop"
+        },
+        {
+          "name": "pop",
+          "url": "https://www.last.fm/tag/pop"
+        },
+        {
+          "name": "Korean",
+          "url": "https://www.last.fm/tag/Korean"
+        },
+        {
+          "name": "hyperpop",
+          "url": "https://www.last.fm/tag/hyperpop"
+        }
+      ]
+    },
+    "bio": {
+      "links": {
+        "link": {
+          "#text": "",
+          "rel": "original",
+          "href": "https://last.fm/music/aespa/+wiki"
+        }
+      },
+      "published": "27 Oct 2020, 14:52",
+      "summary": "aespa is a South Korean girl group formed by SM Entertainment. The group consists of four members: Karina (카리나), Giselle (지젤),  Winter (윈터) and Ningning (닝닝). They debuted on November 17, 2020 with the single \"Black Mamba\".\n\nThe group's name, aespa, combines the English initials of \"avatar\" and \"experience\" (Avatar X Experience) with the English word \"aspect\", meaning \"two sides\", to symbolize the idea of \"meeting another self and experiencing the new world\". <a href=\"https://www.last.fm/music/aespa\">Read more on Last.fm</a>",
+      "content": "aespa is a South Korean girl group formed by SM Entertainment. The group consists of four members: Karina (카리나), Giselle (지젤),  Winter (윈터) and Ningning (닝닝). They debuted on November 17, 2020 with the single \"Black Mamba\".\n\nThe group's name, aespa, combines the English initials of \"avatar\" and \"experience\" (Avatar X Experience) with the English word \"aspect\", meaning \"two sides\", to symbolize the idea of \"meeting another self and experiencing the new world\". Each member has a digital version of themselves, referred to as avatars.\n\nOn January 29, 2021, SM Entertainment announced aespa would release a remake of \"Forever (약속)\", the single originally by Yoo Young-jin for SM Entertainment's 2000 holiday album, Winter Vacation in SMTOWN.com. aespa's version of the song, a \"mid-tempo ballad characterized by acoustic guitar sound\" with \"warm lyrics about promising forever to a loved one\", was released on February 5 that year.\n\nOn May 6, 2021 at 12 AM KST, the group released their first teasers for a new project: a still image and a cryptic video featuring the words \"Next Level\". Later that day at 9 AM KST, the official announcement for their comeback was released, revealing that \"Next Level\" was the name of their upcoming single. The song was released on May 17, 2021.\n\nOn October 5, 2021 at 6 PM KST, aespa released their debut EP \"Savage\" which featured a title track with the same name alongside 5 other songs.\n\nOn July 8, 2022, their second EP \"Girls\" was released, alongside it´s title track with the same name. Consisting of 6 tracks, the album was preceded by a pre-release single called  \"Illusion\" and the first official single of the project:  \"Life´s Too Short (English Version)\".\n\nOn March 30, 2023, they released 'Hold On Tight' as part of the Tetris soundtrack.\n\nOn May 2, 2023, they released a pre-release single titled 'Welcome To MY World (feat. nævis)', featuring naevis, who is a reoccuring character in aespa's lore. Following this, they released their third EP \"MY WORLD\" on May 8th, with the title track 'Spicy'.\n\nOn July 27, 2023, aespa, through teaser videos and their special 3-episode sitcom, began promoting their English digital single \"Better Things\", a \"minimal up-tempo dance\" song, which was released on August 18, 2023. Various remixes were released later on.\n\nOn October 10, aespa announced they would be releasing their fourth EP Drama on November 10, 2023. The EP will contain 6 tracks, three of which are songs already played on the Synk Hyperline Concert, and three others being completely new. <a href=\"https://www.last.fm/music/aespa\">Read more on Last.fm</a>. User-contributed text is available under the Creative Commons By-SA License; additional terms may apply."
+    }
+  }
+}

@@ -1,7 +1,7 @@
 package com.mataku.scrobscrob.data.repository
 
-import com.mataku.scrobscrob.core.entity.ArtistInfo
 import com.mataku.scrobscrob.core.entity.TimeRangeFiltering
+import com.mataku.scrobscrob.core.entity.TopArtistInfo
 import com.mataku.scrobscrob.data.api.LastFmService
 import com.mataku.scrobscrob.data.api.endpoint.UserTopArtistsEndpoint
 import com.mataku.scrobscrob.data.repository.mapper.toTopArtists
@@ -17,7 +17,7 @@ interface TopArtistsRepository {
     page: Int,
     username: String,
     timeRangeFiltering: TimeRangeFiltering
-  ): Flow<List<ArtistInfo>>
+  ): Flow<List<TopArtistInfo>>
 }
 
 @Singleton
@@ -28,7 +28,7 @@ class TopArtistsRepositoryImpl @Inject constructor(
     page: Int,
     username: String,
     timeRangeFiltering: TimeRangeFiltering
-  ): Flow<List<ArtistInfo>> = flow {
+  ): Flow<List<TopArtistInfo>> = flow {
     val params = mapOf(
       "limit" to 20,
       "page" to page,
