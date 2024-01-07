@@ -2,7 +2,8 @@ package com.mataku.scrobscrob.data.repository
 
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.data.db.ThemeDataStore
-import com.mataku.scrobscrob.test_helper.unit.CoroutinesListener
+import com.mataku.scrobscrob.data.db.entity.AppThemeEntity
+import com.mataku.scrobscrob.data.repository.mapper.toAppTheme
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.coEvery
@@ -21,7 +22,7 @@ class ThemeRepositorySpec : DescribeSpec({
     it("should return theme") {
       coEvery {
         themeDataStore.theme()
-      }.returns(flowOf(AppTheme.LASTFM_DARK))
+      }.returns(flowOf(AppThemeEntity.LASTFM_DARK))
 
       repository.currentTheme().collect {
         it shouldBe AppTheme.LASTFM_DARK
@@ -34,14 +35,14 @@ class ThemeRepositorySpec : DescribeSpec({
   }
 
   describe("storeTheme") {
-    val theme = AppTheme.LASTFM_DARK
+    val theme = AppThemeEntity.LASTFM_DARK
 
     it("should call ThemeDataStore#setTheme") {
       coEvery {
         themeDataStore.setTheme(theme)
       }.returns(flowOf(Unit))
 
-      repository.storeTheme(theme).collect()
+      repository.storeTheme(theme.toAppTheme()).collect()
 
       coVerify(exactly = 1) {
         themeDataStore.setTheme(theme)
