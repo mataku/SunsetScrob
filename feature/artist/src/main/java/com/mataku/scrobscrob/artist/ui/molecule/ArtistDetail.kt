@@ -41,20 +41,15 @@ internal fun ArtistDetail(
       modifier = Modifier
         .width(16.dp)
     )
+    ValueDescription(
+      value = listeners?.toReadableIntValue() ?: "",
+      label = "Listeners"
+    )
 
-    listeners?.let {
-      ValueDescription(
-        value = it.toReadableIntValue(),
-        label = "Listeners"
-      )
-    }
 
-    playCount?.let {
-      ValueDescription(
-        value = it.toReadableIntValue(),
-        label = "Plays"
-      )
-    }
-
+    ValueDescription(
+      value = playCount?.toReadableIntValue() ?: "",
+      label = "Plays"
+    )
   }
 }

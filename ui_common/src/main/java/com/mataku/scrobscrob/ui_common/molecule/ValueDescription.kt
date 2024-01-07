@@ -8,6 +8,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -18,10 +19,19 @@ import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 @Composable
 fun ValueDescription(
   value: String,
-  label: String
+  label: String,
+  modifier: Modifier = Modifier
 ) {
   Column(
-    horizontalAlignment = Alignment.CenterHorizontally
+    horizontalAlignment = Alignment.CenterHorizontally,
+    modifier = modifier
+      .alpha(
+        if (value.isEmpty()) {
+          0F
+        } else {
+          1F
+        }
+      )
   ) {
     Text(
       text = value,
