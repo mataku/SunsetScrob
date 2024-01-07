@@ -1,18 +1,15 @@
 package com.mataku.scrobscrob.album.ui.screen
 
-import androidx.compose.ui.test.isRoot
 import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.navigation.NavController
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
-import com.github.takahirom.roborazzi.captureRoboImage
 import com.mataku.scrobscrob.album.ui.viewmodel.TopAlbumsViewModel
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.core.entity.TimeRangeFiltering
 import com.mataku.scrobscrob.core.entity.TopAlbumInfo
 import com.mataku.scrobscrob.data.repository.AlbumRepository
 import com.mataku.scrobscrob.data.repository.UsernameRepository
-import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
+import com.mataku.scrobscrob.test_helper.integration.captureScreenshot
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
@@ -37,7 +34,6 @@ class TopAlbumsScreenTest {
 
   private val albumRepository = mockk<AlbumRepository>()
   private val usernameRepository = mockk<UsernameRepository>()
-  private val navController = mockk<NavController>()
   private val username = "sunsetscrob"
   private val timeRangeFiltering = TimeRangeFiltering.OVERALL
 
@@ -71,7 +67,7 @@ class TopAlbumsScreenTest {
       albumRepository.fetchTopAlbums(
         page = 1,
         username = username,
-        timeRangeFiltering = TimeRangeFiltering.OVERALL
+        timeRangeFiltering = timeRangeFiltering
       )
     }.returns(flowOf(topAlbums))
 
@@ -79,7 +75,7 @@ class TopAlbumsScreenTest {
       albumRepository.fetchTopAlbums(
         page = 2,
         username = username,
-        timeRangeFiltering = TimeRangeFiltering.OVERALL
+        timeRangeFiltering = timeRangeFiltering
       )
     }.returns(flowOf(topAlbumsPage2))
 
@@ -87,15 +83,16 @@ class TopAlbumsScreenTest {
       albumRepository.fetchTopAlbums(
         page = 3,
         username = username,
-        timeRangeFiltering = TimeRangeFiltering.OVERALL
+        timeRangeFiltering = timeRangeFiltering
       )
     }.returns(flowOf(emptyList()))
   }
 
   @Test
   fun layout() {
-    composeRule.setContent {
-      SunsetThemePreview {
+    composeRule.captureScreenshot(
+      appTheme = AppTheme.DARK,
+      content = {
         TopAlbumsScreen(
           viewModel = TopAlbumsViewModel(
             topAlbumsRepository = albumRepository,
@@ -103,17 +100,16 @@ class TopAlbumsScreenTest {
           ),
           navigateToAlbumInfo = {}
         )
-      }
-    }
-    composeRule.onNode(isRoot()).captureRoboImage(
-      filePath = "screenshot/top_albums_screen.png",
+      },
+      fileName = "top_albums_screen.png"
     )
   }
 
   @Test
   fun layout_light() {
-    composeRule.setContent {
-      SunsetThemePreview(theme = AppTheme.LIGHT) {
+    composeRule.captureScreenshot(
+      appTheme = AppTheme.LIGHT,
+      content = {
         TopAlbumsScreen(
           viewModel = TopAlbumsViewModel(
             topAlbumsRepository = albumRepository,
@@ -121,10 +117,8 @@ class TopAlbumsScreenTest {
           ),
           navigateToAlbumInfo = {}
         )
-      }
-    }
-    composeRule.onNode(isRoot()).captureRoboImage(
-      filePath = "screenshot/top_albums_screen_light.png",
+      },
+      fileName = "top_albums_screen_light.png"
     )
   }
 }

@@ -1,19 +1,16 @@
 package com.mataku.scrobscrob.album.ui.screen
 
-import androidx.compose.material3.Surface
-import androidx.compose.ui.test.isRoot
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.lifecycle.SavedStateHandle
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
-import com.github.takahirom.roborazzi.captureRoboImage
 import com.mataku.scrobscrob.album.ui.viewmodel.AlbumViewModel
 import com.mataku.scrobscrob.core.entity.AlbumInfo
 import com.mataku.scrobscrob.core.entity.AlbumInfoTrack
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.core.entity.Tag
 import com.mataku.scrobscrob.data.repository.AlbumRepository
-import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
+import com.mataku.scrobscrob.test_helper.integration.captureScreenshot
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.collections.immutable.persistentListOf
@@ -103,19 +100,15 @@ class AlbumScreenTest {
       savedStateHandle = savedStateHandle
     )
 
-    composeRule.setContent {
-      SunsetThemePreview {
-        Surface {
-          AlbumScreen(
-            viewModel = viewModel,
-            onAlbumLoadMoreTap = {}
-          )
-        }
-      }
-    }
-
-    composeRule.onNode(isRoot()).captureRoboImage(
-      filePath = "screenshot/album_screen.png"
+    composeRule.captureScreenshot(
+      appTheme = AppTheme.DARK,
+      content = {
+        AlbumScreen(
+          viewModel = viewModel,
+          onAlbumLoadMoreTap = {}
+        )
+      },
+      fileName = "album_screen.png"
     )
   }
 
@@ -126,19 +119,15 @@ class AlbumScreenTest {
       savedStateHandle = savedStateHandle
     )
 
-    composeRule.setContent {
-      SunsetThemePreview(theme = AppTheme.LIGHT) {
-        Surface {
-          AlbumScreen(
-            viewModel = viewModel,
-            onAlbumLoadMoreTap = {}
-          )
-        }
-      }
-    }
-
-    composeRule.onNode(isRoot()).captureRoboImage(
-      filePath = "screenshot/album_screen_light.png"
+    composeRule.captureScreenshot(
+      fileName = "album_screen_light.png",
+      content = {
+        AlbumScreen(
+          viewModel = viewModel,
+          onAlbumLoadMoreTap = {}
+        )
+      },
+      appTheme = AppTheme.LIGHT
     )
   }
 }

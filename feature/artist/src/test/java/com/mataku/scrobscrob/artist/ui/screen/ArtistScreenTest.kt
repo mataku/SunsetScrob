@@ -1,12 +1,9 @@
 package com.mataku.scrobscrob.artist.ui.screen
 
-import androidx.compose.material3.Surface
-import androidx.compose.ui.test.isRoot
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.lifecycle.SavedStateHandle
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
-import com.github.takahirom.roborazzi.captureRoboImage
 import com.mataku.scrobscrob.artist.ui.viewmodel.ArtistViewModel
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.core.entity.ArtistInfo
@@ -14,7 +11,7 @@ import com.mataku.scrobscrob.core.entity.Stats
 import com.mataku.scrobscrob.core.entity.Tag
 import com.mataku.scrobscrob.core.entity.Wiki
 import com.mataku.scrobscrob.data.repository.ArtistRepository
-import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
+import com.mataku.scrobscrob.test_helper.integration.captureScreenshot
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.collections.immutable.persistentListOf
@@ -83,18 +80,15 @@ class ArtistScreenTest {
       artistRepository = artistRepository,
       savedStateHandle = savedStateHandle
     )
-    composeRule.setContent {
-      SunsetThemePreview {
-        Surface {
-          ArtistScreen(
-            viewModel = viewModel,
-            onArtistLoadMoreTap = {}
-          )
-        }
-      }
-    }
-    composeRule.onNode(isRoot()).captureRoboImage(
-      filePath = "screenshot/artist_screen.png",
+    composeRule.captureScreenshot(
+      appTheme = AppTheme.DARK,
+      content = {
+        ArtistScreen(
+          viewModel = viewModel,
+          onArtistLoadMoreTap = {}
+        )
+      },
+      fileName = "artist_screen.png"
     )
   }
 
@@ -104,19 +98,15 @@ class ArtistScreenTest {
       artistRepository = artistRepository,
       savedStateHandle = savedStateHandle
     )
-    composeRule.setContent {
-      SunsetThemePreview(theme = AppTheme.LIGHT) {
-        Surface {
-          ArtistScreen(
-            viewModel = viewModel,
-            onArtistLoadMoreTap = {}
-          )
-        }
-      }
-    }
-    composeRule.onNode(isRoot()).captureRoboImage(
-      filePath = "screenshot/artist_screen_light.png",
+    composeRule.captureScreenshot(
+      appTheme = AppTheme.LIGHT,
+      content = {
+        ArtistScreen(
+          viewModel = viewModel,
+          onArtistLoadMoreTap = {}
+        )
+      },
+      fileName = "artist_screen_light.png"
     )
   }
-
 }
