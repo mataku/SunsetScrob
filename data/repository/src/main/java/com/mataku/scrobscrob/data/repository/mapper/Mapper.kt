@@ -26,6 +26,7 @@ import com.mataku.scrobscrob.core.entity.TrackArtist
 import com.mataku.scrobscrob.core.entity.TrackInfo
 import com.mataku.scrobscrob.core.entity.Wiki
 import com.mataku.scrobscrob.core.entity.imageUrl
+import com.mataku.scrobscrob.core.entity.presentation.toReadableString
 import com.mataku.scrobscrob.data.api.endpoint.TrackInfoApiResponse
 import com.mataku.scrobscrob.data.api.model.AlbumInfoBody
 import com.mataku.scrobscrob.data.api.model.AlbumInfoTrackBody
@@ -268,7 +269,7 @@ fun WikiBody?.toWiki(): Wiki? {
   this ?: return null
 
   return Wiki(
-    published = this.published,
+    published = this.published.toReadableString(),
     summary = this.summary,
     content = this.content
   )

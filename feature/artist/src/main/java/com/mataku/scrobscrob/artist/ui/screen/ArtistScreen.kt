@@ -38,7 +38,6 @@ import com.mataku.scrobscrob.ui_common.molecule.TopTags
 import com.mataku.scrobscrob.ui_common.molecule.WikiCell
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import kotlinx.collections.immutable.persistentListOf
-import java.util.Date
 
 @Composable
 fun ArtistScreen(
@@ -180,7 +179,7 @@ private fun ArtistContentPreview() {
             )
           ),
           wiki = Wiki(
-            published = Date(),
+            published = "01 January 2023",
             summary = LoremIpsum(100).values.joinToString(separator = " "),
             content = ""
           )
