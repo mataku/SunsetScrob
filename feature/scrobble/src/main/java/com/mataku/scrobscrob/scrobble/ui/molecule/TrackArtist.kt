@@ -16,7 +16,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.mataku.scrobscrob.core.entity.ArtistInfo
+import com.mataku.scrobscrob.core.entity.TopArtistInfo
 import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.molecule.SunsetImage
@@ -25,7 +25,7 @@ import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun TrackArtist(
-  artistInfo: ArtistInfo
+  artistInfo: TopArtistInfo
 ) {
   Row(
     modifier = Modifier
@@ -70,7 +70,7 @@ private fun TrackArtistPreview() {
   SunsetThemePreview() {
     Surface {
       TrackArtist(
-        ArtistInfo(
+        TopArtistInfo(
           name = "Nayeon",
           imageList = persistentListOf(),
           topTags = persistentListOf(),

@@ -41,6 +41,7 @@ class ScreenshotTestConventionPlugin : Plugin<Project> {
           ).forEach {
             add("testImplementation", libs.findLibrary(it).get())
           }
+          add("testImplementation", project(":test_helper:integration"))
           add("debugImplementation", libs.findLibrary("compose-ui-test-manifest").get())
         }
 

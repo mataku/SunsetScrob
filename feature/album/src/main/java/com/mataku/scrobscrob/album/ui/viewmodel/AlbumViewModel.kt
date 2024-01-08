@@ -23,12 +23,12 @@ class AlbumViewModel @Inject constructor(
 
   private val artistName = savedStateHandle.get<String>("artistName")
   private val albumName = savedStateHandle.get<String>("albumName")
-  private val artworkUrl = savedStateHandle.get<String>("artworkUrl")
+  private val artworkUrl = savedStateHandle.get<String>("artworkUrl") ?: ""
 
   var uiState: MutableStateFlow<AlbumUiState> = MutableStateFlow(AlbumUiState())
 
   init {
-    if (!artistName.isNullOrEmpty() && !albumName.isNullOrEmpty() && !artworkUrl.isNullOrEmpty()) {
+    if (!artistName.isNullOrEmpty() && !albumName.isNullOrEmpty()) {
       uiState.update {
         it.copy(
           preloadAlbumName = albumName,

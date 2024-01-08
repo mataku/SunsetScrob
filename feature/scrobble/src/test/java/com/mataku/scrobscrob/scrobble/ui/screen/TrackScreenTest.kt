@@ -1,12 +1,10 @@
 package com.mataku.scrobscrob.scrobble.ui.screen
 
-import androidx.compose.material3.Surface
-import androidx.compose.ui.test.isRoot
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.lifecycle.SavedStateHandle
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
-import com.github.takahirom.roborazzi.captureRoboImage
+import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.core.entity.Tag
 import com.mataku.scrobscrob.core.entity.TrackAlbumInfo
 import com.mataku.scrobscrob.core.entity.TrackArtist
@@ -14,7 +12,7 @@ import com.mataku.scrobscrob.core.entity.TrackInfo
 import com.mataku.scrobscrob.core.entity.Wiki
 import com.mataku.scrobscrob.data.repository.TrackRepository
 import com.mataku.scrobscrob.scrobble.ui.viewmodel.TrackViewModel
-import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
+import com.mataku.scrobscrob.test_helper.integration.captureScreenshot
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
@@ -89,37 +87,56 @@ class TrackScreenTest {
     every {
       savedStateHandle.get<String>("trackName")
     }.returns(trackName)
-  }
 
-  @Test
-  fun layout() {
     coEvery {
       trackRepository.getInfo(
         trackName = trackName,
         artistName = artistName
       )
     }.returns(flowOf(trackInfo))
+  }
 
+  @Test
+  fun layout() {
     val viewModel = TrackViewModel(
       trackRepository = trackRepository,
       savedStateHandle = savedStateHandle
     )
 
-    composeRule.setContent {
-      SunsetThemePreview {
-        Surface {
-          TrackScreen(
-            trackName = trackName,
-            artistName = artistName,
-            artworkUrl = artworkUrl,
-            trackViewModel = viewModel,
-            navController = mockk()
-          )
-        }
-      }
-    }
-    composeRule.onNode(isRoot()).captureRoboImage(
-      filePath = "screenshot/track_screen.png",
+    composeRule.captureScreenshot(
+      appTheme = AppTheme.DARK,
+      content = {
+        TrackScreen(
+          trackName = trackName,
+          artistName = artistName,
+          artworkUrl = artworkUrl,
+          trackViewModel = viewModel,
+          navController = mockk()
+        )
+      },
+      fileName = "track_screen.png"
+    )
+  }
+
+  @Test
+  fun layout_light() {
+    val viewModel = TrackViewModel(
+      trackRepository = trackRepository,
+      savedStateHandle = savedStateHandle
+    )
+
+    composeRule.captureScreenshot(
+      appTheme = AppTheme.LIGHT,
+      content = {
+        TrackScreen(
+          trackName = trackName,
+          artistName = artistName,
+          artworkUrl = artworkUrl,
+          trackViewModel = viewModel,
+          navController = mockk()
+        )
+      },
+      fileName = "track_screen_light.png"
     )
   }
 }

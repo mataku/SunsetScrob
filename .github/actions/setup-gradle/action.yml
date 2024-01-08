@@ -40,5 +40,5 @@ runs:
           .gradle
           ~/.gradle/caches/build-cache-*
           ~/.gradle/caches/[0-9]*.* # TODO: specify latest only
-        key: gradle-build-cache-${{ github.workflow }}-${{ github.sha }}
-        restore-keys: gradle-build-cache-${{ github.workflow }}-
+        key: gradle-build-cache-${{ runner.os }}-${{ github.sha }}
+        restore-keys: gradle-build-cache-${{ runner.os }}-

@@ -1,15 +1,13 @@
 package com.mataku.scrobscrob.scrobble.ui.screen
 
-import androidx.compose.material3.Surface
-import androidx.compose.ui.test.isRoot
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
-import com.github.takahirom.roborazzi.captureRoboImage
+import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.core.entity.RecentTrack
 import com.mataku.scrobscrob.data.repository.ScrobbleRepository
 import com.mataku.scrobscrob.scrobble.ui.viewmodel.ScrobbleViewModel
-import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
+import com.mataku.scrobscrob.test_helper.integration.captureScreenshot
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.collections.immutable.persistentListOf
@@ -73,18 +71,30 @@ class ScrobbleScreenTest {
   @Test
   fun layout() {
     val viewModel = ScrobbleViewModel(scrobbleRepository)
-    composeRule.setContent {
-      SunsetThemePreview {
-        Surface {
-          ScrobbleScreen(
-            viewModel = viewModel,
-            navController = mockk()
-          )
-        }
-      }
-    }
-    composeRule.onNode(isRoot()).captureRoboImage(
-      filePath = "screenshot/scrobble_screen.png",
+    composeRule.captureScreenshot(
+      appTheme = AppTheme.DARK,
+      content = {
+        ScrobbleScreen(
+          viewModel = viewModel,
+          navController = mockk()
+        )
+      },
+      fileName = "scrobble_screen.png"
+    )
+  }
+
+  @Test
+  fun layout_light() {
+    val viewModel = ScrobbleViewModel(scrobbleRepository)
+    composeRule.captureScreenshot(
+      appTheme = AppTheme.LIGHT,
+      content = {
+        ScrobbleScreen(
+          viewModel = viewModel,
+          navController = mockk()
+        )
+      },
+      fileName = "scrobble_screen_light.png"
     )
   }
 }

@@ -11,26 +11,20 @@ data class ArtistInfoBody(
   val imageList: List<ImageBody>? = null,
 
   @SerialName("tags")
-  val topTags: TagListBody? = null,
+  val tags: TagListBody? = null,
 
   @SerialName("stats")
-  val stats: ArtistStatsBody,
+  val stats: StatsBody,
 
   @SerialName("url")
-  val url: String
+  val url: String,
+
+  @SerialName("bio")
+  val wiki: WikiBody? = null
 )
 
 @Serializable
 data class ArtistInfoApiResponse(
   @SerialName("artist")
   val artistInfo: ArtistInfoBody
-)
-
-@Serializable
-data class ArtistStatsBody(
-  @SerialName("listeners")
-  val listeners: String,
-
-  @SerialName("playcount")
-  val playCount: String
 )

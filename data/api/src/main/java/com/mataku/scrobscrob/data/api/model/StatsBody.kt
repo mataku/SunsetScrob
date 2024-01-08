@@ -8,6 +8,6 @@ data class StatsBody(
   @SerialName("listeners")
   val listeners: String,
 
-  @SerialName("plays")
+  @SerialName("playcount")
   val playCount: String
 )
