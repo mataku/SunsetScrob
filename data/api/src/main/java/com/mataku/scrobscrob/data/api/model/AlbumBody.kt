@@ -19,7 +19,7 @@ data class AlbumBody(
 )
 
 @Serializable
-data class UserTopAlbumsApiResponse(
+data class TopAlbumsApiResponse(
   @SerialName("topalbums")
   val topAlbums: AlbumsBody
 )

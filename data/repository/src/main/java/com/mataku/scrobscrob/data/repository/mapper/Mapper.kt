@@ -42,9 +42,9 @@ import com.mataku.scrobscrob.data.api.model.SingleTag
 import com.mataku.scrobscrob.data.api.model.StatsBody
 import com.mataku.scrobscrob.data.api.model.TagBody
 import com.mataku.scrobscrob.data.api.model.TagListBody
+import com.mataku.scrobscrob.data.api.model.TopAlbumsApiResponse
 import com.mataku.scrobscrob.data.api.model.TrackAlbumInfoBody
 import com.mataku.scrobscrob.data.api.model.TrackArtistBody
-import com.mataku.scrobscrob.data.api.model.UserTopAlbumsApiResponse
 import com.mataku.scrobscrob.data.api.model.UserTopArtistsApiResponse
 import com.mataku.scrobscrob.data.api.model.WikiBody
 import com.mataku.scrobscrob.data.db.entity.AppThemeEntity
@@ -107,7 +107,7 @@ fun TrackInfoApiResponse.toTrackInfo(): TrackInfo {
   )
 }
 
-fun UserTopAlbumsApiResponse.toTopAlbums(): List<TopAlbumInfo> {
+fun TopAlbumsApiResponse.toTopAlbums(): List<TopAlbumInfo> {
   val body = this.topAlbums
   return body.albums.map {
     TopAlbumInfo(

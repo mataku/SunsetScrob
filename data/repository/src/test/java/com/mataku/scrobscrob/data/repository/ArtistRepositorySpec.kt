@@ -125,4 +125,74 @@ class ArtistRepositorySpec : DescribeSpec({
         }
     }
   }
+
+  describe("topAlbums") {
+    it("should parse as List<TopAlbumInfo>") {
+      val response = """
+        {
+          "topalbums": {
+            "album": [
+              {
+                "name": "SAVAGE - The 1st Mini Album",
+                "playcount": 20996309,
+                "url": "https://www.last.fm/music/aespa/SAVAGE+-+The+1st+Mini+Album",
+                "artist": {
+                  "name": "aespa",
+                  "url": "https://www.last.fm/music/aespa"
+                },
+                "image": [
+                  {
+                    "#text": "https://lastfm.freetls.fastly.net/i/u/34s/9686de538a7ca3b967de4cc7e76e316b.png",
+                    "size": "small"
+                  },
+                  {
+                    "#text": "https://lastfm.freetls.fastly.net/i/u/64s/9686de538a7ca3b967de4cc7e76e316b.png",
+                    "size": "medium"
+                  },
+                  {
+                    "#text": "https://lastfm.freetls.fastly.net/i/u/174s/9686de538a7ca3b967de4cc7e76e316b.png",
+                    "size": "large"
+                  },
+                  {
+                    "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/9686de538a7ca3b967de4cc7e76e316b.png",
+                    "size": "extralarge"
+                  }
+                ]
+              }
+            ],
+            "@attr": {
+              "artist": "aespa",
+              "page": "1",
+              "perPage": "1",
+              "totalPages": "3024",
+              "total": "3024"
+            }
+          }
+        }
+      """.trimIndent()
+
+      val mockEngine = MockEngine { request ->
+        request.url.fullPath shouldBe "/2.0/?method=artist.gettopalbums&format=json&artist=aespa&page=1&limit=1"
+        request.method shouldBe HttpMethod.Get
+        respond(
+          content = ByteReadChannel(response),
+          status = HttpStatusCode.OK,
+          headers = headersOf(HttpHeaders.ContentType, "application/json")
+        )
+      }
+      val lastfmService = LastFmService(
+        LastFmHttpClient.create(mockEngine)
+      )
+      val repository = ArtistRepositoryImpl(lastfmService)
+      repository.topAlbums(
+        name = "aespa",
+        page = 1,
+        limit = 1
+      )
+        .test {
+          awaitItem().isNotEmpty() shouldBe true
+          awaitComplete()
+        }
+    }
+  }
 })
