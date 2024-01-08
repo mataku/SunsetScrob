@@ -1,0 +1,1 @@
+- Add artist detail screen
