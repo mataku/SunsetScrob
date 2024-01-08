@@ -1,9 +1,9 @@
 package com.mataku.scrobscrob.data.repository
 
 import app.cash.turbine.test
+import com.mataku.scrobscrob.core.entity.Stats
 import com.mataku.scrobscrob.data.api.LastFmHttpClient
 import com.mataku.scrobscrob.data.api.LastFmService
-import com.mataku.scrobscrob.test_helper.unit.CoroutinesListener
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
 import io.ktor.client.engine.mock.MockEngine
@@ -116,9 +116,10 @@ class ArtistRepositorySpec : DescribeSpec({
         .test {
           awaitItem().let {
             it.name shouldBe "Nayeon"
-            it.imageList.isNotEmpty() shouldBe true
+            it.images.isNotEmpty() shouldBe true
             it.url shouldBe "https://www.last.fm/music/Nayeon"
-            it.topTags.isNotEmpty() shouldBe true
+            it.tags.isNotEmpty() shouldBe true
+            it.stats shouldBe Stats(listeners = "384242", playCount = "15045020")
           }
           awaitComplete()
         }

@@ -30,14 +30,12 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.mataku.scrobscrob.artist.R
 import com.mataku.scrobscrob.artist.ui.molecule.TopArtist
 import com.mataku.scrobscrob.artist.ui.viewmodel.TopArtistsViewModel
-import com.mataku.scrobscrob.core.entity.ArtistInfo
+import com.mataku.scrobscrob.core.entity.TopArtistInfo
 import com.mataku.scrobscrob.ui_common.molecule.FilteringFloatingButton
 import com.mataku.scrobscrob.ui_common.molecule.LoadingIndicator
-import com.mataku.scrobscrob.ui_common.navigateToWebView
 import com.mataku.scrobscrob.ui_common.organism.ContentHeader
 import com.mataku.scrobscrob.ui_common.organism.FilteringBottomSheet
 import com.mataku.scrobscrob.ui_common.organism.InfiniteLoadingIndicator
@@ -49,7 +47,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun TopArtistsScreen(
   viewModel: TopArtistsViewModel,
-  navController: NavController
+  onArtistTap: (TopArtistInfo) -> Unit
 ) {
   val uiState by viewModel.uiState.collectAsState()
 
@@ -85,7 +83,7 @@ fun TopArtistsScreen(
     TopArtistsContent(
       artists = uiState.topArtists,
       hasNext = uiState.hasNext,
-      onUrlTap = navController::navigateToWebView,
+      onArtistTap = onArtistTap,
       onScrollEnd = viewModel::fetchTopArtists,
       maxSpanCount = if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
         4
@@ -129,10 +127,10 @@ fun TopArtistsScreen(
 
 @Composable
 private fun TopArtistsContent(
-  artists: ImmutableList<ArtistInfo>,
+  artists: ImmutableList<TopArtistInfo>,
   hasNext: Boolean,
   maxSpanCount: Int,
-  onUrlTap: (String) -> Unit,
+  onArtistTap: (TopArtistInfo) -> Unit,
   onScrollEnd: () -> Unit
 ) {
   Column(
@@ -154,7 +152,7 @@ private fun TopArtistsContent(
           TopArtist(
             artist = artist,
             onArtistTap = {
-              onUrlTap.invoke(artist.url)
+              onArtistTap.invoke(artist)
             },
             modifier = Modifier
               .fillMaxWidth()

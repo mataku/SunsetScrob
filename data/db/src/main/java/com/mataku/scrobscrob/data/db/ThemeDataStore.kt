@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import com.mataku.scrobscrob.core.entity.AppTheme
+import com.mataku.scrobscrob.data.db.entity.AppThemeEntity
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -20,17 +20,17 @@ private val Context.themeDataStore by preferencesDataStore("THEME")
 class ThemeDataStore(
   @ApplicationContext private val context: Context
 ) {
-  fun theme(): Flow<AppTheme> =
+  fun theme(): Flow<AppThemeEntity> =
     context.themeDataStore.data
       .catch {
-        AppTheme.DARK
+        AppThemeEntity.DARK
       }
       .map {
         val rawPrimaryId = it[THEME_KEY]
-        AppTheme.find(rawPrimaryId)
+        AppThemeEntity.find(rawPrimaryId)
       }
 
-  suspend fun setTheme(theme: AppTheme): Flow<Unit> {
+  suspend fun setTheme(theme: AppThemeEntity): Flow<Unit> {
     return flowOf(
       context.themeDataStore.edit {
         it[THEME_KEY] = theme.primaryId

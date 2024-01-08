@@ -6,8 +6,9 @@ import kotlinx.collections.immutable.ImmutableList
 @Immutable
 data class ArtistInfo(
   val name: String,
-  val imageList: ImmutableList<Image>,
-  val topTags: ImmutableList<Tag>,
-  val playCount: String,
-  val url: String
+  val images: ImmutableList<Image>,
+  val tags: ImmutableList<Tag>,
+  val stats: Stats,
+  val url: String,
+  val wiki: Wiki? = null
 )

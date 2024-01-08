@@ -1,9 +1,10 @@
 package com.mataku.scrobscrob.core.entity
 
-import java.util.Date
+import androidx.compose.runtime.Immutable
 
+@Immutable
 data class Wiki(
-  val published: Date,
+  val published: String?,
   val summary: String?,
   val content: String?
 )

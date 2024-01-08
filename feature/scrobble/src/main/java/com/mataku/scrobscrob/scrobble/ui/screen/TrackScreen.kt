@@ -1,5 +1,6 @@
 package com.mataku.scrobscrob.scrobble.ui.screen
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.BackdropScaffold
+import androidx.compose.material.BackdropScaffoldDefaults
 import androidx.compose.material.BackdropValue
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.rememberBackdropScaffoldState
@@ -52,7 +54,6 @@ import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import com.mataku.scrobscrob.ui_common.style.backgroundColor
 import kotlinx.collections.immutable.persistentListOf
-import java.util.Date
 
 @Composable
 fun TrackScreen(
@@ -89,10 +90,15 @@ private fun TrackContent(
   onUrlTap: (String) -> Unit
 ) {
   val screenWidth = LocalConfiguration.current.screenWidthDp
+  val screenHeight = LocalConfiguration.current.screenHeightDp
   val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Revealed)
   BackdropScaffold(
     appBar = {},
-    headerHeight = screenWidth.dp,
+    headerHeight = if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT) {
+      (screenHeight - screenWidth).dp
+    } else {
+      BackdropScaffoldDefaults.HeaderHeight
+    },
     backLayerContent = {
       val imageData = if (artworkUrl == null || artworkUrl.isBlank()) {
         com.mataku.scrobscrob.ui_common.R.drawable.no_image
@@ -105,7 +111,7 @@ private fun TrackContent(
           contentDescription = "artwork image",
           modifier = Modifier
             .fillMaxWidth()
-            .aspectRatio(1F)
+            .aspectRatio(1F),
         )
         SunsetImage(
           imageData = imageData,
@@ -115,7 +121,7 @@ private fun TrackContent(
             .aspectRatio(1F)
             .offset(
               y = (screenWidth / 2).dp
-            )
+            ),
         )
       }
     },
@@ -239,7 +245,7 @@ private fun TrackContentPreview() {
             )
           ),
           wiki = Wiki(
-            published = Date(),
+            published = "01 January 2023",
             content = "\"Clocks\" emerged in <b>conception during the late</b>stages into the production of Coldplay's second album, A Rush of Blood to the Head. The band's vocalist, Chris Martin, came in studio late one night. A riff popped  up in Martin's mind and wrote it on the  piano. Martin presented the riff to the band's guitarist, Jonny Buckland, who then added guitar chords on the basic track.\n\nDuring the writing of \"Clocks\", the band had already made 10 songs for the album. With this, they thought it was too late for the song's inclusion in the albumclude contrast, contradictions and urgency. Chris Martin sings of being in the state of \"helplessness ...",
             summary = "\"Clocks\" emerged in <b>conception during the late stages</b> into the production of Coldplay's second album, A Rush of Blood to the Head. The band's vocalist, Chris Martin, came in studio late one night. A riff popped  up in Martin's mind and wrote it on the  piano. Martin presented the riff to the band's guitarist, Jonny Buckland, who then added guitar chords on the basic track.\n\nDuring the writing of \"Clocks\", the band had already made 10 songs for the album. <a href=\"http://www.last.fm/music/Coldplay/_/Clocks\">Read more on Last.fm</a>.",
           )

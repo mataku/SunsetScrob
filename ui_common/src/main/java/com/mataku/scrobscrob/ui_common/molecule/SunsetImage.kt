@@ -25,7 +25,7 @@ fun SunsetImage(
   if (LocalInspectionMode.current) {
     Image(
       painter = painterResource(id = com.mataku.scrobscrob.ui_common.R.drawable.no_image),
-      contentDescription = "",
+      contentDescription = contentDescription,
       modifier = modifier,
       contentScale = contentScale
     )
@@ -53,10 +53,4 @@ fun SunsetImage(
       )
     }
   )
-//  AsyncImage(
-//    model = imageRequestBuilder.build(),
-//    contentDescription = contentDescription,
-//    modifier = modifier,
-//    contentScale = contentScale
-//  )
 }

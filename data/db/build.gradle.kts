@@ -11,7 +11,6 @@ android {
 }
 
 dependencies {
-  implementation(project(":core"))
   implementation(libs.datastore.preferences)
   implementation(libs.serialization.json)
 }

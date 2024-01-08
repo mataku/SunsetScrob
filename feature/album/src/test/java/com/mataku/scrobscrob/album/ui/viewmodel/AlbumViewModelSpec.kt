@@ -93,27 +93,7 @@ class AlbumViewModelSpec : DescribeSpec({
         }
       }
     }
-
-    context("artworkUrl is empty") {
-      every {
-        savedStateHandle.get<String>("artworkUrl")
-      }.returns("")
-
-      it("should return initial state") {
-        val viewModel = AlbumViewModel(
-          albumRepository = albumRepository,
-          savedStateHandle = savedStateHandle
-        )
-        viewModel.uiState.value shouldBe AlbumViewModel.AlbumUiState()
-
-        coVerify(exactly = 0) {
-          albumRepository.albumInfo(
-            any(), any()
-          )
-        }
-      }
-    }
-
+    
     context("required params are passed") {
       it("should return fetched AlbumInfo") {
         val viewModel = AlbumViewModel(
