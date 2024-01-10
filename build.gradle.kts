@@ -17,6 +17,7 @@ plugins {
   alias(libs.plugins.google.services) apply false
   alias(libs.plugins.roborazzi) apply false
   alias(libs.plugins.licensee) apply false
+  alias(libs.plugins.sqldelight) apply false
 }
 
 allprojects {
