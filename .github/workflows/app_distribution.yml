@@ -22,19 +22,19 @@ jobs:
   deploy-app-to-app-distribution:
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    # permissions:
-    #   id-token: write
-    #   contents: read
+    permissions:
+      id-token: write
+      contents: read
     steps:
     - uses: actions/checkout@v4
       with:
         ref: ${{ github.event.inputs.branch }}
-    # - id: auth
-    #   uses: google-github-actions/auth@v2
-    #   with:
-    #     create_credentials_file: true
-    #     workload_identity_provider: ${{ secrets.WORKFLOW_IDENTITY_PROVIDER }}
-    #     service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT }}
+    - id: auth
+      uses: google-github-actions/auth@v2
+      with:
+        create_credentials_file: true
+        workload_identity_provider: ${{ secrets.WORKFLOW_IDENTITY_PROVIDER }}
+        service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT }}
     - uses: ./.github/actions/setup-gradle
     - uses: ruby/setup-ruby@v1
       with:
@@ -49,9 +49,6 @@ jobs:
         LAST_FM_SHARED_SECRET: ${{ secrets.LAST_FM_SHARED_SECRET }}
         GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON_DEV }}
         FIREBASE_DEV_APP_ID: ${{ secrets.FIREBASE_DEV_APP_ID }}
-        APP_DISTRIBUTION_JSON: ${{ secrets.APP_DISTRIBUTION_JSON }}
       run: |
-        echo -n $APP_DISTRIBUTION_JSON > app/app-distribution.json
-        npm install -g firebase-tools
         bundle exec fastlane android setup_for_ci
         bundle exec fastlane android deploy_to_firebase_app_distribution
