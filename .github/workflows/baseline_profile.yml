@@ -18,14 +18,18 @@ env:
 
 jobs:
   baseline_profile:
-    # ubuntu-latest is enough, but needed for Android Emulator: https://issuetracker.google.com/issues/193118030
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     timeout-minutes: 25
 
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.inputs.branch }}
+      - name: Enable KVM group perms
+        run: |
+            echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+            sudo udevadm control --reload-rules
+            sudo udevadm trigger --name-match=kvm
       - uses: ./.github/actions/setup-gradle
 
       - uses: ruby/setup-ruby@v1
@@ -50,4 +54,4 @@ jobs:
           ./gradlew :benchmark:pixel4Api31BenchmarkAndroidTest -Pandroid.testoptions.manageddevices.emulator.gpu="swiftshader_indirect" -Pandroid.testInstrumentationRunnerArguments.androidx.benchmark.enabledRules=BaselineProfile
       - name: Move baseline profile file
         run: |
-          mv benchmark/build/outputs/managed_device_android_test_additional_output/pixel4Api31/BaselineProfileGenerator_generateBaselineProfile-baseline-prof.txt app/src/main/baseline-prof.txt
+           mv benchmark/build/outputs/managed_device_android_test_additional_output/benchmark/pixel4Api31/BaselineProfileGenerator_generateBaselineProfile-baseline-prof.txt app/src/main/baseline-prof.txt
