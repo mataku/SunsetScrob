@@ -16,8 +16,6 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  FASTLANE_HIDE_CHANGELOG: true
-  FASTLANE_SKIP_UPDATE_CHECK: true
   GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx8g -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -XX:+UseParallelGC -XX:MaxMetaspaceSize=1g"
 
 jobs:

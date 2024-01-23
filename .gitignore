@@ -72,4 +72,5 @@ app/*.json
 mainframer.sh
 fastlane/report.xml
 fastlane/README.md
+!fastlane/.env
 google-services.json
