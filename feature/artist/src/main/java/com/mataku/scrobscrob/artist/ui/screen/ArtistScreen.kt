@@ -15,7 +15,7 @@ import androidx.compose.material.BackdropScaffoldDefaults
 import androidx.compose.material.BackdropValue
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.rememberBackdropScaffoldState
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -119,7 +119,7 @@ private fun ArtistContent(
               vertical = 16.dp
             )
           )
-          Divider()
+          HorizontalDivider()
 
           artistInfo.wiki?.let {
             WikiCell(

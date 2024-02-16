@@ -17,7 +17,7 @@ import androidx.compose.material.BackdropScaffoldDefaults
 import androidx.compose.material.BackdropValue
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.rememberBackdropScaffoldState
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -132,8 +132,7 @@ private fun AlbumContent(
               )
           )
         }
-
-        Divider()
+        HorizontalDivider()
 
         albumInfo?.let { album ->
           Spacer(modifier = Modifier.height(16.dp))
@@ -145,7 +144,7 @@ private fun AlbumContent(
               )
           )
           Spacer(modifier = Modifier.height(16.dp))
-          Divider()
+          HorizontalDivider()
           val wiki = album.wiki
           if (wiki == null) {
             SimpleWiki(
