@@ -51,7 +51,7 @@ dependencies {
 
   implementation(libs.compose.material.icons.extended)
   implementation(libs.androidx.profileinstaller)
-  baselineProfile(project(":baselineprofile"))
+  baselineProfile(project(":benchmark"))
   debugImplementation(libs.showkase)
   implementation(libs.showkase.annotation)
   kspDebug(libs.showkase.processor)
