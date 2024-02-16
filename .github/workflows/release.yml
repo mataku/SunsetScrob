@@ -46,11 +46,11 @@ jobs:
           bundle exec fastlane android setup_for_ci
       - name: Generate benchmark profile
         run: |
-          ./gradlew :benchmark:cleanManagedDevices --unused-only
-          ./gradlew :benchmark:pixel4Api31BenchmarkAndroidTest -Pandroid.testoptions.manageddevices.emulator.gpu="swiftshader_indirect" -Pandroid.testInstrumentationRunnerArguments.androidx.benchmark.enabledRules=BaselineProfile
+          ./gradlew cleanManagedDevices --unused-only
+          ./gradlew app:generateReleaseBaselineProfile -Pandroid.testoptions.manageddevices.emulator.gpu="swiftshader_indirect" -Pandroid.testInstrumentationRunnerArguments.androidx.benchmark.enabledRules=BaselineProfile
       - name: Move baseline profile file
         run: |
-          mv benchmark/build/outputs/managed_device_android_test_additional_output/benchmark/pixel4Api31/BaselineProfileGenerator_generateBaselineProfile-baseline-prof.txt app/src/main/baseline-prof.txt
+          mv app/src/release/generated/baselineProfiles/baseline-prof.txt app/src/main/baseline-prof.txt
 
       - name: Prepare authentication
         run: |

@@ -6,6 +6,7 @@ plugins {
   id("com.google.gms.google-services")
   id("com.google.devtools.ksp")
   id("app.cash.licensee")
+  id("androidx.baselineprofile")
 }
 
 android {
@@ -14,13 +15,6 @@ android {
   }
 
   namespace = "com.mataku.scrobscrob"
-  buildTypes {
-    create("benchmark") {
-      signingConfig = signingConfigs.getByName("debug")
-      matchingFallbacks += listOf("release")
-      isDebuggable = false
-    }
-  }
 }
 
 dependencies {
@@ -56,6 +50,8 @@ dependencies {
   implementation(libs.timber)
 
   implementation(libs.compose.material.icons.extended)
+  implementation(libs.androidx.profileinstaller)
+  baselineProfile(project(":baselineprofile"))
   debugImplementation(libs.showkase)
   implementation(libs.showkase.annotation)
   kspDebug(libs.showkase.processor)
