@@ -15,7 +15,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -247,7 +247,7 @@ private fun AccountContent(
         }
       }
       item {
-        Divider(
+        HorizontalDivider(
           modifier = Modifier.padding(vertical = 8.dp)
         )
         AccountMenuCell(

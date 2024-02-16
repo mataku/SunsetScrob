@@ -16,19 +16,22 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  FASTLANE_HIDE_CHANGELOG: true
-  FASTLANE_SKIP_UPDATE_CHECK: true
   GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx8g -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -XX:+UseParallelGC -XX:MaxMetaspaceSize=1g"
 
 jobs:
   screenshot_test:
-    runs-on: macos-13
+    runs-on: ubuntu-latest
     timeout-minutes: 20
 
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.inputs.branch }}
+      - name: Enable KVM group perms
+        run: |
+            echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+            sudo udevadm control --reload-rules
+            sudo udevadm trigger --name-match=kvm
       - uses: ./.github/actions/setup-gradle
         with:
           use-build-cache: 'false'

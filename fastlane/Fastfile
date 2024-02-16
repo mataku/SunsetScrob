@@ -79,7 +79,6 @@ platform :android do
       android_artifact_type: 'APK',
       android_artifact_path: 'app/build/outputs/apk/debug/app-debug.apk',
       release_notes_file: './release_notes.txt',
-      service_credentials_file: 'app/app-distribution.json',
       groups: 'tester'
     )
   end
