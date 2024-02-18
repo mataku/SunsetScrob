@@ -1,7 +1,7 @@
 <resources>
   <string name="description_scrobble">選択したアプリの曲を Last.fm へ Scrobble します</string>
   <string name="item_theme">テーマ</string>
-  <string name="item_clear_cache">Clear cache</string>
+  <string name="item_clear_cache">画像のキャッシュをクリア</string>
   <string name="item_logout_description">ログアウトする</string>
   <string name="item_privacy_policy">プライバシーポリシー</string>
   <string name="title_theme_selector">テーマ</string>
