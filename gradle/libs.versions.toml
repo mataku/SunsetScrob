@@ -2,7 +2,7 @@
 activity = "1.8.2"
 agp = "8.2.2"
 accompanist = "0.34.0"
-coil = "2.5.0"
+coil = "3.0.0-alpha04"
 compose = "2024.02.00"
 core-sprashscreen = "1.0.1"
 coroutines = "1.8.0"
@@ -43,7 +43,9 @@ accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-
 
 core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "core-sprashscreen" }
 
-coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
+coil-core = { module = "io.coil-kt.coil3:coil", version.ref = "coil" }
+coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
+coil-network-ktor = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coil" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase" }
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 

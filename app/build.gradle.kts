@@ -42,6 +42,7 @@ dependencies {
   implementation(libs.compose.material)
   implementation(libs.compose.material3)
   implementation(libs.compose.navigation)
+  implementation(libs.coil.core)
   implementation(libs.coil.compose)
 
   implementation(libs.accompanist.systemuicontroller)

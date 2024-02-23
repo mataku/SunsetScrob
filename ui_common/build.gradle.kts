@@ -20,7 +20,9 @@ dependencies {
 
   implementation(libs.accompanist.systemuicontroller)
 
+  implementation(libs.coil.core)
   implementation(libs.coil.compose)
+  implementation(libs.coil.network.ktor)
   implementation(libs.compose.material.icons.extended)
 
   implementation(libs.showkase.annotation)
