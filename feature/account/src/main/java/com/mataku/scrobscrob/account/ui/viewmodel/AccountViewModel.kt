@@ -1,6 +1,7 @@
 package com.mataku.scrobscrob.account.ui.viewmodel
 
 import android.app.Application
+import androidx.compose.runtime.Immutable
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.play.core.appupdate.AppUpdateInfo
@@ -126,6 +127,7 @@ class AccountViewModel @Inject constructor(
     }
   }
 
+  @Immutable
   sealed class Event {
     object Logout : Event()
   }
