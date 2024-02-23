@@ -156,7 +156,8 @@ fun AccountScreen(
       },
       appVersion = uiState.appVersion,
       clearCache = viewModel::clearCache,
-      navigateToUiCatalog = viewModel::navigateToUiCatalog
+      navigateToUiCatalog = viewModel::navigateToUiCatalog,
+      imageCacheMB = uiState.imageCacheMB
     )
   }
 
@@ -192,6 +193,9 @@ fun AccountScreen(
 @Composable
 private fun AccountContent(
   theme: AppTheme,
+  appVersion: String,
+  appUpdateInfo: AppUpdateInfo?,
+  imageCacheMB: String?,
   navigateToScrobbleSetting: () -> Unit,
   navigateToThemeSelector: () -> Unit,
   navigateToLogoutConfirmation: () -> Unit,
@@ -200,8 +204,6 @@ private fun AccountContent(
   navigateToPrivacyPolicy: () -> Unit,
   navigateToNotificationSetting: () -> Unit,
   requestAppUpdate: (AppUpdateInfo) -> Unit,
-  appVersion: String,
-  appUpdateInfo: AppUpdateInfo?,
   navigateToUiCatalog: () -> Unit
 ) {
   val context = LocalContext.current
@@ -252,7 +254,11 @@ private fun AccountContent(
         )
         AccountMenuCell(
           title = stringResource(id = AccountMenu.CLEAR_CACHE.titleRes),
-          description = ""
+          description = if (imageCacheMB != null) {
+            "$imageCacheMB MB"
+          } else {
+            ""
+          }
         ) {
           openClearCacheConfirmationDialog.value = true
         }
@@ -396,7 +402,8 @@ private fun AccountContentPreview() {
         appUpdateInfo = null,
         appVersion = "1.0.0",
         clearCache = {},
-        navigateToUiCatalog = {}
+        navigateToUiCatalog = {},
+        imageCacheMB = "0.1"
       )
     }
   }

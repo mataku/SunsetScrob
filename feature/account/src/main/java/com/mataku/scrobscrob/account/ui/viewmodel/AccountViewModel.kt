@@ -12,11 +12,15 @@ import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.data.repository.SessionRepository
 import com.mataku.scrobscrob.data.repository.ThemeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.nio.file.Files
+import java.text.DecimalFormat
 import javax.inject.Inject
 
 @HiltViewModel
@@ -27,6 +31,8 @@ class AccountViewModel @Inject constructor(
   private val appUpdateManager: AppUpdateManager,
   private val application: Application
 ) : AndroidViewModel(application) {
+
+  private val decimalFormat = DecimalFormat("#.##")
 
   var uiState: MutableStateFlow<AccountUiState> = MutableStateFlow(AccountUiState.initialize())
     private set
@@ -59,6 +65,23 @@ class AccountViewModel @Inject constructor(
         appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
           uiState.update {
             it.copy(appUpdateInfo = appUpdateInfo)
+          }
+        }
+
+        withContext(Dispatchers.IO) {
+          val imageCacheDir = application.cacheDir.resolve("sunsetscrob_image")
+          val imageCacheDirMBSize = runCatching {
+            val bytes = Files.size(imageCacheDir.toPath())
+            bytes / (1024.0 * 1024.0)
+          }.getOrNull()
+          if (imageCacheDirMBSize != null) {
+            withContext(Dispatchers.Main) {
+              uiState.update {
+                it.copy(
+                  imageCacheMB = decimalFormat.format(imageCacheDirMBSize)
+                )
+              }
+            }
           }
         }
       }
@@ -103,6 +126,12 @@ class AccountViewModel @Inject constructor(
         if (imageCacheDir.exists()) {
           imageCacheDir.deleteRecursively()
         }
+
+        uiState.update {
+          it.copy(
+            imageCacheMB = "0"
+          )
+        }
       }
     }
   }
@@ -115,20 +144,22 @@ class AccountViewModel @Inject constructor(
     val theme: AppTheme?,
     val event: Event?,
     val appVersion: String,
-    val appUpdateInfo: AppUpdateInfo?
+    val appUpdateInfo: AppUpdateInfo?,
+    val imageCacheMB: String?
   ) {
     companion object {
       fun initialize() = AccountUiState(
         theme = null,
         event = null,
         appVersion = "",
-        appUpdateInfo = null
+        appUpdateInfo = null,
+        imageCacheMB = null
       )
     }
   }
 
   @Immutable
   sealed class Event {
-    object Logout : Event()
+    data object Logout : Event()
   }
 }
