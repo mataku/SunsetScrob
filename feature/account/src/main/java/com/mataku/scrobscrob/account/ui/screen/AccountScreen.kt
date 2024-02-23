@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
@@ -282,17 +281,6 @@ private fun AccountContent(
       HorizontalDivider(
         modifier = Modifier.padding(vertical = 8.dp)
       )
-      AccountMenuCell(
-        title = stringResource(id = AccountMenu.CLEAR_CACHE.titleRes),
-        description = if (imageCacheMB != null) {
-          "$imageCacheMB MB"
-        } else {
-          ""
-        }
-      ) {
-        openClearCacheConfirmationDialog.value = true
-      }
-
       val licenseMenu = AccountMenu.LICENSE
       AccountMenuCell(
         title = stringResource(id = licenseMenu.titleRes),
@@ -318,7 +306,7 @@ private fun AccountContent(
       }
     }
   }
-  
+
   if (openDialog.value) {
     AlertDialog(
       onDismissRequest = {
