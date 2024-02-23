@@ -9,17 +9,15 @@ import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.ktx.requestCompleteUpdate
 import com.mataku.scrobscrob.account.AppInfoProvider
 import com.mataku.scrobscrob.core.entity.AppTheme
+import com.mataku.scrobscrob.data.repository.FileRepository
 import com.mataku.scrobscrob.data.repository.SessionRepository
 import com.mataku.scrobscrob.data.repository.ThemeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import java.nio.file.Files
 import java.text.DecimalFormat
 import javax.inject.Inject
 
@@ -29,6 +27,7 @@ class AccountViewModel @Inject constructor(
   private val sessionRepository: SessionRepository,
   private val appInfoProvider: AppInfoProvider,
   private val appUpdateManager: AppUpdateManager,
+  private val fileRepository: FileRepository,
   private val application: Application
 ) : AndroidViewModel(application) {
 
@@ -68,21 +67,11 @@ class AccountViewModel @Inject constructor(
           }
         }
 
-        withContext(Dispatchers.IO) {
-          val imageCacheDir = application.cacheDir.resolve("sunsetscrob_image")
-          val imageCacheDirMBSize = runCatching {
-            val bytes = Files.size(imageCacheDir.toPath())
-            bytes / (1024.0 * 1024.0)
-          }.getOrNull()
-          if (imageCacheDirMBSize != null) {
-            withContext(Dispatchers.Main) {
-              uiState.update {
-                it.copy(
-                  imageCacheMB = decimalFormat.format(imageCacheDirMBSize)
-                )
-              }
-            }
-          }
+        val imageCacheDirMBSize = fileRepository.cacheImageDirMBSize()
+        uiState.update {
+          it.copy(
+            imageCacheMB = decimalFormat.format(imageCacheDirMBSize)
+          )
         }
       }
     }
@@ -120,18 +109,12 @@ class AccountViewModel @Inject constructor(
   }
 
   fun clearCache() {
-    val imageCacheDir = application.cacheDir.resolve("sunsetscrob_image")
     viewModelScope.launch {
-      kotlin.runCatching {
-        if (imageCacheDir.exists()) {
-          imageCacheDir.deleteRecursively()
-        }
-
-        uiState.update {
-          it.copy(
-            imageCacheMB = "0"
-          )
-        }
+      fileRepository.deleteCacheImageDir()
+      uiState.update {
+        it.copy(
+          imageCacheMB = "0"
+        )
       }
     }
   }
