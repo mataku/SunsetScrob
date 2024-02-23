@@ -11,6 +11,7 @@ import com.google.android.play.core.appupdate.AppUpdateManager
 import com.mataku.scrobscrob.account.AppInfoProvider
 import com.mataku.scrobscrob.account.ui.viewmodel.AccountViewModel
 import com.mataku.scrobscrob.core.entity.AppTheme
+import com.mataku.scrobscrob.data.repository.FileRepository
 import com.mataku.scrobscrob.data.repository.SessionRepository
 import com.mataku.scrobscrob.data.repository.ThemeRepository
 import com.mataku.scrobscrob.test_helper.integration.captureScreenshot
@@ -42,6 +43,8 @@ class AccountScreenTest {
   private val application = mockk<Application>()
   private val appUpdateInfoTask = mockk<Task<AppUpdateInfo>>()
   private val navController = mockk<NavController>()
+  private val fileRepository = mockk<FileRepository>()
+
   private val appVersion = "1.0.0"
 
   @Before
@@ -61,6 +64,10 @@ class AccountScreenTest {
     every {
       appUpdateInfoTask.addOnSuccessListener(any())
     }.returns(appUpdateInfoTask)
+
+    coEvery {
+      fileRepository.cacheImageDirMBSize()
+    }.returns(100.1)
   }
 
   @Test
@@ -70,7 +77,8 @@ class AccountScreenTest {
       sessionRepository,
       appInfoProvider,
       appUpdateManager,
-      application
+      fileRepository,
+      application,
     )
     composeTestRule.captureScreenshot(
       appTheme = AppTheme.DARK,
@@ -91,6 +99,7 @@ class AccountScreenTest {
       sessionRepository,
       appInfoProvider,
       appUpdateManager,
+      fileRepository,
       application
     )
     composeTestRule.captureScreenshot(
@@ -104,5 +113,4 @@ class AccountScreenTest {
       fileName = "account_screen_light.png"
     )
   }
-
 }
