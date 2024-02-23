@@ -45,7 +45,7 @@ core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = 
 
 coil-core = { module = "io.coil-kt.coil3:coil", version.ref = "coil" }
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
-coil-network-ktor = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coil" }
+coil-network = { module = "io.coil-kt.coil3:coil-network-ktor", version.ref = "coil" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase" }
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 
