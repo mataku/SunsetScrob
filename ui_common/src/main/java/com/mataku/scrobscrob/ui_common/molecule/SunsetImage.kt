@@ -13,13 +13,13 @@ import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
+import coil.size.Size
 
 @Composable
 fun SunsetImage(
   modifier: Modifier = Modifier,
   imageData: Any?,
   contentDescription: String?,
-  size: Int? = null,
   contentScale: ContentScale = ContentScale.Fit,
 ) {
   if (LocalInspectionMode.current) {
@@ -34,10 +34,7 @@ fun SunsetImage(
 
   val imageRequestBuilder = ImageRequest.Builder(LocalContext.current)
     .data(imageData)
-
-  if (size != null) {
-    imageRequestBuilder.size(size)
-  }
+    .size(Size.ORIGINAL)
 
   SubcomposeAsyncImage(
     model = imageRequestBuilder.build(),

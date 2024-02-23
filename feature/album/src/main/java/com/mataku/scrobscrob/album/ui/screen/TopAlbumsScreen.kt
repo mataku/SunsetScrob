@@ -144,7 +144,15 @@ fun TopAlbumsContent(
       contentPadding = PaddingValues(horizontal = 8.dp),
       columns = GridCells.Fixed(maxSpanCount),
       content = {
-        items(albums) { album ->
+        items(
+          items = albums,
+          key = { album ->
+            "${album.hashCode()}"
+          },
+          contentType = {
+            "top_albums"
+          }
+        ) { album ->
           TopAlbum(
             album = album,
             onAlbumTap = {

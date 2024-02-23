@@ -69,7 +69,6 @@ internal fun ChartTrackCell(
       imageData = imageData,
       contentDescription = "rank ${rank}: ${chartTrack.name} artwork",
       modifier = Modifier.size(56.dp),
-      size = 1000
     )
 
     Column(

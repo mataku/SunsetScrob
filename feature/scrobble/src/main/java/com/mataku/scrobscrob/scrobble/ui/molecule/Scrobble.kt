@@ -77,7 +77,6 @@ private fun ScrobbleContent(
         imageData = imageData,
         contentDescription = "$trackName artwork image",
         modifier = Modifier.size(56.dp),
-        size = 1000
       )
 
       Column(
