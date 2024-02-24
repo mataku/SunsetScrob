@@ -14,7 +14,7 @@ runs:
         distribution: zulu
         java-version: 17
     - name: Cache gradle wrapper
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       if: ${{ !startsWith(github.head_ref, 'renovate') }}
       with:
         path: |
@@ -23,7 +23,7 @@ runs:
         restore-keys: gradle-wrapper-
 
     - name: Cache gradle dependencies dir
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       if: ${{ !startsWith(github.head_ref, 'renovate') }}
       with:
         path: |
@@ -33,7 +33,7 @@ runs:
         key: gradle-dependencies-${{ hashFiles('gradle/libs.versions.toml') }}
         restore-keys: gradle-dependencies-
     - name: Cache gradle build results
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       if: ${{ inputs.use-build-cache == 'true' }}
       with:
         path: |

@@ -25,6 +25,6 @@ fun ComposeContentTestRule.captureScreenshot(
   actionsBeforeCapturing.invoke()
 
   this.onNode(isRoot()).captureRoboImage(
-    filePath = "screenshot/${fileName}"
+    filePath = "screenshot/${fileName}",
   )
 }

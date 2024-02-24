@@ -64,13 +64,28 @@ class ScrobbleViewModel @Inject constructor(
             isRefreshing = false
           )
         }
-      }.collect {
-        uiState.update { state ->
-          state.copy(
-            isRefreshing = false,
-            recentTracks = it.toImmutableList(),
-            hasNext = it.isNotEmpty()
-          )
+      }.collect { recentTracks ->
+        val currentList = uiState.value.recentTracks
+        if (currentList.isEmpty() || recentTracks.isEmpty()) {
+          uiState.update { state ->
+            state.copy(
+              isRefreshing = false,
+              recentTracks = recentTracks.toImmutableList(),
+              hasNext = recentTracks.isNotEmpty()
+            )
+          }
+        } else {
+          val currentFirst = currentList.first()
+          val recentFirst = recentTracks.first()
+          if (currentFirst.date != recentFirst.date) {
+            uiState.update { state ->
+              state.copy(
+                isRefreshing = false,
+                recentTracks = recentTracks.toImmutableList(),
+                hasNext = recentTracks.isNotEmpty()
+              )
+            }
+          }
         }
         page++
       }
@@ -137,6 +152,7 @@ class ScrobbleViewModel @Inject constructor(
     }
   }
 
+  @Immutable
   sealed class ScrobbleUiEvent {
     data class Error(val throwable: Throwable) : ScrobbleUiEvent()
   }

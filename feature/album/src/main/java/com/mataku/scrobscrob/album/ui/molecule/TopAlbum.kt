@@ -58,7 +58,6 @@ fun TopAlbum(
     SunsetImage(
       imageData = imageData,
       contentDescription = album.title,
-      size = 1000,
       contentScale = ContentScale.FillWidth,
       modifier = Modifier
         .fillMaxWidth()

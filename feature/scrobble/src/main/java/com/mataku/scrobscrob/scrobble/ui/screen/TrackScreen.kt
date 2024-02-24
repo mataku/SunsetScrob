@@ -20,7 +20,7 @@ import androidx.compose.material.BackdropScaffoldDefaults
 import androidx.compose.material.BackdropValue
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.rememberBackdropScaffoldState
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -148,7 +148,7 @@ private fun TrackContent(
                 16.dp
               ),
           )
-          Divider()
+          HorizontalDivider()
         }
 
         trackInfo?.let { track ->
@@ -168,7 +168,7 @@ private fun TrackContent(
               Spacer(modifier = Modifier.height(16.dp))
             }
           }
-          Divider()
+          HorizontalDivider()
           val wiki = track.wiki
           if (wiki == null) {
             SimpleWiki(

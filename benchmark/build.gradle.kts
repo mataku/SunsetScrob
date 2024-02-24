@@ -1,10 +1,13 @@
+import com.android.build.api.dsl.ManagedVirtualDevice
+
 plugins {
   id("com.android.test")
   id("org.jetbrains.kotlin.android")
+  id("androidx.baselineprofile")
 }
 
 android {
-  namespace = "com.example.benchmark"
+  namespace = "com.mataku.scrobscrob.baselineprofile"
   compileSdk = 34
 
   compileOptions {
@@ -17,45 +20,33 @@ android {
   }
 
   defaultConfig {
-    minSdk = 30
+    minSdk = 28
     targetSdk = 34
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
   }
 
-  buildTypes {
-    // This benchmark buildType is used for benchmarking, and should function like your
-    // release build (for example, with minification on). It"s signed with a debug key
-    // for easy local/CI testing.
-    create("benchmark") {
-      isDebuggable = true
-      signingConfig = getByName("debug").signingConfig
-      matchingFallbacks += listOf("release")
-    }
-  }
-
   targetProjectPath = ":app"
-  experimentalProperties["android.experimental.self-instrumenting"] = true
 
-  testOptions {
-    managedDevices {
-      devices.maybeCreate<com.android.build.api.dsl.ManagedVirtualDevice>("pixel4Api31").apply {
-        device = "Pixel 4"
-        apiLevel = 31
-        systemImageSource = "aosp"
-      }
+  testOptions.managedDevices.devices {
+    create<ManagedVirtualDevice>("pixel6Api34") {
+      device = "Pixel 6"
+      apiLevel = 34
+      systemImageSource = "google"
     }
   }
+}
+
+// This is the configuration block for the Baseline Profile plugin.
+// You can specify to run the generators on a managed devices or connected devices.
+baselineProfile {
+  managedDevices += "pixel6Api34"
+  useConnectedDevices = false
 }
 
 dependencies {
   implementation(libs.androidx.test.ext.junit)
+  implementation(libs.androidx.espresso.core)
   implementation(libs.androidx.test.uiautomator)
   implementation(libs.androidx.benchmark.macro.junit4)
-}
-
-androidComponents {
-  beforeVariants(selector().all()) {
-    it.enable = it.buildType == "benchmark"
-  }
 }

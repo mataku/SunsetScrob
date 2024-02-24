@@ -39,6 +39,7 @@ local.properties
 .idea/migrations.xml
 .idea/androidTestResultsUserPreferences.xml
 .idea/deploymentTargetDropDown.xml
+.idea/runConfigurations
 
 *.iml
 .env
@@ -48,6 +49,7 @@ local.properties
 
 # Baseline profile
 app/src/main/baseline-prof.txt
+app/src/*/generated/
 
 # OS-specific files
 .DS_Store
@@ -72,4 +74,5 @@ app/*.json
 mainframer.sh
 fastlane/report.xml
 fastlane/README.md
+!fastlane/.env
 google-services.json

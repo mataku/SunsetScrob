@@ -7,6 +7,10 @@ plugins {
 
 android {
   namespace = "com.mataku.scrobscrob.ui_common"
+
+  buildFeatures {
+    buildConfig = true
+  }
 }
 
 dependencies {
@@ -20,7 +24,9 @@ dependencies {
 
   implementation(libs.accompanist.systemuicontroller)
 
+  implementation(libs.coil.core)
   implementation(libs.coil.compose)
+  implementation(libs.coil.network)
   implementation(libs.compose.material.icons.extended)
 
   implementation(libs.showkase.annotation)

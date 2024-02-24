@@ -63,7 +63,6 @@ fun ChartArtistCell(
       imageData = imageData,
       contentDescription = "rank ${rank}: ${chartArtist.name} artwork",
       modifier = Modifier.size(56.dp),
-      size = 1000
     )
 
 
