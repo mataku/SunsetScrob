@@ -35,5 +35,12 @@
     "org.junit.vintage:junit-vintage-engine"
   ],
   "prConcurrentLimit": 3,
-  "rebaseWhen": "never"
+  "rebaseWhen": "conflicted",
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["minor", "patch"],
+      "automerge": true,
+      "platformAutomerge": true
+    }
+  ]
 }
