@@ -7,7 +7,7 @@ import org.gradle.api.plugins.ExtensionAware
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
 import java.io.File
 
-fun CommonExtension<*, *, *, *, *>.composeConfiguration(
+fun CommonExtension<*, *, *, *, *, *>.composeConfiguration(
   libs: VersionCatalog,
   currentProject: Project
 ) {
