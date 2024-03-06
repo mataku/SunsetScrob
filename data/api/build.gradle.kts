@@ -12,7 +12,7 @@ android {
     buildConfig = true
   }
   defaultConfig {
-    val properties = gradleLocalProperties(rootDir)
+    val properties = gradleLocalProperties(rootDir, providers)
     val apiKey = properties.getProperty("API_KEY")
     val sharedSecret = properties.getProperty("SHARED_SECRET")
     buildConfigField("String", "API_KEY", apiKey)
