@@ -40,6 +40,7 @@ local.properties
 .idea/androidTestResultsUserPreferences.xml
 .idea/deploymentTargetDropDown.xml
 .idea/runConfigurations
+.idea/copilot/
 
 *.iml
 .env
