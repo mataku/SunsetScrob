@@ -4,7 +4,6 @@
   ],
   "ignoreDeps": [
     "androidx.compose.animation:animation",
-    "androidx.compose:compose-bom",
     "androidx.compose.ui:ui-tooling",
     "androidx.compose.ui:ui-test",
     "androidx.compose.ui:ui-test-junit4",
@@ -40,6 +39,14 @@
       "matchUpdateTypes": ["minor", "patch"],
       "automerge": true,
       "platformAutomerge": true
+    },
+    {
+      "groupName": "compose_compiler",
+      "matchPackagePrefixes": [
+        // Specify `kotlin:` explicitly to exclude kotlinx
+        "androidx.compose.compiler",
+        "org.jetbrains.kotlin:"
+      ]
     }
   ]
 }
