@@ -68,8 +68,8 @@ class ApplicationConventionPlugin : Plugin<Project> {
         }
         defaultConfig {
           applicationId = "com.mataku.scrobscrob"
-          versionCode = 181
-          versionName = "1.8.1"
+          versionCode = 182
+          versionName = "1.8.2"
           proguardFiles(
             getDefaultProguardFile("proguard-android.txt"),
             "proguard-rules.pro"
