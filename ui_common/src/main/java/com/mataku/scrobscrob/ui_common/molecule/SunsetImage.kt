@@ -1,11 +1,13 @@
 package com.mataku.scrobscrob.ui_common.molecule
 
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
+import com.bumptech.glide.integration.compose.CrossFade
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 
@@ -30,6 +32,7 @@ fun SunsetImage(
     model = imageData,
     modifier = modifier,
     contentDescription = contentDescription,
-    contentScale = contentScale
+    contentScale = contentScale,
+    transition = CrossFade(animationSpec = tween(300))
   )
 }
