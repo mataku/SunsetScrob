@@ -24,9 +24,7 @@ dependencies {
 
   implementation(libs.accompanist.systemuicontroller)
 
-  implementation(libs.coil.core)
-  implementation(libs.coil.compose)
-  implementation(libs.coil.network)
+  implementation(libs.glide.compose)
   implementation(libs.compose.material.icons.extended)
 
   implementation(libs.showkase.annotation)

@@ -17,7 +17,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import com.mataku.scrobscrob.core.entity.RecentTrack
@@ -29,7 +28,6 @@ import com.mataku.scrobscrob.scrobble.ui.viewmodel.ScrobbleViewModel
 import com.mataku.scrobscrob.ui_common.molecule.LoadingIndicator
 import com.mataku.scrobscrob.ui_common.organism.ContentHeader
 import com.mataku.scrobscrob.ui_common.organism.InfiniteLoadingIndicator
-import com.mataku.scrobscrob.ui_common.recomposeHighlighter
 import kotlinx.collections.immutable.ImmutableList
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -138,7 +136,5 @@ private fun ScrobbleContent(
     },
     modifier = Modifier
       .fillMaxSize()
-      .testTag("scrobble_list")
-      .recomposeHighlighter()
   )
 }

@@ -2,7 +2,6 @@
 activity = "1.8.2"
 agp = "8.3.2"
 accompanist = "0.34.0"
-coil = "3.0.0-alpha06"
 compose = "2024.04.00"
 core-sprashscreen = "1.0.1"
 coroutines = "1.8.0"
@@ -43,9 +42,6 @@ accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-
 
 core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "core-sprashscreen" }
 
-coil-core = { module = "io.coil-kt.coil3:coil", version.ref = "coil" }
-coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
-coil-network = { module = "io.coil-kt.coil3:coil-network-ktor", version.ref = "coil" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase" }
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 
@@ -110,6 +106,8 @@ junit-vintage-engine = { module = "org.junit.vintage:junit-vintage-engine", vers
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version = "5.8.2" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
 androidx-profileinstaller = { group = "androidx.profileinstaller", name = "profileinstaller", version.ref = "profileinstaller" }
+
+glide-compose = { module = "com.github.bumptech.glide:compose", version = "1.0.0-beta01" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
