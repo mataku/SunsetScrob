@@ -1,25 +1,22 @@
 package com.mataku.scrobscrob.ui_common.molecule
 
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
-import coil.compose.SubcomposeAsyncImage
-import coil.request.ImageRequest
+import com.bumptech.glide.integration.compose.CrossFade
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
 
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun SunsetImage(
   modifier: Modifier = Modifier,
   imageData: Any?,
   contentDescription: String?,
-  size: Int? = null,
   contentScale: ContentScale = ContentScale.Fit,
 ) {
   if (LocalInspectionMode.current) {
@@ -31,26 +28,11 @@ fun SunsetImage(
     )
     return
   }
-
-  val imageRequestBuilder = ImageRequest.Builder(LocalContext.current)
-    .data(imageData)
-
-  if (size != null) {
-    imageRequestBuilder.size(size)
-  }
-
-  SubcomposeAsyncImage(
-    model = imageRequestBuilder.build(),
-    contentDescription = contentDescription,
+  GlideImage(
+    model = imageData,
     modifier = modifier,
-    loading = {
-      Box(
-        modifier = Modifier
-          .fillMaxSize()
-          .background(
-            MaterialTheme.colorScheme.background
-          )
-      )
-    }
+    contentDescription = contentDescription,
+    contentScale = contentScale,
+    transition = CrossFade(animationSpec = tween(300))
   )
 }

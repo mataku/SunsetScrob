@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
@@ -16,7 +17,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import com.mataku.scrobscrob.core.entity.RecentTrack
@@ -64,6 +64,13 @@ fun ScrobbleScreen(
       },
       onScrollEnd = viewModel::fetchRecentTracks,
     )
+
+    PullRefreshIndicator(
+      refreshing = uiState.isRefreshing,
+      state = pullRefreshState,
+      modifier = Modifier.align(alignment = Alignment.TopCenter)
+    )
+
   }
 
   if (uiState.isLoading && uiState.recentTracks.isEmpty()) {
@@ -88,7 +95,10 @@ private fun ScrobbleContent(
   LazyColumn(
     state = lazyListState,
     content = {
-      stickyHeader {
+      stickyHeader(
+        key = "header",
+        contentType = "fixed_header"
+      ) {
         ContentHeader(text = stringResource(id = R.string.menu_scrobble))
       }
 
@@ -96,6 +106,9 @@ private fun ScrobbleContent(
         items = recentTracks,
         key = { index, track ->
           "${index}${track.hashCode()}"
+        },
+        contentType = { _, _ ->
+          "scrobble"
         }
       ) { _, track ->
         Scrobble(
@@ -108,7 +121,10 @@ private fun ScrobbleContent(
         )
       }
       if (hasNext && recentTracks.isNotEmpty()) {
-        item {
+        item(
+          key = "footer_loading",
+          contentType = "footer_loading"
+        ) {
           Box(
             Modifier.fillMaxWidth(),
             contentAlignment = Alignment.Center
@@ -120,6 +136,5 @@ private fun ScrobbleContent(
     },
     modifier = Modifier
       .fillMaxSize()
-      .testTag("scrobble_list")
   )
 }

@@ -13,7 +13,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -156,7 +157,8 @@ fun AccountScreen(
       },
       appVersion = uiState.appVersion,
       clearCache = viewModel::clearCache,
-      navigateToUiCatalog = viewModel::navigateToUiCatalog
+      navigateToUiCatalog = viewModel::navigateToUiCatalog,
+      imageCacheMB = uiState.imageCacheMB
     )
   }
 
@@ -192,6 +194,9 @@ fun AccountScreen(
 @Composable
 private fun AccountContent(
   theme: AppTheme,
+  appVersion: String,
+  appUpdateInfo: AppUpdateInfo?,
+  imageCacheMB: String?,
   navigateToScrobbleSetting: () -> Unit,
   navigateToThemeSelector: () -> Unit,
   navigateToLogoutConfirmation: () -> Unit,
@@ -200,8 +205,6 @@ private fun AccountContent(
   navigateToPrivacyPolicy: () -> Unit,
   navigateToNotificationSetting: () -> Unit,
   requestAppUpdate: (AppUpdateInfo) -> Unit,
-  appVersion: String,
-  appUpdateInfo: AppUpdateInfo?,
   navigateToUiCatalog: () -> Unit
 ) {
   val context = LocalContext.current
@@ -211,93 +214,98 @@ private fun AccountContent(
   val openClearCacheConfirmationDialog = remember {
     mutableStateOf(false)
   }
+  Column(modifier = Modifier.fillMaxSize()) {
+    ContentHeader(text = stringResource(id = R.string.menu_account))
 
-  LazyColumn(
-    content = {
-      stickyHeader {
-        ContentHeader(text = stringResource(id = R.string.menu_account))
-      }
-      item {
-        val scrobbleMenu = AccountMenu.SCROBBLE
-        AccountMenuCell(
-          title = stringResource(id = scrobbleMenu.titleRes),
-          description = stringResource(id = scrobbleMenu.descriptionRes)
+    Column(
+      modifier = Modifier
+        .fillMaxWidth()
+        .verticalScroll(rememberScrollState())
+    ) {
+      val scrobbleMenu = AccountMenu.SCROBBLE
+      AccountMenuCell(
+        title = stringResource(id = scrobbleMenu.titleRes),
+        description = stringResource(id = scrobbleMenu.descriptionRes)
+      ) {
+        if (NotificationManagerCompat.getEnabledListenerPackages(context)
+            .contains(context.packageName)
         ) {
-          if (NotificationManagerCompat.getEnabledListenerPackages(context)
-              .contains(context.packageName)
-          ) {
-            navigateToScrobbleSetting.invoke()
-          } else {
-            openDialog.value = true
-          }
-        }
-        val menu = AccountMenu.THEME
-        AccountMenuCell(
-          title = stringResource(id = menu.titleRes),
-          description = theme.displayName
-        ) {
-          navigateToThemeSelector.invoke()
-        }
-        val logoutMenu = AccountMenu.LOGOUT
-        AccountMenuCell(
-          title = stringResource(id = logoutMenu.titleRes),
-          description = stringResource(id = logoutMenu.descriptionRes)
-        ) {
-          navigateToLogoutConfirmation.invoke()
+          navigateToScrobbleSetting.invoke()
+        } else {
+          openDialog.value = true
         }
       }
-      item {
-        HorizontalDivider(
-          modifier = Modifier.padding(vertical = 8.dp)
-        )
-        AccountMenuCell(
-          title = stringResource(id = AccountMenu.CLEAR_CACHE.titleRes),
-          description = ""
-        ) {
-          openClearCacheConfirmationDialog.value = true
-        }
 
-        val licenseMenu = AccountMenu.LICENSE
-        AccountMenuCell(
-          title = stringResource(id = licenseMenu.titleRes),
-          description = ""
-        ) {
-          navigateToLicenseList.invoke()
+      val menu = AccountMenu.THEME
+      AccountMenuCell(
+        title = stringResource(id = menu.titleRes),
+        description = theme.displayName
+      ) {
+        navigateToThemeSelector.invoke()
+      }
+
+      AccountMenuCell(
+        title = stringResource(id = AccountMenu.CLEAR_CACHE.titleRes),
+        description = if (imageCacheMB != null) {
+          "$imageCacheMB MB"
+        } else {
+          ""
         }
-        val privacyPolicyMenu = AccountMenu.PRIVACY_POLICY
+      ) {
+        openClearCacheConfirmationDialog.value = true
+      }
+
+      val appUpdateMenu = AccountMenu.APP_VERSION
+      val updateAvailable =
+        appUpdateInfo?.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE || appUpdateInfo?.installStatus() == InstallStatus.DOWNLOADED
+      AccountMenuCell(
+        title = stringResource(id = appUpdateMenu.titleRes, appVersion),
+        description = if (updateAvailable) {
+          stringResource(id = R.string.label_update_available)
+        } else {
+          "Thank you for using the latest version!"
+        },
+        enabled = updateAvailable
+      ) {
+        requestAppUpdate.invoke(appUpdateInfo!!)
+      }
+
+      val logoutMenu = AccountMenu.LOGOUT
+      AccountMenuCell(
+        title = stringResource(id = logoutMenu.titleRes),
+        description = stringResource(id = logoutMenu.descriptionRes)
+      ) {
+        navigateToLogoutConfirmation.invoke()
+      }
+
+      HorizontalDivider(
+        modifier = Modifier.padding(vertical = 8.dp)
+      )
+      val licenseMenu = AccountMenu.LICENSE
+      AccountMenuCell(
+        title = stringResource(id = licenseMenu.titleRes),
+        description = ""
+      ) {
+        navigateToLicenseList.invoke()
+      }
+      val privacyPolicyMenu = AccountMenu.PRIVACY_POLICY
+      AccountMenuCell(
+        title = stringResource(id = privacyPolicyMenu.titleRes),
+        description = ""
+      ) {
+        navigateToPrivacyPolicy.invoke()
+      }
+
+      if (BuildConfig.DEBUG) {
         AccountMenuCell(
-          title = stringResource(id = privacyPolicyMenu.titleRes),
-          description = ""
+          title = "UI Catalog",
+          description = "",
         ) {
-          navigateToPrivacyPolicy.invoke()
-        }
-        val appUpdateMenu = AccountMenu.APP_VERSION
-        val updateAvailable =
-          appUpdateInfo?.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE || appUpdateInfo?.installStatus() == InstallStatus.DOWNLOADED
-        AccountMenuCell(
-          title = stringResource(id = appUpdateMenu.titleRes, appVersion),
-          description = if (updateAvailable) {
-            stringResource(id = R.string.label_update_available)
-          } else {
-            "Thank you for using the latest version!"
-          },
-          enabled = updateAvailable
-        ) {
-          requestAppUpdate.invoke(appUpdateInfo!!)
-        }
-        if (BuildConfig.DEBUG) {
-          AccountMenuCell(
-            title = "UI Catalog",
-            description = "",
-          ) {
-            navigateToUiCatalog.invoke()
-          }
+          navigateToUiCatalog.invoke()
         }
       }
-    },
-    modifier = Modifier
-      .fillMaxSize()
-  )
+    }
+  }
 
   if (openDialog.value) {
     AlertDialog(
@@ -396,7 +404,8 @@ private fun AccountContentPreview() {
         appUpdateInfo = null,
         appVersion = "1.0.0",
         clearCache = {},
-        navigateToUiCatalog = {}
+        navigateToUiCatalog = {},
+        imageCacheMB = "0.1"
       )
     }
   }

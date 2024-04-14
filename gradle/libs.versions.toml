@@ -1,28 +1,26 @@
 [versions]
 activity = "1.8.2"
-agp = "8.2.2"
+agp = "8.3.2"
 accompanist = "0.34.0"
-coil = "2.5.0"
-compose = "2024.02.00"
+compose = "2024.04.00"
 core-sprashscreen = "1.0.1"
 coroutines = "1.8.0"
-firebase = "32.7.2"
-hilt = "2.50"
-ktor = "2.3.8"
-kotlin = "1.9.22"
-ksp = "1.9.22-1.0.17"
+firebase = "32.8.1"
+hilt = "2.51.1"
+ktor = "2.3.10"
+kotlin = "1.9.23"
+ksp = "1.9.23-1.0.20"
 licensee = "1.8.0"
-compose-compiler-extension = "1.5.9"
+compose-compiler-extension = "1.5.11"
 kotlinx-collections-immutable-jvm = "0.3.7"
 kotlinx-serialization-json = "1.6.3"
-kotest = "5.8.0"
-lifecycle-viewmodel-compose = "2.6.2"
+kotest = "5.8.1"
 material = "1.11.0"
-mockk = "1.13.9"
+mockk = "1.13.10"
 navigation-compose = "2.7.7"
 okhttp = "4.12.0"
 robolectric = "4.11.1"
-roborazzi = "1.9.0"
+roborazzi = "1.12.0"
 showkase = "1.0.2"
 espresso-core = "3.5.1"
 baselineprofile = "1.2.3"
@@ -31,6 +29,7 @@ profileinstaller = "1.3.1"
 [libraries]
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity" }
 compose-bom = { module = "androidx.compose:compose-bom", version.ref = "compose" }
+compose-compiler = { module = "androidx.compose.compiler:compiler", version.ref = "compose-compiler-extension" }
 compose-material = { module = "androidx.compose.material:material" }
 compose-material3 = { module = "androidx.compose.material3:material3" }
 compose-animation = { module = "androidx.compose.animation:animation" }
@@ -43,7 +42,6 @@ accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-
 
 core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "core-sprashscreen" }
 
-coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase" }
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 
@@ -70,7 +68,7 @@ activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activ
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
 
-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version = "1.1.0" }
+hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version = "1.2.0" }
 
 datastore-preferences = { module = "androidx.datastore:datastore-preferences", version = "1.0.0" }
 
@@ -108,6 +106,8 @@ junit-vintage-engine = { module = "org.junit.vintage:junit-vintage-engine", vers
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version = "5.8.2" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
 androidx-profileinstaller = { group = "androidx.profileinstaller", name = "profileinstaller", version.ref = "profileinstaller" }
+
+glide-compose = { module = "com.github.bumptech.glide:compose", version = "1.0.0-beta01" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

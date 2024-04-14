@@ -2,7 +2,7 @@ package ext
 
 import com.android.build.api.dsl.CommonExtension
 
-fun CommonExtension<*, *, *, *, *>.androidSdkConfiguration() {
+fun CommonExtension<*, *, *, *, *, *>.androidSdkConfiguration() {
   compileSdk = 34
   defaultConfig {
     minSdk = 30

@@ -51,6 +51,7 @@ import com.mataku.scrobscrob.data.db.entity.AppThemeEntity
 import com.mataku.scrobscrob.data.db.entity.LicenseArtifactDefinitionEntity
 import com.mataku.scrobscrob.data.db.entity.ScmEntity
 import com.mataku.scrobscrob.data.db.entity.SpdxLicenseEntity
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 
@@ -242,14 +243,14 @@ fun ScmEntity?.toScm(): Scm? {
   return Scm(url = this.url)
 }
 
-fun List<SpdxLicenseEntity>.toSpdxLicenseList(): List<SpdxLicense> {
+fun List<SpdxLicenseEntity>.toSpdxLicenseList(): ImmutableList<SpdxLicense> {
   return this.map {
     SpdxLicense(
       identifier = it.identifier,
       name = it.name,
       url = it.url
     )
-  }
+  }.toImmutableList()
 }
 
 fun List<LicenseArtifactDefinitionEntity>.toLicenseArtifactList(): List<LicenseArtifact> {

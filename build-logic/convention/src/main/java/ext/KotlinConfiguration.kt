@@ -5,7 +5,7 @@ import org.gradle.api.JavaVersion
 import org.gradle.api.plugins.ExtensionAware
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
 
-fun CommonExtension<*, *, *, *, *>.kotlinConfiguration() {
+fun CommonExtension<*, *, *, *, *, *>.kotlinConfiguration() {
   compileOptions {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17

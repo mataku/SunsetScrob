@@ -4,7 +4,6 @@
   ],
   "ignoreDeps": [
     "androidx.compose.animation:animation",
-    "androidx.compose:compose-bom",
     "androidx.compose.ui:ui-tooling",
     "androidx.compose.ui:ui-test",
     "androidx.compose.ui:ui-test-junit4",
@@ -23,17 +22,26 @@
     "com.google.accompanist:accompanist-navigation-animation",
     "com.google.accompanist:accompanist-systemuicontroller",
     "com.google.accompanist:accompanist-swiperefresh",
-    "com.google.devtools.ksp",
     "com.jakewharton.timber:timber",
-    "io.github.takahirom.roborazzi:roborazzi",
-    "org.jetbrains.kotlin:kotlin-gradle-plugin",
-    "org.jetbrains.kotlin:kotlin-serialization",
-    "org.jetbrains.kotlin.plugin.serialization",
-    "org.jetbrains.kotlin.jvm",
     "org.robolectric:robolectric",
     "org.junit.jupiter:junit-jupiter",
     "org.junit.vintage:junit-vintage-engine"
   ],
   "prConcurrentLimit": 3,
-  "rebaseWhen": "never"
+  "rebaseWhen": "conflicted",
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["minor", "patch"],
+      "automerge": true,
+      "platformAutomerge": true
+    },
+    {
+      "groupName": "compose_compiler_kotlin",
+      "matchPackagePrefixes": [
+        "androidx.compose.compiler",
+        "org.jetbrains.kotlin",
+        "com.google.devtools.ksp"
+      ]
+    }
+  ]
 }
