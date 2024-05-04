@@ -1,4 +1,4 @@
-package com.mataku.scrobscrob.chart.ui.molecule
+package com.mataku.scrobscrob.home.ui.molecule
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
@@ -11,14 +11,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.mataku.scrobscrob.chart.ui.ChartType
+import com.mataku.scrobscrob.home.HomeTabType
 import com.mataku.scrobscrob.ui_common.molecule.TabRowText
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 
 @Composable
-internal fun ChartTabRow(
+internal fun HomeTabs(
   selectedChartIndex: Int,
-  onChartTypeTap: (Int, ChartType) -> Unit,
+  onTabTap: (HomeTabType) -> Unit,
   modifier: Modifier = Modifier
 ) {
   TabRow(
@@ -28,12 +28,12 @@ internal fun ChartTabRow(
     divider = {},
     modifier = modifier
   ) {
-    repeat(2) {
-      val chartType = ChartType.findByIndex(it)
+    repeat(3) {
+      val homeTabType = HomeTabType.findByIndex(it)
       Tab(
         selected = selectedChartIndex == it,
         onClick = {
-          onChartTypeTap.invoke(it, chartType)
+          onTabTap.invoke(homeTabType)
         },
         modifier = Modifier
           .wrapContentWidth()
@@ -44,13 +44,13 @@ internal fun ChartTabRow(
       ) {
         TabRowText(
           selected = it == selectedChartIndex,
-          tabName = chartType.tabName,
+          tabName = homeTabType.tabName,
           modifier = Modifier
             .align(
-              alignment = if (it == 0) {
-                Alignment.End
-              } else {
-                Alignment.Start
+              alignment = when (it) {
+                0 -> Alignment.End
+                1 -> Alignment.CenterHorizontally
+                else -> Alignment.Start
               }
             )
         )
@@ -61,12 +61,12 @@ internal fun ChartTabRow(
 
 @Preview(showBackground = true)
 @Composable
-private fun ChartTabRowPreview() {
+private fun HomeTabsPreview() {
   SunsetThemePreview {
     Surface {
-      ChartTabRow(
+      HomeTabs(
         selectedChartIndex = 0,
-        onChartTypeTap = { _, _ -> }
+        onTabTap = {}
       )
     }
   }

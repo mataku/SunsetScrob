@@ -10,4 +10,18 @@ android {
 }
 
 dependencies {
+  implementation(project(":ui_common"))
+  implementation(project(":core"))
+  implementation(project(":data:repository"))
+
+  implementation(libs.compose.ui.tooling)
+  implementation(libs.compose.animation)
+  implementation(libs.compose.material3)
+  implementation(libs.compose.navigation)
+
+  implementation(libs.hilt.navigation.compose)
+
+  implementation(libs.coroutines)
+  implementation(libs.timber)
+  implementation(libs.kotlinx.collection)
 }
