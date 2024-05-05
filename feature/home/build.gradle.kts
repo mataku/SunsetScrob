@@ -13,6 +13,7 @@ dependencies {
   implementation(project(":ui_common"))
   implementation(project(":core"))
   implementation(project(":data:repository"))
+  implementation(project(":feature:scrobble"))
 
   implementation(libs.compose.ui.tooling)
   implementation(libs.compose.animation)

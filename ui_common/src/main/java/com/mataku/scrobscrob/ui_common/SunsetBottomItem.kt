@@ -15,6 +15,12 @@ enum class SunsetBottomNavItem(
   val screenRoute: String,
   val icon: ImageVector?
 ) {
+  HOME(
+    R.drawable.ic_last_fm_logo,
+    "Home",
+    "home",
+    null
+  ),
   SCROBBLE(
     R.drawable.ic_last_fm_logo,
     "Scrobble",
@@ -22,7 +28,7 @@ enum class SunsetBottomNavItem(
     null
   ),
   TOP_ALBUMS(
-   null,
+    null,
     "Album",
     "top_albums",
     Icons.Default.LibraryMusic

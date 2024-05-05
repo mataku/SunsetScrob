@@ -12,29 +12,30 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.navigation.NavController
 import com.mataku.scrobscrob.core.entity.RecentTrack
 import com.mataku.scrobscrob.core.entity.imageUrl
-import com.mataku.scrobscrob.scrobble.R
 import com.mataku.scrobscrob.scrobble.ui.molecule.Scrobble
 import com.mataku.scrobscrob.scrobble.ui.navigation.navigateToTrackDetail
 import com.mataku.scrobscrob.scrobble.ui.viewmodel.ScrobbleViewModel
 import com.mataku.scrobscrob.ui_common.molecule.LoadingIndicator
-import com.mataku.scrobscrob.ui_common.organism.ContentHeader
 import com.mataku.scrobscrob.ui_common.organism.InfiniteLoadingIndicator
 import kotlinx.collections.immutable.ImmutableList
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun ScrobbleScreen(
   viewModel: ScrobbleViewModel,
   navController: NavController,
+  scrollBehavior: TopAppBarScrollBehavior? = null
 ) {
   val uiState by viewModel.uiState.collectAsState()
   val lazyListState = rememberLazyListState()
@@ -63,6 +64,7 @@ fun ScrobbleScreen(
         )
       },
       onScrollEnd = viewModel::fetchRecentTracks,
+      scrollBehavior = scrollBehavior
     )
 
     PullRefreshIndicator(
@@ -83,25 +85,19 @@ fun ScrobbleScreen(
   }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 private fun ScrobbleContent(
   lazyListState: LazyListState,
   recentTracks: ImmutableList<RecentTrack>,
   hasNext: Boolean,
   onScrobbleTap: (RecentTrack) -> Unit,
-  onScrollEnd: () -> Unit
+  onScrollEnd: () -> Unit,
+  scrollBehavior: TopAppBarScrollBehavior? = null
 ) {
   LazyColumn(
     state = lazyListState,
     content = {
-      stickyHeader(
-        key = "header",
-        contentType = "fixed_header"
-      ) {
-        ContentHeader(text = stringResource(id = R.string.menu_scrobble))
-      }
-
       itemsIndexed(
         items = recentTracks,
         key = { index, track ->
@@ -136,5 +132,10 @@ private fun ScrobbleContent(
     },
     modifier = Modifier
       .fillMaxSize()
+      .then(
+        if (scrollBehavior == null) Modifier
+        else Modifier
+          .nestedScroll(scrollBehavior.nestedScrollConnection)
+      )
   )
 }

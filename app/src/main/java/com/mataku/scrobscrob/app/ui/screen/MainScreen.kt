@@ -13,6 +13,7 @@ import com.mataku.scrobscrob.album.ui.navigation.navigateToTopAlbums
 import com.mataku.scrobscrob.app.ui.navigation.NavigationGraph
 import com.mataku.scrobscrob.artist.ui.navigation.navigateToTopArtists
 import com.mataku.scrobscrob.chart.ui.navigation.navigateToChart
+import com.mataku.scrobscrob.home.ui.navigation.navigateToHome
 import com.mataku.scrobscrob.ui_common.SunsetBottomNavItem
 import com.mataku.scrobscrob.ui_common.navigateToScrobble
 import com.mataku.scrobscrob.ui_common.organism.SunsetNavigationBar
@@ -40,7 +41,8 @@ fun MainScreen(username: String?) {
           navigateToTopAlbums = navController::navigateToTopAlbums,
           navigateToTopArtists = navController::navigateToTopArtists,
           navigateToAccount = navController::navigateToAccount,
-          navigateToChart = navController::navigateToChart
+          navigateToChart = navController::navigateToChart,
+          navigateToHome = navController::navigateToHome
         )
       }
     },

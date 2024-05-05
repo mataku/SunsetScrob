@@ -15,7 +15,8 @@ import com.mataku.scrobscrob.album.ui.navigation.albumGraph
 import com.mataku.scrobscrob.artist.ui.navigation.artistGraph
 import com.mataku.scrobscrob.auth.ui.navigation.authGraph
 import com.mataku.scrobscrob.chart.ui.navigation.chartGraph
-import com.mataku.scrobscrob.scrobble.ui.navigation.SCROBBLE_NAVIGATION_ROUTE
+import com.mataku.scrobscrob.home.ui.navigation.HOME_NAVIGATION_ROUTE
+import com.mataku.scrobscrob.home.ui.navigation.homeGraph
 import com.mataku.scrobscrob.scrobble.ui.navigation.scrobbleGraph
 import com.mataku.scrobscrob.ui_common.commonGraph
 
@@ -26,7 +27,7 @@ fun NavigationGraph(
 ) {
   NavHost(
     navController = navController,
-    startDestination = if (isLoggedIn) SCROBBLE_NAVIGATION_ROUTE else "login",
+    startDestination = if (isLoggedIn) HOME_NAVIGATION_ROUTE else "login",
     modifier = Modifier,
     enterTransition = {
       fadeIn(tween(250))
@@ -42,6 +43,7 @@ fun NavigationGraph(
     },
     contentAlignment = Alignment.TopStart // Workaround for default TopStart animation issue
   ) {
+    homeGraph(navController)
     scrobbleGraph(navController)
     albumGraph(navController)
     artistGraph(navController)

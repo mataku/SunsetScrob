@@ -2,6 +2,8 @@ package com.mataku.scrobscrob.home.ui.molecule
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
@@ -24,8 +26,11 @@ internal fun HomeTabs(
   TabRow(
     selectedTabIndex = selectedChartIndex,
     containerColor = Color.Transparent,
+    contentColor = MaterialTheme.colorScheme.background,
     indicator = {},
-    divider = {},
+    divider = {
+      HorizontalDivider()
+    },
     modifier = modifier
   ) {
     repeat(3) {

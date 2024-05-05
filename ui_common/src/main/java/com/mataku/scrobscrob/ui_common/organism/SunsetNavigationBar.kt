@@ -63,7 +63,8 @@ fun SunsetNavigationBar(
   navigateToTopAlbums: () -> Unit,
   navigateToTopArtists: () -> Unit,
   navigateToAccount: () -> Unit,
-  navigateToChart: () -> Unit
+  navigateToChart: () -> Unit,
+  navigateToHome: () -> Unit
 ) {
   val backStackEntry = navController.currentBackStackEntryAsState()
   val route = backStackEntry.value?.destination?.route
@@ -96,6 +97,10 @@ fun SunsetNavigationBar(
         SunsetBottomNavItem.CHART -> {
           navigateToChart.invoke()
         }
+
+        SunsetBottomNavItem.HOME -> {
+          navigateToHome.invoke()
+        }
       }
     }
   )
@@ -112,7 +117,8 @@ fun SunsetNavigationBarPreview() {
         navigateToAccount = {},
         navigateToTopAlbums = {},
         navigateToTopArtists = {},
-        navigateToChart = {}
+        navigateToChart = {},
+        navigateToHome = {}
       )
     }
   }
@@ -129,7 +135,8 @@ fun SunsetNavigationBarLightPreview() {
         navigateToAccount = {},
         navigateToTopAlbums = {},
         navigateToTopArtists = {},
-        navigateToChart = {}
+        navigateToChart = {},
+        navigateToHome = {}
       )
     }
   }
@@ -279,7 +286,7 @@ private fun BottomBarTabs(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
       ) {
-        if (tab == SunsetBottomNavItem.SCROBBLE) {
+        if (tab == SunsetBottomNavItem.SCROBBLE || tab == SunsetBottomNavItem.HOME) {
           Icon(painterResource(id = tab.iconDrawable!!), contentDescription = "tab ${tab.title}")
         } else {
           Icon(imageVector = tab.icon!!, contentDescription = "tab ${tab.title}")
