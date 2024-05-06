@@ -13,7 +13,6 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mataku.scrobscrob.core.entity.AppTheme
 
 @Composable
@@ -21,13 +20,6 @@ fun SunsetTheme(
   theme: AppTheme = AppTheme.DARK,
   content: @Composable () -> Unit,
 ) {
-  val systemUiController = rememberSystemUiController()
-  systemUiController.setSystemBarsColor(
-    theme.backgroundColor()
-  )
-  systemUiController.setNavigationBarColor(
-    theme.colorScheme().primary
-  )
   val rippleTheme = SunsetRippleTheme(theme)
   MaterialTheme(
     colorScheme = theme.colorScheme(),

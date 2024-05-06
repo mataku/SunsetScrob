@@ -24,11 +24,12 @@ import com.mataku.scrobscrob.ui_common.commonGraph
 fun NavigationGraph(
   navController: NavHostController,
   isLoggedIn: Boolean,
+  modifier: Modifier = Modifier
 ) {
   NavHost(
     navController = navController,
     startDestination = if (isLoggedIn) HOME_NAVIGATION_ROUTE else "login",
-    modifier = Modifier,
+    modifier = modifier,
     enterTransition = {
       fadeIn(tween(250))
     },

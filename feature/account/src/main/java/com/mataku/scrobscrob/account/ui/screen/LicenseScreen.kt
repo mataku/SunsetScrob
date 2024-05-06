@@ -21,24 +21,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mataku.scrobscrob.account.ui.viewmodel.LicenseViewModel
 import com.mataku.scrobscrob.core.entity.LicenseArtifact
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.organism.ContentHeader
-import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
-import com.mataku.scrobscrob.ui_common.style.backgroundColor
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun LicenseScreen(
   viewModel: LicenseViewModel = hiltViewModel(),
 ) {
-  val systemUiController = rememberSystemUiController()
-  systemUiController.setSystemBarsColor(
-    color = LocalAppTheme.current.backgroundColor()
-  )
-
   val uiState by viewModel.uiState.collectAsState()
 
   val context = LocalContext.current

@@ -64,7 +64,8 @@ fun SunsetNavigationBar(
   navigateToTopArtists: () -> Unit,
   navigateToAccount: () -> Unit,
   navigateToChart: () -> Unit,
-  navigateToHome: () -> Unit
+  navigateToHome: () -> Unit,
+  modifier: Modifier = Modifier
 ) {
   val backStackEntry = navController.currentBackStackEntryAsState()
   val route = backStackEntry.value?.destination?.route
@@ -102,7 +103,8 @@ fun SunsetNavigationBar(
           navigateToHome.invoke()
         }
       }
-    }
+    },
+    modifier = modifier
   )
 }
 

@@ -21,13 +21,11 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -57,17 +55,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mataku.scrobscrob.auth.R
 import com.mataku.scrobscrob.auth.ui.viewmodel.LoginViewModel
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.navigateToPrivacyPolicy
 import com.mataku.scrobscrob.ui_common.navigateToScrobbleFromAuth
-import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.LocalSnackbarHostState
 import com.mataku.scrobscrob.ui_common.style.SunsetTheme
-import com.mataku.scrobscrob.ui_common.style.backgroundColor
-import com.mataku.scrobscrob.ui_common.style.colorScheme
 import kotlinx.coroutines.launch
 import com.mataku.scrobscrob.ui_common.R as uiCommonR
 
@@ -78,20 +72,11 @@ fun LoginScreen(
 ) {
   val coroutineScope = rememberCoroutineScope()
   val uiState by viewModel.uiState.collectAsState()
-  val currentTheme = LocalAppTheme.current
-  val systemUiController = rememberSystemUiController()
-  systemUiController.setNavigationBarColor(
-    color = currentTheme.backgroundColor()
-  )
-  val navigationBarColor = MaterialTheme.colorScheme.primary
-  val systemBarColor = LocalAppTheme.current.backgroundColor()
   val context = LocalContext.current
   val snackbarHostState = LocalSnackbarHostState.current
   uiState.event?.let {
     when (it) {
       is LoginViewModel.UiEvent.LoginSuccess -> {
-        systemUiController.setSystemBarsColor(color = systemBarColor)
-        systemUiController.setNavigationBarColor(navigationBarColor)
         navController.navigateToScrobbleFromAuth()
       }
 
@@ -112,7 +97,6 @@ fun LoginScreen(
           snackbarHostState.showSnackbar(context.getString(R.string.error_username_required))
         }
       }
-
     }
     viewModel.popEvent()
   }
@@ -147,8 +131,6 @@ private fun LoginContent(
   }
   val focusManager = LocalFocusManager.current
   val autofill = LocalAutofill.current
-  val systemUiController = rememberSystemUiController()
-  val navigationBackgroundColor = LocalAppTheme.current.colorScheme().primary
   val usernameAutofillNode = AutofillNode(autofillTypes = listOf(AutofillType.Username), onFill = {
     onUsernameUpdate.invoke(it)
   })
@@ -302,12 +284,6 @@ private fun LoginContent(
       onPrivacyPolicyTap.invoke()
     }) {
       Text(text = "Privacy policy", style = SunsetTextStyle.button)
-    }
-  }
-
-  DisposableEffect(Unit) {
-    onDispose {
-      systemUiController.setNavigationBarColor(navigationBackgroundColor)
     }
   }
 }

@@ -6,7 +6,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -14,7 +13,6 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mataku.scrobscrob.scrobble.ui.screen.ScrobbleScreen
 import com.mataku.scrobscrob.scrobble.ui.screen.TrackScreen
 
@@ -23,8 +21,6 @@ fun NavGraphBuilder.scrobbleGraph(navController: NavController) {
     composable(
       SCROBBLE_DESTINATION,
     ) {
-      val systemUiController = rememberSystemUiController()
-      systemUiController.setSystemBarsColor(MaterialTheme.colorScheme.background)
       ScrobbleScreen(
         viewModel = hiltViewModel(),
         navController = navController
