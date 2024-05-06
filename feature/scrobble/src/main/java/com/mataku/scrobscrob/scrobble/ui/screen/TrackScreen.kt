@@ -35,7 +35,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mataku.scrobscrob.core.entity.Tag
 import com.mataku.scrobscrob.core.entity.TrackAlbumInfo
 import com.mataku.scrobscrob.core.entity.TrackInfo
@@ -50,9 +49,7 @@ import com.mataku.scrobscrob.ui_common.molecule.TopTags
 import com.mataku.scrobscrob.ui_common.molecule.ValueDescription
 import com.mataku.scrobscrob.ui_common.molecule.WikiCell
 import com.mataku.scrobscrob.ui_common.navigateToWebView
-import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
-import com.mataku.scrobscrob.ui_common.style.backgroundColor
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
@@ -64,13 +61,7 @@ fun TrackScreen(
   navController: NavController
 ) {
   val uiState by trackViewModel.state.collectAsState()
-
-  val systemUiController = rememberSystemUiController()
-  val currentTheme = LocalAppTheme.current
-  systemUiController.setNavigationBarColor(
-    color = currentTheme.backgroundColor()
-  )
-
+  
   TrackContent(
     artworkUrl = artworkUrl,
     trackInfo = uiState.trackInfo,

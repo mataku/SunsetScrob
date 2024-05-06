@@ -1,11 +1,15 @@
 package com.mataku.scrobscrob.app.ui.screen
 
-import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.mataku.scrobscrob.account.ui.navigation.navigateToAccount
@@ -18,8 +22,6 @@ import com.mataku.scrobscrob.ui_common.navigateToScrobble
 import com.mataku.scrobscrob.ui_common.organism.SunsetNavigationBar
 import com.mataku.scrobscrob.ui_common.style.LocalSnackbarHostState
 
-// Suppress warning because of custom transparent background bottom nav
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MainScreen(username: String?) {
   val navController = rememberNavController()
@@ -40,7 +42,9 @@ fun MainScreen(username: String?) {
           navigateToTopAlbums = navController::navigateToTopAlbums,
           navigateToTopArtists = navController::navigateToTopArtists,
           navigateToAccount = navController::navigateToAccount,
-          navigateToChart = navController::navigateToChart
+          navigateToChart = navController::navigateToChart,
+          modifier = Modifier
+            .navigationBarsPadding()
         )
       }
     },
@@ -48,6 +52,17 @@ fun MainScreen(username: String?) {
     NavigationGraph(
       navController,
       isLoggedIn = username != null,
+      modifier = Modifier
+        // ignore bottom padding because of custom bottom nav component
+        .padding(
+          top = it.calculateTopPadding(),
+          start = it.calculateStartPadding(
+            layoutDirection = LayoutDirection.Ltr
+          ),
+          end = it.calculateEndPadding(
+            layoutDirection = LayoutDirection.Ltr
+          )
+        )
     )
   }
 }
