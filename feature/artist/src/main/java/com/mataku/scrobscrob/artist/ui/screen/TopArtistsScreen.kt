@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,6 +15,7 @@ import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -26,17 +26,14 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.mataku.scrobscrob.artist.R
 import com.mataku.scrobscrob.artist.ui.molecule.TopArtist
 import com.mataku.scrobscrob.artist.ui.viewmodel.TopArtistsViewModel
 import com.mataku.scrobscrob.core.entity.TopArtistInfo
 import com.mataku.scrobscrob.ui_common.molecule.FilteringFloatingButton
 import com.mataku.scrobscrob.ui_common.molecule.LoadingIndicator
-import com.mataku.scrobscrob.ui_common.organism.ContentHeader
 import com.mataku.scrobscrob.ui_common.organism.FilteringBottomSheet
 import com.mataku.scrobscrob.ui_common.organism.InfiniteLoadingIndicator
 import kotlinx.collections.immutable.ImmutableList
@@ -47,7 +44,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun TopArtistsScreen(
   viewModel: TopArtistsViewModel,
-  onArtistTap: (TopArtistInfo) -> Unit
+  onArtistTap: (TopArtistInfo) -> Unit,
+  topAppBarScrollBehavior: TopAppBarScrollBehavior
 ) {
   val uiState by viewModel.uiState.collectAsState()
 
@@ -89,7 +87,8 @@ fun TopArtistsScreen(
         4
       } else {
         2
-      }
+      },
+      topAppBarScrollBehavior = topAppBarScrollBehavior
     )
     if (showBottomSheet) {
       ModalBottomSheet(
@@ -125,51 +124,47 @@ fun TopArtistsScreen(
   }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TopArtistsContent(
   artists: ImmutableList<TopArtistInfo>,
   hasNext: Boolean,
   maxSpanCount: Int,
   onArtistTap: (TopArtistInfo) -> Unit,
-  onScrollEnd: () -> Unit
+  onScrollEnd: () -> Unit,
+  topAppBarScrollBehavior: TopAppBarScrollBehavior
 ) {
-  Column(
-    modifier = Modifier
-      .fillMaxSize()
-  ) {
-    ContentHeader(text = stringResource(id = R.string.menu_top_artists))
+  LazyVerticalGrid(
+    contentPadding = PaddingValues(horizontal = 8.dp),
+    columns = GridCells.Fixed(maxSpanCount),
+    content = {
+      itemsIndexed(
+        items = artists,
+        key = { index, artist ->
+          "${index}${artist.hashCode()}"
+        }
+      ) { _, artist ->
+        TopArtist(
+          artist = artist,
+          onArtistTap = {
+            onArtistTap.invoke(artist)
+          },
+          modifier = Modifier
+            .fillMaxWidth()
+        )
+      }
 
-    LazyVerticalGrid(
-      contentPadding = PaddingValues(horizontal = 8.dp),
-      columns = GridCells.Fixed(maxSpanCount),
-      content = {
-        itemsIndexed(
-          items = artists,
-          key = { index, artist ->
-            "${index}${artist.hashCode()}"
-          }
-        ) { _, artist ->
-          TopArtist(
-            artist = artist,
-            onArtistTap = {
-              onArtistTap.invoke(artist)
-            },
+      if (hasNext && artists.isNotEmpty()) {
+        item(span = { GridItemSpan(2) }) {
+          InfiniteLoadingIndicator(
+            onScrollEnd = onScrollEnd,
             modifier = Modifier
-              .fillMaxWidth()
           )
         }
-
-        if (hasNext && artists.isNotEmpty()) {
-          item(span = { GridItemSpan(2) }) {
-            InfiniteLoadingIndicator(
-              onScrollEnd = onScrollEnd,
-              modifier = Modifier
-            )
-          }
-        }
-      },
-      modifier = Modifier
-        .testTag("artists_list")
-    )
-  }
+      }
+    },
+    modifier = Modifier
+      .fillMaxSize()
+      .nestedScroll(topAppBarScrollBehavior.nestedScrollConnection)
+  )
 }

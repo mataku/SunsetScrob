@@ -4,7 +4,10 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.mataku.scrobscrob.album.ui.navigation.albumGraph
+import com.mataku.scrobscrob.artist.ui.navigation.artistGraph
 import com.mataku.scrobscrob.home.ui.HomeScreen
+import com.mataku.scrobscrob.scrobble.ui.navigation.scrobbleGraph
 
 fun NavGraphBuilder.homeGraph(navController: NavController) {
   navigation(route = HOME_NAVIGATION_ROUTE, startDestination = HOME_DESTINATION) {
@@ -15,6 +18,10 @@ fun NavGraphBuilder.homeGraph(navController: NavController) {
         navController = navController
       )
     }
+
+    albumGraph(navController)
+    artistGraph(navController)
+    scrobbleGraph(navController)
   }
 }
 

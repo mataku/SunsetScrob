@@ -20,11 +20,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.navigation.NavController
 import com.mataku.scrobscrob.core.entity.RecentTrack
-import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.scrobble.ui.molecule.Scrobble
-import com.mataku.scrobscrob.scrobble.ui.navigation.navigateToTrackDetail
 import com.mataku.scrobscrob.scrobble.ui.viewmodel.ScrobbleViewModel
 import com.mataku.scrobscrob.ui_common.molecule.LoadingIndicator
 import com.mataku.scrobscrob.ui_common.organism.InfiniteLoadingIndicator
@@ -34,8 +31,8 @@ import kotlinx.collections.immutable.ImmutableList
 @Composable
 fun ScrobbleScreen(
   viewModel: ScrobbleViewModel,
-  navController: NavController,
-  scrollBehavior: TopAppBarScrollBehavior? = null
+  topAppBarScrollBehavior: TopAppBarScrollBehavior,
+  navigateToTrackDetail: (RecentTrack) -> Unit
 ) {
   val uiState by viewModel.uiState.collectAsState()
   val lazyListState = rememberLazyListState()
@@ -56,15 +53,9 @@ fun ScrobbleScreen(
       lazyListState = lazyListState,
       recentTracks = uiState.recentTracks,
       hasNext = uiState.hasNext,
-      onScrobbleTap = { track ->
-        navController.navigateToTrackDetail(
-          trackName = track.name,
-          artistName = track.artistName,
-          imageUrl = track.images.imageUrl() ?: "",
-        )
-      },
+      onScrobbleTap = navigateToTrackDetail,
       onScrollEnd = viewModel::fetchRecentTracks,
-      scrollBehavior = scrollBehavior
+      scrollBehavior = topAppBarScrollBehavior
     )
 
     PullRefreshIndicator(
@@ -93,7 +84,7 @@ private fun ScrobbleContent(
   hasNext: Boolean,
   onScrobbleTap: (RecentTrack) -> Unit,
   onScrollEnd: () -> Unit,
-  scrollBehavior: TopAppBarScrollBehavior? = null
+  scrollBehavior: TopAppBarScrollBehavior
 ) {
   LazyColumn(
     state = lazyListState,
@@ -132,10 +123,6 @@ private fun ScrobbleContent(
     },
     modifier = Modifier
       .fillMaxSize()
-      .then(
-        if (scrollBehavior == null) Modifier
-        else Modifier
-          .nestedScroll(scrollBehavior.nestedScrollConnection)
-      )
+      .nestedScroll(scrollBehavior.nestedScrollConnection)
   )
 }

@@ -14,6 +14,9 @@ dependencies {
   implementation(project(":core"))
   implementation(project(":data:repository"))
   implementation(project(":feature:scrobble"))
+  implementation(project(":feature:album"))
+  implementation(project(":feature:artist"))
+
 
   implementation(libs.compose.ui.tooling)
   implementation(libs.compose.animation)

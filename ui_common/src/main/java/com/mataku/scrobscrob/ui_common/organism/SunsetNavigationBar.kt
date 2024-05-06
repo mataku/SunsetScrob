@@ -59,9 +59,6 @@ import com.mataku.scrobscrob.ui_common.style.backgroundColor
 @Composable
 fun SunsetNavigationBar(
   navController: NavHostController,
-  navigateToScrobble: () -> Unit,
-  navigateToTopAlbums: () -> Unit,
-  navigateToTopArtists: () -> Unit,
   navigateToAccount: () -> Unit,
   navigateToChart: () -> Unit,
   navigateToHome: () -> Unit,
@@ -70,29 +67,17 @@ fun SunsetNavigationBar(
   val backStackEntry = navController.currentBackStackEntryAsState()
   val route = backStackEntry.value?.destination?.route
   val selectedItem =
-    SunsetBottomNavItem.entries.find { it.screenRoute == route } ?: SunsetBottomNavItem.SCROBBLE
+    SunsetBottomNavItem.entries.find { it.screenRoute == route } ?: SunsetBottomNavItem.HOME
 
   SunsetBottomNavigation(
-    tabs = SunsetBottomNavItem.entries.filter { it != SunsetBottomNavItem.CHART },
+    tabs = SunsetBottomNavItem.entries,
     selectedItem = selectedItem,
     onTabSelected = { item ->
       if (item == selectedItem) return@SunsetBottomNavigation
 
       when (item) {
-        SunsetBottomNavItem.SCROBBLE -> {
-          navigateToScrobble.invoke()
-        }
-
         SunsetBottomNavItem.ACCOUNT -> {
           navigateToAccount.invoke()
-        }
-
-        SunsetBottomNavItem.TOP_ARTISTS -> {
-          navigateToTopArtists.invoke()
-        }
-
-        SunsetBottomNavItem.TOP_ALBUMS -> {
-          navigateToTopAlbums.invoke()
         }
 
         SunsetBottomNavItem.CHART -> {
@@ -115,10 +100,7 @@ fun SunsetNavigationBarPreview() {
     Surface {
       SunsetNavigationBar(
         navController = NavHostController(LocalContext.current),
-        navigateToScrobble = {},
         navigateToAccount = {},
-        navigateToTopAlbums = {},
-        navigateToTopArtists = {},
         navigateToChart = {},
         navigateToHome = {}
       )
@@ -133,10 +115,7 @@ fun SunsetNavigationBarLightPreview() {
     Surface {
       SunsetNavigationBar(
         navController = NavHostController(LocalContext.current),
-        navigateToScrobble = {},
         navigateToAccount = {},
-        navigateToTopAlbums = {},
-        navigateToTopArtists = {},
         navigateToChart = {},
         navigateToHome = {}
       )
@@ -288,7 +267,7 @@ private fun BottomBarTabs(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
       ) {
-        if (tab == SunsetBottomNavItem.SCROBBLE || tab == SunsetBottomNavItem.HOME) {
+        if (tab == SunsetBottomNavItem.HOME) {
           Icon(painterResource(id = tab.iconDrawable!!), contentDescription = "tab ${tab.title}")
         } else {
           Icon(imageVector = tab.icon!!, contentDescription = "tab ${tab.title}")

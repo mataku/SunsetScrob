@@ -16,11 +16,11 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
   private val themeRepository: ThemeRepository,
-  private val usernameRepository: UsernameRepository
+  private val usernameRepository: UsernameRepository,
 ) : ViewModel() {
 
-  private var _state: MutableStateFlow<Pair<AppTheme, String?>?> = MutableStateFlow(null)
-  val state: StateFlow<Pair<AppTheme, String?>?> = _state.asStateFlow()
+  private var _state: MutableStateFlow<MainUiState?> = MutableStateFlow(null)
+  val state: StateFlow<MainUiState?> = _state.asStateFlow()
 
   init {
     viewModelScope.launch {
@@ -28,11 +28,22 @@ class MainViewModel @Inject constructor(
 
       themeRepository.currentTheme()
         .catch {
-          _state.value = Pair(AppTheme.DARK, username)
+          _state.value = MainUiState(
+            theme = AppTheme.DARK,
+            username = username
+          )
         }
         .collect {
-          _state.value = Pair(it, username)
+          _state.value = MainUiState(
+            theme = it,
+            username = username
+          )
         }
     }
   }
+
+  data class MainUiState(
+    val theme: AppTheme,
+    val username: String?,
+  )
 }
