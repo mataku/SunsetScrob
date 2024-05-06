@@ -125,7 +125,7 @@ private fun ScrobbleContent(
 
 @Composable
 @Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)
-fun ScrobblePreview() {
+private fun ScrobblePreview() {
   SunsetThemePreview {
     Surface {
       ScrobbleContent(

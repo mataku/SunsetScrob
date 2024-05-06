@@ -30,8 +30,8 @@ class MainActivity : ComponentActivity() {
 
     lifecycleScope.launch {
       viewModel.state.collect {
-        it?.let { statePair ->
-          val theme = statePair.first
+        it?.let { uiState ->
+          val theme = uiState.theme
           enableEdgeToEdge(
             statusBarStyle = if (theme.isLight) {
               SystemBarStyle.light(
@@ -46,7 +46,9 @@ class MainActivity : ComponentActivity() {
           )
           setContent {
             SunsetTheme(theme = theme) {
-              MainScreen(username = statePair.second)
+              MainScreen(
+                username = uiState.username,
+              )
             }
           }
         }

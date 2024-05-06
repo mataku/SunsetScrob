@@ -21,7 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class TopAlbumsViewModel @Inject constructor(
   private val topAlbumsRepository: AlbumRepository,
-  usernameRepository: UsernameRepository
+  usernameRepository: UsernameRepository,
 ) : ViewModel() {
 
   var uiState: MutableStateFlow<TopAlbumsUiState> = MutableStateFlow(TopAlbumsUiState.initialized())
