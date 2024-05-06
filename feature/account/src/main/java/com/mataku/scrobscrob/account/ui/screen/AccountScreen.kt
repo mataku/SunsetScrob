@@ -34,7 +34,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.app.NotificationManagerCompat
 import androidx.navigation.NavController
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.google.android.play.core.appupdate.AppUpdateInfo
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.appupdate.AppUpdateOptions
@@ -57,10 +56,8 @@ import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.navigateToLogin
 import com.mataku.scrobscrob.ui_common.navigateToPrivacyPolicy
 import com.mataku.scrobscrob.ui_common.organism.ContentHeader
-import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.LocalSnackbarHostState
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
-import com.mataku.scrobscrob.ui_common.style.backgroundColor
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -70,11 +67,6 @@ fun AccountScreen(
   navController: NavController,
   showPermissionHelp: () -> Unit
 ) {
-  val systemUiController = rememberSystemUiController()
-  val theme = LocalAppTheme.current
-  systemUiController.setSystemBarsColor(
-    theme.backgroundColor()
-  )
   val openDialog = remember {
     mutableStateOf(false)
   }

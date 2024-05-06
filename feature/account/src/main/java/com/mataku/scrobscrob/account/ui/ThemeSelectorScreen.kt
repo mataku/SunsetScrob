@@ -18,21 +18,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mataku.scrobscrob.account.R
 import com.mataku.scrobscrob.account.ui.viewmodel.ThemeSelectorViewModel
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.organism.ContentHeader
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
-import com.mataku.scrobscrob.ui_common.style.backgroundColor
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -41,27 +37,14 @@ fun ThemeSelectorScreen(
   navController: NavController
 ) {
   val uiState by viewModel.uiState.collectAsState()
-  val systemUiController = rememberSystemUiController()
   val currentTheme = LocalAppTheme.current
-  val initialState = remember {
-    mutableStateOf(true)
-  }
-
-  if (initialState.value) {
-    systemUiController.setSystemBarsColor(
-      currentTheme.backgroundColor()
-    )
-    initialState.value = false
-  }
 
   // Because there were cases where values flowed in unintentionally, control
   // TODO
   uiState.event?.let {
     when (it) {
       is ThemeSelectorViewModel.UiEvent.ThemeChanged -> {
-        systemUiController.setSystemBarsColor(
-          it.theme.backgroundColor()
-        )
+
       }
     }
     viewModel.popEvent()
@@ -88,9 +71,7 @@ fun ThemeSelectorScreen(
         .fillMaxSize()
     )
   }
-  val navigationBarColor = MaterialTheme.colorScheme.primary
   BackHandler() {
-    systemUiController.setNavigationBarColor(navigationBarColor)
     navController.popBackStack()
   }
 }

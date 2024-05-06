@@ -48,13 +48,7 @@ fun AlbumScreen(
   onAlbumLoadMoreTap: (String) -> Unit
 ) {
   val uiState by viewModel.uiState.collectAsState()
-
-//  val systemUiController = rememberSystemUiController()
-//  val currentTheme = LocalAppTheme.current
-//  systemUiController.setNavigationBarColor(
-//    color = currentTheme.backgroundColor()
-//  )
-
+  
   AlbumContent(
     artworkUrl = uiState.preloadArtworkUrl,
     albumName = uiState.preloadAlbumName,
