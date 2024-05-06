@@ -1,8 +1,8 @@
 package com.mataku.scrobscrob.app.ui.screen
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -22,8 +22,6 @@ import com.mataku.scrobscrob.ui_common.navigateToScrobble
 import com.mataku.scrobscrob.ui_common.organism.SunsetNavigationBar
 import com.mataku.scrobscrob.ui_common.style.LocalSnackbarHostState
 
-// Suppress warning because of custom transparent background bottom nav
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MainScreen(username: String?) {
   val navController = rememberNavController()
@@ -44,7 +42,9 @@ fun MainScreen(username: String?) {
           navigateToTopAlbums = navController::navigateToTopAlbums,
           navigateToTopArtists = navController::navigateToTopArtists,
           navigateToAccount = navController::navigateToAccount,
-          navigateToChart = navController::navigateToChart
+          navigateToChart = navController::navigateToChart,
+          modifier = Modifier
+            .navigationBarsPadding()
         )
       }
     },
