@@ -1,5 +1,7 @@
 package com.mataku.scrobscrob.scrobble.ui.screen
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
@@ -19,6 +21,7 @@ import org.junit.runner.RunWith
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
+@OptIn(ExperimentalMaterial3Api::class)
 @RunWith(AndroidJUnit4::class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 @Config(
@@ -76,7 +79,8 @@ class ScrobbleScreenTest {
       content = {
         ScrobbleScreen(
           viewModel = viewModel,
-          navController = mockk()
+          navigateToTrackDetail = {},
+          topAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
         )
       },
       fileName = "scrobble_screen.png"
@@ -91,7 +95,8 @@ class ScrobbleScreenTest {
       content = {
         ScrobbleScreen(
           viewModel = viewModel,
-          navController = mockk()
+          navigateToTrackDetail = {},
+          topAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
         )
       },
       fileName = "scrobble_screen_light.png"

@@ -5,6 +5,8 @@ import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -19,6 +21,7 @@ import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -28,6 +31,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import com.mataku.scrobscrob.artist.ui.molecule.TopArtist
 import com.mataku.scrobscrob.artist.ui.viewmodel.TopArtistsViewModel
@@ -58,6 +62,13 @@ fun TopArtistsScreen(
   val orientation = remember {
     configuration.orientation
   }
+  val density = LocalDensity.current
+
+  val topAppBarHeightPixel by remember {
+    derivedStateOf {
+      topAppBarScrollBehavior.state.heightOffset
+    }
+  }
   BackHandler(bottomSheetState.isVisible) {
     coroutineScope.launch {
       bottomSheetState.hide()
@@ -73,7 +84,9 @@ fun TopArtistsScreen(
         },
         modifier = Modifier
           .padding(
-            bottom = 80.dp
+            bottom = 152.dp + with(density) {
+              topAppBarHeightPixel.toDp()
+            }
           )
       )
     }
@@ -88,14 +101,18 @@ fun TopArtistsScreen(
       } else {
         2
       },
-      topAppBarScrollBehavior = topAppBarScrollBehavior
+      modifier = Modifier
+        .fillMaxSize()
+        .nestedScroll(topAppBarScrollBehavior.nestedScrollConnection)
     )
     if (showBottomSheet) {
       ModalBottomSheet(
         onDismissRequest = {
           showBottomSheet = false
         },
-        sheetState = bottomSheetState
+        sheetState = bottomSheetState,
+        modifier = Modifier,
+        windowInsets = WindowInsets.displayCutout
       ) {
         FilteringBottomSheet(
           selectedTimeRangeFiltering = uiState.selectedTimeRangeFiltering,
@@ -124,7 +141,6 @@ fun TopArtistsScreen(
   }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TopArtistsContent(
   artists: ImmutableList<TopArtistInfo>,
@@ -132,7 +148,7 @@ private fun TopArtistsContent(
   maxSpanCount: Int,
   onArtistTap: (TopArtistInfo) -> Unit,
   onScrollEnd: () -> Unit,
-  topAppBarScrollBehavior: TopAppBarScrollBehavior
+  modifier: Modifier = Modifier
 ) {
   LazyVerticalGrid(
     contentPadding = PaddingValues(horizontal = 8.dp),
@@ -163,8 +179,6 @@ private fun TopArtistsContent(
         }
       }
     },
-    modifier = Modifier
-      .fillMaxSize()
-      .nestedScroll(topAppBarScrollBehavior.nestedScrollConnection)
+    modifier = modifier
   )
 }
