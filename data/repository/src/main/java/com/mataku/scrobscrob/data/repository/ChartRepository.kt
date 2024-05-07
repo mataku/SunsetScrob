@@ -23,7 +23,7 @@ interface ChartRepository {
 
   fun topTracks(page: Int): Flow<ChartTopTracks>
 
-  fun topTags(page: Int): Flow<List<Tag>>
+  fun topTags(page: Int): Flow<ImmutableList<Tag>>
 }
 
 @Singleton

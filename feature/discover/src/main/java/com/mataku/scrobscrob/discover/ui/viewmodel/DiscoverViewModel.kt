@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mataku.scrobscrob.core.entity.ChartArtist
 import com.mataku.scrobscrob.core.entity.ChartTrack
+import com.mataku.scrobscrob.core.entity.Tag
 import com.mataku.scrobscrob.data.repository.ChartRepository
-import com.mataku.scrobscrob.discover.ui.ChartType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -64,12 +64,26 @@ class DiscoverViewModel @Inject constructor(
         }
       }
       .launchIn(viewModelScope)
+
+    chartRepository.topTags(requestPage)
+      .catch {
+
+      }
+      .onEach {
+        uiState.update { state ->
+          state.copy(
+            topTags = it.toImmutableList()
+          )
+        }
+      }
+      .launchIn(viewModelScope)
   }
-  
+
   @Immutable
   data class DiscoverUiState(
     val isLoading: Boolean = false,
     val topArtists: ImmutableList<ChartArtist> = persistentListOf(),
     val topTracks: ImmutableList<ChartTrack> = persistentListOf(),
+    val topTags: ImmutableList<Tag> = persistentListOf()
   )
 }

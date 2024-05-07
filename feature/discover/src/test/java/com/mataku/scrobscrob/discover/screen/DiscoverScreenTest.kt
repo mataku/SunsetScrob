@@ -10,12 +10,14 @@ import com.mataku.scrobscrob.core.entity.ChartTopTracks
 import com.mataku.scrobscrob.core.entity.ChartTrack
 import com.mataku.scrobscrob.core.entity.ChartTrackArtist
 import com.mataku.scrobscrob.core.entity.PagingAttr
+import com.mataku.scrobscrob.core.entity.Tag
 import com.mataku.scrobscrob.data.repository.ChartRepository
 import com.mataku.scrobscrob.discover.ui.screen.DiscoverScreen
 import com.mataku.scrobscrob.discover.ui.viewmodel.DiscoverViewModel
 import com.mataku.scrobscrob.test_helper.integration.captureScreenshot
 import io.mockk.every
 import io.mockk.mockk
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.flowOf
 import org.junit.Before
 import org.junit.Rule
@@ -91,6 +93,31 @@ class DiscoverScreenTest {
             total = "1",
             perPage = "1"
           )
+        )
+      )
+    )
+
+    every {
+      chartRepository.topTags(1)
+    }.returns(
+      flowOf(
+        persistentListOf(
+          Tag(
+            name = "tag name",
+            url = ""
+          ),
+          Tag(
+            name = "tag name2",
+            url = ""
+          ),
+          Tag(
+            name = "tag name3",
+            url = ""
+          ),
+          Tag(
+            name = "tag name4",
+            url = ""
+          ),
         )
       )
     )

@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mataku.scrobscrob.discover.ui.molecule.ChartArtistList
+import com.mataku.scrobscrob.discover.ui.molecule.ChartTagList
 import com.mataku.scrobscrob.discover.ui.molecule.ChartTrackList
 import com.mataku.scrobscrob.discover.ui.viewmodel.DiscoverViewModel
 import com.mataku.scrobscrob.ui_common.navigateToWebView
@@ -56,6 +57,14 @@ fun DiscoverScreen(
             navController.navigateToWebView(it.url)
           }
         )
+      }
+    }
+
+    if (uiState.topTags.isNotEmpty()) {
+      item(
+        key = "chart_top_tags"
+      ) {
+        ChartTagList(tagList = uiState.topTags)
       }
     }
   }
