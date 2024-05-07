@@ -1,35 +1,31 @@
 package com.mataku.scrobscrob.scrobble.ui.screen
 
-import android.content.res.Configuration
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.BackdropScaffold
-import androidx.compose.material.BackdropScaffoldDefaults
-import androidx.compose.material.BackdropValue
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.rememberBackdropScaffoldState
+import androidx.compose.material3.BottomSheetScaffold
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberBottomSheetScaffoldState
+import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -61,7 +57,7 @@ fun TrackScreen(
   navController: NavController
 ) {
   val uiState by trackViewModel.state.collectAsState()
-  
+
   TrackContent(
     artworkUrl = artworkUrl,
     trackInfo = uiState.trackInfo,
@@ -71,7 +67,7 @@ fun TrackScreen(
   )
 }
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TrackContent(
   artworkUrl: String?,
@@ -81,16 +77,24 @@ private fun TrackContent(
   onUrlTap: (String) -> Unit
 ) {
   val screenWidth = LocalConfiguration.current.screenWidthDp
-  val screenHeight = LocalConfiguration.current.screenHeightDp
-  val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Revealed)
-  BackdropScaffold(
-    appBar = {},
-    headerHeight = if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT) {
-      (screenHeight - screenWidth).dp
-    } else {
-      BackdropScaffoldDefaults.HeaderHeight
+  val scaffoldState = rememberBottomSheetScaffoldState(
+    bottomSheetState = rememberStandardBottomSheetState(
+      initialValue = SheetValue.Expanded
+    )
+  )
+  BottomSheetScaffold(
+    scaffoldState = scaffoldState,
+    sheetContent = {
+      TrackDetailContent(
+        trackInfo = trackInfo,
+        trackName = trackName,
+        artistName = artistName,
+        onUrlTap = onUrlTap,
+        modifier = Modifier
+          .defaultMinSize(minHeight = screenWidth.dp)
+      )
     },
-    backLayerContent = {
+    content = {
       val imageData = if (artworkUrl == null || artworkUrl.isBlank()) {
         com.mataku.scrobscrob.ui_common.R.drawable.no_image
       } else {
@@ -103,101 +107,100 @@ private fun TrackContent(
           modifier = Modifier
             .fillMaxWidth()
             .aspectRatio(1F),
+          contentScale = ContentScale.FillWidth
         )
         SunsetImage(
           imageData = imageData,
           contentDescription = "artwork image",
           modifier = Modifier
             .fillMaxWidth()
-            .aspectRatio(1F)
-            .offset(
-              y = (screenWidth / 2).dp
-            ),
+            .aspectRatio(1F),
+          contentScale = ContentScale.FillWidth
         )
       }
-    },
-    frontLayerContent = {
-      Column(
+    }
+  )
+}
+
+@Composable
+private fun TrackDetailContent(
+  trackInfo: TrackInfo?,
+  trackName: String,
+  artistName: String,
+  onUrlTap: (String) -> Unit,
+  modifier: Modifier = Modifier
+) {
+  Column(
+    modifier = modifier
+      .fillMaxWidth()
+      .verticalScroll(rememberScrollState())
+  ) {
+    if (trackInfo == null) {
+      TrackDetail2(
+        trackName = trackName,
+        artistName = artistName,
         modifier = Modifier
-          .fillMaxWidth()
-          .verticalScroll(rememberScrollState())
-      ) {
-        if (trackInfo == null) {
-          TrackDetail2(
-            trackName = trackName,
-            artistName = artistName,
+          .padding(
+            16.dp
+          ),
+      )
+    } else {
+      TrackDetail(
+        trackInfo = trackInfo,
+        modifier = Modifier
+          .padding(
+            16.dp
+          ),
+      )
+      HorizontalDivider()
+    }
+
+    trackInfo?.let { track ->
+      track.album?.let { album ->
+        Spacer(modifier = Modifier.height(16.dp))
+        TrackAlbum(album = album)
+        if (track.topTags.isNotEmpty()) {
+          TopTags(
+            tagList = track.topTags,
             modifier = Modifier
+              .fillMaxWidth()
               .padding(
-                16.dp
-              ),
+                vertical = 16.dp
+              )
           )
         } else {
-          TrackDetail(
-            trackInfo = trackInfo,
-            modifier = Modifier
-              .padding(
-                16.dp
-              ),
-          )
-          HorizontalDivider()
+          Spacer(modifier = Modifier.height(16.dp))
         }
-
-        trackInfo?.let { track ->
-          track.album?.let { album ->
-            Spacer(modifier = Modifier.height(16.dp))
-            TrackAlbum(album = album)
-            if (track.topTags.isNotEmpty()) {
-              TopTags(
-                tagList = track.topTags,
-                modifier = Modifier
-                  .fillMaxWidth()
-                  .padding(
-                    vertical = 16.dp
-                  )
-              )
-            } else {
-              Spacer(modifier = Modifier.height(16.dp))
-            }
-          }
-          HorizontalDivider()
-          val wiki = track.wiki
-          if (wiki == null) {
-            SimpleWiki(
-              name = trackName,
-              url = track.url,
-              onUrlTap = onUrlTap,
-              modifier = Modifier
-                .padding(
-                  start = 16.dp,
-                  end = 16.dp,
-                  top = 16.dp,
-                  bottom = 24.dp
-                )
-            )
-          } else {
-            WikiCell(
-              wiki = wiki,
-              name = trackName,
-              modifier = Modifier
-                .padding(
-                  16.dp
-                ),
-              onUrlTap = onUrlTap
-            )
-          }
-        }
-        Spacer(modifier = Modifier.height(32.dp))
       }
-    },
-    modifier = Modifier
-      .fillMaxSize()
-      .background(
-        color = Color.White
-      ),
-    scaffoldState = scaffoldState,
-    frontLayerBackgroundColor = MaterialTheme.colorScheme.background,
-    frontLayerScrimColor = Color.Transparent
-  )
+      HorizontalDivider()
+      val wiki = track.wiki
+      if (wiki == null) {
+        SimpleWiki(
+          name = trackName,
+          url = track.url,
+          onUrlTap = onUrlTap,
+          modifier = Modifier
+            .padding(
+              start = 16.dp,
+              end = 16.dp,
+              top = 16.dp,
+              bottom = 24.dp
+            )
+        )
+      } else {
+        WikiCell(
+          wiki = wiki,
+          name = trackName,
+          modifier = Modifier
+            .padding(
+              16.dp
+            ),
+          onUrlTap = onUrlTap
+        )
+      }
+    }
+    Spacer(modifier = Modifier.height(32.dp))
+  }
 }
 
 @Composable
@@ -318,7 +321,7 @@ private fun TrackDetail(
         overflow = TextOverflow.Ellipsis
       )
 
-      Spacer(modifier = Modifier.height(8.dp))
+      Spacer(modifier = Modifier.height(4.dp))
 
       Text(
         text = trackInfo.artist.name,

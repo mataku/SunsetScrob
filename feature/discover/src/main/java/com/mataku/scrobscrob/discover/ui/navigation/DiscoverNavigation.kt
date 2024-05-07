@@ -19,7 +19,7 @@ fun NavGraphBuilder.discoverGraph(navController: NavController) {
   }
 }
 
-fun NavController.navigateToChart() {
+fun NavController.navigateToDiscover() {
   navigate(DISCOVER_NAVIGATION_ROUTE) {
     popUpTo(graph.findStartDestination().id) {
       saveState = true

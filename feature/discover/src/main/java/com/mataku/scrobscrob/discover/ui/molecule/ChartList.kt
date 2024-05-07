@@ -13,6 +13,5 @@ internal fun ChartList(
   Column(
     modifier = Modifier.fillMaxWidth()
   ) {
-
   }
 }
