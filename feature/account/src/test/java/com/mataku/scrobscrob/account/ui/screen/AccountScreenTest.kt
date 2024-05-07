@@ -2,6 +2,7 @@ package com.mataku.scrobscrob.account.ui.screen
 
 import android.app.Application
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.NavController
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
@@ -49,6 +50,7 @@ class AccountScreenTest {
   private val navController = mockk<NavController>()
   private val fileRepository = mockk<FileRepository>()
   private val userRepository = mockk<UserRepository>()
+  private val savedStateHandle = mockk<SavedStateHandle>()
 
   private val appVersion = "1.0.0"
 
@@ -94,6 +96,10 @@ class AccountScreenTest {
         )
       )
     )
+
+    every {
+      savedStateHandle.get<String>("username")
+    }.returns("nicole")
   }
 
   @Test
@@ -105,7 +111,8 @@ class AccountScreenTest {
       appUpdateManager,
       fileRepository,
       application,
-      userRepository
+      userRepository,
+      savedStateHandle
     )
     composeTestRule.captureScreenshot(
       appTheme = AppTheme.DARK,
@@ -128,7 +135,8 @@ class AccountScreenTest {
       appUpdateManager,
       fileRepository,
       application,
-      userRepository
+      userRepository,
+      savedStateHandle
     )
     composeTestRule.captureScreenshot(
       appTheme = AppTheme.LIGHT,

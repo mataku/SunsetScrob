@@ -1,8 +1,6 @@
 package com.mataku.scrobscrob.discover.screen
 
 import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
 import com.mataku.scrobscrob.core.entity.AppTheme
@@ -99,7 +97,7 @@ class DiscoverScreenTest {
   }
 
   @Test
-  fun layout_artist() {
+  fun layout() {
     val viewModel = DiscoverViewModel(chartRepository)
     composeTestRule.captureScreenshot(
       appTheme = AppTheme.DARK,
@@ -109,12 +107,12 @@ class DiscoverScreenTest {
           navController = mockk()
         )
       },
-      fileName = "chart_screen_artist.png"
+      fileName = "discover_screen.png"
     )
   }
 
   @Test
-  fun layout_artist_light() {
+  fun layout_light() {
     val viewModel = DiscoverViewModel(chartRepository)
     composeTestRule.captureScreenshot(
       appTheme = AppTheme.LIGHT,
@@ -124,43 +122,7 @@ class DiscoverScreenTest {
           navController = mockk()
         )
       },
-      fileName = "chart_screen_artist_light.png"
-    )
-  }
-
-  @Test
-  fun layout_track() {
-    val viewModel = DiscoverViewModel(chartRepository)
-    composeTestRule.captureScreenshot(
-      appTheme = AppTheme.DARK,
-      content = {
-        DiscoverScreen(
-          viewModel = viewModel,
-          navController = mockk()
-        )
-      },
-      actionsBeforeCapturing = {
-        composeTestRule.onNodeWithText("Track").performClick()
-      },
-      fileName = "chart_screen_track.png"
-    )
-  }
-
-  @Test
-  fun layout_track_light() {
-    val viewModel = DiscoverViewModel(chartRepository)
-    composeTestRule.captureScreenshot(
-      appTheme = AppTheme.LIGHT,
-      content = {
-        DiscoverScreen(
-          viewModel = viewModel,
-          navController = mockk()
-        )
-      },
-      actionsBeforeCapturing = {
-        composeTestRule.onNodeWithText("Track").performClick()
-      },
-      fileName = "chart_screen_track_light.png"
+      fileName = "discover_screen_light.png"
     )
   }
 }
