@@ -60,7 +60,7 @@ import com.mataku.scrobscrob.ui_common.style.backgroundColor
 fun SunsetNavigationBar(
   navController: NavHostController,
   navigateToAccount: () -> Unit,
-  navigateToChart: () -> Unit,
+  navigateToDiscover: () -> Unit,
   navigateToHome: () -> Unit,
   modifier: Modifier = Modifier
 ) {
@@ -80,8 +80,8 @@ fun SunsetNavigationBar(
           navigateToAccount.invoke()
         }
 
-        SunsetBottomNavItem.CHART -> {
-          navigateToChart.invoke()
+        SunsetBottomNavItem.DISCOVER -> {
+          navigateToDiscover.invoke()
         }
 
         SunsetBottomNavItem.HOME -> {
@@ -101,7 +101,7 @@ fun SunsetNavigationBarPreview() {
       SunsetNavigationBar(
         navController = NavHostController(LocalContext.current),
         navigateToAccount = {},
-        navigateToChart = {},
+        navigateToDiscover = {},
         navigateToHome = {}
       )
     }
@@ -116,7 +116,7 @@ fun SunsetNavigationBarLightPreview() {
       SunsetNavigationBar(
         navController = NavHostController(LocalContext.current),
         navigateToAccount = {},
-        navigateToChart = {},
+        navigateToDiscover = {},
         navigateToHome = {}
       )
     }

@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package com.mataku.scrobscrob.ui_common.style
 
 import androidx.compose.material.ripple.LocalRippleTheme
@@ -57,6 +55,7 @@ val LocalSnackbarHostState = staticCompositionLocalOf {
   SnackbarHostState()
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 val LocalTopAppBarState = staticCompositionLocalOf<TopAppBarScrollBehavior> {
   throw IllegalStateException("TopAppBarScrollBehavior is not provided")
 }

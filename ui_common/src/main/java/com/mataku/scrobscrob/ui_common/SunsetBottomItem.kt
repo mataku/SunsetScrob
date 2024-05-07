@@ -19,10 +19,10 @@ enum class SunsetBottomNavItem(
     "home",
     null
   ),
-  CHART(
+  DISCOVER(
     null,
-    "Chart",
-    "chart",
+    "Discover",
+    "discover",
     Icons.Default.Public
   ),
   ACCOUNT(
