@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
-internal fun ChartList(
+internal fun ChartTagList(
   title: String,
   chartRow: @Composable () -> Unit
 ) {

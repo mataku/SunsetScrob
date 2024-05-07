@@ -33,26 +33,30 @@ fun DiscoverScreen(
       ContentHeader(text = "Discover")
     }
 
-    item(
-      key = "chart_track_list"
-    ) {
-      ChartTrackList(
-        chartTrackList = uiState.topTracks,
-        onChartTrackTap = {
-          navController.navigateToWebView(it.url)
-        }
-      )
+    if (uiState.topTracks.isNotEmpty()) {
+      item(
+        key = "chart_track_list"
+      ) {
+        ChartTrackList(
+          chartTrackList = uiState.topTracks,
+          onChartTrackTap = {
+            navController.navigateToWebView(it.url)
+          }
+        )
+      }
     }
 
-    item(
-      key = "chart_artist_list"
-    ) {
-      ChartArtistList(
-        chartArtistList = uiState.topArtists,
-        onChartArtistTap = {
-          navController.navigateToWebView(it.url)
-        }
-      )
+    if (uiState.topArtists.isNotEmpty()) {
+      item(
+        key = "chart_artist_list"
+      ) {
+        ChartArtistList(
+          chartArtistList = uiState.topArtists,
+          onChartArtistTap = {
+            navController.navigateToWebView(it.url)
+          }
+        )
+      }
     }
   }
 }

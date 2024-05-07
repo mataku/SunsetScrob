@@ -32,7 +32,9 @@ import com.mataku.scrobscrob.data.api.endpoint.TrackInfoApiResponse
 import com.mataku.scrobscrob.data.api.model.AlbumInfoBody
 import com.mataku.scrobscrob.data.api.model.AlbumInfoTrackBody
 import com.mataku.scrobscrob.data.api.model.ArtistInfoApiResponse
+import com.mataku.scrobscrob.data.api.model.ChartTagBody
 import com.mataku.scrobscrob.data.api.model.ChartTopArtistsResponse
+import com.mataku.scrobscrob.data.api.model.ChartTopTagsResponse
 import com.mataku.scrobscrob.data.api.model.ChartTopTracksResponse
 import com.mataku.scrobscrob.data.api.model.ImageBody
 import com.mataku.scrobscrob.data.api.model.MultipleTag
@@ -351,5 +353,19 @@ fun UserInfoApiResponse.toUserInfo(): UserInfo {
     imageList = body.imageList?.toImageList()?.toImmutableList() ?: persistentListOf<Image>(),
     url = body.url
   )
+}
+
+fun List<ChartTagBody>.toChartTagList(): ImmutableList<Tag> {
+  return this.map {
+    Tag(
+      name = it.name,
+      url = it.url
+    )
+  }.toImmutableList()
+}
+
+fun ChartTopTagsResponse.toChartTopTags(): ImmutableList<Tag> {
+  val body = this.chartTopTagsBody
+  return body.tagList.toChartTagList()
 }
 
