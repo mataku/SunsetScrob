@@ -20,16 +20,19 @@ import com.mataku.scrobscrob.ui_common.PRIVACY_POLICY_DESTINATION
 
 fun NavGraphBuilder.accountGraph(navController: NavController, username: String) {
   val usernameArgs = "username"
-  navigation(route = ACCOUNT_NAVIGATION_ROUTE, startDestination = ACCOUNT_DESTINATION) {
+  navigation(
+    route = ACCOUNT_NAVIGATION_ROUTE,
+    startDestination = "${ACCOUNT_DESTINATION}?username={username}",
+  ) {
     composable(
-      ACCOUNT_DESTINATION,
+      "${ACCOUNT_DESTINATION}?username={username}",
       arguments = listOf(
         navArgument(usernameArgs) {
           type = NavType.StringType
+          defaultValue = username
         }
       )
     ) {
-      it.arguments ?: return@composable
       val context = LocalContext.current
       AccountScreen(
         viewModel = hiltViewModel(),

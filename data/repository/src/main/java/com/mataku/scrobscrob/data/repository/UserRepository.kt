@@ -1,9 +1,12 @@
 package com.mataku.scrobscrob.data.repository
 
+import com.mataku.scrobscrob.core.entity.Image
 import com.mataku.scrobscrob.core.entity.UserInfo
+import com.mataku.scrobscrob.data.api.BuildConfig
 import com.mataku.scrobscrob.data.api.LastFmService
 import com.mataku.scrobscrob.data.api.endpoint.UserInfoEndpoint
 import com.mataku.scrobscrob.data.repository.mapper.toUserInfo
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -23,7 +26,24 @@ class UserRepositoryImpl @Inject constructor(
         "user" to userName
       )
     )
-    val userInfo = lastFmService.request(endpoint).toUserInfo()
+    val userInfo = if (BuildConfig.DEBUG) {
+      UserInfo(
+        name = "matakucom",
+        playCount = "102654",
+        artistCount = "728",
+        trackCount = "2296",
+        albumCount = "1753",
+        imageList = persistentListOf(
+          Image(
+            size = "extralarge",
+            url = "https://lastfm.freetls.fastly.net/i/u/300x300/3605caa7a395e19202c55d55be23cbff.png"
+          )
+        ),
+        url = "https://www.last.fm/user/matakucom"
+      )
+    } else {
+      lastFmService.request(endpoint).toUserInfo()
+    }
     emit(userInfo)
   }
 }

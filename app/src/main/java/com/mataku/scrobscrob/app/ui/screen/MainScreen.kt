@@ -44,7 +44,8 @@ fun MainScreen(
       },
       topBar = {},
       bottomBar = {
-        if (SunsetBottomNavItem.entries.map { it.screenRoute }.contains(currentRoute)) {
+        if (SunsetBottomNavItem.entries.map { it.screenRoute }
+            .contains(currentRoute?.split("?")?.get(0))) {
           SunsetNavigationBar(
             navController = navController,
             navigateToAccount = navController::navigateToAccount,

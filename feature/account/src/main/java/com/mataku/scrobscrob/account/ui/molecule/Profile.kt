@@ -60,7 +60,7 @@ internal fun Profile(
         style = SunsetTextStyle.title
       )
 
-      Spacer(modifier = Modifier.height(8.dp))
+      Spacer(modifier = Modifier.height(16.dp))
 
       UserListeningCount(
         playCount = userInfo.playCount,

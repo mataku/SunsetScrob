@@ -64,13 +64,17 @@ class AccountViewModel @Inject constructor(
               )
             }
           }
+      }
 
-        if (username.isNotEmpty()) {
+      if (username.isNotEmpty()) {
+        launch {
           userRepository.getInfo(
             userName = username
           )
-            .catch { }
+            .catch {
+            }
             .collect { userInfo ->
+
               uiState.update { state ->
                 state.copy(
                   userInfo = userInfo

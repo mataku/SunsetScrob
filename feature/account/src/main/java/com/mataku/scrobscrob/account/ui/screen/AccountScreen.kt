@@ -218,7 +218,16 @@ private fun AccountContent(
         .verticalScroll(rememberScrollState())
     ) {
       if (userInfo != null) {
-        Profile(userInfo = userInfo)
+        Profile(
+          userInfo = userInfo,
+          modifier = Modifier
+            .padding(
+              horizontal = 16.dp
+            )
+        )
+        HorizontalDivider(
+          modifier = Modifier.padding(vertical = 8.dp),
+        )
       }
 
       val scrobbleMenu = AccountMenu.SCROBBLE

@@ -67,7 +67,8 @@ fun SunsetNavigationBar(
   val backStackEntry = navController.currentBackStackEntryAsState()
   val route = backStackEntry.value?.destination?.route
   val selectedItem =
-    SunsetBottomNavItem.entries.find { it.screenRoute == route } ?: SunsetBottomNavItem.HOME
+    SunsetBottomNavItem.entries.find { it.screenRoute == route?.split("?")?.get(0) }
+      ?: SunsetBottomNavItem.HOME
 
   SunsetBottomNavigation(
     tabs = SunsetBottomNavItem.entries,
