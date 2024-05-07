@@ -11,13 +11,17 @@ import com.google.android.play.core.appupdate.AppUpdateManager
 import com.mataku.scrobscrob.account.AppInfoProvider
 import com.mataku.scrobscrob.account.ui.viewmodel.AccountViewModel
 import com.mataku.scrobscrob.core.entity.AppTheme
+import com.mataku.scrobscrob.core.entity.Image
+import com.mataku.scrobscrob.core.entity.UserInfo
 import com.mataku.scrobscrob.data.repository.FileRepository
 import com.mataku.scrobscrob.data.repository.SessionRepository
 import com.mataku.scrobscrob.data.repository.ThemeRepository
+import com.mataku.scrobscrob.data.repository.UserRepository
 import com.mataku.scrobscrob.test_helper.integration.captureScreenshot
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.flowOf
 import org.junit.Before
 import org.junit.Rule
@@ -44,6 +48,7 @@ class AccountScreenTest {
   private val appUpdateInfoTask = mockk<Task<AppUpdateInfo>>()
   private val navController = mockk<NavController>()
   private val fileRepository = mockk<FileRepository>()
+  private val userRepository = mockk<UserRepository>()
 
   private val appVersion = "1.0.0"
 
@@ -68,6 +73,27 @@ class AccountScreenTest {
     coEvery {
       fileRepository.cacheImageDirMBSize()
     }.returns(100.1)
+
+    coEvery {
+      userRepository.getInfo(any())
+    }.returns(
+      flowOf(
+        UserInfo(
+          name = "nicole",
+          playCount = "102030",
+          artistCount = "800",
+          trackCount = "1000",
+          albumCount = "200",
+          imageList = persistentListOf(
+            Image(
+              size = "small",
+              url = "https://www.example.com/image.jpg"
+            )
+          ),
+          url = "https://www.example.com"
+        )
+      )
+    )
   }
 
   @Test
@@ -79,6 +105,7 @@ class AccountScreenTest {
       appUpdateManager,
       fileRepository,
       application,
+      userRepository
     )
     composeTestRule.captureScreenshot(
       appTheme = AppTheme.DARK,
@@ -100,7 +127,8 @@ class AccountScreenTest {
       appInfoProvider,
       appUpdateManager,
       fileRepository,
-      application
+      application,
+      userRepository
     )
     composeTestRule.captureScreenshot(
       appTheme = AppTheme.LIGHT,

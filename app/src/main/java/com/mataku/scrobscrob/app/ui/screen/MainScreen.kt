@@ -17,7 +17,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.mataku.scrobscrob.account.ui.navigation.navigateToAccount
 import com.mataku.scrobscrob.app.ui.navigation.NavigationGraph
-import com.mataku.scrobscrob.discover.ui.navigation.navigateToChart
+import com.mataku.scrobscrob.discover.ui.navigation.navigateToDiscover
 import com.mataku.scrobscrob.home.ui.navigation.navigateToHome
 import com.mataku.scrobscrob.ui_common.SunsetBottomNavItem
 import com.mataku.scrobscrob.ui_common.organism.SunsetNavigationBar
@@ -48,7 +48,7 @@ fun MainScreen(
           SunsetNavigationBar(
             navController = navController,
             navigateToAccount = navController::navigateToAccount,
-            navigateToChart = navController::navigateToChart,
+            navigateToDiscover = navController::navigateToDiscover,
             navigateToHome = navController::navigateToHome,
             modifier = Modifier
               .navigationBarsPadding()
@@ -58,7 +58,7 @@ fun MainScreen(
     ) {
       NavigationGraph(
         navController,
-        isLoggedIn = username != null,
+        username = username,
         modifier = Modifier
           // ignore bottom padding because of custom bottom nav component
           .padding(

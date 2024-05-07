@@ -21,9 +21,10 @@ import com.mataku.scrobscrob.ui_common.commonGraph
 @Composable
 fun NavigationGraph(
   navController: NavHostController,
-  isLoggedIn: Boolean,
+  username: String?,
   modifier: Modifier = Modifier
 ) {
+  val isLoggedIn = username != null
   NavHost(
     navController = navController,
     startDestination = if (isLoggedIn) HOME_NAVIGATION_ROUTE else "login",
@@ -44,7 +45,7 @@ fun NavigationGraph(
   ) {
     homeGraph(navController)
     artistGraph(navController)
-    accountGraph(navController)
+    accountGraph(navController, username ?: "")
     discoverGraph(navController)
     authGraph(navController)
     commonGraph()

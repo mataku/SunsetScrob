@@ -5,7 +5,6 @@ import android.content.Intent
 import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -46,11 +45,13 @@ import com.google.android.play.core.ktx.requestCompleteUpdate
 import com.mataku.scrobscrob.account.AccountMenu
 import com.mataku.scrobscrob.account.BuildConfig
 import com.mataku.scrobscrob.account.R
+import com.mataku.scrobscrob.account.ui.molecule.Profile
 import com.mataku.scrobscrob.account.ui.navigation.navigateToLicense
 import com.mataku.scrobscrob.account.ui.navigation.navigateToScrobbleSetting
 import com.mataku.scrobscrob.account.ui.navigation.navigateToThemeSelector
 import com.mataku.scrobscrob.account.ui.viewmodel.AccountViewModel
 import com.mataku.scrobscrob.core.entity.AppTheme
+import com.mataku.scrobscrob.core.entity.UserInfo
 import com.mataku.scrobscrob.ui_common.SunsetAlertDialog
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.navigateToLogin
@@ -58,6 +59,7 @@ import com.mataku.scrobscrob.ui_common.navigateToPrivacyPolicy
 import com.mataku.scrobscrob.ui_common.organism.ContentHeader
 import com.mataku.scrobscrob.ui_common.style.LocalSnackbarHostState
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -150,7 +152,8 @@ fun AccountScreen(
       appVersion = uiState.appVersion,
       clearCache = viewModel::clearCache,
       navigateToUiCatalog = viewModel::navigateToUiCatalog,
-      imageCacheMB = uiState.imageCacheMB
+      imageCacheMB = uiState.imageCacheMB,
+      userInfo = uiState.userInfo
     )
   }
 
@@ -182,13 +185,13 @@ fun AccountScreen(
   }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun AccountContent(
   theme: AppTheme,
   appVersion: String,
   appUpdateInfo: AppUpdateInfo?,
   imageCacheMB: String?,
+  userInfo: UserInfo?,
   navigateToScrobbleSetting: () -> Unit,
   navigateToThemeSelector: () -> Unit,
   navigateToLogoutConfirmation: () -> Unit,
@@ -214,6 +217,10 @@ private fun AccountContent(
         .fillMaxWidth()
         .verticalScroll(rememberScrollState())
     ) {
+      if (userInfo != null) {
+        Profile(userInfo = userInfo)
+      }
+
       val scrobbleMenu = AccountMenu.SCROBBLE
       AccountMenuCell(
         title = stringResource(id = scrobbleMenu.titleRes),
@@ -397,7 +404,16 @@ private fun AccountContentPreview() {
         appVersion = "1.0.0",
         clearCache = {},
         navigateToUiCatalog = {},
-        imageCacheMB = "0.1"
+        imageCacheMB = "0.1",
+        userInfo = UserInfo(
+          name = "mataku",
+          playCount = "10000",
+          albumCount = "100",
+          trackCount = "1000",
+          artistCount = "100",
+          url = "",
+          imageList = persistentListOf()
+        )
       )
     }
   }
