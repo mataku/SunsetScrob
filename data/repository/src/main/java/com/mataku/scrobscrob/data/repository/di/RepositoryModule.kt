@@ -26,6 +26,8 @@ import com.mataku.scrobscrob.data.repository.TopArtistsRepository
 import com.mataku.scrobscrob.data.repository.TopArtistsRepositoryImpl
 import com.mataku.scrobscrob.data.repository.TrackRepository
 import com.mataku.scrobscrob.data.repository.TrackRepositoryImpl
+import com.mataku.scrobscrob.data.repository.UserRepository
+import com.mataku.scrobscrob.data.repository.UserRepositoryImpl
 import com.mataku.scrobscrob.data.repository.UsernameRepository
 import com.mataku.scrobscrob.data.repository.UsernameRepositoryImpl
 import dagger.Binds
@@ -89,4 +91,8 @@ abstract class RepositoryModule {
   @Singleton
   @Binds
   abstract fun provideFileRepository(repository: FileRepositoryImpl): FileRepository
+
+  @Singleton
+  @Binds
+  abstract fun provideUserRepository(repository: UserRepositoryImpl): UserRepository
 }

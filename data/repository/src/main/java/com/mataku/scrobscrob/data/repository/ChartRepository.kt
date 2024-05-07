@@ -26,7 +26,7 @@ class ChartRepositoryImpl @Inject constructor(
 ) : ChartRepository {
   override fun topArtists(page: Int): Flow<ChartTopArtists> = flow {
     val params = mapOf(
-      "limit" to "30",
+      "limit" to "20",
       "page" to page.toString()
     )
     val chartTopArtistsEndpoint = ChartTopArtistsEndpoint(
@@ -38,7 +38,7 @@ class ChartRepositoryImpl @Inject constructor(
 
   override fun topTracks(page: Int): Flow<ChartTopTracks> = flow {
     val params = mapOf(
-      "limit" to "30",
+      "limit" to "20",
       "page" to page.toString()
     )
     val chartTopTracksEndpoint = ChartTopTracksEndpoint(

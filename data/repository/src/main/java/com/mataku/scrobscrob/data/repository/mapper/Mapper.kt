@@ -24,6 +24,7 @@ import com.mataku.scrobscrob.core.entity.TopArtistInfo
 import com.mataku.scrobscrob.core.entity.TrackAlbumInfo
 import com.mataku.scrobscrob.core.entity.TrackArtist
 import com.mataku.scrobscrob.core.entity.TrackInfo
+import com.mataku.scrobscrob.core.entity.UserInfo
 import com.mataku.scrobscrob.core.entity.Wiki
 import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.core.entity.presentation.toReadableString
@@ -45,6 +46,7 @@ import com.mataku.scrobscrob.data.api.model.TagListBody
 import com.mataku.scrobscrob.data.api.model.TopAlbumsApiResponse
 import com.mataku.scrobscrob.data.api.model.TrackAlbumInfoBody
 import com.mataku.scrobscrob.data.api.model.TrackArtistBody
+import com.mataku.scrobscrob.data.api.model.UserInfoApiResponse
 import com.mataku.scrobscrob.data.api.model.UserTopArtistsApiResponse
 import com.mataku.scrobscrob.data.api.model.WikiBody
 import com.mataku.scrobscrob.data.db.entity.AppThemeEntity
@@ -336,5 +338,18 @@ fun AppTheme.toAppThemeEntity(): AppThemeEntity {
     AppTheme.OCEAN -> AppThemeEntity.OCEAN
     AppTheme.LASTFM_DARK -> AppThemeEntity.LASTFM_DARK
   }
+}
+
+fun UserInfoApiResponse.toUserInfo(): UserInfo {
+  val body = this.userInfo
+  return UserInfo(
+    name = body.name,
+    playCount = body.playCount,
+    artistCount = body.artistCount,
+    trackCount = body.trackCount,
+    albumCount = body.albumCount,
+    imageList = body.imageList?.toImageList()?.toImmutableList() ?: persistentListOf<Image>(),
+    url = body.url
+  )
 }
 
