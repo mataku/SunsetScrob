@@ -13,7 +13,7 @@ import androidx.navigation.compose.NavHost
 import com.mataku.scrobscrob.account.ui.navigation.accountGraph
 import com.mataku.scrobscrob.artist.ui.navigation.artistGraph
 import com.mataku.scrobscrob.auth.ui.navigation.authGraph
-import com.mataku.scrobscrob.chart.ui.navigation.chartGraph
+import com.mataku.scrobscrob.discover.ui.navigation.discoverGraph
 import com.mataku.scrobscrob.home.ui.navigation.HOME_NAVIGATION_ROUTE
 import com.mataku.scrobscrob.home.ui.navigation.homeGraph
 import com.mataku.scrobscrob.ui_common.commonGraph
@@ -45,7 +45,7 @@ fun NavigationGraph(
     homeGraph(navController)
     artistGraph(navController)
     accountGraph(navController)
-    chartGraph(navController)
+    discoverGraph(navController)
     authGraph(navController)
     commonGraph()
   }

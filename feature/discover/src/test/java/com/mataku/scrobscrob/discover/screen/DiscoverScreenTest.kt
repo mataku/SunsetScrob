@@ -1,11 +1,10 @@
-package com.mataku.scrobscrob.chart.ui.screen
+package com.mataku.scrobscrob.discover.screen
 
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
-import com.mataku.scrobscrob.chart.ui.viewmodel.ChartViewModel
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.core.entity.ChartArtist
 import com.mataku.scrobscrob.core.entity.ChartTopArtists
@@ -14,6 +13,8 @@ import com.mataku.scrobscrob.core.entity.ChartTrack
 import com.mataku.scrobscrob.core.entity.ChartTrackArtist
 import com.mataku.scrobscrob.core.entity.PagingAttr
 import com.mataku.scrobscrob.data.repository.ChartRepository
+import com.mataku.scrobscrob.discover.ui.screen.DiscoverScreen
+import com.mataku.scrobscrob.discover.ui.viewmodel.DiscoverViewModel
 import com.mataku.scrobscrob.test_helper.integration.captureScreenshot
 import io.mockk.every
 import io.mockk.mockk
@@ -31,7 +32,7 @@ import org.robolectric.annotation.GraphicsMode
   qualifiers = RobolectricDeviceQualifiers.Pixel7,
   sdk = [33]
 )
-class ChartScreenTest {
+class DiscoverScreenTest {
   @get:Rule
   val composeTestRule = createComposeRule()
 
@@ -99,11 +100,11 @@ class ChartScreenTest {
 
   @Test
   fun layout_artist() {
-    val viewModel = ChartViewModel(chartRepository)
+    val viewModel = DiscoverViewModel(chartRepository)
     composeTestRule.captureScreenshot(
       appTheme = AppTheme.DARK,
       content = {
-        ChartScreen(
+        DiscoverScreen(
           viewModel = viewModel,
           navController = mockk()
         )
@@ -114,11 +115,11 @@ class ChartScreenTest {
 
   @Test
   fun layout_artist_light() {
-    val viewModel = ChartViewModel(chartRepository)
+    val viewModel = DiscoverViewModel(chartRepository)
     composeTestRule.captureScreenshot(
       appTheme = AppTheme.LIGHT,
       content = {
-        ChartScreen(
+        DiscoverScreen(
           viewModel = viewModel,
           navController = mockk()
         )
@@ -129,11 +130,11 @@ class ChartScreenTest {
 
   @Test
   fun layout_track() {
-    val viewModel = ChartViewModel(chartRepository)
+    val viewModel = DiscoverViewModel(chartRepository)
     composeTestRule.captureScreenshot(
       appTheme = AppTheme.DARK,
       content = {
-        ChartScreen(
+        DiscoverScreen(
           viewModel = viewModel,
           navController = mockk()
         )
@@ -147,11 +148,11 @@ class ChartScreenTest {
 
   @Test
   fun layout_track_light() {
-    val viewModel = ChartViewModel(chartRepository)
+    val viewModel = DiscoverViewModel(chartRepository)
     composeTestRule.captureScreenshot(
       appTheme = AppTheme.LIGHT,
       content = {
-        ChartScreen(
+        DiscoverScreen(
           viewModel = viewModel,
           navController = mockk()
         )

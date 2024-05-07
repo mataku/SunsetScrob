@@ -17,7 +17,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.mataku.scrobscrob.account.ui.navigation.navigateToAccount
 import com.mataku.scrobscrob.app.ui.navigation.NavigationGraph
-import com.mataku.scrobscrob.chart.ui.navigation.navigateToChart
+import com.mataku.scrobscrob.discover.ui.navigation.navigateToChart
 import com.mataku.scrobscrob.home.ui.navigation.navigateToHome
 import com.mataku.scrobscrob.ui_common.SunsetBottomNavItem
 import com.mataku.scrobscrob.ui_common.organism.SunsetNavigationBar

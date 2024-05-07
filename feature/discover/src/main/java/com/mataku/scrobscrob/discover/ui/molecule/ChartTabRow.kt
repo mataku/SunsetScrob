@@ -1,4 +1,4 @@
-package com.mataku.scrobscrob.chart.ui.molecule
+package com.mataku.scrobscrob.discover.ui.molecule
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.mataku.scrobscrob.chart.ui.ChartType
+import com.mataku.scrobscrob.discover.ui.ChartType
 import com.mataku.scrobscrob.ui_common.molecule.TabRowText
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 

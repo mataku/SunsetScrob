@@ -1,4 +1,4 @@
-package com.mataku.scrobscrob.chart.ui.screen
+package com.mataku.scrobscrob.discover.ui.screen
 
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -17,17 +17,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.mataku.scrobscrob.chart.ui.molecule.ChartArtistList
-import com.mataku.scrobscrob.chart.ui.molecule.ChartTabRow
-import com.mataku.scrobscrob.chart.ui.molecule.ChartTrackList
-import com.mataku.scrobscrob.chart.ui.viewmodel.ChartViewModel
+import com.mataku.scrobscrob.discover.ui.molecule.ChartArtistList
+import com.mataku.scrobscrob.discover.ui.molecule.ChartTabRow
+import com.mataku.scrobscrob.discover.ui.molecule.ChartTrackList
+import com.mataku.scrobscrob.discover.ui.viewmodel.DiscoverViewModel
 import com.mataku.scrobscrob.ui_common.navigateToWebView
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ChartScreen(
-  viewModel: ChartViewModel = hiltViewModel(),
+fun DiscoverScreen(
+  viewModel: DiscoverViewModel = hiltViewModel(),
   navController: NavController
 ) {
   val uiState by viewModel.uiState.collectAsState()
@@ -51,7 +51,6 @@ fun ChartScreen(
             animationSpec = tween(500)
           )
         }
-        viewModel.changeSelectedChartType(chartType)
       },
       modifier = Modifier
         .padding(

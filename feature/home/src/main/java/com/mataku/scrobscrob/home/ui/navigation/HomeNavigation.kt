@@ -1,6 +1,7 @@
 package com.mataku.scrobscrob.home.ui.navigation
 
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
@@ -26,7 +27,13 @@ fun NavGraphBuilder.homeGraph(navController: NavController) {
 }
 
 fun NavController.navigateToHome() {
-  navigate(HOME_NAVIGATION_ROUTE)
+  navigate(HOME_NAVIGATION_ROUTE) {
+    popUpTo(graph.findStartDestination().id) {
+      saveState = true
+    }
+    launchSingleTop = true
+    restoreState = true
+  }
 }
 
 private const val HOME_DESTINATION = "home"

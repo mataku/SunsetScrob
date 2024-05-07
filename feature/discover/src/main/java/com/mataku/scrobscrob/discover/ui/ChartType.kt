@@ -1,4 +1,4 @@
-package com.mataku.scrobscrob.chart.ui
+package com.mataku.scrobscrob.discover.ui
 
 import androidx.compose.runtime.Immutable
 

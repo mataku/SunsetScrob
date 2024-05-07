@@ -1,18 +1,18 @@
-package com.mataku.scrobscrob.chart.ui.navigation
+package com.mataku.scrobscrob.discover.ui.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.mataku.scrobscrob.chart.ui.screen.ChartScreen
+import com.mataku.scrobscrob.discover.ui.screen.DiscoverScreen
 
-fun NavGraphBuilder.chartGraph(navController: NavController) {
-  navigation(route = CHART_NAVIGATION_ROUTE, startDestination = CHART_START_NAVIGATION) {
+fun NavGraphBuilder.discoverGraph(navController: NavController) {
+  navigation(route = DISCOVER_NAVIGATION_ROUTE, startDestination = DISCOVER_START_NAVIGATION) {
     composable(
-      CHART_START_NAVIGATION
+      DISCOVER_START_NAVIGATION
     ) {
-      ChartScreen(
+      DiscoverScreen(
         navController = navController
       )
     }
@@ -20,7 +20,7 @@ fun NavGraphBuilder.chartGraph(navController: NavController) {
 }
 
 fun NavController.navigateToChart() {
-  navigate(CHART_NAVIGATION_ROUTE) {
+  navigate(DISCOVER_NAVIGATION_ROUTE) {
     popUpTo(graph.findStartDestination().id) {
       saveState = true
     }
@@ -29,5 +29,5 @@ fun NavController.navigateToChart() {
   }
 }
 
-private const val CHART_START_NAVIGATION = "chart"
-private const val CHART_NAVIGATION_ROUTE = "chart_route"
+private const val DISCOVER_START_NAVIGATION = "discover"
+private const val DISCOVER_NAVIGATION_ROUTE = "discover_route"

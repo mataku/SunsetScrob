@@ -1,4 +1,4 @@
-package com.mataku.scrobscrob.chart.ui.molecule
+package com.mataku.scrobscrob.discover.ui.molecule
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -10,26 +10,25 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.mataku.scrobscrob.core.entity.ChartTrack
-import com.mataku.scrobscrob.core.entity.ChartTrackArtist
+import com.mataku.scrobscrob.core.entity.ChartArtist
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
-internal fun ChartTrackList(
-  chartTrackList: ImmutableList<ChartTrack>,
-  onChartTrackTap: (ChartTrack) -> Unit
+fun ChartArtistList(
+  chartArtistList: ImmutableList<ChartArtist>,
+  onChartArtistTap: (ChartArtist) -> Unit
 ) {
   LazyColumn(
     content = {
       itemsIndexed(
-        chartTrackList,
-        key = { index, item -> "${index}_${item.name}" }) { index, track ->
-        ChartTrackCell(
-          chartTrack = track,
+        chartArtistList,
+        key = { index, item -> "${index}_${item.name}" }) { index, artist ->
+        ChartArtistCell(
+          chartArtist = artist,
           rank = index + 1,
-          onChartTrackTap = onChartTrackTap
+          onChartArtistTap = onChartArtistTap
         )
       }
     },
@@ -44,25 +43,20 @@ internal fun ChartTrackList(
 
 @Preview(showBackground = true)
 @Composable
-private fun ChartTrackListPreview() {
+private fun ChartArtistListPreview() {
   SunsetThemePreview {
     Surface {
-      ChartTrackList(
-        chartTrackList = (1..10).map {
-          ChartTrack(
-            name = "track name ${it}",
+      ChartArtistList(
+        chartArtistList = (1..10).map {
+          ChartArtist(
+            name = "artist name $it",
             url = "",
-            listeners = "100000${it}",
-            imageList = emptyList(),
-            playCount = "100000${it}",
-            artist = ChartTrackArtist(
-              name = "artist name $it",
-              url = ""
-            ),
-            mbid = ""
+            listeners = "100000$it",
+            playCount = "100000$it",
+            imageList = emptyList()
           )
         }.toImmutableList(),
-        onChartTrackTap = {}
+        onChartArtistTap = {}
       )
     }
   }
