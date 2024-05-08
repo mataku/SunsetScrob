@@ -18,6 +18,13 @@ class FeatureConventionPlugin : Plugin<Project> {
           androidSdkConfiguration()
           kotlinConfiguration()
           androidLintConfiguration()
+          packaging {
+            val excludePatterns = listOf(
+              "META-INF/LICENSE.md",
+              "META-INF/LICENSE-notice.md"
+            )
+            resources.excludes.addAll(excludePatterns)
+          }
           buildTypes {
             getByName("debug") {
             }

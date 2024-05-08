@@ -31,7 +31,7 @@ private fun composeCompilerParameters(currentProject: Project): List<String> {
   val composeMetricsEnabled =
     currentProject.rootProject.providers.gradleProperty("sunsetscrob.composeCompilerMetrics").orNull == "true"
   if (composeMetricsEnabled) {
-    val metricsFolder = File(currentProject.buildDir, "compose_metrics")
+    val metricsFolder = File(currentProject.layout.buildDirectory.asFile.get(), "compose_metrics")
     compilerParameters.add("-P")
     compilerParameters.add(
       "plugin:androidx.compose.compiler.plugins.kotlin:metricsDestination=" + metricsFolder.absolutePath,
@@ -41,7 +41,7 @@ private fun composeCompilerParameters(currentProject: Project): List<String> {
   val composeReportEnabled =
     currentProject.rootProject.providers.gradleProperty("sunsetscrob.composeCompilerReports").orNull == "true"
   if (composeReportEnabled) {
-    val reportsFolder = File(currentProject.buildDir, "compose_reports")
+    val reportsFolder = File(currentProject.layout.buildDirectory.asFile.get(), "compose_reports")
     compilerParameters.add("-P")
     compilerParameters.add(
       "plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=" + reportsFolder.absolutePath,
