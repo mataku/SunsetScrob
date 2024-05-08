@@ -15,6 +15,7 @@
     "androidx.core:core-splashscreen",
     "app.cash.turbine:turbine",
     "app.cash.licensee",
+    "app.cash.sqldelight",
     "com.airbnb.android:showkase",
     "com.airbnb.android:showkase-annotation",
     "com.airbnb.android:showkase-processor",
@@ -31,7 +32,10 @@
   "rebaseWhen": "conflicted",
   "packageRules": [
     {
-      "matchUpdateTypes": ["minor", "patch"],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
       "automerge": true,
       "platformAutomerge": true
     },

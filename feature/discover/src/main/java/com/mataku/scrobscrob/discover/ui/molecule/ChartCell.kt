@@ -25,13 +25,13 @@ internal fun ChartCell(
 ) {
   Column(
     modifier = modifier
-      .width(128.dp)
+      .width(140.dp)
   ) {
     SunsetImage(
       imageData = artworkUrl,
       contentDescription = "$title artwork",
       modifier = Modifier
-        .size(128.dp)
+        .size(140.dp)
     )
     Spacer(modifier = Modifier.height(8.dp))
     Text(

@@ -11,6 +11,7 @@ plugins {
   alias(libs.plugins.licensee) apply false
   alias(libs.plugins.android.test) apply false
   alias(libs.plugins.baselineprofile) apply false
+  alias(libs.plugins.sqldelight) apply false
 }
 
 subprojects {

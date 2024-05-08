@@ -1,0 +1,14 @@
+CREATE TABLE artist_artwork (
+  id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  url TEXT NOT NULL
+);
+
+CREATE INDEX artist_artwork_name ON artist_artwork(name);
+
+insert:
+INSERT INTO artist_artwork(name, url)
+VALUES (?, ?);
+
+selectUrl:
+SELECT url FROM artist_artwork WHERE name = ? LIMIT 1;
