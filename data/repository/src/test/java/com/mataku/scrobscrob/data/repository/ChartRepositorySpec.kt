@@ -65,7 +65,7 @@ class ChartRepositorySpec : DescribeSpec({
     """.trimIndent()
     val page = 1
     val mockEngine = MockEngine { request ->
-      request.url.fullPath shouldBe "/2.0/?method=chart.gettopartists&format=json&limit=30&page=1"
+      request.url.fullPath shouldBe "/2.0/?method=chart.gettopartists&format=json&limit=20&page=1"
       request.method shouldBe HttpMethod.Get
 
       respond(
@@ -141,7 +141,7 @@ class ChartRepositorySpec : DescribeSpec({
     """.trimIndent()
     val page = 1
     val mockEngine = MockEngine { request ->
-      request.url.fullPath shouldBe "/2.0/?method=chart.gettoptracks&format=json&limit=30&page=1"
+      request.url.fullPath shouldBe "/2.0/?method=chart.gettoptracks&format=json&limit=20&page=1"
       request.method shouldBe HttpMethod.Get
 
       respond(
