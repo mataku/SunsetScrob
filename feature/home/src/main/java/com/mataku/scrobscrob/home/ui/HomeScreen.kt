@@ -13,9 +13,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -30,6 +27,7 @@ import com.mataku.scrobscrob.home.HomeTabType
 import com.mataku.scrobscrob.home.ui.molecule.HomeTabs
 import com.mataku.scrobscrob.scrobble.ui.navigation.navigateToTrackDetail
 import com.mataku.scrobscrob.scrobble.ui.screen.ScrobbleScreen
+import com.mataku.scrobscrob.ui_common.organism.ContentHeader
 import com.mataku.scrobscrob.ui_common.style.LocalTopAppBarState
 import kotlinx.coroutines.launch
 
@@ -57,17 +55,7 @@ fun HomeScreen(
           scrollState
         )
     ) {
-      TopAppBar(
-        scrollBehavior = scrollBehavior,
-        title = {
-          Text(text = "Home")
-        },
-        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-          containerColor = MaterialTheme.colorScheme.background,
-          scrolledContainerColor = MaterialTheme.colorScheme.background
-        ),
-      )
-
+      ContentHeader(text = "Home")
       Column(
         modifier = Modifier
           .fillMaxWidth()
