@@ -48,6 +48,6 @@ fun NavigationGraph(
     accountGraph(navController, username ?: "")
     discoverGraph(navController)
     authGraph(navController)
-    commonGraph()
+    commonGraph(navController)
   }
 }
