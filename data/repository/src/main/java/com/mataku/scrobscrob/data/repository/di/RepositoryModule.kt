@@ -6,6 +6,8 @@ import com.mataku.scrobscrob.data.repository.AlbumRepository
 import com.mataku.scrobscrob.data.repository.AlbumRepositoryImpl
 import com.mataku.scrobscrob.data.repository.ArtistRepository
 import com.mataku.scrobscrob.data.repository.ArtistRepositoryImpl
+import com.mataku.scrobscrob.data.repository.ArtworkRepository
+import com.mataku.scrobscrob.data.repository.ArtworkRepositoryImpl
 import com.mataku.scrobscrob.data.repository.ChartRepository
 import com.mataku.scrobscrob.data.repository.ChartRepositoryImpl
 import com.mataku.scrobscrob.data.repository.FileRepository
@@ -95,4 +97,8 @@ abstract class RepositoryModule {
   @Singleton
   @Binds
   abstract fun provideUserRepository(repository: UserRepositoryImpl): UserRepository
+
+  @Singleton
+  @Binds
+  abstract fun provideArtworkRepository(repository: ArtworkRepositoryImpl): ArtworkRepository
 }
