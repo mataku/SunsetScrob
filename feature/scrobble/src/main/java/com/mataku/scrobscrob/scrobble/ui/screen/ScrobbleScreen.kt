@@ -1,6 +1,7 @@
 package com.mataku.scrobscrob.scrobble.ui.screen
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
@@ -19,6 +20,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.unit.dp
 import com.mataku.scrobscrob.core.entity.RecentTrack
 import com.mataku.scrobscrob.scrobble.ui.molecule.Scrobble
 import com.mataku.scrobscrob.scrobble.ui.viewmodel.ScrobbleViewModel
@@ -122,6 +124,9 @@ private fun ScrobbleContent(
     },
     modifier = Modifier
       .fillMaxSize()
-      .nestedScroll(scrollBehavior.nestedScrollConnection)
+      .nestedScroll(scrollBehavior.nestedScrollConnection),
+    contentPadding = PaddingValues(
+      vertical = 8.dp
+    )
   )
 }
