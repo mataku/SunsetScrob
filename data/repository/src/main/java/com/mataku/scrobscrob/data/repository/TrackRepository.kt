@@ -20,8 +20,7 @@ interface TrackRepository {
 class TrackRepositoryImpl @Inject constructor(
   private val lastFmService: LastFmService,
   private val usernameDataStore: UsernameDataStore
-) :
-  TrackRepository {
+) : TrackRepository {
   override suspend fun getInfo(
     trackName: String,
     artistName: String
