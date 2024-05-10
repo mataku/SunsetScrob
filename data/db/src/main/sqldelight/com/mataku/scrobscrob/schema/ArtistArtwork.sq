@@ -1,14 +1,32 @@
 CREATE TABLE artist_artwork (
   id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-  name TEXT NOT NULL,
-  url TEXT NOT NULL
+  name TEXT NOT NULL UNIQUE,
+  url TEXT
 );
 
 CREATE INDEX artist_artwork_name ON artist_artwork(name);
 
 insert:
 INSERT INTO artist_artwork(name, url)
-VALUES (?, ?);
+VALUES (?, ?) ON CONFLICT(name)
+DO UPDATE SET url = excluded.url;
+
+upsert {
+  UPDATE artist_artwork
+  SET
+    url = :url
+  WHERE
+    name = :name;
+
+  INSERT OR IGNORE INTO artist_artwork(name, url)
+  VALUES (:name, :url);
+}
 
 selectUrl:
 SELECT url FROM artist_artwork WHERE name = ? LIMIT 1;
+
+selectUrlList:
+SELECT name, url FROM artist_artwork WHERE name IN ? LIMIT 20;
+
+deleteAll:
+DELETE FROM artist_artwork;

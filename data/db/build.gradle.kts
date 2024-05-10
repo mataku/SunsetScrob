@@ -15,6 +15,7 @@ dependencies {
   implementation(libs.datastore.preferences)
   implementation(libs.serialization.json)
   implementation(libs.sqldelight.driver)
+  implementation(libs.sqldelight.coroutines)
 }
 
 sqldelight {

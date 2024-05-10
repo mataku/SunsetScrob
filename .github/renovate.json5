@@ -16,6 +16,7 @@
     "app.cash.turbine:turbine",
     "app.cash.licensee",
     "app.cash.sqldelight",
+    "sqldelight",
     "com.airbnb.android:showkase",
     "com.airbnb.android:showkase-annotation",
     "com.airbnb.android:showkase-processor",

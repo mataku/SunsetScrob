@@ -1,9 +1,8 @@
 package com.mataku.scrobscrob.data.db.di
 
 import android.content.Context
-import app.cash.sqldelight.db.SqlDriver
-import app.cash.sqldelight.driver.android.AndroidSqliteDriver
-import com.mataku.scrobscrob.Database
+import com.mataku.scrobscrob.data.db.ArtworkDataStore
+import com.mataku.scrobscrob.data.db.ArtworkDataStoreImpl
 import com.mataku.scrobscrob.data.db.ScrobbleAppDataStore
 import com.mataku.scrobscrob.data.db.SessionKeyDataStore
 import com.mataku.scrobscrob.data.db.ThemeDataStore
@@ -45,7 +44,7 @@ class DatabaseModule {
 
   @Singleton
   @Provides
-  fun provideSqlDriver(@ApplicationContext context: Context): SqlDriver {
-    return AndroidSqliteDriver(Database.Schema, context, "scrobscrob.db")
+  fun provideArtworkDataStore(@ApplicationContext context: Context): ArtworkDataStore {
+    return ArtworkDataStoreImpl(context)
   }
 }
