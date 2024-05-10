@@ -1,8 +1,11 @@
 package com.mataku.scrobscrob.ui_common.template
 
+import android.view.ViewGroup
+import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -56,20 +59,38 @@ fun WebViewScreen(
     // NOTE: specified height and visibility animation as workaround for compose WebView flickering
     AndroidView(
       factory = {
-        WebView(it)
-      },
-      update = { webView ->
-        webView.webViewClient = object : WebViewClient() {
-          override fun onPageFinished(view: WebView?, url: String?) {
-            title = view?.title ?: ""
-            if (!visibility) {
-              coroutineScope.launch {
-                visibilityValue.animateTo(1F, tween(1000))
+        WebView(it).apply {
+          layoutParams = ViewGroup.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+          )
+
+          webViewClient = object : WebViewClient() {
+            override fun onPageFinished(view: WebView?, url: String?) {
+              title = view?.title ?: ""
+              if (!visibility) {
+                coroutineScope.launch {
+                  visibilityValue.animateTo(
+                    1F, tween(
+                      durationMillis = 1000,
+                      easing = LinearEasing
+                    )
+                  )
+                }
+                visibility = true
               }
-              visibility = true
+            }
+
+            override fun shouldOverrideUrlLoading(
+              view: WebView?,
+              request: WebResourceRequest?
+            ): Boolean {
+              return false
             }
           }
         }
+      },
+      update = { webView ->
         webView.loadUrl(url)
       },
       modifier = Modifier

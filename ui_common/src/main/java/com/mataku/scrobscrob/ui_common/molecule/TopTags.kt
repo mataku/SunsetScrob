@@ -23,7 +23,8 @@ import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 @Composable
 fun TopTags(
   tagList: List<Tag>,
-  modifier: Modifier = Modifier
+  modifier: Modifier = Modifier,
+  onTagClick: (Tag) -> Unit = {},
 ) {
   Row(
     modifier = modifier
@@ -32,16 +33,26 @@ fun TopTags(
   ) {
     Spacer(modifier = Modifier.width(8.dp))
     tagList.map {
-      Tag(name = it.name)
+      Tag(
+        name = it.name,
+        onTagClick = {
+          onTagClick.invoke(it)
+        }
+      )
     }
     Spacer(modifier = Modifier.width(8.dp))
   }
 }
 
 @Composable
-private fun Tag(name: String) {
+private fun Tag(
+  name: String,
+  onTagClick: () -> Unit = {}
+) {
   SuggestionChip(
-    onClick = {},
+    onClick = {
+      onTagClick.invoke()
+    },
     label = {
       Text(
         text = name,
@@ -65,7 +76,7 @@ fun TopTagsPreview() {
           url = ""
         )
       }
-      TopTags(tagList = tagList)
+      TopTags(tagList = tagList, onTagClick = {})
     }
   }
 }

@@ -64,7 +64,12 @@ fun DiscoverScreen(
       item(
         key = "chart_top_tags"
       ) {
-        ChartTagList(tagList = uiState.topTags)
+        ChartTagList(
+          tagList = uiState.topTags,
+          onTagClick = {
+            navController.navigateToWebView(it.url)
+          }
+        )
       }
     }
   }

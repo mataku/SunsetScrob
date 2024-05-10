@@ -16,7 +16,8 @@ import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 
 @Composable
 internal fun ChartTagList(
-  tagList: List<Tag>
+  tagList: List<Tag>,
+  onTagClick: (Tag) -> Unit
 ) {
   Column(
     modifier = Modifier.fillMaxWidth()
@@ -33,7 +34,8 @@ internal fun ChartTagList(
     )
 
     TopTags(
-      tagList = tagList
+      tagList = tagList,
+      onTagClick = onTagClick,
     )
   }
 }
@@ -55,7 +57,8 @@ private fun ChartTagListPreview() {
           Tag("metal", ""),
           Tag("punk", ""),
           Tag("classical", "")
-        )
+        ),
+        onTagClick = {}
       )
     }
   }
