@@ -58,8 +58,8 @@ import androidx.navigation.NavController
 import com.mataku.scrobscrob.auth.R
 import com.mataku.scrobscrob.auth.ui.viewmodel.LoginViewModel
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
+import com.mataku.scrobscrob.ui_common.navigateToHomeFromAuth
 import com.mataku.scrobscrob.ui_common.navigateToPrivacyPolicy
-import com.mataku.scrobscrob.ui_common.navigateToScrobbleFromAuth
 import com.mataku.scrobscrob.ui_common.style.LocalSnackbarHostState
 import com.mataku.scrobscrob.ui_common.style.SunsetTheme
 import kotlinx.coroutines.launch
@@ -77,7 +77,7 @@ fun LoginScreen(
   uiState.event?.let {
     when (it) {
       is LoginViewModel.UiEvent.LoginSuccess -> {
-        navController.navigateToScrobbleFromAuth()
+        navController.navigateToHomeFromAuth()
       }
 
       is LoginViewModel.UiEvent.LoginFailed -> {
