@@ -21,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mataku.scrobscrob.core.entity.UserInfo
 import com.mataku.scrobscrob.core.entity.imageUrl
+import com.mataku.scrobscrob.core.entity.presentation.toReadableIntValue
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.molecule.SunsetImage
 import com.mataku.scrobscrob.ui_common.molecule.ValueDescription
@@ -63,9 +64,9 @@ internal fun Profile(
       Spacer(modifier = Modifier.height(16.dp))
 
       UserListeningCount(
-        playCount = userInfo.playCount,
-        albumCount = userInfo.albumCount,
-        trackCount = userInfo.trackCount
+        playCount = userInfo.playCount.toReadableIntValue(),
+        albumCount = userInfo.albumCount.toReadableIntValue(),
+        trackCount = userInfo.trackCount.toReadableIntValue()
       )
     }
   }

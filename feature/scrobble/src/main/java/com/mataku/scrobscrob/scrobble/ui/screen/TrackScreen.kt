@@ -1,6 +1,11 @@
 package com.mataku.scrobscrob.scrobble.ui.screen
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,9 +17,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -23,8 +31,13 @@ import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.style.TextOverflow
@@ -63,7 +76,8 @@ fun TrackScreen(
     trackInfo = uiState.trackInfo,
     onUrlTap = navController::navigateToWebView,
     artistName = artistName,
-    trackName = trackName
+    trackName = trackName,
+    onBackPressed = navController::popBackStack
   )
 }
 
@@ -74,7 +88,8 @@ private fun TrackContent(
   trackName: String,
   artistName: String,
   trackInfo: TrackInfo?,
-  onUrlTap: (String) -> Unit
+  onUrlTap: (String) -> Unit,
+  onBackPressed: () -> Unit
 ) {
   val screenWidth = LocalConfiguration.current.screenWidthDp
   val scaffoldState = rememberBottomSheetScaffoldState(
@@ -101,14 +116,46 @@ private fun TrackContent(
         artworkUrl
       }
       Column {
-        SunsetImage(
-          imageData = imageData,
-          contentDescription = "artwork image",
-          modifier = Modifier
-            .fillMaxWidth()
-            .aspectRatio(1F),
-          contentScale = ContentScale.FillWidth
-        )
+        Box {
+          SunsetImage(
+            imageData = imageData,
+            contentDescription = "artwork image",
+            modifier = Modifier
+              .fillMaxWidth()
+              .aspectRatio(1F),
+            contentScale = ContentScale.FillWidth
+          )
+          Box(
+            modifier = Modifier
+              .fillMaxWidth()
+              .height(64.dp)
+              .background(
+                color = Color.Transparent
+              )
+          ) {
+            Image(
+              painter = rememberVectorPainter(image = Icons.AutoMirrored.Default.ArrowBack),
+              contentDescription = "back",
+              modifier = Modifier
+                .clickable(
+                  indication = null,
+                  interactionSource = remember { MutableInteractionSource() }
+                ) {
+                  onBackPressed.invoke()
+                }
+                .padding(
+                  16.dp
+                )
+                .alpha(0.9F)
+              ,
+              colorFilter = ColorFilter.tint(
+                color = Color.Gray.copy(
+                  alpha = 0.9F
+                )
+              )
+            )
+          }
+        }
         SunsetImage(
           imageData = imageData,
           contentDescription = "artwork image",
@@ -246,7 +293,8 @@ private fun TrackContentPreview() {
         ),
         onUrlTap = {},
         artistName = "aespa",
-        trackName = "Drama"
+        trackName = "Drama",
+        onBackPressed = {}
       )
     }
   }

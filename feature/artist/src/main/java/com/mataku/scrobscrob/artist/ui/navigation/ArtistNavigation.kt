@@ -24,7 +24,8 @@ fun NavGraphBuilder.artistGraph(navController: NavController) {
   ) {
     ArtistScreen(
       viewModel = hiltViewModel(),
-      onArtistLoadMoreTap = navController::navigateToWebView
+      onArtistLoadMoreTap = navController::navigateToWebView,
+      onBackPressed = navController::popBackStack
     )
   }
 }
