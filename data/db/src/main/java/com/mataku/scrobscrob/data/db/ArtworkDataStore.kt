@@ -6,7 +6,7 @@ import app.cash.sqldelight.coroutines.mapToOneOrDefault
 import app.cash.sqldelight.driver.android.AndroidSqliteDriver
 import com.mataku.scrobscrob.Database
 import com.mataku.scrobscrob.data.db.entity.ArtistArtworkEntity
-import com.mataku.scrobscrob.schema.artwork.SelectUrl
+import com.mataku.scrobscrob.schema.SelectUrl
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
