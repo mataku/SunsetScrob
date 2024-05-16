@@ -1,9 +1,9 @@
 CREATE TABLE artwork (
   id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-  name TEXT NOT NULL UNIQUE,
-  album_name TEXT,
+  name TEXT NOT NULL,
+  album_name TEXT NOT NULL,
   url TEXT,
-  UNIQUE(name, album_name) ON CONFLICT REPLACE
+  UNIQUE(name, album_name) ON CONFLICT IGNORE
 );
 
 CREATE INDEX artwork_name ON artwork(name);
@@ -11,18 +11,7 @@ CREATE INDEX artwork_album_name ON artwork(album_name);
 
 insert:
 INSERT INTO artwork(name, album_name, url)
-VALUES (?, ?, ?);
-
-upsert {
-  UPDATE artwork
-  SET
-    url = :url
-  WHERE
-    name = :name;
-
-  INSERT OR IGNORE INTO artwork(name, url)
-  VALUES (:name, :url);
-}
+VALUES (:name, :albumName, :url);
 
 selectUrl:
 SELECT url FROM artwork WHERE name = ? LIMIT 1;

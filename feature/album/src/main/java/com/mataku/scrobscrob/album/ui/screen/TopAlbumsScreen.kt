@@ -150,7 +150,7 @@ fun TopAlbumsContent(
   modifier: Modifier = Modifier
 ) {
   LazyVerticalGrid(
-    contentPadding = PaddingValues(horizontal = 8.dp),
+    contentPadding = PaddingValues(8.dp),
     columns = GridCells.Fixed(maxSpanCount),
     content = {
       items(
