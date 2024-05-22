@@ -18,6 +18,7 @@ import io.mockk.every
 import io.mockk.mockk
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -96,7 +97,7 @@ class TrackScreenTest {
   }
 
   @Test
-  fun layout() {
+  fun layout() = runTest {
     val viewModel = TrackViewModel(
       trackRepository = trackRepository,
       savedStateHandle = savedStateHandle
@@ -118,7 +119,7 @@ class TrackScreenTest {
   }
 
   @Test
-  fun layout_light() {
+  fun layout_light() = runTest {
     val viewModel = TrackViewModel(
       trackRepository = trackRepository,
       savedStateHandle = savedStateHandle

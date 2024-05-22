@@ -12,12 +12,5 @@ plugins {
   alias(libs.plugins.android.test) apply false
   alias(libs.plugins.baselineprofile) apply false
   alias(libs.plugins.sqldelight) apply false
-}
-
-subprojects {
-  tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    kotlinOptions {
-      jvmTarget = JavaVersion.VERSION_17.toString()
-    }
-  }
+  alias(libs.plugins.compose.compiler) apply false
 }

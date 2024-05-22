@@ -1,5 +1,3 @@
-import com.android.build.gradle.LibraryExtension
-import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import ext.composeConfiguration
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -11,14 +9,7 @@ class ComposeConventionPlugin : Plugin<Project> {
   override fun apply(target: Project) {
     with(target) {
       val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
-      val type = if (target.name == "app") {
-        BaseAppModuleExtension::class.java
-      } else {
-        LibraryExtension::class.java
-      }
-      extensions.configure(type) {
-        composeConfiguration(libs, target)
-      }
+      composeConfiguration()
 
       dependencies {
         val composeBom = libs.findLibrary("compose-bom").get()
