@@ -41,6 +41,7 @@ local.properties
 .idea/deploymentTargetDropDown.xml
 .idea/runConfigurations
 .idea/copilot/
+.idea/deploymentTargetSelector.xml
 
 *.iml
 .env
