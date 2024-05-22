@@ -21,9 +21,9 @@ fun SunsetImage(
   contentDescription: String?,
   contentScale: ContentScale = ContentScale.Fit,
 ) {
-  if (LocalInspectionMode.current) {
+  if (LocalInspectionMode.current || imageData == R.drawable.no_image) {
     Image(
-      painter = painterResource(id = com.mataku.scrobscrob.ui_common.R.drawable.no_image),
+      painter = painterResource(id = R.drawable.no_image),
       contentDescription = contentDescription,
       modifier = modifier,
       contentScale = contentScale
