@@ -16,6 +16,9 @@ VALUES (:name, :albumName, :url);
 selectUrl:
 SELECT url FROM artwork WHERE name = ? LIMIT 1;
 
+selectAlbumUrl:
+SELECT url FROM artwork WHERE name = ? AND album_name = ? LIMIT 1;
+
 selectUrlList:
 SELECT name, url FROM artwork WHERE name IN ? LIMIT 20;
 

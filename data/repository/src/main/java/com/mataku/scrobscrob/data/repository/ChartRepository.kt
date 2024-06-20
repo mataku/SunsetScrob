@@ -7,6 +7,7 @@ import com.mataku.scrobscrob.data.api.LastFmService
 import com.mataku.scrobscrob.data.api.endpoint.ChartTopArtistsEndpoint
 import com.mataku.scrobscrob.data.api.endpoint.ChartTopTagsEndpoint
 import com.mataku.scrobscrob.data.api.endpoint.ChartTopTracksEndpoint
+import com.mataku.scrobscrob.data.db.ArtworkDataStore
 import com.mataku.scrobscrob.data.repository.mapper.toChartTopArtists
 import com.mataku.scrobscrob.data.repository.mapper.toChartTopTags
 import com.mataku.scrobscrob.data.repository.mapper.toChartTopTracks
@@ -28,11 +29,12 @@ interface ChartRepository {
 
 @Singleton
 class ChartRepositoryImpl @Inject constructor(
-  private val lastFmService: LastFmService
+  private val lastFmService: LastFmService,
+  private val artworkDataStore: ArtworkDataStore
 ) : ChartRepository {
   override fun topArtists(page: Int): Flow<ChartTopArtists> = flow {
     val params = mapOf(
-      "limit" to "20",
+      "limit" to "10",
       "page" to page.toString()
     )
     val chartTopArtistsEndpoint = ChartTopArtistsEndpoint(
@@ -44,7 +46,7 @@ class ChartRepositoryImpl @Inject constructor(
 
   override fun topTracks(page: Int): Flow<ChartTopTracks> = flow {
     val params = mapOf(
-      "limit" to "20",
+      "limit" to "10",
       "page" to page.toString()
     )
     val chartTopTracksEndpoint = ChartTopTracksEndpoint(

@@ -14,6 +14,7 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.http.fullPath
 import io.ktor.http.headersOf
 import io.ktor.utils.io.ByteReadChannel
+import io.mockk.mockk
 
 class ChartRepositorySpec : DescribeSpec({
   extension(CoroutinesListener())
@@ -65,7 +66,7 @@ class ChartRepositorySpec : DescribeSpec({
     """.trimIndent()
     val page = 1
     val mockEngine = MockEngine { request ->
-      request.url.fullPath shouldBe "/2.0/?method=chart.gettopartists&format=json&limit=20&page=1"
+      request.url.fullPath shouldBe "/2.0/?method=chart.gettopartists&format=json&limit=10&page=1"
       request.method shouldBe HttpMethod.Get
 
       respond(
@@ -79,7 +80,7 @@ class ChartRepositorySpec : DescribeSpec({
     )
 
     it("should parse as ChartTopArtists") {
-      val repository = ChartRepositoryImpl(lastFmService)
+      val repository = ChartRepositoryImpl(lastFmService, mockk())
 
       repository.topArtists(page)
         .test {
@@ -141,7 +142,7 @@ class ChartRepositorySpec : DescribeSpec({
     """.trimIndent()
     val page = 1
     val mockEngine = MockEngine { request ->
-      request.url.fullPath shouldBe "/2.0/?method=chart.gettoptracks&format=json&limit=20&page=1"
+      request.url.fullPath shouldBe "/2.0/?method=chart.gettoptracks&format=json&limit=10&page=1"
       request.method shouldBe HttpMethod.Get
 
       respond(
@@ -155,7 +156,7 @@ class ChartRepositorySpec : DescribeSpec({
     )
 
     it("should parse as ChartTopTracks") {
-      val repository = ChartRepositoryImpl(lastFmService)
+      val repository = ChartRepositoryImpl(lastFmService, mockk())
       repository.topTracks(page)
         .test {
           awaitItem().topTracks.isNotEmpty() shouldBe true

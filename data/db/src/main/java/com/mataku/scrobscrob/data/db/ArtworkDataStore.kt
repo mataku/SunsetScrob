@@ -18,6 +18,7 @@ import javax.inject.Singleton
 
 interface ArtworkDataStore {
   suspend fun artwork(artist: String): Flow<String?>
+  suspend fun albumArtwork(albumName: String, artist: String): String?
 
   suspend fun artworkList(artists: List<String>): Flow<List<String?>>
   suspend fun artworkList2(artists: List<String>): List<ArtistArtworkEntity>
@@ -82,6 +83,15 @@ class ArtworkDataStoreImpl @Inject constructor(
             url = it.url ?: ""
           )
         }
+    }
+  }
+
+  override suspend fun albumArtwork(albumName: String, artist: String): String? {
+    return withContext(Dispatchers.IO) {
+      artworkQueries.selectAlbumUrl(
+        name = artist,
+        album_name = albumName
+      ).executeAsOneOrNull()?.url
     }
   }
 }
