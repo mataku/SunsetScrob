@@ -41,7 +41,6 @@ fun Project.testConfiguration() {
     val turbine = libs.findLibrary("turbine").get()
     val coroutinesTest = libs.findLibrary("coroutines-test").get()
     val junitVintageEngine = libs.findLibrary("junit-vintage-engine").get()
-    val junitJupiter = libs.findLibrary("junit-jupiter").get()
     listOf(
       androidxTestCore,
       kotestRunner,
@@ -50,7 +49,6 @@ fun Project.testConfiguration() {
       turbine,
       coroutinesTest,
       junitVintageEngine,
-      junitJupiter
     ).forEach {
       add("testImplementation", it)
     }
