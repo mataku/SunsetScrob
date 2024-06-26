@@ -39,12 +39,13 @@ fun TopArtist(
       }
   ) {
     val imageList = artist.imageList
-    val url = if (imageList.isEmpty()) {
-      ""
-    } else {
-      imageList.imageUrl()
+    val cachedImageUrl = artist.imageUrl
+    val url = when {
+      cachedImageUrl != null -> cachedImageUrl
+      imageList.isEmpty() -> ""
+      else -> imageList.imageUrl()
     }
-    val imageData = if (url == null || url.isBlank()) {
+    val imageData = if (url.isNullOrEmpty()) {
       uiCommonR.drawable.no_image
     } else {
       url

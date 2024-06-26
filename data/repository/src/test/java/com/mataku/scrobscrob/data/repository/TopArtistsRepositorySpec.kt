@@ -4,6 +4,7 @@ import app.cash.turbine.test
 import com.mataku.scrobscrob.core.entity.TimeRangeFiltering
 import com.mataku.scrobscrob.data.api.LastFmHttpClient
 import com.mataku.scrobscrob.data.api.LastFmService
+import com.mataku.scrobscrob.data.db.ArtworkDataStore
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
 import io.ktor.client.engine.mock.MockEngine
@@ -14,6 +15,7 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.http.fullPath
 import io.ktor.http.headersOf
 import io.ktor.utils.io.ByteReadChannel
+import io.mockk.mockk
 
 class TopArtistsRepositorySpec : DescribeSpec({
   describe("fetchTopArtists") {
@@ -207,10 +209,11 @@ class TopArtistsRepositorySpec : DescribeSpec({
         headers = headersOf(HttpHeaders.ContentType, "application/json")
       )
     }
+    val artworkDatastore = mockk<ArtworkDataStore>(relaxed = true)
     val lastfmService = LastFmService(
       LastFmHttpClient.create(mockEngine)
     )
-    val repository = TopArtistsRepositoryImpl(lastfmService)
+    val repository = TopArtistsRepositoryImpl(lastfmService, artworkDatastore)
 
     it("should parse as TopArtists") {
       repository.fetchTopArtists(

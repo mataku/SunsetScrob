@@ -2,11 +2,9 @@ package com.mataku.scrobscrob.data.db
 
 import android.content.Context
 import app.cash.sqldelight.coroutines.asFlow
-import app.cash.sqldelight.coroutines.mapToOneOrDefault
 import app.cash.sqldelight.driver.android.AndroidSqliteDriver
 import com.mataku.scrobscrob.Database
 import com.mataku.scrobscrob.data.db.entity.ArtistArtworkEntity
-import com.mataku.scrobscrob.schema.SelectUrl
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -17,7 +15,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 interface ArtworkDataStore {
-  suspend fun artwork(artist: String): Flow<String?>
+  suspend fun artwork(artist: String): String?
   suspend fun albumArtwork(albumName: String, artist: String): String?
 
   suspend fun artworkList(artists: List<String>): Flow<List<String?>>
@@ -33,15 +31,11 @@ class ArtworkDataStoreImpl @Inject constructor(
   private val sqlDriver = AndroidSqliteDriver(Database.Schema, context, "scrobscrob.db")
   private val artworkQueries = Database(sqlDriver).artworkQueries
 
-  override suspend fun artwork(artist: String): Flow<String?> {
-    return artworkQueries.selectUrl(name = artist)
-      .asFlow()
-      .catch {
-      }
-      .mapToOneOrDefault(SelectUrl(""), Dispatchers.IO)
-      .map {
-        it.url
-      }
+  override suspend fun artwork(artist: String): String? {
+    return withContext(Dispatchers.IO) {
+      artworkQueries.selectUrl(name = artist)
+        .executeAsOneOrNull()?.url
+    }
   }
 
   override suspend fun deleteAll() {

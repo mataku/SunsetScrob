@@ -47,11 +47,11 @@ internal fun ChartArtistList(
     ) {
       itemsIndexed(
         chartArtistList,
-        key = { index, item -> "${index}_${item.name}" }) { index, artist ->
+        key = { index, item -> "${index}_${item.name}" }) { _, artist ->
         ChartCell(
           title = artist.name,
           subTitle = "",
-          artworkUrl = artist.imageList.imageUrl(),
+          artworkUrl = artist.imageUrl ?: artist.imageList.imageUrl(),
           modifier = Modifier
             .clickable {
               onChartArtistTap.invoke(artist)
