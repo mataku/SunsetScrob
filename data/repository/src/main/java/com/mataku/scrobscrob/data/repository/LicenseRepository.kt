@@ -1,9 +1,11 @@
 package com.mataku.scrobscrob.data.repository
 
 import com.mataku.scrobscrob.core.entity.LicenseArtifact
+import com.mataku.scrobscrob.core.entity.SpdxLicense
 import com.mataku.scrobscrob.data.db.LicenseDataStore
 import com.mataku.scrobscrob.data.repository.di.LicenseInfoProvider
 import com.mataku.scrobscrob.data.repository.mapper.toLicenseArtifactList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -29,7 +31,23 @@ class LicenseRepositoryImpl @Inject constructor(
     }
 
     val list = LicenseDataStore.parseLicenseList(licenseInfoProvider.licenseRawString())
-      .toLicenseArtifactList()
+      .toLicenseArtifactList().toMutableList()
+    list.add(
+      LicenseArtifact(
+        artifactId = "",
+        name = "Noto Sans",
+        spdxLicenses = persistentListOf(
+          SpdxLicense(
+            identifier = "notosans",
+            name = "Open Font License",
+            url = "https://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=OFL"
+          )
+        ),
+        groupId = "",
+        scm = null,
+        version = ""
+      )
+    )
     cachedList = list
     emit(list)
   }.flowOn(Dispatchers.IO)
