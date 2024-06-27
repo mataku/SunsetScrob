@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -18,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -30,14 +32,31 @@ import com.mataku.scrobscrob.ui_common.organism.ContentHeader
 @Composable
 fun LicenseScreen(
   viewModel: LicenseViewModel = hiltViewModel(),
+  onBackPressed: () -> Unit
 ) {
   val uiState by viewModel.uiState.collectAsState()
 
   val context = LocalContext.current
   LazyColumn(
     content = {
-      stickyHeader {
-        ContentHeader(text = "Licenses")
+      stickyHeader(
+        key = "license_header",
+        contentType = "header"
+      ) {
+        ContentHeader(
+          text = "Licenses",
+          onBackPressed = onBackPressed,
+          modifier = Modifier
+            .layout { measurable, constraints ->
+              val width = constraints.maxWidth + 2 * (16.dp).roundToPx()
+              val newConstraints = constraints.copy(maxWidth = width)
+              val placeable = measurable.measure(newConstraints)
+              layout(placeable.width, placeable.height) {
+                placeable.place(0, 0)
+              }
+            }
+            .fillMaxWidth()
+        )
       }
       items(uiState.licenseList) {
         LicenseCell(

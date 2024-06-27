@@ -66,7 +66,7 @@ object SunsetTextStyle {
     fontFamily = notoSansJpFamily,
     platformStyle = PlatformTextStyle(
       includeFontPadding = false
-    )
+    ),
   )
 
   val headline = TextStyle(
