@@ -49,6 +49,7 @@ class ScrobbleRepositoryImpl @Inject constructor(
     val response = lastFmService.request(endpoint)
     val recentTracks = response.toRecentTracks()
     emit(recentTracks)
+    // TODO: refactor
     recentTracks.distinct().forEach { track ->
       val imageUrl = track.images.imageUrl()
       if (imageUrl != null) {

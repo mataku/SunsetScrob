@@ -31,7 +31,17 @@ class LicenseRepositoryImpl @Inject constructor(
     }
 
     val list = LicenseDataStore.parseLicenseList(licenseInfoProvider.licenseRawString())
-      .toLicenseArtifactList().toMutableList()
+      .toLicenseArtifactList()
+      .sortedBy {
+        it.name
+      }
+      .distinctBy {
+        it.name
+      }
+      .filter {
+        it.name.isNotEmpty()
+      }
+      .toMutableList()
     list.add(
       LicenseArtifact(
         artifactId = "",
