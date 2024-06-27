@@ -13,6 +13,8 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.contract
 
 interface ArtworkDataStore {
   suspend fun artwork(artist: String): String?
@@ -43,6 +45,7 @@ class ArtworkDataStoreImpl @Inject constructor(
   }
 
   override suspend fun insertArtwork(albumName: String, artist: String, artworkUrl: String) {
+    if (artworkUrl.isInvalidArtwork()) return
     withContext(Dispatchers.IO) {
       artworkQueries.insert(
         name = artist,
@@ -89,3 +92,16 @@ class ArtworkDataStoreImpl @Inject constructor(
     }
   }
 }
+
+@OptIn(ExperimentalContracts::class)
+private fun String?.isInvalidArtwork(): Boolean {
+  contract {
+    returns(false) implies (this@isInvalidArtwork != null)
+  }
+
+  this ?: return true
+
+  val lastElement = this.split("/").lastOrNull()?.split(".")?.get(0) ?: return true
+  return lastElement == "2a96cbd8b46e442fc41c2b86b821562f"
+}
+
