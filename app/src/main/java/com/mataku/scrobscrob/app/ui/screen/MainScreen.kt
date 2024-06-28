@@ -28,6 +28,7 @@ import com.mataku.scrobscrob.ui_common.style.LocalTopAppBarState
 @Composable
 fun MainScreen(
   username: String?,
+  modifier: Modifier = Modifier
 ) {
   val navController = rememberNavController()
   val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -38,7 +39,7 @@ fun MainScreen(
   ) {
 
     Scaffold(
-      modifier = Modifier,
+      modifier = modifier,
       snackbarHost = {
         SnackbarHost(hostState = LocalSnackbarHostState.current)
       },

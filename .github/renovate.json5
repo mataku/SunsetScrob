@@ -28,7 +28,8 @@
     "com.jakewharton.timber:timber",
     "org.robolectric:robolectric",
     "org.junit.jupiter:junit-jupiter",
-    "org.junit.vintage:junit-vintage-engine"
+    "org.junit.vintage:junit-vintage-engine",
+    "com.slack.lint.compose:compose-lint-checks"
   ],
   "prConcurrentLimit": 3,
   "rebaseWhen": "conflicted",

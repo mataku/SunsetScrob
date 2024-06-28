@@ -9,7 +9,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mataku.scrobscrob.discover.ui.molecule.ChartArtistList
 import com.mataku.scrobscrob.discover.ui.molecule.ChartTagList
@@ -21,13 +20,14 @@ import com.mataku.scrobscrob.ui_common.organism.ContentHeader
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun DiscoverScreen(
-  viewModel: DiscoverViewModel = hiltViewModel(),
-  navController: NavController
+  viewModel: DiscoverViewModel,
+  navController: NavController,
+  modifier: Modifier = Modifier
 ) {
   val uiState by viewModel.uiState.collectAsState()
 
   LazyColumn(
-    modifier = Modifier.fillMaxSize(),
+    modifier = modifier.fillMaxSize(),
     verticalArrangement = Arrangement.spacedBy(16.dp)
   ) {
     stickyHeader {

@@ -19,44 +19,49 @@ import com.mataku.scrobscrob.ui_common.organism.ContentHeader
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun PrivacyPolicyScreen() {
+fun PrivacyPolicyScreen(
+  modifier: Modifier = Modifier
+) {
   val context = LocalContext.current
-  LazyColumn(content = {
-    stickyHeader {
-      ContentHeader(text = stringResource(id = R.string.item_privacy_policy))
-    }
-    item {
-      Column(modifier = Modifier.fillMaxSize()) {
-        AndroidView(
-          factory = {
-            WebView(it)
-          },
-          update = { webView ->
-            webView.webViewClient = object : WebViewClient() {
-              override fun shouldOverrideUrlLoading(
-                view: WebView?,
-                request: WebResourceRequest?
-              ): Boolean {
-                val urlStr = request?.url
-                urlStr?.let {
-                  kotlin.runCatching {
-                    context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(it.toString())))
-                  }.fold(
-                    onSuccess = {},
-                    onFailure = {}
-                  )
-                  return true
-                }
-
-                return false
-              }
-            }
-            webView.loadUrl("https://mataku.github.io/sunsetscrob/index.html")
-          }
-        )
+  LazyColumn(
+    content = {
+      stickyHeader {
+        ContentHeader(text = stringResource(id = R.string.item_privacy_policy))
       }
-    }
-  }, modifier = Modifier.fillMaxSize())
+      item {
+        Column(modifier = Modifier.fillMaxSize()) {
+          AndroidView(
+            factory = {
+              WebView(it)
+            },
+            update = { webView ->
+              webView.webViewClient = object : WebViewClient() {
+                override fun shouldOverrideUrlLoading(
+                  view: WebView?,
+                  request: WebResourceRequest?
+                ): Boolean {
+                  val urlStr = request?.url
+                  urlStr?.let {
+                    kotlin.runCatching {
+                      context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(it.toString())))
+                    }.fold(
+                      onSuccess = {},
+                      onFailure = {}
+                    )
+                    return true
+                  }
+
+                  return false
+                }
+              }
+              webView.loadUrl("https://mataku.github.io/sunsetscrob/index.html")
+            }
+          )
+        }
+      }
+    },
+    modifier = modifier.fillMaxSize()
+  )
 
 //  val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
 //  ModalBottomSheetLayout(

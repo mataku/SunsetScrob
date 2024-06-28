@@ -66,8 +66,7 @@ private fun Tag(
 
 @Preview
 @Composable
-@ShowkaseComposable(name = "TagList", group = "TagList")
-fun TopTagsPreview() {
+private fun TopTagsPreview() {
   SunsetThemePreview {
     Surface {
       val tagList = listOf("Dance", "Rock", "Jazz").map {

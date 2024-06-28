@@ -34,7 +34,8 @@ import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 @Composable
 fun ThemeSelectorScreen(
   viewModel: ThemeSelectorViewModel,
-  navController: NavController
+  navController: NavController,
+  modifier: Modifier = Modifier
 ) {
   val uiState by viewModel.uiState.collectAsState()
   val currentTheme = LocalAppTheme.current
@@ -67,7 +68,7 @@ fun ThemeSelectorScreen(
             })
         }
       },
-      modifier = Modifier
+      modifier = modifier
         .fillMaxSize()
     )
   }

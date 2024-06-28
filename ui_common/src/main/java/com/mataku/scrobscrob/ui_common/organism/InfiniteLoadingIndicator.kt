@@ -13,28 +13,35 @@ import androidx.compose.ui.unit.dp
 import com.mataku.scrobscrob.ui_common.molecule.LoadingIndicator
 
 @Composable
-fun InfiniteLoadingIndicator(onScrollEnd: () -> Unit, padding: Dp = 0.dp) {
+fun InfiniteLoadingIndicator(
+  onScrollEnd: () -> Unit,
+  modifier: Modifier = Modifier,
+  padding: Dp = 0.dp
+) {
   CircularProgressIndicator(
-    modifier = Modifier
+    modifier = modifier
       .size(40.dp)
       .padding(horizontal = padding, vertical = 16.dp),
   )
 
-  LaunchedEffect(key1 = true, block = {
+  LaunchedEffect(key1 = Unit, block = {
     onScrollEnd()
   })
 }
 
 @Composable
-fun InfiniteLoadingIndicator(onScrollEnd: () -> Unit, modifier: Modifier) {
+fun InfiniteLoadingIndicator(
+  onScrollEnd: () -> Unit,
+  modifier: Modifier = Modifier
+) {
   Box(
     modifier = modifier,
     contentAlignment = Alignment.Center
-    ) {
-    LoadingIndicator(modifier = modifier)
+  ) {
+    LoadingIndicator(modifier = Modifier)
   }
 
-  LaunchedEffect(key1 = true, block = {
+  LaunchedEffect(key1 = Unit, block = {
     onScrollEnd()
   })
 }

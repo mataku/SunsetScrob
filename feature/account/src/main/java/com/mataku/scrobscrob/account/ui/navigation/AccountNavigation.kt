@@ -50,7 +50,9 @@ fun NavGraphBuilder.accountGraph(navController: NavController, username: String)
     composable(
       SCROBBLE_SETTING_DESTINATION,
     ) {
-      ScrobbleSettingScreen()
+      ScrobbleSettingScreen(
+        viewModel = hiltViewModel()
+      )
     }
     composable(THEME_SELECTOR_DESTINATION) {
       ThemeSelectorScreen(
@@ -60,6 +62,7 @@ fun NavGraphBuilder.accountGraph(navController: NavController, username: String)
     }
     composable(LICENSE_DESTINATION) {
       LicenseScreen(
+        viewModel = hiltViewModel(),
         onBackPressed = navController::popBackStack
       )
     }

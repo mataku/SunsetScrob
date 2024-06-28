@@ -34,7 +34,7 @@ import kotlinx.coroutines.launch
 fun WebViewScreen(
   url: String,
   navController: NavController,
-  modifier: Modifier
+  modifier: Modifier = Modifier
 ) {
   var title by remember {
     mutableStateOf("")
@@ -53,9 +53,10 @@ fun WebViewScreen(
     modifier = modifier
       .fillMaxSize()
   ) {
-    NavigationHeader(text = title) {
-      navController.popBackStack()
-    }
+    NavigationHeader(
+      text = title,
+      onBackPressed = navController::popBackStack
+    )
     // NOTE: specified height and visibility animation as workaround for compose WebView flickering
     AndroidView(
       factory = {

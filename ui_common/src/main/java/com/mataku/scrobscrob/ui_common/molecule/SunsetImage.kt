@@ -1,5 +1,6 @@
 package com.mataku.scrobscrob.ui_common.molecule
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable
@@ -13,12 +14,13 @@ import com.bumptech.glide.integration.compose.GlideImage
 import com.bumptech.glide.integration.compose.placeholder
 import com.mataku.scrobscrob.ui_common.R
 
+@SuppressLint("ComposeModifierReused")
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun SunsetImage(
-  modifier: Modifier = Modifier,
   imageData: Any?,
   contentDescription: String?,
+  modifier: Modifier = Modifier,
   contentScale: ContentScale = ContentScale.Fit,
 ) {
   if (LocalInspectionMode.current || imageData == R.drawable.no_image) {

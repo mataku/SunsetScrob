@@ -38,7 +38,8 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-  navController: NavController
+  navController: NavController,
+  modifier: Modifier = Modifier
 ) {
   val pagerState = rememberPagerState(
     pageCount = {
@@ -48,7 +49,9 @@ fun HomeScreen(
   val coroutineScope = rememberCoroutineScope()
   val scrollBehavior = LocalTopAppBarState.current
 
-  BoxWithConstraints {
+  BoxWithConstraints(
+    modifier = modifier
+  ) {
     val screenHeight = maxHeight
     val scrollState = rememberScrollState()
 

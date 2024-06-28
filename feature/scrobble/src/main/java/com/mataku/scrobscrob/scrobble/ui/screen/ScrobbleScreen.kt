@@ -33,7 +33,8 @@ import kotlinx.collections.immutable.ImmutableList
 fun ScrobbleScreen(
   viewModel: ScrobbleViewModel,
   topAppBarScrollBehavior: TopAppBarScrollBehavior,
-  navigateToTrackDetail: (RecentTrack) -> Unit
+  navigateToTrackDetail: (RecentTrack) -> Unit,
+  modifier: Modifier = Modifier
 ) {
   val uiState by viewModel.uiState.collectAsState()
   val lazyListState = rememberLazyListState()
@@ -44,7 +45,7 @@ fun ScrobbleScreen(
   )
 
   Box(
-    modifier = Modifier
+    modifier = modifier
       .pullRefresh(
         state = pullRefreshState,
       )

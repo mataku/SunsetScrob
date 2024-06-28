@@ -25,10 +25,11 @@ import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun TrackArtist(
-  artistInfo: TopArtistInfo
+  artistInfo: TopArtistInfo,
+  modifier: Modifier = Modifier
 ) {
   Row(
-    modifier = Modifier
+    modifier = modifier
       .fillMaxWidth()
       .padding(horizontal = 16.dp, vertical = 8.dp),
     verticalAlignment = Alignment.CenterVertically

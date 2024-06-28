@@ -49,7 +49,8 @@ import kotlinx.coroutines.launch
 fun TopArtistsScreen(
   viewModel: TopArtistsViewModel,
   onArtistTap: (TopArtistInfo) -> Unit,
-  topAppBarScrollBehavior: TopAppBarScrollBehavior
+  topAppBarScrollBehavior: TopAppBarScrollBehavior,
+  modifier: Modifier = Modifier
 ) {
   val uiState by viewModel.uiState.collectAsState()
 
@@ -82,7 +83,7 @@ fun TopArtistsScreen(
             showBottomSheet = true
           }
         },
-        modifier = Modifier
+        modifier = modifier
           .padding(
             bottom = 152.dp + with(density) {
               topAppBarHeightPixel.toDp()

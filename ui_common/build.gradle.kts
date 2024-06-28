@@ -28,6 +28,7 @@ dependencies {
   implementation(libs.showkase.annotation)
   kspDebug(libs.showkase.processor)
   implementation(libs.showkase)
+  implementation(libs.kotlinx.collection)
 }
 
 ksp {

@@ -45,10 +45,10 @@ import kotlinx.collections.immutable.persistentListOf
 @Composable
 fun AlbumScreen(
   viewModel: AlbumViewModel,
-  onAlbumLoadMoreTap: (String) -> Unit
+  onAlbumLoadMoreTap: (String) -> Unit,
 ) {
   val uiState by viewModel.uiState.collectAsState()
-  
+
   AlbumContent(
     artworkUrl = uiState.preloadArtworkUrl,
     albumName = uiState.preloadAlbumName,

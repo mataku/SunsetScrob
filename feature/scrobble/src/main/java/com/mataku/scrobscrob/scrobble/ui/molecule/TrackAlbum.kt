@@ -30,10 +30,11 @@ import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun TrackAlbum(
-  album: TrackAlbumInfo
+  album: TrackAlbumInfo,
+  modifier: Modifier = Modifier
 ) {
   Column(
-    modifier = Modifier
+    modifier = modifier
       .fillMaxWidth()
       .padding(horizontal = 16.dp)
   ) {

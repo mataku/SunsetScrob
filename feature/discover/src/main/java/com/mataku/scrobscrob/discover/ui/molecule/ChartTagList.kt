@@ -13,10 +13,12 @@ import com.mataku.scrobscrob.core.entity.Tag
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.molecule.TopTags
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 internal fun ChartTagList(
-  tagList: List<Tag>,
+  tagList: ImmutableList<Tag>,
   onTagClick: (Tag) -> Unit
 ) {
   Column(
@@ -46,7 +48,7 @@ private fun ChartTagListPreview() {
   SunsetThemePreview {
     Surface {
       ChartTagList(
-        tagList = listOf(
+        tagList = persistentListOf(
           Tag("rock", ""),
           Tag("pop", ""),
           Tag("jazz", ""),

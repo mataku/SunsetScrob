@@ -2,14 +2,12 @@ package com.mataku.scrobscrob.account.ui.molecule
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -37,8 +35,7 @@ internal fun Profile(
       .fillMaxWidth()
       .padding(
         vertical = 12.dp
-      )
-    ,
+      ),
     horizontalArrangement = Arrangement.spacedBy(16.dp),
     verticalAlignment = Alignment.CenterVertically
   ) {
@@ -86,19 +83,16 @@ private fun UserListeningCount(
     ValueDescription(
       value = playCount,
       label = "Scrobbles",
-      modifier = Modifier
     )
 
     ValueDescription(
       value = albumCount,
       label = "Albums",
-      modifier = modifier
     )
 
     ValueDescription(
       value = trackCount,
       label = "Tracks",
-      modifier = modifier
     )
   }
 }

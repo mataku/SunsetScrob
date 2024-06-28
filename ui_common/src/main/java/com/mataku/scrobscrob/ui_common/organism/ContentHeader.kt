@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.MaterialTheme
@@ -24,7 +23,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
-import androidx.compose.ui.layout.layout
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.airbnb.android.showkase.annotation.ShowkaseComposable
@@ -88,7 +86,7 @@ fun ContentHeader(
   styleName = "Dark"
 )
 @Composable
-fun ContentHeaderPreview() {
+private fun ContentHeaderPreview() {
   SunsetThemePreview {
     ContentHeader(text = "Scrobble")
   }
@@ -97,7 +95,7 @@ fun ContentHeaderPreview() {
 @Preview
 @ShowkaseComposable(name = "ContentHeader", group = "Common", styleName = "Light")
 @Composable
-fun ContentHeaderLightPreview() {
+private fun ContentHeaderLightPreview() {
   SunsetThemePreview(theme = AppTheme.LIGHT) {
     ContentHeader(text = "Scrobble")
   }
@@ -106,7 +104,7 @@ fun ContentHeaderLightPreview() {
 @Preview
 @ShowkaseComposable(name = "ContentHeader", group = "Common", styleName = "Midnight")
 @Composable
-fun ContentHeaderMidnightPreview() {
+private fun ContentHeaderMidnightPreview() {
   SunsetThemePreview(theme = AppTheme.MIDNIGHT) {
     ContentHeader(text = "Scrobble")
   }
@@ -115,7 +113,7 @@ fun ContentHeaderMidnightPreview() {
 @Preview
 @ShowkaseComposable(name = "ContentHeader", group = "Common", styleName = "Last.fm Dark")
 @Composable
-fun ContentHeaderLastFmDarkPreview() {
+private fun ContentHeaderLastFmDarkPreview() {
   SunsetThemePreview(theme = AppTheme.LASTFM_DARK) {
     ContentHeader(
       text = "Scrobble",

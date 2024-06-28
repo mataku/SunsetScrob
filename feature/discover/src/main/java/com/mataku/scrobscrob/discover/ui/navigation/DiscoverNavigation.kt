@@ -1,5 +1,6 @@
 package com.mataku.scrobscrob.discover.ui.navigation
 
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
@@ -13,6 +14,7 @@ fun NavGraphBuilder.discoverGraph(navController: NavController) {
       DISCOVER_START_NAVIGATION
     ) {
       DiscoverScreen(
+        viewModel = hiltViewModel(),
         navController = navController
       )
     }
