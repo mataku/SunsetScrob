@@ -1,5 +1,6 @@
 package com.mataku.scrobscrob.album.ui.navigation
 
+import android.net.Uri
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -64,7 +65,9 @@ private fun buildAlbumInfoUrl(
   artistName: String,
   artworkUrl: String,
 ): String {
-  return "${ALBUM_INFO_DESTINATION}?albumName=${albumName}&artistName=${artistName}&artworkUrl=${artworkUrl}"
+  val encodedAlbumName = Uri.encode(albumName)
+  val encodedArtistName = Uri.encode(artistName)
+  return "${ALBUM_INFO_DESTINATION}?albumName=${encodedAlbumName}&artistName=${encodedArtistName}&artworkUrl=${artworkUrl}"
 }
 
 private const val TOP_ALBUMS_DESTINATION = "top_albums"
