@@ -1,5 +1,6 @@
 package com.mataku.scrobscrob.scrobble.ui.navigation
 
+import android.net.Uri
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -53,8 +54,10 @@ fun NavController.navigateToTrackDetail(
   artistName: String,
   imageUrl: String,
 ) {
+  val encodedTrackName = Uri.encode(trackName)
+  val encodedArtistName = Uri.encode(artistName)
   val destination =
-    "track_detail?trackName=$trackName&artistName=$artistName&imageUrl=$imageUrl"
+    "track_detail?trackName=$encodedTrackName&artistName=$encodedArtistName&imageUrl=$imageUrl"
   navigate(destination)
 }
 
