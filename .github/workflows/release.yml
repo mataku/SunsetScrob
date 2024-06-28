@@ -44,18 +44,21 @@ jobs:
           GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON_DEV }}
         run: |
           bundle exec fastlane android setup_for_ci
+      - name: Prepare authentication
+        run: |
+          echo -n "${{ secrets.SUNSETSCROB_KEYSTORE }}" | base64 -d > SunsetScrob.jks
+          echo -n "${{ secrets.APP_PUBLISHER_JSON }}" | base64 -d > app/app-publisher.json
       - name: Generate benchmark profile
+        env:
+          SUNSET_KEY_ALIAS: ${{ secrets.SUNSET_KEY_ALIAS }}
+          SUNSET_KEY_PASSWORD: ${{ secrets.SUNSET_KEY_PASSWORD }}
+          SUNSET_STORE_PASSWORD: ${{ secrets.SUNSET_STORE_PASSWORD }}
         run: |
           ./gradlew cleanManagedDevices --unused-only
           ./gradlew app:generateReleaseBaselineProfile -Pandroid.testoptions.manageddevices.emulator.gpu="swiftshader_indirect" -Pandroid.testInstrumentationRunnerArguments.androidx.benchmark.enabledRules=BaselineProfile
       - name: Move baseline profile file
         run: |
           mv app/src/release/generated/baselineProfiles/baseline-prof.txt app/src/main/baseline-prof.txt
-
-      - name: Prepare authentication
-        run: |
-          echo -n "${{ secrets.SUNSETSCROB_KEYSTORE }}" | base64 -d > SunsetScrob.jks
-          echo -n "${{ secrets.APP_PUBLISHER_JSON }}" | base64 -d > app/app-publisher.json
       - name: Deploy an aab
         env:
           LAST_FM_API_KEY: ${{ secrets.LAST_FM_API_KEY }}
@@ -65,5 +68,4 @@ jobs:
           SUNSET_KEY_PASSWORD: ${{ secrets.SUNSET_KEY_PASSWORD }}
           SUNSET_STORE_PASSWORD: ${{ secrets.SUNSET_STORE_PASSWORD }}
         run: |
-          bundle exec fastlane android setup_for_ci
           bundle exec fastlane android deploy_internal
