@@ -8,7 +8,7 @@ object Colors {
   val LastFmColor = Color(0xFFbb0414)
   val BarBackground = Color(0xFF607D8B)
   val textSecondary = Color(0xFF90A4AE)
-  val SunsetTextSecondary = Color(0xFF757575)
+  val textSecondaryLight = Color(0xFF757575)
   val Lime = Color(0xFFCDDC39)
   val LightLime = Color(0xFFC0CA33)
   val MidnightGray = Color(0xFF424242)
@@ -56,7 +56,7 @@ object LightColor {
   val secondary = Color.White
 
   @ShowkaseColor(name = "onSecondary", group = "Light")
-  val onSecondary = Colors.textSecondary
+  val onSecondary = Colors.textSecondaryLight
 
   @ShowkaseColor(name = "surface", group = "Light")
   val surface = Color(0xFFF5F5F5)
