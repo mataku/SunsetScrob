@@ -3,8 +3,5 @@ release_notes:
 	cp fastlane/metadata/android/en-US/changelogs/97.txt fastlane/metadata/android/en-US/changelogs/$(VERSION).txt
 	cp fastlane/metadata/android/ja-JP/changelogs/97.txt fastlane/metadata/android/ja-JP/changelogs/$(VERSION).txt
 
-generate_compose_metrics:
-	./gradlew assembleDebug -Psunsetscrob.composeCompilerMetrics=true
-
 generate_compose_reports:
-	./gradlew assembleDebug -Psunsetscrob.composeCompilerReports=true
+	./gradlew assembleDebug -PcomposeCompilerReports=true

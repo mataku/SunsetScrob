@@ -23,6 +23,7 @@ android {
     minSdk = 28
     targetSdk = 34
 
+    testInstrumentationRunnerArguments["androidx.benchmark.suppressErrors"] = "EMULATOR"
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
   }
 

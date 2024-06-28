@@ -29,10 +29,15 @@ fun Project.composeConfiguration() {
     }
 
     with(extensions.getByType<ComposeCompilerGradlePluginExtension>()) {
-      includeSourceInformation.set(true)
       enableStrongSkippingMode.set(true)
 
-      reportsDestination.set(layout.buildDirectory.dir("compose_reports"))
+      val composeReportEnabled =
+        rootProject.providers.gradleProperty("composeCompilerReports").orNull == "true"
+
+      if (composeReportEnabled) {
+        reportsDestination.set(layout.buildDirectory.dir("compose_reports"))
+        metricsDestination.set(layout.buildDirectory.dir("compose_metrics"))
+      }
     }
   }
 }
