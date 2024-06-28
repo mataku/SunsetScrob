@@ -12,8 +12,8 @@ with my account
 
 | Dark | Light | Midnight |
 | :--: | :--: | :--: |
-| <img src="./scrobble_dark.png" height=400 /> | <img src="./scrobble_light.png" height=400 /> | <img src="./scrobble_midnight.png" height=400 /> |
+| <img src="./scrobble_dark.png" height=400 /> | <img src="./scrobble_light.png" height=400 /> | <img src="./midnight.png" height=400 /> |
 
 | Ocean | Last.fm Dark |
 | :--: | :--: |
-|  <img src="./scrobble_ocean.png" height=600 /> |  <img src="./scrobble_lastfm_dark.png" height=600 /> |
+|  <img src="./ocean.png" height=600 /> |  <img src="./lastfm_dark.png" height=600 /> |
