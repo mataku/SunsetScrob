@@ -80,7 +80,7 @@ class ChartRepositorySpec : DescribeSpec({
     )
 
     it("should parse as ChartTopArtists") {
-      val repository = ChartRepositoryImpl(lastFmService, mockk())
+      val repository = ChartRepositoryImpl(lastFmService, mockk(relaxed = true))
 
       repository.topArtists(page)
         .test {
@@ -156,7 +156,7 @@ class ChartRepositorySpec : DescribeSpec({
     )
 
     it("should parse as ChartTopTracks") {
-      val repository = ChartRepositoryImpl(lastFmService, mockk())
+      val repository = ChartRepositoryImpl(lastFmService, mockk(relaxed = true))
       repository.topTracks(page)
         .test {
           awaitItem().topTracks.isNotEmpty() shouldBe true

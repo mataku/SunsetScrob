@@ -17,7 +17,7 @@ data class ChartTrack(
   val imageList: List<Image>,
   val mbid: String,
   val artworkLoaded: Boolean = false,
-  val imageUrl: String? = null
+  var imageUrl: String? = null
 )
 
 @Immutable

@@ -3,10 +3,12 @@ package com.mataku.scrobscrob.data.repository
 import com.mataku.scrobscrob.core.entity.NowPlayingTrackEntity
 import com.mataku.scrobscrob.core.entity.RecentTrack
 import com.mataku.scrobscrob.core.entity.ScrobbleResult
+import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.data.api.LastFmService
 import com.mataku.scrobscrob.data.api.endpoint.ApiSignature
 import com.mataku.scrobscrob.data.api.endpoint.ScrobbleEndpoint
 import com.mataku.scrobscrob.data.api.endpoint.UserRecentTracksEndpoint
+import com.mataku.scrobscrob.data.db.ArtworkDataStore
 import com.mataku.scrobscrob.data.db.SessionKeyDataStore
 import com.mataku.scrobscrob.data.db.UsernameDataStore
 import com.mataku.scrobscrob.data.repository.mapper.toRecentTracks
@@ -29,6 +31,7 @@ class ScrobbleRepositoryImpl @Inject constructor(
   private val lastFmService: LastFmService,
   private val usernameDataStore: UsernameDataStore,
   private val sessionDataStore: SessionKeyDataStore,
+  private val artworkDataStore: ArtworkDataStore
 ) : ScrobbleRepository {
   override suspend fun recentTracks(page: Int): Flow<List<RecentTrack>> = flow {
     val username = usernameDataStore.username() ?: emit(emptyList())
@@ -44,7 +47,19 @@ class ScrobbleRepositoryImpl @Inject constructor(
     )
 
     val response = lastFmService.request(endpoint)
-    emit(response.toRecentTracks())
+    val recentTracks = response.toRecentTracks()
+    emit(recentTracks)
+    // TODO: refactor
+    recentTracks.distinct().forEach { track ->
+      val imageUrl = track.images.imageUrl()
+      if (imageUrl != null) {
+        artworkDataStore.insertArtwork(
+          albumName = track.albumName,
+          artist = track.artistName,
+          artworkUrl = imageUrl
+        )
+      }
+    }
   }
 
   override suspend fun scrobble(currentTrack: NowPlayingTrackEntity) = flow {

@@ -59,7 +59,9 @@ fun NavGraphBuilder.accountGraph(navController: NavController, username: String)
       )
     }
     composable(LICENSE_DESTINATION) {
-      LicenseScreen()
+      LicenseScreen(
+        onBackPressed = navController::popBackStack
+      )
     }
     composable(PRIVACY_POLICY_DESTINATION) {
       PrivacyPolicyScreen()

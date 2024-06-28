@@ -41,7 +41,22 @@ class ChartRepositoryImpl @Inject constructor(
       params = params
     )
     val response = lastFmService.request(chartTopArtistsEndpoint)
-    emit(response.toChartTopArtists())
+    val topArtists = response.toChartTopArtists().topArtists.map { artist ->
+      val imageUrl = artworkDataStore.artwork(
+        artist = artist.name
+      )
+      if (imageUrl != null) {
+        artist.imageUrl = imageUrl
+      }
+      artist
+    }
+
+    emit(
+      ChartTopArtists(
+        topArtists = topArtists,
+        pagingAttr = response.toChartTopArtists().pagingAttr
+      )
+    )
   }.flowOn(Dispatchers.IO)
 
   override fun topTracks(page: Int): Flow<ChartTopTracks> = flow {
