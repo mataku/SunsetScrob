@@ -1,5 +1,7 @@
 package com.mataku.scrobscrob.artist.ui.screen
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
@@ -22,6 +24,7 @@ import org.junit.runner.RunWith
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
+@OptIn(ExperimentalMaterial3Api::class)
 @RunWith(AndroidJUnit4::class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 @Config(
@@ -99,7 +102,8 @@ class TopArtistsScreenTest {
       content = {
         TopArtistsScreen(
           viewModel = viewModel,
-          onArtistTap = {}
+          onArtistTap = {},
+          topAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
         )
       },
       fileName = "top_artists_screen.png"
@@ -117,7 +121,8 @@ class TopArtistsScreenTest {
       content = {
         TopArtistsScreen(
           viewModel = viewModel,
-          onArtistTap = {}
+          onArtistTap = {},
+          topAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
         )
       },
       fileName = "top_artists_screen_light.png"

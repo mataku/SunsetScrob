@@ -7,52 +7,32 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import androidx.navigation.navigation
 import com.mataku.scrobscrob.album.ui.screen.AlbumScreen
-import com.mataku.scrobscrob.album.ui.screen.TopAlbumsScreen
-import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.ui_common.navigateToWebView
 
 fun NavGraphBuilder.albumGraph(navController: NavController) {
-  navigation(route = ALBUM_NAVIGATION_ROUTE, startDestination = TOP_ALBUMS_DESTINATION) {
-    composable(
-      TOP_ALBUMS_DESTINATION
-    ) {
-      TopAlbumsScreen(
-        viewModel = hiltViewModel(),
-        navigateToAlbumInfo = { album ->
-          navController.navigateToAlbumInfo(
-            albumName = album.title,
-            artistName = album.artist,
-            artworkUrl = album.imageList.imageUrl() ?: ""
-          )
+  composable(
+    "${ALBUM_INFO_DESTINATION}?albumName={albumName}&artistName={artistName}&artworkUrl={artworkUrl}",
+    arguments = listOf(
+      navArgument("artworkUrl") {
+        type = NavType.StringType
+      },
+      navArgument("albumName") {
+        type = NavType.StringType
+      },
+      navArgument("artistName") {
+        type = NavType.StringType
+      }
+    ),
+  ) {
+    AlbumScreen(
+      viewModel = hiltViewModel(),
+      onAlbumLoadMoreTap = {
+        if (it.isNotEmpty()) {
+          navController.navigateToWebView(it)
         }
-      )
-    }
-
-    composable(
-      "${ALBUM_INFO_DESTINATION}?albumName={albumName}&artistName={artistName}&artworkUrl={artworkUrl}",
-      arguments = listOf(
-        navArgument("artworkUrl") {
-          type = NavType.StringType
-        },
-        navArgument("albumName") {
-          type = NavType.StringType
-        },
-        navArgument("artistName") {
-          type = NavType.StringType
-        }
-      ),
-    ) {
-      AlbumScreen(
-        viewModel = hiltViewModel(),
-        onAlbumLoadMoreTap = {
-          if (it.isNotEmpty()) {
-            navController.navigateToWebView(it)
-          }
-        }
-      )
-    }
+      }
+    )
   }
 }
 

@@ -22,7 +22,6 @@ dependencies {
 
   implementation(libs.hilt.navigation.compose)
   implementation(libs.compose.material.icons.extended)
-  implementation(libs.accompanist.systemuicontroller)
 
   implementation(libs.coroutines)
   implementation(libs.timber)

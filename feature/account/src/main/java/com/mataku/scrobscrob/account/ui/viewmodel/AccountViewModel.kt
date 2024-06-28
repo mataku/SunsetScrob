@@ -3,15 +3,18 @@ package com.mataku.scrobscrob.account.ui.viewmodel
 import android.app.Application
 import androidx.compose.runtime.Immutable
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.google.android.play.core.appupdate.AppUpdateInfo
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.ktx.requestCompleteUpdate
 import com.mataku.scrobscrob.account.AppInfoProvider
 import com.mataku.scrobscrob.core.entity.AppTheme
+import com.mataku.scrobscrob.core.entity.UserInfo
 import com.mataku.scrobscrob.data.repository.FileRepository
 import com.mataku.scrobscrob.data.repository.SessionRepository
 import com.mataku.scrobscrob.data.repository.ThemeRepository
+import com.mataku.scrobscrob.data.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
@@ -28,10 +31,14 @@ class AccountViewModel @Inject constructor(
   private val appInfoProvider: AppInfoProvider,
   private val appUpdateManager: AppUpdateManager,
   private val fileRepository: FileRepository,
-  private val application: Application
+  private val application: Application,
+  private val userRepository: UserRepository,
+  savedStateHandle: SavedStateHandle,
 ) : AndroidViewModel(application) {
 
   private val decimalFormat = DecimalFormat("#.##")
+
+  private val username: String = savedStateHandle.get<String>("username") ?: ""
 
   var uiState: MutableStateFlow<AccountUiState> = MutableStateFlow(AccountUiState.initialize())
     private set
@@ -57,6 +64,24 @@ class AccountViewModel @Inject constructor(
               )
             }
           }
+      }
+
+      if (username.isNotEmpty()) {
+        launch {
+          userRepository.getInfo(
+            userName = username
+          )
+            .catch {
+            }
+            .collect { userInfo ->
+
+              uiState.update { state ->
+                state.copy(
+                  userInfo = userInfo
+                )
+              }
+            }
+        }
       }
 
       launch {
@@ -128,7 +153,8 @@ class AccountViewModel @Inject constructor(
     val event: Event?,
     val appVersion: String,
     val appUpdateInfo: AppUpdateInfo?,
-    val imageCacheMB: String?
+    val imageCacheMB: String?,
+    val userInfo: UserInfo?
   ) {
     companion object {
       fun initialize() = AccountUiState(
@@ -136,7 +162,8 @@ class AccountViewModel @Inject constructor(
         event = null,
         appVersion = "",
         appUpdateInfo = null,
-        imageCacheMB = null
+        imageCacheMB = null,
+        userInfo = null
       )
     }
   }

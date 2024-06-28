@@ -20,7 +20,6 @@ dependencies {
 
   implementation(libs.activity.compose)
   implementation(libs.compose.ui.tooling)
-  implementation(libs.compose.material)
   implementation(libs.compose.material3)
   implementation(libs.compose.navigation)
   implementation(libs.compose.material.icons.extended)
@@ -31,7 +30,6 @@ dependencies {
   implementation(libs.timber)
 
 
-  implementation(libs.accompanist.systemuicontroller)
 
   implementation(libs.app.update)
 

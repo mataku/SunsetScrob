@@ -1,0 +1,26 @@
+CREATE TABLE artwork (
+  id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  album_name TEXT NOT NULL,
+  url TEXT,
+  UNIQUE(name, album_name) ON CONFLICT IGNORE
+);
+
+CREATE INDEX artwork_name ON artwork(name);
+CREATE INDEX artwork_album_name ON artwork(album_name);
+
+insert:
+INSERT INTO artwork(name, album_name, url)
+VALUES (:name, :albumName, :url);
+
+selectUrl:
+SELECT url FROM artwork WHERE name = ? LIMIT 1;
+
+selectAlbumUrl:
+SELECT url FROM artwork WHERE name = ? AND album_name = ? LIMIT 1;
+
+selectUrlList:
+SELECT name, url FROM artwork WHERE name IN ? LIMIT 20;
+
+deleteAll:
+DELETE FROM artwork;

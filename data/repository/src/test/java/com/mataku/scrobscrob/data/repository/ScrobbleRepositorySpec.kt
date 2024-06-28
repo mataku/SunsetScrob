@@ -4,6 +4,7 @@ import app.cash.turbine.test
 import com.mataku.scrobscrob.core.entity.NowPlayingTrackEntity
 import com.mataku.scrobscrob.data.api.LastFmHttpClient
 import com.mataku.scrobscrob.data.api.LastFmService
+import com.mataku.scrobscrob.data.db.ArtworkDataStore
 import com.mataku.scrobscrob.data.db.SessionKeyDataStore
 import com.mataku.scrobscrob.data.db.UsernameDataStore
 import io.kotest.assertions.fail
@@ -25,6 +26,7 @@ import io.mockk.unmockkAll
 class ScrobbleRepositorySpec : DescribeSpec({
   val usernameDataStore = mockk<UsernameDataStore>()
   val sessionKeyDataStore = mockk<SessionKeyDataStore>()
+  val artworkDataStore = mockk<ArtworkDataStore>(relaxed = true)
   val username = "sunsetscrob"
   val sessionKey = "sessionkey"
 
@@ -111,7 +113,8 @@ class ScrobbleRepositorySpec : DescribeSpec({
       val repository = ScrobbleRepositoryImpl(
         lastfmService,
         usernameDataStore,
-        sessionKeyDataStore
+        sessionKeyDataStore,
+        artworkDataStore
       )
       repository.recentTracks(page = page)
         .test {
@@ -146,7 +149,8 @@ class ScrobbleRepositorySpec : DescribeSpec({
       val repository = ScrobbleRepositoryImpl(
         lastfmService,
         usernameDataStore,
-        sessionKeyDataStore
+        sessionKeyDataStore,
+        artworkDataStore
       )
       it("should return with accepted: false") {
         repository.scrobble(mockk())
@@ -171,7 +175,8 @@ class ScrobbleRepositorySpec : DescribeSpec({
       val repository = ScrobbleRepositoryImpl(
         lastfmService,
         usernameDataStore,
-        sessionKeyDataStore
+        sessionKeyDataStore,
+        artworkDataStore
       )
       it("should return with accepted: false") {
         repository.scrobble(mockk())
@@ -192,7 +197,8 @@ class ScrobbleRepositorySpec : DescribeSpec({
       val repository = ScrobbleRepositoryImpl(
         lastfmService,
         usernameDataStore,
-        sessionKeyDataStore
+        sessionKeyDataStore,
+        artworkDataStore
       )
       val track = mockk<NowPlayingTrackEntity>()
       every {
@@ -262,7 +268,7 @@ class ScrobbleRepositorySpec : DescribeSpec({
     every {
       track.timeStamp
     }.returns(300000L)
-   
+
     val mockEngine = MockEngine { request ->
       request.method shouldBe HttpMethod.Post
 
@@ -282,7 +288,8 @@ class ScrobbleRepositorySpec : DescribeSpec({
     val repository = ScrobbleRepositoryImpl(
       lastfmService,
       usernameDataStore,
-      sessionKeyDataStore
+      sessionKeyDataStore,
+      artworkDataStore
     )
 
     it("should return with accepted: true") {

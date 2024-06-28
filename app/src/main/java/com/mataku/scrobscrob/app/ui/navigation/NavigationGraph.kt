@@ -11,23 +11,24 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.mataku.scrobscrob.account.ui.navigation.accountGraph
-import com.mataku.scrobscrob.album.ui.navigation.albumGraph
 import com.mataku.scrobscrob.artist.ui.navigation.artistGraph
 import com.mataku.scrobscrob.auth.ui.navigation.authGraph
-import com.mataku.scrobscrob.chart.ui.navigation.chartGraph
-import com.mataku.scrobscrob.scrobble.ui.navigation.SCROBBLE_NAVIGATION_ROUTE
-import com.mataku.scrobscrob.scrobble.ui.navigation.scrobbleGraph
+import com.mataku.scrobscrob.discover.ui.navigation.discoverGraph
+import com.mataku.scrobscrob.home.ui.navigation.HOME_NAVIGATION_ROUTE
+import com.mataku.scrobscrob.home.ui.navigation.homeGraph
 import com.mataku.scrobscrob.ui_common.commonGraph
 
 @Composable
 fun NavigationGraph(
   navController: NavHostController,
-  isLoggedIn: Boolean,
+  username: String?,
+  modifier: Modifier = Modifier
 ) {
+  val isLoggedIn = username != null
   NavHost(
     navController = navController,
-    startDestination = if (isLoggedIn) SCROBBLE_NAVIGATION_ROUTE else "login",
-    modifier = Modifier,
+    startDestination = if (isLoggedIn) HOME_NAVIGATION_ROUTE else "login",
+    modifier = modifier,
     enterTransition = {
       fadeIn(tween(250))
     },
@@ -42,12 +43,11 @@ fun NavigationGraph(
     },
     contentAlignment = Alignment.TopStart // Workaround for default TopStart animation issue
   ) {
-    scrobbleGraph(navController)
-    albumGraph(navController)
+    homeGraph(navController)
     artistGraph(navController)
-    accountGraph(navController)
-    chartGraph(navController)
+    accountGraph(navController, username ?: "")
+    discoverGraph(navController)
     authGraph(navController)
-    commonGraph()
+    commonGraph(navController)
   }
 }

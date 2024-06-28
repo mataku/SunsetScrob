@@ -25,6 +25,7 @@ class BaselineProfileGenerator {
     ) {
       pressHome()
       startActivityAndWait()
+      killProcess()
 
       // https://d.android.com/training/testing/other-components/ui-automator
     }

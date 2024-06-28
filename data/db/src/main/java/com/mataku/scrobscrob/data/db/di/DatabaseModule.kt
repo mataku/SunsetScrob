@@ -1,6 +1,8 @@
 package com.mataku.scrobscrob.data.db.di
 
 import android.content.Context
+import com.mataku.scrobscrob.data.db.ArtworkDataStore
+import com.mataku.scrobscrob.data.db.ArtworkDataStoreImpl
 import com.mataku.scrobscrob.data.db.ScrobbleAppDataStore
 import com.mataku.scrobscrob.data.db.SessionKeyDataStore
 import com.mataku.scrobscrob.data.db.ThemeDataStore
@@ -38,5 +40,11 @@ class DatabaseModule {
   @Provides
   fun provideScrobbleAppDataStore(@ApplicationContext context: Context): ScrobbleAppDataStore {
     return ScrobbleAppDataStore(context)
+  }
+
+  @Singleton
+  @Provides
+  fun provideArtworkDataStore(@ApplicationContext context: Context): ArtworkDataStore {
+    return ArtworkDataStoreImpl(context)
   }
 }

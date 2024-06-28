@@ -10,6 +10,8 @@ import androidx.compose.ui.res.painterResource
 import com.bumptech.glide.integration.compose.CrossFade
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.bumptech.glide.integration.compose.placeholder
+import com.mataku.scrobscrob.ui_common.R
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
@@ -19,9 +21,9 @@ fun SunsetImage(
   contentDescription: String?,
   contentScale: ContentScale = ContentScale.Fit,
 ) {
-  if (LocalInspectionMode.current) {
+  if (LocalInspectionMode.current || imageData == R.drawable.no_image) {
     Image(
-      painter = painterResource(id = com.mataku.scrobscrob.ui_common.R.drawable.no_image),
+      painter = painterResource(id = R.drawable.no_image),
       contentDescription = contentDescription,
       modifier = modifier,
       contentScale = contentScale
@@ -33,6 +35,7 @@ fun SunsetImage(
     modifier = modifier,
     contentDescription = contentDescription,
     contentScale = contentScale,
-    transition = CrossFade(animationSpec = tween(300))
+    transition = CrossFade(animationSpec = tween(300)),
+    failure = placeholder(R.drawable.no_image)
   )
 }

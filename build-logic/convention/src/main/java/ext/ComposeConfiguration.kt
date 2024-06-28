@@ -1,51 +1,43 @@
 package ext
 
-import com.android.build.api.dsl.CommonExtension
+import com.android.build.gradle.LibraryExtension
+import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import org.gradle.api.Project
-import org.gradle.api.artifacts.VersionCatalog
-import org.gradle.api.plugins.ExtensionAware
-import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
-import java.io.File
+import org.gradle.kotlin.dsl.getByType
+import org.jetbrains.kotlin.compose.compiler.gradle.ComposeCompilerGradlePluginExtension
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
 
-fun CommonExtension<*, *, *, *, *, *>.composeConfiguration(
-  libs: VersionCatalog,
-  currentProject: Project
-) {
-  buildFeatures {
-    compose = true
+fun Project.composeConfiguration() {
+  with(pluginManager) {
+    apply("org.jetbrains.kotlin.plugin.compose")
   }
-  composeOptions {
-    kotlinCompilerExtensionVersion =
-      libs.findVersion("compose.compiler.extension").get().toString()
+  val type = if (this.name == "app") {
+    BaseAppModuleExtension::class.java
+  } else {
+    LibraryExtension::class.java
   }
+  extensions.configure(type) {
+    buildFeatures {
+      compose = true
+    }
 
-  (this as ExtensionAware).extensions.configure<KotlinJvmOptions>("kotlinOptions") {
-    freeCompilerArgs = freeCompilerArgs + composeCompilerParameters(
-      currentProject
-    )
-  }
-}
+    with(extensions.getByType<KotlinAndroidProjectExtension>()) {
+      compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_17)
+      }
+    }
 
-private fun composeCompilerParameters(currentProject: Project): List<String> {
-  val compilerParameters = mutableListOf<String>()
-  val composeMetricsEnabled =
-    currentProject.rootProject.providers.gradleProperty("sunsetscrob.composeCompilerMetrics").orNull == "true"
-  if (composeMetricsEnabled) {
-    val metricsFolder = File(currentProject.buildDir, "compose_metrics")
-    compilerParameters.add("-P")
-    compilerParameters.add(
-      "plugin:androidx.compose.compiler.plugins.kotlin:metricsDestination=" + metricsFolder.absolutePath,
-    )
-  }
+    with(extensions.getByType<ComposeCompilerGradlePluginExtension>()) {
+      enableStrongSkippingMode.set(true)
 
-  val composeReportEnabled =
-    currentProject.rootProject.providers.gradleProperty("sunsetscrob.composeCompilerReports").orNull == "true"
-  if (composeReportEnabled) {
-    val reportsFolder = File(currentProject.buildDir, "compose_reports")
-    compilerParameters.add("-P")
-    compilerParameters.add(
-      "plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=" + reportsFolder.absolutePath,
-    )
+      val composeReportEnabled =
+        rootProject.providers.gradleProperty("composeCompilerReports").orNull == "true"
+
+      if (composeReportEnabled) {
+        reportsDestination.set(layout.buildDirectory.dir("compose_reports"))
+        metricsDestination.set(layout.buildDirectory.dir("compose_metrics"))
+      }
+    }
   }
-  return compilerParameters.toList()
 }

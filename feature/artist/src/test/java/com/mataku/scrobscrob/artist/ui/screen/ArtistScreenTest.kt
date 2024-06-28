@@ -84,7 +84,8 @@ class ArtistScreenTest {
       content = {
         ArtistScreen(
           viewModel = viewModel,
-          onArtistLoadMoreTap = {}
+          onArtistLoadMoreTap = {},
+          onBackPressed = {}
         )
       },
       fileName = "artist_screen.png"
@@ -102,7 +103,8 @@ class ArtistScreenTest {
       content = {
         ArtistScreen(
           viewModel = viewModel,
-          onArtistLoadMoreTap = {}
+          onArtistLoadMoreTap = {},
+          onBackPressed = {}
         )
       },
       fileName = "artist_screen_light.png"

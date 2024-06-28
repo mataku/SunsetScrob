@@ -9,20 +9,24 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.mataku.scrobscrob.ui_common.template.WebViewScreen
 
-fun NavGraphBuilder.commonGraph() {
+fun NavGraphBuilder.commonGraph(navController: NavController) {
   composable(
     "webview?url={url}",
     arguments = listOf(navArgument("url") {
       defaultValue = ""
     })
   ) {
-    WebViewScreen(url = it.arguments?.getString("url")!!, modifier = Modifier.fillMaxSize())
+    WebViewScreen(
+      url = it.arguments?.getString("url")!!,
+      modifier = Modifier.fillMaxSize(),
+      navController = navController
+    )
   }
 }
 
-fun NavController.navigateToScrobbleFromAuth() {
+fun NavController.navigateToHomeFromAuth() {
   navigate(
-    SCROBBLE_DESTINATION
+    "home_route"
   ) {
     popUpTo(0)
   }

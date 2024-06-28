@@ -13,5 +13,6 @@ data class ChartArtist(
   val playCount: String,
   val listeners: String,
   val url: String,
-  val imageList: List<Image>
+  val imageList: List<Image>,
+  var imageUrl: String? = null
 )

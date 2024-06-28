@@ -22,8 +22,6 @@ dependencies {
   implementation(libs.compose.material3)
   implementation(libs.compose.navigation)
 
-  implementation(libs.accompanist.systemuicontroller)
-
   implementation(libs.glide.compose)
   implementation(libs.compose.material.icons.extended)
 

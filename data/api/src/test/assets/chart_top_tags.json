@@ -1,0 +1,36 @@
+{
+  "tags": {
+    "tag": [
+      {
+        "name": "rock",
+        "url": "https://www.last.fm/tag/rock",
+        "reach": "400617",
+        "taggings": "4038119",
+        "streamable": "1",
+        "wiki": {}
+      },
+      {
+        "name": "electronic",
+        "url": "https://www.last.fm/tag/electronic",
+        "reach": "259684",
+        "taggings": "2458735",
+        "streamable": "1",
+        "wiki": {}
+      },
+      {
+        "name": "seen live",
+        "url": "https://www.last.fm/tag/seen+live",
+        "reach": "82350",
+        "taggings": "2171222",
+        "streamable": "1",
+        "wiki": {}
+      }
+    ],
+    "@attr": {
+      "page": "1",
+      "perPage": "3",
+      "totalPages": "943525",
+      "total": "2830573"
+    }
+  }
+}

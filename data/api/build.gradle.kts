@@ -19,6 +19,10 @@ android {
     buildConfigField("String", "SHARED_SECRET", sharedSecret)
   }
   namespace = "com.mataku.scrobscrob.data.api"
+
+  sourceSets {
+    getByName("test").resources.srcDirs("src/test/assets")
+  }
 }
 
 dependencies {

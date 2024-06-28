@@ -4,8 +4,9 @@ import android.annotation.SuppressLint
 import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -15,9 +16,11 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -25,17 +28,15 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
-import com.mataku.scrobscrob.album.R
 import com.mataku.scrobscrob.album.ui.molecule.TopAlbum
 import com.mataku.scrobscrob.album.ui.viewmodel.TopAlbumsViewModel
 import com.mataku.scrobscrob.core.entity.TopAlbumInfo
 import com.mataku.scrobscrob.ui_common.molecule.FilteringFloatingButton
 import com.mataku.scrobscrob.ui_common.molecule.LoadingIndicator
-import com.mataku.scrobscrob.ui_common.organism.ContentHeader
 import com.mataku.scrobscrob.ui_common.organism.FilteringBottomSheet
 import com.mataku.scrobscrob.ui_common.organism.InfiniteLoadingIndicator
 import kotlinx.collections.immutable.ImmutableList
@@ -46,7 +47,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun TopAlbumsScreen(
   viewModel: TopAlbumsViewModel,
-  navigateToAlbumInfo: (TopAlbumInfo) -> Unit
+  navigateToAlbumInfo: (TopAlbumInfo) -> Unit,
+  topAppBarScrollBehavior: TopAppBarScrollBehavior
 ) {
   val uiState by viewModel.uiState.collectAsState()
 
@@ -65,6 +67,13 @@ fun TopAlbumsScreen(
     }
   }
 
+  val topAppBarHeightPixel by remember {
+    derivedStateOf {
+      topAppBarScrollBehavior.state.heightOffset
+    }
+  }
+  val density = LocalDensity.current
+
   Scaffold(
     floatingActionButton = {
       FilteringFloatingButton(
@@ -75,7 +84,9 @@ fun TopAlbumsScreen(
         },
         modifier = Modifier
           .padding(
-            bottom = 80.dp
+            bottom = 152.dp + with(density) {
+              topAppBarHeightPixel.toDp()
+            }
           )
       )
     }
@@ -89,7 +100,9 @@ fun TopAlbumsScreen(
       } else {
         2
       },
-      onAlbumTap = navigateToAlbumInfo
+      onAlbumTap = navigateToAlbumInfo,
+      modifier = Modifier
+        .nestedScroll(topAppBarScrollBehavior.nestedScrollConnection)
     )
 
     if (showBottomSheet) {
@@ -97,7 +110,8 @@ fun TopAlbumsScreen(
         onDismissRequest = {
           showBottomSheet = false
         },
-        sheetState = bottomSheetState
+        sheetState = bottomSheetState,
+        windowInsets = WindowInsets.displayCutout
       ) {
         FilteringBottomSheet(
           selectedTimeRangeFiltering = uiState.timeRangeFiltering,
@@ -108,7 +122,7 @@ fun TopAlbumsScreen(
               showBottomSheet = false
             }
             viewModel.updateTimeRange(it)
-          }
+          },
         )
       }
     }
@@ -133,46 +147,40 @@ fun TopAlbumsContent(
   maxSpanCount: Int,
   onAlbumTap: (TopAlbumInfo) -> Unit,
   onScrollEnd: () -> Unit,
+  modifier: Modifier = Modifier
 ) {
-  Column(
-    modifier = Modifier
-      .fillMaxSize()
-  ) {
-    ContentHeader(text = stringResource(id = R.string.menu_top_albums))
-
-    LazyVerticalGrid(
-      contentPadding = PaddingValues(horizontal = 8.dp),
-      columns = GridCells.Fixed(maxSpanCount),
-      content = {
-        items(
-          items = albums,
-          key = { album ->
-            "${album.hashCode()}"
+  LazyVerticalGrid(
+    contentPadding = PaddingValues(8.dp),
+    columns = GridCells.Fixed(maxSpanCount),
+    content = {
+      items(
+        items = albums,
+        key = { album ->
+          "${album.hashCode()}"
+        },
+        contentType = {
+          "top_albums"
+        }
+      ) { album ->
+        TopAlbum(
+          album = album,
+          onAlbumTap = {
+            onAlbumTap.invoke(album)
           },
-          contentType = {
-            "top_albums"
-          }
-        ) { album ->
-          TopAlbum(
-            album = album,
-            onAlbumTap = {
-              onAlbumTap.invoke(album)
-            },
-            modifier = Modifier.fillMaxWidth(),
+          modifier = Modifier.fillMaxWidth(),
+        )
+      }
+
+      if (hasNext && albums.isNotEmpty()) {
+        item {
+          InfiniteLoadingIndicator(
+            onScrollEnd = onScrollEnd,
+            modifier = Modifier
           )
         }
-
-        if (hasNext && albums.isNotEmpty()) {
-          item {
-            InfiniteLoadingIndicator(
-              onScrollEnd = onScrollEnd,
-              modifier = Modifier
-            )
-          }
-        }
-      },
-      modifier = Modifier
-        .testTag("album_list")
-    )
-  }
+      }
+    },
+    modifier = modifier
+      .fillMaxSize()
+  )
 }

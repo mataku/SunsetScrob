@@ -6,6 +6,8 @@ import com.mataku.scrobscrob.data.repository.AlbumRepository
 import com.mataku.scrobscrob.data.repository.AlbumRepositoryImpl
 import com.mataku.scrobscrob.data.repository.ArtistRepository
 import com.mataku.scrobscrob.data.repository.ArtistRepositoryImpl
+import com.mataku.scrobscrob.data.repository.ArtworkRepository
+import com.mataku.scrobscrob.data.repository.ArtworkRepositoryImpl
 import com.mataku.scrobscrob.data.repository.ChartRepository
 import com.mataku.scrobscrob.data.repository.ChartRepositoryImpl
 import com.mataku.scrobscrob.data.repository.FileRepository
@@ -26,6 +28,8 @@ import com.mataku.scrobscrob.data.repository.TopArtistsRepository
 import com.mataku.scrobscrob.data.repository.TopArtistsRepositoryImpl
 import com.mataku.scrobscrob.data.repository.TrackRepository
 import com.mataku.scrobscrob.data.repository.TrackRepositoryImpl
+import com.mataku.scrobscrob.data.repository.UserRepository
+import com.mataku.scrobscrob.data.repository.UserRepositoryImpl
 import com.mataku.scrobscrob.data.repository.UsernameRepository
 import com.mataku.scrobscrob.data.repository.UsernameRepositoryImpl
 import dagger.Binds
@@ -89,4 +93,12 @@ abstract class RepositoryModule {
   @Singleton
   @Binds
   abstract fun provideFileRepository(repository: FileRepositoryImpl): FileRepository
+
+  @Singleton
+  @Binds
+  abstract fun provideUserRepository(repository: UserRepositoryImpl): UserRepository
+
+  @Singleton
+  @Binds
+  abstract fun provideArtworkRepository(repository: ArtworkRepositoryImpl): ArtworkRepository
 }

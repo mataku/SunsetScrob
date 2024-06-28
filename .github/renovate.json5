@@ -12,9 +12,12 @@
     "androidx.test.uiautomator:uiautomator",
     "androidx.test.ext:junit",
     "androidx.test:core",
+    "androidx.test.espresso:espresso-core",
     "androidx.core:core-splashscreen",
     "app.cash.turbine:turbine",
     "app.cash.licensee",
+    "app.cash.sqldelight",
+    "sqldelight",
     "com.airbnb.android:showkase",
     "com.airbnb.android:showkase-annotation",
     "com.airbnb.android:showkase-processor",
@@ -31,7 +34,10 @@
   "rebaseWhen": "conflicted",
   "packageRules": [
     {
-      "matchUpdateTypes": ["minor", "patch"],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
       "automerge": true,
       "platformAutomerge": true
     },

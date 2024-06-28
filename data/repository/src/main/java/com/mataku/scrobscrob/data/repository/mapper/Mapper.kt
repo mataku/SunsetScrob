@@ -3,6 +3,7 @@ package com.mataku.scrobscrob.data.repository.mapper
 import com.mataku.scrobscrob.core.entity.AlbumInfo
 import com.mataku.scrobscrob.core.entity.AlbumInfoTrack
 import com.mataku.scrobscrob.core.entity.AppTheme
+import com.mataku.scrobscrob.core.entity.ArtistArtwork
 import com.mataku.scrobscrob.core.entity.ArtistInfo
 import com.mataku.scrobscrob.core.entity.ChartArtist
 import com.mataku.scrobscrob.core.entity.ChartTopArtists
@@ -24,6 +25,7 @@ import com.mataku.scrobscrob.core.entity.TopArtistInfo
 import com.mataku.scrobscrob.core.entity.TrackAlbumInfo
 import com.mataku.scrobscrob.core.entity.TrackArtist
 import com.mataku.scrobscrob.core.entity.TrackInfo
+import com.mataku.scrobscrob.core.entity.UserInfo
 import com.mataku.scrobscrob.core.entity.Wiki
 import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.core.entity.presentation.toReadableString
@@ -31,7 +33,9 @@ import com.mataku.scrobscrob.data.api.endpoint.TrackInfoApiResponse
 import com.mataku.scrobscrob.data.api.model.AlbumInfoBody
 import com.mataku.scrobscrob.data.api.model.AlbumInfoTrackBody
 import com.mataku.scrobscrob.data.api.model.ArtistInfoApiResponse
+import com.mataku.scrobscrob.data.api.model.ChartTagBody
 import com.mataku.scrobscrob.data.api.model.ChartTopArtistsResponse
+import com.mataku.scrobscrob.data.api.model.ChartTopTagsResponse
 import com.mataku.scrobscrob.data.api.model.ChartTopTracksResponse
 import com.mataku.scrobscrob.data.api.model.ImageBody
 import com.mataku.scrobscrob.data.api.model.MultipleTag
@@ -45,9 +49,11 @@ import com.mataku.scrobscrob.data.api.model.TagListBody
 import com.mataku.scrobscrob.data.api.model.TopAlbumsApiResponse
 import com.mataku.scrobscrob.data.api.model.TrackAlbumInfoBody
 import com.mataku.scrobscrob.data.api.model.TrackArtistBody
+import com.mataku.scrobscrob.data.api.model.UserInfoApiResponse
 import com.mataku.scrobscrob.data.api.model.UserTopArtistsApiResponse
 import com.mataku.scrobscrob.data.api.model.WikiBody
 import com.mataku.scrobscrob.data.db.entity.AppThemeEntity
+import com.mataku.scrobscrob.data.db.entity.ArtistArtworkEntity
 import com.mataku.scrobscrob.data.db.entity.LicenseArtifactDefinitionEntity
 import com.mataku.scrobscrob.data.db.entity.ScmEntity
 import com.mataku.scrobscrob.data.db.entity.SpdxLicenseEntity
@@ -336,5 +342,39 @@ fun AppTheme.toAppThemeEntity(): AppThemeEntity {
     AppTheme.OCEAN -> AppThemeEntity.OCEAN
     AppTheme.LASTFM_DARK -> AppThemeEntity.LASTFM_DARK
   }
+}
+
+fun UserInfoApiResponse.toUserInfo(): UserInfo {
+  val body = this.userInfo
+  return UserInfo(
+    name = body.name,
+    playCount = body.playCount,
+    artistCount = body.artistCount,
+    trackCount = body.trackCount,
+    albumCount = body.albumCount,
+    imageList = body.imageList?.toImageList()?.toImmutableList() ?: persistentListOf<Image>(),
+    url = body.url
+  )
+}
+
+fun List<ChartTagBody>.toChartTagList(): ImmutableList<Tag> {
+  return this.map {
+    Tag(
+      name = it.name,
+      url = it.url
+    )
+  }.toImmutableList()
+}
+
+fun ChartTopTagsResponse.toChartTopTags(): ImmutableList<Tag> {
+  val body = this.chartTopTagsBody
+  return body.tagList.toChartTagList()
+}
+
+fun ArtistArtworkEntity.toArtistArtwork(): ArtistArtwork {
+  return ArtistArtwork(
+    name = this.name,
+    url = this.url
+  )
 }
 

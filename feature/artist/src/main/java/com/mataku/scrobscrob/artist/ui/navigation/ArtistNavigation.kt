@@ -7,42 +7,26 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import androidx.navigation.navigation
 import com.mataku.scrobscrob.artist.ui.screen.ArtistScreen
-import com.mataku.scrobscrob.artist.ui.screen.TopArtistsScreen
-import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.ui_common.navigateToWebView
 
 fun NavGraphBuilder.artistGraph(navController: NavController) {
-  navigation(route = ARTIST_NAVIGATION_ROUTE, startDestination = TOP_ARTISTS_DESTINATION) {
-    composable(TOP_ARTISTS_DESTINATION) {
-      TopArtistsScreen(
-        viewModel = hiltViewModel(),
-        onArtistTap = {
-          navController.navigateToArtistInfo(
-            artistName = it.name,
-            artworkUrl = it.imageList.imageUrl() ?: "",
-          )
-        }
-      )
-    }
-
-    composable(
-      "${ARTIST_INFO_DESTINATION}?${ARTIST_NAME_ARGUMENT}={artistName}&${ARTWORK_URL_ARGUMENT}={artworkUrl}",
-      arguments = listOf(
-        navArgument(ARTIST_NAME_ARGUMENT) {
-          type = NavType.StringType
-        },
-        navArgument(ARTWORK_URL_ARGUMENT) {
-          type = NavType.StringType
-        }
-      )
-    ) {
-      ArtistScreen(
-        viewModel = hiltViewModel(),
-        onArtistLoadMoreTap = navController::navigateToWebView
-      )
-    }
+  composable(
+    "${ARTIST_INFO_DESTINATION}?${ARTIST_NAME_ARGUMENT}={artistName}&${ARTWORK_URL_ARGUMENT}={artworkUrl}",
+    arguments = listOf(
+      navArgument(ARTIST_NAME_ARGUMENT) {
+        type = NavType.StringType
+      },
+      navArgument(ARTWORK_URL_ARGUMENT) {
+        type = NavType.StringType
+      }
+    )
+  ) {
+    ArtistScreen(
+      viewModel = hiltViewModel(),
+      onArtistLoadMoreTap = navController::navigateToWebView,
+      onBackPressed = navController::popBackStack
+    )
   }
 }
 

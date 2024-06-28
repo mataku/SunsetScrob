@@ -1,11 +1,3 @@
-buildscript {
-  repositories {
-    google()
-    mavenCentral()
-    maven("https://plugins.gradle.org/m2/")
-  }
-}
-
 plugins {
   alias(libs.plugins.android.application) apply false
   alias(libs.plugins.android.library) apply false
@@ -19,19 +11,6 @@ plugins {
   alias(libs.plugins.licensee) apply false
   alias(libs.plugins.android.test) apply false
   alias(libs.plugins.baselineprofile) apply false
-}
-
-allprojects {
-  repositories {
-    google()
-    mavenCentral()
-  }
-}
-
-subprojects {
-  tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    kotlinOptions {
-      jvmTarget = JavaVersion.VERSION_17.toString()
-    }
-  }
+  alias(libs.plugins.sqldelight) apply false
+  alias(libs.plugins.compose.compiler) apply false
 }

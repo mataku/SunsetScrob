@@ -44,12 +44,18 @@ jobs:
       run: |
         echo "${{ github.event.inputs.release_notes }}" >> release_notes.txt
         echo "${{ github.event.inputs.branch }}@$(git rev-parse HEAD)" >> release_notes.txt
+    - name: Prepare authentication
+      run: |
+        echo -n "${{ secrets.SUNSETSCROB_KEYSTORE }}" | base64 -d > SunsetScrob.jks
     - name: Deploy to Firebase App Distribution
       env:
         LAST_FM_API_KEY: ${{ secrets.LAST_FM_API_KEY }}
         LAST_FM_SHARED_SECRET: ${{ secrets.LAST_FM_SHARED_SECRET }}
-        GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON_DEV }}
-        FIREBASE_DEV_APP_ID: ${{ secrets.FIREBASE_DEV_APP_ID }}
+        GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
+        FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
+        SUNSET_KEY_ALIAS: ${{ secrets.SUNSET_KEY_ALIAS }}
+        SUNSET_KEY_PASSWORD: ${{ secrets.SUNSET_KEY_PASSWORD }}
+        SUNSET_STORE_PASSWORD: ${{ secrets.SUNSET_STORE_PASSWORD }}
       run: |
         bundle exec fastlane android setup_for_ci
         bundle exec fastlane android deploy_to_firebase_app_distribution
