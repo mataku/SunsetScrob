@@ -55,7 +55,10 @@ fun ThemeSelectorScreen(
     LazyColumn(
       content = {
         stickyHeader {
-          ContentHeader(text = stringResource(id = R.string.title_theme_selector))
+          ContentHeader(
+            text = stringResource(id = R.string.title_theme_selector),
+            onBackPressed = navController::popBackStack
+          )
         }
         items(AppTheme.entries.sortedBy {
           it.priority

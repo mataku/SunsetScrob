@@ -67,7 +67,9 @@ fun NavGraphBuilder.accountGraph(navController: NavController, username: String)
       )
     }
     composable(PRIVACY_POLICY_DESTINATION) {
-      PrivacyPolicyScreen()
+      PrivacyPolicyScreen(
+        onBackPressed = navController::popBackStack
+      )
     }
   }
 }
