@@ -105,7 +105,8 @@ class AlbumScreenTest {
       content = {
         AlbumScreen(
           viewModel = viewModel,
-          onAlbumLoadMoreTap = {}
+          onAlbumLoadMoreTap = {},
+          onBackPressed = {}
         )
       },
       fileName = "album_screen.png"
@@ -124,7 +125,8 @@ class AlbumScreenTest {
       content = {
         AlbumScreen(
           viewModel = viewModel,
-          onAlbumLoadMoreTap = {}
+          onAlbumLoadMoreTap = {},
+          onBackPressed = {}
         )
       },
       appTheme = AppTheme.LIGHT

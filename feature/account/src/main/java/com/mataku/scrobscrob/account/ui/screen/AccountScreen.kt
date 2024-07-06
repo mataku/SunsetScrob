@@ -67,7 +67,8 @@ import kotlinx.coroutines.launch
 fun AccountScreen(
   viewModel: AccountViewModel,
   navController: NavController,
-  showPermissionHelp: () -> Unit
+  showPermissionHelp: () -> Unit,
+  modifier: Modifier = Modifier
 ) {
   val openDialog = remember {
     mutableStateOf(false)
@@ -153,7 +154,8 @@ fun AccountScreen(
       clearCache = viewModel::clearCache,
       navigateToUiCatalog = viewModel::navigateToUiCatalog,
       imageCacheMB = uiState.imageCacheMB,
-      userInfo = uiState.userInfo
+      userInfo = uiState.userInfo,
+      modifier = modifier
     )
   }
 
@@ -200,7 +202,8 @@ private fun AccountContent(
   navigateToPrivacyPolicy: () -> Unit,
   navigateToNotificationSetting: () -> Unit,
   requestAppUpdate: (AppUpdateInfo) -> Unit,
-  navigateToUiCatalog: () -> Unit
+  navigateToUiCatalog: () -> Unit,
+  modifier: Modifier = Modifier
 ) {
   val context = LocalContext.current
   val openDialog = remember {
@@ -209,7 +212,7 @@ private fun AccountContent(
   val openClearCacheConfirmationDialog = remember {
     mutableStateOf(false)
   }
-  Column(modifier = Modifier.fillMaxSize()) {
+  Column(modifier = modifier.fillMaxSize()) {
     ContentHeader(text = stringResource(id = R.string.menu_account))
 
     Column(

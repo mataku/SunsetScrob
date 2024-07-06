@@ -71,7 +71,8 @@ import com.mataku.scrobscrob.ui_common.R as uiCommonR
 @Composable
 fun LoginScreen(
   viewModel: LoginViewModel,
-  navController: NavController
+  navController: NavController,
+  modifier: Modifier = Modifier
 ) {
   val coroutineScope = rememberCoroutineScope()
   val uiState by viewModel.uiState.collectAsState()
@@ -114,7 +115,8 @@ fun LoginScreen(
     username = uiState.username,
     password = uiState.password,
     onUsernameUpdate = viewModel::updateUsername,
-    onPasswordUpdate = viewModel::updatePassword
+    onPasswordUpdate = viewModel::updatePassword,
+    modifier = modifier
   )
 }
 
@@ -127,7 +129,8 @@ private fun LoginContent(
   username: String,
   password: String,
   onUsernameUpdate: (String) -> Unit,
-  onPasswordUpdate: (String) -> Unit
+  onPasswordUpdate: (String) -> Unit,
+  modifier: Modifier = Modifier
 ) {
   var passwordVisible by remember {
     mutableStateOf(false)
@@ -146,7 +149,7 @@ private fun LoginContent(
   // Stored data with "remember { mutableStateOf("") }" will blow up the data in AutoFill#onFill,
   //  so manages input data in ViewModel (TODO: details)
   Column(
-    modifier = Modifier
+    modifier = modifier
       .fillMaxSize()
       .verticalScroll(rememberScrollState())
       .padding(horizontal = 16.dp)

@@ -1,6 +1,5 @@
 package com.mataku.scrobscrob.scrobble.ui.screen
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -17,12 +16,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -34,10 +30,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.style.TextOverflow
@@ -52,6 +45,7 @@ import com.mataku.scrobscrob.core.entity.presentation.toReadableIntValue
 import com.mataku.scrobscrob.scrobble.ui.molecule.TrackAlbum
 import com.mataku.scrobscrob.scrobble.ui.viewmodel.TrackViewModel
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
+import com.mataku.scrobscrob.ui_common.component.CircleBackButton
 import com.mataku.scrobscrob.ui_common.molecule.SimpleWiki
 import com.mataku.scrobscrob.ui_common.molecule.SunsetImage
 import com.mataku.scrobscrob.ui_common.molecule.TopTags
@@ -67,7 +61,8 @@ fun TrackScreen(
   artistName: String,
   artworkUrl: String?,
   trackViewModel: TrackViewModel,
-  navController: NavController
+  navController: NavController,
+  modifier: Modifier = Modifier
 ) {
   val uiState by trackViewModel.state.collectAsState()
 
@@ -77,7 +72,8 @@ fun TrackScreen(
     onUrlTap = navController::navigateToWebView,
     artistName = artistName,
     trackName = trackName,
-    onBackPressed = navController::popBackStack
+    onBackPressed = navController::popBackStack,
+    modifier = modifier
   )
 }
 
@@ -89,15 +85,18 @@ private fun TrackContent(
   artistName: String,
   trackInfo: TrackInfo?,
   onUrlTap: (String) -> Unit,
-  onBackPressed: () -> Unit
+  onBackPressed: () -> Unit,
+  modifier: Modifier = Modifier
 ) {
   val screenWidth = LocalConfiguration.current.screenWidthDp
+  val screenHeight = LocalConfiguration.current.screenHeightDp
   val scaffoldState = rememberBottomSheetScaffoldState(
     bottomSheetState = rememberStandardBottomSheetState(
-      initialValue = SheetValue.Expanded
+      initialValue = SheetValue.PartiallyExpanded
     )
   )
   BottomSheetScaffold(
+    modifier = modifier,
     scaffoldState = scaffoldState,
     sheetContent = {
       TrackDetailContent(
@@ -109,13 +108,20 @@ private fun TrackContent(
           .defaultMinSize(minHeight = screenWidth.dp)
       )
     },
+    sheetPeekHeight = if (screenHeight >= screenWidth) {
+      (screenHeight - screenWidth).dp
+    } else {
+      (screenWidth - screenHeight).dp
+    },
     content = {
       val imageData = if (artworkUrl == null || artworkUrl.isBlank()) {
         com.mataku.scrobscrob.ui_common.R.drawable.no_image
       } else {
         artworkUrl
       }
-      Column {
+      Column(
+        modifier = Modifier
+      ) {
         Box {
           SunsetImage(
             imageData = imageData,
@@ -125,35 +131,27 @@ private fun TrackContent(
               .aspectRatio(1F),
             contentScale = ContentScale.FillWidth
           )
-          Box(
+          Column(
             modifier = Modifier
               .fillMaxWidth()
-              .height(64.dp)
               .background(
                 color = Color.Transparent
               )
           ) {
-            Image(
-              painter = rememberVectorPainter(image = Icons.AutoMirrored.Default.ArrowBack),
-              contentDescription = "back",
+            Spacer(modifier = Modifier.height(24.dp))
+            CircleBackButton(
               modifier = Modifier
+                .padding(
+                  start = 4.dp
+                )
                 .clickable(
+                  interactionSource = remember { MutableInteractionSource() },
                   indication = null,
-                  interactionSource = remember { MutableInteractionSource() }
                 ) {
                   onBackPressed.invoke()
                 }
-                .padding(
-                  16.dp
-                )
-                .alpha(0.9F)
-              ,
-              colorFilter = ColorFilter.tint(
-                color = Color.Gray.copy(
-                  alpha = 0.9F
-                )
-              )
             )
+
           }
         }
         SunsetImage(

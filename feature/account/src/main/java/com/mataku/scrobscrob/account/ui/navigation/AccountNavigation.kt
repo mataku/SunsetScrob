@@ -1,7 +1,10 @@
 package com.mataku.scrobscrob.account.ui.navigation
 
 import android.widget.Toast
+import androidx.compose.foundation.layout.padding
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -43,7 +46,11 @@ fun NavGraphBuilder.accountGraph(navController: NavController, username: String)
             R.string.label_notification_permission_help,
             Toast.LENGTH_LONG
           ).show()
-        }
+        },
+        modifier = Modifier
+          .padding(
+            top = 24.dp
+          )
       )
     }
 
@@ -51,24 +58,40 @@ fun NavGraphBuilder.accountGraph(navController: NavController, username: String)
       SCROBBLE_SETTING_DESTINATION,
     ) {
       ScrobbleSettingScreen(
-        viewModel = hiltViewModel()
+        viewModel = hiltViewModel(),
+        modifier = Modifier
+          .padding(
+            top = 24.dp
+          )
       )
     }
     composable(THEME_SELECTOR_DESTINATION) {
       ThemeSelectorScreen(
         viewModel = hiltViewModel(),
-        navController = navController
+        navController = navController,
+        modifier = Modifier
+          .padding(
+            top = 24.dp
+          )
       )
     }
     composable(LICENSE_DESTINATION) {
       LicenseScreen(
         viewModel = hiltViewModel(),
-        onBackPressed = navController::popBackStack
+        onBackPressed = navController::popBackStack,
+        modifier = Modifier
+          .padding(
+            top = 24.dp
+          )
       )
     }
     composable(PRIVACY_POLICY_DESTINATION) {
       PrivacyPolicyScreen(
-        onBackPressed = navController::popBackStack
+        onBackPressed = navController::popBackStack,
+        modifier = Modifier
+          .padding(
+            top = 24.dp
+          )
       )
     }
   }

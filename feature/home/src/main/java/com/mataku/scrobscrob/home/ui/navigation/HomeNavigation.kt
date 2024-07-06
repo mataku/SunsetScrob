@@ -1,5 +1,8 @@
 package com.mataku.scrobscrob.home.ui.navigation
 
+import androidx.compose.foundation.layout.padding
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
@@ -16,7 +19,11 @@ fun NavGraphBuilder.homeGraph(navController: NavController) {
       HOME_DESTINATION,
     ) {
       HomeScreen(
-        navController = navController
+        navController = navController,
+        modifier = Modifier
+          .padding(
+            top = 24.dp
+          )
       )
     }
 

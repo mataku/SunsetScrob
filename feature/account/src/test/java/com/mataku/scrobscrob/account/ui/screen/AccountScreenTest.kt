@@ -119,8 +119,9 @@ class AccountScreenTest {
       content = {
         AccountScreen(
           viewModel = viewModel,
-          navController = navController
-        ) {}
+          navController = navController,
+          showPermissionHelp = {},
+        )
       },
       fileName = "account_screen.png"
     )
@@ -143,8 +144,9 @@ class AccountScreenTest {
       content = {
         AccountScreen(
           viewModel = viewModel,
-          navController = navController
-        ) {}
+          navController = navController,
+          showPermissionHelp = {}
+        )
       },
       fileName = "account_screen_light.png"
     )

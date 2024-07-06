@@ -121,7 +121,7 @@ fun HomeScreen(
               )
             }
 
-            HomeTabType.TRACK -> {
+            HomeTabType.ALBUM -> {
               TopAlbumsScreen(
                 viewModel = hiltViewModel(),
                 navigateToAlbumInfo = { album ->
