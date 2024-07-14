@@ -22,7 +22,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.mataku.scrobscrob.account.R
 import com.mataku.scrobscrob.account.ui.viewmodel.ThemeSelectorViewModel
 import com.mataku.scrobscrob.core.entity.AppTheme
@@ -34,7 +33,7 @@ import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 @Composable
 fun ThemeSelectorScreen(
   viewModel: ThemeSelectorViewModel,
-  navController: NavController,
+  onBackPressed: () -> Unit,
   modifier: Modifier = Modifier
 ) {
   val uiState by viewModel.uiState.collectAsState()
@@ -57,7 +56,7 @@ fun ThemeSelectorScreen(
         stickyHeader {
           ContentHeader(
             text = stringResource(id = R.string.title_theme_selector),
-            onBackPressed = navController::popBackStack
+            onBackPressed = onBackPressed
           )
         }
         items(AppTheme.entries.sortedBy {
@@ -76,7 +75,7 @@ fun ThemeSelectorScreen(
     )
   }
   BackHandler() {
-    navController.popBackStack()
+    onBackPressed.invoke()
   }
 }
 

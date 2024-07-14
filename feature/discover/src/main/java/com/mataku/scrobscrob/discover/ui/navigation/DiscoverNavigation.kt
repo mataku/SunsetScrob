@@ -10,6 +10,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.mataku.scrobscrob.discover.ui.screen.DiscoverScreen
+import com.mataku.scrobscrob.ui_common.navigateToWebView
 
 fun NavGraphBuilder.discoverGraph(navController: NavController) {
   navigation(route = DISCOVER_NAVIGATION_ROUTE, startDestination = DISCOVER_START_NAVIGATION) {
@@ -18,7 +19,7 @@ fun NavGraphBuilder.discoverGraph(navController: NavController) {
     ) {
       DiscoverScreen(
         viewModel = hiltViewModel(),
-        navController = navController,
+        navigateToWebView = navController::navigateToWebView,
         modifier = Modifier
           .padding(
             top = 24.dp

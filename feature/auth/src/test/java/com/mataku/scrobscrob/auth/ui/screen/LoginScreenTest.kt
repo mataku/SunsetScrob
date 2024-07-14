@@ -30,7 +30,8 @@ class LoginScreenTest {
       content = {
         LoginScreen(
           viewModel = LoginViewModel(mockk()),
-          navController = mockk()
+          navigateToHomeFromAuth = mockk(),
+          navigateToPrivacyPolicy = mockk()
         )
       },
       fileName = "login_screen.png"
@@ -44,7 +45,8 @@ class LoginScreenTest {
       content = {
         LoginScreen(
           viewModel = LoginViewModel(mockk()),
-          navController = mockk()
+          navigateToHomeFromAuth = mockk(),
+          navigateToPrivacyPolicy = mockk()
         )
       },
       fileName = "login_screen_light.png"

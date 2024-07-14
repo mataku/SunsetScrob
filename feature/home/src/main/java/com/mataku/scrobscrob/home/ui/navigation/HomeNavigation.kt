@@ -9,8 +9,12 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.mataku.scrobscrob.album.ui.navigation.albumGraph
+import com.mataku.scrobscrob.album.ui.navigation.navigateToAlbumInfo
 import com.mataku.scrobscrob.artist.ui.navigation.artistGraph
+import com.mataku.scrobscrob.artist.ui.navigation.navigateToArtistInfo
+import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.home.ui.HomeScreen
+import com.mataku.scrobscrob.scrobble.ui.navigation.navigateToTrackDetail
 import com.mataku.scrobscrob.scrobble.ui.navigation.scrobbleGraph
 
 fun NavGraphBuilder.homeGraph(navController: NavController) {
@@ -19,7 +23,26 @@ fun NavGraphBuilder.homeGraph(navController: NavController) {
       HOME_DESTINATION,
     ) {
       HomeScreen(
-        navController = navController,
+        navigateToTrackDetail = { track ->
+          navController.navigateToTrackDetail(
+            trackName = track.name,
+            artistName = track.artistName,
+            imageUrl = track.images.imageUrl() ?: "",
+          )
+        },
+        navigateToArtistDetail = { artist ->
+          navController.navigateToArtistInfo(
+            artistName = artist.name,
+            artworkUrl = artist.imageList.imageUrl() ?: "",
+          )
+        },
+        navigateToAlbumDetail = { album ->
+          navController.navigateToAlbumInfo(
+            albumName = album.title,
+            artistName = album.artist,
+            artworkUrl = album.imageList.imageUrl() ?: ""
+          )
+        },
         modifier = Modifier
           .padding(
             top = 24.dp

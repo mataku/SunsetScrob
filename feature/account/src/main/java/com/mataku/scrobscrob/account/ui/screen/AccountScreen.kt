@@ -32,7 +32,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.app.NotificationManagerCompat
-import androidx.navigation.NavController
 import com.google.android.play.core.appupdate.AppUpdateInfo
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.appupdate.AppUpdateOptions
@@ -46,16 +45,11 @@ import com.mataku.scrobscrob.account.AccountMenu
 import com.mataku.scrobscrob.account.BuildConfig
 import com.mataku.scrobscrob.account.R
 import com.mataku.scrobscrob.account.ui.molecule.Profile
-import com.mataku.scrobscrob.account.ui.navigation.navigateToLicense
-import com.mataku.scrobscrob.account.ui.navigation.navigateToScrobbleSetting
-import com.mataku.scrobscrob.account.ui.navigation.navigateToThemeSelector
 import com.mataku.scrobscrob.account.ui.viewmodel.AccountViewModel
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.core.entity.UserInfo
 import com.mataku.scrobscrob.ui_common.SunsetAlertDialog
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
-import com.mataku.scrobscrob.ui_common.navigateToLogin
-import com.mataku.scrobscrob.ui_common.navigateToPrivacyPolicy
 import com.mataku.scrobscrob.ui_common.organism.ContentHeader
 import com.mataku.scrobscrob.ui_common.style.LocalSnackbarHostState
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
@@ -66,8 +60,12 @@ import kotlinx.coroutines.launch
 @Composable
 fun AccountScreen(
   viewModel: AccountViewModel,
-  navController: NavController,
   showPermissionHelp: () -> Unit,
+  navigateToScrobbleSetting: () -> Unit,
+  navigateToPrivacyPolicy: () -> Unit,
+  navigateToThemeSelector: () -> Unit,
+  navigateToLicenseList: () -> Unit,
+  navigateToLogin: () -> Unit,
   modifier: Modifier = Modifier
 ) {
   val openDialog = remember {
@@ -82,7 +80,7 @@ fun AccountScreen(
       if (NotificationManagerCompat.getEnabledListenerPackages(context)
           .contains(context.packageName)
       ) {
-        navController.navigateToScrobbleSetting()
+        navigateToScrobbleSetting.invoke()
       }
     }
 
@@ -112,19 +110,13 @@ fun AccountScreen(
   uiState.theme?.let {
     AccountContent(
       theme = it,
-      navigateToThemeSelector = { navController.navigateToThemeSelector() },
+      navigateToThemeSelector = navigateToThemeSelector,
       navigateToLogoutConfirmation = {
         openDialog.value = true
       },
-      navigateToLicenseList = {
-        navController.navigateToLicense()
-      },
-      navigateToPrivacyPolicy = {
-        navController.navigateToPrivacyPolicy()
-      },
-      navigateToScrobbleSetting = {
-        navController.navigateToScrobbleSetting()
-      },
+      navigateToLicenseList = navigateToLicenseList,
+      navigateToPrivacyPolicy = navigateToPrivacyPolicy,
+      navigateToScrobbleSetting = navigateToScrobbleSetting,
       navigateToNotificationSetting = {
         val intent = Intent()
         intent.action = Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS
@@ -163,7 +155,7 @@ fun AccountScreen(
     when (it) {
       is AccountViewModel.Event.Logout -> {
         openDialog.value = false
-        navController.navigateToLogin()
+        navigateToLogin.invoke()
       }
     }
     viewModel.popEvent()

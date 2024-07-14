@@ -131,7 +131,7 @@ class DiscoverScreenTest {
       content = {
         DiscoverScreen(
           viewModel = viewModel,
-          navController = mockk()
+          navigateToWebView = mockk()
         )
       },
       fileName = "discover_screen.png"
@@ -146,7 +146,7 @@ class DiscoverScreenTest {
       content = {
         DiscoverScreen(
           viewModel = viewModel,
-          navController = mockk()
+          navigateToWebView = mockk()
         )
       },
       fileName = "discover_screen_light.png"

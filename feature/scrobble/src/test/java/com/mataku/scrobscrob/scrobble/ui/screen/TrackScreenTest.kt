@@ -111,7 +111,8 @@ class TrackScreenTest {
           artistName = artistName,
           artworkUrl = artworkUrl,
           trackViewModel = viewModel,
-          navController = mockk()
+          navigateToWebView = mockk(),
+          onBackPressed = mockk()
         )
       },
       fileName = "track_screen.png"
@@ -133,7 +134,8 @@ class TrackScreenTest {
           artistName = artistName,
           artworkUrl = artworkUrl,
           trackViewModel = viewModel,
-          navController = mockk()
+          navigateToWebView = mockk(),
+          onBackPressed = mockk()
         )
       },
       fileName = "track_screen_light.png"

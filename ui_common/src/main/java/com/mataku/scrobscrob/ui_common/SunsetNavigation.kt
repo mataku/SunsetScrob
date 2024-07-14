@@ -19,7 +19,7 @@ fun NavGraphBuilder.commonGraph(navController: NavController) {
   ) {
     WebViewScreen(
       url = it.arguments?.getString("url")!!,
-      navController = navController,
+      onBackPressed = navController::popBackStack,
       modifier = Modifier
         .padding(
           top = 24.dp

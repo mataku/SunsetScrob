@@ -57,12 +57,9 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.mataku.scrobscrob.auth.R
 import com.mataku.scrobscrob.auth.ui.viewmodel.LoginViewModel
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
-import com.mataku.scrobscrob.ui_common.navigateToHomeFromAuth
-import com.mataku.scrobscrob.ui_common.navigateToPrivacyPolicy
 import com.mataku.scrobscrob.ui_common.style.LocalSnackbarHostState
 import com.mataku.scrobscrob.ui_common.style.SunsetTheme
 import kotlinx.coroutines.launch
@@ -71,7 +68,8 @@ import com.mataku.scrobscrob.ui_common.R as uiCommonR
 @Composable
 fun LoginScreen(
   viewModel: LoginViewModel,
-  navController: NavController,
+  navigateToHomeFromAuth: () -> Unit,
+  navigateToPrivacyPolicy: () -> Unit,
   modifier: Modifier = Modifier
 ) {
   val coroutineScope = rememberCoroutineScope()
@@ -81,7 +79,7 @@ fun LoginScreen(
   uiState.event?.let {
     when (it) {
       is LoginViewModel.UiEvent.LoginSuccess -> {
-        navController.navigateToHomeFromAuth()
+        navigateToHomeFromAuth.invoke()
       }
 
       is LoginViewModel.UiEvent.LoginFailed -> {
@@ -109,9 +107,7 @@ fun LoginScreen(
     onLoginButtonTap = { id, password ->
       viewModel.authorize(id, password)
     },
-    onPrivacyPolicyTap = {
-      navController.navigateToPrivacyPolicy()
-    },
+    onPrivacyPolicyTap = navigateToPrivacyPolicy,
     username = uiState.username,
     password = uiState.password,
     onUsernameUpdate = viewModel::updateUsername,

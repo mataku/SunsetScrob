@@ -119,8 +119,12 @@ class AccountScreenTest {
       content = {
         AccountScreen(
           viewModel = viewModel,
-          navController = navController,
           showPermissionHelp = {},
+          navigateToLogin = mockk(),
+          navigateToPrivacyPolicy = mockk(),
+          navigateToScrobbleSetting = mockk(),
+          navigateToLicenseList = mockk(),
+          navigateToThemeSelector = mockk()
         )
       },
       fileName = "account_screen.png"
@@ -144,8 +148,12 @@ class AccountScreenTest {
       content = {
         AccountScreen(
           viewModel = viewModel,
-          navController = navController,
-          showPermissionHelp = {}
+          showPermissionHelp = {},
+          navigateToLogin = mockk(),
+          navigateToPrivacyPolicy = mockk(),
+          navigateToScrobbleSetting = mockk(),
+          navigateToLicenseList = mockk(),
+          navigateToThemeSelector = mockk()
         )
       },
       fileName = "account_screen_light.png"

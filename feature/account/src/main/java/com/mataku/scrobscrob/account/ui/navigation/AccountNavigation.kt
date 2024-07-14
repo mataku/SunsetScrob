@@ -20,6 +20,8 @@ import com.mataku.scrobscrob.account.ui.screen.LicenseScreen
 import com.mataku.scrobscrob.account.ui.screen.PrivacyPolicyScreen
 import com.mataku.scrobscrob.account.ui.screen.ScrobbleSettingScreen
 import com.mataku.scrobscrob.ui_common.PRIVACY_POLICY_DESTINATION
+import com.mataku.scrobscrob.ui_common.navigateToLogin
+import com.mataku.scrobscrob.ui_common.navigateToPrivacyPolicy
 
 fun NavGraphBuilder.accountGraph(navController: NavController, username: String) {
   val usernameArgs = "username"
@@ -39,7 +41,11 @@ fun NavGraphBuilder.accountGraph(navController: NavController, username: String)
       val context = LocalContext.current
       AccountScreen(
         viewModel = hiltViewModel(),
-        navController = navController,
+        navigateToScrobbleSetting = navController::navigateToScrobbleSetting,
+        navigateToThemeSelector = navController::navigateToThemeSelector,
+        navigateToLicenseList = navController::navigateToLicense,
+        navigateToLogin = navController::navigateToLogin,
+        navigateToPrivacyPolicy = navController::navigateToPrivacyPolicy,
         showPermissionHelp = {
           Toast.makeText(
             context.applicationContext,
@@ -68,7 +74,7 @@ fun NavGraphBuilder.accountGraph(navController: NavController, username: String)
     composable(THEME_SELECTOR_DESTINATION) {
       ThemeSelectorScreen(
         viewModel = hiltViewModel(),
-        navController = navController,
+        onBackPressed = navController::popBackStack,
         modifier = Modifier
           .padding(
             top = 24.dp
