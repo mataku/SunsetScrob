@@ -1,7 +1,7 @@
 package com.mataku.scrobscrob.scrobble.ui.component
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -9,22 +9,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.layout
@@ -51,10 +44,6 @@ internal fun TrackDetail(
   modifier: Modifier = Modifier,
   onUrlTap: (String) -> Unit
 ) {
-  var userLoved by remember {
-    mutableStateOf(false)
-  }
-
   Column(
     modifier = modifier
       .fillMaxWidth()
@@ -72,19 +61,18 @@ internal fun TrackDetail(
         modifier = Modifier.weight(1F)
       )
 
-      val userPlayCount = trackInfo.userPlayCount
-      if (userPlayCount > 0) {
-        Spacer(modifier = Modifier.width(8.dp))
-        ValueDescription(
-          value = userPlayCount.toReadableIntValue(),
-          label = "Scrobbles",
-          modifier = Modifier
-        )
-      }
+//      val userPlayCount = trackInfo.userPlayCount
+//      if (userPlayCount > 0) {
+//        Spacer(modifier = Modifier.width(8.dp))
+//        ValueDescription(
+//          value = userPlayCount.toReadableIntValue(),
+//          label = "Scrobbles",
+//          modifier = Modifier
+//        )
+//      }
+//      Spacer(modifier = Modifier.width(20.dp))
 
-      Spacer(modifier = Modifier.width(20.dp))
-
-      if (userLoved) {
+      if (trackInfo.userLoved) {
         Image(
           painter = rememberVectorPainter(image = Icons.Default.Favorite),
           contentDescription = "favorite",
@@ -93,32 +81,27 @@ internal fun TrackDetail(
           ),
           modifier = Modifier
             .size(30.dp)
-            .clickable {
-              userLoved = !userLoved
-            }
-        )
-      } else {
-        Image(
-          painter = rememberVectorPainter(image = Icons.Outlined.FavoriteBorder),
-          contentDescription = "favorite",
-          modifier = Modifier
-            .size(30.dp)
-            .clickable {
-              userLoved = !userLoved
-            },
-          colorFilter = ColorFilter.tint(
-            color = Color.Gray
-          ),
         )
       }
     }
+
+    TrackMetaData(
+      listeners = trackInfo.listeners,
+      playCount = trackInfo.playCount,
+      userPlayCount = trackInfo.userPlayCount,
+      modifier = Modifier
+        .padding(
+          top = 24.dp,
+          bottom = 8.dp
+        )
+    )
 
     trackInfo.album?.let { album ->
       HorizontalDivider(
         modifier = Modifier
           .fillMaxWidth()
           .padding(
-            vertical = 24.dp
+            vertical = 16.dp
           ),
         color = MaterialTheme.colorScheme.onSecondary.copy(
           alpha = 0.7F
@@ -203,6 +186,37 @@ private fun TrackDescription(
 }
 
 @Composable
+private fun TrackMetaData(
+  listeners: String?,
+  playCount: String?,
+  userPlayCount: String,
+  modifier: Modifier = Modifier
+) {
+  Row(
+    modifier = modifier,
+    horizontalArrangement = Arrangement.spacedBy(40.dp)
+  ) {
+    listeners?.let {
+      ValueDescription(
+        value = it.toReadableIntValue(),
+        label = "Listeners",
+      )
+    }
+    playCount?.let {
+      ValueDescription(
+        value = it.toReadableIntValue(),
+        label = "Plays"
+      )
+    }
+
+    ValueDescription(
+      value = userPlayCount.toReadableIntValue(),
+      label = "You"
+    )
+  }
+}
+
+@Composable
 @Preview(showBackground = true)
 private fun TrackDetailPreview() {
   SunsetThemePreview {
@@ -241,7 +255,7 @@ private fun TrackDetailPreview() {
             content = "\"Clocks\" emerged in <b>conception during the late</b>stages into the production of Coldplay's second album, A Rush of Blood to the Head. The band's vocalist, Chris Martin, came in studio late one night. A riff popped  up in Martin's mind and wrote it on the  piano. Martin presented the riff to the band's guitarist, Jonny Buckland, who then added guitar chords on the basic track.\n\nDuring the writing of \"Clocks\", the band had already made 10 songs for the album. With this, they thought it was too late for the song's inclusion in the albumclude contrast, contradictions and urgency. Chris Martin sings of being in the state of \"helplessness ...",
             summary = "\"Clocks\" emerged in <b>conception during the late stages</b> into the production of Coldplay's second album, A Rush of Blood to the Head. The band's vocalist, Chris Martin, came in studio late one night. A riff popped  up in Martin's mind and wrote it on the  piano. Martin presented the riff to the band's guitarist, Jonny Buckland, who then added guitar chords on the basic track.\n\nDuring the writing of \"Clocks\", the band had already made 10 songs for the album. <a href=\"http://www.last.fm/music/Coldplay/_/Clocks\">Read more on Last.fm</a>.",
           ),
-          userPlayCount = 10000
+          userPlayCount = "10000"
         ),
         modifier = Modifier
           .padding(
@@ -292,7 +306,7 @@ private fun TrackDetailUserLovedTrackPreview() {
             content = "\"Clocks\" emerged in <b>conception during the late</b>stages into the production of Coldplay's second album, A Rush of Blood to the Head. The band's vocalist, Chris Martin, came in studio late one night. A riff popped  up in Martin's mind and wrote it on the  piano. Martin presented the riff to the band's guitarist, Jonny Buckland, who then added guitar chords on the basic track.\n\nDuring the writing of \"Clocks\", the band had already made 10 songs for the album. With this, they thought it was too late for the song's inclusion in the albumclude contrast, contradictions and urgency. Chris Martin sings of being in the state of \"helplessness ...",
             summary = "\"Clocks\" emerged in <b>conception during the late stages</b> into the production of Coldplay's second album, A Rush of Blood to the Head. The band's vocalist, Chris Martin, came in studio late one night. A riff popped  up in Martin's mind and wrote it on the  piano. Martin presented the riff to the band's guitarist, Jonny Buckland, who then added guitar chords on the basic track.\n\nDuring the writing of \"Clocks\", the band had already made 10 songs for the album. <a href=\"http://www.last.fm/music/Coldplay/_/Clocks\">Read more on Last.fm</a>.",
           ),
-          userPlayCount = 10000,
+          userPlayCount = "10000",
           userLoved = true
         ),
         modifier = Modifier
