@@ -38,6 +38,7 @@ internal fun ChartTagList(
     TopTags(
       tagList = tagList,
       onTagClick = onTagClick,
+      modifier = Modifier
     )
   }
 }

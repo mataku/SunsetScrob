@@ -1,4 +1,4 @@
-package com.mataku.scrobscrob.scrobble.ui.molecule
+package com.mataku.scrobscrob.scrobble.ui.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

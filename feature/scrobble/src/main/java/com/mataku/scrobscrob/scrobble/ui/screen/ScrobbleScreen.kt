@@ -22,7 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import com.mataku.scrobscrob.core.entity.RecentTrack
-import com.mataku.scrobscrob.scrobble.ui.molecule.Scrobble
+import com.mataku.scrobscrob.scrobble.ui.component.Scrobble
 import com.mataku.scrobscrob.scrobble.ui.viewmodel.ScrobbleViewModel
 import com.mataku.scrobscrob.ui_common.molecule.LoadingIndicator
 import com.mataku.scrobscrob.ui_common.organism.InfiniteLoadingIndicator
