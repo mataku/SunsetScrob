@@ -25,7 +25,7 @@ data class TrackInfoBody(
   @SerialName("wiki")
   val wiki: WikiBody? = null,
   @SerialName("userplaycount")
-  val userPlayCount: Int?,
+  val userPlayCount: String?,
   @SerialName("userloved")
   val userLoved: String?
 )

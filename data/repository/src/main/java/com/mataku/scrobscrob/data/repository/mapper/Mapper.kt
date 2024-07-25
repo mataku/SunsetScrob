@@ -111,7 +111,7 @@ fun TrackInfoApiResponse.toTrackInfo(): TrackInfo {
     name = body.name,
     playCount = body.playCount,
     wiki = body.wiki.toWiki(),
-    userPlayCount = body.userPlayCount ?: 0,
+    userPlayCount = body.userPlayCount ?: "0",
     userLoved = body.userLoved == "1"
   )
 }
