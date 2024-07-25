@@ -1,4 +1,4 @@
-package com.mataku.scrobscrob.scrobble.ui.molecule
+package com.mataku.scrobscrob.scrobble.ui.component
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.clickable

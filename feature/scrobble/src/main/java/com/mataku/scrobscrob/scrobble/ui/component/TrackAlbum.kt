@@ -36,7 +36,6 @@ fun TrackAlbum(
   Column(
     modifier = modifier
       .fillMaxWidth()
-      .padding(horizontal = 16.dp)
   ) {
 
     Text(
@@ -108,7 +107,11 @@ private fun TrackAlbumPreview() {
           artist = "Perfume",
           title = "セラミックガール",
           imageList = persistentListOf(),
-        )
+        ),
+        modifier = Modifier
+          .padding(
+            horizontal = 16.dp
+          )
       )
     }
   }
