@@ -6,13 +6,14 @@ import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
 import com.mataku.scrobscrob.app.ui.screen.MainScreen
 import com.mataku.scrobscrob.app.ui.viewmodel.MainViewModel
+import com.mataku.scrobscrob.ui_common.style.Colors
 import com.mataku.scrobscrob.ui_common.style.SunsetTheme
+import com.mataku.scrobscrob.ui_common.style.backgroundColor
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -35,12 +36,16 @@ class MainActivity : ComponentActivity() {
           enableEdgeToEdge(
             statusBarStyle = if (theme.isLight) {
               SystemBarStyle.light(
-                Color.Transparent.toArgb(),
-                Color.Transparent.toArgb()
+                theme.backgroundColor().copy(
+                  alpha = 0.2F
+                ).toArgb(),
+                Colors.StatusBarDark.toArgb()
               )
             } else {
               SystemBarStyle.dark(
-                Color.Transparent.toArgb(),
+                theme.backgroundColor().copy(
+                  alpha = 0.2F
+                ).toArgb(),
               )
             }
           )

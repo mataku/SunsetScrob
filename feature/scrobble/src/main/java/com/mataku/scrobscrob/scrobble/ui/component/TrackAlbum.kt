@@ -78,9 +78,7 @@ fun TrackAlbum(
           modifier = Modifier.wrapContentSize(),
           maxLines = 1,
           overflow = TextOverflow.Ellipsis,
-          style = SunsetTextStyle.body.copy(
-            fontWeight = FontWeight.Bold
-          )
+          style = SunsetTextStyle.body
         )
 
         Spacer(modifier = Modifier.size(4.dp))

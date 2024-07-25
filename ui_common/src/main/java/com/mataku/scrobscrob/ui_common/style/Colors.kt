@@ -18,6 +18,8 @@ object Colors {
   val SunsetBlue = Color(0xFF90CAF9)
   val SunsetBackground = Color(0xFFf5b95c)
   val Heart = Color(0xFFEC407A)
+  val StatusBarDark = Color(0x1A000000)
+  val StatusBarLight = Color(0x1AFFFFFF)
 }
 
 object DarkColor {

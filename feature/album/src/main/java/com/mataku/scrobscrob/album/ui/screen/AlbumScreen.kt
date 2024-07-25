@@ -86,7 +86,7 @@ private fun AlbumContent(
     modifier = modifier,
     scaffoldState = scaffoldState,
     sheetPeekHeight = if (screenHeight >= screenWidth) {
-      (screenHeight - screenWidth).dp
+      (screenHeight - screenWidth + 24).dp
     } else {
       (screenWidth - screenHeight).dp
     },

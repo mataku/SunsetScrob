@@ -9,6 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.mataku.scrobscrob.core.entity.presentation.toReadableIntValue
@@ -30,7 +31,9 @@ internal fun ArtistDetail(
   ) {
     Text(
       text = artistName,
-      style = SunsetTextStyle.body,
+      style = SunsetTextStyle.body.copy(
+        fontWeight = FontWeight.Bold
+      ),
       maxLines = 1,
       overflow = TextOverflow.Ellipsis,
       modifier = Modifier
@@ -46,10 +49,9 @@ internal fun ArtistDetail(
       label = "Listeners"
     )
 
-
     ValueDescription(
       value = playCount?.toReadableIntValue() ?: "",
-      label = "Plays"
+      label = "Scrobbles"
     )
   }
 }

@@ -1,7 +1,6 @@
 package com.mataku.scrobscrob.scrobble.ui.component
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,10 +18,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.layout
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -171,7 +170,9 @@ private fun TrackDescription(
   Column(modifier = modifier) {
     Text(
       text = trackName,
-      style = SunsetTextStyle.body,
+      style = SunsetTextStyle.body.copy(
+        fontWeight = FontWeight.Bold
+      ),
       maxLines = 1,
       overflow = TextOverflow.Ellipsis
     )
@@ -208,13 +209,13 @@ private fun TrackMetaData(
     playCount?.let {
       ValueDescription(
         value = it.toReadableIntValue(),
-        label = "Plays"
+        label = "Scrobbles"
       )
     }
 
     ValueDescription(
       value = userPlayCount.toReadableIntValue(),
-      label = "You"
+      label = "Yours"
     )
   }
 }
