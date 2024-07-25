@@ -82,7 +82,7 @@ internal fun TrackDetail(
         )
       }
 
-      Spacer(modifier = Modifier.width(16.dp))
+      Spacer(modifier = Modifier.width(20.dp))
 
       if (userLoved) {
         Image(
@@ -112,7 +112,7 @@ internal fun TrackDetail(
         )
       }
     }
-    
+
     trackInfo.album?.let { album ->
       HorizontalDivider(
         modifier = Modifier
