@@ -23,7 +23,11 @@ data class TrackInfoBody(
   @SerialName("name")
   val name: String,
   @SerialName("wiki")
-  val wiki: WikiBody? = null
+  val wiki: WikiBody? = null,
+  @SerialName("userplaycount")
+  val userPlayCount: Int?,
+  @SerialName("userloved")
+  val userLoved: String?
 )
 
 @Serializable
