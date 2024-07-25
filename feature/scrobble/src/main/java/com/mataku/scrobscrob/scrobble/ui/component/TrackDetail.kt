@@ -1,6 +1,7 @@
 package com.mataku.scrobscrob.scrobble.ui.component
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.layout
@@ -112,12 +114,11 @@ internal fun TrackDetail(
         TopTags(
           tagList = trackInfo.topTags,
           modifier = Modifier
-            .fillMaxWidth()
             .padding(
               vertical = 16.dp
             )
             .layout { measurable, constraints ->
-              val width = constraints.maxWidth + (32.dp).roundToPx()
+              val width = constraints.maxWidth + 32.dp.roundToPx()
               val placeable = measurable.measure(
                 constraints.copy(
                   maxWidth = width
@@ -127,6 +128,8 @@ internal fun TrackDetail(
                 placeable.place(0, 0)
               }
             }
+            .fillMaxWidth()
+
         )
       } else {
         Spacer(modifier = Modifier.height(16.dp))
