@@ -14,8 +14,6 @@ dependencies {
   implementation(project(":core"))
   implementation(project(":data:repository"))
   implementation(libs.activity.compose)
-  implementation(libs.compose.ui.tooling)
-  implementation(libs.compose.material)
   implementation(libs.compose.material3)
   implementation(libs.compose.navigation)
 
@@ -25,4 +23,5 @@ dependencies {
 
   implementation(libs.kotlinx.collection)
 
+  implementation(libs.compose.ui.tooling)
 }

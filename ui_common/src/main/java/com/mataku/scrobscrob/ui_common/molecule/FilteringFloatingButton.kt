@@ -1,9 +1,9 @@
 package com.mataku.scrobscrob.ui_common.molecule
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material3.FloatingActionButton
@@ -29,7 +29,7 @@ fun FilteringFloatingButton(
     modifier = modifier,
     shape = FloatingActionButtonDefaults.shape
   ) {
-    Icon(
+    Image(
       painter = rememberVectorPainter(image = Icons.Filled.FilterList),
       contentDescription = "filter content"
     )

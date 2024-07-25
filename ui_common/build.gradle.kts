@@ -16,9 +16,7 @@ android {
 dependencies {
   implementation(project(":core"))
   implementation(libs.activity.compose)
-  implementation(libs.compose.ui.tooling)
   implementation(libs.compose.animation)
-  implementation(libs.compose.material)
   implementation(libs.compose.material3)
   implementation(libs.compose.navigation)
 
@@ -29,6 +27,8 @@ dependencies {
   kspDebug(libs.showkase.processor)
   implementation(libs.showkase)
   implementation(libs.kotlinx.collection)
+
+  implementation(libs.compose.ui.tooling)
 }
 
 ksp {

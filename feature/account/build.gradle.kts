@@ -19,19 +19,14 @@ dependencies {
   implementation(project(":data:repository"))
 
   implementation(libs.activity.compose)
-  implementation(libs.compose.ui.tooling)
   implementation(libs.compose.material3)
   implementation(libs.compose.navigation)
   implementation(libs.compose.material.icons.extended)
-
   implementation(libs.hilt.navigation.compose)
-
   implementation(libs.coroutines)
   implementation(libs.timber)
-
-
-
   implementation(libs.app.update)
-
   implementation(libs.kotlinx.collection)
+
+  implementation(libs.compose.ui.tooling)
 }
