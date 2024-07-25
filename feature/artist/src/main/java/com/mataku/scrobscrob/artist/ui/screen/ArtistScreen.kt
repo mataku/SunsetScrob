@@ -1,39 +1,32 @@
 package com.mataku.scrobscrob.artist.ui.screen
 
-import android.content.res.Configuration
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.BackdropScaffold
-import androidx.compose.material.BackdropScaffoldDefaults
-import androidx.compose.material.BackdropValue
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.rememberBackdropScaffoldState
+import androidx.compose.material3.BottomSheetScaffold
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Surface
+import androidx.compose.material3.rememberBottomSheetScaffoldState
+import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
@@ -44,6 +37,7 @@ import com.mataku.scrobscrob.core.entity.ArtistInfo
 import com.mataku.scrobscrob.core.entity.Stats
 import com.mataku.scrobscrob.core.entity.Tag
 import com.mataku.scrobscrob.core.entity.Wiki
+import com.mataku.scrobscrob.ui_common.component.CircleBackButton
 import com.mataku.scrobscrob.ui_common.molecule.SunsetImage
 import com.mataku.scrobscrob.ui_common.molecule.TopTags
 import com.mataku.scrobscrob.ui_common.molecule.WikiCell
@@ -67,67 +61,65 @@ fun ArtistScreen(
   )
 }
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ArtistContent(
   artworkUrl: String,
   artistName: String,
   artistInfo: ArtistInfo?,
   onArtistLoadMoreTap: (String) -> Unit,
-  onBackPressed: () -> Unit
+  onBackPressed: () -> Unit,
+  modifier: Modifier = Modifier
 ) {
   val screenWidth = LocalConfiguration.current.screenWidthDp
   val screenHeight = LocalConfiguration.current.screenHeightDp
-  val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Revealed)
+  val scaffoldState = rememberBottomSheetScaffoldState(
+    bottomSheetState = rememberStandardBottomSheetState(
+      initialValue = SheetValue.PartiallyExpanded
+    )
+  )
 
-  BackdropScaffold(
-    appBar = {},
-    headerHeight = if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT) {
+  BottomSheetScaffold(
+    modifier = modifier,
+    scaffoldState = scaffoldState,
+    sheetPeekHeight = if (screenHeight >= screenWidth) {
       (screenHeight - screenWidth).dp
     } else {
-      BackdropScaffoldDefaults.HeaderHeight
+      (screenWidth - screenHeight).dp
     },
-    backLayerContent = {
+    content = {
       val imageData = artworkUrl.ifBlank {
         com.mataku.scrobscrob.ui_common.R.drawable.no_image
       }
       Column {
         Box {
-
           SunsetImage(
             imageData = imageData,
             contentDescription = "artwork image",
             modifier = Modifier
               .fillMaxWidth()
-              .aspectRatio(1F)
+              .aspectRatio(1F),
+            contentScale = ContentScale.FillWidth
           )
-          Box(
+          Column(
             modifier = Modifier
               .fillMaxWidth()
-              .height(64.dp)
               .background(
                 color = Color.Transparent
               )
           ) {
-            Image(
-              painter = rememberVectorPainter(image = Icons.AutoMirrored.Default.ArrowBack),
-              contentDescription = "back",
+            Spacer(modifier = Modifier.height(24.dp))
+            CircleBackButton(
               modifier = Modifier
+                .padding(
+                  start = 4.dp
+                )
                 .clickable(
+                  interactionSource = remember { MutableInteractionSource() },
                   indication = null,
-                  interactionSource = remember { MutableInteractionSource() }
                 ) {
                   onBackPressed.invoke()
                 }
-                .padding(
-                  16.dp
-                )
-                .alpha(0.9F),
-              colorFilter = ColorFilter.tint(
-                color = Color.Gray.copy(
-                  alpha = 0.9F
-                )
-              )
             )
           }
         }
@@ -136,14 +128,12 @@ private fun ArtistContent(
           contentDescription = "artwork image",
           modifier = Modifier
             .fillMaxWidth()
-            .aspectRatio(1F)
-            .offset(
-              y = (screenWidth / 2).dp
-            )
+            .aspectRatio(1F),
+          contentScale = ContentScale.FillWidth
         )
       }
     },
-    frontLayerContent = {
+    sheetContent = {
       Column(
         modifier = Modifier
           .fillMaxWidth()
@@ -179,14 +169,6 @@ private fun ArtistContent(
         }
       }
     },
-    modifier = Modifier
-      .fillMaxSize()
-      .background(
-        color = Color.White
-      ),
-    scaffoldState = scaffoldState,
-    frontLayerBackgroundColor = MaterialTheme.colorScheme.background,
-    frontLayerScrimColor = Color.Transparent
   )
 }
 
