@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -137,6 +138,7 @@ private fun ArtistContent(
       Column(
         modifier = Modifier
           .fillMaxWidth()
+          .fillMaxHeight(fraction = 0.9F)
           .verticalScroll(rememberScrollState())
       ) {
         val stats = artistInfo?.stats

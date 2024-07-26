@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -102,6 +103,7 @@ private fun TrackContent(
         onUrlTap = onUrlTap,
         modifier = Modifier
           .defaultMinSize(minHeight = screenWidth.dp)
+          .fillMaxHeight(fraction = 0.9F)
       )
     },
     sheetPeekHeight = if (screenHeight >= screenWidth) {
