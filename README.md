@@ -29,8 +29,8 @@ See more: [screenshots](./screenshot/README.md)
 Prepare local.properties and run `./gradlew installDebug`
 
 ```
-API_KEY="your last.fm api key"
-SHARED_SECRET="your last.fm shared secret"
+API_KEY=YOUR LAST.FM API KEY
+SHARED_SECRET=YOUR LAST.FM SHARED SECRET
 ```
 
 - - -
@@ -53,6 +53,3 @@ or try via Google Play
 ![](./screenshot/module_graph.png)
 
 </details>
-
-## TODO
-- Show artist content details
