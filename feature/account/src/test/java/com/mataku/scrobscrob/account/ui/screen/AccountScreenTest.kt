@@ -3,9 +3,7 @@ package com.mataku.scrobscrob.account.ui.screen
 import android.app.Application
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.lifecycle.SavedStateHandle
-import androidx.navigation.NavController
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
 import com.google.android.gms.tasks.Task
 import com.google.android.play.core.appupdate.AppUpdateInfo
 import com.google.android.play.core.appupdate.AppUpdateManager
@@ -28,15 +26,10 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
 @RunWith(AndroidJUnit4::class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
-@Config(
-  qualifiers = RobolectricDeviceQualifiers.Pixel7,
-  sdk = [33]
-)
 class AccountScreenTest {
   @get:Rule
   val composeTestRule = createComposeRule()
@@ -47,7 +40,6 @@ class AccountScreenTest {
   private val appUpdateManager = mockk<AppUpdateManager>()
   private val application = mockk<Application>()
   private val appUpdateInfoTask = mockk<Task<AppUpdateInfo>>()
-  private val navController = mockk<NavController>()
   private val fileRepository = mockk<FileRepository>()
   private val userRepository = mockk<UserRepository>()
   private val savedStateHandle = mockk<SavedStateHandle>()
@@ -119,8 +111,13 @@ class AccountScreenTest {
       content = {
         AccountScreen(
           viewModel = viewModel,
-          navController = navController
-        ) {}
+          showPermissionHelp = {},
+          navigateToLogin = mockk(),
+          navigateToPrivacyPolicy = mockk(),
+          navigateToScrobbleSetting = mockk(),
+          navigateToLicenseList = mockk(),
+          navigateToThemeSelector = mockk()
+        )
       },
       fileName = "account_screen.png"
     )
@@ -143,8 +140,13 @@ class AccountScreenTest {
       content = {
         AccountScreen(
           viewModel = viewModel,
-          navController = navController
-        ) {}
+          showPermissionHelp = {},
+          navigateToLogin = mockk(),
+          navigateToPrivacyPolicy = mockk(),
+          navigateToScrobbleSetting = mockk(),
+          navigateToLicenseList = mockk(),
+          navigateToThemeSelector = mockk()
+        )
       },
       fileName = "account_screen_light.png"
     )

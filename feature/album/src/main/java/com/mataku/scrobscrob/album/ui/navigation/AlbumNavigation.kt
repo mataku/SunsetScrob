@@ -32,7 +32,8 @@ fun NavGraphBuilder.albumGraph(navController: NavController) {
         if (it.isNotEmpty()) {
           navController.navigateToWebView(it)
         }
-      }
+      },
+      onBackPressed = navController::popBackStack
     )
   }
 }
@@ -71,5 +72,5 @@ private fun buildAlbumInfoUrl(
 }
 
 private const val TOP_ALBUMS_DESTINATION = "top_albums"
-private const val ALBUM_INFO_DESTINATION = "album_info"
+private const val ALBUM_INFO_DESTINATION = "album_detail"
 private const val ALBUM_NAVIGATION_ROUTE = "album_route"

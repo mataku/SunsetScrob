@@ -19,10 +19,12 @@ import com.airbnb.android.showkase.annotation.ShowkaseComposable
 import com.mataku.scrobscrob.core.entity.Tag
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun TopTags(
-  tagList: List<Tag>,
+  tagList: ImmutableList<Tag>,
   modifier: Modifier = Modifier,
   onTagClick: (Tag) -> Unit = {},
 ) {
@@ -66,8 +68,7 @@ private fun Tag(
 
 @Preview
 @Composable
-@ShowkaseComposable(name = "TagList", group = "TagList")
-fun TopTagsPreview() {
+private fun TopTagsPreview() {
   SunsetThemePreview {
     Surface {
       val tagList = listOf("Dance", "Rock", "Jazz").map {
@@ -75,7 +76,7 @@ fun TopTagsPreview() {
           name = it,
           url = ""
         )
-      }
+      }.toImmutableList()
       TopTags(tagList = tagList, onTagClick = {})
     }
   }

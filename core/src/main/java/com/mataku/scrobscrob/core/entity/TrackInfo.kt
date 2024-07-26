@@ -12,7 +12,9 @@ data class TrackInfo(
   val url: String,
   val topTags: ImmutableList<Tag> = persistentListOf(),
   val name: String,
-  val wiki: Wiki? = null
+  val wiki: Wiki? = null,
+  val userPlayCount: String = "0",
+  val userLoved: Boolean = false
 )
 
 data class TrackArtist(

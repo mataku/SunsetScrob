@@ -94,7 +94,7 @@ fun TopAlbum(
 
 @Preview(showBackground = true)
 @Composable
-fun TopAlbumPreview() {
+private fun TopAlbumPreview() {
   SunsetThemePreview {
     Surface {
       TopAlbum(

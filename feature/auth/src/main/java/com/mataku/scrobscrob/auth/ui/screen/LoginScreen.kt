@@ -57,12 +57,9 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.mataku.scrobscrob.auth.R
 import com.mataku.scrobscrob.auth.ui.viewmodel.LoginViewModel
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
-import com.mataku.scrobscrob.ui_common.navigateToHomeFromAuth
-import com.mataku.scrobscrob.ui_common.navigateToPrivacyPolicy
 import com.mataku.scrobscrob.ui_common.style.LocalSnackbarHostState
 import com.mataku.scrobscrob.ui_common.style.SunsetTheme
 import kotlinx.coroutines.launch
@@ -71,7 +68,9 @@ import com.mataku.scrobscrob.ui_common.R as uiCommonR
 @Composable
 fun LoginScreen(
   viewModel: LoginViewModel,
-  navController: NavController
+  navigateToHomeFromAuth: () -> Unit,
+  navigateToPrivacyPolicy: () -> Unit,
+  modifier: Modifier = Modifier
 ) {
   val coroutineScope = rememberCoroutineScope()
   val uiState by viewModel.uiState.collectAsState()
@@ -80,7 +79,7 @@ fun LoginScreen(
   uiState.event?.let {
     when (it) {
       is LoginViewModel.UiEvent.LoginSuccess -> {
-        navController.navigateToHomeFromAuth()
+        navigateToHomeFromAuth.invoke()
       }
 
       is LoginViewModel.UiEvent.LoginFailed -> {
@@ -108,13 +107,12 @@ fun LoginScreen(
     onLoginButtonTap = { id, password ->
       viewModel.authorize(id, password)
     },
-    onPrivacyPolicyTap = {
-      navController.navigateToPrivacyPolicy()
-    },
+    onPrivacyPolicyTap = navigateToPrivacyPolicy,
     username = uiState.username,
     password = uiState.password,
     onUsernameUpdate = viewModel::updateUsername,
-    onPasswordUpdate = viewModel::updatePassword
+    onPasswordUpdate = viewModel::updatePassword,
+    modifier = modifier
   )
 }
 
@@ -127,7 +125,8 @@ private fun LoginContent(
   username: String,
   password: String,
   onUsernameUpdate: (String) -> Unit,
-  onPasswordUpdate: (String) -> Unit
+  onPasswordUpdate: (String) -> Unit,
+  modifier: Modifier = Modifier
 ) {
   var passwordVisible by remember {
     mutableStateOf(false)
@@ -146,7 +145,7 @@ private fun LoginContent(
   // Stored data with "remember { mutableStateOf("") }" will blow up the data in AutoFill#onFill,
   //  so manages input data in ViewModel (TODO: details)
   Column(
-    modifier = Modifier
+    modifier = modifier
       .fillMaxSize()
       .verticalScroll(rememberScrollState())
       .padding(horizontal = 16.dp)

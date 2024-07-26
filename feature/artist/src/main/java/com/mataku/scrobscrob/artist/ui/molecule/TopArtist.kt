@@ -28,7 +28,7 @@ import com.mataku.scrobscrob.ui_common.R as uiCommonR
 fun TopArtist(
   artist: TopArtistInfo,
   onArtistTap: () -> Unit,
-  modifier: Modifier
+  modifier: Modifier = Modifier
 ) {
   Column(
     horizontalAlignment = Alignment.CenterHorizontally,

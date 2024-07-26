@@ -1,7 +1,10 @@
 package com.mataku.scrobscrob.account.ui.navigation
 
 import android.widget.Toast
+import androidx.compose.foundation.layout.padding
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -17,6 +20,8 @@ import com.mataku.scrobscrob.account.ui.screen.LicenseScreen
 import com.mataku.scrobscrob.account.ui.screen.PrivacyPolicyScreen
 import com.mataku.scrobscrob.account.ui.screen.ScrobbleSettingScreen
 import com.mataku.scrobscrob.ui_common.PRIVACY_POLICY_DESTINATION
+import com.mataku.scrobscrob.ui_common.navigateToLogin
+import com.mataku.scrobscrob.ui_common.navigateToPrivacyPolicy
 
 fun NavGraphBuilder.accountGraph(navController: NavController, username: String) {
   val usernameArgs = "username"
@@ -36,35 +41,64 @@ fun NavGraphBuilder.accountGraph(navController: NavController, username: String)
       val context = LocalContext.current
       AccountScreen(
         viewModel = hiltViewModel(),
-        navController = navController,
+        navigateToScrobbleSetting = navController::navigateToScrobbleSetting,
+        navigateToThemeSelector = navController::navigateToThemeSelector,
+        navigateToLicenseList = navController::navigateToLicense,
+        navigateToLogin = navController::navigateToLogin,
+        navigateToPrivacyPolicy = navController::navigateToPrivacyPolicy,
         showPermissionHelp = {
           Toast.makeText(
             context.applicationContext,
             R.string.label_notification_permission_help,
             Toast.LENGTH_LONG
           ).show()
-        }
+        },
+        modifier = Modifier
+          .padding(
+            top = 24.dp
+          )
       )
     }
 
     composable(
       SCROBBLE_SETTING_DESTINATION,
     ) {
-      ScrobbleSettingScreen()
+      ScrobbleSettingScreen(
+        viewModel = hiltViewModel(),
+        modifier = Modifier
+          .padding(
+            top = 24.dp
+          )
+      )
     }
     composable(THEME_SELECTOR_DESTINATION) {
       ThemeSelectorScreen(
         viewModel = hiltViewModel(),
-        navController = navController
+        onBackPressed = navController::popBackStack,
+        modifier = Modifier
+          .padding(
+            top = 24.dp
+          )
       )
     }
     composable(LICENSE_DESTINATION) {
       LicenseScreen(
-        onBackPressed = navController::popBackStack
+        viewModel = hiltViewModel(),
+        onBackPressed = navController::popBackStack,
+        modifier = Modifier
+          .padding(
+            top = 24.dp
+          )
       )
     }
     composable(PRIVACY_POLICY_DESTINATION) {
-      PrivacyPolicyScreen()
+      PrivacyPolicyScreen(
+        onBackPressed = navController::popBackStack,
+        modifier = Modifier
+          .padding(
+            top = 24.dp
+          )
+      )
     }
   }
 }

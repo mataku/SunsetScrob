@@ -55,6 +55,8 @@ import com.mataku.scrobscrob.ui_common.SunsetBottomNavItem
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import com.mataku.scrobscrob.ui_common.style.backgroundColor
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun SunsetNavigationBar(
@@ -71,7 +73,7 @@ fun SunsetNavigationBar(
       ?: SunsetBottomNavItem.HOME
 
   SunsetBottomNavigation(
-    tabs = SunsetBottomNavItem.entries,
+    tabs = SunsetBottomNavItem.entries.toImmutableList(),
     selectedItem = selectedItem,
     onTabSelected = { item ->
       if (item == selectedItem) return@SunsetBottomNavigation
@@ -96,7 +98,7 @@ fun SunsetNavigationBar(
 
 @Preview
 @Composable
-fun SunsetNavigationBarPreview() {
+private fun SunsetNavigationBarPreview() {
   SunsetThemePreview {
     Surface {
       SunsetNavigationBar(
@@ -111,7 +113,7 @@ fun SunsetNavigationBarPreview() {
 
 @Preview
 @Composable
-fun SunsetNavigationBarLightPreview() {
+private fun SunsetNavigationBarLightPreview() {
   SunsetThemePreview(theme = AppTheme.LIGHT) {
     Surface {
       SunsetNavigationBar(
@@ -126,7 +128,7 @@ fun SunsetNavigationBarLightPreview() {
 
 @Composable
 fun SunsetBottomNavigation(
-  tabs: List<SunsetBottomNavItem>,
+  tabs: ImmutableList<SunsetBottomNavItem>,
   selectedItem: SunsetBottomNavItem,
   onTabSelected: (SunsetBottomNavItem) -> Unit,
   modifier: Modifier = Modifier,

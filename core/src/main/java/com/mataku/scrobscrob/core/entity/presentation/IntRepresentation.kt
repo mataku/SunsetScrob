@@ -12,3 +12,13 @@ fun String.toReadableIntValue(): String {
     compactDecimalFormat.format(this.toInt())
   }.getOrNull() ?: this
 }
+
+fun Int.toReadableIntValue(): String {
+  return runCatching {
+    val compactDecimalFormat = CompactDecimalFormat.getInstance(
+      Locale.ENGLISH,
+      CompactDecimalFormat.CompactStyle.SHORT
+    )
+    compactDecimalFormat.format(this)
+  }.getOrNull() ?: this.toString()
+}

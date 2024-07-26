@@ -22,15 +22,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import com.mataku.scrobscrob.album.ui.navigation.navigateToAlbumInfo
 import com.mataku.scrobscrob.album.ui.screen.TopAlbumsScreen
-import com.mataku.scrobscrob.artist.ui.navigation.navigateToArtistInfo
 import com.mataku.scrobscrob.artist.ui.screen.TopArtistsScreen
-import com.mataku.scrobscrob.core.entity.imageUrl
+import com.mataku.scrobscrob.core.entity.RecentTrack
+import com.mataku.scrobscrob.core.entity.TopAlbumInfo
+import com.mataku.scrobscrob.core.entity.TopArtistInfo
 import com.mataku.scrobscrob.home.HomeTabType
 import com.mataku.scrobscrob.home.ui.molecule.HomeTabs
-import com.mataku.scrobscrob.scrobble.ui.navigation.navigateToTrackDetail
 import com.mataku.scrobscrob.scrobble.ui.screen.ScrobbleScreen
 import com.mataku.scrobscrob.ui_common.style.LocalTopAppBarState
 import kotlinx.coroutines.launch
@@ -38,7 +36,10 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-  navController: NavController
+  navigateToTrackDetail: (RecentTrack) -> Unit,
+  navigateToArtistDetail: (TopArtistInfo) -> Unit,
+  navigateToAlbumDetail: (TopAlbumInfo) -> Unit,
+  modifier: Modifier = Modifier
 ) {
   val pagerState = rememberPagerState(
     pageCount = {
@@ -48,7 +49,9 @@ fun HomeScreen(
   val coroutineScope = rememberCoroutineScope()
   val scrollBehavior = LocalTopAppBarState.current
 
-  BoxWithConstraints {
+  BoxWithConstraints(
+    modifier = modifier
+  ) {
     val screenHeight = maxHeight
     val scrollState = rememberScrollState()
 
@@ -95,39 +98,22 @@ fun HomeScreen(
               ScrobbleScreen(
                 viewModel = hiltViewModel(),
                 topAppBarScrollBehavior = scrollBehavior,
-                navigateToTrackDetail = { track ->
-                  navController.navigateToTrackDetail(
-                    trackName = track.name,
-                    artistName = track.artistName,
-                    imageUrl = track.images.imageUrl() ?: "",
-                  )
-                }
+                navigateToTrackDetail = navigateToTrackDetail
               )
             }
 
             HomeTabType.ARTIST -> {
               TopArtistsScreen(
                 viewModel = hiltViewModel(),
-                onArtistTap = {
-                  navController.navigateToArtistInfo(
-                    artistName = it.name,
-                    artworkUrl = it.imageList.imageUrl() ?: "",
-                  )
-                },
+                onArtistTap = navigateToArtistDetail,
                 topAppBarScrollBehavior = scrollBehavior
               )
             }
 
-            HomeTabType.TRACK -> {
+            HomeTabType.ALBUM -> {
               TopAlbumsScreen(
                 viewModel = hiltViewModel(),
-                navigateToAlbumInfo = { album ->
-                  navController.navigateToAlbumInfo(
-                    albumName = album.title,
-                    artistName = album.artist,
-                    artworkUrl = album.imageList.imageUrl() ?: ""
-                  )
-                },
+                navigateToAlbumInfo = navigateToAlbumDetail,
                 topAppBarScrollBehavior = scrollBehavior
               )
             }

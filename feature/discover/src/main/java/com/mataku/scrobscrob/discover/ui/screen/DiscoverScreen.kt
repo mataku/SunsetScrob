@@ -9,25 +9,23 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.mataku.scrobscrob.discover.ui.molecule.ChartArtistList
 import com.mataku.scrobscrob.discover.ui.molecule.ChartTagList
 import com.mataku.scrobscrob.discover.ui.molecule.ChartTrackList
 import com.mataku.scrobscrob.discover.ui.viewmodel.DiscoverViewModel
-import com.mataku.scrobscrob.ui_common.navigateToWebView
 import com.mataku.scrobscrob.ui_common.organism.ContentHeader
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun DiscoverScreen(
-  viewModel: DiscoverViewModel = hiltViewModel(),
-  navController: NavController
+  viewModel: DiscoverViewModel,
+  navigateToWebView: (String) -> Unit,
+  modifier: Modifier = Modifier
 ) {
   val uiState by viewModel.uiState.collectAsState()
 
   LazyColumn(
-    modifier = Modifier.fillMaxSize(),
+    modifier = modifier.fillMaxSize(),
     verticalArrangement = Arrangement.spacedBy(16.dp)
   ) {
     stickyHeader {
@@ -41,7 +39,7 @@ fun DiscoverScreen(
         ChartTrackList(
           chartTrackList = uiState.topTracks,
           onChartTrackTap = {
-            navController.navigateToWebView(it.url)
+            navigateToWebView.invoke(it.url)
           }
         )
       }
@@ -54,7 +52,7 @@ fun DiscoverScreen(
         ChartArtistList(
           chartArtistList = uiState.topArtists,
           onChartArtistTap = {
-            navController.navigateToWebView(it.url)
+            navigateToWebView.invoke(it.url)
           }
         )
       }
@@ -67,7 +65,7 @@ fun DiscoverScreen(
         ChartTagList(
           tagList = uiState.topTags,
           onTagClick = {
-            navController.navigateToWebView(it.url)
+            navigateToWebView.invoke(it.url)
           }
         )
       }

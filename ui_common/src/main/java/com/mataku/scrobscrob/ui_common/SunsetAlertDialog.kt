@@ -5,18 +5,21 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 
 @Composable
 fun SunsetAlertDialog(
   title: String,
+  confirmButtonText: String,
+  onConfirmButton: () -> Unit,
+  modifier: Modifier = Modifier,
   description: String = "",
   onDismissRequest: () -> Unit = {},
-  onConfirmButton: () -> Unit,
   onDismissButton: () -> Unit = {},
   dismissButtonText: String = "",
-  confirmButtonText: String
 ) {
   AlertDialog(
+    modifier = modifier,
     onDismissRequest = onDismissRequest,
     title = if (title.isNotBlank()) {
       { Text(text = title) }

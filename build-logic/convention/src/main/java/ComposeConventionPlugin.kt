@@ -15,6 +15,7 @@ class ComposeConventionPlugin : Plugin<Project> {
         val composeBom = libs.findLibrary("compose-bom").get()
         add("implementation", platform(composeBom))
         add("androidTestImplementation", platform(composeBom))
+        add("lintChecks", libs.findLibrary("compose-lint").get())
       }
     }
   }

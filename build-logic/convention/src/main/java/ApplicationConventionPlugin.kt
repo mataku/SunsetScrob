@@ -8,6 +8,9 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 
 class ApplicationConventionPlugin : Plugin<Project> {
+
+  private val appVersionName = "1.10.0"
+
   override fun apply(target: Project) {
     with(target) {
       with(pluginManager) {
@@ -68,8 +71,8 @@ class ApplicationConventionPlugin : Plugin<Project> {
         }
         defaultConfig {
           applicationId = "com.mataku.scrobscrob"
-          versionCode = 190
-          versionName = "1.9.0"
+          versionName = appVersionName
+          versionCode = generateVersionCode(appVersionName)
           proguardFiles(
             getDefaultProguardFile("proguard-android.txt"),
             "proguard-rules.pro"
@@ -79,4 +82,12 @@ class ApplicationConventionPlugin : Plugin<Project> {
       testConfiguration()
     }
   }
+}
+
+private fun generateVersionCode(versionName: String): Int {
+  val versionCodeDigits = versionName.split(".")
+  val major = versionCodeDigits[0].toInt()
+  val minor = versionCodeDigits[1].toInt()
+  val patch = versionCodeDigits[2].toInt()
+  return major * 1000000 + minor * 1000 + patch
 }

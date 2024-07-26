@@ -22,7 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import com.mataku.scrobscrob.core.entity.RecentTrack
-import com.mataku.scrobscrob.scrobble.ui.molecule.Scrobble
+import com.mataku.scrobscrob.scrobble.ui.component.Scrobble
 import com.mataku.scrobscrob.scrobble.ui.viewmodel.ScrobbleViewModel
 import com.mataku.scrobscrob.ui_common.molecule.LoadingIndicator
 import com.mataku.scrobscrob.ui_common.organism.InfiniteLoadingIndicator
@@ -33,7 +33,8 @@ import kotlinx.collections.immutable.ImmutableList
 fun ScrobbleScreen(
   viewModel: ScrobbleViewModel,
   topAppBarScrollBehavior: TopAppBarScrollBehavior,
-  navigateToTrackDetail: (RecentTrack) -> Unit
+  navigateToTrackDetail: (RecentTrack) -> Unit,
+  modifier: Modifier = Modifier
 ) {
   val uiState by viewModel.uiState.collectAsState()
   val lazyListState = rememberLazyListState()
@@ -44,7 +45,7 @@ fun ScrobbleScreen(
   )
 
   Box(
-    modifier = Modifier
+    modifier = modifier
       .pullRefresh(
         state = pullRefreshState,
       )

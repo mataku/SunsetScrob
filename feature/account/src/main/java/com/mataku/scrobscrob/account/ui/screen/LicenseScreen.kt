@@ -22,7 +22,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.mataku.scrobscrob.account.ui.viewmodel.LicenseViewModel
 import com.mataku.scrobscrob.core.entity.LicenseArtifact
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
@@ -31,8 +30,9 @@ import com.mataku.scrobscrob.ui_common.organism.ContentHeader
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun LicenseScreen(
-  viewModel: LicenseViewModel = hiltViewModel(),
-  onBackPressed: () -> Unit
+  viewModel: LicenseViewModel,
+  onBackPressed: () -> Unit,
+  modifier: Modifier = Modifier
 ) {
   val uiState by viewModel.uiState.collectAsState()
 
@@ -73,7 +73,7 @@ fun LicenseScreen(
         HorizontalDivider()
       }
     },
-    modifier = Modifier
+    modifier = modifier
       .fillMaxSize()
       .padding(
         horizontal = 16.dp

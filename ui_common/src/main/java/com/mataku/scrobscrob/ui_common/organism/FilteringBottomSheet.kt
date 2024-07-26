@@ -1,7 +1,6 @@
 package com.mataku.scrobscrob.ui_common.organism
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -71,7 +70,7 @@ private fun TimeRangeCell(
   timeRangeValue: String,
   selected: Boolean,
   onClick: () -> Unit,
-  modifier: Modifier
+  modifier: Modifier = Modifier
 ) {
   Row(modifier = Modifier
     .fillMaxWidth()
@@ -103,7 +102,7 @@ private fun TimeRangeCell(
 @Preview(showBackground = true)
 @Composable
 @ShowkaseComposable(name = "FilteringBottomSheet", group = "BottomSheet")
-fun FilteringBottomSheetPreview() {
+private fun FilteringBottomSheetPreview() {
   SunsetThemePreview {
     Surface {
       FilteringBottomSheet(

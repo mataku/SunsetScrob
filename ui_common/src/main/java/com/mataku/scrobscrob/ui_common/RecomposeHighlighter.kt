@@ -14,6 +14,7 @@ package com.mataku.scrobscrob.ui_common
  * permissions and limitations under the License.
  */
 
+import android.annotation.SuppressLint
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.mutableStateOf
@@ -48,6 +49,7 @@ fun Modifier.recomposeHighlighter(): Modifier {
 
 // Use a single instance + @Stable to ensure that recompositions can enable skipping optimizations
 // Modifier.composed will still remember unique data per call site.
+@SuppressLint("ComposeModifierComposed")
 private val recomposeModifier =
   Modifier.composed(inspectorInfo = debugInspectorInfo { name = "recomposeHighlighter" }) {
     // The total number of compositions that have occurred. We're not using a State<> here be

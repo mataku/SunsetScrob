@@ -30,10 +30,12 @@ import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 @Composable
 fun NavigationHeader(
   text: String,
-  onBackPressed: () -> Unit
+  onBackPressed: () -> Unit,
+  modifier: Modifier = Modifier
 ) {
   Surface(
-    shadowElevation = 2.dp
+    shadowElevation = 2.dp,
+    modifier = modifier
   ) {
     Row(
       modifier = Modifier
@@ -81,7 +83,7 @@ fun NavigationHeader(
   styleName = "Dark"
 )
 @Composable
-fun NavigationHeaderPreview() {
+private fun NavigationHeaderPreview() {
   SunsetThemePreview {
     NavigationHeader(text = "Scrobble", onBackPressed = {})
   }
@@ -90,7 +92,7 @@ fun NavigationHeaderPreview() {
 @Preview
 @ShowkaseComposable(name = "NavigationHeader", group = "Common", styleName = "Light")
 @Composable
-fun NavigationHeaderLightPreview() {
+private fun NavigationHeaderLightPreview() {
   SunsetThemePreview(theme = AppTheme.LIGHT) {
     NavigationHeader(text = "Scrobble", onBackPressed = {})
   }
@@ -99,7 +101,7 @@ fun NavigationHeaderLightPreview() {
 @Preview
 @ShowkaseComposable(name = "NavigationHeader", group = "Common", styleName = "Midnight")
 @Composable
-fun NavigationHeaderMidnightPreview() {
+private fun NavigationHeaderMidnightPreview() {
   SunsetThemePreview(theme = AppTheme.MIDNIGHT) {
     NavigationHeader(text = "Scrobble", onBackPressed = {})
   }
@@ -108,7 +110,7 @@ fun NavigationHeaderMidnightPreview() {
 @Preview
 @ShowkaseComposable(name = "NavigationHeader", group = "Common", styleName = "Last.fm Dark")
 @Composable
-fun NavigationHeaderLastFmDarkPreview() {
+private fun NavigationHeaderLastFmDarkPreview() {
   SunsetThemePreview(theme = AppTheme.LASTFM_DARK) {
     NavigationHeader(text = "Scrobble", onBackPressed = {})
   }

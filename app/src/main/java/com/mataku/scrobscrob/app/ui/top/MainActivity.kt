@@ -11,6 +11,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
 import com.mataku.scrobscrob.app.ui.screen.MainScreen
 import com.mataku.scrobscrob.app.ui.viewmodel.MainViewModel
+import com.mataku.scrobscrob.ui_common.style.Colors
 import com.mataku.scrobscrob.ui_common.style.SunsetTheme
 import com.mataku.scrobscrob.ui_common.style.backgroundColor
 import dagger.hilt.android.AndroidEntryPoint
@@ -24,9 +25,9 @@ class MainActivity : ComponentActivity() {
     // Should Call before onCreate
     // https://developer.android.com/guide/topics/ui/splash-screen/migrate#migrate_your_splash_screen_implementation
     installSplashScreen()
-    super.onCreate(savedInstanceState)
 
     enableEdgeToEdge()
+    super.onCreate(savedInstanceState)
 
     lifecycleScope.launch {
       viewModel.state.collect {
@@ -35,12 +36,16 @@ class MainActivity : ComponentActivity() {
           enableEdgeToEdge(
             statusBarStyle = if (theme.isLight) {
               SystemBarStyle.light(
-                theme.backgroundColor().toArgb(),
-                theme.backgroundColor().toArgb()
+                theme.backgroundColor().copy(
+                  alpha = 0.2F
+                ).toArgb(),
+                Colors.StatusBarDark.toArgb()
               )
             } else {
               SystemBarStyle.dark(
-                theme.backgroundColor().toArgb()
+                theme.backgroundColor().copy(
+                  alpha = 0.2F
+                ).toArgb(),
               )
             }
           )

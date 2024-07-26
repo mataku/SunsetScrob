@@ -18,7 +18,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.mataku.scrobscrob.account.R
 import com.mataku.scrobscrob.account.ui.viewmodel.ScrobbleSettingViewModel
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
@@ -29,7 +28,8 @@ import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ScrobbleSettingScreen(
-  viewModel: ScrobbleSettingViewModel = hiltViewModel()
+  viewModel: ScrobbleSettingViewModel,
+  modifier: Modifier = Modifier
 ) {
   val uiState = viewModel.uiState
   val snackbarHostState = LocalSnackbarHostState.current
@@ -52,38 +52,41 @@ fun ScrobbleSettingScreen(
   val spotifyAllowed = uiState.allowedApps.contains(SPOTIFY_NAME.mappedApp())
   val youTubeMusicAllowed = uiState.allowedApps.contains(YOUTUBE_MUSIC_NAME.mappedApp())
 
-  LazyColumn(content = {
-    stickyHeader {
-      ContentHeader(text = stringResource(id = R.string.label_scrobble_setting))
-    }
+  LazyColumn(
+    content = {
+      stickyHeader {
+        ContentHeader(text = stringResource(id = R.string.label_scrobble_setting))
+      }
 
-    item {
-      ScrobbleSettingCell(
-        title = APPLE_MUSIC_NAME,
-        enabled = appleMusicAllowed,
-        onTapCell = { appName, enable ->
-          viewModel.changeAppScrobbleState(appName, enable)
-        }
-      )
+      item {
+        ScrobbleSettingCell(
+          title = APPLE_MUSIC_NAME,
+          enabled = appleMusicAllowed,
+          onTapCell = { appName, enable ->
+            viewModel.changeAppScrobbleState(appName, enable)
+          }
+        )
 
-      ScrobbleSettingCell(
-        title = SPOTIFY_NAME,
-        enabled = spotifyAllowed,
-        onTapCell = { appName, enable ->
-          viewModel.changeAppScrobbleState(appName, enable)
-        }
-      )
+        ScrobbleSettingCell(
+          title = SPOTIFY_NAME,
+          enabled = spotifyAllowed,
+          onTapCell = { appName, enable ->
+            viewModel.changeAppScrobbleState(appName, enable)
+          }
+        )
 
-      ScrobbleSettingCell(
-        title = YOUTUBE_MUSIC_NAME,
-        enabled = youTubeMusicAllowed,
-        onTapCell = { appName, enable ->
-          viewModel.changeAppScrobbleState(appName, enable)
-        }
-      )
+        ScrobbleSettingCell(
+          title = YOUTUBE_MUSIC_NAME,
+          enabled = youTubeMusicAllowed,
+          onTapCell = { appName, enable ->
+            viewModel.changeAppScrobbleState(appName, enable)
+          }
+        )
 
-    }
-  }, modifier = Modifier.fillMaxSize())
+      }
+    },
+    modifier = modifier.fillMaxSize()
+  )
 }
 
 @Composable

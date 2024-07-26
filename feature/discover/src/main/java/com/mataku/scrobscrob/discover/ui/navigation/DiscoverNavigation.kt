@@ -1,11 +1,16 @@
 package com.mataku.scrobscrob.discover.ui.navigation
 
+import androidx.compose.foundation.layout.padding
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.mataku.scrobscrob.discover.ui.screen.DiscoverScreen
+import com.mataku.scrobscrob.ui_common.navigateToWebView
 
 fun NavGraphBuilder.discoverGraph(navController: NavController) {
   navigation(route = DISCOVER_NAVIGATION_ROUTE, startDestination = DISCOVER_START_NAVIGATION) {
@@ -13,7 +18,12 @@ fun NavGraphBuilder.discoverGraph(navController: NavController) {
       DISCOVER_START_NAVIGATION
     ) {
       DiscoverScreen(
-        navController = navController
+        viewModel = hiltViewModel(),
+        navigateToWebView = navController::navigateToWebView,
+        modifier = Modifier
+          .padding(
+            top = 24.dp
+          )
       )
     }
   }

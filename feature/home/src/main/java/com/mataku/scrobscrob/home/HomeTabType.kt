@@ -2,7 +2,7 @@ package com.mataku.scrobscrob.home
 
 enum class HomeTabType(val tabName: String) {
   SCROBBLE("Scrobble"),
-  TRACK("Track"),
+  ALBUM("Album"),
   ARTIST("Artist");
 
   companion object {

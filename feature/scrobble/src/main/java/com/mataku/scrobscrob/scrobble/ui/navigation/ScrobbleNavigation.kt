@@ -11,6 +11,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.mataku.scrobscrob.scrobble.ui.screen.TrackScreen
+import com.mataku.scrobscrob.ui_common.navigateToWebView
 
 fun NavGraphBuilder.scrobbleGraph(navController: NavController) {
   composable(
@@ -37,7 +38,8 @@ fun NavGraphBuilder.scrobbleGraph(navController: NavController) {
         artworkUrl = arguments.getString("imageUrl", ""),
         artistName = artistName,
         trackViewModel = hiltViewModel(),
-        navController = navController
+        onBackPressed = navController::popBackStack,
+        navigateToWebView = navController::navigateToWebView
       )
     },
     enterTransition = {
