@@ -33,7 +33,7 @@ fun NavGraphBuilder.homeGraph(navController: NavController) {
         navigateToArtistDetail = { artist ->
           navController.navigateToArtistInfo(
             artistName = artist.name,
-            artworkUrl = artist.imageList.imageUrl() ?: "",
+            artworkUrl = (artist.imageUrl ?: artist.imageList.imageUrl()) ?: ""
           )
         },
         navigateToAlbumDetail = { album ->
