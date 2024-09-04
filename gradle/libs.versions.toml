@@ -1,5 +1,5 @@
 [versions]
-activity = "1.9.1"
+activity = "1.9.2"
 agp = "8.6.0"
 compose = "2024.08.00"
 core-sprashscreen = "1.0.1"
