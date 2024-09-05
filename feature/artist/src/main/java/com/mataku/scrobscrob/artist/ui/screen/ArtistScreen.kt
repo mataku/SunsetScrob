@@ -10,13 +10,13 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Surface
 import androidx.compose.material3.rememberBottomSheetScaffoldState
@@ -82,6 +82,7 @@ private fun ArtistContent(
 
   BottomSheetScaffold(
     modifier = modifier,
+    sheetContainerColor = MaterialTheme.colorScheme.background,
     scaffoldState = scaffoldState,
     sheetPeekHeight = if (screenHeight >= screenWidth) {
       (screenHeight - screenWidth).dp
