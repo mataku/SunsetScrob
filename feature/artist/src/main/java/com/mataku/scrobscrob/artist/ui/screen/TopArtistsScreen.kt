@@ -113,7 +113,9 @@ fun TopArtistsScreen(
         },
         sheetState = bottomSheetState,
         modifier = Modifier,
-        windowInsets = WindowInsets.displayCutout
+        contentWindowInsets = {
+          WindowInsets.displayCutout
+        },
       ) {
         FilteringBottomSheet(
           selectedTimeRangeFiltering = uiState.selectedTimeRangeFiltering,

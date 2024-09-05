@@ -1,11 +1,11 @@
 package com.mataku.scrobscrob.ui_common.style
 
-import androidx.compose.material.ripple.LocalRippleTheme
 import androidx.compose.material.ripple.RippleAlpha
-import androidx.compose.material.ripple.RippleTheme
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.LocalRippleConfiguration
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RippleConfiguration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.darkColorScheme
@@ -17,17 +17,24 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.mataku.scrobscrob.core.entity.AppTheme
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SunsetTheme(
   theme: AppTheme = AppTheme.DARK,
   content: @Composable () -> Unit,
 ) {
-  val rippleTheme = SunsetRippleTheme(theme)
   MaterialTheme(
     colorScheme = theme.colorScheme(),
   ) {
     CompositionLocalProvider(
-      LocalRippleTheme provides rippleTheme,
+      LocalRippleConfiguration provides RippleConfiguration(
+        color = MaterialTheme.colorScheme.onSurface,
+        rippleAlpha = if (theme.isLight) {
+          LightRippleAlpha
+        } else {
+          DarkRippleAlpha
+        }
+      ),
       LocalAppTheme provides theme,
       content = content
     )
@@ -163,19 +170,17 @@ private val midnightColorScheme = darkColorScheme(
   onBackground = Color.White
 )
 
-private class SunsetRippleTheme(
-  val appTheme: AppTheme
-) : RippleTheme {
-  @Composable
-  override fun defaultColor(): Color {
-    return MaterialTheme.colorScheme.onSurface
-  }
+// referenced from old RippleTheme implementation
+private val LightRippleAlpha = RippleAlpha(
+  pressedAlpha = 0.12f,
+  focusedAlpha = 0.12f,
+  draggedAlpha = 0.08f,
+  hoveredAlpha = 0.04f
+)
 
-  @Composable
-  override fun rippleAlpha(): RippleAlpha {
-    return RippleTheme.defaultRippleAlpha(
-      Color.Black,
-      lightTheme = appTheme.isLight
-    )
-  }
-}
+private val DarkRippleAlpha = RippleAlpha(
+  pressedAlpha = 0.10f,
+  focusedAlpha = 0.12f,
+  draggedAlpha = 0.08f,
+  hoveredAlpha = 0.04f
+)

@@ -112,7 +112,9 @@ fun TopAlbumsScreen(
           showBottomSheet = false
         },
         sheetState = bottomSheetState,
-        windowInsets = WindowInsets.displayCutout
+        contentWindowInsets = {
+          WindowInsets.displayCutout
+        },
       ) {
         FilteringBottomSheet(
           selectedTimeRangeFiltering = uiState.timeRangeFiltering,
