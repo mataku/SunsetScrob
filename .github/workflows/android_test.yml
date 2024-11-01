@@ -49,6 +49,6 @@ jobs:
         with:
           name: android-test-reports
           path: |
-            '**/build/reports/'
-            '**/build/outputs/'
+            **/build/reports/roborazzi/**
+            **/build/outputs/roborazzi/**
           retention-days: 7
