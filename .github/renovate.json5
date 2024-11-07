@@ -1,54 +1,54 @@
 {
-  "extends": [
-    "config:base"
+  extends: [
+    'config:recommended',
   ],
-  "ignoreDeps": [
-    "androidx.compose.animation:animation",
-    "androidx.compose.ui:ui-tooling",
-    "androidx.compose.ui:ui-test",
-    "androidx.compose.ui:ui-test-junit4",
-    "androidx.compose.ui:ui-test-manifest",
-    "androidx.benchmark:benchmark-macro-junit4",
-    "androidx.test.uiautomator:uiautomator",
-    "androidx.test.ext:junit",
-    "androidx.test:core",
-    "androidx.test.espresso:espresso-core",
-    "androidx.core:core-splashscreen",
-    "app.cash.turbine:turbine",
-    "app.cash.licensee",
-    "app.cash.sqldelight",
-    "sqldelight",
-    "com.airbnb.android:showkase",
-    "com.airbnb.android:showkase-annotation",
-    "com.airbnb.android:showkase-processor",
-    "com.airbnb.android:lottie-compose",
-    "com.google.accompanist:accompanist-navigation-animation",
-    "com.google.accompanist:accompanist-systemuicontroller",
-    "com.google.accompanist:accompanist-swiperefresh",
-    "com.jakewharton.timber:timber",
-    "org.robolectric:robolectric",
-    "org.junit.jupiter:junit-jupiter",
-    "org.junit.vintage:junit-vintage-engine",
-    "com.slack.lint.compose:compose-lint-checks"
+  ignoreDeps: [
+    'androidx.compose.animation:animation',
+    'androidx.compose.ui:ui-tooling',
+    'androidx.compose.ui:ui-test',
+    'androidx.compose.ui:ui-test-junit4',
+    'androidx.compose.ui:ui-test-manifest',
+    'androidx.benchmark:benchmark-macro-junit4',
+    'androidx.test.uiautomator:uiautomator',
+    'androidx.test.ext:junit',
+    'androidx.test:core',
+    'androidx.test.espresso:espresso-core',
+    'androidx.core:core-splashscreen',
+    'app.cash.turbine:turbine',
+    'app.cash.licensee',
+    'app.cash.sqldelight',
+    'sqldelight',
+    'com.airbnb.android:showkase',
+    'com.airbnb.android:showkase-annotation',
+    'com.airbnb.android:showkase-processor',
+    'com.airbnb.android:lottie-compose',
+    'com.google.accompanist:accompanist-navigation-animation',
+    'com.google.accompanist:accompanist-systemuicontroller',
+    'com.google.accompanist:accompanist-swiperefresh',
+    'com.jakewharton.timber:timber',
+    'org.robolectric:robolectric',
+    'org.junit.jupiter:junit-jupiter',
+    'org.junit.vintage:junit-vintage-engine',
+    'com.slack.lint.compose:compose-lint-checks',
   ],
-  "prConcurrentLimit": 3,
-  "rebaseWhen": "conflicted",
-  "packageRules": [
+  prConcurrentLimit: 3,
+  rebaseWhen: 'conflicted',
+  packageRules: [
     {
-      "matchUpdateTypes": [
-        "minor",
-        "patch"
+      matchUpdateTypes: [
+        'minor',
+        'patch',
       ],
-      "automerge": true,
-      "platformAutomerge": true
+      automerge: true,
+      platformAutomerge: true,
     },
     {
-      "groupName": "compose_compiler_kotlin",
-      "matchPackagePrefixes": [
-        "androidx.compose.compiler",
-        "org.jetbrains.kotlin",
-        "com.google.devtools.ksp"
-      ]
-    }
-  ]
+      groupName: 'compose_compiler_kotlin',
+      matchPackageNames: [
+        'androidx.compose.compiler{/,}**',
+        'org.jetbrains.kotlin{/,}**',
+        'com.google.devtools.ksp{/,}**',
+      ],
+    },
+  ],
 }
