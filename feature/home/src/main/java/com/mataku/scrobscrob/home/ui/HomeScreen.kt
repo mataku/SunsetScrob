@@ -90,7 +90,13 @@ fun HomeScreen(
               MaterialTheme.colorScheme.background
             )
         )
-        HorizontalPager(state = pagerState) { page ->
+        HorizontalPager(
+          state = pagerState,
+          key = {
+            val homeTabType = HomeTabType.findByIndex(it)
+            homeTabType.tabName
+          }
+          ) { page ->
           val homeTabType = HomeTabType.findByIndex(page)
           when (homeTabType) {
             HomeTabType.SCROBBLE -> {
