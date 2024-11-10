@@ -37,10 +37,7 @@ jobs:
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
-      - uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
-      - name: Setup
+      - name: Setup env
         env:
           LAST_FM_API_KEY: ${{ secrets.LAST_FM_API_KEY }}
           LAST_FM_SHARED_SECRET: ${{ secrets.LAST_FM_SHARED_SECRET }}
