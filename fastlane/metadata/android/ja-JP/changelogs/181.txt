@@ -1,2 +1,0 @@
-- Update dependencies
-- Make the target of the Delete Cache menu easier to understand

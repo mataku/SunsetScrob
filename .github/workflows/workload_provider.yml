@@ -6,24 +6,34 @@ on:
 jobs:
   workload-identity-integrate-test:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 25
     permissions:
       id-token: write
       contents: read
     steps:
     - uses: actions/checkout@v4
-      with:
-        ref: ${{ github.event.inputs.branch }}
     - id: auth
       uses: google-github-actions/auth@v2
       with:
         create_credentials_file: true
         workload_identity_provider: ${{ secrets.WORKFLOW_IDENTITY_PROVIDER }}
-        service_account: ${{ secrets.APP_PUBLISHER_GOOGLE_SERVICE_ACCOUNT }}
+        service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT }}
     - uses: ./.github/actions/setup-gradle
     - uses: ruby/setup-ruby@v1
       with:
         bundler-cache: true
-    - name: Run fastlane with google-github-actions/auth result
+    - name: Prepare authentication
       run: |
+        echo -n "${{ secrets.SUNSETSCROB_KEYSTORE }}" | base64 -d > SunsetScrob.jks
+    - name: Run fastlane with google-github-actions/auth result
+      env:
+        LAST_FM_API_KEY: ${{ secrets.LAST_FM_API_KEY }}
+        LAST_FM_SHARED_SECRET: ${{ secrets.LAST_FM_SHARED_SECRET }}
+        GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
+        SUNSET_KEY_ALIAS: ${{ secrets.SUNSET_KEY_ALIAS }}
+        SUNSET_KEY_PASSWORD: ${{ secrets.SUNSET_KEY_PASSWORD }}
+        SUNSET_STORE_PASSWORD: ${{ secrets.SUNSET_STORE_PASSWORD }}
+      run: |
+        bundle exec fastlane android setup_for_ci
         bundle exec fastlane android fetch_metadata
+        bundle exec fastlane android deploy_internal_app_sharing

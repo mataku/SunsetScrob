@@ -1,2 +1,0 @@
-- Add track detail screen
-- Add album detail screen

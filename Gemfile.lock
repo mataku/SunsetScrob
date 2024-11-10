@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/mataku/fastlane
-  revision: 693385548b84d500883adc4ab57a63a1998788e1
+  revision: a6e3a490cbc4ec0d5800267b8955615934ad5625
   branch: feature/google-auth-external-account
   specs:
     fastlane (2.225.0)
