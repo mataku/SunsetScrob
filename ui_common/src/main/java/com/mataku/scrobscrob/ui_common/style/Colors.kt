@@ -36,7 +36,7 @@ object DarkColor {
   val onSecondary = Colors.textSecondary
 
   @ShowkaseColor(name = "surface", group = "Dark")
-  val surface = Color(0xFF37474F)
+  val surface = Colors.ContentBackground
 
   @ShowkaseColor(name = "onSurface", group = "Dark")
   val onSurface = Color.White

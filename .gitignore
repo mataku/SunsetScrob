@@ -43,6 +43,8 @@ local.properties
 .idea/copilot/
 .idea/deploymentTargetSelector.xml
 .idea/other.xml
+.idea/material_theme_project_new.xml
+.idea/runConfigurations.xml
 
 *.iml
 .env

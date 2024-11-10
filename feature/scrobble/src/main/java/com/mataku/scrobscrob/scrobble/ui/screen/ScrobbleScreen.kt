@@ -65,7 +65,6 @@ fun ScrobbleScreen(
       state = pullRefreshState,
       modifier = Modifier.align(alignment = Alignment.TopCenter)
     )
-
   }
 
   if (uiState.isLoading && uiState.recentTracks.isEmpty()) {

@@ -112,7 +112,9 @@ fun TopAlbumsScreen(
           showBottomSheet = false
         },
         sheetState = bottomSheetState,
-        windowInsets = WindowInsets.displayCutout
+        contentWindowInsets = {
+          WindowInsets.displayCutout
+        },
       ) {
         FilteringBottomSheet(
           selectedTimeRangeFiltering = uiState.timeRangeFiltering,
@@ -173,7 +175,9 @@ fun TopAlbumsContent(
       }
 
       if (hasNext && albums.isNotEmpty()) {
-        item {
+        item(
+          key = "top_albums_loading"
+        ) {
           InfiniteLoadingIndicator(
             onScrollEnd = onScrollEnd,
             modifier = Modifier

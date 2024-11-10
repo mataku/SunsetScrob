@@ -113,7 +113,9 @@ fun TopArtistsScreen(
         },
         sheetState = bottomSheetState,
         modifier = Modifier,
-        windowInsets = WindowInsets.displayCutout
+        contentWindowInsets = {
+          WindowInsets.displayCutout
+        },
       ) {
         FilteringBottomSheet(
           selectedTimeRangeFiltering = uiState.selectedTimeRangeFiltering,
@@ -172,7 +174,10 @@ private fun TopArtistsContent(
       }
 
       if (hasNext && artists.isNotEmpty()) {
-        item(span = { GridItemSpan(2) }) {
+        item(
+          span = { GridItemSpan(2) },
+          key = "top_artists_loading"
+          ) {
           InfiniteLoadingIndicator(
             onScrollEnd = onScrollEnd,
             modifier = Modifier
