@@ -29,8 +29,6 @@ fun Project.composeConfiguration() {
     }
 
     with(extensions.getByType<ComposeCompilerGradlePluginExtension>()) {
-      enableStrongSkippingMode.set(true)
-
       val composeReportEnabled =
         rootProject.providers.gradleProperty("composeCompilerReports").orNull == "true"
 
