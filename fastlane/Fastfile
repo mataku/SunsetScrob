@@ -47,7 +47,8 @@ platform :android do
 
   lane :fetch_metadata do
     download_from_play_store(
-      package_name: APP_ID
+      package_name: APP_ID,
+      json_key: ENV['GOOGLE_APPLICATION_CREDENTIALS'],
     )
   end
 

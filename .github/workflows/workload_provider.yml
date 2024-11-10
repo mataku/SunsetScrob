@@ -1,0 +1,29 @@
+name: Workload Identity test
+
+on:
+  pull_request:
+
+jobs:
+  workload-identity-integrate-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        ref: ${{ github.event.inputs.branch }}
+    - id: auth
+      uses: google-github-actions/auth@v2
+      with:
+        create_credentials_file: true
+        workload_identity_provider: ${{ secrets.WORKFLOW_IDENTITY_PROVIDER }}
+        service_account: ${{ secrets.APP_PUBLISHER_GOOGLE_SERVICE_ACCOUNT }}
+    - uses: ./.github/actions/setup-gradle
+    - uses: ruby/setup-ruby@v1
+      with:
+        bundler-cache: true
+    - name: Run fastlane with google-github-actions/auth result
+      run: |
+        bundle exec fastlane android fetch_metadata
