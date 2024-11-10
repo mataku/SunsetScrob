@@ -227,7 +227,7 @@ fun SunsetBottomNavigation(
 
 @Composable
 private fun BottomBarTabs(
-  tabs: List<SunsetBottomNavItem>,
+  tabs: ImmutableList<SunsetBottomNavItem>,
   selectedTab: SunsetBottomNavItem,
   onTabSelected: (SunsetBottomNavItem) -> Unit,
 ) {

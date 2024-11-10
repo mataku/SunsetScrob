@@ -175,7 +175,9 @@ fun TopAlbumsContent(
       }
 
       if (hasNext && albums.isNotEmpty()) {
-        item {
+        item(
+          key = "top_albums_loading"
+        ) {
           InfiniteLoadingIndicator(
             onScrollEnd = onScrollEnd,
             modifier = Modifier
