@@ -12,12 +12,6 @@ jobs:
       contents: read
     steps:
     - uses: actions/checkout@v4
-    - id: auth
-      uses: google-github-actions/auth@v2
-      with:
-        create_credentials_file: true
-        workload_identity_provider: ${{ secrets.WORKFLOW_IDENTITY_PROVIDER }}
-        service_account: ${{ secrets.APP_PUBLISHER_GOOGLE_SERVICE_ACCOUNT }}
     - uses: ./.github/actions/setup-gradle
     - uses: ruby/setup-ruby@v1
       with:
@@ -25,7 +19,8 @@ jobs:
     - name: Prepare authentication
       run: |
         echo -n "${{ secrets.SUNSETSCROB_KEYSTORE }}" | base64 -d > SunsetScrob.jks
-    - name: Run fastlane with google-github-actions/auth result
+        echo -n "${{ secrets.APP_PUBLISHER_JSON }}" | base64 -d > app/app-publisher.json
+    - name: Run fastlane
       env:
         LAST_FM_API_KEY: ${{ secrets.LAST_FM_API_KEY }}
         LAST_FM_SHARED_SECRET: ${{ secrets.LAST_FM_SHARED_SECRET }}

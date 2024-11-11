@@ -48,7 +48,6 @@ platform :android do
   lane :fetch_metadata do
     download_from_play_store(
       package_name: APP_ID,
-      json_key: ENV['GOOGLE_APPLICATION_CREDENTIALS'],
     )
   end
 
@@ -71,7 +70,6 @@ platform :android do
     upload_to_play_store_internal_app_sharing(
       package_name: APP_ID,
       aab: 'app/build/outputs/bundle/release/app-release.aab',
-      json_key: ENV['GOOGLE_APPLICATION_CREDENTIALS'],
     )
   end
 
