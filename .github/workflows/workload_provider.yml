@@ -17,7 +17,7 @@ jobs:
       with:
         create_credentials_file: true
         workload_identity_provider: ${{ secrets.WORKFLOW_IDENTITY_PROVIDER }}
-        service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT }}
+        service_account: ${{ secrets.APP_PUBLISHER_GOOGLE_SERVICE_ACCOUNT }}
     - uses: ./.github/actions/setup-gradle
     - uses: ruby/setup-ruby@v1
       with:
