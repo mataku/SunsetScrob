@@ -9,7 +9,7 @@ import org.gradle.kotlin.dsl.configure
 
 class ApplicationConventionPlugin : Plugin<Project> {
 
-  private val appVersionName = "1.11.1"
+  private val appVersionName = "1.11.2"
 
   override fun apply(target: Project) {
     with(target) {

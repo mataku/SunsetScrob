@@ -60,7 +60,8 @@ platform :android do
       skip_upload_metadata: false,
       skip_upload_images: true,
       skip_upload_screenshots: true,
-      skip_upload_apk: true
+      skip_upload_apk: true,
+      rollout: '0.2',
     )
   end
 
@@ -99,6 +100,22 @@ platform :android do
     production_release.releases.each do |release|
       UI.message "#{release.name}'s release status: #{release.status}"
     end
+  end
+
+  lane :halt_internal_track do
+    upload_to_play_store(
+      # Target track to halt
+      track: 'internal',
+      # No need to specify `track_remote_to` because stage will not change
+      track_promote_release_status: 'halted',
+      # Skip uploading binary and metadata processing because I just want to halt
+      skip_upload_apk: true,
+      skip_upload_aab: true,
+      skip_upload_metadata: true,
+      skip_upload_changelogs: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+    )
   end
 
   error do |lane, exception|
