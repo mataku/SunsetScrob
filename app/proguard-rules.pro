@@ -36,3 +36,16 @@
 -dontwarn org.openjsse.net.ssl.OpenJSSE
 
 -keep public class * extends com.airbnb.android.showkase.models.ShowkaseProvider
+
+# Compose Trace
+-assumenosideeffects public class androidx.compose.runtime.ComposerKt {
+
+   boolean isTraceInProgress();
+
+   void traceEventStart(int,int,int,java.lang.String);
+
+   void traceEventStart(int,java.lang.String);
+
+   void traceEventEnd();
+
+}

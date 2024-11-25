@@ -52,6 +52,9 @@ dependencies {
   debugImplementation(libs.showkase)
   implementation(libs.showkase.annotation)
   kspDebug(libs.showkase.processor)
+
+  implementation(libs.androidx.runtime.tracing)
+  implementation(libs.androidx.tracing.ktx)
 }
 
 ksp {
