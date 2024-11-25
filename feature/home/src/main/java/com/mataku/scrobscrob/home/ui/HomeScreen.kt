@@ -19,7 +19,10 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mataku.scrobscrob.album.ui.screen.TopAlbumsScreen
 import com.mataku.scrobscrob.artist.ui.screen.TopArtistsScreen
@@ -32,7 +35,7 @@ import com.mataku.scrobscrob.scrobble.ui.screen.ScrobbleScreen
 import com.mataku.scrobscrob.ui_common.style.LocalTopAppBarState
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun HomeScreen(
   navigateToTrackDetail: (RecentTrack) -> Unit,
@@ -50,6 +53,9 @@ fun HomeScreen(
 
   BoxWithConstraints(
     modifier = modifier
+      .semantics {
+        testTagsAsResourceId = true
+      }
   ) {
     val screenHeight = maxHeight
     val scrollState = rememberScrollState()
@@ -95,8 +101,9 @@ fun HomeScreen(
           key = {
             val homeTabType = HomeTabType.findByIndex(it)
             homeTabType.tabName
-          }
-          ) { page ->
+          },
+          modifier = Modifier
+        ) { page ->
           val homeTabType = HomeTabType.findByIndex(page)
           when (homeTabType) {
             HomeTabType.SCROBBLE -> {

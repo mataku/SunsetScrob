@@ -18,8 +18,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.mataku.scrobscrob.core.entity.RecentTrack
 import com.mataku.scrobscrob.scrobble.ui.component.Scrobble
@@ -28,7 +30,9 @@ import com.mataku.scrobscrob.ui_common.molecule.LoadingIndicator
 import com.mataku.scrobscrob.ui_common.organism.InfiniteLoadingIndicator
 import kotlinx.collections.immutable.ImmutableList
 
-@OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
+@OptIn(
+  ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class
+)
 @Composable
 fun ScrobbleScreen(
   viewModel: ScrobbleViewModel,
@@ -77,7 +81,7 @@ fun ScrobbleScreen(
   }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 private fun ScrobbleContent(
   lazyListState: LazyListState,
@@ -124,7 +128,10 @@ private fun ScrobbleContent(
     },
     modifier = Modifier
       .fillMaxSize()
-      .nestedScroll(scrollBehavior.nestedScrollConnection),
+      .nestedScroll(scrollBehavior.nestedScrollConnection)
+      .testTag(
+        "scrobbleList"
+      ),
     contentPadding = PaddingValues(
       vertical = 8.dp
     )

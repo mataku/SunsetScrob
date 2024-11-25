@@ -48,7 +48,10 @@ import androidx.compose.ui.platform.LocalAutofill
 import androidx.compose.ui.platform.LocalAutofillTree
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -150,7 +153,10 @@ private fun LoginContent(
       .verticalScroll(rememberScrollState())
       .padding(horizontal = 16.dp)
       .imePadding()
-      .imeNestedScroll(),
+      .imeNestedScroll()
+      .semantics {
+        testTagsAsResourceId = true
+      },
     horizontalAlignment = Alignment.CenterHorizontally,
     verticalArrangement = Arrangement.Center
   ) {
@@ -198,6 +204,7 @@ private fun LoginContent(
             }
           }
         }
+        .testTag("loginUsername")
     )
 
     Spacer(modifier = Modifier.height(16.dp))
@@ -252,6 +259,7 @@ private fun LoginContent(
             }
           }
         }
+        .testTag("loginPassword")
     )
 
     Spacer(modifier = Modifier.height(48.dp))
@@ -263,7 +271,8 @@ private fun LoginContent(
       },
       modifier = Modifier
         .fillMaxWidth()
-        .padding(horizontal = 24.dp),
+        .padding(horizontal = 24.dp)
+        .testTag("loginButton"),
       enabled = !isLoading,
       contentPadding = PaddingValues(vertical = 16.dp)
     ) {
