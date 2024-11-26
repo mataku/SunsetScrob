@@ -57,16 +57,11 @@ internal fun ChartTrackCell(
       textAlign = TextAlign.Center
     )
     val imageUrl = chartTrack.imageList.imageUrl()
-    val imageData = if (imageUrl == null || imageUrl.isBlank()) {
-      com.mataku.scrobscrob.ui_common.R.drawable.no_image
-    } else {
-      imageUrl
-    }
 
     Spacer(modifier = Modifier.width(8.dp))
 
     SunsetImage(
-      imageData = imageData,
+      imageData = imageUrl,
       contentDescription = "rank ${rank}: ${chartTrack.name} artwork",
       modifier = Modifier.size(56.dp),
     )

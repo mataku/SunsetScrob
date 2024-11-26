@@ -5,9 +5,10 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalInspectionMode
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import com.bumptech.glide.integration.compose.CrossFade
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
@@ -18,14 +19,14 @@ import com.mataku.scrobscrob.ui_common.R
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun SunsetImage(
-  imageData: Any?,
+  imageData: String?,
   contentDescription: String?,
   modifier: Modifier = Modifier,
   contentScale: ContentScale = ContentScale.Fit,
 ) {
-  if (LocalInspectionMode.current || imageData == R.drawable.no_image) {
+  if (LocalInspectionMode.current || imageData == null) {
     Image(
-      painter = painterResource(id = R.drawable.no_image),
+      imageVector = ImageVector.vectorResource(id = R.drawable.no_image),
       contentDescription = contentDescription,
       modifier = modifier,
       contentScale = contentScale

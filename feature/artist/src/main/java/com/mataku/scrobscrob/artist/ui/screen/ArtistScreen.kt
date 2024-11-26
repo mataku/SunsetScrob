@@ -90,13 +90,10 @@ private fun ArtistContent(
       (screenWidth - screenHeight).dp
     },
     content = {
-      val imageData = artworkUrl.ifBlank {
-        com.mataku.scrobscrob.ui_common.R.drawable.no_image
-      }
       Column {
         Box {
           SunsetImage(
-            imageData = imageData,
+            imageData = artworkUrl,
             contentDescription = "artwork image",
             modifier = Modifier
               .fillMaxWidth()
@@ -126,7 +123,7 @@ private fun ArtistContent(
           }
         }
         SunsetImage(
-          imageData = imageData,
+          imageData = artworkUrl,
           contentDescription = "artwork image",
           modifier = Modifier
             .fillMaxWidth()
