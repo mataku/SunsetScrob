@@ -3,8 +3,10 @@ package com.mataku.scrobscrob.ui_common.molecule
 import android.annotation.SuppressLint
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalInspectionMode
@@ -29,7 +31,10 @@ fun SunsetImage(
       imageVector = ImageVector.vectorResource(id = R.drawable.no_image),
       contentDescription = contentDescription,
       modifier = modifier,
-      contentScale = contentScale
+      contentScale = contentScale,
+      colorFilter = ColorFilter.tint(
+        color = MaterialTheme.colorScheme.onSurface
+      )
     )
     return
   }
