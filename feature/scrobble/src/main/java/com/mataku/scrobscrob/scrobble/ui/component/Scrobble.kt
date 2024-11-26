@@ -32,7 +32,6 @@ import com.mataku.scrobscrob.scrobble.R
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.molecule.SunsetImage
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
-import com.mataku.scrobscrob.ui_common.R as uiCommonR
 
 @Composable
 fun Scrobble(recentTrack: RecentTrack, onScrobbleTap: () -> Unit) {
@@ -67,14 +66,8 @@ private fun ScrobbleContent(
     verticalAlignment = Alignment.CenterVertically
   ) {
     Row(modifier = Modifier.weight(1F)) {
-      val imageData = if (imageUrl == null || imageUrl.isBlank()) {
-        uiCommonR.drawable.no_image
-      } else {
-        imageUrl
-      }
-
       SunsetImage(
-        imageData = imageData,
+        imageData = imageUrl,
         contentDescription = "$trackName artwork image",
         modifier = Modifier.size(56.dp),
       )

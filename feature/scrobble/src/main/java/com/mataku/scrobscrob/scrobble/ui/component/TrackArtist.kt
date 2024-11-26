@@ -38,14 +38,8 @@ fun TrackArtist(
     val height = 80.dp
     val imageUrl = artistInfo.imageList.imageUrl()
 
-    val imageData = if (imageUrl == null || imageUrl.isBlank()) {
-      com.mataku.scrobscrob.ui_common.R.drawable.no_image
-    } else {
-      imageUrl
-    }
-
     SunsetImage(
-      imageData = imageData,
+      imageData = imageUrl,
       contentDescription = "Album artist artwork",
       modifier = Modifier
         .size(height)
