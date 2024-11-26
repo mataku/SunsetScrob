@@ -1,6 +1,5 @@
 package com.mataku.scrobscrob.home.ui
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
@@ -20,6 +19,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mataku.scrobscrob.album.ui.screen.TopAlbumsScreen
 import com.mataku.scrobscrob.artist.ui.screen.TopArtistsScreen
@@ -78,6 +78,7 @@ fun HomeScreen(
           .fillMaxWidth()
           .height(screenHeight)
       ) {
+        val backgroundColor = MaterialTheme.colorScheme.background
         HomeTabs(
           selectedChartIndex = pagerState.currentPage,
           onTabTap = { tabType ->
@@ -86,9 +87,9 @@ fun HomeScreen(
             }
           },
           modifier = Modifier
-            .background(
-              MaterialTheme.colorScheme.background
-            )
+            .drawBehind {
+              drawRect(color = backgroundColor)
+            }
         )
         HorizontalPager(
           state = pagerState,
@@ -96,7 +97,7 @@ fun HomeScreen(
             val homeTabType = HomeTabType.findByIndex(it)
             homeTabType.tabName
           }
-          ) { page ->
+        ) { page ->
           val homeTabType = HomeTabType.findByIndex(page)
           when (homeTabType) {
             HomeTabType.SCROBBLE -> {

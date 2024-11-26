@@ -1,11 +1,9 @@
 package com.mataku.scrobscrob.home.ui.molecule
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -14,6 +12,8 @@ import androidx.compose.material3.TabRow
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -29,6 +29,8 @@ internal fun HomeTabs(
   onTabTap: (HomeTabType) -> Unit,
   modifier: Modifier = Modifier
 ) {
+  val accentColor = LocalAppTheme.current.accentColor()
+
   TabRow(
     selectedTabIndex = selectedChartIndex,
     containerColor = Color.Transparent,
@@ -41,10 +43,12 @@ internal fun HomeTabs(
           .padding(
             horizontal = 16.dp
           )
-          .background(
-            LocalAppTheme.current.accentColor(),
-            RoundedCornerShape(100, 100, 0, 0)
-          )
+          .drawBehind {
+            drawRoundRect(
+              color = accentColor,
+              cornerRadius = CornerRadius(100f, 100f)
+            )
+          }
       )
     },
     divider = {
