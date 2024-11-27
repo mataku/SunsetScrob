@@ -34,8 +34,10 @@ class UsernameRepositoryImpl @Inject constructor(
   private val usernameDataStore: UsernameDataStore
 ) : UsernameRepository {
   override fun username(): String? =
-    runBlocking { usernameDataStore.username() }
+    runBlocking { "sunsetscrob" }
 
-  override suspend fun asyncUsername(): String? =
-    usernameDataStore.username()
+  override suspend fun asyncUsername(): String? {
+//    return usernameDataStore.username()
+    return "sunsetscrob"
+  }
 }

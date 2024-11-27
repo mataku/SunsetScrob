@@ -98,6 +98,7 @@ class ScrobbleViewModel @Inject constructor(
       scrobbleRepository.recentTracks(
         page = page
       ).catch { e ->
+        println("MATAKUDEBUG error $e")
         uiState.update { state ->
           state.copy(
             isLoading = false,

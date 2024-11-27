@@ -2,6 +2,7 @@ package com.mataku.scrobscrob.data.api.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
 
 @Serializable
 @SerialName("album")
@@ -22,7 +23,15 @@ data class AlbumBody(
 data class TopAlbumsApiResponse(
   @SerialName("topalbums")
   val topAlbums: AlbumsBody
-)
+) {
+  companion object {
+    fun parse(rawJson: String): TopAlbumsApiResponse {
+      return Json {
+        ignoreUnknownKeys = true
+      }.decodeFromString<TopAlbumsApiResponse>(rawJson)
+    }
+  }
+}
 
 @Serializable
 data class AlbumsBody(

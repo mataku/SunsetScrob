@@ -41,7 +41,7 @@ class ApplicationConventionPlugin : Plugin<Project> {
           }
           release {
             isMinifyEnabled = true
-            signingConfig = signingConfigs.getByName("release")
+            signingConfig = signingConfigs.getByName("debug")
             isDebuggable = false
           }
         }

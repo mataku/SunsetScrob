@@ -2,12 +2,21 @@ package com.mataku.scrobscrob.data.api.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
 
 @Serializable
 data class RecentTracksApiResponse(
   @SerialName("recenttracks")
   val recentTracks: RecentTracksBody
-)
+) {
+  companion object {
+    fun parse(rawJson: String): RecentTracksApiResponse {
+      return Json {
+        ignoreUnknownKeys = true
+      }.decodeFromString<RecentTracksApiResponse>(rawJson)
+    }
+  }
+}
 
 @Serializable
 data class RecentTracksBody(
