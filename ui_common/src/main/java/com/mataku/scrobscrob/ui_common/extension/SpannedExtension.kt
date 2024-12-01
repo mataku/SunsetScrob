@@ -7,6 +7,7 @@ import android.text.style.URLSpan
 import android.text.style.UnderlineSpan
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
@@ -27,9 +28,8 @@ fun Spanned.toAnnotatedString(): AnnotatedString = buildAnnotatedString {
     when (span) {
       is URLSpan -> {
         addStyle(SpanStyle(color = LocalAppTheme.current.accentColor()), start, end)
-        addStringAnnotation(
-          tag = URL_TAG,
-          annotation = span.url,
+        addLink(
+          LinkAnnotation.Url(span.url),
           start,
           end
         )

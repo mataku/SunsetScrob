@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -17,7 +16,6 @@ import androidx.core.text.HtmlCompat
 import com.mataku.scrobscrob.core.entity.Wiki
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.extension.toAnnotatedString
-import com.mataku.scrobscrob.ui_common.extension.url
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 
 @Composable
@@ -47,13 +45,8 @@ fun WikiCell(
 
       val text = spanned.toAnnotatedString()
 
-      ClickableText(
+      Text(
         text = text,
-        onClick = { position ->
-          text.url(position) {
-            onUrlTap.invoke(it)
-          }
-        },
         style = SunsetTextStyle.label.copy(
           color = MaterialTheme.colorScheme.onSecondary
         )
