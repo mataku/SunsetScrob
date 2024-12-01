@@ -7,8 +7,10 @@ import com.mataku.scrobscrob.data.api.LastFmService
 import com.mataku.scrobscrob.data.api.endpoint.UserInfoEndpoint
 import com.mataku.scrobscrob.data.repository.mapper.toUserInfo
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -45,5 +47,5 @@ class UserRepositoryImpl @Inject constructor(
       lastFmService.request(endpoint).toUserInfo()
     }
     emit(userInfo)
-  }
+  }.flowOn(Dispatchers.IO)
 }

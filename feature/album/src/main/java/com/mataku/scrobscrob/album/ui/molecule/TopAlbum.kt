@@ -43,20 +43,10 @@ fun TopAlbum(
         onAlbumTap()
       },
   ) {
-    val imageList = album.imageList
-    val url = if (imageList.isEmpty()) {
-      ""
-    } else {
-      imageList.imageUrl()
-    }
-    val imageData = if (url == null || url.isBlank()) {
-      uiCommonR.drawable.no_image
-    } else {
-      url
-    }
+    val imageUrl = album.imageList.imageUrl()
 
     SunsetImage(
-      imageData = imageData,
+      imageData = imageUrl,
       contentDescription = album.title,
       contentScale = ContentScale.FillWidth,
       modifier = Modifier

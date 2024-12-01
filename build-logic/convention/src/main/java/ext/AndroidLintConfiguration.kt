@@ -7,5 +7,7 @@ fun CommonExtension<*, *, *, *, *, *>.androidLintConfiguration() {
     abortOnError = false
     textReport = true
     xmlReport = false
+    disable.add("GradleDependency")
+    disable.add("ObsoleteLintCustomCheck")
   }
 }

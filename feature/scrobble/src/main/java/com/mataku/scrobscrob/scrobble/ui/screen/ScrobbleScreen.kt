@@ -8,12 +8,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.pullrefresh.PullRefreshIndicator
-import androidx.compose.material.pullrefresh.pullRefresh
-import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBarScrollBehavior
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -24,11 +21,10 @@ import androidx.compose.ui.unit.dp
 import com.mataku.scrobscrob.core.entity.RecentTrack
 import com.mataku.scrobscrob.scrobble.ui.component.Scrobble
 import com.mataku.scrobscrob.scrobble.ui.viewmodel.ScrobbleViewModel
-import com.mataku.scrobscrob.ui_common.molecule.LoadingIndicator
 import com.mataku.scrobscrob.ui_common.organism.InfiniteLoadingIndicator
 import kotlinx.collections.immutable.ImmutableList
 
-@OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ScrobbleScreen(
   viewModel: ScrobbleViewModel,
@@ -39,17 +35,10 @@ fun ScrobbleScreen(
   val uiState by viewModel.uiState.collectAsState()
   val lazyListState = rememberLazyListState()
 
-  val pullRefreshState = rememberPullRefreshState(
-    refreshing = uiState.isRefreshing,
-    onRefresh = viewModel::refresh
-  )
-
-  Box(
-    modifier = modifier
-      .pullRefresh(
-        state = pullRefreshState,
-      )
-      .fillMaxSize()
+  PullToRefreshBox(
+    isRefreshing = uiState.isRefreshing,
+    onRefresh = viewModel::refresh,
+    modifier = modifier.fillMaxSize()
   ) {
     ScrobbleContent(
       lazyListState = lazyListState,
@@ -59,21 +48,6 @@ fun ScrobbleScreen(
       onScrollEnd = viewModel::fetchRecentTracks,
       scrollBehavior = topAppBarScrollBehavior
     )
-
-    PullRefreshIndicator(
-      refreshing = uiState.isRefreshing,
-      state = pullRefreshState,
-      modifier = Modifier.align(alignment = Alignment.TopCenter)
-    )
-  }
-
-  if (uiState.isLoading && uiState.recentTracks.isEmpty()) {
-    Box(
-      modifier = Modifier.fillMaxSize(),
-      contentAlignment = Alignment.Center
-    ) {
-      LoadingIndicator(modifier = Modifier)
-    }
   }
 }
 

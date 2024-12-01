@@ -81,5 +81,5 @@ class ChartRepositoryImpl @Inject constructor(
     )
     val response = lastFmService.request(chartTopTagsEndpoint)
     emit(response.toChartTopTags())
-  }
+  }.flowOn(Dispatchers.IO)
 }

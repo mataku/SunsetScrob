@@ -115,17 +115,12 @@ private fun TrackContent(
       (screenWidth - screenHeight).dp
     },
     content = {
-      val imageData = if (artworkUrl == null || artworkUrl.isBlank()) {
-        com.mataku.scrobscrob.ui_common.R.drawable.no_image
-      } else {
-        artworkUrl
-      }
       Column(
         modifier = Modifier
       ) {
         Box {
           SunsetImage(
-            imageData = imageData,
+            imageData = artworkUrl,
             contentDescription = "artwork image",
             modifier = Modifier
               .fillMaxWidth()
@@ -170,7 +165,7 @@ private fun TrackContent(
           }
         }
         SunsetImage(
-          imageData = imageData,
+          imageData = artworkUrl,
           contentDescription = "artwork image",
           modifier = Modifier
             .fillMaxWidth()

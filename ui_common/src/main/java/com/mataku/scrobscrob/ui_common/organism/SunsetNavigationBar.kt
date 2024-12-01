@@ -42,8 +42,9 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.PathMeasure
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -271,7 +272,10 @@ private fun BottomBarTabs(
         verticalArrangement = Arrangement.Center,
       ) {
         if (tab == SunsetBottomNavItem.HOME) {
-          Icon(painterResource(id = tab.iconDrawable!!), contentDescription = "tab ${tab.title}")
+          Icon(
+            imageVector = ImageVector.vectorResource(id = tab.iconDrawable!!),
+            contentDescription = "tab ${tab.title}"
+          )
         } else {
           Icon(imageVector = tab.icon!!, contentDescription = "tab ${tab.title}")
         }

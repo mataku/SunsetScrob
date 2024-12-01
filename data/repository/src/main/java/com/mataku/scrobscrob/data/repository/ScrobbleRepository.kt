@@ -33,7 +33,7 @@ class ScrobbleRepositoryImpl @Inject constructor(
   private val sessionDataStore: SessionKeyDataStore,
   private val artworkDataStore: ArtworkDataStore
 ) : ScrobbleRepository {
-  override suspend fun recentTracks(page: Int): Flow<List<RecentTrack>> = flow {
+  override suspend fun recentTracks(page: Int): Flow<List<RecentTrack>> = flow<List<RecentTrack>> {
     val username = usernameDataStore.username() ?: emit(emptyList())
 
     val params = mapOf(
@@ -60,7 +60,7 @@ class ScrobbleRepositoryImpl @Inject constructor(
         )
       }
     }
-  }
+  }.flowOn(Dispatchers.IO)
 
   override suspend fun scrobble(currentTrack: NowPlayingTrackEntity) = flow {
     val sessionKey = sessionDataStore.sessionKey()

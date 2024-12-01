@@ -7,8 +7,10 @@ import com.mataku.scrobscrob.data.api.endpoint.ApiSignature
 import com.mataku.scrobscrob.data.api.endpoint.UpdateNowPlayingEndpoint
 import com.mataku.scrobscrob.data.db.SessionKeyDataStore
 import com.mataku.scrobscrob.data.repository.mapper.toNowPlayingTrackEntity
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -36,7 +38,7 @@ class NowPlayingRepositoryImpl @Inject constructor(
       albumName = trackInfo.album?.title ?: ""
     )
     emit(Unit)
-  }
+  }.flowOn(Dispatchers.IO)
 
   private suspend fun updateNowPlaying(
     trackName: String,

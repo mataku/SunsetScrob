@@ -22,7 +22,6 @@ import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.ui_common.R
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.molecule.SunsetImage
-import com.mataku.scrobscrob.ui_common.R as uiCommonR
 
 @Composable
 fun TopArtist(
@@ -42,17 +41,11 @@ fun TopArtist(
     val cachedImageUrl = artist.imageUrl
     val url = when {
       cachedImageUrl != null -> cachedImageUrl
-      imageList.isEmpty() -> ""
+      imageList.isEmpty() -> null
       else -> imageList.imageUrl()
     }
-    val imageData = if (url.isNullOrEmpty()) {
-      uiCommonR.drawable.no_image
-    } else {
-      url
-    }
-
     SunsetImage(
-      imageData = imageData,
+      imageData = url,
       contentDescription = artist.name,
       modifier = Modifier
         .fillMaxWidth()
