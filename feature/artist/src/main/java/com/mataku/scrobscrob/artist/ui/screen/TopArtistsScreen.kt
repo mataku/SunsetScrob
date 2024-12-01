@@ -175,9 +175,9 @@ private fun TopArtistsContent(
 
       if (hasNext && artists.isNotEmpty()) {
         item(
-          span = { GridItemSpan(2) },
+          span = { GridItemSpan(maxLineSpan) },
           key = "top_artists_loading"
-          ) {
+        ) {
           InfiniteLoadingIndicator(
             onScrollEnd = onScrollEnd,
             modifier = Modifier

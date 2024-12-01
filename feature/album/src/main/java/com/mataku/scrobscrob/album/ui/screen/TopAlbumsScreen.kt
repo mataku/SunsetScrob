@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -176,7 +177,10 @@ fun TopAlbumsContent(
 
       if (hasNext && albums.isNotEmpty()) {
         item(
-          key = "top_albums_loading"
+          key = "top_albums_loading",
+          span = {
+            GridItemSpan(maxLineSpan)
+          },
         ) {
           InfiniteLoadingIndicator(
             onScrollEnd = onScrollEnd,
