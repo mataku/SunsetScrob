@@ -1,9 +1,7 @@
 package com.mataku.scrobscrob.ui_common.molecule
 
-import android.annotation.SuppressLint
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,7 +25,6 @@ import com.bumptech.glide.integration.compose.placeholder
 import com.mataku.scrobscrob.ui_common.R
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 
-@SuppressLint("ComposeModifierReused")
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun SunsetImage(
@@ -36,7 +33,7 @@ fun SunsetImage(
   modifier: Modifier = Modifier,
   contentScale: ContentScale = ContentScale.Fit,
 ) {
-  if (LocalInspectionMode.current || imageData == null) {
+  if (LocalInspectionMode.current || imageData.isNullOrEmpty()) {
     Box(
       modifier = modifier
         .border(
@@ -54,16 +51,16 @@ fun SunsetImage(
         )
       )
     }
-    return
+  } else {
+    GlideImage(
+      model = imageData,
+      modifier = modifier,
+      contentDescription = contentDescription,
+      contentScale = contentScale,
+      transition = CrossFade(animationSpec = tween(300)),
+      failure = placeholder(R.drawable.no_image)
+    )
   }
-  GlideImage(
-    model = imageData,
-    modifier = modifier,
-    contentDescription = contentDescription,
-    contentScale = contentScale,
-    transition = CrossFade(animationSpec = tween(300)),
-    failure = placeholder(R.drawable.no_image)
-  )
 }
 
 @Preview(showBackground = true)
