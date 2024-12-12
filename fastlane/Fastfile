@@ -3,7 +3,7 @@ default_platform :android
 APP_ID = 'com.mataku.scrobscrob'.freeze
 
 platform :android do
-  before_all do
+  before_all do |lane|
     # gradle(task: 'clean')
     # ENV["SLACK_URL"] = "https://hooks.slack.com/services/..."
   end
@@ -101,6 +101,14 @@ platform :android do
     end
   end
 
+  lane :prepare_release_notes do
+    Dir.chdir '..' do
+      version_code = generate_version_code
+      `cp fastlane/metadata/android/en-US/changelogs/97.txt fastlane/metadata/android/en-US/changelogs/#{version_code}.txt`
+      `cp fastlane/metadata/android/ja-JP/changelogs/97.txt fastlane/metadata/android/ja-JP/changelogs/#{version_code}.txt`
+    end
+  end
+
   error do |lane, exception|
     # slack(
     #   message: exception.message,
@@ -116,18 +124,8 @@ platform :android do
       end
     end
   end
-end
 
-platform :local do
-  lane :prepare_release_notes do
-    Dir.chdir '..' do
-      version_code = generate_version_code
-      `cp fastlane/metadata/android/en-US/changelogs/97.txt fastlane/metadata/android/en-US/changelogs/#{version_code}.txt`
-      `cp fastlane/metadata/android/ja-JP/changelogs/97.txt fastlane/metadata/android/ja-JP/changelogs/#{version_code}.txt`
-    end
-  end
-
-  def generate_version_code
+ def generate_version_code
     # e.g. 1.0.0
     version_name = `grep 'appVersionName =' build-logic/convention/src/main/java/ApplicationConventionPlugin.kt | awk -F'= ' '{print $2}'`.chomp.delete('"')
     version_map = version_name.split('.').map(&:to_i)
