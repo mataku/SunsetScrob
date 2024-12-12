@@ -145,7 +145,7 @@ fun TopAlbumsScreen(
 }
 
 @Composable
-fun TopAlbumsContent(
+private fun TopAlbumsContent(
   albums: ImmutableList<TopAlbumInfo>,
   hasNext: Boolean,
   maxSpanCount: Int,
