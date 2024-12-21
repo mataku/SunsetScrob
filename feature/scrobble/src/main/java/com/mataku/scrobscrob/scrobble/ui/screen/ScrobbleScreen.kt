@@ -22,6 +22,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mataku.scrobscrob.core.entity.RecentTrack
+import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.scrobble.ui.component.Scrobble
 import com.mataku.scrobscrob.scrobble.ui.viewmodel.ScrobbleViewModel
 import com.mataku.scrobscrob.ui_common.organism.InfiniteLoadingIndicator
@@ -82,7 +83,12 @@ private fun ScrobbleContent(
           "scrobble"
         }
       ) { index, track ->
-        val id = "${index}${track.hashCode()}"
+        val artwork = track.images.imageUrl()
+        val id = if (artwork.isNullOrEmpty()) {
+          ""
+        } else {
+          "${index}${track.hashCode()}"
+        }
         Scrobble(
           recentTrack = track,
           onScrobbleTap = {

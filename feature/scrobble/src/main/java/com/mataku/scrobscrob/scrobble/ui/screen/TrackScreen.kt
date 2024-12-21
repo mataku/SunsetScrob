@@ -38,6 +38,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -60,8 +61,7 @@ import kotlinx.collections.immutable.persistentListOf
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun TrackScreen(
-  sharedTransitionScope: SharedTransitionScope,
+fun SharedTransitionScope.TrackScreen(
   animatedContentScope: AnimatedContentScope,
   id: String,
   trackName: String,
@@ -75,7 +75,6 @@ fun TrackScreen(
   val uiState by trackViewModel.state.collectAsStateWithLifecycle()
 
   TrackContent(
-    sharedTransitionScope = sharedTransitionScope,
     animatedContentScope = animatedContentScope,
     id = id,
     artworkUrl = artworkUrl,
@@ -90,8 +89,7 @@ fun TrackScreen(
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
-private fun TrackContent(
-  sharedTransitionScope: SharedTransitionScope,
+private fun SharedTransitionScope.TrackContent(
   animatedContentScope: AnimatedContentScope,
   id: String,
   artworkUrl: String?,
@@ -109,91 +107,89 @@ private fun TrackContent(
       initialValue = SheetValue.PartiallyExpanded
     )
   )
-  with(sharedTransitionScope) {
-    BottomSheetScaffold(
-      modifier = modifier,
-      sheetContainerColor = MaterialTheme.colorScheme.background,
-      scaffoldState = scaffoldState,
-      sheetContent = {
-        TrackDetailContent(
-          trackInfo = trackInfo,
-          trackName = trackName,
-          artistName = artistName,
-          onUrlTap = onUrlTap,
-          modifier = Modifier
-            .defaultMinSize(minHeight = screenWidth.dp)
-            .fillMaxHeight(fraction = 0.9F)
-        )
-      },
-      sheetPeekHeight = if (screenHeight >= screenWidth) {
-        (screenHeight - screenWidth + 24).dp
-      } else {
-        (screenWidth - screenHeight).dp
-      },
-      content = {
-        Column(
-          modifier = Modifier
-        ) {
-          Box {
-            SunsetImage(
-              imageData = artworkUrl,
-              contentDescription = "artwork image",
-              modifier = Modifier
-                .then(
-                  if (id.isEmpty()) {
-                    Modifier
-                  } else {
-                    Modifier
-                      .sharedElement(
-                        state = sharedTransitionScope.rememberSharedContentState(
-                          key = id
-                        ),
-                        animatedVisibilityScope = animatedContentScope,
-                        renderInOverlayDuringTransition = false,
-                      )
-                  }
-                )
-                .fillMaxWidth()
-                .aspectRatio(1F),
-              contentScale = ContentScale.FillWidth
-            )
-            if (!sharedTransitionScope.isTransitionActive) {
-              Column(
-                modifier = Modifier
-                  .fillMaxWidth()
-                  .background(
-                    color = Color.Transparent
-                  )
-              ) {
-                ArtworkLayerBar()
-                CircleBackButton(
-                  modifier = Modifier
-                    .padding(
-                      start = 4.dp
-                    )
-                    .clickable(
-                      interactionSource = remember { MutableInteractionSource() },
-                      indication = null,
-                    ) {
-                      onBackPressed.invoke()
-                    }
-                )
-
-              }
-            }
-          }
+  BottomSheetScaffold(
+    modifier = modifier,
+    sheetContainerColor = MaterialTheme.colorScheme.background,
+    scaffoldState = scaffoldState,
+    sheetContent = {
+      TrackDetailContent(
+        trackInfo = trackInfo,
+        trackName = trackName,
+        artistName = artistName,
+        onUrlTap = onUrlTap,
+        modifier = Modifier
+          .defaultMinSize(minHeight = screenWidth.dp)
+          .fillMaxHeight(fraction = 0.9F)
+      )
+    },
+    sheetPeekHeight = if (screenHeight >= screenWidth) {
+      (screenHeight - screenWidth + 24).dp
+    } else {
+      (screenWidth - screenHeight).dp
+    },
+    content = {
+      Column(
+        modifier = Modifier
+      ) {
+        Box {
           SunsetImage(
             imageData = artworkUrl,
             contentDescription = "artwork image",
             modifier = Modifier
+              .then(
+                if (id.isEmpty() || LocalInspectionMode.current) {
+                  Modifier
+                } else {
+                  Modifier
+                    .sharedElement(
+                      state = this@TrackContent.rememberSharedContentState(
+                        key = id
+                      ),
+                      animatedVisibilityScope = animatedContentScope,
+                      renderInOverlayDuringTransition = false,
+                    )
+                }
+              )
               .fillMaxWidth()
               .aspectRatio(1F),
             contentScale = ContentScale.FillWidth
           )
+          if (!this@TrackContent.isTransitionActive) {
+            Column(
+              modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                  color = Color.Transparent
+                )
+            ) {
+              ArtworkLayerBar()
+              CircleBackButton(
+                modifier = Modifier
+                  .padding(
+                    start = 4.dp
+                  )
+                  .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null,
+                  ) {
+                    onBackPressed.invoke()
+                  }
+              )
+
+            }
+          }
         }
+        SunsetImage(
+          imageData = artworkUrl,
+          contentDescription = "artwork image",
+          modifier = Modifier
+            .fillMaxWidth()
+            .aspectRatio(1F),
+          contentScale = ContentScale.FillWidth
+        )
       }
-    )
-  }
+    }
+  )
 }
 
 @Composable
@@ -283,7 +279,6 @@ private fun TrackContentPreview() {
             trackName = "Drama",
             onBackPressed = {},
             id = "123",
-            sharedTransitionScope = this@SharedTransitionLayout,
             animatedContentScope = this
           )
         }

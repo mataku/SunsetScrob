@@ -43,17 +43,19 @@ fun NavGraphBuilder.scrobbleGraph(
       val artistName = arguments.getString("artistName", "")
       val id = arguments.getString("id", "")
 
-      TrackScreen(
-        trackName = trackName,
-        artworkUrl = arguments.getString("imageUrl", ""),
-        artistName = artistName,
-        trackViewModel = hiltViewModel(),
-        onBackPressed = navController::popBackStack,
-        navigateToWebView = navController::navigateToWebView,
-        id = id,
-        sharedTransitionScope = sharedTransitionScope,
-        animatedContentScope = this@composable,
-      )
+      with(sharedTransitionScope) {
+
+        TrackScreen(
+          trackName = trackName,
+          artworkUrl = arguments.getString("imageUrl", ""),
+          artistName = artistName,
+          trackViewModel = hiltViewModel(),
+          onBackPressed = navController::popBackStack,
+          navigateToWebView = navController::navigateToWebView,
+          id = id,
+          animatedContentScope = this@composable,
+        )
+      }
     },
     enterTransition = {
       fadeIn(tween(300))
