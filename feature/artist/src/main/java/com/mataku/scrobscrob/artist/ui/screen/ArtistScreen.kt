@@ -22,7 +22,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -32,6 +31,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mataku.scrobscrob.artist.ui.molecule.ArtistDetail
 import com.mataku.scrobscrob.artist.ui.viewmodel.ArtistViewModel
 import com.mataku.scrobscrob.core.entity.ArtistInfo
@@ -51,7 +51,7 @@ fun ArtistScreen(
   onArtistLoadMoreTap: (String) -> Unit,
   onBackPressed: () -> Unit
 ) {
-  val uiState by viewModel.uiState.collectAsState()
+  val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
   ArtistContent(
     artworkUrl = uiState.preloadArtworkUrl,
