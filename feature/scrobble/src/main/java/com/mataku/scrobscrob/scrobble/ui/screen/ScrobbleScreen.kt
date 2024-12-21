@@ -1,5 +1,8 @@
 package com.mataku.scrobscrob.scrobble.ui.screen
 
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,12 +27,14 @@ import com.mataku.scrobscrob.scrobble.ui.viewmodel.ScrobbleViewModel
 import com.mataku.scrobscrob.ui_common.organism.InfiniteLoadingIndicator
 import kotlinx.collections.immutable.ImmutableList
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
 fun ScrobbleScreen(
+  sharedTransitionScope: SharedTransitionScope,
+  animatedContentScope: AnimatedContentScope,
   viewModel: ScrobbleViewModel,
   topAppBarScrollBehavior: TopAppBarScrollBehavior,
-  navigateToTrackDetail: (RecentTrack) -> Unit,
+  navigateToTrackDetail: (RecentTrack, String) -> Unit,
   modifier: Modifier = Modifier
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -46,18 +51,22 @@ fun ScrobbleScreen(
       hasNext = uiState.hasNext,
       onScrobbleTap = navigateToTrackDetail,
       onScrollEnd = viewModel::fetchRecentTracks,
-      scrollBehavior = topAppBarScrollBehavior
+      scrollBehavior = topAppBarScrollBehavior,
+      sharedTransitionScope = sharedTransitionScope,
+      animatedContentScope = animatedContentScope
     )
   }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
 private fun ScrobbleContent(
+  sharedTransitionScope: SharedTransitionScope,
+  animatedContentScope: AnimatedContentScope,
   lazyListState: LazyListState,
   recentTracks: ImmutableList<RecentTrack>,
   hasNext: Boolean,
-  onScrobbleTap: (RecentTrack) -> Unit,
+  onScrobbleTap: (RecentTrack, String) -> Unit,
   onScrollEnd: () -> Unit,
   scrollBehavior: TopAppBarScrollBehavior
 ) {
@@ -72,14 +81,18 @@ private fun ScrobbleContent(
         contentType = { _, _ ->
           "scrobble"
         }
-      ) { _, track ->
+      ) { index, track ->
+        val id = "${index}${track.hashCode()}"
         Scrobble(
           recentTrack = track,
           onScrobbleTap = {
             onScrobbleTap(
-              track
+              track, id
             )
-          }
+          },
+          sharedTransitionScope = sharedTransitionScope,
+          animatedContentScope = animatedContentScope,
+          id = id,
         )
       }
       if (hasNext && recentTracks.isNotEmpty()) {

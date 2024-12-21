@@ -1,5 +1,8 @@
 package com.mataku.scrobscrob.home.ui
 
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
@@ -32,10 +35,12 @@ import com.mataku.scrobscrob.scrobble.ui.screen.ScrobbleScreen
 import com.mataku.scrobscrob.ui_common.style.LocalTopAppBarState
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
 fun HomeScreen(
-  navigateToTrackDetail: (RecentTrack) -> Unit,
+  sharedTransitionScope: SharedTransitionScope,
+  animatedContentScope: AnimatedContentScope,
+  navigateToTrackDetail: (RecentTrack, String) -> Unit,
   navigateToArtistDetail: (TopArtistInfo) -> Unit,
   navigateToAlbumDetail: (TopAlbumInfo) -> Unit,
   modifier: Modifier = Modifier
@@ -104,7 +109,9 @@ fun HomeScreen(
               ScrobbleScreen(
                 viewModel = hiltViewModel(),
                 topAppBarScrollBehavior = scrollBehavior,
-                navigateToTrackDetail = navigateToTrackDetail
+                navigateToTrackDetail = navigateToTrackDetail,
+                sharedTransitionScope = sharedTransitionScope,
+                animatedContentScope = animatedContentScope,
               )
             }
 

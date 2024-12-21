@@ -1,5 +1,7 @@
 package com.mataku.scrobscrob.home.ui.navigation
 
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -17,17 +19,24 @@ import com.mataku.scrobscrob.home.ui.HomeScreen
 import com.mataku.scrobscrob.scrobble.ui.navigation.navigateToTrackDetail
 import com.mataku.scrobscrob.scrobble.ui.navigation.scrobbleGraph
 
-fun NavGraphBuilder.homeGraph(navController: NavController) {
+@OptIn(ExperimentalSharedTransitionApi::class)
+fun NavGraphBuilder.homeGraph(
+  navController: NavController,
+  sharedTransitionScope: SharedTransitionScope,
+) {
   navigation(route = HOME_NAVIGATION_ROUTE, startDestination = HOME_DESTINATION) {
     composable(
       HOME_DESTINATION,
     ) {
       HomeScreen(
-        navigateToTrackDetail = { track ->
+        sharedTransitionScope = sharedTransitionScope,
+        animatedContentScope = this@composable,
+        navigateToTrackDetail = { track, id ->
           navController.navigateToTrackDetail(
             trackName = track.name,
             artistName = track.artistName,
             imageUrl = track.images.imageUrl() ?: "",
+            id = id
           )
         },
         navigateToArtistDetail = { artist ->
@@ -52,7 +61,10 @@ fun NavGraphBuilder.homeGraph(navController: NavController) {
 
     albumGraph(navController)
     artistGraph(navController)
-    scrobbleGraph(navController)
+    scrobbleGraph(
+      navController = navController,
+      sharedTransitionScope = sharedTransitionScope,
+    )
   }
 }
 
