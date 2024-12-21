@@ -38,6 +38,8 @@ import com.mataku.scrobscrob.data.api.model.ChartTopArtistsResponse
 import com.mataku.scrobscrob.data.api.model.ChartTopTagsResponse
 import com.mataku.scrobscrob.data.api.model.ChartTopTracksResponse
 import com.mataku.scrobscrob.data.api.model.ImageBody
+import com.mataku.scrobscrob.data.api.model.LovedTrack
+import com.mataku.scrobscrob.data.api.model.LovedTracksResponse
 import com.mataku.scrobscrob.data.api.model.MultipleTag
 import com.mataku.scrobscrob.data.api.model.PagingAttrBody
 import com.mataku.scrobscrob.data.api.model.RecentTracksApiResponse
@@ -380,3 +382,18 @@ fun ArtistArtworkEntity.toArtistArtwork(): ArtistArtwork {
   )
 }
 
+fun LovedTrack.toRecentTrack(): RecentTrack {
+  return RecentTrack(
+    artistName = artist.name,
+    albumName = album.name,
+    images = images.toImageList().toImmutableList(),
+    name = name,
+    url = url
+  )
+}
+
+fun LovedTracksResponse.toRecentTrackList(): List<RecentTrack> {
+  return lovedTracks.tracks.map {
+    it.toRecentTrack()
+  }
+}

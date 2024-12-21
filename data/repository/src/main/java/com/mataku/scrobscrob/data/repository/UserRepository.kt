@@ -1,10 +1,13 @@
 package com.mataku.scrobscrob.data.repository
 
 import com.mataku.scrobscrob.core.entity.Image
+import com.mataku.scrobscrob.core.entity.RecentTrack
 import com.mataku.scrobscrob.core.entity.UserInfo
 import com.mataku.scrobscrob.data.api.BuildConfig
 import com.mataku.scrobscrob.data.api.LastFmService
 import com.mataku.scrobscrob.data.api.endpoint.UserInfoEndpoint
+import com.mataku.scrobscrob.data.api.endpoint.UserLovedTracksEndpoint
+import com.mataku.scrobscrob.data.repository.mapper.toRecentTrackList
 import com.mataku.scrobscrob.data.repository.mapper.toUserInfo
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.Dispatchers
@@ -16,6 +19,7 @@ import javax.inject.Singleton
 
 interface UserRepository {
   suspend fun getInfo(userName: String): Flow<UserInfo>
+  suspend fun getLovedTracks(page: Int): Flow<List<RecentTrack>>
 }
 
 @Singleton
@@ -47,5 +51,17 @@ class UserRepositoryImpl @Inject constructor(
       lastFmService.request(endpoint).toUserInfo()
     }
     emit(userInfo)
+  }.flowOn(Dispatchers.IO)
+
+  override suspend fun getLovedTracks(page: Int): Flow<List<RecentTrack>> = flow {
+    val endpoint = UserLovedTracksEndpoint(
+      params = mapOf(
+        "limit" to "20",
+        "page" to page.toString()
+      )
+    )
+
+    val result = lastFmService.request(endpoint)
+    emit(result.toRecentTrackList())
   }.flowOn(Dispatchers.IO)
 }
