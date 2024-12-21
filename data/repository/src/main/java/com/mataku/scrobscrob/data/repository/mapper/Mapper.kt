@@ -12,6 +12,7 @@ import com.mataku.scrobscrob.core.entity.ChartTrack
 import com.mataku.scrobscrob.core.entity.ChartTrackArtist
 import com.mataku.scrobscrob.core.entity.Image
 import com.mataku.scrobscrob.core.entity.LicenseArtifact
+import com.mataku.scrobscrob.core.entity.LovedTrack
 import com.mataku.scrobscrob.core.entity.NowPlayingTrackEntity
 import com.mataku.scrobscrob.core.entity.PagingAttr
 import com.mataku.scrobscrob.core.entity.RecentTrack
@@ -38,7 +39,7 @@ import com.mataku.scrobscrob.data.api.model.ChartTopArtistsResponse
 import com.mataku.scrobscrob.data.api.model.ChartTopTagsResponse
 import com.mataku.scrobscrob.data.api.model.ChartTopTracksResponse
 import com.mataku.scrobscrob.data.api.model.ImageBody
-import com.mataku.scrobscrob.data.api.model.LovedTrack
+import com.mataku.scrobscrob.data.api.model.LovedTrackBody
 import com.mataku.scrobscrob.data.api.model.LovedTracksResponse
 import com.mataku.scrobscrob.data.api.model.MultipleTag
 import com.mataku.scrobscrob.data.api.model.PagingAttrBody
@@ -382,18 +383,18 @@ fun ArtistArtworkEntity.toArtistArtwork(): ArtistArtwork {
   )
 }
 
-fun LovedTrack.toRecentTrack(): RecentTrack {
-  return RecentTrack(
-    artistName = artist.name,
-    albumName = album.name,
+fun LovedTrackBody.toLovedTrack(): LovedTrack {
+  return LovedTrack(
+    artist = artist.name,
     images = images.toImageList().toImmutableList(),
     name = name,
-    url = url
+    url = url,
+    date = date?.date
   )
 }
 
-fun LovedTracksResponse.toRecentTrackList(): List<RecentTrack> {
+fun LovedTracksResponse.toRecentTrackList(): List<LovedTrack> {
   return lovedTracks.tracks.map {
-    it.toRecentTrack()
+    it.toLovedTrack()
   }
 }

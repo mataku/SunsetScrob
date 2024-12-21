@@ -6,20 +6,20 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class LovedTracksResponse(
   @SerialName("lovedtracks")
-  val lovedTracks: LovedTracks
+  val lovedTracks: LovedTracksBody
 )
 
 @Serializable
-data class LovedTracks(
+data class LovedTracksBody(
   @SerialName("track")
-  val tracks: List<LovedTrack>,
+  val tracks: List<LovedTrackBody>,
 
   @SerialName("@attr")
   val attr: PagingAttrBody
 )
 
 @Serializable
-data class LovedTrack(
+data class LovedTrackBody(
   @SerialName("artist")
   val artist: TrackArtistBody,
 

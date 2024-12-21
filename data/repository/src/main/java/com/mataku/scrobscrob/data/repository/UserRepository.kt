@@ -1,7 +1,7 @@
 package com.mataku.scrobscrob.data.repository
 
 import com.mataku.scrobscrob.core.entity.Image
-import com.mataku.scrobscrob.core.entity.RecentTrack
+import com.mataku.scrobscrob.core.entity.LovedTrack
 import com.mataku.scrobscrob.core.entity.UserInfo
 import com.mataku.scrobscrob.data.api.BuildConfig
 import com.mataku.scrobscrob.data.api.LastFmService
@@ -19,7 +19,7 @@ import javax.inject.Singleton
 
 interface UserRepository {
   suspend fun getInfo(userName: String): Flow<UserInfo>
-  suspend fun getLovedTracks(page: Int): Flow<List<RecentTrack>>
+  suspend fun getLovedTracks(page: Int): Flow<List<LovedTrack>>
 }
 
 @Singleton
@@ -53,7 +53,7 @@ class UserRepositoryImpl @Inject constructor(
     emit(userInfo)
   }.flowOn(Dispatchers.IO)
 
-  override suspend fun getLovedTracks(page: Int): Flow<List<RecentTrack>> = flow {
+  override suspend fun getLovedTracks(page: Int): Flow<List<LovedTrack>> = flow {
     val endpoint = UserLovedTracksEndpoint(
       params = mapOf(
         "limit" to "20",
