@@ -1,19 +1,23 @@
+@file:OptIn(ExperimentalSharedTransitionApi::class)
+
 package com.mataku.scrobscrob.album.ui.screen
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
@@ -36,6 +40,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mataku.scrobscrob.album.ui.molecule.TopAlbum
 import com.mataku.scrobscrob.album.ui.viewmodel.TopAlbumsViewModel
 import com.mataku.scrobscrob.core.entity.TopAlbumInfo
+import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.ui_common.molecule.FilteringFloatingButton
 import com.mataku.scrobscrob.ui_common.molecule.LoadingIndicator
 import com.mataku.scrobscrob.ui_common.organism.FilteringBottomSheet
@@ -47,8 +52,10 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopAlbumsScreen(
+  sharedTransitionScope: SharedTransitionScope,
+  animatedContentScope: AnimatedContentScope,
   viewModel: TopAlbumsViewModel,
-  navigateToAlbumInfo: (TopAlbumInfo) -> Unit,
+  navigateToAlbumInfo: (TopAlbumInfo, String) -> Unit,
   topAppBarScrollBehavior: TopAppBarScrollBehavior,
   modifier: Modifier = Modifier
 ) {
@@ -75,7 +82,6 @@ fun TopAlbumsScreen(
     }
   }
   val density = LocalDensity.current
-
   Scaffold(
     floatingActionButton = {
       FilteringFloatingButton(
@@ -94,6 +100,8 @@ fun TopAlbumsScreen(
     }
   ) {
     TopAlbumsContent(
+      sharedTransitionScope = sharedTransitionScope,
+      animatedContentScope = animatedContentScope,
       albums = uiState.topAlbums,
       hasNext = uiState.hasNext,
       onScrollEnd = viewModel::fetchAlbums,
@@ -146,10 +154,12 @@ fun TopAlbumsScreen(
 
 @Composable
 private fun TopAlbumsContent(
+  sharedTransitionScope: SharedTransitionScope,
+  animatedContentScope: AnimatedContentScope,
   albums: ImmutableList<TopAlbumInfo>,
   hasNext: Boolean,
   maxSpanCount: Int,
-  onAlbumTap: (TopAlbumInfo) -> Unit,
+  onAlbumTap: (TopAlbumInfo, String) -> Unit,
   onScrollEnd: () -> Unit,
   modifier: Modifier = Modifier
 ) {
@@ -157,21 +167,28 @@ private fun TopAlbumsContent(
     contentPadding = PaddingValues(8.dp),
     columns = GridCells.Fixed(maxSpanCount),
     content = {
-      items(
+      itemsIndexed(
         items = albums,
-        key = { album ->
+        key = { _, album ->
           "${album.hashCode()}"
         },
-        contentType = {
+        contentType = { _, _ ->
           "top_albums"
         }
-      ) { album ->
+      ) { index, album ->
+        val id = if (album.imageList.imageUrl().isNullOrEmpty()) {
+          ""
+        } else {
+          "top_album_${index}${album.hashCode()}"
+        }
         TopAlbum(
           album = album,
           onAlbumTap = {
-            onAlbumTap.invoke(album)
+            onAlbumTap.invoke(album, id)
           },
-          modifier = Modifier.fillMaxWidth(),
+          sharedTransitionScope = sharedTransitionScope,
+          animatedContentScope = animatedContentScope,
+          id = id
         )
       }
 

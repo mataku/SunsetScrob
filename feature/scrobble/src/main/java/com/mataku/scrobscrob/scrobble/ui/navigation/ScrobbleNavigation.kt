@@ -44,7 +44,6 @@ fun NavGraphBuilder.scrobbleGraph(
       val id = arguments.getString("id", "")
 
       with(sharedTransitionScope) {
-
         TrackScreen(
           trackName = trackName,
           artworkUrl = arguments.getString("imageUrl", ""),

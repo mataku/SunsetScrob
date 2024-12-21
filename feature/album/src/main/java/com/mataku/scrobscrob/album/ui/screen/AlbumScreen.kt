@@ -1,5 +1,10 @@
 package com.mataku.scrobscrob.album.ui.screen
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -47,8 +52,11 @@ import com.mataku.scrobscrob.ui_common.molecule.WikiCell
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import kotlinx.collections.immutable.persistentListOf
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun AlbumScreen(
+fun SharedTransitionScope.AlbumScreen(
+  animatedContentScope: AnimatedContentScope,
+  id: String,
   viewModel: AlbumViewModel,
   onAlbumLoadMoreTap: (String) -> Unit,
   onBackPressed: () -> Unit,
@@ -57,6 +65,8 @@ fun AlbumScreen(
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
   AlbumContent(
+    animatedContentScope = animatedContentScope,
+    id = id,
     artworkUrl = uiState.preloadArtworkUrl,
     albumName = uiState.preloadAlbumName,
     artistName = uiState.preloadArtistName,
@@ -67,9 +77,11 @@ fun AlbumScreen(
   )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
-private fun AlbumContent(
+private fun SharedTransitionScope.AlbumContent(
+  animatedContentScope: AnimatedContentScope,
+  id: String,
   artworkUrl: String,
   albumName: String,
   artistName: String,
@@ -101,35 +113,51 @@ private fun AlbumContent(
             imageData = artworkUrl,
             contentDescription = "artwork image",
             modifier = Modifier
+              .then(
+                if (id.isEmpty()) {
+                  Modifier
+                } else {
+                  Modifier
+                    .sharedElement(
+                      state = this@AlbumContent.rememberSharedContentState(
+                        key = id
+                      ),
+                      animatedVisibilityScope = animatedContentScope,
+                      renderInOverlayDuringTransition = false,
+                    )
+                }
+              )
               .fillMaxWidth()
               .aspectRatio(1F),
             contentScale = ContentScale.FillWidth
           )
-          Column(
-            modifier = Modifier
-              .fillMaxWidth()
-              .background(
-                color = Color.Transparent
-              )
-          ) {
-            ArtworkLayerBar()
-            CircleBackButton(
+          if (!this@AlbumContent.isTransitionActive) {
+            Column(
               modifier = Modifier
-                .padding(
-                  start = 4.dp
+                .fillMaxWidth()
+                .background(
+                  color = Color.Transparent
                 )
-                .clickable(
-                  interactionSource = remember { MutableInteractionSource() },
-                  indication = null,
-                ) {
-                  onBackPressed.invoke()
-                }
-            )
+            ) {
+              ArtworkLayerBar()
+              CircleBackButton(
+                modifier = Modifier
+                  .padding(
+                    start = 4.dp
+                  )
+                  .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null,
+                  ) {
+                    onBackPressed.invoke()
+                  }
+              )
+            }
           }
         }
         SunsetImage(
           imageData = artworkUrl,
-          contentDescription = "artwork image",
+          contentDescription = "artwork_image_behind",
           modifier = Modifier
             .fillMaxWidth()
             .aspectRatio(1F),
@@ -217,66 +245,76 @@ private fun AlbumDetailContent(
   }
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 @Preview(showBackground = true)
 private fun AlbumContentPreview() {
   SunsetThemePreview {
     Surface {
-      AlbumContent(
-        artworkUrl = "",
-        albumName = "Drama",
-        artistName = "aespa",
-        albumInfo = AlbumInfo(
-          artistName = "aespa",
-          albumName = "Drama",
-          tracks = persistentListOf(
-            AlbumInfoTrack(
-              duration = "100",
-              name = "Drama",
-              url = ""
+      SharedTransitionLayout {
+        AnimatedContent(
+          targetState = "",
+          label = "album_content_preview"
+        ) {
+          AlbumContent(
+            artworkUrl = it,
+            albumName = "Drama",
+            artistName = "aespa",
+            albumInfo = AlbumInfo(
+              artistName = "aespa",
+              albumName = "Drama",
+              tracks = persistentListOf(
+                AlbumInfoTrack(
+                  duration = "100",
+                  name = "Drama",
+                  url = ""
+                ),
+                AlbumInfoTrack(
+                  duration = "100",
+                  name = "Drama",
+                  url = ""
+                ),
+                AlbumInfoTrack(
+                  duration = "100",
+                  name = "Drama",
+                  url = ""
+                )
+              ),
+              images = persistentListOf(),
+              listeners = "10000",
+              playCount = "1000",
+              url = "",
+              tags = persistentListOf(
+                Tag(
+                  name = "K-POP",
+                  url = ""
+                ),
+                Tag(
+                  name = "K-POP",
+                  url = ""
+                ),
+                Tag(
+                  name = "K-POP",
+                  url = ""
+                ),
+                Tag(
+                  name = "K-POP",
+                  url = ""
+                ),
+              ),
+              wiki = Wiki(
+                published = "01 January 2023",
+                content = "\"Clocks\" emerged in <b>conception during the late</b>stages into the production of Coldplay's second album, A Rush of Blood to the Head. The band's vocalist, Chris Martin, came in studio late one night. A riff popped  up in Martin's mind and wrote it on the  piano. Martin presented the riff to the band's guitarist, Jonny Buckland, who then added guitar chords on the basic track.\n\nDuring the writing of \"Clocks\", the band had already made 10 songs for the album. With this, they thought it was too late for the song's inclusion in the albumclude contrast, contradictions and urgency. Chris Martin sings of being in the state of \"helplessness ...",
+                summary = "\"Clocks\" emerged in <b>conception during the late stages</b> into the production of Coldplay's second album, A Rush of Blood to the Head. The band's vocalist, Chris Martin, came in studio late one night. A riff popped  up in Martin's mind and wrote it on the  piano. Martin presented the riff to the band's guitarist, Jonny Buckland, who then added guitar chords on the basic track.\n\nDuring the writing of \"Clocks\", the band had already made 10 songs for the album. <a href=\"http://www.last.fm/music/Coldplay/_/Clocks\">Read more on Last.fm</a>.",
+              )
             ),
-            AlbumInfoTrack(
-              duration = "100",
-              name = "Drama",
-              url = ""
-            ),
-            AlbumInfoTrack(
-              duration = "100",
-              name = "Drama",
-              url = ""
-            )
-          ),
-          images = persistentListOf(),
-          listeners = "10000",
-          playCount = "1000",
-          url = "",
-          tags = persistentListOf(
-            Tag(
-              name = "K-POP",
-              url = ""
-            ),
-            Tag(
-              name = "K-POP",
-              url = ""
-            ),
-            Tag(
-              name = "K-POP",
-              url = ""
-            ),
-            Tag(
-              name = "K-POP",
-              url = ""
-            ),
-          ),
-          wiki = Wiki(
-            published = "01 January 2023",
-            content = "\"Clocks\" emerged in <b>conception during the late</b>stages into the production of Coldplay's second album, A Rush of Blood to the Head. The band's vocalist, Chris Martin, came in studio late one night. A riff popped  up in Martin's mind and wrote it on the  piano. Martin presented the riff to the band's guitarist, Jonny Buckland, who then added guitar chords on the basic track.\n\nDuring the writing of \"Clocks\", the band had already made 10 songs for the album. With this, they thought it was too late for the song's inclusion in the albumclude contrast, contradictions and urgency. Chris Martin sings of being in the state of \"helplessness ...",
-            summary = "\"Clocks\" emerged in <b>conception during the late stages</b> into the production of Coldplay's second album, A Rush of Blood to the Head. The band's vocalist, Chris Martin, came in studio late one night. A riff popped  up in Martin's mind and wrote it on the  piano. Martin presented the riff to the band's guitarist, Jonny Buckland, who then added guitar chords on the basic track.\n\nDuring the writing of \"Clocks\", the band had already made 10 songs for the album. <a href=\"http://www.last.fm/music/Coldplay/_/Clocks\">Read more on Last.fm</a>.",
+            onAlbumLoadMoreTap = {},
+            onBackPressed = {},
+            animatedContentScope = this,
+            id = ""
           )
-        ),
-        onAlbumLoadMoreTap = {},
-        onBackPressed = {}
-      )
+        }
+      }
     }
   }
 }

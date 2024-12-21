@@ -1,5 +1,8 @@
 package com.mataku.scrobscrob.album.ui.screen
 
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.lifecycle.SavedStateHandle
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -20,6 +23,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.annotation.GraphicsMode
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @RunWith(AndroidJUnit4::class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 class AlbumScreenTest {
@@ -64,6 +68,7 @@ class AlbumScreenTest {
 
   private val albumRepository = mockk<AlbumRepository>()
   private val savedStateHandle = mockk<SavedStateHandle>()
+  private val animatedContentScope = mockk<AnimatedContentScope>(relaxed = true)
 
   @Before
   fun setup() {
@@ -97,11 +102,15 @@ class AlbumScreenTest {
     composeRule.captureScreenshot(
       appTheme = AppTheme.DARK,
       content = {
-        AlbumScreen(
-          viewModel = viewModel,
-          onAlbumLoadMoreTap = {},
-          onBackPressed = {}
-        )
+        SharedTransitionLayout {
+          AlbumScreen(
+            viewModel = viewModel,
+            onAlbumLoadMoreTap = {},
+            onBackPressed = {},
+            animatedContentScope = animatedContentScope,
+            id = ""
+          )
+        }
       },
       fileName = "album_screen.png"
     )
@@ -117,11 +126,15 @@ class AlbumScreenTest {
     composeRule.captureScreenshot(
       fileName = "album_screen_light.png",
       content = {
-        AlbumScreen(
-          viewModel = viewModel,
-          onAlbumLoadMoreTap = {},
-          onBackPressed = {}
-        )
+        SharedTransitionLayout {
+          AlbumScreen(
+            viewModel = viewModel,
+            onAlbumLoadMoreTap = {},
+            onBackPressed = {},
+            animatedContentScope = animatedContentScope,
+            id = ""
+          )
+        }
       },
       appTheme = AppTheme.LIGHT
     )

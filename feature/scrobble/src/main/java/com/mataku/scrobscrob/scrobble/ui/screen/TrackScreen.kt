@@ -181,7 +181,7 @@ private fun SharedTransitionScope.TrackContent(
         }
         SunsetImage(
           imageData = artworkUrl,
-          contentDescription = "artwork image",
+          contentDescription = "artwork_image_behind",
           modifier = Modifier
             .fillMaxWidth()
             .aspectRatio(1F),

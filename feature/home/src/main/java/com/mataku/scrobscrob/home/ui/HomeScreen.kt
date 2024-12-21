@@ -42,7 +42,7 @@ fun HomeScreen(
   animatedContentScope: AnimatedContentScope,
   navigateToTrackDetail: (RecentTrack, String) -> Unit,
   navigateToArtistDetail: (TopArtistInfo) -> Unit,
-  navigateToAlbumDetail: (TopAlbumInfo) -> Unit,
+  navigateToAlbumDetail: (TopAlbumInfo, String) -> Unit,
   modifier: Modifier = Modifier
 ) {
   val pagerState = rememberPagerState(
@@ -127,7 +127,9 @@ fun HomeScreen(
               TopAlbumsScreen(
                 viewModel = hiltViewModel(),
                 navigateToAlbumInfo = navigateToAlbumDetail,
-                topAppBarScrollBehavior = scrollBehavior
+                topAppBarScrollBehavior = scrollBehavior,
+                sharedTransitionScope = sharedTransitionScope,
+                animatedContentScope = animatedContentScope
               )
             }
           }

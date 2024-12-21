@@ -1,5 +1,10 @@
+@file:OptIn(ExperimentalSharedTransitionApi::class)
+
 package com.mataku.scrobscrob.album.ui.screen
 
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.ui.test.junit4.createComposeRule
@@ -36,23 +41,25 @@ class TopAlbumsScreenTest {
 
   private val topAlbums = (1..20).map {
     TopAlbumInfo(
-      artist = "SooooooooooooooooooooooLongArtistname ${it}",
-      title = "SooooooooooooooooooooooLongAlbumname ${it}",
+      artist = "SooooooooooooooooooooooLongArtistname $it",
+      title = "SooooooooooooooooooooooLongAlbumname $it",
       imageList = persistentListOf(),
-      playCount = "100${it}",
+      playCount = "100$it",
       url = ""
     )
   }
 
   private val topAlbumsPage2 = (21..40).map {
     TopAlbumInfo(
-      artist = "SooooooooooooooooooooooLongArtistname ${it}",
-      title = "SooooooooooooooooooooooLongAlbumname ${it}",
+      artist = "SooooooooooooooooooooooLongArtistname $it",
+      title = "SooooooooooooooooooooooLongAlbumname $it",
       imageList = persistentListOf(),
-      playCount = "100${it}",
+      playCount = "100$it",
       url = ""
     )
   }
+
+  private val animatedContentScope = mockk<AnimatedContentScope>(relaxed = true)
 
   @Before
   fun setup() {
@@ -90,14 +97,18 @@ class TopAlbumsScreenTest {
     composeRule.captureScreenshot(
       appTheme = AppTheme.DARK,
       content = {
-        TopAlbumsScreen(
-          viewModel = TopAlbumsViewModel(
-            topAlbumsRepository = albumRepository,
-            usernameRepository = usernameRepository
-          ),
-          navigateToAlbumInfo = {},
-          topAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
-        )
+        SharedTransitionLayout {
+          TopAlbumsScreen(
+            viewModel = TopAlbumsViewModel(
+              topAlbumsRepository = albumRepository,
+              usernameRepository = usernameRepository
+            ),
+            navigateToAlbumInfo = { _, _ -> },
+            topAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(),
+            sharedTransitionScope = this,
+            animatedContentScope = animatedContentScope
+          )
+        }
       },
       fileName = "top_albums_screen.png"
     )
@@ -108,14 +119,18 @@ class TopAlbumsScreenTest {
     composeRule.captureScreenshot(
       appTheme = AppTheme.LIGHT,
       content = {
-        TopAlbumsScreen(
-          viewModel = TopAlbumsViewModel(
-            topAlbumsRepository = albumRepository,
-            usernameRepository = usernameRepository
-          ),
-          navigateToAlbumInfo = {},
-          topAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
-        )
+        SharedTransitionLayout {
+          TopAlbumsScreen(
+            viewModel = TopAlbumsViewModel(
+              topAlbumsRepository = albumRepository,
+              usernameRepository = usernameRepository
+            ),
+            navigateToAlbumInfo = { _, _ -> },
+            topAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(),
+            sharedTransitionScope = this,
+            animatedContentScope = animatedContentScope
+          )
+        }
       },
       fileName = "top_albums_screen_light.png"
     )
