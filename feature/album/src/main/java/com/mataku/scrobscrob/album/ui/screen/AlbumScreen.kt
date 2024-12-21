@@ -24,9 +24,7 @@ import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
@@ -40,6 +38,7 @@ import com.mataku.scrobscrob.core.entity.AlbumInfo
 import com.mataku.scrobscrob.core.entity.AlbumInfoTrack
 import com.mataku.scrobscrob.core.entity.Tag
 import com.mataku.scrobscrob.core.entity.Wiki
+import com.mataku.scrobscrob.ui_common.component.ArtworkLayerBar
 import com.mataku.scrobscrob.ui_common.component.CircleBackButton
 import com.mataku.scrobscrob.ui_common.molecule.SimpleWiki
 import com.mataku.scrobscrob.ui_common.molecule.SunsetImage
@@ -113,21 +112,7 @@ private fun AlbumContent(
                 color = Color.Transparent
               )
           ) {
-            Box(
-              modifier = Modifier
-                .fillMaxWidth()
-                .height(24.dp)
-                .background(
-                  Brush.verticalGradient(
-                    colors = listOf(
-                      MaterialTheme.colorScheme.surface.copy(alpha = 0.5F),
-                      MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1F)
-                    )
-                  )
-                ),
-              contentAlignment = Alignment.Center,
-            ) {
-            }
+            ArtworkLayerBar()
             CircleBackButton(
               modifier = Modifier
                 .padding(

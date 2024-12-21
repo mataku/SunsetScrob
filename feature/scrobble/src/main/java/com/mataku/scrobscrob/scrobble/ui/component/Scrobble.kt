@@ -88,7 +88,8 @@ private fun ScrobbleContent(
               state = sharedTransitionScope.rememberSharedContentState(
                 key = id,
               ),
-              animatedVisibilityScope = animatedContentScope
+              animatedVisibilityScope = animatedContentScope,
+              renderInOverlayDuringTransition = false,
             )
             .size(56.dp),
         )

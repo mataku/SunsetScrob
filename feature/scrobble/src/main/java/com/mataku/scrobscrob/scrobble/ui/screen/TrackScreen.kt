@@ -1,7 +1,9 @@
 package com.mataku.scrobscrob.scrobble.ui.screen
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -24,6 +26,7 @@ import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SheetValue
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberStandardBottomSheetState
@@ -32,22 +35,28 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.mataku.scrobscrob.core.entity.Tag
+import com.mataku.scrobscrob.core.entity.TrackAlbumInfo
 import com.mataku.scrobscrob.core.entity.TrackInfo
+import com.mataku.scrobscrob.core.entity.Wiki
 import com.mataku.scrobscrob.core.entity.presentation.toReadableIntValue
 import com.mataku.scrobscrob.scrobble.ui.component.TrackDetail
 import com.mataku.scrobscrob.scrobble.ui.viewmodel.TrackViewModel
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
+import com.mataku.scrobscrob.ui_common.component.ArtworkLayerBar
 import com.mataku.scrobscrob.ui_common.component.CircleBackButton
 import com.mataku.scrobscrob.ui_common.molecule.SunsetImage
 import com.mataku.scrobscrob.ui_common.molecule.ValueDescription
+import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
+import kotlinx.collections.immutable.persistentListOf
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
@@ -100,95 +109,91 @@ private fun TrackContent(
       initialValue = SheetValue.PartiallyExpanded
     )
   )
-  BottomSheetScaffold(
-    modifier = modifier,
-    sheetContainerColor = MaterialTheme.colorScheme.background,
-    scaffoldState = scaffoldState,
-    sheetContent = {
-      TrackDetailContent(
-        trackInfo = trackInfo,
-        trackName = trackName,
-        artistName = artistName,
-        onUrlTap = onUrlTap,
-        modifier = Modifier
-          .defaultMinSize(minHeight = screenWidth.dp)
-          .fillMaxHeight(fraction = 0.9F)
-      )
-    },
-    sheetPeekHeight = if (screenHeight >= screenWidth) {
-      (screenHeight - screenWidth + 24).dp
-    } else {
-      (screenWidth - screenHeight).dp
-    },
-    content = {
-      Column(
-        modifier = Modifier
-      ) {
-        Box {
-          with(sharedTransitionScope) {
+  with(sharedTransitionScope) {
+    BottomSheetScaffold(
+      modifier = modifier,
+      sheetContainerColor = MaterialTheme.colorScheme.background,
+      scaffoldState = scaffoldState,
+      sheetContent = {
+        TrackDetailContent(
+          trackInfo = trackInfo,
+          trackName = trackName,
+          artistName = artistName,
+          onUrlTap = onUrlTap,
+          modifier = Modifier
+            .defaultMinSize(minHeight = screenWidth.dp)
+            .fillMaxHeight(fraction = 0.9F)
+        )
+      },
+      sheetPeekHeight = if (screenHeight >= screenWidth) {
+        (screenHeight - screenWidth + 24).dp
+      } else {
+        (screenWidth - screenHeight).dp
+      },
+      content = {
+        Column(
+          modifier = Modifier
+        ) {
+          Box {
             SunsetImage(
               imageData = artworkUrl,
               contentDescription = "artwork image",
               modifier = Modifier
-                .sharedElement(
-                  state = sharedTransitionScope.rememberSharedContentState(
-                    key = id
-                  ),
-                  animatedVisibilityScope = animatedContentScope,
+                .then(
+                  if (id.isEmpty()) {
+                    Modifier
+                  } else {
+                    Modifier
+                      .sharedElement(
+                        state = sharedTransitionScope.rememberSharedContentState(
+                          key = id
+                        ),
+                        animatedVisibilityScope = animatedContentScope,
+                        renderInOverlayDuringTransition = false,
+                      )
+                  }
                 )
                 .fillMaxWidth()
                 .aspectRatio(1F),
               contentScale = ContentScale.FillWidth
             )
+            if (!sharedTransitionScope.isTransitionActive) {
+              Column(
+                modifier = Modifier
+                  .fillMaxWidth()
+                  .background(
+                    color = Color.Transparent
+                  )
+              ) {
+                ArtworkLayerBar()
+                CircleBackButton(
+                  modifier = Modifier
+                    .padding(
+                      start = 4.dp
+                    )
+                    .clickable(
+                      interactionSource = remember { MutableInteractionSource() },
+                      indication = null,
+                    ) {
+                      onBackPressed.invoke()
+                    }
+                )
+
+              }
+            }
           }
-          Column(
+          SunsetImage(
+            imageData = artworkUrl,
+            contentDescription = "artwork image",
             modifier = Modifier
               .fillMaxWidth()
-              .background(
-                color = Color.Transparent
-              )
-          ) {
-            Box(
-              modifier = Modifier
-                .fillMaxWidth()
-                .height(24.dp)
-                .background(
-                  Brush.verticalGradient(
-                    colors = listOf(
-                      MaterialTheme.colorScheme.surface.copy(alpha = 0.5F),
-                      MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1F)
-                    )
-                  )
-                ),
-              contentAlignment = Alignment.Center,
-            ) {
-            }
-            CircleBackButton(
-              modifier = Modifier
-                .padding(
-                  start = 4.dp
-                )
-                .clickable(
-                  interactionSource = remember { MutableInteractionSource() },
-                  indication = null,
-                ) {
-                  onBackPressed.invoke()
-                }
-            )
-
-          }
+              .aspectRatio(1F),
+            contentScale = ContentScale.FillWidth
+          )
         }
-        SunsetImage(
-          imageData = artworkUrl,
-          contentDescription = "artwork image",
-          modifier = Modifier
-            .fillMaxWidth()
-            .aspectRatio(1F),
-          contentScale = ContentScale.FillWidth
-        )
       }
-    }
-  )
+    )
+  }
 }
 
 @Composable
@@ -228,56 +233,64 @@ private fun TrackDetailContent(
   }
 }
 
-//@Composable
-//@Preview(showBackground = true)
-//private fun TrackContentPreview() {
-//  SunsetThemePreview {
-//    Surface {
-//      TrackContent(
-//        artworkUrl = null,
-//        trackInfo = TrackInfo(
-//          artist = com.mataku.scrobscrob.core.entity.TrackArtist(
-//            name = "aespaaespaaespaaespaaespaaespaaespa",
-//            url = ""
-//          ),
-//          listeners = "100000",
-//          url = "https://example.com",
-//          name = "Drama",
-//          album = TrackAlbumInfo(
-//            artist = "aespaaespaaespaaespaaespaaespa",
-//            imageList = persistentListOf(),
-//            title = "Drama"
-//          ),
-//          playCount = "10000",
-//          topTags = persistentListOf(
-//            Tag(
-//              name = "K-POP",
-//              url = ""
-//            ),
-//            Tag(
-//              name = "K-POP",
-//              url = ""
-//            ),
-//            Tag(
-//              name = "K-POP",
-//              url = ""
-//            )
-//          ),
-//          wiki = Wiki(
-//            published = "01 January 2023",
-//            content = "\"Clocks\" emerged in <b>conception during the late</b>stages into the production of Coldplay's second album, A Rush of Blood to the Head. The band's vocalist, Chris Martin, came in studio late one night. A riff popped  up in Martin's mind and wrote it on the  piano. Martin presented the riff to the band's guitarist, Jonny Buckland, who then added guitar chords on the basic track.\n\nDuring the writing of \"Clocks\", the band had already made 10 songs for the album. With this, they thought it was too late for the song's inclusion in the albumclude contrast, contradictions and urgency. Chris Martin sings of being in the state of \"helplessness ...",
-//            summary = "\"Clocks\" emerged in <b>conception during the late stages</b> into the production of Coldplay's second album, A Rush of Blood to the Head. The band's vocalist, Chris Martin, came in studio late one night. A riff popped  up in Martin's mind and wrote it on the  piano. Martin presented the riff to the band's guitarist, Jonny Buckland, who then added guitar chords on the basic track.\n\nDuring the writing of \"Clocks\", the band had already made 10 songs for the album. <a href=\"http://www.last.fm/music/Coldplay/_/Clocks\">Read more on Last.fm</a>.",
-//          ),
-//          userPlayCount = "10000"
-//        ),
-//        onUrlTap = {},
-//        artistName = "aespa",
-//        trackName = "Drama",
-//        onBackPressed = {}
-//      )
-//    }
-//  }
-//}
+@OptIn(ExperimentalSharedTransitionApi::class)
+@Composable
+@Preview(showBackground = true)
+private fun TrackContentPreview() {
+  SunsetThemePreview {
+    Surface {
+      SharedTransitionLayout {
+        AnimatedContent(targetState = "", label = "track_screen_preview") {
+          TrackContent(
+            artworkUrl = it,
+            trackInfo = TrackInfo(
+              artist = com.mataku.scrobscrob.core.entity.TrackArtist(
+                name = "aespaaespaaespaaespaaespaaespaaespa",
+                url = ""
+              ),
+              listeners = "100000",
+              url = "https://example.com",
+              name = "Drama",
+              album = TrackAlbumInfo(
+                artist = "aespaaespaaespaaespaaespaaespa",
+                imageList = persistentListOf(),
+                title = "Drama"
+              ),
+              playCount = "10000",
+              topTags = persistentListOf(
+                Tag(
+                  name = "K-POP",
+                  url = ""
+                ),
+                Tag(
+                  name = "K-POP",
+                  url = ""
+                ),
+                Tag(
+                  name = "K-POP",
+                  url = ""
+                )
+              ),
+              wiki = Wiki(
+                published = "01 January 2023",
+                content = "\"Clocks\" emerged in <b>conception during the late</b>stages into the production of Coldplay's second album, A Rush of Blood to the Head. The band's vocalist, Chris Martin, came in studio late one night. A riff popped  up in Martin's mind and wrote it on the  piano. Martin presented the riff to the band's guitarist, Jonny Buckland, who then added guitar chords on the basic track.\n\nDuring the writing of \"Clocks\", the band had already made 10 songs for the album. With this, they thought it was too late for the song's inclusion in the albumclude contrast, contradictions and urgency. Chris Martin sings of being in the state of \"helplessness ...",
+                summary = "\"Clocks\" emerged in <b>conception during the late stages</b> into the production of Coldplay's second album, A Rush of Blood to the Head. The band's vocalist, Chris Martin, came in studio late one night. A riff popped  up in Martin's mind and wrote it on the  piano. Martin presented the riff to the band's guitarist, Jonny Buckland, who then added guitar chords on the basic track.\n\nDuring the writing of \"Clocks\", the band had already made 10 songs for the album. <a href=\"http://www.last.fm/music/Coldplay/_/Clocks\">Read more on Last.fm</a>.",
+              ),
+              userPlayCount = "10000"
+            ),
+            onUrlTap = {},
+            artistName = "aespa",
+            trackName = "Drama",
+            onBackPressed = {},
+            id = "123",
+            sharedTransitionScope = this@SharedTransitionLayout,
+            animatedContentScope = this
+          )
+        }
+      }
+    }
+  }
+}
 
 @Composable
 private fun TrackDetail2(
@@ -305,7 +318,7 @@ private fun TrackDetail2(
         overflow = TextOverflow.Ellipsis
       )
 
-      Spacer(modifier = Modifier.height(8.dp))
+      Spacer(modifier = Modifier.height(4.dp))
 
       Text(
         text = artistName,
