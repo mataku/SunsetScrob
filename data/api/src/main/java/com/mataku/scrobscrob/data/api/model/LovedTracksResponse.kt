@@ -21,13 +21,10 @@ data class LovedTracks(
 @Serializable
 data class LovedTrack(
   @SerialName("artist")
-  val artist: RecentTrackArtistBody,
+  val artist: TrackArtistBody,
 
   @SerialName("image")
   val images: List<ImageBody>,
-
-  @SerialName("album")
-  val album: RecentTrackAlbumBody,
 
   @SerialName("name")
   val name: String,
