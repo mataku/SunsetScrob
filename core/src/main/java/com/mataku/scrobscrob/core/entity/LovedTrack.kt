@@ -5,5 +5,6 @@ data class LovedTrack(
   val images: List<Image>,
   val name: String,
   val url: String,
-  val date: String? = null
+  val date: String? = null,
+  var imageUrl: String? = null
 )

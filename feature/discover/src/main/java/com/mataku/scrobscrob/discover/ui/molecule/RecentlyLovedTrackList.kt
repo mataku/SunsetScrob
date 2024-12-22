@@ -16,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mataku.scrobscrob.core.entity.ChartTrack
 import com.mataku.scrobscrob.core.entity.ChartTrackArtist
+import com.mataku.scrobscrob.core.entity.LovedTrack
 import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
@@ -23,14 +24,14 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
-internal fun ChartTrackList(
-  chartTrackList: ImmutableList<ChartTrack>,
-  onChartTrackTap: (ChartTrack) -> Unit,
+internal fun RecentlyLovedTrackList(
+  lovedTrackList: ImmutableList<LovedTrack>,
+  onLovedTrackTap: (LovedTrack) -> Unit,
   modifier: Modifier = Modifier
 ) {
   Column(modifier = modifier.fillMaxWidth()) {
     Text(
-      text = "Hot Tracks",
+      text = "Your Recently Loved Tracks",
       style = SunsetTextStyle.headline,
       maxLines = 1,
       modifier = Modifier
@@ -48,16 +49,16 @@ internal fun ChartTrackList(
       horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
       itemsIndexed(
-        chartTrackList,
+        lovedTrackList,
         key = { index, item -> "${index}_${item.name}" }) { index, track ->
         val cachedImageUrl = track.imageUrl
         ChartCell(
           title = track.name,
-          subTitle = track.artist.name,
-          artworkUrl = if (cachedImageUrl.isNullOrEmpty()) track.imageList.imageUrl() else cachedImageUrl,
+          subTitle = track.artist,
+          artworkUrl = if (cachedImageUrl.isNullOrEmpty()) track.images.imageUrl() else cachedImageUrl,
           modifier = Modifier
             .clickable {
-              onChartTrackTap.invoke(track)
+              onLovedTrackTap.invoke(track)
             }
         )
       }
