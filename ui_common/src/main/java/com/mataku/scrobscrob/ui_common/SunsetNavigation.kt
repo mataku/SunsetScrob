@@ -29,17 +29,12 @@ fun NavGraphBuilder.commonGraph(navController: NavController) {
 }
 
 fun NavController.navigateToHomeFromAuth() {
-  navigate(
-    "home_route"
-  ) {
-    popUpTo(0)
-  }
-}
-
-fun NavController.navigateToScrobble() {
-  navigate(SCROBBLE_DESTINATION) {
+  navigate("home_route") {
     popUpTo(graph.findStartDestination().id) {
       saveState = true
+    }
+    popUpTo("login") {
+      inclusive = true
     }
     launchSingleTop = true
     restoreState = true
@@ -60,6 +55,5 @@ fun NavController.navigateToWebView(url: String) {
   navigate("webview?url=$url")
 }
 
-private const val SCROBBLE_DESTINATION = "scrobble"
 const val LOGIN_DESTINATION = "login"
 const val PRIVACY_POLICY_DESTINATION = "privacy_policy"
