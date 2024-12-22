@@ -3,7 +3,6 @@ package com.mataku.scrobscrob.scrobble.ui.component
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedContentScope
-import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.clickable
@@ -38,7 +37,6 @@ import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.molecule.SunsetImage
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun Scrobble(
   sharedTransitionScope: SharedTransitionScope,
@@ -59,7 +57,6 @@ fun Scrobble(
   )
 }
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 private fun ScrobbleContent(
   sharedTransitionScope: SharedTransitionScope,
@@ -152,7 +149,6 @@ private fun ScrobbleContent(
   }
 }
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 @Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)
 private fun ScrobblePreview() {

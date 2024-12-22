@@ -1,7 +1,6 @@
 package com.mataku.scrobscrob.scrobble.ui.navigation
 
 import android.net.Uri
-import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -15,7 +14,6 @@ import androidx.navigation.navArgument
 import com.mataku.scrobscrob.scrobble.ui.screen.TrackScreen
 import com.mataku.scrobscrob.ui_common.navigateToWebView
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 fun NavGraphBuilder.scrobbleGraph(
   navController: NavController,
   sharedTransitionScope: SharedTransitionScope,

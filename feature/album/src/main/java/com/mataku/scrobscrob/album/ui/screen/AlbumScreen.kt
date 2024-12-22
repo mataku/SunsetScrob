@@ -2,7 +2,6 @@ package com.mataku.scrobscrob.album.ui.screen
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedContentScope
-import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
@@ -52,7 +51,6 @@ import com.mataku.scrobscrob.ui_common.molecule.WikiCell
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import kotlinx.collections.immutable.persistentListOf
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun SharedTransitionScope.AlbumScreen(
   animatedContentScope: AnimatedContentScope,
@@ -77,7 +75,7 @@ fun SharedTransitionScope.AlbumScreen(
   )
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SharedTransitionScope.AlbumContent(
   animatedContentScope: AnimatedContentScope,
@@ -245,7 +243,6 @@ private fun AlbumDetailContent(
   }
 }
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 @Preview(showBackground = true)
 private fun AlbumContentPreview() {

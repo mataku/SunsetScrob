@@ -2,7 +2,6 @@ package com.mataku.scrobscrob.scrobble.ui.screen
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedContentScope
-import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
@@ -59,7 +58,6 @@ import com.mataku.scrobscrob.ui_common.molecule.ValueDescription
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import kotlinx.collections.immutable.persistentListOf
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun SharedTransitionScope.TrackScreen(
   animatedContentScope: AnimatedContentScope,
@@ -87,7 +85,7 @@ fun SharedTransitionScope.TrackScreen(
   )
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SharedTransitionScope.TrackContent(
   animatedContentScope: AnimatedContentScope,
@@ -229,7 +227,6 @@ private fun TrackDetailContent(
   }
 }
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 @Preview(showBackground = true)
 private fun TrackContentPreview() {

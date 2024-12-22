@@ -1,6 +1,5 @@
 package com.mataku.scrobscrob.home.ui.navigation
 
-import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
@@ -19,7 +18,6 @@ import com.mataku.scrobscrob.home.ui.HomeScreen
 import com.mataku.scrobscrob.scrobble.ui.navigation.navigateToTrackDetail
 import com.mataku.scrobscrob.scrobble.ui.navigation.scrobbleGraph
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 fun NavGraphBuilder.homeGraph(
   navController: NavController,
   sharedTransitionScope: SharedTransitionScope,

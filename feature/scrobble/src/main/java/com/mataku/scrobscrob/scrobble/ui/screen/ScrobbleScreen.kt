@@ -1,7 +1,6 @@
 package com.mataku.scrobscrob.scrobble.ui.screen
 
 import androidx.compose.animation.AnimatedContentScope
-import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -29,7 +28,7 @@ import com.mataku.scrobscrob.scrobble.ui.viewmodel.ScrobbleViewModel
 import com.mataku.scrobscrob.ui_common.organism.InfiniteLoadingIndicator
 import kotlinx.collections.immutable.ImmutableList
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ScrobbleScreen(
   sharedTransitionScope: SharedTransitionScope,
@@ -60,7 +59,7 @@ fun ScrobbleScreen(
   }
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ScrobbleContent(
   sharedTransitionScope: SharedTransitionScope,
@@ -88,7 +87,7 @@ private fun ScrobbleContent(
         val id = if (artwork.isInvalidArtwork()) {
           ""
         } else {
-          "${index}${track.hashCode()}"
+          "scrobble_${index}${track.hashCode()}"
         }
         Scrobble(
           recentTrack = track,

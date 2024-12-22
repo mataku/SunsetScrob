@@ -2,7 +2,6 @@ package com.mataku.scrobscrob.app.ui.navigation
 
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
-import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -19,7 +18,6 @@ import com.mataku.scrobscrob.home.ui.navigation.HOME_NAVIGATION_ROUTE
 import com.mataku.scrobscrob.home.ui.navigation.homeGraph
 import com.mataku.scrobscrob.ui_common.commonGraph
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun NavigationGraph(
   navController: NavHostController,

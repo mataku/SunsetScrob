@@ -1,12 +1,9 @@
-@file:OptIn(ExperimentalSharedTransitionApi::class)
-
 package com.mataku.scrobscrob.album.ui.screen
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContentScope
-import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
