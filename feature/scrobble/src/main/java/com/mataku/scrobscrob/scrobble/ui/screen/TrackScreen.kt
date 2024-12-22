@@ -1,5 +1,9 @@
 package com.mataku.scrobscrob.scrobble.ui.screen
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -30,10 +34,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -47,6 +51,7 @@ import com.mataku.scrobscrob.core.entity.presentation.toReadableIntValue
 import com.mataku.scrobscrob.scrobble.ui.component.TrackDetail
 import com.mataku.scrobscrob.scrobble.ui.viewmodel.TrackViewModel
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
+import com.mataku.scrobscrob.ui_common.component.ArtworkLayerBar
 import com.mataku.scrobscrob.ui_common.component.CircleBackButton
 import com.mataku.scrobscrob.ui_common.molecule.SunsetImage
 import com.mataku.scrobscrob.ui_common.molecule.ValueDescription
@@ -54,7 +59,9 @@ import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
-fun TrackScreen(
+fun SharedTransitionScope.TrackScreen(
+  animatedContentScope: AnimatedContentScope,
+  id: String,
   trackName: String,
   artistName: String,
   artworkUrl: String?,
@@ -66,6 +73,8 @@ fun TrackScreen(
   val uiState by trackViewModel.state.collectAsStateWithLifecycle()
 
   TrackContent(
+    animatedContentScope = animatedContentScope,
+    id = id,
     artworkUrl = artworkUrl,
     trackInfo = uiState.trackInfo,
     onUrlTap = navigateToWebView,
@@ -78,7 +87,9 @@ fun TrackScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun TrackContent(
+private fun SharedTransitionScope.TrackContent(
+  animatedContentScope: AnimatedContentScope,
+  id: String,
   artworkUrl: String?,
   trackName: String,
   artistName: String,
@@ -123,50 +134,52 @@ private fun TrackContent(
             imageData = artworkUrl,
             contentDescription = "artwork image",
             modifier = Modifier
+              .then(
+                if (id.isEmpty() || LocalInspectionMode.current) {
+                  Modifier
+                } else {
+                  Modifier
+                    .sharedElement(
+                      state = this@TrackContent.rememberSharedContentState(
+                        key = id
+                      ),
+                      animatedVisibilityScope = animatedContentScope,
+                      renderInOverlayDuringTransition = false,
+                    )
+                }
+              )
               .fillMaxWidth()
               .aspectRatio(1F),
             contentScale = ContentScale.FillWidth
           )
-          Column(
-            modifier = Modifier
-              .fillMaxWidth()
-              .background(
-                color = Color.Transparent
-              )
-          ) {
-            Box(
+          if (!this@TrackContent.isTransitionActive) {
+            Column(
               modifier = Modifier
                 .fillMaxWidth()
-                .height(24.dp)
                 .background(
-                  Brush.verticalGradient(
-                    colors = listOf(
-                      MaterialTheme.colorScheme.surface.copy(alpha = 0.5F),
-                      MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1F)
-                    )
-                  )
-                ),
-              contentAlignment = Alignment.Center,
-            ) {
-            }
-            CircleBackButton(
-              modifier = Modifier
-                .padding(
-                  start = 4.dp
+                  color = Color.Transparent
                 )
-                .clickable(
-                  interactionSource = remember { MutableInteractionSource() },
-                  indication = null,
-                ) {
-                  onBackPressed.invoke()
-                }
-            )
+            ) {
+              ArtworkLayerBar()
+              CircleBackButton(
+                modifier = Modifier
+                  .padding(
+                    start = 4.dp
+                  )
+                  .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null,
+                  ) {
+                    onBackPressed.invoke()
+                  }
+              )
 
+            }
           }
         }
         SunsetImage(
           imageData = artworkUrl,
-          contentDescription = "artwork image",
+          contentDescription = "artwork_image_behind",
           modifier = Modifier
             .fillMaxWidth()
             .aspectRatio(1F),
@@ -219,48 +232,54 @@ private fun TrackDetailContent(
 private fun TrackContentPreview() {
   SunsetThemePreview {
     Surface {
-      TrackContent(
-        artworkUrl = null,
-        trackInfo = TrackInfo(
-          artist = com.mataku.scrobscrob.core.entity.TrackArtist(
-            name = "aespaaespaaespaaespaaespaaespaaespa",
-            url = ""
-          ),
-          listeners = "100000",
-          url = "https://example.com",
-          name = "Drama",
-          album = TrackAlbumInfo(
-            artist = "aespaaespaaespaaespaaespaaespa",
-            imageList = persistentListOf(),
-            title = "Drama"
-          ),
-          playCount = "10000",
-          topTags = persistentListOf(
-            Tag(
-              name = "K-POP",
-              url = ""
+      SharedTransitionLayout {
+        AnimatedContent(targetState = "", label = "track_screen_preview") {
+          TrackContent(
+            artworkUrl = it,
+            trackInfo = TrackInfo(
+              artist = com.mataku.scrobscrob.core.entity.TrackArtist(
+                name = "aespaaespaaespaaespaaespaaespaaespa",
+                url = ""
+              ),
+              listeners = "100000",
+              url = "https://example.com",
+              name = "Drama",
+              album = TrackAlbumInfo(
+                artist = "aespaaespaaespaaespaaespaaespa",
+                imageList = persistentListOf(),
+                title = "Drama"
+              ),
+              playCount = "10000",
+              topTags = persistentListOf(
+                Tag(
+                  name = "K-POP",
+                  url = ""
+                ),
+                Tag(
+                  name = "K-POP",
+                  url = ""
+                ),
+                Tag(
+                  name = "K-POP",
+                  url = ""
+                )
+              ),
+              wiki = Wiki(
+                published = "01 January 2023",
+                content = "\"Clocks\" emerged in <b>conception during the late</b>stages into the production of Coldplay's second album, A Rush of Blood to the Head. The band's vocalist, Chris Martin, came in studio late one night. A riff popped  up in Martin's mind and wrote it on the  piano. Martin presented the riff to the band's guitarist, Jonny Buckland, who then added guitar chords on the basic track.\n\nDuring the writing of \"Clocks\", the band had already made 10 songs for the album. With this, they thought it was too late for the song's inclusion in the albumclude contrast, contradictions and urgency. Chris Martin sings of being in the state of \"helplessness ...",
+                summary = "\"Clocks\" emerged in <b>conception during the late stages</b> into the production of Coldplay's second album, A Rush of Blood to the Head. The band's vocalist, Chris Martin, came in studio late one night. A riff popped  up in Martin's mind and wrote it on the  piano. Martin presented the riff to the band's guitarist, Jonny Buckland, who then added guitar chords on the basic track.\n\nDuring the writing of \"Clocks\", the band had already made 10 songs for the album. <a href=\"http://www.last.fm/music/Coldplay/_/Clocks\">Read more on Last.fm</a>.",
+              ),
+              userPlayCount = "10000"
             ),
-            Tag(
-              name = "K-POP",
-              url = ""
-            ),
-            Tag(
-              name = "K-POP",
-              url = ""
-            )
-          ),
-          wiki = Wiki(
-            published = "01 January 2023",
-            content = "\"Clocks\" emerged in <b>conception during the late</b>stages into the production of Coldplay's second album, A Rush of Blood to the Head. The band's vocalist, Chris Martin, came in studio late one night. A riff popped  up in Martin's mind and wrote it on the  piano. Martin presented the riff to the band's guitarist, Jonny Buckland, who then added guitar chords on the basic track.\n\nDuring the writing of \"Clocks\", the band had already made 10 songs for the album. With this, they thought it was too late for the song's inclusion in the albumclude contrast, contradictions and urgency. Chris Martin sings of being in the state of \"helplessness ...",
-            summary = "\"Clocks\" emerged in <b>conception during the late stages</b> into the production of Coldplay's second album, A Rush of Blood to the Head. The band's vocalist, Chris Martin, came in studio late one night. A riff popped  up in Martin's mind and wrote it on the  piano. Martin presented the riff to the band's guitarist, Jonny Buckland, who then added guitar chords on the basic track.\n\nDuring the writing of \"Clocks\", the band had already made 10 songs for the album. <a href=\"http://www.last.fm/music/Coldplay/_/Clocks\">Read more on Last.fm</a>.",
-          ),
-          userPlayCount = "10000"
-        ),
-        onUrlTap = {},
-        artistName = "aespa",
-        trackName = "Drama",
-        onBackPressed = {}
-      )
+            onUrlTap = {},
+            artistName = "aespa",
+            trackName = "Drama",
+            onBackPressed = {},
+            id = "123",
+            animatedContentScope = this
+          )
+        }
+      }
     }
   }
 }
@@ -291,7 +310,7 @@ private fun TrackDetail2(
         overflow = TextOverflow.Ellipsis
       )
 
-      Spacer(modifier = Modifier.height(8.dp))
+      Spacer(modifier = Modifier.height(4.dp))
 
       Text(
         text = artistName,

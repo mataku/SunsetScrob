@@ -1,5 +1,6 @@
 package com.mataku.scrobscrob.home.ui.navigation
 
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -17,30 +18,38 @@ import com.mataku.scrobscrob.home.ui.HomeScreen
 import com.mataku.scrobscrob.scrobble.ui.navigation.navigateToTrackDetail
 import com.mataku.scrobscrob.scrobble.ui.navigation.scrobbleGraph
 
-fun NavGraphBuilder.homeGraph(navController: NavController) {
+fun NavGraphBuilder.homeGraph(
+  navController: NavController,
+  sharedTransitionScope: SharedTransitionScope,
+) {
   navigation(route = HOME_NAVIGATION_ROUTE, startDestination = HOME_DESTINATION) {
     composable(
       HOME_DESTINATION,
     ) {
       HomeScreen(
-        navigateToTrackDetail = { track ->
+        sharedTransitionScope = sharedTransitionScope,
+        animatedContentScope = this@composable,
+        navigateToTrackDetail = { track, id ->
           navController.navigateToTrackDetail(
             trackName = track.name,
             artistName = track.artistName,
             imageUrl = track.images.imageUrl() ?: "",
+            id = id
           )
         },
-        navigateToArtistDetail = { artist ->
+        navigateToArtistDetail = { artist, id ->
           navController.navigateToArtistInfo(
             artistName = artist.name,
-            artworkUrl = (artist.imageUrl ?: artist.imageList.imageUrl()) ?: ""
+            artworkUrl = (artist.imageUrl ?: artist.imageList.imageUrl()) ?: "",
+            contentId = id
           )
         },
-        navigateToAlbumDetail = { album ->
+        navigateToAlbumDetail = { album, id ->
           navController.navigateToAlbumInfo(
             albumName = album.title,
             artistName = album.artist,
-            artworkUrl = album.imageList.imageUrl() ?: ""
+            artworkUrl = album.imageList.imageUrl() ?: "",
+            contentId = id
           )
         },
         modifier = Modifier
@@ -50,9 +59,18 @@ fun NavGraphBuilder.homeGraph(navController: NavController) {
       )
     }
 
-    albumGraph(navController)
-    artistGraph(navController)
-    scrobbleGraph(navController)
+    albumGraph(
+      navController = navController,
+      sharedTransitionScope = sharedTransitionScope
+    )
+    artistGraph(
+      navController = navController,
+      sharedTransitionScope = sharedTransitionScope,
+    )
+    scrobbleGraph(
+      navController = navController,
+      sharedTransitionScope = sharedTransitionScope,
+    )
   }
 }
 

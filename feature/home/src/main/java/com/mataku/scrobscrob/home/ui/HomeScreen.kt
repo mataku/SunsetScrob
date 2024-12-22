@@ -1,5 +1,7 @@
 package com.mataku.scrobscrob.home.ui
 
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
@@ -35,9 +37,11 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-  navigateToTrackDetail: (RecentTrack) -> Unit,
-  navigateToArtistDetail: (TopArtistInfo) -> Unit,
-  navigateToAlbumDetail: (TopAlbumInfo) -> Unit,
+  sharedTransitionScope: SharedTransitionScope,
+  animatedContentScope: AnimatedContentScope,
+  navigateToTrackDetail: (RecentTrack, String) -> Unit,
+  navigateToArtistDetail: (TopArtistInfo, String) -> Unit,
+  navigateToAlbumDetail: (TopAlbumInfo, String) -> Unit,
   modifier: Modifier = Modifier
 ) {
   val pagerState = rememberPagerState(
@@ -104,7 +108,9 @@ fun HomeScreen(
               ScrobbleScreen(
                 viewModel = hiltViewModel(),
                 topAppBarScrollBehavior = scrollBehavior,
-                navigateToTrackDetail = navigateToTrackDetail
+                navigateToTrackDetail = navigateToTrackDetail,
+                sharedTransitionScope = sharedTransitionScope,
+                animatedContentScope = animatedContentScope,
               )
             }
 
@@ -112,7 +118,9 @@ fun HomeScreen(
               TopArtistsScreen(
                 viewModel = hiltViewModel(),
                 onArtistTap = navigateToArtistDetail,
-                topAppBarScrollBehavior = scrollBehavior
+                topAppBarScrollBehavior = scrollBehavior,
+                sharedTransitionScope = sharedTransitionScope,
+                animatedContentScope = animatedContentScope
               )
             }
 
@@ -120,7 +128,9 @@ fun HomeScreen(
               TopAlbumsScreen(
                 viewModel = hiltViewModel(),
                 navigateToAlbumInfo = navigateToAlbumDetail,
-                topAppBarScrollBehavior = scrollBehavior
+                topAppBarScrollBehavior = scrollBehavior,
+                sharedTransitionScope = sharedTransitionScope,
+                animatedContentScope = animatedContentScope
               )
             }
           }

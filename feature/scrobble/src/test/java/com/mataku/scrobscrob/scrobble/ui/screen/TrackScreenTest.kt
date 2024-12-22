@@ -1,5 +1,7 @@
 package com.mataku.scrobscrob.scrobble.ui.screen
 
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.lifecycle.SavedStateHandle
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -71,6 +73,7 @@ class TrackScreenTest {
 
   private val trackRepository = mockk<TrackRepository>()
   private val savedStateHandle = mockk<SavedStateHandle>()
+  private val animatedContentScope = mockk<AnimatedContentScope>(relaxed = true)
 
   @Before
   fun setup() {
@@ -100,14 +103,18 @@ class TrackScreenTest {
     composeRule.captureScreenshot(
       appTheme = AppTheme.DARK,
       content = {
-        TrackScreen(
-          trackName = trackName,
-          artistName = artistName,
-          artworkUrl = artworkUrl,
-          trackViewModel = viewModel,
-          navigateToWebView = mockk(),
-          onBackPressed = mockk()
-        )
+        SharedTransitionLayout {
+          TrackScreen(
+            trackName = trackName,
+            artistName = artistName,
+            artworkUrl = artworkUrl,
+            trackViewModel = viewModel,
+            navigateToWebView = mockk(),
+            onBackPressed = mockk(),
+            animatedContentScope = animatedContentScope,
+            id = ""
+          )
+        }
       },
       fileName = "track_screen.png"
     )
@@ -123,14 +130,18 @@ class TrackScreenTest {
     composeRule.captureScreenshot(
       appTheme = AppTheme.LIGHT,
       content = {
-        TrackScreen(
-          trackName = trackName,
-          artistName = artistName,
-          artworkUrl = artworkUrl,
-          trackViewModel = viewModel,
-          navigateToWebView = mockk(),
-          onBackPressed = mockk()
-        )
+        SharedTransitionLayout {
+          TrackScreen(
+            trackName = trackName,
+            artistName = artistName,
+            artworkUrl = artworkUrl,
+            trackViewModel = viewModel,
+            navigateToWebView = mockk(),
+            onBackPressed = mockk(),
+            animatedContentScope = animatedContentScope,
+            id = ""
+          )
+        }
       },
       fileName = "track_screen_light.png"
     )

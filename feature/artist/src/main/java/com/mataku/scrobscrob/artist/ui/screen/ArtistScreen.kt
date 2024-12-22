@@ -1,5 +1,9 @@
 package com.mataku.scrobscrob.artist.ui.screen
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -46,7 +50,9 @@ import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
-fun ArtistScreen(
+fun SharedTransitionScope.ArtistScreen(
+  animatedContentScope: AnimatedContentScope,
+  id: String,
   viewModel: ArtistViewModel,
   onArtistLoadMoreTap: (String) -> Unit,
   onBackPressed: () -> Unit
@@ -58,13 +64,17 @@ fun ArtistScreen(
     artistName = uiState.preloadArtistName,
     artistInfo = uiState.artistInfo,
     onArtistLoadMoreTap = onArtistLoadMoreTap,
-    onBackPressed = onBackPressed
+    onBackPressed = onBackPressed,
+    animatedContentScope = animatedContentScope,
+    id = id
   )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun ArtistContent(
+private fun SharedTransitionScope.ArtistContent(
+  animatedContentScope: AnimatedContentScope,
+  id: String,
   artworkUrl: String,
   artistName: String,
   artistInfo: ArtistInfo?,
@@ -96,30 +106,46 @@ private fun ArtistContent(
             imageData = artworkUrl,
             contentDescription = "artwork image",
             modifier = Modifier
+              .then(
+                if (id.isEmpty()) {
+                  Modifier
+                } else {
+                  Modifier
+                    .sharedElement(
+                      state = this@ArtistContent.rememberSharedContentState(
+                        key = id
+                      ),
+                      animatedVisibilityScope = animatedContentScope,
+                      renderInOverlayDuringTransition = false,
+                    )
+                }
+              )
               .fillMaxWidth()
               .aspectRatio(1F),
             contentScale = ContentScale.FillWidth
           )
-          Column(
-            modifier = Modifier
-              .fillMaxWidth()
-              .background(
-                color = Color.Transparent
-              )
-          ) {
-            Spacer(modifier = Modifier.height(24.dp))
-            CircleBackButton(
+          if (!this@ArtistContent.isTransitionActive) {
+            Column(
               modifier = Modifier
-                .padding(
-                  start = 4.dp
+                .fillMaxWidth()
+                .background(
+                  color = Color.Transparent
                 )
-                .clickable(
-                  interactionSource = remember { MutableInteractionSource() },
-                  indication = null,
-                ) {
-                  onBackPressed.invoke()
-                }
-            )
+            ) {
+              Spacer(modifier = Modifier.height(24.dp))
+              CircleBackButton(
+                modifier = Modifier
+                  .padding(
+                    start = 4.dp
+                  )
+                  .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null,
+                  ) {
+                    onBackPressed.invoke()
+                  }
+              )
+            }
           }
         }
         SunsetImage(
@@ -177,44 +203,53 @@ private fun ArtistContent(
 private fun ArtistContentPreview() {
   SunsetThemePreview {
     Surface {
-      ArtistContent(
-        artworkUrl = "",
-        artistName = "aespa",
-        artistInfo = ArtistInfo(
-          name = "aespa",
-          images = persistentListOf(),
-          stats = Stats(
-            listeners = "100000",
-            playCount = "1000000"
-          ),
-          url = "",
-          tags = persistentListOf(
-            Tag(
-              name = "K-POP",
-              url = ""
+      SharedTransitionLayout {
+        AnimatedContent(
+          targetState = "",
+          label = "artist_content_preview"
+        ) {
+          ArtistContent(
+            artworkUrl = it,
+            artistName = "aespa",
+            artistInfo = ArtistInfo(
+              name = "aespa",
+              images = persistentListOf(),
+              stats = Stats(
+                listeners = "100000",
+                playCount = "1000000"
+              ),
+              url = "",
+              tags = persistentListOf(
+                Tag(
+                  name = "K-POP",
+                  url = ""
+                ),
+                Tag(
+                  name = "K-POP",
+                  url = ""
+                ),
+                Tag(
+                  name = "K-POP",
+                  url = ""
+                ),
+                Tag(
+                  name = "K-POP",
+                  url = ""
+                )
+              ),
+              wiki = Wiki(
+                published = "01 January 2023",
+                summary = LoremIpsum(100).values.joinToString(separator = " "),
+                content = ""
+              )
             ),
-            Tag(
-              name = "K-POP",
-              url = ""
-            ),
-            Tag(
-              name = "K-POP",
-              url = ""
-            ),
-            Tag(
-              name = "K-POP",
-              url = ""
-            )
-          ),
-          wiki = Wiki(
-            published = "01 January 2023",
-            summary = LoremIpsum(100).values.joinToString(separator = " "),
-            content = ""
+            onArtistLoadMoreTap = {},
+            onBackPressed = {},
+            id = "",
+            animatedContentScope = this
           )
-        ),
-        onArtistLoadMoreTap = {},
-        onBackPressed = {}
-      )
+        }
+      }
     }
   }
 }

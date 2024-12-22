@@ -3,6 +3,8 @@ package com.mataku.scrobscrob.artist.ui.screen
 import android.annotation.SuppressLint
 import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
@@ -36,6 +38,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mataku.scrobscrob.artist.ui.molecule.TopArtist
 import com.mataku.scrobscrob.artist.ui.viewmodel.TopArtistsViewModel
 import com.mataku.scrobscrob.core.entity.TopArtistInfo
+import com.mataku.scrobscrob.core.entity.imageUrl
+import com.mataku.scrobscrob.core.entity.isInvalidArtwork
 import com.mataku.scrobscrob.ui_common.molecule.FilteringFloatingButton
 import com.mataku.scrobscrob.ui_common.molecule.LoadingIndicator
 import com.mataku.scrobscrob.ui_common.organism.FilteringBottomSheet
@@ -47,8 +51,10 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopArtistsScreen(
+  sharedTransitionScope: SharedTransitionScope,
+  animatedContentScope: AnimatedContentScope,
   viewModel: TopArtistsViewModel,
-  onArtistTap: (TopArtistInfo) -> Unit,
+  onArtistTap: (TopArtistInfo, String) -> Unit,
   topAppBarScrollBehavior: TopAppBarScrollBehavior,
   modifier: Modifier = Modifier
 ) {
@@ -93,6 +99,8 @@ fun TopArtistsScreen(
     }
   ) {
     TopArtistsContent(
+      sharedTransitionScope = sharedTransitionScope,
+      animatedContentScope = animatedContentScope,
       artists = uiState.topArtists,
       hasNext = uiState.hasNext,
       onArtistTap = onArtistTap,
@@ -146,10 +154,12 @@ fun TopArtistsScreen(
 
 @Composable
 private fun TopArtistsContent(
+  sharedTransitionScope: SharedTransitionScope,
+  animatedContentScope: AnimatedContentScope,
   artists: ImmutableList<TopArtistInfo>,
   hasNext: Boolean,
   maxSpanCount: Int,
-  onArtistTap: (TopArtistInfo) -> Unit,
+  onArtistTap: (TopArtistInfo, String) -> Unit,
   onScrollEnd: () -> Unit,
   modifier: Modifier = Modifier
 ) {
@@ -162,14 +172,29 @@ private fun TopArtistsContent(
         key = { index, artist ->
           "${index}${artist.hashCode()}"
         }
-      ) { _, artist ->
+      ) { index, artist ->
+        val cachedImageUrl = artist.imageUrl
+        val imageUrl = when {
+          cachedImageUrl != null -> cachedImageUrl
+          artist.imageList.isEmpty() -> null
+          else -> artist.imageList.imageUrl()
+        }
+        val id = if (imageUrl.isInvalidArtwork()) {
+          ""
+        } else {
+          "top_artist_${index}${artist.hashCode()}"
+        }
         TopArtist(
           artist = artist,
           onArtistTap = {
-            onArtistTap.invoke(artist)
+            onArtistTap.invoke(artist, id)
           },
           modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxWidth(),
+          sharedTransitionScope = sharedTransitionScope,
+          animatedContentScope = animatedContentScope,
+          id = id,
+          imageUrl = imageUrl ?: ""
         )
       }
 
