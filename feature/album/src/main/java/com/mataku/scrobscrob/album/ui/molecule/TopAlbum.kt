@@ -44,7 +44,11 @@ internal fun TopAlbum(
     horizontalAlignment = Alignment.CenterHorizontally,
     modifier = modifier
       .fillMaxWidth()
-      .padding(8.dp)
+      .padding(
+        start = 8.dp,
+        end = 8.dp,
+        bottom = 24.dp
+      )
       .clickable {
         onAlbumTap()
       },
