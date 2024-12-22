@@ -37,7 +37,11 @@ internal fun TopArtist(
   Column(
     horizontalAlignment = Alignment.CenterHorizontally,
     modifier = modifier
-      .padding(8.dp)
+      .padding(
+        start = 8.dp,
+        end = 8.dp,
+        bottom = 24.dp,
+      )
       .clickable {
         onArtistTap()
       }
@@ -81,6 +85,7 @@ internal fun TopArtist(
     } else {
       R.string.playcounts
     }
+    Spacer(modifier = Modifier.height(2.dp))
     Text(
       stringResource(playCountResource, artist.playCount),
       style = SunsetTextStyle.caption,

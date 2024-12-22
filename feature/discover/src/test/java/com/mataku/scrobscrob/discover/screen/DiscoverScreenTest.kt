@@ -8,16 +8,15 @@ import com.mataku.scrobscrob.core.entity.ChartTopArtists
 import com.mataku.scrobscrob.core.entity.ChartTopTracks
 import com.mataku.scrobscrob.core.entity.ChartTrack
 import com.mataku.scrobscrob.core.entity.ChartTrackArtist
+import com.mataku.scrobscrob.core.entity.LovedTrack
 import com.mataku.scrobscrob.core.entity.PagingAttr
-import com.mataku.scrobscrob.core.entity.Tag
 import com.mataku.scrobscrob.data.repository.ChartRepository
+import com.mataku.scrobscrob.data.repository.UserRepository
 import com.mataku.scrobscrob.discover.ui.screen.DiscoverScreen
 import com.mataku.scrobscrob.discover.ui.viewmodel.DiscoverViewModel
 import com.mataku.scrobscrob.test_helper.integration.captureScreenshot
-import io.mockk.every
+import io.mockk.coEvery
 import io.mockk.mockk
-import kotlinx.collections.immutable.persistentListOf
-import kotlinx.coroutines.flow.flowOf
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -31,6 +30,7 @@ class DiscoverScreenTest {
   val composeTestRule = createComposeRule()
 
   private val chartRepository = mockk<ChartRepository>()
+  private val userRepository = mockk<UserRepository>()
 
   private val topArtists = (1..20).map {
     ChartArtist(
@@ -57,28 +57,21 @@ class DiscoverScreenTest {
     )
   }
 
+  private val recentLovedTracks = (1..20).map {
+    LovedTrack(
+      name = "sooooo looooong loved track $it",
+      artist = "soooo looong loved artist $it",
+      url = "",
+      images = emptyList()
+    )
+  }
+
   @Before
   fun setup() {
-    every {
-      chartRepository.topArtists(1)
+    coEvery {
+      chartRepository.topTracksAsync(1)
     }.returns(
-      flowOf(
-        ChartTopArtists(
-          topArtists = topArtists,
-          pagingAttr = PagingAttr(
-            page = "1",
-            totalPages = "1",
-            total = "1",
-            perPage = "1"
-          )
-        )
-      )
-    )
-
-    every {
-      chartRepository.topTracks(1)
-    }.returns(
-      flowOf(
+      Result.success(
         ChartTopTracks(
           topTracks = topTracks,
           pagingAttr = PagingAttr(
@@ -91,35 +84,30 @@ class DiscoverScreenTest {
       )
     )
 
-    every {
-      chartRepository.topTags(1)
+    coEvery {
+      chartRepository.topArtistsAsync(1)
     }.returns(
-      flowOf(
-        persistentListOf(
-          Tag(
-            name = "tag name",
-            url = ""
-          ),
-          Tag(
-            name = "tag name2",
-            url = ""
-          ),
-          Tag(
-            name = "tag name3",
-            url = ""
-          ),
-          Tag(
-            name = "tag name4",
-            url = ""
-          ),
+      Result.success(
+        ChartTopArtists(
+          topArtists = topArtists,
+          pagingAttr = PagingAttr(
+            page = "1",
+            totalPages = "1",
+            total = "1",
+            perPage = "1"
+          )
         )
       )
     )
+
+    coEvery {
+      userRepository.getLovedTracks(1)
+    }.returns(Result.success(recentLovedTracks))
   }
 
   @Test
   fun layout() {
-    val viewModel = DiscoverViewModel(chartRepository)
+    val viewModel = DiscoverViewModel(chartRepository, userRepository)
     composeTestRule.captureScreenshot(
       appTheme = AppTheme.DARK,
       content = {
@@ -134,7 +122,7 @@ class DiscoverScreenTest {
 
   @Test
   fun layout_light() {
-    val viewModel = DiscoverViewModel(chartRepository)
+    val viewModel = DiscoverViewModel(chartRepository, userRepository)
     composeTestRule.captureScreenshot(
       appTheme = AppTheme.LIGHT,
       content = {

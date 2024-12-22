@@ -1,5 +1,6 @@
 package com.mataku.scrobscrob.ui_common.molecule
 
+import android.graphics.drawable.Drawable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -22,6 +23,11 @@ import com.bumptech.glide.integration.compose.CrossFade
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.bumptech.glide.integration.compose.placeholder
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.load.resource.gif.GifDrawable
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.mataku.scrobscrob.ui_common.R
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 
@@ -33,6 +39,30 @@ fun SunsetImage(
   modifier: Modifier = Modifier,
   contentScale: ContentScale = ContentScale.Fit,
 ) {
+  val requestListener: RequestListener<Drawable> = object : RequestListener<Drawable> {
+    override fun onResourceReady(
+      resource: Drawable,
+      model: Any,
+      target: Target<Drawable>?,
+      dataSource: DataSource,
+      isFirstResource: Boolean
+    ): Boolean {
+      if (resource is GifDrawable) {
+        resource.setLoopCount(1)
+      }
+      return false
+    }
+
+    override fun onLoadFailed(
+      e: GlideException?,
+      model: Any?,
+      target: Target<Drawable>,
+      isFirstResource: Boolean
+    ): Boolean {
+      // Glide proceeds default error handling
+      return false
+    }
+  }
   if (LocalInspectionMode.current || imageData.isNullOrEmpty()) {
     Box(
       modifier = modifier
@@ -57,8 +87,11 @@ fun SunsetImage(
       modifier = modifier,
       contentDescription = contentDescription,
       contentScale = contentScale,
-      transition = CrossFade(animationSpec = tween(300)),
-      failure = placeholder(R.drawable.no_image)
+      transition = CrossFade(animationSpec = tween(500)),
+      failure = placeholder(R.drawable.no_image),
+      requestBuilderTransform = {
+        it.listener(requestListener)
+      }
     )
   }
 }

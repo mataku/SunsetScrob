@@ -106,17 +106,17 @@ fun HomeScreen(
           when (homeTabType) {
             HomeTabType.SCROBBLE -> {
               ScrobbleScreen(
-                viewModel = hiltViewModel(),
                 topAppBarScrollBehavior = scrollBehavior,
                 navigateToTrackDetail = navigateToTrackDetail,
                 sharedTransitionScope = sharedTransitionScope,
                 animatedContentScope = animatedContentScope,
+                viewModel = hiltViewModel(key = "scrobble"),
               )
             }
 
             HomeTabType.ARTIST -> {
               TopArtistsScreen(
-                viewModel = hiltViewModel(),
+                viewModel = hiltViewModel(key = "artist"),
                 onArtistTap = navigateToArtistDetail,
                 topAppBarScrollBehavior = scrollBehavior,
                 sharedTransitionScope = sharedTransitionScope,
@@ -126,7 +126,7 @@ fun HomeScreen(
 
             HomeTabType.ALBUM -> {
               TopAlbumsScreen(
-                viewModel = hiltViewModel(),
+                viewModel = hiltViewModel(key = "album"),
                 navigateToAlbumInfo = navigateToAlbumDetail,
                 topAppBarScrollBehavior = scrollBehavior,
                 sharedTransitionScope = sharedTransitionScope,

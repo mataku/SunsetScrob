@@ -13,33 +13,31 @@ import com.mataku.scrobscrob.ui_common.template.WebViewScreen
 fun NavGraphBuilder.commonGraph(navController: NavController) {
   composable(
     "webview?url={url}",
-    arguments = listOf(navArgument("url") {
-      defaultValue = ""
-    })
-  ) {
-    WebViewScreen(
-      url = it.arguments?.getString("url")!!,
-      onBackPressed = navController::popBackStack,
-      modifier = Modifier
-        .padding(
-          top = 24.dp
-        )
-    )
-  }
+    arguments = listOf(
+      navArgument("url") {
+        defaultValue = ""
+      }
+    ),
+    content = {
+      WebViewScreen(
+        url = it.arguments?.getString("url")!!,
+        onBackPressed = navController::popBackStack,
+        modifier = Modifier
+          .padding(
+            top = 24.dp
+          )
+      )
+    }
+  )
 }
 
 fun NavController.navigateToHomeFromAuth() {
-  navigate(
-    "home_route"
-  ) {
-    popUpTo(0)
-  }
-}
-
-fun NavController.navigateToScrobble() {
-  navigate(SCROBBLE_DESTINATION) {
+  navigate("home_route") {
     popUpTo(graph.findStartDestination().id) {
       saveState = true
+    }
+    popUpTo("login") {
+      inclusive = true
     }
     launchSingleTop = true
     restoreState = true
@@ -60,6 +58,5 @@ fun NavController.navigateToWebView(url: String) {
   navigate("webview?url=$url")
 }
 
-private const val SCROBBLE_DESTINATION = "scrobble"
 const val LOGIN_DESTINATION = "login"
 const val PRIVACY_POLICY_DESTINATION = "privacy_policy"

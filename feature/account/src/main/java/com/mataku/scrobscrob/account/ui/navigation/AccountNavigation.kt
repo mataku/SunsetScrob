@@ -1,6 +1,9 @@
 package com.mataku.scrobscrob.account.ui.navigation
 
 import android.widget.Toast
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -36,29 +39,42 @@ fun NavGraphBuilder.accountGraph(navController: NavController, username: String)
           type = NavType.StringType
           defaultValue = username
         }
-      )
-    ) {
-      val context = LocalContext.current
-      AccountScreen(
-        viewModel = hiltViewModel(),
-        navigateToScrobbleSetting = navController::navigateToScrobbleSetting,
-        navigateToThemeSelector = navController::navigateToThemeSelector,
-        navigateToLicenseList = navController::navigateToLicense,
-        navigateToLogin = navController::navigateToLogin,
-        navigateToPrivacyPolicy = navController::navigateToPrivacyPolicy,
-        showPermissionHelp = {
-          Toast.makeText(
-            context.applicationContext,
-            R.string.label_notification_permission_help,
-            Toast.LENGTH_LONG
-          ).show()
-        },
-        modifier = Modifier
-          .padding(
-            top = 24.dp
-          )
-      )
-    }
+      ),
+      content = {
+        val context = LocalContext.current
+        AccountScreen(
+          viewModel = hiltViewModel(),
+          navigateToScrobbleSetting = navController::navigateToScrobbleSetting,
+          navigateToThemeSelector = navController::navigateToThemeSelector,
+          navigateToLicenseList = navController::navigateToLicense,
+          navigateToLogin = navController::navigateToLogin,
+          navigateToPrivacyPolicy = navController::navigateToPrivacyPolicy,
+          showPermissionHelp = {
+            Toast.makeText(
+              context.applicationContext,
+              R.string.label_notification_permission_help,
+              Toast.LENGTH_LONG
+            ).show()
+          },
+          modifier = Modifier
+            .padding(
+              top = 24.dp
+            )
+        )
+      },
+      enterTransition = {
+        fadeIn(tween(250))
+      },
+      exitTransition = {
+        fadeOut(tween(250))
+      },
+      popEnterTransition = {
+        fadeIn(tween(250))
+      },
+      popExitTransition = {
+        fadeOut(animationSpec = tween(250))
+      }
+    )
 
     composable(
       SCROBBLE_SETTING_DESTINATION,
