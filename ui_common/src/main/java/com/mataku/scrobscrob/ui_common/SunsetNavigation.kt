@@ -13,19 +13,22 @@ import com.mataku.scrobscrob.ui_common.template.WebViewScreen
 fun NavGraphBuilder.commonGraph(navController: NavController) {
   composable(
     "webview?url={url}",
-    arguments = listOf(navArgument("url") {
-      defaultValue = ""
-    })
-  ) {
-    WebViewScreen(
-      url = it.arguments?.getString("url")!!,
-      onBackPressed = navController::popBackStack,
-      modifier = Modifier
-        .padding(
-          top = 24.dp
-        )
-    )
-  }
+    arguments = listOf(
+      navArgument("url") {
+        defaultValue = ""
+      }
+    ),
+    content = {
+      WebViewScreen(
+        url = it.arguments?.getString("url")!!,
+        onBackPressed = navController::popBackStack,
+        modifier = Modifier
+          .padding(
+            top = 24.dp
+          )
+      )
+    }
+  )
 }
 
 fun NavController.navigateToHomeFromAuth() {

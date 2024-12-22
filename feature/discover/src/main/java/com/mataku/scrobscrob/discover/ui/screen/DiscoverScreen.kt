@@ -25,7 +25,6 @@ fun DiscoverScreen(
   modifier: Modifier = Modifier
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-
   LazyColumn(
     modifier = modifier.fillMaxSize(),
   ) {
