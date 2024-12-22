@@ -13,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.mataku.scrobscrob.account.ui.navigation.accountGraph
-import com.mataku.scrobscrob.artist.ui.navigation.artistGraph
 import com.mataku.scrobscrob.auth.ui.navigation.authGraph
 import com.mataku.scrobscrob.discover.ui.navigation.discoverGraph
 import com.mataku.scrobscrob.home.ui.navigation.HOME_NAVIGATION_ROUTE
@@ -51,7 +50,6 @@ fun NavigationGraph(
         navController = navController,
         sharedTransitionScope = this@SharedTransitionLayout,
       )
-      artistGraph(navController)
       accountGraph(navController, username ?: "")
       discoverGraph(navController)
       authGraph(navController)

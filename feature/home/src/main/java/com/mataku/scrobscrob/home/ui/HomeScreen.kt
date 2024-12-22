@@ -41,7 +41,7 @@ fun HomeScreen(
   sharedTransitionScope: SharedTransitionScope,
   animatedContentScope: AnimatedContentScope,
   navigateToTrackDetail: (RecentTrack, String) -> Unit,
-  navigateToArtistDetail: (TopArtistInfo) -> Unit,
+  navigateToArtistDetail: (TopArtistInfo, String) -> Unit,
   navigateToAlbumDetail: (TopAlbumInfo, String) -> Unit,
   modifier: Modifier = Modifier
 ) {
@@ -119,7 +119,9 @@ fun HomeScreen(
               TopArtistsScreen(
                 viewModel = hiltViewModel(),
                 onArtistTap = navigateToArtistDetail,
-                topAppBarScrollBehavior = scrollBehavior
+                topAppBarScrollBehavior = scrollBehavior,
+                sharedTransitionScope = sharedTransitionScope,
+                animatedContentScope = animatedContentScope
               )
             }
 

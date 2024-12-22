@@ -1,5 +1,10 @@
+@file:OptIn(ExperimentalSharedTransitionApi::class)
+
 package com.mataku.scrobscrob.artist.ui.screen
 
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.ui.test.junit4.createComposeRule
@@ -54,6 +59,8 @@ class TopArtistsScreenTest {
     )
   }
 
+  private val animatedContentScope = mockk<AnimatedContentScope>(relaxed = true)
+
   @Before
   fun setup() {
     every {
@@ -94,11 +101,15 @@ class TopArtistsScreenTest {
     composeRule.captureScreenshot(
       appTheme = AppTheme.DARK,
       content = {
-        TopArtistsScreen(
-          viewModel = viewModel,
-          onArtistTap = {},
-          topAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
-        )
+        SharedTransitionLayout {
+          TopArtistsScreen(
+            viewModel = viewModel,
+            onArtistTap = { _, _ -> },
+            topAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(),
+            animatedContentScope = animatedContentScope,
+            sharedTransitionScope = this
+          )
+        }
       },
       fileName = "top_artists_screen.png"
     )
@@ -113,11 +124,15 @@ class TopArtistsScreenTest {
     composeRule.captureScreenshot(
       appTheme = AppTheme.LIGHT,
       content = {
-        TopArtistsScreen(
-          viewModel = viewModel,
-          onArtistTap = {},
-          topAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
-        )
+        SharedTransitionLayout {
+          TopArtistsScreen(
+            viewModel = viewModel,
+            onArtistTap = { _, _ -> },
+            topAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(),
+            animatedContentScope = animatedContentScope,
+            sharedTransitionScope = this
+          )
+        }
       },
       fileName = "top_artists_screen_light.png"
     )

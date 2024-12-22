@@ -39,10 +39,11 @@ fun NavGraphBuilder.homeGraph(
             id = id
           )
         },
-        navigateToArtistDetail = { artist ->
+        navigateToArtistDetail = { artist, id ->
           navController.navigateToArtistInfo(
             artistName = artist.name,
-            artworkUrl = (artist.imageUrl ?: artist.imageList.imageUrl()) ?: ""
+            artworkUrl = (artist.imageUrl ?: artist.imageList.imageUrl()) ?: "",
+            contentId = id
           )
         },
         navigateToAlbumDetail = { album, id ->
@@ -64,7 +65,10 @@ fun NavGraphBuilder.homeGraph(
       navController = navController,
       sharedTransitionScope = sharedTransitionScope
     )
-    artistGraph(navController)
+    artistGraph(
+      navController = navController,
+      sharedTransitionScope = sharedTransitionScope,
+    )
     scrobbleGraph(
       navController = navController,
       sharedTransitionScope = sharedTransitionScope,

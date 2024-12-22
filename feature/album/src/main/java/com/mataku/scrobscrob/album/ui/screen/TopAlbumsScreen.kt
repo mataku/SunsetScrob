@@ -41,6 +41,7 @@ import com.mataku.scrobscrob.album.ui.molecule.TopAlbum
 import com.mataku.scrobscrob.album.ui.viewmodel.TopAlbumsViewModel
 import com.mataku.scrobscrob.core.entity.TopAlbumInfo
 import com.mataku.scrobscrob.core.entity.imageUrl
+import com.mataku.scrobscrob.core.entity.isInvalidArtwork
 import com.mataku.scrobscrob.ui_common.molecule.FilteringFloatingButton
 import com.mataku.scrobscrob.ui_common.molecule.LoadingIndicator
 import com.mataku.scrobscrob.ui_common.organism.FilteringBottomSheet
@@ -176,7 +177,7 @@ private fun TopAlbumsContent(
           "top_albums"
         }
       ) { index, album ->
-        val id = if (album.imageList.imageUrl().isNullOrEmpty()) {
+        val id = if (album.imageList.imageUrl().isInvalidArtwork()) {
           ""
         } else {
           "top_album_${index}${album.hashCode()}"

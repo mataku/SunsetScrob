@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mataku.scrobscrob.core.entity.RecentTrack
 import com.mataku.scrobscrob.core.entity.imageUrl
+import com.mataku.scrobscrob.core.entity.isInvalidArtwork
 import com.mataku.scrobscrob.scrobble.ui.component.Scrobble
 import com.mataku.scrobscrob.scrobble.ui.viewmodel.ScrobbleViewModel
 import com.mataku.scrobscrob.ui_common.organism.InfiniteLoadingIndicator
@@ -84,7 +85,7 @@ private fun ScrobbleContent(
         }
       ) { index, track ->
         val artwork = track.images.imageUrl()
-        val id = if (artwork.isNullOrEmpty()) {
+        val id = if (artwork.isInvalidArtwork()) {
           ""
         } else {
           "${index}${track.hashCode()}"

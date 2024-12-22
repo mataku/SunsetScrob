@@ -1,5 +1,10 @@
+@file:OptIn(ExperimentalSharedTransitionApi::class)
+
 package com.mataku.scrobscrob.artist.ui.screen
 
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.lifecycle.SavedStateHandle
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -52,6 +57,8 @@ class ArtistScreenTest {
   )
   private val savedStateHandle = mockk<SavedStateHandle>()
 
+  private val animatedContentScope = mockk<AnimatedContentScope>(relaxed = true)
+
   @Before
   fun setup() {
     every {
@@ -76,11 +83,15 @@ class ArtistScreenTest {
     composeRule.captureScreenshot(
       appTheme = AppTheme.DARK,
       content = {
-        ArtistScreen(
-          viewModel = viewModel,
-          onArtistLoadMoreTap = {},
-          onBackPressed = {}
-        )
+        SharedTransitionLayout {
+          ArtistScreen(
+            viewModel = viewModel,
+            onArtistLoadMoreTap = {},
+            onBackPressed = {},
+            animatedContentScope = animatedContentScope,
+            id = ""
+          )
+        }
       },
       fileName = "artist_screen.png"
     )
@@ -95,11 +106,15 @@ class ArtistScreenTest {
     composeRule.captureScreenshot(
       appTheme = AppTheme.LIGHT,
       content = {
-        ArtistScreen(
-          viewModel = viewModel,
-          onArtistLoadMoreTap = {},
-          onBackPressed = {}
-        )
+        SharedTransitionLayout {
+          ArtistScreen(
+            viewModel = viewModel,
+            onArtistLoadMoreTap = {},
+            onBackPressed = {},
+            id = "",
+            animatedContentScope = animatedContentScope
+          )
+        }
       },
       fileName = "artist_screen_light.png"
     )

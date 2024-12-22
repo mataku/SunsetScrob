@@ -1,6 +1,8 @@
 package com.mataku.scrobscrob.core.entity
 
 import androidx.compose.runtime.Immutable
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.contract
 
 @Immutable
 data class Image(
@@ -23,5 +25,17 @@ fun List<Image>.imageUrl(): String? {
   }
 
   return null
-
 }
+
+@OptIn(ExperimentalContracts::class)
+fun String?.isInvalidArtwork(): Boolean {
+  contract {
+    returns(false) implies (this@isInvalidArtwork != null)
+  }
+
+  if (this.isNullOrEmpty()) return true
+
+  val lastElement = this.split("/").lastOrNull()?.split(".")?.get(0) ?: return true
+  return lastElement == "2a96cbd8b46e442fc41c2b86b821562f"
+}
+
