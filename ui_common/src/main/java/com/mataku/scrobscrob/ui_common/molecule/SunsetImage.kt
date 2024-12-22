@@ -57,7 +57,7 @@ fun SunsetImage(
       modifier = modifier,
       contentDescription = contentDescription,
       contentScale = contentScale,
-      transition = CrossFade(animationSpec = tween(300)),
+      transition = CrossFade(animationSpec = tween(500)),
       failure = placeholder(R.drawable.no_image)
     )
   }

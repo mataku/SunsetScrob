@@ -1,7 +1,7 @@
 package com.mataku.scrobscrob.discover.ui.navigation
 
-import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
@@ -29,11 +29,17 @@ fun NavGraphBuilder.discoverGraph(navController: NavController) {
             )
         )
       },
+      enterTransition = {
+        fadeIn(tween(250))
+      },
+      exitTransition = {
+        fadeOut(tween(250))
+      },
       popEnterTransition = {
-        EnterTransition.None
+        fadeIn(tween(250))
       },
       popExitTransition = {
-        fadeOut(animationSpec = tween(200))
+        fadeOut(animationSpec = tween(250))
       }
     )
   }
