@@ -15,10 +15,11 @@ import com.bumptech.glide.module.AppGlideModule
 class SunsetGlideModule : AppGlideModule() {
   override fun applyOptions(context: Context, builder: GlideBuilder) {
     val cacheSizeBytes = 1024L * 1024L * 256L // 256MB
+    val diskCacheSizeBytes = 1024L * 1024L * 1024L // 1GB
     builder
       .setMemoryCache(LruResourceCache(cacheSizeBytes))
       .setDiskCache(
-        InternalCacheDiskCacheFactory(context, "sunsetscrob_image", cacheSizeBytes)
+        InternalCacheDiskCacheFactory(context, "sunsetscrob_image", diskCacheSizeBytes)
       )
       .setDefaultTransitionOptions(
         Drawable::class.java, DrawableTransitionOptions.withCrossFade(300)

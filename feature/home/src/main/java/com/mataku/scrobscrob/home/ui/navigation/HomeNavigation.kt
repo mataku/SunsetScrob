@@ -61,14 +61,8 @@ fun NavGraphBuilder.homeGraph(
             )
         )
       },
-      popEnterTransition = {
-        fadeIn(tween(250))
-      },
-      popExitTransition = {
-        fadeOut(tween(250))
-      },
       enterTransition = {
-        fadeIn(tween(250))
+        fadeIn(tween(300))
       },
       exitTransition = {
         fadeOut(tween(250))

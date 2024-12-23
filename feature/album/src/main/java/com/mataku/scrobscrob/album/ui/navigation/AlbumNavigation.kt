@@ -55,7 +55,7 @@ fun NavGraphBuilder.albumGraph(
       fadeIn(tween(300))
     },
     exitTransition = {
-      fadeOut(tween(300))
+      fadeOut(tween(250))
     }
   )
 }

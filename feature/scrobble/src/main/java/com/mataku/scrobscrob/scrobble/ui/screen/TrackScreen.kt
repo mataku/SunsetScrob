@@ -81,7 +81,8 @@ fun SharedTransitionScope.TrackScreen(
     artistName = artistName,
     trackName = trackName,
     onBackPressed = onBackPressed,
-    modifier = modifier
+    modifier = modifier,
+    onLoveIconTap = trackViewModel::loveOrUnloveTrack
   )
 }
 
@@ -96,6 +97,7 @@ private fun SharedTransitionScope.TrackContent(
   trackInfo: TrackInfo?,
   onUrlTap: (String) -> Unit,
   onBackPressed: () -> Unit,
+  onLoveIconTap: (TrackInfo) -> Unit,
   modifier: Modifier = Modifier
 ) {
   val screenWidth = LocalConfiguration.current.screenWidthDp
@@ -117,7 +119,8 @@ private fun SharedTransitionScope.TrackContent(
         onUrlTap = onUrlTap,
         modifier = Modifier
           .defaultMinSize(minHeight = screenWidth.dp)
-          .fillMaxHeight(fraction = 0.9F)
+          .fillMaxHeight(fraction = 0.9F),
+        onLoveIconTap = onLoveIconTap
       )
     },
     sheetPeekHeight = if (screenHeight >= screenWidth) {
@@ -150,7 +153,7 @@ private fun SharedTransitionScope.TrackContent(
               )
               .fillMaxWidth()
               .aspectRatio(1F),
-            contentScale = ContentScale.FillWidth
+            contentScale = ContentScale.FillWidth,
           )
           if (!this@TrackContent.isTransitionActive) {
             Column(
@@ -183,7 +186,8 @@ private fun SharedTransitionScope.TrackContent(
           modifier = Modifier
             .fillMaxWidth()
             .aspectRatio(1F),
-          contentScale = ContentScale.FillWidth
+          contentScale = ContentScale.FillWidth,
+          skipCrossFade = false
         )
       }
     }
@@ -196,6 +200,7 @@ private fun TrackDetailContent(
   trackName: String,
   artistName: String,
   onUrlTap: (String) -> Unit,
+  onLoveIconTap: (TrackInfo) -> Unit,
   modifier: Modifier = Modifier
 ) {
   Column(
@@ -219,7 +224,8 @@ private fun TrackDetailContent(
           .padding(
             vertical = 16.dp
           ),
-        onUrlTap = onUrlTap
+        onUrlTap = onUrlTap,
+        onLoveIconTap = onLoveIconTap
       )
     }
 
@@ -276,7 +282,8 @@ private fun TrackContentPreview() {
             trackName = "Drama",
             onBackPressed = {},
             id = "123",
-            animatedContentScope = this
+            animatedContentScope = this,
+            onLoveIconTap = {}
           )
         }
       }
