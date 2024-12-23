@@ -84,6 +84,7 @@ private fun ScrobbleContent(
     Row(modifier = Modifier.weight(1F)) {
       with(sharedTransitionScope) {
         SunsetImage(
+          skipCrossFade = false,
           imageData = imageUrl,
           contentDescription = "$trackName artwork image",
           modifier = Modifier
