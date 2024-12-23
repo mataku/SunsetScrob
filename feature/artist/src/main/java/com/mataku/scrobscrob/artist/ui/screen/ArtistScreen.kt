@@ -122,7 +122,8 @@ private fun SharedTransitionScope.ArtistContent(
               )
               .fillMaxWidth()
               .aspectRatio(1F),
-            contentScale = ContentScale.FillWidth
+            contentScale = ContentScale.FillWidth,
+            skipCrossFade = true
           )
           if (!this@ArtistContent.isTransitionActive) {
             Column(
@@ -154,7 +155,8 @@ private fun SharedTransitionScope.ArtistContent(
           modifier = Modifier
             .fillMaxWidth()
             .aspectRatio(1F),
-          contentScale = ContentScale.FillWidth
+          contentScale = ContentScale.FillWidth,
+          skipCrossFade = true
         )
       }
     },

@@ -127,7 +127,8 @@ private fun SharedTransitionScope.AlbumContent(
               )
               .fillMaxWidth()
               .aspectRatio(1F),
-            contentScale = ContentScale.FillWidth
+            contentScale = ContentScale.FillWidth,
+            skipCrossFade = false
           )
           if (!this@AlbumContent.isTransitionActive) {
             Column(
@@ -159,7 +160,8 @@ private fun SharedTransitionScope.AlbumContent(
           modifier = Modifier
             .fillMaxWidth()
             .aspectRatio(1F),
-          contentScale = ContentScale.FillWidth
+          contentScale = ContentScale.FillWidth,
+          skipCrossFade = false
         )
       }
     },
