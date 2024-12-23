@@ -1,0 +1,3 @@
+- Improve screen transition
+- Fix recreating tabs after login
+- Add track favorites

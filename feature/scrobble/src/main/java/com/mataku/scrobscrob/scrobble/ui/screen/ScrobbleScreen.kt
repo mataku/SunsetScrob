@@ -1,5 +1,7 @@
 package com.mataku.scrobscrob.scrobble.ui.screen
 
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,13 +14,15 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mataku.scrobscrob.core.entity.RecentTrack
+import com.mataku.scrobscrob.core.entity.imageUrl
+import com.mataku.scrobscrob.core.entity.isInvalidArtwork
 import com.mataku.scrobscrob.scrobble.ui.component.Scrobble
 import com.mataku.scrobscrob.scrobble.ui.viewmodel.ScrobbleViewModel
 import com.mataku.scrobscrob.ui_common.organism.InfiniteLoadingIndicator
@@ -27,12 +31,14 @@ import kotlinx.collections.immutable.ImmutableList
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ScrobbleScreen(
+  sharedTransitionScope: SharedTransitionScope,
+  animatedContentScope: AnimatedContentScope,
   viewModel: ScrobbleViewModel,
   topAppBarScrollBehavior: TopAppBarScrollBehavior,
-  navigateToTrackDetail: (RecentTrack) -> Unit,
+  navigateToTrackDetail: (RecentTrack, String) -> Unit,
   modifier: Modifier = Modifier
 ) {
-  val uiState by viewModel.uiState.collectAsState()
+  val uiState by viewModel.uiState.collectAsStateWithLifecycle()
   val lazyListState = rememberLazyListState()
 
   PullToRefreshBox(
@@ -46,7 +52,9 @@ fun ScrobbleScreen(
       hasNext = uiState.hasNext,
       onScrobbleTap = navigateToTrackDetail,
       onScrollEnd = viewModel::fetchRecentTracks,
-      scrollBehavior = topAppBarScrollBehavior
+      scrollBehavior = topAppBarScrollBehavior,
+      sharedTransitionScope = sharedTransitionScope,
+      animatedContentScope = animatedContentScope
     )
   }
 }
@@ -54,10 +62,12 @@ fun ScrobbleScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ScrobbleContent(
+  sharedTransitionScope: SharedTransitionScope,
+  animatedContentScope: AnimatedContentScope,
   lazyListState: LazyListState,
   recentTracks: ImmutableList<RecentTrack>,
   hasNext: Boolean,
-  onScrobbleTap: (RecentTrack) -> Unit,
+  onScrobbleTap: (RecentTrack, String) -> Unit,
   onScrollEnd: () -> Unit,
   scrollBehavior: TopAppBarScrollBehavior
 ) {
@@ -72,14 +82,23 @@ private fun ScrobbleContent(
         contentType = { _, _ ->
           "scrobble"
         }
-      ) { _, track ->
+      ) { index, track ->
+        val artwork = track.images.imageUrl()
+        val id = if (artwork.isInvalidArtwork()) {
+          ""
+        } else {
+          "scrobble_${index}${track.hashCode()}"
+        }
         Scrobble(
           recentTrack = track,
           onScrobbleTap = {
             onScrobbleTap(
-              track
+              track, id
             )
-          }
+          },
+          sharedTransitionScope = sharedTransitionScope,
+          animatedContentScope = animatedContentScope,
+          id = id,
         )
       }
       if (hasNext && recentTracks.isNotEmpty()) {

@@ -21,6 +21,7 @@ dependencies {
   implementation(libs.compose.navigation)
 
   implementation(libs.glide.compose)
+  ksp(libs.glide.compiler)
   implementation(libs.compose.material.icons.extended)
 
   implementation(libs.showkase.annotation)

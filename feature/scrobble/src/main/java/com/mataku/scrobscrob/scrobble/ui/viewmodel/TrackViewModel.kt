@@ -27,11 +27,53 @@ class TrackViewModel @Inject constructor(
   private val trackName: String? = savedStateHandle["trackName"]
   private val artistName: String? = savedStateHandle["artistName"]
 
+  private var isLoveRequestProcessing = false
+
   init {
     fetchTrackInfo(
       trackName = trackName,
       artistName = artistName
     )
+  }
+
+  fun loveOrUnloveTrack(
+    trackInfo: TrackInfo
+  ) {
+    if (isLoveRequestProcessing) {
+      return
+    }
+    isLoveRequestProcessing = true
+    viewModelScope.launch {
+      val requestFlow = if (trackInfo.userLoved) {
+        trackRepository.loveTrack(
+          trackName = trackInfo.name,
+          artistName = trackInfo.artist.name
+        )
+      } else {
+        trackRepository.unloveTrack(
+          trackName = trackInfo.name,
+          artistName = trackInfo.artist.name
+        )
+      }
+
+      requestFlow.catch {}
+        .onCompletion {
+          isLoveRequestProcessing = false
+        }
+        .collect { _ ->
+          state.update {
+            if (trackInfo.userLoved) {
+              it.copy(
+                trackInfo = trackInfo.copy(userLoved = false)
+              )
+            } else {
+              it.copy(
+                trackInfo = trackInfo.copy(userLoved = true)
+              )
+            }
+          }
+        }
+    }
   }
 
   private fun fetchTrackInfo(

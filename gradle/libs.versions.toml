@@ -1,24 +1,24 @@
 [versions]
 activity = "1.9.3"
-agp = "8.7.2"
-compose = "2024.11.00"
+agp = "8.7.3"
+compose = "2024.12.01"
 core-sprashscreen = "1.0.1"
-coroutines = "1.9.0"
-firebase = "33.6.0"
-hilt = "2.52"
-ktor = "3.0.1"
-kotlin = "2.0.21"
-ksp = "2.0.21-1.0.28"
+coroutines = "1.10.1"
+firebase = "33.7.0"
+hilt = "2.54"
+ktor = "3.0.3"
+kotlin = "2.1.0"
+ksp = "2.1.0-1.0.29"
 licensee = "1.8.0"
 kotlinx-collections-immutable-jvm = "0.3.8"
 kotlinx-serialization-json = "1.7.3"
 kotest = "5.9.1"
 material = "1.12.0"
-mockk = "1.13.13"
-navigation-compose = "2.8.4"
+mockk = "1.13.14"
+navigation-compose = "2.8.5"
 okhttp = "4.12.0"
 robolectric = "4.14"
-roborazzi = "1.34.0"
+roborazzi = "1.38.0"
 showkase = "1.0.2"
 sqldelight = "2.0.2"
 espresso-core = "3.6.1"
@@ -108,6 +108,7 @@ androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-co
 androidx-profileinstaller = { group = "androidx.profileinstaller", name = "profileinstaller", version.ref = "profileinstaller" }
 
 glide-compose = { module = "com.github.bumptech.glide:compose", version = "1.0.0-beta01" }
+glide-compiler = { module = "com.github.bumptech.glide:ksp", version = "4.16.0" }
 
 compose-lint = { module = "com.slack.lint.compose:compose-lint-checks", version = "1.3.1" }
 

@@ -1,5 +1,9 @@
 package com.mataku.scrobscrob.album.ui.molecule
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -28,31 +32,53 @@ import kotlinx.collections.immutable.persistentListOf
 import com.mataku.scrobscrob.ui_common.R as uiCommonR
 
 @Composable
-fun TopAlbum(
+internal fun TopAlbum(
+  sharedTransitionScope: SharedTransitionScope,
+  animatedContentScope: AnimatedContentScope,
+  id: String,
   album: TopAlbumInfo,
   onAlbumTap: () -> Unit,
   modifier: Modifier = Modifier
 ) {
-
   Column(
     horizontalAlignment = Alignment.CenterHorizontally,
     modifier = modifier
       .fillMaxWidth()
-      .padding(8.dp)
+      .padding(
+        start = 8.dp,
+        end = 8.dp,
+        bottom = 24.dp
+      )
       .clickable {
         onAlbumTap()
       },
   ) {
     val imageUrl = album.imageList.imageUrl()
 
-    SunsetImage(
-      imageData = imageUrl,
-      contentDescription = album.title,
-      contentScale = ContentScale.FillWidth,
-      modifier = Modifier
-        .fillMaxWidth()
-        .aspectRatio(1F)
-    )
+    with(sharedTransitionScope) {
+      SunsetImage(
+        imageData = imageUrl,
+        contentDescription = album.title,
+        contentScale = ContentScale.FillWidth,
+        modifier = Modifier
+          .then(
+            if (id.isEmpty()) {
+              Modifier
+            } else {
+              Modifier
+                .sharedElement(
+                  state = sharedTransitionScope.rememberSharedContentState(
+                    key = id,
+                  ),
+                  animatedVisibilityScope = animatedContentScope,
+                  renderInOverlayDuringTransition = false,
+                )
+            }
+          )
+          .fillMaxWidth()
+          .aspectRatio(1F)
+      )
+    }
     Spacer(modifier = Modifier.height(8.dp))
     Text(
       album.title,
@@ -87,17 +113,24 @@ fun TopAlbum(
 private fun TopAlbumPreview() {
   SunsetThemePreview {
     Surface {
-      TopAlbum(
-        album = TopAlbumInfo(
-          artist = "乃木坂46",
-          title = "生まれてから初めて見た夢",
-          imageList = persistentListOf(),
-          playCount = "100000",
-          url = ""
-        ),
-        onAlbumTap = {},
-        modifier = Modifier
-      )
+      SharedTransitionLayout {
+        AnimatedContent(targetState = "", label = "top_album_preview") {
+          TopAlbum(
+            album = TopAlbumInfo(
+              artist = "乃木坂46",
+              title = "生まれてから初めて見た夢",
+              imageList = persistentListOf(),
+              playCount = "100000",
+              url = ""
+            ),
+            onAlbumTap = {},
+            modifier = Modifier,
+            sharedTransitionScope = this@SharedTransitionLayout,
+            animatedContentScope = this,
+            id = it
+          )
+        }
+      }
     }
   }
 }

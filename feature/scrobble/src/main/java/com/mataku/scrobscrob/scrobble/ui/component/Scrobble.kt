@@ -1,6 +1,10 @@
 package com.mataku.scrobscrob.scrobble.ui.component
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -34,18 +38,30 @@ import com.mataku.scrobscrob.ui_common.molecule.SunsetImage
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 
 @Composable
-fun Scrobble(recentTrack: RecentTrack, onScrobbleTap: () -> Unit) {
+fun Scrobble(
+  sharedTransitionScope: SharedTransitionScope,
+  animatedContentScope: AnimatedContentScope,
+  id: String,
+  recentTrack: RecentTrack,
+  onScrobbleTap: () -> Unit
+) {
   ScrobbleContent(
     imageUrl = recentTrack.images.imageUrl(),
     trackName = recentTrack.name,
     artistName = recentTrack.artistName,
     date = recentTrack.date,
-    onScrobbleTap = onScrobbleTap
+    onScrobbleTap = onScrobbleTap,
+    sharedTransitionScope = sharedTransitionScope,
+    animatedContentScope = animatedContentScope,
+    id = id
   )
 }
 
 @Composable
 private fun ScrobbleContent(
+  sharedTransitionScope: SharedTransitionScope,
+  animatedContentScope: AnimatedContentScope,
+  id: String,
   imageUrl: String?,
   trackName: String,
   artistName: String,
@@ -66,11 +82,29 @@ private fun ScrobbleContent(
     verticalAlignment = Alignment.CenterVertically
   ) {
     Row(modifier = Modifier.weight(1F)) {
-      SunsetImage(
-        imageData = imageUrl,
-        contentDescription = "$trackName artwork image",
-        modifier = Modifier.size(56.dp),
-      )
+      with(sharedTransitionScope) {
+        SunsetImage(
+          skipCrossFade = false,
+          imageData = imageUrl,
+          contentDescription = "$trackName artwork image",
+          modifier = Modifier
+            .then(
+              if (id.isEmpty()) {
+                Modifier
+              } else {
+                Modifier
+                  .sharedElement(
+                    state = sharedTransitionScope.rememberSharedContentState(
+                      key = id,
+                    ),
+                    animatedVisibilityScope = animatedContentScope,
+                    renderInOverlayDuringTransition = false,
+                  )
+              }
+            )
+            .size(56.dp),
+        )
+      }
 
       Column(
         modifier = Modifier
@@ -121,13 +155,23 @@ private fun ScrobbleContent(
 private fun ScrobblePreview() {
   SunsetThemePreview {
     Surface {
-      ScrobbleContent(
-        imageUrl = null,
-        trackName = "裸足でSummer",
-        artistName = "乃木坂46",
-        date = "01 Aug 2022, 04:08",
-        onScrobbleTap = {}
-      )
+      SharedTransitionLayout {
+        AnimatedContent(
+          targetState = "",
+          label = "scrobble_preview"
+        ) {
+          ScrobbleContent(
+            imageUrl = it,
+            trackName = "裸足でSummer",
+            artistName = "乃木坂46",
+            date = "01 Aug 2022, 04:08",
+            onScrobbleTap = {},
+            animatedContentScope = this,
+            sharedTransitionScope = this@SharedTransitionLayout,
+            id = ""
+          )
+        }
+      }
     }
   }
 }

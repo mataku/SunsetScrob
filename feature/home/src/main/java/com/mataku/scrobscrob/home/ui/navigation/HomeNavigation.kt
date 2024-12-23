@@ -1,5 +1,9 @@
 package com.mataku.scrobscrob.home.ui.navigation
 
+import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -17,42 +21,66 @@ import com.mataku.scrobscrob.home.ui.HomeScreen
 import com.mataku.scrobscrob.scrobble.ui.navigation.navigateToTrackDetail
 import com.mataku.scrobscrob.scrobble.ui.navigation.scrobbleGraph
 
-fun NavGraphBuilder.homeGraph(navController: NavController) {
+fun NavGraphBuilder.homeGraph(
+  navController: NavController,
+  sharedTransitionScope: SharedTransitionScope,
+) {
   navigation(route = HOME_NAVIGATION_ROUTE, startDestination = HOME_DESTINATION) {
     composable(
       HOME_DESTINATION,
-    ) {
-      HomeScreen(
-        navigateToTrackDetail = { track ->
-          navController.navigateToTrackDetail(
-            trackName = track.name,
-            artistName = track.artistName,
-            imageUrl = track.images.imageUrl() ?: "",
-          )
-        },
-        navigateToArtistDetail = { artist ->
-          navController.navigateToArtistInfo(
-            artistName = artist.name,
-            artworkUrl = (artist.imageUrl ?: artist.imageList.imageUrl()) ?: ""
-          )
-        },
-        navigateToAlbumDetail = { album ->
-          navController.navigateToAlbumInfo(
-            albumName = album.title,
-            artistName = album.artist,
-            artworkUrl = album.imageList.imageUrl() ?: ""
-          )
-        },
-        modifier = Modifier
-          .padding(
-            top = 24.dp
-          )
-      )
-    }
+      content = {
+        HomeScreen(
+          sharedTransitionScope = sharedTransitionScope,
+          animatedContentScope = this@composable,
+          navigateToTrackDetail = { track, id ->
+            navController.navigateToTrackDetail(
+              trackName = track.name,
+              artistName = track.artistName,
+              imageUrl = track.images.imageUrl() ?: "",
+              id = id
+            )
+          },
+          navigateToArtistDetail = { artist, id ->
+            navController.navigateToArtistInfo(
+              artistName = artist.name,
+              artworkUrl = (artist.imageUrl ?: artist.imageList.imageUrl()) ?: "",
+              contentId = id
+            )
+          },
+          navigateToAlbumDetail = { album, id ->
+            navController.navigateToAlbumInfo(
+              albumName = album.title,
+              artistName = album.artist,
+              artworkUrl = album.imageList.imageUrl() ?: "",
+              contentId = id
+            )
+          },
+          modifier = Modifier
+            .padding(
+              top = 24.dp
+            )
+        )
+      },
+      enterTransition = {
+        fadeIn(tween(300))
+      },
+      exitTransition = {
+        fadeOut(tween(250))
+      },
+    )
 
-    albumGraph(navController)
-    artistGraph(navController)
-    scrobbleGraph(navController)
+    albumGraph(
+      navController = navController,
+      sharedTransitionScope = sharedTransitionScope
+    )
+    artistGraph(
+      navController = navController,
+      sharedTransitionScope = sharedTransitionScope,
+    )
+    scrobbleGraph(
+      navController = navController,
+      sharedTransitionScope = sharedTransitionScope,
+    )
   }
 }
 

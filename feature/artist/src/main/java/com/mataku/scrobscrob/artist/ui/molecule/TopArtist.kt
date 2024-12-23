@@ -1,5 +1,7 @@
 package com.mataku.scrobscrob.artist.ui.molecule
 
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -18,40 +20,56 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.mataku.scrobscrob.core.entity.TopArtistInfo
-import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.ui_common.R
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.molecule.SunsetImage
 
 @Composable
-fun TopArtist(
+internal fun TopArtist(
+  sharedTransitionScope: SharedTransitionScope,
+  animatedContentScope: AnimatedContentScope,
+  id: String,
   artist: TopArtistInfo,
+  imageUrl: String,
   onArtistTap: () -> Unit,
   modifier: Modifier = Modifier
 ) {
   Column(
     horizontalAlignment = Alignment.CenterHorizontally,
     modifier = modifier
-      .padding(8.dp)
+      .padding(
+        start = 8.dp,
+        end = 8.dp,
+        bottom = 24.dp,
+      )
       .clickable {
         onArtistTap()
       }
   ) {
-    val imageList = artist.imageList
-    val cachedImageUrl = artist.imageUrl
-    val url = when {
-      cachedImageUrl != null -> cachedImageUrl
-      imageList.isEmpty() -> null
-      else -> imageList.imageUrl()
+    with(sharedTransitionScope) {
+      SunsetImage(
+        imageData = imageUrl,
+        contentDescription = artist.name,
+        modifier = Modifier
+          .then(
+            if (id.isEmpty()) {
+              Modifier
+            } else {
+              Modifier
+                .sharedElement(
+                  state = sharedTransitionScope.rememberSharedContentState(
+                    key = id,
+                  ),
+                  animatedVisibilityScope = animatedContentScope,
+                  renderInOverlayDuringTransition = false,
+                )
+            }
+          )
+          .fillMaxWidth()
+          .aspectRatio(1F),
+        contentScale = ContentScale.FillWidth
+      )
     }
-    SunsetImage(
-      imageData = url,
-      contentDescription = artist.name,
-      modifier = Modifier
-        .fillMaxWidth()
-        .aspectRatio(1F),
-      contentScale = ContentScale.FillWidth
-    )
 
     Spacer(modifier = Modifier.height(8.dp))
     Text(
@@ -67,6 +85,7 @@ fun TopArtist(
     } else {
       R.string.playcounts
     }
+    Spacer(modifier = Modifier.height(2.dp))
     Text(
       stringResource(playCountResource, artist.playCount),
       style = SunsetTextStyle.caption,

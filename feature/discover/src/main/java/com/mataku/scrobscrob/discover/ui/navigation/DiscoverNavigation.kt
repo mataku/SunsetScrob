@@ -1,5 +1,8 @@
 package com.mataku.scrobscrob.discover.ui.navigation
 
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -15,17 +18,30 @@ import com.mataku.scrobscrob.ui_common.navigateToWebView
 fun NavGraphBuilder.discoverGraph(navController: NavController) {
   navigation(route = DISCOVER_NAVIGATION_ROUTE, startDestination = DISCOVER_START_NAVIGATION) {
     composable(
-      DISCOVER_START_NAVIGATION
-    ) {
-      DiscoverScreen(
-        viewModel = hiltViewModel(),
-        navigateToWebView = navController::navigateToWebView,
-        modifier = Modifier
-          .padding(
-            top = 24.dp
-          )
-      )
-    }
+      DISCOVER_START_NAVIGATION,
+      content = {
+        DiscoverScreen(
+          viewModel = hiltViewModel(),
+          navigateToWebView = navController::navigateToWebView,
+          modifier = Modifier
+            .padding(
+              top = 24.dp
+            )
+        )
+      },
+      enterTransition = {
+        fadeIn(tween(250))
+      },
+      exitTransition = {
+        fadeOut(tween(250))
+      },
+      popEnterTransition = {
+        fadeIn(tween(250))
+      },
+      popExitTransition = {
+        fadeOut(animationSpec = tween(250))
+      }
+    )
   }
 }
 

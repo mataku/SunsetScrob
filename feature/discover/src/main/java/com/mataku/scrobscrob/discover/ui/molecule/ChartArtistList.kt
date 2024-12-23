@@ -24,9 +24,10 @@ import kotlinx.collections.immutable.toImmutableList
 @Composable
 internal fun ChartArtistList(
   chartArtistList: ImmutableList<ChartArtist>,
-  onChartArtistTap: (ChartArtist) -> Unit
+  onChartArtistTap: (ChartArtist) -> Unit,
+  modifier: Modifier = Modifier
 ) {
-  Column(modifier = Modifier.fillMaxWidth()) {
+  Column(modifier = modifier.fillMaxWidth()) {
     Text(
       text = "Hot Artists",
       style = SunsetTextStyle.headline,

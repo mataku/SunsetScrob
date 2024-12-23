@@ -1,5 +1,6 @@
 package com.mataku.scrobscrob.scrobble.ui.screen
 
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.ui.test.junit4.createComposeRule
@@ -10,6 +11,7 @@ import com.mataku.scrobscrob.data.repository.ScrobbleRepository
 import com.mataku.scrobscrob.scrobble.ui.viewmodel.ScrobbleViewModel
 import com.mataku.scrobscrob.test_helper.integration.captureScreenshot
 import io.mockk.coEvery
+import io.mockk.every
 import io.mockk.mockk
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.flowOf
@@ -30,10 +32,10 @@ class ScrobbleScreenTest {
 
   private val recentScrobbleTracks = (1..20).map {
     RecentTrack(
-      artistName = "SooooooooooooooooooLoooooooooooongArtistName ${it}",
+      artistName = "SooooooooooooooooooLoooooooooooongArtistName $it",
       images = persistentListOf(),
-      albumName = "SoooooooooooooooooooLoooooooooooongAlbumName ${it}",
-      name = "track name ${it}",
+      albumName = "SoooooooooooooooooooLoooooooooooongAlbumName $it",
+      name = "track name $it",
       url = "",
       date = null
     )
@@ -41,14 +43,16 @@ class ScrobbleScreenTest {
 
   private val recentScrobbleTracksPage2 = (21..40).map {
     RecentTrack(
-      artistName = "SooooooooooooooooooLoooooooooooongArtistName ${it}",
+      artistName = "SooooooooooooooooooLoooooooooooongArtistName $it",
       images = persistentListOf(),
-      albumName = "SoooooooooooooooooooLoooooooooooongAlbumName ${it}",
-      name = "track name ${it}",
+      albumName = "SoooooooooooooooooooLoooooooooooongAlbumName $it",
+      name = "track name $it",
       url = "",
       date = null
     )
   }
+
+  private val sharedTransitionScope = mockk<SharedTransitionScope>(relaxed = true)
 
   @Before
   fun setup() {
@@ -63,6 +67,10 @@ class ScrobbleScreenTest {
     coEvery {
       scrobbleRepository.recentTracks(3)
     }.returns(flowOf(emptyList()))
+
+    every {
+      sharedTransitionScope.isTransitionActive
+    }.returns(false)
   }
 
   @Test
@@ -73,8 +81,10 @@ class ScrobbleScreenTest {
       content = {
         ScrobbleScreen(
           viewModel = viewModel,
-          navigateToTrackDetail = {},
-          topAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+          navigateToTrackDetail = { _, _ -> },
+          topAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(),
+          animatedContentScope = mockk(),
+          sharedTransitionScope = sharedTransitionScope
         )
       },
       fileName = "scrobble_screen.png"
@@ -89,8 +99,10 @@ class ScrobbleScreenTest {
       content = {
         ScrobbleScreen(
           viewModel = viewModel,
-          navigateToTrackDetail = {},
-          topAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+          navigateToTrackDetail = { _, _ -> },
+          topAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(),
+          sharedTransitionScope = mockk(),
+          animatedContentScope = mockk()
         )
       },
       fileName = "scrobble_screen_light.png"

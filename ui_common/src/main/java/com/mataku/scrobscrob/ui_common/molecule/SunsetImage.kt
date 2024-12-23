@@ -1,9 +1,7 @@
 package com.mataku.scrobscrob.ui_common.molecule
 
-import android.annotation.SuppressLint
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,7 +25,6 @@ import com.bumptech.glide.integration.compose.placeholder
 import com.mataku.scrobscrob.ui_common.R
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 
-@SuppressLint("ComposeModifierReused")
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun SunsetImage(
@@ -35,8 +32,32 @@ fun SunsetImage(
   contentDescription: String?,
   modifier: Modifier = Modifier,
   contentScale: ContentScale = ContentScale.Fit,
+  skipCrossFade: Boolean = false // It may be good if applied explicitly by checking Modifier's value (e.g. sharedElement) instead of argument specification
 ) {
-  if (LocalInspectionMode.current || imageData == null) {
+//  val requestListener: RequestListener<Drawable> = object : RequestListener<Drawable> {
+//    override fun onResourceReady(
+//      resource: Drawable,
+//      model: Any,
+//      target: Target<Drawable>?,
+//      dataSource: DataSource,
+//      isFirstResource: Boolean
+//    ): Boolean {
+//      if (resource is GifDrawable) {
+//        resource.setLoopCount(1)
+//      }
+//      return true
+//    }
+//
+//    override fun onLoadFailed(
+//      e: GlideException?,
+//      model: Any?,
+//      target: Target<Drawable>,
+//      isFirstResource: Boolean
+//    ): Boolean {
+//      return true
+//    }
+//  }
+  if (LocalInspectionMode.current || imageData.isNullOrEmpty()) {
     Box(
       modifier = modifier
         .border(
@@ -54,16 +75,17 @@ fun SunsetImage(
         )
       )
     }
-    return
+  } else {
+    // TODO: Intercept GlideImage to apply loop count to 1 if GifDrawable
+    GlideImage(
+      model = imageData,
+      modifier = modifier,
+      contentDescription = contentDescription,
+      contentScale = contentScale,
+      transition = if (skipCrossFade) null else CrossFade(animationSpec = tween(500)),
+      failure = placeholder(R.drawable.no_image),
+    )
   }
-  GlideImage(
-    model = imageData,
-    modifier = modifier,
-    contentDescription = contentDescription,
-    contentScale = contentScale,
-    transition = CrossFade(animationSpec = tween(300)),
-    failure = placeholder(R.drawable.no_image)
-  )
 }
 
 @Preview(showBackground = true)

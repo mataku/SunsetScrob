@@ -1,6 +1,7 @@
 package com.mataku.scrobscrob.scrobble.ui.component
 
-import androidx.compose.foundation.Image
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -8,18 +9,18 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -31,6 +32,7 @@ import com.mataku.scrobscrob.core.entity.TrackInfo
 import com.mataku.scrobscrob.core.entity.Wiki
 import com.mataku.scrobscrob.core.entity.presentation.toReadableIntValue
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
+import com.mataku.scrobscrob.ui_common.extension.throttleFirst
 import com.mataku.scrobscrob.ui_common.molecule.SimpleWiki
 import com.mataku.scrobscrob.ui_common.molecule.TopTags
 import com.mataku.scrobscrob.ui_common.molecule.ValueDescription
@@ -42,9 +44,19 @@ import kotlinx.collections.immutable.persistentListOf
 @Composable
 internal fun TrackDetail(
   trackInfo: TrackInfo,
+  onLoveIconTap: (TrackInfo) -> Unit,
+  onUrlTap: (String) -> Unit,
   modifier: Modifier = Modifier,
-  onUrlTap: (String) -> Unit
 ) {
+  val favoriteColor by animateColorAsState(
+    targetValue = if (trackInfo.userLoved) {
+      Colors.Heart
+    } else {
+      MaterialTheme.colorScheme.onSecondary.copy(alpha = 0.4F)
+    },
+    label = "track_favorite_color",
+    animationSpec = tween(500)
+  )
   Column(
     modifier = modifier
       .fillMaxWidth()
@@ -61,27 +73,20 @@ internal fun TrackDetail(
         artistName = trackInfo.artist.name,
         modifier = Modifier.weight(1F)
       )
-
-//      val userPlayCount = trackInfo.userPlayCount
-//      if (userPlayCount > 0) {
-//        Spacer(modifier = Modifier.width(8.dp))
-//        ValueDescription(
-//          value = userPlayCount.toReadableIntValue(),
-//          label = "Scrobbles",
-//          modifier = Modifier
-//        )
-//      }
-//      Spacer(modifier = Modifier.width(20.dp))
-
-      if (trackInfo.userLoved) {
-        Image(
-          painter = rememberVectorPainter(image = Icons.Default.Favorite),
+      val iconToggleAction = throttleFirst {
+        onLoveIconTap.invoke(trackInfo)
+      }
+      IconToggleButton(
+        checked = trackInfo.userLoved,
+        onCheckedChange = {
+          iconToggleAction.invoke()
+        },
+        modifier = Modifier,
+      ) {
+        Icon(
+          Icons.Filled.Favorite,
           contentDescription = "favorite",
-          colorFilter = ColorFilter.tint(
-            color = Colors.Heart
-          ),
-          modifier = Modifier
-            .size(30.dp)
+          tint = favoriteColor,
         )
       }
     }
@@ -261,12 +266,13 @@ private fun TrackDetailPreview() {
           ),
           userPlayCount = "10000"
         ),
+        onLoveIconTap = {},
+        onUrlTap = {},
         modifier = Modifier
           .padding(
             vertical = 16.dp
           )
-      ) {
-      }
+      )
     }
   }
 }
@@ -313,12 +319,13 @@ private fun TrackDetailUserLovedTrackPreview() {
           userPlayCount = "10000",
           userLoved = true
         ),
+        onLoveIconTap = {},
+        onUrlTap = {},
         modifier = Modifier
           .padding(
             vertical = 16.dp
           )
-      ) {
-      }
+      )
     }
   }
 }
