@@ -1,6 +1,8 @@
 package com.mataku.scrobscrob.data.api
 
 import com.mataku.scrobscrob.data.api.endpoint.Endpoint
+import com.mataku.scrobscrob.data.api.endpoint.LastFmApiError
+import com.mataku.scrobscrob.data.api.endpoint.LastFmErrorResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -10,12 +12,12 @@ import io.ktor.client.request.put
 import io.ktor.client.request.setBody
 import io.ktor.client.request.url
 import io.ktor.http.HttpMethod
+import io.ktor.http.isSuccess
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class LastFmService @Inject constructor(val httpClient: HttpClient) {
-
   suspend inline fun <reified T> request(endpoint: Endpoint<T>): T {
     return when (val requestType = endpoint.requestType) {
       HttpMethod.Get -> {
@@ -56,8 +58,14 @@ class LastFmService @Inject constructor(val httpClient: HttpClient) {
         parameter(k, v)
       }
     }
-
-    return response.body()
+    if (response.status.isSuccess()) {
+      return response.body()
+    } else {
+      val errorMessage = kotlin.runCatching {
+        response.body<LastFmErrorResponse>().message
+      }.getOrNull() ?: "Unknown error"
+      throw LastFmApiError(errorMessage)
+    }
   }
 
   suspend inline fun <reified T> put(endpoint: Endpoint<T>): T {
