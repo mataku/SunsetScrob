@@ -5,6 +5,7 @@ GEM
       base64
       nkf
       rexml
+    abbrev (0.1.2)
     addressable (2.8.7)
       public_suffix (>= 2.0.2, < 7.0)
     artifactory (3.0.17)
@@ -32,6 +33,7 @@ GEM
     colored2 (3.1.2)
     commander (4.6.0)
       highline (~> 2.0.0)
+    csv (3.3.2)
     declarative (0.0.20)
     digest-crc (0.6.5)
       rake (>= 12.0.0, < 14.0.0)
@@ -168,6 +170,7 @@ GEM
     mini_mime (1.1.5)
     multi_json (1.15.0)
     multipart-post (2.4.1)
+    mutex_m (0.3.0)
     nanaimo (0.4.0)
     naturally (2.2.1)
     nkf (0.2.0)
@@ -224,8 +227,11 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  abbrev (= 0.1.2)
+  csv (= 3.3.2)
   fastlane (= 2.226.0)
   fastlane-plugin-firebase_app_distribution (= 0.9.1)
+  mutex_m (= 0.3.0)
 
 BUNDLED WITH
    2.5.22
