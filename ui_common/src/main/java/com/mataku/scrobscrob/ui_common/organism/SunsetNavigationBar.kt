@@ -11,7 +11,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -135,97 +134,95 @@ fun SunsetBottomNavigation(
   onTabSelected: (SunsetBottomNavItem) -> Unit,
   modifier: Modifier = Modifier,
 ) {
-  BoxWithConstraints {
-    Box(
-      modifier = modifier
-        .padding(vertical = 16.dp, horizontal = if (maxWidth <= 360.dp) 48.dp else 64.dp)
-        .fillMaxWidth()
-        .height(64.dp)
-        .border(
-          width = Dp.Hairline,
-          brush = Brush.verticalGradient(
-            colors = listOf(
-              MaterialTheme.colorScheme.onSecondary.copy(alpha = .4f),
-              MaterialTheme.colorScheme.onSecondary.copy(alpha = .2f),
-            ),
+  Box(
+    modifier = modifier
+      .padding(vertical = 16.dp, horizontal = 72.dp)
+      .fillMaxWidth()
+      .height(64.dp)
+      .border(
+        width = Dp.Hairline,
+        brush = Brush.verticalGradient(
+          colors = listOf(
+            MaterialTheme.colorScheme.onSecondary.copy(alpha = .4f),
+            MaterialTheme.colorScheme.onSecondary.copy(alpha = .2f),
           ),
-          shape = CircleShape
-        )
+        ),
+        shape = CircleShape
+      )
+  ) {
+
+    val selectedTabIndex = SunsetBottomNavItem.entries.indexOf(selectedItem)
+    val animatedSelectedTabIndex by animateFloatAsState(
+      targetValue = selectedTabIndex.toFloat(), label = "animatedSelectedTabIndex",
+      animationSpec = spring(
+        stiffness = Spring.StiffnessLow,
+        dampingRatio = Spring.DampingRatioLowBouncy,
+      )
+    )
+
+    val animatedColor by animateColorAsState(
+      targetValue = LocalAppTheme.current.backgroundColor(),
+      label = "animatedColor",
+      animationSpec = spring(
+        stiffness = Spring.StiffnessLow,
+      )
+    )
+
+    Canvas(
+      modifier = Modifier
+        .fillMaxSize()
+        .clip(CircleShape)
+        .blur(50.dp, edgeTreatment = BlurredEdgeTreatment.Unbounded)
     ) {
-
-      val selectedTabIndex = SunsetBottomNavItem.entries.indexOf(selectedItem)
-      val animatedSelectedTabIndex by animateFloatAsState(
-        targetValue = selectedTabIndex.toFloat(), label = "animatedSelectedTabIndex",
-        animationSpec = spring(
-          stiffness = Spring.StiffnessLow,
-          dampingRatio = Spring.DampingRatioLowBouncy,
+      val tabWidth = size.width / SunsetBottomNavItem.entries.size
+      drawCircle(
+        color = animatedColor.copy(alpha = .6f),
+        radius = size.height / 2,
+        center = Offset(
+          (tabWidth * animatedSelectedTabIndex) + tabWidth / 2,
+          size.height / 2
         )
-      )
-
-      val animatedColor by animateColorAsState(
-        targetValue = LocalAppTheme.current.backgroundColor(),
-        label = "animatedColor",
-        animationSpec = spring(
-          stiffness = Spring.StiffnessLow,
-        )
-      )
-
-      Canvas(
-        modifier = Modifier
-          .fillMaxSize()
-          .clip(CircleShape)
-          .blur(50.dp, edgeTreatment = BlurredEdgeTreatment.Unbounded)
-      ) {
-        val tabWidth = size.width / SunsetBottomNavItem.entries.size
-        drawCircle(
-          color = animatedColor.copy(alpha = .6f),
-          radius = size.height / 2,
-          center = Offset(
-            (tabWidth * animatedSelectedTabIndex) + tabWidth / 2,
-            size.height / 2
-          )
-        )
-      }
-
-      Canvas(
-        modifier = Modifier
-          .fillMaxSize()
-          .clip(CircleShape)
-          .alpha(.95F)
-          .background(MaterialTheme.colorScheme.primary)
-      ) {
-        val path = Path().apply {
-          addRoundRect(RoundRect(size.toRect(), CornerRadius(size.height)))
-        }
-        val length = PathMeasure().apply { setPath(path, false) }.length
-
-        val tabWidth = size.width / SunsetBottomNavItem.entries.size
-        drawPath(
-          path,
-          brush = Brush.horizontalGradient(
-            colors = listOf(
-              animatedColor.copy(alpha = 0f),
-              animatedColor.copy(alpha = 1f),
-              animatedColor.copy(alpha = 1f),
-              animatedColor.copy(alpha = 0f),
-            ),
-            startX = tabWidth * animatedSelectedTabIndex,
-            endX = tabWidth * (animatedSelectedTabIndex + 1),
-          ),
-          style = Stroke(
-            width = 6f,
-            pathEffect = PathEffect.dashPathEffect(
-              intervals = floatArrayOf(length / 2, length)
-            )
-          )
-        )
-      }
-      BottomBarTabs(
-        tabs = tabs,
-        selectedTab = selectedItem,
-        onTabSelected = onTabSelected
       )
     }
+
+    Canvas(
+      modifier = Modifier
+        .fillMaxSize()
+        .clip(CircleShape)
+        .alpha(.95F)
+        .background(MaterialTheme.colorScheme.primary)
+    ) {
+      val path = Path().apply {
+        addRoundRect(RoundRect(size.toRect(), CornerRadius(size.height)))
+      }
+      val length = PathMeasure().apply { setPath(path, false) }.length
+
+      val tabWidth = size.width / SunsetBottomNavItem.entries.size
+      drawPath(
+        path,
+        brush = Brush.horizontalGradient(
+          colors = listOf(
+            animatedColor.copy(alpha = 0f),
+            animatedColor.copy(alpha = 1f),
+            animatedColor.copy(alpha = 1f),
+            animatedColor.copy(alpha = 0f),
+          ),
+          startX = tabWidth * animatedSelectedTabIndex,
+          endX = tabWidth * (animatedSelectedTabIndex + 1),
+        ),
+        style = Stroke(
+          width = 6f,
+          pathEffect = PathEffect.dashPathEffect(
+            intervals = floatArrayOf(length / 2, length)
+          )
+        )
+      )
+    }
+    BottomBarTabs(
+      tabs = tabs,
+      selectedTab = selectedItem,
+      onTabSelected = onTabSelected
+    )
   }
 }
 
