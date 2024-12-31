@@ -17,7 +17,7 @@ platform :android do
   end
 
   lane :build_debug do
-    gradle(task: "bundleDebug")
+    gradle(task: "assembleDebug")
   end
 
   desc "Run unit tests"

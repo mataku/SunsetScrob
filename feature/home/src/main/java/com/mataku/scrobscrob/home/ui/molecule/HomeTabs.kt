@@ -10,14 +10,17 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mataku.scrobscrob.home.HomeTabType
+import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.molecule.TabRowText
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
@@ -70,14 +73,35 @@ internal fun HomeTabs(
             vertical = 4.dp
           )
       ) {
-        TabRowText(
-          selected = false,
+        TabText(
+          selected = it == selectedChartIndex,
           tabName = homeTabType.tabName,
           modifier = Modifier
         )
       }
     }
   }
+}
+
+@Composable
+private fun TabText(
+  selected: Boolean,
+  tabName: String,
+  modifier: Modifier = Modifier,
+) {
+  Text(
+    text = tabName,
+    style = SunsetTextStyle.label,
+    color = MaterialTheme.colorScheme.onSurface.copy(
+      alpha = if (selected) 1.0F else 0.6F
+    ),
+    modifier = modifier
+      .padding(
+        horizontal = 16.dp,
+        vertical = 8.dp
+      ),
+    fontWeight = FontWeight.Bold
+  )
 }
 
 @Preview(showBackground = true)
