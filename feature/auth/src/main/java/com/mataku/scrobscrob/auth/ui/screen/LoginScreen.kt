@@ -24,7 +24,9 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -60,8 +62,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mataku.scrobscrob.auth.R
 import com.mataku.scrobscrob.auth.ui.viewmodel.LoginViewModel
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
+import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.LocalSnackbarHostState
 import com.mataku.scrobscrob.ui_common.style.SunsetTheme
+import com.mataku.scrobscrob.ui_common.style.accentColor
 import kotlinx.coroutines.launch
 import com.mataku.scrobscrob.ui_common.R as uiCommonR
 
@@ -166,6 +170,8 @@ private fun LoginContent(
 
     Spacer(modifier = Modifier.height(24.dp))
 
+    val theme = LocalAppTheme.current
+
     OutlinedTextField(
       value = username,
       onValueChange = {
@@ -179,9 +185,14 @@ private fun LoginContent(
       label = {
         Text(
           text = "Username",
-          style = SunsetTextStyle.label
+          style = SunsetTextStyle.label.copy(
+            color = MaterialTheme.colorScheme.onSurface
+          )
         )
       },
+      colors = OutlinedTextFieldDefaults.colors(
+        focusedBorderColor = theme.accentColor(),
+      ),
       modifier = Modifier
         .onGloballyPositioned {
           usernameAutofillNode.boundingBox = it.boundsInWindow()
@@ -233,9 +244,14 @@ private fun LoginContent(
       label = {
         Text(
           text = "Password",
-          style = SunsetTextStyle.label
+          style = SunsetTextStyle.label.copy(
+            color = MaterialTheme.colorScheme.onSurface
+          )
         )
       },
+      colors = OutlinedTextFieldDefaults.colors(
+        focusedBorderColor = theme.accentColor(),
+      ),
       modifier = Modifier
         .onGloballyPositioned {
           passwordAutofillNode.boundingBox = it.boundsInWindow()
@@ -277,7 +293,8 @@ private fun LoginContent(
       } else {
         Text(
           text = "Let me in!",
-          style = SunsetTextStyle.label
+          style = SunsetTextStyle.body,
+          fontWeight = FontWeight.Medium,
         )
       }
     }

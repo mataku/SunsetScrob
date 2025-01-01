@@ -31,6 +31,7 @@ import com.mataku.scrobscrob.core.entity.TopArtistInfo
 import com.mataku.scrobscrob.home.HomeTabType
 import com.mataku.scrobscrob.home.ui.molecule.HomeTabs
 import com.mataku.scrobscrob.scrobble.ui.screen.ScrobbleScreen
+import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.style.LocalTopAppBarState
 import kotlinx.coroutines.launch
 
@@ -68,7 +69,10 @@ fun HomeScreen(
       TopAppBar(
         scrollBehavior = scrollBehavior,
         title = {
-          Text(text = "Home")
+          Text(
+            text = "Home",
+            style = SunsetTextStyle.title,
+          )
         },
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
           containerColor = MaterialTheme.colorScheme.background,

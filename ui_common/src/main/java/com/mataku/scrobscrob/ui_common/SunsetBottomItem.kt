@@ -31,4 +31,20 @@ enum class SunsetBottomNavItem(
     "account",
     Icons.Default.Settings
   );
+
+  companion object {
+    fun currentItem(route: String?): SunsetBottomNavItem? {
+      route ?: return null
+
+      val entry = entries.find { it.screenRoute == route }
+      if (entry != null) {
+        return entry
+      }
+
+      if (route in listOf("scrobble_setting", "theme_selector", "license")) {
+        return ACCOUNT
+      }
+      return HOME
+    }
+  }
 }
