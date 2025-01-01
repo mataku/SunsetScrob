@@ -5,6 +5,7 @@ import android.content.Intent
 import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,8 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -168,7 +168,7 @@ fun AccountScreen(
         viewModel.logout()
       },
       confirmButtonText = "Let me out!",
-      dismissButtonText = "NO",
+      dismissButtonText = "Cancel",
       onDismissRequest = {
         openDialog.value = false
       },
@@ -179,6 +179,7 @@ fun AccountScreen(
   }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun AccountContent(
   theme: AppTheme,
@@ -204,15 +205,13 @@ private fun AccountContent(
   val openClearCacheConfirmationDialog = remember {
     mutableStateOf(false)
   }
-  Column(modifier = modifier.fillMaxSize()) {
-    ContentHeader(text = stringResource(id = R.string.menu_account))
+  LazyColumn(modifier = modifier.fillMaxSize()) {
+    stickyHeader {
+      ContentHeader(text = stringResource(id = R.string.menu_account))
+    }
 
-    Column(
-      modifier = Modifier
-        .fillMaxWidth()
-        .verticalScroll(rememberScrollState())
-    ) {
-      if (userInfo != null) {
+    if (userInfo != null) {
+      item(key = "profile") {
         Profile(
           userInfo = userInfo,
           modifier = Modifier
@@ -225,86 +224,100 @@ private fun AccountContent(
         )
       }
 
-      val scrobbleMenu = AccountMenu.SCROBBLE
-      AccountMenuCell(
-        title = stringResource(id = scrobbleMenu.titleRes),
-        description = stringResource(id = scrobbleMenu.descriptionRes)
-      ) {
-        if (NotificationManagerCompat.getEnabledListenerPackages(context)
-            .contains(context.packageName)
+      item(key = "scrobble") {
+        val scrobbleMenu = AccountMenu.SCROBBLE
+        AccountMenuCell(
+          title = stringResource(id = scrobbleMenu.titleRes),
+          description = stringResource(id = scrobbleMenu.descriptionRes)
         ) {
-          navigateToScrobbleSetting.invoke()
-        } else {
-          openDialog.value = true
+          if (NotificationManagerCompat.getEnabledListenerPackages(context)
+              .contains(context.packageName)
+          ) {
+            navigateToScrobbleSetting.invoke()
+          } else {
+            openDialog.value = true
+          }
         }
       }
 
-      val menu = AccountMenu.THEME
-      AccountMenuCell(
-        title = stringResource(id = menu.titleRes),
-        description = theme.displayName
-      ) {
-        navigateToThemeSelector.invoke()
-      }
-
-      AccountMenuCell(
-        title = stringResource(id = AccountMenu.CLEAR_CACHE.titleRes),
-        description = if (imageCacheMB != null) {
-          "$imageCacheMB MB"
-        } else {
-          ""
+      item(key = "theme") {
+        val menu = AccountMenu.THEME
+        AccountMenuCell(
+          title = stringResource(id = menu.titleRes),
+          description = theme.displayName
+        ) {
+          navigateToThemeSelector.invoke()
         }
-      ) {
-        openClearCacheConfirmationDialog.value = true
       }
+      item(key = "clear_cache") {
+        val clearCacheMenu = AccountMenu.CLEAR_CACHE
+        AccountMenuCell(
+          title = stringResource(id = clearCacheMenu.titleRes),
+          description = if (imageCacheMB != null) {
+            "$imageCacheMB MB"
+          } else {
+            ""
+          }
+        ) {
+          openClearCacheConfirmationDialog.value = true
+        }
+      }
+      item(key = "app_version") {
+        val appUpdateMenu = AccountMenu.APP_VERSION
+        val updateAvailable =
+          appUpdateInfo?.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE || appUpdateInfo?.installStatus() == InstallStatus.DOWNLOADED
+        AccountMenuCell(
+          title = stringResource(id = appUpdateMenu.titleRes, appVersion),
+          description = if (updateAvailable) {
+            stringResource(id = R.string.label_update_available)
+          } else {
+            "Thank you for using the latest version!"
+          },
+          enabled = updateAvailable
+        ) {
+          requestAppUpdate.invoke(appUpdateInfo!!)
+        }
+      }
+      item(key = "logout") {
+        val logoutMenu = AccountMenu.LOGOUT
+        AccountMenuCell(
+          title = stringResource(id = logoutMenu.titleRes),
+          description = stringResource(id = logoutMenu.descriptionRes)
+        ) {
+          navigateToLogoutConfirmation.invoke()
+        }
 
-      val appUpdateMenu = AccountMenu.APP_VERSION
-      val updateAvailable =
-        appUpdateInfo?.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE || appUpdateInfo?.installStatus() == InstallStatus.DOWNLOADED
-      AccountMenuCell(
-        title = stringResource(id = appUpdateMenu.titleRes, appVersion),
-        description = if (updateAvailable) {
-          stringResource(id = R.string.label_update_available)
-        } else {
-          "Thank you for using the latest version!"
-        },
-        enabled = updateAvailable
-      ) {
-        requestAppUpdate.invoke(appUpdateInfo!!)
+        HorizontalDivider(
+          modifier = Modifier.padding(vertical = 8.dp)
+        )
       }
-
-      val logoutMenu = AccountMenu.LOGOUT
-      AccountMenuCell(
-        title = stringResource(id = logoutMenu.titleRes),
-        description = stringResource(id = logoutMenu.descriptionRes)
-      ) {
-        navigateToLogoutConfirmation.invoke()
+      item(key = "licenses") {
+        val licenseMenu = AccountMenu.LICENSE
+        AccountMenuCell(
+          title = stringResource(id = licenseMenu.titleRes),
+          description = ""
+        ) {
+          navigateToLicenseList.invoke()
+        }
       }
-
-      HorizontalDivider(
-        modifier = Modifier.padding(vertical = 8.dp)
-      )
-      val licenseMenu = AccountMenu.LICENSE
-      AccountMenuCell(
-        title = stringResource(id = licenseMenu.titleRes),
-        description = ""
-      ) {
-        navigateToLicenseList.invoke()
-      }
-      val privacyPolicyMenu = AccountMenu.PRIVACY_POLICY
-      AccountMenuCell(
-        title = stringResource(id = privacyPolicyMenu.titleRes),
-        description = ""
-      ) {
-        navigateToPrivacyPolicy.invoke()
+      item(key = "privacy_policy") {
+        val privacyPolicyMenu = AccountMenu.PRIVACY_POLICY
+        AccountMenuCell(
+          title = stringResource(id = privacyPolicyMenu.titleRes),
+          description = ""
+        ) {
+          navigateToPrivacyPolicy.invoke()
+        }
       }
 
       if (BuildConfig.DEBUG) {
-        AccountMenuCell(
-          title = "UI Catalog",
-          description = "",
-        ) {
-          navigateToUiCatalog.invoke()
+        item(key = "ui_catalog") {
+          AccountMenuCell(
+            title = "UI Catalog",
+            description = "",
+          ) {
+            navigateToUiCatalog.invoke()
+          }
         }
       }
     }

@@ -10,7 +10,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 
 /*
    A Layer to make the status bar easier to see.
@@ -20,6 +22,7 @@ import androidx.compose.ui.unit.dp
 fun ColumnScope.ArtworkLayerBar(
   modifier: Modifier = Modifier
 ) {
+  val theme = LocalAppTheme.current
   Box(
     modifier = modifier
       .fillMaxWidth()
@@ -27,8 +30,12 @@ fun ColumnScope.ArtworkLayerBar(
       .background(
         Brush.verticalGradient(
           colors = listOf(
-            MaterialTheme.colorScheme.surface.copy(alpha = 0.5F),
-            MaterialTheme.colorScheme.onSurface.copy(alpha = 0.05F)
+            MaterialTheme.colorScheme.surface.copy(alpha = 0.9F),
+            if (theme.isLight) {
+              Color(0xFFF5F5F5).copy(alpha = 0.2F)
+            } else {
+              MaterialTheme.colorScheme.onSurface.copy(alpha = 0.05F)
+            }
           )
         )
       ),

@@ -27,6 +27,8 @@ fun Project.testConfiguration() {
           if (project.hasProperty("onlyScreenshotTest")) {
             it.include("**/*ScreenTest.class")
           }
+          // for: `OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended`
+          it.jvmArgs("-Xshare:off")
         }
       }
     }

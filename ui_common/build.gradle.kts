@@ -1,7 +1,7 @@
 plugins {
   id("sunsetscrob.android.feature")
   id("sunsetscrob.android.compose")
-  id("kotlin-android")
+  id("sunsetscrob.android.test.screenshot")
   id("com.google.devtools.ksp")
 }
 

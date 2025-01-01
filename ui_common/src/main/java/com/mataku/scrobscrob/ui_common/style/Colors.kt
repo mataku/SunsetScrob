@@ -50,7 +50,7 @@ object DarkColor {
 
 object LightColor {
   @ShowkaseColor(name = "primary", group = "Light")
-  val primary = Color(0xFFEEEEEE)
+  val primary = Color(0xFFCFD8DC)
 
   @ShowkaseColor(name = "onPrimary", group = "Light")
   val onPrimary = Color.Black

@@ -78,44 +78,78 @@ fun NavGraphBuilder.accountGraph(navController: NavController, username: String)
 
     composable(
       SCROBBLE_SETTING_DESTINATION,
-    ) {
-      ScrobbleSettingScreen(
-        viewModel = hiltViewModel(),
-        modifier = Modifier
-          .padding(
-            top = 24.dp
-          )
-      )
-    }
-    composable(THEME_SELECTOR_DESTINATION) {
-      ThemeSelectorScreen(
-        viewModel = hiltViewModel(),
-        onBackPressed = navController::popBackStack,
-        modifier = Modifier
-          .padding(
-            top = 24.dp
-          )
-      )
-    }
-    composable(LICENSE_DESTINATION) {
-      LicenseScreen(
-        viewModel = hiltViewModel(),
-        onBackPressed = navController::popBackStack,
-        modifier = Modifier
-          .padding(
-            top = 24.dp
-          )
-      )
-    }
-    composable(PRIVACY_POLICY_DESTINATION) {
-      PrivacyPolicyScreen(
-        onBackPressed = navController::popBackStack,
-        modifier = Modifier
-          .padding(
-            top = 24.dp
-          )
-      )
-    }
+      content = {
+        ScrobbleSettingScreen(
+          viewModel = hiltViewModel(),
+          modifier = Modifier
+            .padding(
+              top = 24.dp
+            )
+        )
+      },
+      enterTransition = {
+        fadeIn(tween(250))
+      },
+      exitTransition = {
+        fadeOut(tween(250))
+      },
+    )
+    composable(
+      THEME_SELECTOR_DESTINATION,
+      content = {
+        ThemeSelectorScreen(
+          viewModel = hiltViewModel(),
+          onBackPressed = navController::popBackStack,
+          modifier = Modifier
+            .padding(
+              top = 24.dp
+            )
+        )
+      },
+      enterTransition = {
+        fadeIn(tween(250))
+      },
+      exitTransition = {
+        fadeOut(tween(250))
+      },
+    )
+    composable(
+      LICENSE_DESTINATION,
+      content = {
+        LicenseScreen(
+          viewModel = hiltViewModel(),
+          onBackPressed = navController::popBackStack,
+          modifier = Modifier
+            .padding(
+              top = 24.dp
+            )
+        )
+      },
+      enterTransition = {
+        fadeIn(tween(250))
+      },
+      exitTransition = {
+        fadeOut(tween(250))
+      }
+    )
+    composable(
+      PRIVACY_POLICY_DESTINATION,
+      content = {
+        PrivacyPolicyScreen(
+          onBackPressed = navController::popBackStack,
+          modifier = Modifier
+            .padding(
+              top = 24.dp
+            )
+        )
+      },
+      enterTransition = {
+        fadeIn(tween(250))
+      },
+      exitTransition = {
+        fadeOut(tween(250))
+      }
+    )
   }
 }
 

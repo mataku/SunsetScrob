@@ -46,17 +46,17 @@ fun MainScreen(
       },
       topBar = {},
       bottomBar = {
-        if (SunsetBottomNavItem.entries.map { it.screenRoute }
-            .contains(currentRoute?.split("?")?.get(0))) {
-          SunsetNavigationBar(
-            navController = navController,
-            navigateToAccount = navController::navigateToAccount,
-            navigateToDiscover = navController::navigateToDiscover,
-            navigateToHome = navController::navigateToHome,
-            modifier = Modifier
-              .navigationBarsPadding()
-          )
-        }
+        val hasNavigationBarScreen = SunsetBottomNavItem.entries.map { it.screenRoute }
+          .contains(currentRoute?.split("?")?.get(0))
+        SunsetNavigationBar(
+          navController = navController,
+          navigateToAccount = navController::navigateToAccount,
+          navigateToDiscover = navController::navigateToDiscover,
+          navigateToHome = navController::navigateToHome,
+          modifier = Modifier
+            .navigationBarsPadding(),
+          hasNavigationBarScreen = hasNavigationBarScreen
+        )
       },
     ) {
       NavigationGraph(

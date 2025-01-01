@@ -5,7 +5,7 @@ Last.fm client on Android (mainly for my portfolio)
 - - -
 
 
-![](./screenshot/features.png)
+![](./screenshot/features.jpg)
 
 See more: [screenshots](./screenshot/README.md)
 

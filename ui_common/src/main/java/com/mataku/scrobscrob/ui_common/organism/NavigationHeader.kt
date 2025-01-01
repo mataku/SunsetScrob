@@ -34,7 +34,6 @@ fun NavigationHeader(
   modifier: Modifier = Modifier
 ) {
   Surface(
-    shadowElevation = 2.dp,
     modifier = modifier
   ) {
     Row(

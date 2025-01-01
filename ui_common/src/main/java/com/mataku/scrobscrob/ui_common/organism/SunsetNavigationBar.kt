@@ -21,8 +21,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -43,12 +43,12 @@ import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.PathMeasure
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.mataku.scrobscrob.core.entity.AppTheme
@@ -65,36 +65,37 @@ fun SunsetNavigationBar(
   navigateToAccount: () -> Unit,
   navigateToDiscover: () -> Unit,
   navigateToHome: () -> Unit,
-  modifier: Modifier = Modifier
+  modifier: Modifier = Modifier,
+  hasNavigationBarScreen: Boolean = true,
 ) {
   val backStackEntry = navController.currentBackStackEntryAsState()
   val route = backStackEntry.value?.destination?.route
-  val selectedItem =
-    SunsetBottomNavItem.entries.find { it.screenRoute == route?.split("?")?.get(0) }
-      ?: SunsetBottomNavItem.HOME
+  val selectedItem = SunsetBottomNavItem.currentItem(route?.split("?")?.get(0))
 
-  SunsetBottomNavigation(
-    tabs = SunsetBottomNavItem.entries.toImmutableList(),
-    selectedItem = selectedItem,
-    onTabSelected = { item ->
-      if (item == selectedItem) return@SunsetBottomNavigation
+  if (hasNavigationBarScreen) {
+    SunsetBottomNavigation(
+      tabs = SunsetBottomNavItem.entries.toImmutableList(),
+      selectedItem = selectedItem,
+      onTabSelected = { item ->
+        if (item == selectedItem) return@SunsetBottomNavigation
 
-      when (item) {
-        SunsetBottomNavItem.ACCOUNT -> {
-          navigateToAccount.invoke()
+        when (item) {
+          SunsetBottomNavItem.ACCOUNT -> {
+            navigateToAccount.invoke()
+          }
+
+          SunsetBottomNavItem.DISCOVER -> {
+            navigateToDiscover.invoke()
+          }
+
+          SunsetBottomNavItem.HOME -> {
+            navigateToHome.invoke()
+          }
         }
-
-        SunsetBottomNavItem.DISCOVER -> {
-          navigateToDiscover.invoke()
-        }
-
-        SunsetBottomNavItem.HOME -> {
-          navigateToHome.invoke()
-        }
-      }
-    },
-    modifier = modifier
-  )
+      },
+      modifier = modifier
+    )
+  }
 }
 
 @Preview
@@ -102,12 +103,24 @@ fun SunsetNavigationBar(
 private fun SunsetNavigationBarPreview() {
   SunsetThemePreview {
     Surface {
-      SunsetNavigationBar(
-        navController = NavHostController(LocalContext.current),
-        navigateToAccount = {},
-        navigateToDiscover = {},
-        navigateToHome = {}
-      )
+      Scaffold(
+        bottomBar = {
+          SunsetNavigationBar(
+            navController = NavHostController(LocalContext.current),
+            navigateToAccount = {},
+            navigateToDiscover = {},
+            navigateToHome = {},
+            hasNavigationBarScreen = true
+          )
+        }
+      ) {
+        Box(
+          modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+            .padding(it)
+        )
+      }
     }
   }
 }
@@ -121,7 +134,9 @@ private fun SunsetNavigationBarLightPreview() {
         navController = NavHostController(LocalContext.current),
         navigateToAccount = {},
         navigateToDiscover = {},
-        navigateToHome = {}
+        navigateToHome = {},
+        modifier = Modifier,
+        hasNavigationBarScreen = true
       )
     }
   }
@@ -130,14 +145,19 @@ private fun SunsetNavigationBarLightPreview() {
 @Composable
 fun SunsetBottomNavigation(
   tabs: ImmutableList<SunsetBottomNavItem>,
-  selectedItem: SunsetBottomNavItem,
+  selectedItem: SunsetBottomNavItem?,
   onTabSelected: (SunsetBottomNavItem) -> Unit,
   modifier: Modifier = Modifier,
 ) {
+  val screenDp = LocalConfiguration.current.screenWidthDp
+  val horizontalPadding = screenDp.dp - 208.dp
   Box(
     modifier = modifier
-      .padding(vertical = 16.dp, horizontal = 72.dp)
       .fillMaxWidth()
+      .padding(
+        horizontal = horizontalPadding / 2,
+        vertical = 16.dp,
+      )
       .height(64.dp)
       .border(
         width = Dp.Hairline,
@@ -148,7 +168,8 @@ fun SunsetBottomNavigation(
           ),
         ),
         shape = CircleShape
-      )
+      ),
+    contentAlignment = Alignment.Center
   ) {
 
     val selectedTabIndex = SunsetBottomNavItem.entries.indexOf(selectedItem)
@@ -189,7 +210,7 @@ fun SunsetBottomNavigation(
       modifier = Modifier
         .fillMaxSize()
         .clip(CircleShape)
-        .alpha(.95F)
+        .alpha(.85F)
         .background(MaterialTheme.colorScheme.primary)
     ) {
       val path = Path().apply {
@@ -229,7 +250,7 @@ fun SunsetBottomNavigation(
 @Composable
 private fun BottomBarTabs(
   tabs: ImmutableList<SunsetBottomNavItem>,
-  selectedTab: SunsetBottomNavItem,
+  selectedTab: SunsetBottomNavItem?,
   onTabSelected: (SunsetBottomNavItem) -> Unit,
 ) {
   Row(
@@ -245,7 +266,7 @@ private fun BottomBarTabs(
         label = "alpha"
       )
       val scale by animateFloatAsState(
-        targetValue = if (selectedTab == tab) 1f else .98f,
+        targetValue = if (selectedTab == tab) 1f else .85f,
         visibilityThreshold = .000001f,
         animationSpec = spring(
           stiffness = Spring.StiffnessLow,
@@ -279,10 +300,6 @@ private fun BottomBarTabs(
         } else {
           Icon(imageVector = tab.icon!!, contentDescription = "tab ${tab.title}")
         }
-        Text(
-          text = tab.title,
-          fontSize = 12.sp
-        )
       }
     }
   }

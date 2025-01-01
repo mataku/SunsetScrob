@@ -14,9 +14,10 @@ fun ComposeContentTestRule.captureScreenshot(
   appTheme: AppTheme,
   fileName: String,
   content: @Composable () -> Unit,
+  device: String = RobolectricDeviceQualifiers.Pixel7,
   actionsBeforeCapturing: () -> Unit = {}
 ) {
-  RuntimeEnvironment.setQualifiers(RobolectricDeviceQualifiers.Pixel7)
+  RuntimeEnvironment.setQualifiers(device)
 
   this.setContent {
     SunsetThemePreview(theme = appTheme) {
