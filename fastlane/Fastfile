@@ -104,8 +104,8 @@ platform :android do
   lane :prepare_release_notes do
     Dir.chdir '..' do
       version_code = generate_version_code
-      `cp fastlane/metadata/android/en-US/changelogs/97.txt fastlane/metadata/android/en-US/changelogs/#{version_code}.txt`
-      `cp fastlane/metadata/android/ja-JP/changelogs/97.txt fastlane/metadata/android/ja-JP/changelogs/#{version_code}.txt`
+      `cp fastlane/metadata/android/en-US/changelogs/1014000.txt fastlane/metadata/android/en-US/changelogs/#{version_code}.txt`
+      `cp fastlane/metadata/android/ja-JP/changelogs/1014000.txt fastlane/metadata/android/ja-JP/changelogs/#{version_code}.txt`
     end
   end
 
