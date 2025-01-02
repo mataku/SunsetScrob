@@ -19,10 +19,13 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mataku.scrobscrob.album.ui.screen.TopAlbumsScreen
 import com.mataku.scrobscrob.artist.ui.screen.TopArtistsScreen
 import com.mataku.scrobscrob.core.entity.RecentTrack
@@ -38,104 +41,123 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
+  viewModel: HomeViewModel,
   sharedTransitionScope: SharedTransitionScope,
   animatedContentScope: AnimatedContentScope,
   navigateToTrackDetail: (RecentTrack, String) -> Unit,
   navigateToArtistDetail: (TopArtistInfo, String) -> Unit,
   navigateToAlbumDetail: (TopAlbumInfo, String) -> Unit,
+  navigateToLogin: () -> Unit,
   modifier: Modifier = Modifier
 ) {
-  val pagerState = rememberPagerState(
-    pageCount = {
-      HomeTabType.entries.size
+
+  val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+  LaunchedEffect(uiState.events) {
+    uiState.events.firstOrNull()?.let { event ->
+      when (event) {
+        is HomeViewModel.HomeUiEvent.RedirectToLogin -> {
+          navigateToLogin.invoke()
+        }
+      }
+
+      viewModel.consumeEvent(event)
     }
-  )
-  val coroutineScope = rememberCoroutineScope()
-  val scrollBehavior = LocalTopAppBarState.current
+  }
 
-  BoxWithConstraints(
-    modifier = modifier
-  ) {
-    val screenHeight = maxHeight
-    val scrollState = rememberScrollState()
+  if (uiState.username.isNotEmpty()) {
+    val pagerState = rememberPagerState(
+      pageCount = {
+        HomeTabType.entries.size
+      }
+    )
+    val coroutineScope = rememberCoroutineScope()
+    val scrollBehavior = LocalTopAppBarState.current
 
-    Column(
-      modifier = Modifier
-        .fillMaxSize()
-        .verticalScroll(
-          scrollState
-        )
+    BoxWithConstraints(
+      modifier = modifier
     ) {
-      TopAppBar(
-        scrollBehavior = scrollBehavior,
-        title = {
-          Text(
-            text = "Home",
-            style = SunsetTextStyle.title,
-          )
-        },
-        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-          containerColor = MaterialTheme.colorScheme.background,
-          scrolledContainerColor = MaterialTheme.colorScheme.background
-        ),
-        modifier = Modifier,
-        windowInsets = WindowInsets.displayCutout
-      )
+      val screenHeight = maxHeight
+      val scrollState = rememberScrollState()
+
       Column(
         modifier = Modifier
-          .fillMaxWidth()
-          .height(screenHeight)
+          .fillMaxSize()
+          .verticalScroll(
+            scrollState
+          )
       ) {
-        val backgroundColor = MaterialTheme.colorScheme.background
-        HomeTabs(
-          selectedChartIndex = pagerState.currentPage,
-          onTabTap = { tabType ->
-            coroutineScope.launch {
-              pagerState.animateScrollToPage(tabType.ordinal)
-            }
+        TopAppBar(
+          scrollBehavior = scrollBehavior,
+          title = {
+            Text(
+              text = "Home",
+              style = SunsetTextStyle.title,
+            )
           },
-          modifier = Modifier
-            .drawBehind {
-              drawRect(color = backgroundColor)
-            }
+          colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+            containerColor = MaterialTheme.colorScheme.background,
+            scrolledContainerColor = MaterialTheme.colorScheme.background
+          ),
+          modifier = Modifier,
+          windowInsets = WindowInsets.displayCutout
         )
-        HorizontalPager(
-          state = pagerState,
-          key = {
-            val homeTabType = HomeTabType.findByIndex(it)
-            homeTabType.tabName
-          }
-        ) { page ->
-          val homeTabType = HomeTabType.findByIndex(page)
-          when (homeTabType) {
-            HomeTabType.SCROBBLE -> {
-              ScrobbleScreen(
-                topAppBarScrollBehavior = scrollBehavior,
-                navigateToTrackDetail = navigateToTrackDetail,
-                sharedTransitionScope = sharedTransitionScope,
-                animatedContentScope = animatedContentScope,
-                viewModel = hiltViewModel(key = "scrobble"),
-              )
+        Column(
+          modifier = Modifier
+            .fillMaxWidth()
+            .height(screenHeight)
+        ) {
+          val backgroundColor = MaterialTheme.colorScheme.background
+          HomeTabs(
+            selectedChartIndex = pagerState.currentPage,
+            onTabTap = { tabType ->
+              coroutineScope.launch {
+                pagerState.animateScrollToPage(tabType.ordinal)
+              }
+            },
+            modifier = Modifier
+              .drawBehind {
+                drawRect(color = backgroundColor)
+              }
+          )
+          HorizontalPager(
+            state = pagerState,
+            key = {
+              val homeTabType = HomeTabType.findByIndex(it)
+              homeTabType.tabName
             }
+          ) { page ->
+            val homeTabType = HomeTabType.findByIndex(page)
+            when (homeTabType) {
+              HomeTabType.SCROBBLE -> {
+                ScrobbleScreen(
+                  topAppBarScrollBehavior = scrollBehavior,
+                  navigateToTrackDetail = navigateToTrackDetail,
+                  sharedTransitionScope = sharedTransitionScope,
+                  animatedContentScope = animatedContentScope,
+                  viewModel = hiltViewModel(key = "scrobble"),
+                )
+              }
 
-            HomeTabType.ARTIST -> {
-              TopArtistsScreen(
-                viewModel = hiltViewModel(key = "artist"),
-                onArtistTap = navigateToArtistDetail,
-                topAppBarScrollBehavior = scrollBehavior,
-                sharedTransitionScope = sharedTransitionScope,
-                animatedContentScope = animatedContentScope
-              )
-            }
+              HomeTabType.ARTIST -> {
+                TopArtistsScreen(
+                  viewModel = hiltViewModel(key = "artist"),
+                  onArtistTap = navigateToArtistDetail,
+                  topAppBarScrollBehavior = scrollBehavior,
+                  sharedTransitionScope = sharedTransitionScope,
+                  animatedContentScope = animatedContentScope
+                )
+              }
 
-            HomeTabType.ALBUM -> {
-              TopAlbumsScreen(
-                viewModel = hiltViewModel(key = "album"),
-                navigateToAlbumInfo = navigateToAlbumDetail,
-                topAppBarScrollBehavior = scrollBehavior,
-                sharedTransitionScope = sharedTransitionScope,
-                animatedContentScope = animatedContentScope
-              )
+              HomeTabType.ALBUM -> {
+                TopAlbumsScreen(
+                  viewModel = hiltViewModel(key = "album"),
+                  navigateToAlbumInfo = navigateToAlbumDetail,
+                  topAppBarScrollBehavior = scrollBehavior,
+                  sharedTransitionScope = sharedTransitionScope,
+                  animatedContentScope = animatedContentScope
+                )
+              }
             }
           }
         }

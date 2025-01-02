@@ -1,10 +1,9 @@
 package com.mataku.scrobscrob.auth.ui.viewmodel
 
 import com.mataku.scrobscrob.data.repository.SessionRepository
-import com.mataku.scrobscrob.test_helper.unit.CoroutinesListener
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.booleans.shouldBeFalse
-import io.kotest.matchers.nulls.shouldBeNull
+import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.shouldBe
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -21,8 +20,8 @@ class LoginViewModelSpec : DescribeSpec({
 
   describe("#popEvent") {
     it("should clear event") {
-      viewModel.popEvent()
-      viewModel.uiState.value.event.shouldBeNull()
+      viewModel.popEvent(LoginViewModel.UiEvent.LoginSuccess)
+      viewModel.uiState.value.events.shouldBeEmpty()
     }
   }
 
@@ -30,7 +29,7 @@ class LoginViewModelSpec : DescribeSpec({
     context("username is blank") {
       it("should return LoginScreenState.UiEvent.EmptyUsernameError") {
         viewModel.authorize(username = "", password = "password")
-        viewModel.uiState.value.event shouldBe LoginViewModel.UiEvent.EmptyUsernameError
+        viewModel.uiState.value.events shouldBe listOf(LoginViewModel.UiEvent.EmptyUsernameError)
       }
     }
 
@@ -38,7 +37,7 @@ class LoginViewModelSpec : DescribeSpec({
       it("should return LoginScreenState.UiEvent.EmptyPasswordError") {
         viewModel.authorize(username = "username", password = "")
         viewModel.uiState.value.let {
-          it.event shouldBe LoginViewModel.UiEvent.EmptyPasswordError
+          it.events shouldBe listOf(LoginViewModel.UiEvent.EmptyPasswordError)
           it.isLoading.shouldBeFalse()
         }
       }
@@ -58,7 +57,7 @@ class LoginViewModelSpec : DescribeSpec({
       it("should return LoginScreenState.UiEvent.LoginFailed") {
         viewModel.authorize(username, password)
         viewModel.uiState.value.let {
-          it.event shouldBe LoginViewModel.UiEvent.LoginFailed
+          it.events shouldBe listOf(LoginViewModel.UiEvent.LoginFailed)
           it.isLoading.shouldBeFalse()
         }
       }
@@ -78,7 +77,7 @@ class LoginViewModelSpec : DescribeSpec({
       it("should return LoginScreenState.UiEvent.LoginSuccess") {
         viewModel.authorize(username, password)
         viewModel.uiState.value.let {
-          it.event shouldBe LoginViewModel.UiEvent.LoginSuccess
+          it.events shouldBe listOf(LoginViewModel.UiEvent.LoginSuccess)
           it.isLoading.shouldBeFalse()
         }
       }

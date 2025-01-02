@@ -47,9 +47,7 @@ class MainActivity : ComponentActivity() {
           )
           setContent {
             SunsetTheme(theme = theme) {
-              MainScreen(
-                username = uiState.username,
-              )
+              MainScreen()
             }
           }
         }

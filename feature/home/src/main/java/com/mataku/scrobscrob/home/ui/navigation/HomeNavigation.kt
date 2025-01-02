@@ -7,6 +7,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
@@ -20,6 +21,7 @@ import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.home.ui.HomeScreen
 import com.mataku.scrobscrob.scrobble.ui.navigation.navigateToTrackDetail
 import com.mataku.scrobscrob.scrobble.ui.navigation.scrobbleGraph
+import com.mataku.scrobscrob.ui_common.navigateToLogin
 
 fun NavGraphBuilder.homeGraph(
   navController: NavController,
@@ -30,6 +32,7 @@ fun NavGraphBuilder.homeGraph(
       HOME_DESTINATION,
       content = {
         HomeScreen(
+          viewModel = hiltViewModel(key = "home"),
           sharedTransitionScope = sharedTransitionScope,
           animatedContentScope = this@composable,
           navigateToTrackDetail = { track, id ->
@@ -54,6 +57,9 @@ fun NavGraphBuilder.homeGraph(
               artworkUrl = album.imageList.imageUrl() ?: "",
               contentId = id
             )
+          },
+          navigateToLogin = {
+            navController.navigateToLogin()
           },
           modifier = Modifier
             .padding(
@@ -85,7 +91,7 @@ fun NavGraphBuilder.homeGraph(
 }
 
 fun NavController.navigateToHome() {
-  navigate(HOME_NAVIGATION_ROUTE) {
+  navigate(HOME_DESTINATION) {
     popUpTo(graph.findStartDestination().id) {
       saveState = true
     }

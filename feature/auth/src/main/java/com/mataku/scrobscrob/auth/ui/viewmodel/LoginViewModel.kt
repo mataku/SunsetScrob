@@ -18,10 +18,13 @@ class LoginViewModel @Inject constructor(private val repo: SessionRepository) : 
   var uiState: MutableStateFlow<LoginUiState> = MutableStateFlow(LoginUiState.initialize())
     private set
 
-  fun popEvent() {
+  fun popEvent(event: UiEvent) {
+    val newEvents = uiState.value.events.filterNot {
+      it == event
+    }
     uiState.update {
       it.copy(
-        event = null
+        events = newEvents
       )
     }
   }
@@ -30,7 +33,7 @@ class LoginViewModel @Inject constructor(private val repo: SessionRepository) : 
     if (username.isBlank()) {
       uiState.update {
         it.copy(
-          event = UiEvent.EmptyUsernameError
+          events = it.events + UiEvent.EmptyUsernameError
         )
       }
       return
@@ -38,7 +41,7 @@ class LoginViewModel @Inject constructor(private val repo: SessionRepository) : 
 
     if (password.isBlank()) {
       uiState.update {
-        it.copy(event = UiEvent.EmptyPasswordError)
+        it.copy(events = it.events + UiEvent.EmptyPasswordError)
       }
       return
     }
@@ -65,13 +68,13 @@ class LoginViewModel @Inject constructor(private val repo: SessionRepository) : 
         .catch {
           uiState.update { state ->
             state.copy(
-              event = UiEvent.LoginFailed
+              events = state.events + UiEvent.LoginFailed
             )
           }
         }
         .collect {
           uiState.update { state ->
-            state.copy(isLoading = false, event = UiEvent.LoginSuccess)
+            state.copy(isLoading = false, events = state.events + UiEvent.LoginSuccess)
           }
         }
     }
@@ -91,14 +94,14 @@ class LoginViewModel @Inject constructor(private val repo: SessionRepository) : 
 
   data class LoginUiState(
     val isLoading: Boolean,
-    val event: UiEvent? = null,
+    val events: List<UiEvent>,
     val username: String,
     val password: String
   ) {
     companion object {
       fun initialize() = LoginUiState(
         isLoading = false,
-        event = null,
+        events = emptyList(),
         username = "",
         password = ""
       )

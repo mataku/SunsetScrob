@@ -81,8 +81,8 @@ fun LoginScreen(
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
   val context = LocalContext.current
   val snackbarHostState = LocalSnackbarHostState.current
-  LaunchedEffect(Unit) {
-    uiState.event?.let {
+  LaunchedEffect(uiState.events) {
+    uiState.events.firstOrNull()?.let {
       when (it) {
         is LoginViewModel.UiEvent.LoginSuccess -> {
           navigateToHomeFromAuth.invoke()
@@ -106,7 +106,7 @@ fun LoginScreen(
           }
         }
       }
-      viewModel.popEvent()
+      viewModel.popEvent(it)
     }
   }
   LoginContent(

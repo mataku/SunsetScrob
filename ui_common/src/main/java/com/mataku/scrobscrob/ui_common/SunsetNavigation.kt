@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
@@ -29,19 +28,6 @@ fun NavGraphBuilder.commonGraph(navController: NavController) {
       )
     }
   )
-}
-
-fun NavController.navigateToHomeFromAuth() {
-  navigate("home_route") {
-    popUpTo(graph.findStartDestination().id) {
-      saveState = true
-    }
-    popUpTo("login") {
-      inclusive = true
-    }
-    launchSingleTop = true
-    restoreState = true
-  }
 }
 
 fun NavController.navigateToLogin() {

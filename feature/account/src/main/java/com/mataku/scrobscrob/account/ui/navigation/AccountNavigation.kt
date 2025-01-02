@@ -12,9 +12,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavType
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.mataku.scrobscrob.account.R
 import com.mataku.scrobscrob.account.ui.ThemeSelectorScreen
@@ -26,20 +24,13 @@ import com.mataku.scrobscrob.ui_common.PRIVACY_POLICY_DESTINATION
 import com.mataku.scrobscrob.ui_common.navigateToLogin
 import com.mataku.scrobscrob.ui_common.navigateToPrivacyPolicy
 
-fun NavGraphBuilder.accountGraph(navController: NavController, username: String) {
-  val usernameArgs = "username"
+fun NavGraphBuilder.accountGraph(navController: NavController) {
   navigation(
     route = ACCOUNT_NAVIGATION_ROUTE,
     startDestination = "${ACCOUNT_DESTINATION}?username={username}",
   ) {
     composable(
-      "${ACCOUNT_DESTINATION}?username={username}",
-      arguments = listOf(
-        navArgument(usernameArgs) {
-          type = NavType.StringType
-          defaultValue = username
-        }
-      ),
+      ACCOUNT_DESTINATION,
       content = {
         val context = LocalContext.current
         AccountScreen(

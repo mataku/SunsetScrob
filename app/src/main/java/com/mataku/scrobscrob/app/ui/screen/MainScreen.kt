@@ -28,7 +28,6 @@ import com.mataku.scrobscrob.ui_common.style.LocalTopAppBarState
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
-  username: String?,
   modifier: Modifier = Modifier
 ) {
   val navController = rememberNavController()
@@ -61,7 +60,6 @@ fun MainScreen(
     ) {
       NavigationGraph(
         navController,
-        username = username,
         modifier = Modifier
           // ignore bottom padding because of custom bottom nav component
           .padding(
