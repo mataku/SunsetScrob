@@ -31,6 +31,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -80,31 +81,33 @@ fun LoginScreen(
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
   val context = LocalContext.current
   val snackbarHostState = LocalSnackbarHostState.current
-  uiState.event?.let {
-    when (it) {
-      is LoginViewModel.UiEvent.LoginSuccess -> {
-        navigateToHomeFromAuth.invoke()
-      }
+  LaunchedEffect(Unit) {
+    uiState.event?.let {
+      when (it) {
+        is LoginViewModel.UiEvent.LoginSuccess -> {
+          navigateToHomeFromAuth.invoke()
+        }
 
-      is LoginViewModel.UiEvent.LoginFailed -> {
-        coroutineScope.launch {
-          snackbarHostState.showSnackbar(context.getString(R.string.error_login_failed))
+        is LoginViewModel.UiEvent.LoginFailed -> {
+          coroutineScope.launch {
+            snackbarHostState.showSnackbar(context.getString(R.string.error_login_failed))
+          }
+        }
+
+        is LoginViewModel.UiEvent.EmptyPasswordError -> {
+          coroutineScope.launch {
+            snackbarHostState.showSnackbar(context.getString(R.string.error_password_required))
+          }
+        }
+
+        is LoginViewModel.UiEvent.EmptyUsernameError -> {
+          coroutineScope.launch {
+            snackbarHostState.showSnackbar(context.getString(R.string.error_username_required))
+          }
         }
       }
-
-      is LoginViewModel.UiEvent.EmptyPasswordError -> {
-        coroutineScope.launch {
-          snackbarHostState.showSnackbar(context.getString(R.string.error_password_required))
-        }
-      }
-
-      is LoginViewModel.UiEvent.EmptyUsernameError -> {
-        coroutineScope.launch {
-          snackbarHostState.showSnackbar(context.getString(R.string.error_username_required))
-        }
-      }
+      viewModel.popEvent()
     }
-    viewModel.popEvent()
   }
   LoginContent(
     isLoading = uiState.isLoading,
