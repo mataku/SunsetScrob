@@ -21,6 +21,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -151,14 +152,16 @@ fun AccountScreen(
     )
   }
 
-  uiState.event?.let {
-    when (it) {
-      is AccountViewModel.Event.Logout -> {
-        openDialog.value = false
-        navigateToLogin.invoke()
+  LaunchedEffect(uiState.events) {
+    uiState.events.firstOrNull()?.let {
+      when (it) {
+        is AccountViewModel.Event.Logout -> {
+          openDialog.value = false
+          navigateToLogin.invoke()
+        }
       }
+      viewModel.popEvent(it)
     }
-    viewModel.popEvent()
   }
 
   if (openDialog.value) {

@@ -9,7 +9,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.mataku.scrobscrob.auth.ui.screen.LoginScreen
 import com.mataku.scrobscrob.ui_common.LOGIN_DESTINATION
-import com.mataku.scrobscrob.ui_common.navigateToHomeFromAuth
 import com.mataku.scrobscrob.ui_common.navigateToPrivacyPolicy
 
 fun NavGraphBuilder.authGraph(navController: NavController) {
@@ -23,5 +22,12 @@ fun NavGraphBuilder.authGraph(navController: NavController) {
           top = 24.dp
         )
     )
+  }
+}
+
+fun NavController.navigateToHomeFromAuth() {
+  navigate("home_route") {
+    popUpTo(0)
+    launchSingleTop = true
   }
 }

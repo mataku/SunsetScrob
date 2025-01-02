@@ -21,14 +21,12 @@ import com.mataku.scrobscrob.ui_common.commonGraph
 @Composable
 fun NavigationGraph(
   navController: NavHostController,
-  username: String?,
   modifier: Modifier = Modifier
 ) {
-  val isLoggedIn = username != null
   SharedTransitionLayout {
     NavHost(
       navController = navController,
-      startDestination = if (isLoggedIn) HOME_NAVIGATION_ROUTE else "login",
+      startDestination = HOME_NAVIGATION_ROUTE,
       modifier = modifier,
       enterTransition = {
         fadeIn(tween(250))
@@ -48,7 +46,7 @@ fun NavigationGraph(
         navController = navController,
         sharedTransitionScope = this@SharedTransitionLayout,
       )
-      accountGraph(navController, username ?: "")
+      accountGraph(navController)
       discoverGraph(navController)
       authGraph(navController)
       commonGraph(navController)

@@ -16,6 +16,7 @@ import com.mataku.scrobscrob.data.repository.FileRepository
 import com.mataku.scrobscrob.data.repository.SessionRepository
 import com.mataku.scrobscrob.data.repository.ThemeRepository
 import com.mataku.scrobscrob.data.repository.UserRepository
+import com.mataku.scrobscrob.data.repository.UsernameRepository
 import com.mataku.scrobscrob.test_helper.integration.captureScreenshot
 import io.mockk.coEvery
 import io.mockk.every
@@ -34,6 +35,7 @@ class AccountScreenTest {
   @get:Rule
   val composeTestRule = createComposeRule()
 
+  private val usernameRepository = mockk<UsernameRepository>()
   private val themeRepository = mockk<ThemeRepository>()
   private val sessionRepository = mockk<SessionRepository>()
   private val appInfoProvider = mockk<AppInfoProvider>()
@@ -48,6 +50,9 @@ class AccountScreenTest {
 
   @Before
   fun setup() {
+    coEvery {
+      usernameRepository.username()
+    }.returns("matakucom")
     every {
       appInfoProvider.appVersion()
     }.returns(appVersion)
@@ -97,6 +102,7 @@ class AccountScreenTest {
   @Test
   fun layout() {
     val viewModel = AccountViewModel(
+      usernameRepository,
       themeRepository,
       sessionRepository,
       appInfoProvider,
@@ -104,7 +110,6 @@ class AccountScreenTest {
       fileRepository,
       application,
       userRepository,
-      savedStateHandle
     )
     composeTestRule.captureScreenshot(
       appTheme = AppTheme.DARK,
@@ -126,6 +131,7 @@ class AccountScreenTest {
   @Test
   fun layout_light() {
     val viewModel = AccountViewModel(
+      usernameRepository,
       themeRepository,
       sessionRepository,
       appInfoProvider,
@@ -133,7 +139,6 @@ class AccountScreenTest {
       fileRepository,
       application,
       userRepository,
-      savedStateHandle
     )
     composeTestRule.captureScreenshot(
       appTheme = AppTheme.LIGHT,

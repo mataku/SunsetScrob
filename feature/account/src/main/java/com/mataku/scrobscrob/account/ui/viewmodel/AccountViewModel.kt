@@ -3,7 +3,6 @@ package com.mataku.scrobscrob.account.ui.viewmodel
 import android.app.Application
 import androidx.compose.runtime.Immutable
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.google.android.play.core.appupdate.AppUpdateInfo
 import com.google.android.play.core.appupdate.AppUpdateManager
@@ -15,6 +14,7 @@ import com.mataku.scrobscrob.data.repository.FileRepository
 import com.mataku.scrobscrob.data.repository.SessionRepository
 import com.mataku.scrobscrob.data.repository.ThemeRepository
 import com.mataku.scrobscrob.data.repository.UserRepository
+import com.mataku.scrobscrob.data.repository.UsernameRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
@@ -27,6 +27,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AccountViewModel @Inject constructor(
+  private val usernameRepository: UsernameRepository,
   private val themeRepository: ThemeRepository,
   private val sessionRepository: SessionRepository,
   private val appInfoProvider: AppInfoProvider,
@@ -34,18 +35,16 @@ class AccountViewModel @Inject constructor(
   private val fileRepository: FileRepository,
   private val application: Application,
   private val userRepository: UserRepository,
-  savedStateHandle: SavedStateHandle,
 ) : AndroidViewModel(application) {
 
   private val decimalFormat = DecimalFormat("#.##")
-
-  private val username: String = savedStateHandle.get<String>("username") ?: ""
 
   var uiState: MutableStateFlow<AccountUiState> = MutableStateFlow(AccountUiState.initialize())
     private set
 
   init {
-    Timber.d("MATAKUDEBUG init AccountViewModel")
+    Timber.d("MATAKUDEBUG init account")
+    val username = usernameRepository.username() ?: ""
     val appVersion = appInfoProvider.appVersion()
     viewModelScope.launch {
       launch {
@@ -120,17 +119,22 @@ class AccountViewModel @Inject constructor(
         }
         .onCompletion {
           uiState.update {
-            it.copy(event = Event.Logout)
+            it.copy(events = it.events + Event.Logout)
           }
         }
-        .collect { }
+        .collect {
+
+        }
     }
   }
 
-  fun popEvent() {
+  fun popEvent(event: Event) {
+    val newEvents = uiState.value.events.filterNot {
+      event == it
+    }
     uiState.update {
       it.copy(
-        event = null
+        events = newEvents
       )
     }
   }
@@ -152,7 +156,7 @@ class AccountViewModel @Inject constructor(
 
   data class AccountUiState(
     val theme: AppTheme?,
-    val event: Event?,
+    val events: List<Event>,
     val appVersion: String,
     val appUpdateInfo: AppUpdateInfo?,
     val imageCacheMB: String?,
@@ -161,7 +165,7 @@ class AccountViewModel @Inject constructor(
     companion object {
       fun initialize() = AccountUiState(
         theme = null,
-        event = null,
+        events = emptyList(),
         appVersion = "",
         appUpdateInfo = null,
         imageCacheMB = null,

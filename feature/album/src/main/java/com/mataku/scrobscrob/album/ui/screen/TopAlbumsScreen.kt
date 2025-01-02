@@ -90,7 +90,7 @@ fun TopAlbumsScreen(
         },
         modifier = modifier
           .padding(
-            bottom = 152.dp + with(density) {
+            bottom = 128.dp + with(density) {
               topAppBarHeightPixel.toDp()
             }
           )
