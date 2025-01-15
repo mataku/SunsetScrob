@@ -66,7 +66,7 @@ hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.re
 
 hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version = "1.2.0" }
 
-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version = "1.1.1" }
+datastore-preferences = { module = "androidx.datastore:datastore-preferences", version = "1.1.2" }
 
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
