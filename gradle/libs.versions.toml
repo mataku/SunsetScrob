@@ -121,7 +121,7 @@ licensee = { id = "app.cash.licensee", version.ref = "licensee" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-crashlytics = { id = "com.google.firebase.crashlytics", version = "3.0.2" }
+crashlytics = { id = "com.google.firebase.crashlytics", version = "3.0.3" }
 google-services = { id = "com.google.gms.google-services", version = "4.4.2" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 baselineprofile = { id = "androidx.baselineprofile", version.ref = "baselineprofile" }
