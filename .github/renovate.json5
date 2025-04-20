@@ -45,8 +45,7 @@
     {
       groupName: 'compose_compiler_kotlin',
       matchPackageNames: [
-        'androidx.compose.compiler{/,}**',
-        'org.jetbrains.kotlin{/,}**',
+        'org.jetbrains.kotlin.{/,}**',
         'com.google.devtools.ksp{/,}**',
       ],
     },
