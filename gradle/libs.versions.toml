@@ -28,7 +28,6 @@ profileinstaller = "1.4.1"
 [libraries]
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity" }
 compose-bom = { module = "androidx.compose:compose-bom", version.ref = "compose" }
-compose-material = { module = "androidx.compose.material:material" }
 compose-material3 = { module = "androidx.compose.material3:material3" }
 compose-animation = { module = "androidx.compose.animation:animation" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
