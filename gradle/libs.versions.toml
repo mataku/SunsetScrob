@@ -1,7 +1,7 @@
 [versions]
 activity = "1.10.1"
 agp = "8.9.2"
-compose = "2025.04.00"
+compose = "2025.04.01"
 core-sprashscreen = "1.0.1"
 coroutines = "1.10.2"
 firebase = "33.12.0"
