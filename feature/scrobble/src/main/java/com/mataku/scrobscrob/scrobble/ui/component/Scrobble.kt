@@ -94,7 +94,7 @@ private fun ScrobbleContent(
               } else {
                 Modifier
                   .sharedElement(
-                    state = sharedTransitionScope.rememberSharedContentState(
+                    sharedContentState = sharedTransitionScope.rememberSharedContentState(
                       key = id,
                     ),
                     animatedVisibilityScope = animatedContentScope,

@@ -143,7 +143,7 @@ private fun SharedTransitionScope.TrackContent(
                 } else {
                   Modifier
                     .sharedElement(
-                      state = this@TrackContent.rememberSharedContentState(
+                      sharedContentState = this@TrackContent.rememberSharedContentState(
                         key = id
                       ),
                       animatedVisibilityScope = animatedContentScope,

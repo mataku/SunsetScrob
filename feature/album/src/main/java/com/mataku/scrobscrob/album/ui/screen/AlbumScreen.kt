@@ -117,7 +117,7 @@ private fun SharedTransitionScope.AlbumContent(
                 } else {
                   Modifier
                     .sharedElement(
-                      state = this@AlbumContent.rememberSharedContentState(
+                      sharedContentState = this@AlbumContent.rememberSharedContentState(
                         key = id
                       ),
                       animatedVisibilityScope = animatedContentScope,
