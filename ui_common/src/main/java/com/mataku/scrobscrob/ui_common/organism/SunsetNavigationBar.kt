@@ -43,8 +43,9 @@ import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.PathMeasure
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -149,8 +150,10 @@ fun SunsetBottomNavigation(
   onTabSelected: (SunsetBottomNavItem) -> Unit,
   modifier: Modifier = Modifier,
 ) {
-  val screenDp = LocalConfiguration.current.screenWidthDp
-  val horizontalPadding = screenDp.dp - 208.dp
+  val screenDp = LocalWindowInfo.current.containerSize.width
+  val horizontalPadding = with(LocalDensity.current) {
+    screenDp.toDp() - 208.dp
+  }
   Box(
     modifier = modifier
       .fillMaxWidth()

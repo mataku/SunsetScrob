@@ -16,10 +16,10 @@ class LoginViewModelSpec : DescribeSpec({
   extension(com.mataku.scrobscrob.test_helper.unit.CoroutinesListener())
 
   val sessionRepository = mockk<SessionRepository>()
-  val viewModel = LoginViewModel(sessionRepository)
 
   describe("#popEvent") {
     it("should clear event") {
+      val viewModel = LoginViewModel(sessionRepository)
       viewModel.popEvent(LoginViewModel.UiEvent.LoginSuccess)
       viewModel.uiState.value.events.shouldBeEmpty()
     }
@@ -28,6 +28,7 @@ class LoginViewModelSpec : DescribeSpec({
   describe("#authorize") {
     context("username is blank") {
       it("should return LoginScreenState.UiEvent.EmptyUsernameError") {
+        val viewModel = LoginViewModel(sessionRepository)
         viewModel.authorize(username = "", password = "password")
         viewModel.uiState.value.events shouldBe listOf(LoginViewModel.UiEvent.EmptyUsernameError)
       }
@@ -35,6 +36,7 @@ class LoginViewModelSpec : DescribeSpec({
 
     context("password is blank") {
       it("should return LoginScreenState.UiEvent.EmptyPasswordError") {
+        val viewModel = LoginViewModel(sessionRepository)
         viewModel.authorize(username = "username", password = "")
         viewModel.uiState.value.let {
           it.events shouldBe listOf(LoginViewModel.UiEvent.EmptyPasswordError)
@@ -55,6 +57,7 @@ class LoginViewModelSpec : DescribeSpec({
       })
 
       it("should return LoginScreenState.UiEvent.LoginFailed") {
+        val viewModel = LoginViewModel(sessionRepository)
         viewModel.authorize(username, password)
         viewModel.uiState.value.let {
           it.events shouldBe listOf(LoginViewModel.UiEvent.LoginFailed)
@@ -75,6 +78,7 @@ class LoginViewModelSpec : DescribeSpec({
       )
 
       it("should return LoginScreenState.UiEvent.LoginSuccess") {
+        val viewModel = LoginViewModel(sessionRepository)
         viewModel.authorize(username, password)
         viewModel.uiState.value.let {
           it.events shouldBe listOf(LoginViewModel.UiEvent.LoginSuccess)
@@ -87,6 +91,7 @@ class LoginViewModelSpec : DescribeSpec({
   describe("#updateUsername") {
     it("should update username") {
       val updatedUsername = "updated"
+      val viewModel = LoginViewModel(sessionRepository)
       viewModel.updateUsername(updatedUsername)
       viewModel.uiState.value.username.shouldBe(updatedUsername)
     }
@@ -95,6 +100,7 @@ class LoginViewModelSpec : DescribeSpec({
   describe("#updatePassword") {
     it("should update password") {
       val updatedPassword = "updated"
+      val viewModel = LoginViewModel(sessionRepository)
       viewModel.updatePassword(updatedPassword)
       viewModel.uiState.value.password.shouldBe(updatedPassword)
     }
