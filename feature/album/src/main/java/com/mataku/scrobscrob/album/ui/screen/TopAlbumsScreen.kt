@@ -2,6 +2,7 @@ package com.mataku.scrobscrob.album.ui.screen
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.SharedTransitionScope
@@ -10,7 +11,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -79,6 +80,9 @@ fun TopAlbumsScreen(
       topAppBarScrollBehavior.state.heightOffset
     }
   }
+  with(LocalDensity.current) {
+    Log.d("MATAKUDEBUG", "TopAppBarHeight dp: ${topAppBarHeightPixel.toDp()}")
+  }
   val density = LocalDensity.current
   Scaffold(
     floatingActionButton = {
@@ -89,10 +93,8 @@ fun TopAlbumsScreen(
           }
         },
         modifier = modifier
-          .padding(
-            bottom = 192.dp + with(density) {
-              topAppBarHeightPixel.toDp()
-            }
+          .offset(
+            y = (-64).dp
           )
       )
     }

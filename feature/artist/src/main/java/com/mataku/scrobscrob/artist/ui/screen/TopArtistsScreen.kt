@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -90,10 +90,8 @@ fun TopArtistsScreen(
           }
         },
         modifier = modifier
-          .padding(
-            bottom = 192.dp + with(density) {
-              topAppBarHeightPixel.toDp()
-            }
+          .offset(
+            y = (-64).dp
           )
       )
     }
