@@ -4,10 +4,8 @@ import android.widget.Toast
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -48,9 +46,6 @@ fun NavGraphBuilder.accountGraph(navController: NavController) {
             ).show()
           },
           modifier = Modifier
-            .padding(
-              top = 24.dp
-            )
         )
       },
       enterTransition = {
@@ -73,9 +68,6 @@ fun NavGraphBuilder.accountGraph(navController: NavController) {
         ScrobbleSettingScreen(
           viewModel = hiltViewModel(),
           modifier = Modifier
-            .padding(
-              top = 24.dp
-            )
         )
       },
       enterTransition = {
@@ -92,9 +84,6 @@ fun NavGraphBuilder.accountGraph(navController: NavController) {
           viewModel = hiltViewModel(),
           onBackPressed = navController::popBackStack,
           modifier = Modifier
-            .padding(
-              top = 24.dp
-            )
         )
       },
       enterTransition = {
@@ -109,11 +98,7 @@ fun NavGraphBuilder.accountGraph(navController: NavController) {
       content = {
         LicenseScreen(
           viewModel = hiltViewModel(),
-          onBackPressed = navController::popBackStack,
           modifier = Modifier
-            .padding(
-              top = 24.dp
-            )
         )
       },
       enterTransition = {
@@ -127,11 +112,7 @@ fun NavGraphBuilder.accountGraph(navController: NavController) {
       PRIVACY_POLICY_DESTINATION,
       content = {
         PrivacyPolicyScreen(
-          onBackPressed = navController::popBackStack,
           modifier = Modifier
-            .padding(
-              top = 24.dp
-            )
         )
       },
       enterTransition = {

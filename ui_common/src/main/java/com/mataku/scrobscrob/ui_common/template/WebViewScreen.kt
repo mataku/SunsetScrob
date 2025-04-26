@@ -20,7 +20,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -43,7 +43,7 @@ fun WebViewScreen(
   val visibilityValue = remember {
     Animatable(0F)
   }
-  val screenHeight = LocalConfiguration.current.screenHeightDp
+  val screenHeight = LocalWindowInfo.current.containerSize.height
 
   val coroutineScope = rememberCoroutineScope()
 

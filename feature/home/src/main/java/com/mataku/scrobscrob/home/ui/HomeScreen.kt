@@ -1,11 +1,10 @@
 package com.mataku.scrobscrob.home.ui
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -15,9 +14,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -34,10 +30,10 @@ import com.mataku.scrobscrob.core.entity.TopArtistInfo
 import com.mataku.scrobscrob.home.HomeTabType
 import com.mataku.scrobscrob.home.ui.molecule.HomeTabs
 import com.mataku.scrobscrob.scrobble.ui.screen.ScrobbleScreen
-import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.style.LocalTopAppBarState
 import kotlinx.coroutines.launch
 
+@SuppressLint("UnusedBoxWithConstraintsScope")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
@@ -87,21 +83,21 @@ fun HomeScreen(
             scrollState
           )
       ) {
-        TopAppBar(
-          scrollBehavior = scrollBehavior,
-          title = {
-            Text(
-              text = "Home",
-              style = SunsetTextStyle.title,
-            )
-          },
-          colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-            containerColor = MaterialTheme.colorScheme.background,
-            scrolledContainerColor = MaterialTheme.colorScheme.background
-          ),
-          modifier = Modifier,
-          windowInsets = WindowInsets.displayCutout
-        )
+//        TopAppBar(
+//          scrollBehavior = scrollBehavior,
+//          title = {
+//            Text(
+//              text = "Home",
+//              style = SunsetTextStyle.title,
+//            )
+//          },
+//          colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+//            containerColor = MaterialTheme.colorScheme.background,
+//            scrolledContainerColor = MaterialTheme.colorScheme.background
+//          ),
+//          modifier = Modifier,
+//          windowInsets = WindowInsets.displayCutout
+//        )
         Column(
           modifier = Modifier
             .fillMaxWidth()

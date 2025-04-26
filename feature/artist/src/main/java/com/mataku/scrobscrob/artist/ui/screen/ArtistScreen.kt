@@ -31,7 +31,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import androidx.compose.ui.unit.dp
@@ -82,8 +83,12 @@ private fun SharedTransitionScope.ArtistContent(
   onBackPressed: () -> Unit,
   modifier: Modifier = Modifier
 ) {
-  val screenWidth = LocalConfiguration.current.screenWidthDp
-  val screenHeight = LocalConfiguration.current.screenHeightDp
+  val screenWidth = with(LocalDensity.current) {
+    LocalWindowInfo.current.containerSize.width.toDp()
+  }
+  val screenHeight = with(LocalDensity.current) {
+    LocalWindowInfo.current.containerSize.height.toDp()
+  }
   val scaffoldState = rememberBottomSheetScaffoldState(
     bottomSheetState = rememberStandardBottomSheetState(
       initialValue = SheetValue.PartiallyExpanded
@@ -95,9 +100,9 @@ private fun SharedTransitionScope.ArtistContent(
     sheetContainerColor = MaterialTheme.colorScheme.background,
     scaffoldState = scaffoldState,
     sheetPeekHeight = if (screenHeight >= screenWidth) {
-      (screenHeight - screenWidth).dp
+      (screenHeight - screenWidth)
     } else {
-      (screenWidth - screenHeight).dp
+      (screenWidth - screenHeight)
     },
     content = {
       Column {
@@ -112,7 +117,7 @@ private fun SharedTransitionScope.ArtistContent(
                 } else {
                   Modifier
                     .sharedElement(
-                      state = this@ArtistContent.rememberSharedContentState(
+                      sharedContentState = this@ArtistContent.rememberSharedContentState(
                         key = id
                       ),
                       animatedVisibilityScope = animatedContentScope,

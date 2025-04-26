@@ -36,8 +36,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -100,8 +101,12 @@ private fun SharedTransitionScope.TrackContent(
   onLoveIconTap: (TrackInfo) -> Unit,
   modifier: Modifier = Modifier
 ) {
-  val screenWidth = LocalConfiguration.current.screenWidthDp
-  val screenHeight = LocalConfiguration.current.screenHeightDp
+  val screenWidth = with(LocalDensity.current) {
+    LocalWindowInfo.current.containerSize.width.toDp()
+  }
+  val screenHeight = with(LocalDensity.current) {
+    LocalWindowInfo.current.containerSize.height.toDp()
+  }
   val scaffoldState = rememberBottomSheetScaffoldState(
     bottomSheetState = rememberStandardBottomSheetState(
       initialValue = SheetValue.PartiallyExpanded
@@ -118,15 +123,15 @@ private fun SharedTransitionScope.TrackContent(
         artistName = artistName,
         onUrlTap = onUrlTap,
         modifier = Modifier
-          .defaultMinSize(minHeight = screenWidth.dp)
+          .defaultMinSize(minHeight = screenWidth)
           .fillMaxHeight(fraction = 0.9F),
         onLoveIconTap = onLoveIconTap
       )
     },
     sheetPeekHeight = if (screenHeight >= screenWidth) {
-      (screenHeight - screenWidth + 24).dp
+      (screenHeight - screenWidth + 24.dp)
     } else {
-      (screenWidth - screenHeight).dp
+      (screenWidth - screenHeight)
     },
     content = {
       Column(
@@ -143,7 +148,7 @@ private fun SharedTransitionScope.TrackContent(
                 } else {
                   Modifier
                     .sharedElement(
-                      state = this@TrackContent.rememberSharedContentState(
+                      sharedContentState = this@TrackContent.rememberSharedContentState(
                         key = id
                       ),
                       animatedVisibilityScope = animatedContentScope,

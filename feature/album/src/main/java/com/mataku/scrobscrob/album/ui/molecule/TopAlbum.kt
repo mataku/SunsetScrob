@@ -67,7 +67,7 @@ internal fun TopAlbum(
             } else {
               Modifier
                 .sharedElement(
-                  state = sharedTransitionScope.rememberSharedContentState(
+                  sharedContentState = sharedTransitionScope.rememberSharedContentState(
                     key = id,
                   ),
                   animatedVisibilityScope = animatedContentScope,

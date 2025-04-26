@@ -31,7 +31,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -88,8 +89,12 @@ private fun SharedTransitionScope.AlbumContent(
   onBackPressed: () -> Unit,
   modifier: Modifier = Modifier
 ) {
-  val screenWidth = LocalConfiguration.current.screenWidthDp
-  val screenHeight = LocalConfiguration.current.screenHeightDp
+  val screenWidth = with(LocalDensity.current) {
+    LocalWindowInfo.current.containerSize.width.toDp()
+  }
+  val screenHeight = with(LocalDensity.current) {
+    LocalWindowInfo.current.containerSize.height.toDp()
+  }
   val scaffoldState = rememberBottomSheetScaffoldState(
     bottomSheetState = rememberStandardBottomSheetState(
       initialValue = SheetValue.PartiallyExpanded
@@ -100,9 +105,9 @@ private fun SharedTransitionScope.AlbumContent(
     sheetContainerColor = MaterialTheme.colorScheme.background,
     scaffoldState = scaffoldState,
     sheetPeekHeight = if (screenHeight >= screenWidth) {
-      (screenHeight - screenWidth + 24).dp
+      (screenHeight - screenWidth + 24.dp)
     } else {
-      (screenWidth - screenHeight).dp
+      (screenWidth - screenHeight)
     },
     content = {
       Column {
@@ -117,7 +122,7 @@ private fun SharedTransitionScope.AlbumContent(
                 } else {
                   Modifier
                     .sharedElement(
-                      state = this@AlbumContent.rememberSharedContentState(
+                      sharedContentState = this@AlbumContent.rememberSharedContentState(
                         key = id
                       ),
                       animatedVisibilityScope = animatedContentScope,

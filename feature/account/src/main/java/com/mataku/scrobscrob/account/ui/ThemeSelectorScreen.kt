@@ -19,14 +19,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.mataku.scrobscrob.account.R
 import com.mataku.scrobscrob.account.ui.viewmodel.ThemeSelectorViewModel
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
-import com.mataku.scrobscrob.ui_common.organism.ContentHeader
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -53,12 +50,6 @@ fun ThemeSelectorScreen(
   uiState.theme?.let {
     LazyColumn(
       content = {
-        stickyHeader {
-          ContentHeader(
-            text = stringResource(id = R.string.title_theme_selector),
-            onBackPressed = onBackPressed
-          )
-        }
         items(AppTheme.entries.sortedBy {
           it.priority
         }) {
@@ -85,13 +76,14 @@ private fun ThemeCell(
   selected: Boolean,
   onTapTheme: (AppTheme) -> Unit
 ) {
-  Row(modifier = Modifier
-    .fillMaxWidth()
-    .height(48.dp)
-    .clickable {
-      onTapTheme.invoke(theme)
-    }
-    .padding(horizontal = 16.dp, vertical = 12.dp)
+  Row(
+    modifier = Modifier
+      .fillMaxWidth()
+      .height(48.dp)
+      .clickable {
+        onTapTheme.invoke(theme)
+      }
+      .padding(horizontal = 16.dp, vertical = 12.dp)
   ) {
     Text(
       text = theme.displayName,
