@@ -1,5 +1,7 @@
 package com.mataku.scrobscrob.app.ui.screen
 
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,6 +22,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.LayoutDirection
+import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.mataku.scrobscrob.account.ui.navigation.navigateToAccount
@@ -97,6 +100,18 @@ fun MainScreen(
         )
       },
     ) {
+      val paddingTop by animateDpAsState(
+        targetValue = if (currentRoute?.startsWith("track_detail?") == true || currentRoute?.startsWith(
+            "top_artists?"
+          ) == true || currentRoute?.startsWith("album_detail?") == true
+        ) {
+          0.dp
+        } else {
+          it.calculateTopPadding()
+        },
+        label = "top_padding",
+        animationSpec = tween(100)
+      )
       NavigationGraph(
         navController,
         modifier = Modifier
@@ -108,7 +123,7 @@ fun MainScreen(
             end = it.calculateEndPadding(
               layoutDirection = LayoutDirection.Ltr
             ),
-            top = it.calculateTopPadding()
+            top = paddingTop
           )
       )
     }

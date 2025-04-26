@@ -5,6 +5,9 @@ import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.layout.offset
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -48,6 +51,10 @@ fun NavGraphBuilder.albumGraph(
           onBackPressed = navController::popBackStack,
           animatedContentScope = this@composable,
           id = contentId,
+          modifier = Modifier
+            .offset(
+              y = (-24).dp
+            )
         )
       }
     },
