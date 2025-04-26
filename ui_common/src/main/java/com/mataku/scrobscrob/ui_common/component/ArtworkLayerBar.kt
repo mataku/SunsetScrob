@@ -26,7 +26,7 @@ fun ColumnScope.ArtworkLayerBar(
   Box(
     modifier = modifier
       .fillMaxWidth()
-      .height(24.dp)
+      .height(48.dp)
       .background(
         Brush.verticalGradient(
           colors = listOf(

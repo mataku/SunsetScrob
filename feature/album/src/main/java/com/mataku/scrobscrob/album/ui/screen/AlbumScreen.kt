@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -147,7 +148,8 @@ private fun SharedTransitionScope.AlbumContent(
               CircleBackButton(
                 modifier = Modifier
                   .padding(
-                    start = 4.dp
+                    start = 4.dp,
+                    top = 16.dp
                   )
                   .clickable(
                     interactionSource = remember { MutableInteractionSource() },
@@ -155,6 +157,9 @@ private fun SharedTransitionScope.AlbumContent(
                   ) {
                     onBackPressed.invoke()
                   }
+                  .offset(
+                    y = 24.dp
+                  )
               )
             }
           }
