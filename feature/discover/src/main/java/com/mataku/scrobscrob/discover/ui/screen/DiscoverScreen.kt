@@ -15,7 +15,6 @@ import com.mataku.scrobscrob.discover.ui.molecule.ChartArtistList
 import com.mataku.scrobscrob.discover.ui.molecule.ChartTrackList
 import com.mataku.scrobscrob.discover.ui.molecule.RecentlyLovedTrackList
 import com.mataku.scrobscrob.discover.ui.viewmodel.DiscoverViewModel
-import com.mataku.scrobscrob.ui_common.organism.ContentHeader
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -26,12 +25,9 @@ fun DiscoverScreen(
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
   LazyColumn(
-    modifier = modifier.fillMaxSize(),
+    modifier = modifier
+      .fillMaxSize()
   ) {
-    stickyHeader {
-      ContentHeader(text = "Discover")
-    }
-
     if (uiState.recentlyLovedTracks.isNotEmpty()) {
       item(
         key = "recently_loved_track_list"

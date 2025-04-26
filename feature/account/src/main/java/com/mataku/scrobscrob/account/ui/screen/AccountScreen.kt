@@ -51,7 +51,6 @@ import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.core.entity.UserInfo
 import com.mataku.scrobscrob.ui_common.SunsetAlertDialog
 import com.mataku.scrobscrob.ui_common.SunsetTextStyle
-import com.mataku.scrobscrob.ui_common.organism.ContentHeader
 import com.mataku.scrobscrob.ui_common.style.LocalSnackbarHostState
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import kotlinx.collections.immutable.persistentListOf
@@ -208,11 +207,10 @@ private fun AccountContent(
   val openClearCacheConfirmationDialog = remember {
     mutableStateOf(false)
   }
-  LazyColumn(modifier = modifier.fillMaxSize()) {
-    stickyHeader {
-      ContentHeader(text = stringResource(id = R.string.menu_account))
-    }
-
+  LazyColumn(
+    modifier = modifier
+      .fillMaxSize()
+  ) {
     if (userInfo != null) {
       item(key = "profile") {
         Profile(
@@ -386,13 +384,14 @@ private fun AccountMenuCell(
   enabled: Boolean = true,
   onTapAccount: () -> Unit
 ) {
-  Column(modifier = Modifier
-    .fillMaxWidth()
-    .height(64.dp)
-    .clickable(enabled = enabled) {
-      onTapAccount.invoke()
-    }
-    .padding(horizontal = 16.dp),
+  Column(
+    modifier = Modifier
+      .fillMaxWidth()
+      .height(64.dp)
+      .clickable(enabled = enabled) {
+        onTapAccount.invoke()
+      }
+      .padding(horizontal = 16.dp),
     verticalArrangement = Arrangement.SpaceEvenly
   ) {
     Text(text = title, style = SunsetTextStyle.subtitle)

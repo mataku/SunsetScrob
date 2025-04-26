@@ -91,7 +91,7 @@ fun TopArtistsScreen(
         },
         modifier = modifier
           .padding(
-            bottom = 128.dp + with(density) {
+            bottom = 192.dp + with(density) {
               topAppBarHeightPixel.toDp()
             }
           )

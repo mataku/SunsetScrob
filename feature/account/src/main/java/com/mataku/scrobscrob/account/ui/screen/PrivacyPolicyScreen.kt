@@ -12,26 +12,16 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.viewinterop.AndroidView
-import com.mataku.scrobscrob.account.R
-import com.mataku.scrobscrob.ui_common.organism.ContentHeader
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PrivacyPolicyScreen(
-  onBackPressed: () -> Unit,
   modifier: Modifier = Modifier
 ) {
   val context = LocalContext.current
   LazyColumn(
     content = {
-      stickyHeader {
-        ContentHeader(
-          text = stringResource(id = R.string.item_privacy_policy),
-          onBackPressed = onBackPressed
-        )
-      }
       item {
         Column(modifier = Modifier.fillMaxSize()) {
           AndroidView(
