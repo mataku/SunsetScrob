@@ -24,14 +24,12 @@ import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import com.mataku.scrobscrob.ui_common.organism.NavigationHeader
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import kotlinx.coroutines.launch
 
 @Composable
 fun WebViewScreen(
   url: String,
-  onBackPressed: () -> Unit,
   modifier: Modifier = Modifier
 ) {
   var title by remember {
@@ -51,10 +49,6 @@ fun WebViewScreen(
     modifier = modifier
       .fillMaxSize()
   ) {
-    NavigationHeader(
-      text = title,
-      onBackPressed = onBackPressed
-    )
     // NOTE: specified height and visibility animation as workaround for compose WebView flickering
     AndroidView(
       factory = {
@@ -108,7 +102,6 @@ private fun WebViewScreenPreview() {
       WebViewScreen(
         url = "https://www.google.com",
         modifier = Modifier.fillMaxWidth(),
-        onBackPressed = {}
       )
     }
   }

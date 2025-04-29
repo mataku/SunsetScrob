@@ -1,8 +1,6 @@
 package com.mataku.scrobscrob.ui_common
 
-import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -20,11 +18,7 @@ fun NavGraphBuilder.commonGraph(navController: NavController) {
     content = {
       WebViewScreen(
         url = it.arguments?.getString("url")!!,
-        onBackPressed = navController::popBackStack,
         modifier = Modifier
-          .padding(
-            top = 24.dp
-          )
       )
     }
   )
