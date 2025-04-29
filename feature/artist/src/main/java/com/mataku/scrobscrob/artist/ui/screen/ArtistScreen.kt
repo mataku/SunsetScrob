@@ -142,7 +142,8 @@ private fun SharedTransitionScope.ArtistContent(
               CircleBackButton(
                 modifier = Modifier
                   .padding(
-                    start = 4.dp
+                    start = 4.dp,
+                    top = 16.dp
                   )
                   .clickable(
                     interactionSource = remember { MutableInteractionSource() },

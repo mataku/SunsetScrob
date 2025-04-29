@@ -87,12 +87,25 @@ enum class ScreenStyle(
       )
     },
     navigationRequired = true
+  ),
+  WebViewStyle(
+    route = "webview",
+    topAppBarTitle = {
+      Text(
+        text = "",
+        style = SunsetTextStyle.title,
+      )
+    },
+    navigationRequired = true,
   );
 
   companion object {
     fun fromRoute(route: String?): ScreenStyle? {
       route ?: return null
-      return entries.firstOrNull { it.route == route }
+
+      return entries.firstOrNull {
+        it.route == route.split('?')[0]
+      }
     }
   }
 }
