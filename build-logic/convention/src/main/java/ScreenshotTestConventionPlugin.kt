@@ -1,4 +1,3 @@
-import com.android.build.api.dsl.ManagedVirtualDevice
 import com.android.build.gradle.LibraryExtension
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import org.gradle.api.Plugin
@@ -43,16 +42,6 @@ class ScreenshotTestConventionPlugin : Plugin<Project> {
           }
           add("testImplementation", project(":test_helper:integration"))
           add("debugImplementation", libs.findLibrary("compose-ui-test-manifest").get())
-        }
-
-        testOptions {
-          managedDevices {
-            devices.maybeCreate("pixel4Api31", ManagedVirtualDevice::class.java).apply {
-              device = "Pixel 4"
-              apiLevel = 31
-              systemImageSource = "aosp"
-            }
-          }
         }
         defaultConfig {
           testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
