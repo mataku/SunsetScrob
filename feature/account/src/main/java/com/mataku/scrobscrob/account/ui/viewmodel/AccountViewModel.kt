@@ -21,7 +21,6 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import java.text.DecimalFormat
 import javax.inject.Inject
 
@@ -43,7 +42,6 @@ class AccountViewModel @Inject constructor(
     private set
 
   init {
-    Timber.d("MATAKUDEBUG init account")
     val username = usernameRepository.username() ?: ""
     val appVersion = appInfoProvider.appVersion()
     viewModelScope.launch {
