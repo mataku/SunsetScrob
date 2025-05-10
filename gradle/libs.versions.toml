@@ -2,6 +2,7 @@
 activity = "1.10.1"
 agp = "8.10.0"
 compose = "2025.05.00"
+coil = "3.1.0"
 core-sprashscreen = "1.0.1"
 coroutines = "1.10.2"
 firebase = "33.13.0"
@@ -106,10 +107,11 @@ junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version = "5.8.2" 
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
 androidx-profileinstaller = { group = "androidx.profileinstaller", name = "profileinstaller", version.ref = "profileinstaller" }
 
-glide-compose = { module = "com.github.bumptech.glide:compose", version = "1.0.0-beta01" }
-glide-compiler = { module = "com.github.bumptech.glide:ksp", version = "4.16.0" }
-
 compose-lint = { module = "com.slack.lint.compose:compose-lint-checks", version = "1.3.1" }
+
+coil-core = { module = "io.coil-kt.coil3:coil-core", version.ref = "coil" }
+coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
+coil-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coil" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

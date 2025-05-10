@@ -1,6 +1,11 @@
 package com.mataku.scrobscrob.data.api.di
 
 import android.content.Context
+import coil3.ImageLoader
+import coil3.disk.DiskCache
+import coil3.network.okhttp.OkHttpNetworkFetcherFactory
+import coil3.request.CachePolicy
+import coil3.request.crossfade
 import com.mataku.scrobscrob.data.api.BuildConfig
 import com.mataku.scrobscrob.data.api.LastFmHttpClient
 import com.mataku.scrobscrob.data.api.LastFmService
@@ -10,11 +15,11 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import okio.Path.Companion.toOkioPath
 import java.io.File
 import javax.inject.Singleton
 
@@ -24,11 +29,7 @@ class ApiModule {
 
   @Singleton
   @Provides
-  fun provideLastFmService(@ApplicationContext context: Context): LastFmService {
-    return LastFmService(provideHttpClient(context))
-  }
-
-  private fun provideHttpClient(@ApplicationContext context: Context): HttpClient {
+  fun provideOkhttpClient(@ApplicationContext context: Context): OkHttpClient {
     val okhttpClientBuilder = OkHttpClient.Builder()
       .cache(
         Cache(
@@ -37,15 +38,52 @@ class ApiModule {
         )
       )
 
-    okhttpClientBuilder.addInterceptor(LastfmApiAuthInterceptor())
-
     if (BuildConfig.DEBUG) {
       okhttpClientBuilder.addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
     }
 
+    return okhttpClientBuilder.build()
+  }
+
+  @Singleton
+  @Provides
+  fun provideLastFmService(
+    okHttpClient: OkHttpClient
+  ): LastFmService {
     val okHttpEngine = OkHttp.create {
-      preconfigured = okhttpClientBuilder.build()
+      preconfigured = okHttpClient.newBuilder()
+        .addInterceptor(LastfmApiAuthInterceptor())
+        .build()
     }
-    return LastFmHttpClient.create(okHttpEngine)
+    return LastFmService(
+      LastFmHttpClient.create(okHttpEngine)
+    )
+  }
+
+  @Singleton
+  @Provides
+  fun provideImageLoader(
+    @ApplicationContext context: Context,
+    okHttpClient: OkHttpClient
+  ): ImageLoader {
+    return ImageLoader.Builder(context)
+      .components {
+        add(
+          OkHttpNetworkFetcherFactory(
+            callFactory = {
+              okHttpClient.newBuilder().build()
+            }
+          )
+        )
+      }
+      .crossfade(true)
+      .memoryCachePolicy(CachePolicy.DISABLED)
+      .diskCache {
+        DiskCache.Builder()
+          .directory(context.cacheDir.resolve("sunsetscrob_image").toOkioPath())
+          .maxSizeBytes(1073741824L) // 1GB
+          .build()
+      }
+      .build()
   }
 }
