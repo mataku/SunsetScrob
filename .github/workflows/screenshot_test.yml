@@ -10,6 +10,9 @@ on:
   pull_request:
     branches:
       - '**'
+  push:
+    branches:
+      - develop
 
 concurrency:
   group: ${{ github.head_ref || 'develop' }}-integration
