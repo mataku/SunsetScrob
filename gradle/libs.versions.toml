@@ -2,7 +2,7 @@
 activity = "1.10.1"
 agp = "8.11.1"
 compose = "2025.07.00"
-coil = "3.2.0"
+coil = "3.3.0"
 core-sprashscreen = "1.0.1"
 coroutines = "1.10.2"
 firebase = "33.16.0"
