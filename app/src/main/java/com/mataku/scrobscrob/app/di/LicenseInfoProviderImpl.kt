@@ -10,7 +10,7 @@ import javax.inject.Singleton
 
 @Singleton
 class LicenseInfoProviderImpl @Inject constructor(
-  @ApplicationContext
+  @param:ApplicationContext
   private val context: Context
 ) : LicenseInfoProvider {
   override suspend fun licenseRawString(): String? {

@@ -18,7 +18,7 @@ private val Context.themeDataStore by preferencesDataStore("THEME")
 
 @Singleton
 class ThemeDataStore(
-  @ApplicationContext private val context: Context
+  @param:ApplicationContext private val context: Context
 ) {
   fun theme(): Flow<AppThemeEntity> =
     context.themeDataStore.data
