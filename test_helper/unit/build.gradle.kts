@@ -23,3 +23,7 @@ dependencies {
   implementation(libs.kotest.runner.junit5)
   implementation(libs.coroutines.test)
 }
+
+tasks.withType(Test::class.java) {
+  failOnNoDiscoveredTests = false
+}
