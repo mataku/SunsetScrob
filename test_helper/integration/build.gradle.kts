@@ -21,3 +21,7 @@ dependencies {
   // for robolectric
   implementation(libs.compose.ui.test.manifest)
 }
+
+tasks.withType(Test::class.java) {
+  failOnNoDiscoveredTests = false
+}

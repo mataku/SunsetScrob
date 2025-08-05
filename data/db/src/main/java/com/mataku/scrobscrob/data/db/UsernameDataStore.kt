@@ -17,7 +17,7 @@ private val Context.dataStore by preferencesDataStore("USERNAME")
 
 @Singleton
 class UsernameDataStore(
-  @ApplicationContext private val context: Context
+  @param:ApplicationContext private val context: Context
 ) {
   suspend fun username(): String? {
     val preferences = context.dataStore.data.first()

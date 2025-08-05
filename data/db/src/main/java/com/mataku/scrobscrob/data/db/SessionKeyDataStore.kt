@@ -15,7 +15,7 @@ private val Context.sessionKeyDataStore by preferencesDataStore("SESSION_KEY")
 
 @Singleton
 class SessionKeyDataStore(
-  @ApplicationContext private val context: Context
+  @param:ApplicationContext private val context: Context
 ) {
   suspend fun sessionKey(): String? {
     val preferences = context.sessionKeyDataStore.data.first()

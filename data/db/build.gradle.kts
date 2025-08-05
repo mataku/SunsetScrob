@@ -25,3 +25,7 @@ sqldelight {
     }
   }
 }
+
+tasks.withType(Test::class.java) {
+  failOnNoDiscoveredTests = false
+}

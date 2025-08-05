@@ -16,7 +16,7 @@ interface FileRepository {
 
 @Singleton
 class FileRepositoryImpl @Inject constructor(
-  @ApplicationContext private val applicationContext: Context
+  @param:ApplicationContext private val applicationContext: Context
 ) : FileRepository {
   override suspend fun cacheImageDirMBSize(): Double {
     return withContext(Dispatchers.IO) {

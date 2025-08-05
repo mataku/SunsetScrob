@@ -3,8 +3,8 @@ package com.mataku.scrobscrob.account
 import androidx.annotation.StringRes
 
 enum class AccountMenu(
-  @StringRes val titleRes: Int,
-  @StringRes val descriptionRes: Int
+  @param:StringRes val titleRes: Int,
+  @param:StringRes val descriptionRes: Int
 ) {
   SCROBBLE(
     titleRes = R.string.title_scrobble,

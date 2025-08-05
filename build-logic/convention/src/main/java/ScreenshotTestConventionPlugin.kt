@@ -3,6 +3,7 @@ import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalogsExtension
+import org.gradle.api.tasks.testing.Test
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getByType
@@ -46,6 +47,11 @@ class ScreenshotTestConventionPlugin : Plugin<Project> {
         defaultConfig {
           testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         }
+      }
+
+      // Avoid to fail if no tests are discovered like `./gradlew testDebugUnitTest -PexcludeScreenshotTest=true`
+      tasks.withType(Test::class.java) {
+        failOnNoDiscoveredTests.set(false)
       }
     }
   }
