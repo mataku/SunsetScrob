@@ -1,0 +1,66 @@
+name: Deploy to Google Play Console internal app sharing
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: internal_app_sharing
+  cancel-in-progress: true
+
+env:
+  GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx8g -XX:+UseParallelGC -XX:MaxMetaspaceSize=1g"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Enable KVM group perms
+        run: |
+            echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+            sudo udevadm control --reload-rules
+            sudo udevadm trigger --name-match=kvm
+      - uses: ./.github/actions/setup-gradle
+        with:
+          use-build-cache: 'false'
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+      - name: Setup env
+        env:
+          LAST_FM_API_KEY: ${{ secrets.LAST_FM_API_KEY }}
+          LAST_FM_SHARED_SECRET: ${{ secrets.LAST_FM_SHARED_SECRET }}
+          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON_DEV }}
+        run: |
+          bundle exec fastlane android setup_for_ci
+      - name: Prepare authentication
+        run: |
+          echo -n "${{ secrets.SUNSETSCROB_KEYSTORE }}" | base64 -d > SunsetScrob.jks
+          echo -n "${{ secrets.APP_PUBLISHER_JSON }}" | base64 -d > app/app-publisher.json
+      - name: Generate benchmark profile
+        env:
+          SUNSET_KEY_ALIAS: ${{ secrets.SUNSET_KEY_ALIAS }}
+          SUNSET_KEY_PASSWORD: ${{ secrets.SUNSET_KEY_PASSWORD }}
+          SUNSET_STORE_PASSWORD: ${{ secrets.SUNSET_STORE_PASSWORD }}
+        run: |
+          ./gradlew cleanManagedDevices --unused-only
+          ./gradlew app:generateReleaseBaselineProfile -Pandroid.testoptions.manageddevices.emulator.gpu="swiftshader_indirect" -Pandroid.testInstrumentationRunnerArguments.androidx.benchmark.enabledRules=BaselineProfile
+      - name: Move baseline profile file
+        run: |
+          mv app/src/release/generated/baselineProfiles/baseline-prof.txt app/src/main/baseline-prof.txt
+      - name: Deploy an aab
+        env:
+          LAST_FM_API_KEY: ${{ secrets.LAST_FM_API_KEY }}
+          LAST_FM_SHARED_SECRET: ${{ secrets.LAST_FM_SHARED_SECRET }}
+          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
+          SUNSET_KEY_ALIAS: ${{ secrets.SUNSET_KEY_ALIAS }}
+          SUNSET_KEY_PASSWORD: ${{ secrets.SUNSET_KEY_PASSWORD }}
+          SUNSET_STORE_PASSWORD: ${{ secrets.SUNSET_STORE_PASSWORD }}
+        run: |
+          bundle exec fastlane android deploy_internal_app_sharing
