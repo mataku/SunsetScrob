@@ -40,7 +40,7 @@ class ApplicationConventionPlugin : Plugin<Project> {
             isDebuggable = true
           }
           release {
-            isMinifyEnabled = true
+            isMinifyEnabled = false
             signingConfig = signingConfigs.getByName("release")
             isDebuggable = false
           }
@@ -73,10 +73,10 @@ class ApplicationConventionPlugin : Plugin<Project> {
           applicationId = "com.mataku.scrobscrob"
           versionName = appVersionName
           versionCode = generateVersionCode(appVersionName)
-          proguardFiles(
-            getDefaultProguardFile("proguard-android.txt"),
-            "proguard-rules.pro"
-          )
+//          proguardFiles(
+//            getDefaultProguardFile("proguard-android.txt"),
+//            "proguard-rules.pro"
+//          )
         }
       }
       testConfiguration()
