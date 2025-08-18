@@ -43,6 +43,9 @@ class ApplicationConventionPlugin : Plugin<Project> {
             isMinifyEnabled = true
             signingConfig = signingConfigs.getByName("release")
             isDebuggable = false
+            ndk {
+              debugSymbolLevel = "FULL"
+            }
           }
         }
         kotlinConfiguration()
