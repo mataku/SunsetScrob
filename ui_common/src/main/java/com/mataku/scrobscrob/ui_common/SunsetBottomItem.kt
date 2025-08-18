@@ -8,7 +8,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 
 // NOTE: merge iconDrawable into ImageVector if possible
 enum class SunsetBottomNavItem(
-  @DrawableRes val iconDrawable: Int?,
+  @param:DrawableRes val iconDrawable: Int?,
   val title: String,
   val screenRoute: String,
   val icon: ImageVector?

@@ -17,7 +17,7 @@ private val Context.dataStore by preferencesDataStore("ScrobbleApp")
 
 @Singleton
 class ScrobbleAppDataStore(
-  @ApplicationContext private val context: Context
+  @param:ApplicationContext private val context: Context
 ) {
   suspend fun allowedApps(): Set<String> {
     val preferences = context.dataStore.data.first()

@@ -36,6 +36,19 @@
   packageRules: [
     {
       matchUpdateTypes: [
+        'major',
+        'patch',
+        'minor',
+      ],
+      groupName: 'GitHubActions',
+      matchManagers: [
+        'github-actions',
+      ],
+      automerge: true,
+      platformAutomerge: true,
+    },
+    {
+      matchUpdateTypes: [
         'minor',
         'patch',
       ],

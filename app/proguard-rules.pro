@@ -36,3 +36,7 @@
 -dontwarn org.openjsse.net.ssl.OpenJSSE
 
 -keep public class * extends com.airbnb.android.showkase.models.ShowkaseProvider
+
+# coil
+-keep class * extends coil3.util.DecoderServiceLoaderTarget { *; }
+-keep class * extends coil3.util.FetcherServiceLoaderTarget { *; }

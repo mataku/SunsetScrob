@@ -10,6 +10,9 @@ on:
   pull_request:
     branches:
       - '**'
+  push:
+    branches:
+      - develop
 
 concurrency:
   group: ${{ github.head_ref || 'develop' }}-integration
@@ -24,7 +27,7 @@ jobs:
     timeout-minutes: 20
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           ref: ${{ github.event.inputs.branch }}
       - uses: ./.github/actions/setup-gradle

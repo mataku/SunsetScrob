@@ -20,6 +20,7 @@ android {
 dependencies {
   implementation(project(":core"))
   implementation(project(":data:repository"))
+  implementation(project(":data:api"))
 
   implementation(project(":feature:album"))
   implementation(project(":feature:artist"))
@@ -52,6 +53,9 @@ dependencies {
   debugImplementation(libs.showkase)
   implementation(libs.showkase.annotation)
   kspDebug(libs.showkase.processor)
+
+  implementation(libs.coil.compose)
+  implementation(libs.coil.okhttp)
 }
 
 ksp {
@@ -67,4 +71,8 @@ licensee {
   allow("MIT")
   allowUrl("https://developer.android.com/guide/playcore/license")
   allowUrl("https://developer.android.com/studio/terms.html")
+}
+
+tasks.withType(Test::class.java) {
+  failOnNoDiscoveredTests = false
 }

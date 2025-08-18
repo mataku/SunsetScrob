@@ -3,7 +3,6 @@ package com.mataku.scrobscrob.data.repository.mapper
 import com.mataku.scrobscrob.core.entity.AlbumInfo
 import com.mataku.scrobscrob.core.entity.AlbumInfoTrack
 import com.mataku.scrobscrob.core.entity.AppTheme
-import com.mataku.scrobscrob.core.entity.ArtistArtwork
 import com.mataku.scrobscrob.core.entity.ArtistInfo
 import com.mataku.scrobscrob.core.entity.ChartArtist
 import com.mataku.scrobscrob.core.entity.ChartTopArtists
@@ -56,7 +55,6 @@ import com.mataku.scrobscrob.data.api.model.UserInfoApiResponse
 import com.mataku.scrobscrob.data.api.model.UserTopArtistsApiResponse
 import com.mataku.scrobscrob.data.api.model.WikiBody
 import com.mataku.scrobscrob.data.db.entity.AppThemeEntity
-import com.mataku.scrobscrob.data.db.entity.ArtistArtworkEntity
 import com.mataku.scrobscrob.data.db.entity.LicenseArtifactDefinitionEntity
 import com.mataku.scrobscrob.data.db.entity.ScmEntity
 import com.mataku.scrobscrob.data.db.entity.SpdxLicenseEntity
@@ -171,8 +169,6 @@ fun TagListBody?.toTagList(): List<Tag> {
     is MultipleTag -> {
       this.tagList.toTagList()
     }
-
-    else -> emptyList<Tag>()
   }
 }
 
@@ -374,13 +370,6 @@ fun List<ChartTagBody>.toChartTagList(): ImmutableList<Tag> {
 fun ChartTopTagsResponse.toChartTopTags(): ImmutableList<Tag> {
   val body = this.chartTopTagsBody
   return body.tagList.toChartTagList()
-}
-
-fun ArtistArtworkEntity.toArtistArtwork(): ArtistArtwork {
-  return ArtistArtwork(
-    name = this.name,
-    url = this.url
-  )
 }
 
 fun LovedTrackBody.toLovedTrack(): LovedTrack {

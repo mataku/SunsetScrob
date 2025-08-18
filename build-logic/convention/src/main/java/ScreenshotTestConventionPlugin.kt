@@ -1,9 +1,9 @@
-import com.android.build.api.dsl.ManagedVirtualDevice
 import com.android.build.gradle.LibraryExtension
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalogsExtension
+import org.gradle.api.tasks.testing.Test
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getByType
@@ -44,19 +44,14 @@ class ScreenshotTestConventionPlugin : Plugin<Project> {
           add("testImplementation", project(":test_helper:integration"))
           add("debugImplementation", libs.findLibrary("compose-ui-test-manifest").get())
         }
-
-        testOptions {
-          managedDevices {
-            devices.maybeCreate("pixel4Api31", ManagedVirtualDevice::class.java).apply {
-              device = "Pixel 4"
-              apiLevel = 31
-              systemImageSource = "aosp"
-            }
-          }
-        }
         defaultConfig {
           testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         }
+      }
+
+      // Avoid to fail if no tests are discovered like `./gradlew testDebugUnitTest -PexcludeScreenshotTest=true`
+      tasks.withType(Test::class.java) {
+        failOnNoDiscoveredTests.set(false)
       }
     }
   }

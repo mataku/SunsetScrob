@@ -1,20 +1,17 @@
-name: Release to Google Play Console internal track
+name: Deploy to Google Play Console internal app sharing
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
 
 concurrency:
-  group: release
+  group: internal_app_sharing
   cancel-in-progress: true
 
 env:
   GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx8g -XX:+UseParallelGC -XX:MaxMetaspaceSize=1g"
 
 jobs:
-  release:
+  deploy:
     runs-on: ubuntu-latest
     timeout-minutes: 25
 
@@ -66,4 +63,4 @@ jobs:
           SUNSET_KEY_PASSWORD: ${{ secrets.SUNSET_KEY_PASSWORD }}
           SUNSET_STORE_PASSWORD: ${{ secrets.SUNSET_STORE_PASSWORD }}
         run: |
-          bundle exec fastlane android deploy_internal
+          bundle exec fastlane android deploy_internal_app_sharing

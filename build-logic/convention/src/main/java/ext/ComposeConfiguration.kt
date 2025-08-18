@@ -26,7 +26,9 @@ fun Project.composeConfiguration() {
       compilerOptions {
         jvmTarget.set(JvmTarget.JVM_17)
         // painful but too many files target
-        freeCompilerArgs.add("-opt-in=androidx.compose.animation.ExperimentalSharedTransitionApi")
+        if (name != "core") {
+          freeCompilerArgs.add("-opt-in=androidx.compose.animation.ExperimentalSharedTransitionApi")
+        }
       }
     }
 

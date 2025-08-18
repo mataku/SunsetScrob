@@ -8,20 +8,16 @@ plugins {
 
 android {
   namespace = "com.mataku.scrobscrob.baselineprofile"
-  compileSdk = 34
+  compileSdk = 35
 
   compileOptions {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
   }
-
-  kotlinOptions {
-    jvmTarget = "17"
-  }
-
+  
   defaultConfig {
     minSdk = 28
-    targetSdk = 34
+    targetSdk = 35
 
     testInstrumentationRunnerArguments["androidx.benchmark.suppressErrors"] = "EMULATOR"
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -29,7 +25,7 @@ android {
 
   targetProjectPath = ":app"
 
-  testOptions.managedDevices.devices {
+  testOptions.managedDevices.allDevices {
     create<ManagedVirtualDevice>("pixel6Api34") {
       device = "Pixel 6"
       apiLevel = 34
