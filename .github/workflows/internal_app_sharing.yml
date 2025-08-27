@@ -16,7 +16,7 @@ jobs:
     timeout-minutes: 25
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
       - name: Enable KVM group perms
         run: |
             echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
@@ -26,12 +26,12 @@ jobs:
         with:
           use-build-cache: 'false'
 
-      - uses: ruby/setup-ruby@v1
+      - uses: ruby/setup-ruby@efbf473cab83af4468e8606cc33eca9281bb213f # v1.256.0
         with:
           bundler-cache: true
 
       - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
+        uses: android-actions/setup-android@9fc6c4e9069bf8d3d10b2204b1fb8f6ef7065407 # v3.2.2
       - name: Setup env
         env:
           LAST_FM_API_KEY: ${{ secrets.LAST_FM_API_KEY }}
