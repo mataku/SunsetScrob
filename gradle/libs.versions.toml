@@ -23,7 +23,7 @@ roborazzi = "1.50.0"
 showkase = "1.0.5"
 sqldelight = "2.1.0"
 espresso-core = "3.6.1"
-baselineprofile = "1.4.0"
+baselineprofile = "1.4.1"
 profileinstaller = "1.4.1"
 
 [libraries]
