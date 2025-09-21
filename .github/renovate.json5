@@ -45,7 +45,11 @@
         'github-actions',
       ],
       automerge: true,
-      platformAutomerge: true
+      platformAutomerge: true,
+      timezone: 'Asia/Tokyo',
+      schedule: [
+        'at 1pm on Friday',
+      ],
     },
     {
       matchUpdateTypes: [
