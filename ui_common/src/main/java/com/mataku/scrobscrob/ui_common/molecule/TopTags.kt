@@ -7,8 +7,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material3.ChipColors
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.SuggestionChip
+import androidx.compose.material3.SuggestionChipDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -62,7 +65,11 @@ private fun Tag(
         modifier = Modifier.padding(8.dp)
       )
     },
-    shape = ShapeDefaults.Large
+    shape = ShapeDefaults.Large,
+    border = SuggestionChipDefaults.suggestionChipBorder(
+      enabled = true,
+      borderColor = MaterialTheme.colorScheme.onSecondary,
+    )
   )
 }
 
