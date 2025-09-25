@@ -47,6 +47,8 @@ local.properties
 .idea/runConfigurations.xml
 .idea/AndroidProjectSystem.xml
 .idea/deviceManager.xml
+.idea/copilot.data.migration.agent.xml
+.idea/copilot.data.migration.edit.xml
 
 *.iml
 .env
