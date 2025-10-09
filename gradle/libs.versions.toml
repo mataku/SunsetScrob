@@ -123,7 +123,7 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 crashlytics = { id = "com.google.firebase.crashlytics", version = "3.0.6" }
-google-services = { id = "com.google.gms.google-services", version = "4.4.3" }
+google-services = { id = "com.google.gms.google-services", version = "4.4.4" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 baselineprofile = { id = "androidx.baselineprofile", version.ref = "baselineprofile" }
 sqldelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }
