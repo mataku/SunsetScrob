@@ -10,7 +10,7 @@ hilt = "2.57.2"
 ktor = "3.3.1"
 kotlin = "2.2.21"
 ksp = "2.3.0"
-licensee = "1.8.0"
+licensee = "1.14.1"
 kotlinx-collections-immutable-jvm = "0.4.0"
 kotlinx-serialization-json = "1.9.0"
 kotest = "6.0.4"
@@ -72,7 +72,7 @@ android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 compose-compiler-plugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
 
-lottie-compose = { module = "com.airbnb.android:lottie-compose", version = "6.3.0" }
+lottie-compose = { module = "com.airbnb.android:lottie-compose", version = "6.6.10" }
 
 app-update = { module = "com.google.android.play:app-update-ktx", version = "2.1.0" }
 
