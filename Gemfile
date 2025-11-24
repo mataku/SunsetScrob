@@ -6,5 +6,5 @@ gem 'abbrev'
 gem 'mutex_m'
 gem 'csv'
 
-gem 'fastlane', '2.228.0'
+gem 'fastlane', '2.229.1'
 gem 'fastlane-plugin-firebase_app_distribution', '0.10.1'
