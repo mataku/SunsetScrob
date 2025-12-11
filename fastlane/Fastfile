@@ -60,7 +60,8 @@ platform :android do
       skip_upload_metadata: false,
       skip_upload_images: true,
       skip_upload_screenshots: true,
-      skip_upload_apk: true
+      skip_upload_apk: true,
+      rollout: '0.2',
     )
   end
 
