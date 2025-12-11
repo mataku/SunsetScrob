@@ -235,11 +235,8 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
-  abbrev
-  csv
   fastlane (= 2.229.1)
   fastlane-plugin-firebase_app_distribution (= 0.10.1)
-  mutex_m
 
 BUNDLED WITH
    2.5.22
