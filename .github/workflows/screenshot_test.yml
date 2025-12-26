@@ -27,7 +27,7 @@ jobs:
     timeout-minutes: 20
 
     steps:
-      - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5.0.1
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           ref: ${{ github.event.inputs.branch }}
       - uses: ./.github/actions/setup-gradle
@@ -48,7 +48,7 @@ jobs:
           bundle exec fastlane android screenshot_test
       - name: Upload test reports
         if: failure()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
           name: android-test-reports
           path: |
