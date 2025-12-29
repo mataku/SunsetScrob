@@ -49,9 +49,10 @@ jobs:
           SUNSET_KEY_ALIAS: ${{ secrets.SUNSET_KEY_ALIAS }}
           SUNSET_KEY_PASSWORD: ${{ secrets.SUNSET_KEY_PASSWORD }}
           SUNSET_STORE_PASSWORD: ${{ secrets.SUNSET_STORE_PASSWORD }}
-          CREDENTIALS_JSON_FILE_PATH: ${{ steps.auth.outputs.credentials_file_path }}
+          HALT_GOOGLE_PLAY_RELEASE_PACKAGE_NAME: com.mataku.scrobscrob
+          HALT_GOOGLE_PLAY_RELEASE_TRACK: internal
+          HALT_GOOGLE_PLAY_RELEASE_VERSION_NAME: 1.21.1
+          HALT_GOOGLE_PLAY_RELEASE_JSON_FILE_PATH: ${{ steps.auth.outputs.credentials_file_path }}
         run: |
           bundle exec fastlane android setup_for_ci
           bundle exec fastlane android halt_release
-          bundle exec fastlane android resume_release
-          bundle exec fastlane android update_rollout

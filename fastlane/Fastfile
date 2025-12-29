@@ -111,12 +111,7 @@ platform :android do
   end
 
   lane :halt_release do
-    halt_google_play_release(
-      package_name: 'com.mataku.scrobscrob',
-      track: 'internal',
-      version_name: '1.21.1',
-      json_file_path: ENV['CREDENTIALS_JSON_FILE_PATH'],
-    )
+    halt_google_play_release
   end
 
   lane :resume_release do
