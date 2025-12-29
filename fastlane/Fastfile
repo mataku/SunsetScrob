@@ -110,6 +110,34 @@ platform :android do
     end
   end
 
+  lane :halt_release do
+    halt_google_play_release(
+      package_name: 'com.mataku.scrobscrob',
+      track: 'internal',
+      version_name: '1.21.1',
+      json_file_path: ENV['CREDENTIALS_JSON_FILE_PATH'],
+    )
+  end
+
+  lane :resume_release do
+    resume_google_play_release(
+      package_name: 'com.mataku.scrobscrob',
+      track: 'internal',
+      version_name: '1.21.1',
+      json_file_path: ENV['CREDENTIALS_JSON_FILE_PATH'],
+    )
+  end
+
+  lane :update_rollout do
+    update_google_play_release_rollout(
+      package_name: 'com.mataku.scrobscrob',
+      track: 'internal',
+      version_name: '1.21.1',
+      json_file_path: ENV['CREDENTIALS_JSON_FILE_PATH'],
+      user_fraction: 0.45
+    )
+  end
+
   error do |lane, exception|
     # slack(
     #   message: exception.message,
