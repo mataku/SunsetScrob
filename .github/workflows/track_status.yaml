@@ -26,9 +26,27 @@ jobs:
           create_credentials_file: true
           workload_identity_provider: ${{ secrets.WORKFLOW_IDENTITY_PROVIDER }}
           service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT }}
+      - name: Checkout halt action repository
+        uses: actions/checkout@v6
+        with:
+          repository: mataku/halt-google-play-release-action
+          token: ${{ secrets.ACTIONS_CHECKOUT_TOKEN }}
+          path: .github/actions/halt-google-play-release-action
+      - name: Checkout resume action repository
+        uses: actions/checkout@v6
+        with:
+          repository: mataku/resume-google-play-release-action
+          token: ${{ secrets.ACTIONS_CHECKOUT_TOKEN }}
+          path: .github/actions/resume-google-play-release-action
+      - name: Checkout halt action repository
+        uses: actions/checkout@v6
+        with:
+          repository: mataku/update-google-play-release-rollout-action
+          token: ${{ secrets.ACTIONS_CHECKOUT_TOKEN }}
+          path: .github/actions/update-google-play-release-rollout-action
       - name: Resume Google Play Track
         if: ${{ inputs.operation == 'resume' }}
-        uses: mataku/resume-google-play-release-action@main
+        uses: .github/actions/resume-google-play-release-action
         with:
           package-name: 'com.mataku.scrobscrob'
           version-name: '1.21.1'
@@ -36,7 +54,7 @@ jobs:
           track: 'internal'
       - name: Halt Google Play Track
         if: ${{ inputs.operation == 'halt' }}
-        uses: mataku/halt-google-play-release-action@main
+        uses: .github/actions/halt-google-play-release-action
         with:
           package-name: 'com.mataku.scrobscrob'
           version-name: '1.21.1'
@@ -44,7 +62,7 @@ jobs:
           track: 'internal'
       - name: Update Google Play Track Rollout
         if: ${{ inputs.operation == 'update_rollout' }}
-        uses: mataku/update-rollout-google-play-release-action@main
+        uses: .github/actions/update-google-play-release-rollout-action
         with:
           package-name: 'com.mataku.scrobscrob'
           version-name: '1.21.1'
