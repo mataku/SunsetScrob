@@ -46,7 +46,7 @@ jobs:
           path: .github/actions/update-google-play-release-rollout-action
       - name: Resume Google Play Track
         if: ${{ inputs.operation == 'resume' }}
-        uses: .github/actions/resume-google-play-release-action
+        uses: ./.github/actions/resume-google-play-release-action
         with:
           package-name: 'com.mataku.scrobscrob'
           version-name: '1.21.1'
@@ -54,7 +54,7 @@ jobs:
           track: 'internal'
       - name: Halt Google Play Track
         if: ${{ inputs.operation == 'halt' }}
-        uses: .github/actions/halt-google-play-release-action
+        uses: ./.github/actions/halt-google-play-release-action
         with:
           package-name: 'com.mataku.scrobscrob'
           version-name: '1.21.1'
@@ -62,7 +62,7 @@ jobs:
           track: 'internal'
       - name: Update Google Play Track Rollout
         if: ${{ inputs.operation == 'update_rollout' }}
-        uses: .github/actions/update-google-play-release-rollout-action
+        uses: ./.github/actions/update-google-play-release-rollout-action
         with:
           package-name: 'com.mataku.scrobscrob'
           version-name: '1.21.1'
