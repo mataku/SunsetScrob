@@ -8,8 +8,8 @@ coroutines = "1.10.2"
 firebase = "34.7.0"
 hilt = "2.57.2"
 ktor = "3.3.3"
-kotlin = "2.2.21"
-ksp = "2.3.3"
+kotlin = "2.3.0"
+ksp = "2.3.4"
 licensee = "1.14.1"
 kotlinx-collections-immutable-jvm = "0.4.0"
 kotlinx-serialization-json = "1.9.0"
@@ -71,6 +71,8 @@ datastore-preferences = { module = "androidx.datastore:datastore-preferences", v
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 compose-compiler-plugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
+
+kotlin-metadata-jvm = { module = "org.jetbrains.kotlin:kotlin-metadata-jvm", version.ref = "kotlin" }
 
 lottie-compose = { module = "com.airbnb.android:lottie-compose", version = "6.6.10" }
 

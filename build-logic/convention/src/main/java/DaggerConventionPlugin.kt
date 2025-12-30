@@ -15,6 +15,10 @@ class DaggerConventionPlugin : Plugin<Project> {
 
       val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
       dependencies {
+        add(
+          "ksp",
+          libs.findLibrary("kotlin-metadata-jvm").get()
+        ) // For Hilt workaround: https://github.com/google/dagger/issues/5001
         val hilt = libs.findLibrary("hilt-android").get()
         add("implementation", hilt)
         val hiltCompiler = libs.findLibrary("hilt-compiler").get()
