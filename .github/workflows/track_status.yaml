@@ -41,9 +41,9 @@ jobs:
       - name: Checkout halt action repository
         uses: actions/checkout@v6
         with:
-          repository: mataku/update-google-play-release-rollout-action
+          repository: mataku/update-rollout-google-play-release-action
           token: ${{ secrets.ACTIONS_CHECKOUT_TOKEN }}
-          path: .github/actions/update-google-play-release-rollout-action
+          path: .github/actions/update-rollout-google-play-release-action
       - name: Resume Google Play Track
         if: ${{ inputs.operation == 'resume' }}
         uses: ./.github/actions/resume-google-play-release-action
@@ -62,7 +62,7 @@ jobs:
           track: 'internal'
       - name: Update Google Play Track Rollout
         if: ${{ inputs.operation == 'update_rollout' }}
-        uses: ./.github/actions/update-google-play-release-rollout-action
+        uses: ./.github/actions//update-rollout-google-play-release-action
         with:
           package-name: 'com.mataku.scrobscrob'
           version-name: '1.21.1'
