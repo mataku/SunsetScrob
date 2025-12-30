@@ -1,0 +1,53 @@
+name: Change Google Play Track Status
+
+on:
+  workflow_dispatch:
+    inputs:
+      operation:
+        description: 'Google Play Track Release'
+        required: true
+        type: choice
+        options:
+          - resume
+          - halt
+          - update_rollout
+
+jobs:
+  status-change:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - id: auth
+        uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3.0.0
+        with:
+          create_credentials_file: true
+          workload_identity_provider: ${{ secrets.WORKFLOW_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT }}
+      - name: Resume Google Play Track
+        if: ${{ inputs.operation == 'resume' }}
+        uses: mataku/resume-google-play-release-action@main
+        with:
+          package-name: 'com.mataku.scrobscrob'
+          version-name: '1.21.1'
+          google-account-json-file-path: ${{ steps.auth.outputs.credentials_file_path }}
+          track: 'internal'
+      - name: Halt Google Play Track
+        if: ${{ inputs.operation == 'halt' }}
+        uses: mataku/halt-google-play-release-action@main
+        with:
+          package-name: 'com.mataku.scrobscrob'
+          version-name: '1.21.1'
+          google-account-json-file-path: ${{ steps.auth.outputs.credentials_file_path }}
+          track: 'internal'
+      - name: Update Google Play Track Rollout
+        if: ${{ inputs.operation == 'update_rollout' }}
+        uses: mataku/update-rollout-google-play-release-action@main
+        with:
+          package-name: 'com.mataku.scrobscrob'
+          version-name: '1.21.1'
+          google-account-json-file-path: ${{ steps.auth.outputs.credentials_file_path }}
+          track: 'internal'
+          user-fraction: '0.55'
