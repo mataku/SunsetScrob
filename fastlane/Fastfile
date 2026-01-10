@@ -60,7 +60,8 @@ platform :android do
       skip_upload_metadata: false,
       skip_upload_images: true,
       skip_upload_screenshots: true,
-      skip_upload_apk: true
+      skip_upload_apk: true,
+      json_key: ENV['GOOGLE_APPLICATION_CREDENTIALS'],
     )
   end
 
@@ -70,6 +71,7 @@ platform :android do
     upload_to_play_store_internal_app_sharing(
       package_name: APP_ID,
       aab: 'app/build/outputs/bundle/release/app-release.aab',
+      json_key: ENV['GOOGLE_APPLICATION_CREDENTIALS'],
     )
   end
 
