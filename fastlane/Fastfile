@@ -53,6 +53,7 @@ platform :android do
 
   desc "Deploy a new version to the Google Play internal stage"
   lane :deploy_internal do
+    gradle(task: 'clean')
     gradle(task: "bundleRelease")
     supply(
       aab: 'app/build/outputs/bundle/release/app-release.aab',
@@ -67,6 +68,7 @@ platform :android do
 
   desc "Deploy a new version to the Google Play internal app sharing"
   lane :deploy_internal_app_sharing do
+    gradle(task: 'clean')
     gradle(task: "bundleRelease")
     upload_to_play_store_internal_app_sharing(
       package_name: APP_ID,
