@@ -13,6 +13,10 @@ env:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
+      id-token: write
     timeout-minutes: 25
 
     steps:
