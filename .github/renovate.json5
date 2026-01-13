@@ -66,5 +66,20 @@
         'com.google.devtools.ksp{/,}**',
       ],
     },
+    {
+      groupName: 'ruby',
+      matchManagers: [
+        'ruby-version',
+        'github-actions',
+      ],
+      matchPackagePatterns: [
+        '^ruby$',
+        '^ruby/setup-ruby$',
+      ],
+      timezone: 'Asia/Tokyo',
+      schedule: [
+        '* 13 * * 6',
+      ],
+    },
   ],
 }
