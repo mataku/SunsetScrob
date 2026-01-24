@@ -2,6 +2,16 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Documentation
+
+Refer to the following documents only when needed:
+
+| File | Purpose | When to Reference |
+|------|---------|-------------------|
+| `@docs/architecture.md` | Module structure, dependencies, implementation patterns | When implementing new features |
+| `@docs/coding-conventions.md` | Naming conventions, Compose guidelines | When writing code |
+| `@docs/testing.md` | Unit Test, Screenshot Test guidelines | When writing tests |
+
 ## Project Overview
 
 SunsetScrob is a Last.fm client Android application built with modern Android development practices. It's a modular Kotlin app using Jetpack Compose, Clean Architecture, and feature-based modules.
