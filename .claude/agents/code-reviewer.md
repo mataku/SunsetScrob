@@ -14,9 +14,13 @@ An agent that performs code review on git diff.
 
 ## Execution Steps
 
-1. Run `git diff` to get the changes
-2. Review changed files based on the criteria below
-3. Output results in the specified format
+1. Read the following documents to understand project conventions:
+   - `docs/coding-conventions.md` - Naming conventions, Compose guidelines, security rules
+   - `docs/architecture.md` - Module structure, dependencies, implementation patterns
+   - `docs/testing.md` - Unit Test, Screenshot Test guidelines (if test files are changed)
+2. Run `git diff` to get the changes
+3. Review changed files based on the criteria below
+4. Output results in the specified format
 
 ## Review Criteria
 
