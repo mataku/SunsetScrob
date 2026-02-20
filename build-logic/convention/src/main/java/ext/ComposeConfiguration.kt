@@ -1,8 +1,8 @@
 package ext
 
-import com.android.build.gradle.LibraryExtension
-import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
+import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.getByType
 import org.jetbrains.kotlin.compose.compiler.gradle.ComposeCompilerGradlePluginExtension
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
@@ -12,34 +12,22 @@ fun Project.composeConfiguration() {
   with(pluginManager) {
     apply("org.jetbrains.kotlin.plugin.compose")
   }
-  val type = if (this.name == "app") {
-    BaseAppModuleExtension::class.java
-  } else {
-    LibraryExtension::class.java
+  extensions.configure<CommonExtension> {
+    buildFeatures.compose = true
   }
-  extensions.configure(type) {
-    buildFeatures {
-      compose = true
+  extensions.getByType<KotlinAndroidProjectExtension>().compilerOptions {
+    jvmTarget.set(JvmTarget.JVM_17)
+    if (name != "core") {
+      freeCompilerArgs.add("-opt-in=androidx.compose.animation.ExperimentalSharedTransitionApi")
     }
+  }
+  extensions.getByType<ComposeCompilerGradlePluginExtension>().apply {
+    val composeReportEnabled =
+      rootProject.providers.gradleProperty("composeCompilerReports").orNull == "true"
 
-    with(extensions.getByType<KotlinAndroidProjectExtension>()) {
-      compilerOptions {
-        jvmTarget.set(JvmTarget.JVM_17)
-        // painful but too many files target
-        if (name != "core") {
-          freeCompilerArgs.add("-opt-in=androidx.compose.animation.ExperimentalSharedTransitionApi")
-        }
-      }
-    }
-
-    with(extensions.getByType<ComposeCompilerGradlePluginExtension>()) {
-      val composeReportEnabled =
-        rootProject.providers.gradleProperty("composeCompilerReports").orNull == "true"
-
-      if (composeReportEnabled) {
-        reportsDestination.set(layout.buildDirectory.dir("compose_reports"))
-        metricsDestination.set(layout.buildDirectory.dir("compose_metrics"))
-      }
+    if (composeReportEnabled) {
+      reportsDestination.set(layout.buildDirectory.dir("compose_reports"))
+      metricsDestination.set(layout.buildDirectory.dir("compose_metrics"))
     }
   }
 }

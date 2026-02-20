@@ -1,4 +1,4 @@
-import com.android.build.gradle.LibraryExtension
+import com.android.build.api.dsl.LibraryExtension
 import ext.androidLintConfiguration
 import ext.androidSdkConfiguration
 import ext.kotlinConfiguration
@@ -12,7 +12,6 @@ class FeatureConventionPlugin : Plugin<Project> {
     with(target) {
       with(pluginManager) {
         apply("com.android.library")
-        apply("org.jetbrains.kotlin.android")
 
         extensions.configure<LibraryExtension> {
           androidSdkConfiguration()
