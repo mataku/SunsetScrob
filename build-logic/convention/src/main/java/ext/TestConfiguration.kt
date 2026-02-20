@@ -1,36 +1,42 @@
 package ext
 
-import com.android.build.gradle.LibraryExtension
-import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
+import com.android.build.api.dsl.ApplicationExtension
+import com.android.build.api.dsl.LibraryExtension
 import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getByType
 
 fun Project.testConfiguration() {
-  val type = if (this.name == "app") {
-    BaseAppModuleExtension::class.java
-  } else {
-    LibraryExtension::class.java
-  }
-  extensions.configure(type) {
-    testOptions {
-      unitTests {
-        isIncludeAndroidResources = true
-        all {
-          it.maxParallelForks = Runtime.getRuntime().availableProcessors()
-          it.useJUnitPlatform {
-          }
-          if (project.hasProperty("excludeScreenshotTest")) {
-            it.exclude("**/*ScreenTest.class")
-          }
-          if (project.hasProperty("onlyScreenshotTest")) {
-            it.include("**/*ScreenTest.class")
-          }
-          // for: `OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended`
-          it.jvmArgs("-Xshare:off")
-        }
+  val project = this
+  extensions.findByType(ApplicationExtension::class.java)?.apply {
+    testOptions.unitTests.isIncludeAndroidResources = true
+    testOptions.unitTests.all {
+      it.maxParallelForks = Runtime.getRuntime().availableProcessors()
+      it.useJUnitPlatform {
       }
+      if (project.hasProperty("excludeScreenshotTest")) {
+        it.exclude("**/*ScreenTest.class")
+      }
+      if (project.hasProperty("onlyScreenshotTest")) {
+        it.include("**/*ScreenTest.class")
+      }
+      it.jvmArgs("-Xshare:off")
+    }
+  }
+  extensions.findByType(LibraryExtension::class.java)?.apply {
+    testOptions.unitTests.isIncludeAndroidResources = true
+    testOptions.unitTests.all {
+      it.maxParallelForks = Runtime.getRuntime().availableProcessors()
+      it.useJUnitPlatform {
+      }
+      if (project.hasProperty("excludeScreenshotTest")) {
+        it.exclude("**/*ScreenTest.class")
+      }
+      if (project.hasProperty("onlyScreenshotTest")) {
+        it.include("**/*ScreenTest.class")
+      }
+      it.jvmArgs("-Xshare:off")
     }
   }
 

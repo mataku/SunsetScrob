@@ -1,4 +1,4 @@
-import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
+import com.android.build.api.dsl.ApplicationExtension
 import ext.androidLintConfiguration
 import ext.androidSdkConfiguration
 import ext.kotlinConfiguration
@@ -14,10 +14,9 @@ class ApplicationConventionPlugin : Plugin<Project> {
     with(target) {
       with(pluginManager) {
         apply("com.android.application")
-        apply("org.jetbrains.kotlin.android")
       }
 
-      extensions.configure<BaseAppModuleExtension> {
+      extensions.configure<ApplicationExtension> {
         androidSdkConfiguration()
         defaultConfig.targetSdk = 35
         signingConfigs {
@@ -76,7 +75,7 @@ class ApplicationConventionPlugin : Plugin<Project> {
           versionName = appVersionName
           versionCode = generateVersionCode(appVersionName)
           proguardFiles(
-            getDefaultProguardFile("proguard-android.txt"),
+            getDefaultProguardFile("proguard-android-optimize.txt"),
             "proguard-rules.pro"
           )
         }

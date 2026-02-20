@@ -1,5 +1,5 @@
-import com.android.build.gradle.LibraryExtension
-import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
+import com.android.build.api.dsl.ApplicationExtension
+import com.android.build.api.dsl.LibraryExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalogsExtension
@@ -14,39 +14,34 @@ class ScreenshotTestConventionPlugin : Plugin<Project> {
       with(pluginManager) {
         apply("io.github.takahirom.roborazzi")
       }
-      val type = if (target.name == "app") {
-        BaseAppModuleExtension::class
+      val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
+      if (target.name == "app") {
+        extensions.configure<ApplicationExtension> {
+          defaultConfig.testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        }
       } else {
-        LibraryExtension::class
+        extensions.configure<LibraryExtension> {
+          val excludePatterns = listOf(
+            "META-INF/LICENSE.md",
+            "META-INF/LICENSE-notice.md",
+            "win32-x86-64/attach_hotspot_windows.dll",
+            "META-INF/AL2.0",
+          )
+          packaging.resources.excludes.addAll(excludePatterns)
+          defaultConfig.testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        }
       }
-      extensions.configure(type) {
-        if (type == LibraryExtension::class) {
-          packaging {
-            val excludePatterns = listOf(
-              "META-INF/LICENSE.md",
-              "META-INF/LICENSE-notice.md",
-              "win32-x86-64/attach_hotspot_windows.dll",
-              "META-INF/AL2.0",
-            )
-            resources.excludes.addAll(excludePatterns)
-          }
+      dependencies {
+        listOf(
+          "androidx-test-ext-junit",
+          "compose-ui-test-junit4",
+          "robolectric",
+          "roborazzi",
+        ).forEach {
+          add("testImplementation", libs.findLibrary(it).get())
         }
-        val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
-        dependencies {
-          listOf(
-            "androidx-test-ext-junit",
-            "compose-ui-test-junit4",
-            "robolectric",
-            "roborazzi",
-          ).forEach {
-            add("testImplementation", libs.findLibrary(it).get())
-          }
-          add("testImplementation", project(":test_helper:integration"))
-          add("debugImplementation", libs.findLibrary("compose-ui-test-manifest").get())
-        }
-        defaultConfig {
-          testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        }
+        add("testImplementation", project(":test_helper:integration"))
+        add("debugImplementation", libs.findLibrary("compose-ui-test-manifest").get())
       }
 
       // Avoid to fail if no tests are discovered like `./gradlew testDebugUnitTest -PexcludeScreenshotTest=true`
