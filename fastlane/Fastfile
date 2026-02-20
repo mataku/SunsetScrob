@@ -40,6 +40,11 @@ platform :android do
     gradle(task: 'verifyRoborazziDebug --no-configuration-cache -PonlyScreenshotTest=true')
   end
 
+  desc 'Generate golden images'
+  lane :generate_golden_images do
+    gradle(task: 'recordRoborazziDebug --no-configuration-cache -PonlyScreenshotTest=true')
+  end
+
   desc "Build an aab"
   lane :build do
     gradle(task: 'bundleRelease')
