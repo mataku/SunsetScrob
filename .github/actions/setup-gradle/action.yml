@@ -12,7 +12,7 @@ runs:
       uses: actions/setup-java@f2beeb24e141e01a676f977032f5a29d81c9e27e # v5.1.0
       with:
         distribution: zulu
-        java-version: 17
+        java-version: 21
     - name: Cache gradle wrapper
       uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v5.0.1
       if: ${{ !startsWith(github.head_ref, 'renovate') }}
