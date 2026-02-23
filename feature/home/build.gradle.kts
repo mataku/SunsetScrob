@@ -1,3 +1,5 @@
+import com.android.build.api.dsl.LibraryExtension
+
 plugins {
   id("sunsetscrob.android.feature")
   id("sunsetscrob.android.compose")
@@ -5,9 +7,10 @@ plugins {
   id("sunsetscrob.android.test.screenshot")
 }
 
-android {
+configure<LibraryExtension>() {
   namespace = "com.mataku.scrobscrob.home"
 }
+
 
 dependencies {
   implementation(project(":ui_common"))

@@ -1,3 +1,5 @@
+import com.android.build.api.dsl.LibraryExtension
+
 plugins {
   id("sunsetscrob.android.feature")
   id("sunsetscrob.android.compose")
@@ -5,7 +7,7 @@ plugins {
   id("com.google.devtools.ksp")
 }
 
-android {
+configure<LibraryExtension>() {
   namespace = "com.mataku.scrobscrob.ui_common"
 
   buildFeatures {

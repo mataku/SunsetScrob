@@ -1,3 +1,5 @@
+import com.android.build.api.dsl.LibraryExtension
+
 plugins {
   id("sunsetscrob.android.feature")
   id("dagger.hilt.android.plugin")
@@ -7,7 +9,7 @@ plugins {
   id(libs.plugins.sqldelight.get().pluginId)
 }
 
-android {
+configure<LibraryExtension>() {
   namespace = "com.mataku.scrobscrob.data.db"
 }
 

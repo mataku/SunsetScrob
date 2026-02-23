@@ -1,3 +1,5 @@
+import com.android.build.api.dsl.ApplicationExtension
+
 plugins {
   id("sunsetscrob.android.application")
   id("sunsetscrob.android.compose")
@@ -9,7 +11,7 @@ plugins {
   id("androidx.baselineprofile")
 }
 
-android {
+configure<ApplicationExtension>() {
   buildFeatures {
     buildConfig = true
   }

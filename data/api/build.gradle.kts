@@ -1,4 +1,5 @@
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+import com.android.build.api.dsl.LibraryExtension
 
 plugins {
   id("sunsetscrob.android.feature")
@@ -7,7 +8,7 @@ plugins {
   id("kotlinx-serialization")
 }
 
-android {
+configure<LibraryExtension>() {
   buildFeatures {
     buildConfig = true
   }

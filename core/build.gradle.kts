@@ -1,10 +1,12 @@
+import com.android.build.api.dsl.LibraryExtension
+
 plugins {
   id("sunsetscrob.android.feature")
   id("sunsetscrob.android.compose")
   id("kotlinx-serialization")
 }
 
-android {
+configure<LibraryExtension>() {
   namespace = "com.mataku.scrobscrob.core"
 }
 

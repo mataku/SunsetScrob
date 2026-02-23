@@ -1,11 +1,12 @@
 import com.android.build.api.dsl.ManagedVirtualDevice
+import com.android.build.api.dsl.TestExtension
 
 plugins {
   id("com.android.test")
   id("androidx.baselineprofile")
 }
 
-android {
+configure<TestExtension>() {
   namespace = "com.mataku.scrobscrob.baselineprofile"
   compileSdk = 35
 

@@ -1,10 +1,12 @@
+import com.android.build.api.dsl.LibraryExtension
+
 plugins {
   id("sunsetscrob.android.feature")
   id("dagger.hilt.android.plugin")
   id("sunsetscrob.android.dagger")
 }
 
-android {
+configure<LibraryExtension>() {
   namespace = "com.mataku.scrobscrob.data.repository"
 
   sourceSets {
