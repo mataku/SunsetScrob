@@ -1,7 +1,7 @@
 [versions]
 activity = "1.13.0"
 agp = "9.1.0"
-compose = "2026.02.01"
+compose = "2026.03.00"
 coil = "3.4.0"
 core-sprashscreen = "1.0.1"
 coroutines = "1.10.2"
