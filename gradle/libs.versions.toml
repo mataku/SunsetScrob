@@ -1,5 +1,5 @@
 [versions]
-activity = "1.12.4"
+activity = "1.13.0"
 agp = "9.1.0"
 compose = "2026.02.01"
 coil = "3.4.0"
