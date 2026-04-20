@@ -1,4 +1,4 @@
-package com.mataku.scrobscrob.home.ui
+package com.mataku.scrobscrob.home.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,7 +11,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(
+internal class HomeViewModel @Inject constructor(
   private val usernameRepository: UsernameRepository,
 ) : ViewModel() {
 

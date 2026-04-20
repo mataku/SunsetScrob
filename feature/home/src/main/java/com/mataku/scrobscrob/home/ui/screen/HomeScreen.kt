@@ -1,6 +1,7 @@
-package com.mataku.scrobscrob.home.ui
+package com.mataku.scrobscrob.home.ui.screen
 
 import android.annotation.SuppressLint
+import com.mataku.scrobscrob.home.ui.viewmodel.HomeViewModel
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -36,7 +37,7 @@ import kotlinx.coroutines.launch
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(
+internal fun HomeScreen(
   viewModel: HomeViewModel,
   sharedTransitionScope: SharedTransitionScope,
   animatedContentScope: AnimatedContentScope,

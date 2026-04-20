@@ -13,7 +13,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.mataku.scrobscrob.account.R
-import com.mataku.scrobscrob.account.ui.ThemeSelectorScreen
+import com.mataku.scrobscrob.account.ui.screen.ThemeSelectorScreen
 import com.mataku.scrobscrob.account.ui.screen.AccountScreen
 import com.mataku.scrobscrob.account.ui.screen.LicenseScreen
 import com.mataku.scrobscrob.account.ui.screen.PrivacyPolicyScreen

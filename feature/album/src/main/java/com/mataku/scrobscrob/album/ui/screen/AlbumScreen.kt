@@ -54,7 +54,7 @@ import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
-fun SharedTransitionScope.AlbumScreen(
+internal fun SharedTransitionScope.AlbumScreen(
   animatedContentScope: AnimatedContentScope,
   id: String,
   viewModel: AlbumViewModel,

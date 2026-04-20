@@ -58,7 +58,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
-fun AccountScreen(
+internal fun AccountScreen(
   viewModel: AccountViewModel,
   showPermissionHelp: () -> Unit,
   navigateToScrobbleSetting: () -> Unit,

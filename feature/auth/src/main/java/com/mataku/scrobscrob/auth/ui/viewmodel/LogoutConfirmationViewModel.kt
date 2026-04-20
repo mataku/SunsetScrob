@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LogoutConfirmationViewModel @Inject constructor(
+internal class LogoutConfirmationViewModel @Inject constructor(
   private val sessionRepository: SessionRepository
 ) : ViewModel() {
 

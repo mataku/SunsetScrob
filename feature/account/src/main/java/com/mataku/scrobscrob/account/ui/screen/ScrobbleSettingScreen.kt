@@ -25,7 +25,7 @@ import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ScrobbleSettingScreen(
+internal fun ScrobbleSettingScreen(
   viewModel: ScrobbleSettingViewModel,
   modifier: Modifier = Modifier
 ) {

@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
-class LicenseViewModel @Inject constructor(
+internal class LicenseViewModel @Inject constructor(
   private val licenseRepository: LicenseRepository
 ) : ViewModel() {
 

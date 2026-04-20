@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ScrobbleTopBarViewModel @Inject constructor(
+internal class ScrobbleTopBarViewModel @Inject constructor(
   private val sessionRepository: SessionRepository
 ) : ViewModel() {
 
