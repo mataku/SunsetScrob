@@ -90,3 +90,4 @@ fastlane/README.md
 google-services.json
 
 .kotlin/
+.claude/settings.local.json
