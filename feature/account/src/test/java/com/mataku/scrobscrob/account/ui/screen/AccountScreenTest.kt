@@ -17,6 +17,7 @@ import com.mataku.scrobscrob.data.repository.SessionRepository
 import com.mataku.scrobscrob.data.repository.ThemeRepository
 import com.mataku.scrobscrob.data.repository.UserRepository
 import com.mataku.scrobscrob.data.repository.UsernameRepository
+import com.mataku.scrobscrob.test_helper.integration.VRT
 import com.mataku.scrobscrob.test_helper.integration.captureScreenshot
 import io.mockk.coEvery
 import io.mockk.every
@@ -26,11 +27,13 @@ import kotlinx.coroutines.flow.flowOf
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.experimental.categories.Category
 import org.junit.runner.RunWith
 import org.robolectric.annotation.GraphicsMode
 
 @RunWith(AndroidJUnit4::class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
+@Category(VRT::class)
 class AccountScreenTest {
   @get:Rule
   val composeTestRule = createComposeRule()

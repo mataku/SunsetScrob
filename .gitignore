@@ -51,6 +51,7 @@ local.properties
 .idea/copilot.data.migration.edit.xml
 .idea/copilot.data.migration.ask.xml
 .idea/copilot.data.migration.ask2agent.xml
+.idea/markdown.xml
 
 *.iml
 .env
@@ -89,3 +90,4 @@ fastlane/README.md
 google-services.json
 
 .kotlin/
+.claude/settings.local.json

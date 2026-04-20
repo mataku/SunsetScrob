@@ -13,7 +13,7 @@ private val FEATURE_SUBPACKAGES = listOf(
 class ModuleDependencyArchitectureSpec : DescribeSpec({
 
   val files = Konsist.scopeFromProject().files
-    .filterNot { it.path.contains("/architecture-test/") }
+    .filterNot { it.path.contains("/architecture-spec/") }
     .filter { it.path.contains("/src/main/") }
 
   describe("Module dependency rules (CLAUDE.md Rule 1)") {

@@ -14,17 +14,20 @@ import com.mataku.scrobscrob.data.repository.ChartRepository
 import com.mataku.scrobscrob.data.repository.UserRepository
 import com.mataku.scrobscrob.discover.ui.screen.DiscoverScreen
 import com.mataku.scrobscrob.discover.ui.viewmodel.DiscoverViewModel
+import com.mataku.scrobscrob.test_helper.integration.VRT
 import com.mataku.scrobscrob.test_helper.integration.captureScreenshot
 import io.mockk.coEvery
 import io.mockk.mockk
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.experimental.categories.Category
 import org.junit.runner.RunWith
 import org.robolectric.annotation.GraphicsMode
 
 @RunWith(AndroidJUnit4::class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
+@Category(VRT::class)
 class DiscoverScreenTest {
   @get:Rule
   val composeTestRule = createComposeRule()

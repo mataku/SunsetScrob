@@ -9,6 +9,7 @@ import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.core.entity.RecentTrack
 import com.mataku.scrobscrob.data.repository.ScrobbleRepository
 import com.mataku.scrobscrob.scrobble.ui.viewmodel.ScrobbleViewModel
+import com.mataku.scrobscrob.test_helper.integration.VRT
 import com.mataku.scrobscrob.test_helper.integration.captureScreenshot
 import io.mockk.coEvery
 import io.mockk.every
@@ -18,12 +19,14 @@ import kotlinx.coroutines.flow.flowOf
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.experimental.categories.Category
 import org.junit.runner.RunWith
 import org.robolectric.annotation.GraphicsMode
 
 @OptIn(ExperimentalMaterial3Api::class)
 @RunWith(AndroidJUnit4::class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
+@Category(VRT::class)
 class ScrobbleScreenTest {
   @get:Rule
   val composeRule = createComposeRule()
