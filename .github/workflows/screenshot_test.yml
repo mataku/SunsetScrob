@@ -23,7 +23,7 @@ env:
 
 jobs:
   screenshot_test:
-    runs-on: macos-15
+    runs-on: ubuntu-latest
     timeout-minutes: 20
 
     steps:
@@ -32,20 +32,18 @@ jobs:
           ref: ${{ github.event.inputs.branch }}
       - uses: ./.github/actions/setup-gradle
         with:
-          use-build-cache: 'false'
-      - uses: ruby/setup-ruby@7372622e62b60b3cb750dcd2b9e32c247ffec26a # v1.302.0
-        with:
-          bundler-cache: true
+          use-build-cache: 'true'
       - name: Setup env
         env:
           LAST_FM_API_KEY: ${{ secrets.LAST_FM_API_KEY }}
           LAST_FM_SHARED_SECRET: ${{ secrets.LAST_FM_SHARED_SECRET }}
           GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON_DEV }}
         run: |
-          bundle exec fastlane android setup_for_ci
+          echo "API_KEY=\"$LAST_FM_API_KEY\"" >> local.properties
+          echo "SHARED_SECRET=\"$LAST_FM_SHARED_SECRET\"" >> local.properties
+          echo "$GOOGLE_SERVICES_JSON" > app/google-services.json
       - name: Run screenshot tests
-        run: |
-          bundle exec fastlane android screenshot_test
+        run: ./gradlew verifyRoborazziDebug --no-configuration-cache -PonlyScreenshotTest=true
       - name: Upload test reports
         if: failure()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
