@@ -7,6 +7,8 @@ import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getByType
 
+private const val VRT_TAG = "com.mataku.scrobscrob.test_helper.integration.VRT"
+
 fun Project.testConfiguration() {
   val project = this
   extensions.findByType(ApplicationExtension::class.java)?.apply {
@@ -14,13 +16,15 @@ fun Project.testConfiguration() {
     testOptions.unitTests.all {
       it.maxParallelForks = Runtime.getRuntime().availableProcessors()
       it.useJUnitPlatform {
+        if (project.hasProperty("excludeScreenshotTest")) {
+          excludeTags(VRT_TAG)
+        }
+        if (project.hasProperty("onlyScreenshotTest")) {
+          includeTags(VRT_TAG)
+          excludeEngines("kotest")
+        }
       }
-      if (project.hasProperty("excludeScreenshotTest")) {
-        it.exclude("**/*ScreenTest.class")
-      }
-      if (project.hasProperty("onlyScreenshotTest")) {
-        it.include("**/*ScreenTest.class")
-      }
+      //  architecture-test を architecture-spec に rename したいですね。test タスク実行するのは自然なのですが module name と重複しないといけない理由もないので
       it.jvmArgs("-Xshare:off")
     }
   }
@@ -29,12 +33,13 @@ fun Project.testConfiguration() {
     testOptions.unitTests.all {
       it.maxParallelForks = Runtime.getRuntime().availableProcessors()
       it.useJUnitPlatform {
-      }
-      if (project.hasProperty("excludeScreenshotTest")) {
-        it.exclude("**/*ScreenTest.class")
-      }
-      if (project.hasProperty("onlyScreenshotTest")) {
-        it.include("**/*ScreenTest.class")
+        if (project.hasProperty("excludeScreenshotTest")) {
+          excludeTags(VRT_TAG)
+        }
+        if (project.hasProperty("onlyScreenshotTest")) {
+          includeTags(VRT_TAG)
+          excludeEngines("kotest")
+        }
       }
       it.jvmArgs("-Xshare:off")
     }

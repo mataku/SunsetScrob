@@ -11,6 +11,7 @@ import com.mataku.scrobscrob.core.entity.AlbumInfoTrack
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.core.entity.Tag
 import com.mataku.scrobscrob.data.repository.AlbumRepository
+import com.mataku.scrobscrob.test_helper.integration.VRT
 import com.mataku.scrobscrob.test_helper.integration.captureScreenshot
 import io.mockk.every
 import io.mockk.mockk
@@ -19,11 +20,13 @@ import kotlinx.coroutines.flow.flowOf
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.experimental.categories.Category
 import org.junit.runner.RunWith
 import org.robolectric.annotation.GraphicsMode
 
 @RunWith(AndroidJUnit4::class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
+@Category(VRT::class)
 class AlbumScreenTest {
   @get:Rule
   val composeRule = createComposeRule()

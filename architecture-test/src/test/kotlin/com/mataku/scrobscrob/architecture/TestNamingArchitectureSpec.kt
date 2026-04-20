@@ -42,5 +42,23 @@ class TestNamingArchitectureSpec : DescribeSpec({
           "Offending files:\n" + violations.joinToString("\n") { it.path },
       ) { violations.shouldBeEmpty() }
     }
+
+    it("Roborazzi screenshot classes carry `@Category(VRT::class)`") {
+      val violations = files
+        .flatMap { it.classes() }
+        .filter { cls -> cls.annotations.any { it.name == "GraphicsMode" } }
+        .filterNot { cls ->
+          cls.annotations.any { ann ->
+            ann.name == "Category" && ann.text.contains("VRT")
+          }
+        }
+
+      withClue(
+        "Classes annotated `@GraphicsMode` must also carry `@Category(VRT::class)` so that " +
+          "`./gradlew ... -PonlyScreenshotTest=true` / `-PexcludeScreenshotTest=true` " +
+          "can filter them via JUnit Platform tags. CLAUDE.md Rule 8. Offending classes:\n" +
+          violations.joinToString("\n") { it.fullyQualifiedName ?: it.name },
+      ) { violations.shouldBeEmpty() }
+    }
   }
 })

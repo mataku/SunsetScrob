@@ -150,9 +150,15 @@ Reference: `data/repository/.../ScrobbleRepository.kt`, `data/repository/di/Repo
   avoid `mockk(relaxed = true)` unless the intent is genuinely "ignore all
   unused members".
 - **Flow tests**: Turbine — `flow.test { awaitItem() shouldBe ...; cancelAndConsumeRemainingEvents() }`.
-- **Screenshot tests**: Roborazzi. Files end with `ScreenTest.kt`. Annotate
-  with `@RunWith(AndroidJUnit4::class)` and
-  `@GraphicsMode(GraphicsMode.Mode.NATIVE)`. Use the
+- **Screenshot tests**: Roborazzi. Files end with `Test.kt` (typically
+  `*ScreenTest.kt` for screens, `*Test.kt` for components). Annotate with
+  `@RunWith(AndroidJUnit4::class)`, `@GraphicsMode(GraphicsMode.Mode.NATIVE)`,
+  **and** `@Category(VRT::class)` (marker from `:test_helper:integration`).
+  The `@Category` is what lets `fastlane test` / `fastlane screenshot_test`
+  include or exclude screenshot tests via JUnit Platform tags (Vintage maps
+  `@Category(VRT::class)` to the tag `com.mataku.scrobscrob.test_helper.integration.VRT`,
+  which `TestConfiguration.kt` filters on). Without it the test silently runs
+  in the wrong bucket. Use the
   `composeRule.captureScreenshot(appTheme, fileName) { ... }` helper from
   `:test_helper:integration`.
 - One test file per class under test.
