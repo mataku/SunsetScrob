@@ -25,6 +25,11 @@ platform :android do
     gradle(task: "testDebugUnitTest -PexcludeScreenshotTest=true")
   end
 
+  desc "Run architecture (Konsist) tests"
+  lane :arch_test do
+    gradle(task: ":architecture-test:test")
+  end
+
   desc "Run androidTest on connected device"
   lane :android_test do
     android_test_gradle_tasks = android_test_dirs.map do |dir|

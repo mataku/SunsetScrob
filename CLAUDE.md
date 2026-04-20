@@ -1,76 +1,234 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Guidance for AI coding agents (Claude Code and similar) working in this repository.
+This document is the **inferential feedforward** part of the project's harness; most
+rules below have a matching Konsist sensor under `:architecture-test` that will fail
+CI if violated. When in doubt, follow the existing code in the module you are editing.
+
+---
 
 ## Project Overview
 
-SunsetScrob is a Last.fm client Android application built with modern Android development practices. It's a modular Kotlin app using Jetpack Compose, Clean Architecture, and feature-based modules.
+SunsetScrob is a Last.fm client Android application. Modular Kotlin app using
+Jetpack Compose, MVVM + Repository pattern, Hilt DI, and feature-based modules.
 
-## Setup Requirements
+## Setup
 
 Before building, create `local.properties` with Last.fm API credentials:
+
 ```
 API_KEY=YOUR_LAST_FM_API_KEY
 SHARED_SECRET=YOUR_LAST_FM_SHARED_SECRET
 ```
 
-## Common Development Commands
+## Common Commands
 
-### Build Commands
-- `./gradlew installDebug` - Install debug version on device
-- `./gradlew assembleDebug` - Build debug APK
-- `./gradlew bundleRelease` - Build release AAB
-- `make generate_compose_reports` - Generate Compose compiler reports
+- `./gradlew installDebug` — install debug build on a device
+- `./gradlew assembleDebug` — build debug APK
+- `./gradlew bundleRelease` — build release AAB
+- `./gradlew :architecture-test:test` — run architecture (Konsist) tests
+- `fastlane test` — run unit tests
+- `fastlane screenshot_test` — run Roborazzi screenshot tests
+- `fastlane arch_test` — run architecture tests
+- `make generate_compose_reports` — generate Compose compiler reports
 
-### Fastlane Commands
-- `fastlane build_debug` - Build debug version
-- `fastlane test` - Run unit tests
-- `fastlane screenshot_test` - Run Roborazzi screenshot tests
-- `fastlane android_test` - Run instrumentation tests
+---
 
-### Testing
-- **Unit Tests**: Kotest with MockK, run via `fastlane test`
-- **Screenshot Tests**: Roborazzi framework, run via `fastlane screenshot_test`
+## Module Dependency Rules (enforced by Konsist — Rule 1)
 
-## Architecture Overview
+The module graph is strictly directional. Violations break `:architecture-test:test`.
 
-### Module Structure
-- **`app/`** - Main application module with navigation and Hilt setup
-- **`core/`** - Shared entities and utilities
-- **`data/`** - Data layer split into `api/`, `db/`, and `repository/` modules
-- **`feature/`** - Feature modules: `account/`, `album/`, `artist/`, `auth/`, `discover/`, `home/`, `scrobble/`
-- **`ui_common/`** - Shared UI components and theming
-- **`build-logic/`** - Custom Gradle convention plugins
+- `:core` — pure, depends on **nothing** in this project.
+- `:ui_common` — may depend only on `:core`.
+- `:data:api` and `:data:db` — must not depend on each other.
+- `:data:repository` — depends on `:data:api` and `:data:db`.
+- `:feature:*` — may depend on `:ui_common`, `:core`, `:data:repository` only.
+  **Never depend on `:data:api` or `:data:db` directly from a feature module.**
+- Feature-to-feature dependencies are forbidden with one exception:
+  `:feature:home` is the navigation hub and may depend on other feature modules.
+  No other `:feature:*` may depend on another `:feature:*`.
+- `:app` — top of the graph; may depend on anything.
+- `:architecture-test` and `:test_helper:*` — orthogonal, not part of the production graph.
 
-### Key Architectural Patterns
-- **Clean Architecture** with clear separation of concerns
-- **MVVM** with Compose UI and ViewModels
-- **Repository Pattern** for data access abstraction
-- **Dependency Injection** via Dagger Hilt
-- **Modular Design** with feature-based modules
+## Package Structure (enforced by Konsist — Rule 2)
 
-### Technology Stack
-- **UI**: Jetpack Compose with Material 3
-- **Networking**: Ktor client for Last.fm API
-- **Database**: SQLDelight for local storage
-- **Async**: Kotlin Coroutines and Flow
-- **Image Loading**: Coil
-- **Build**: Gradle with Kotlin DSL and custom convention plugins
+- Root package is `com.mataku.scrobscrob.<subpackage>`. The subpackage does not
+  always equal the module name — e.g. `:feature:discover` uses
+  `com.mataku.scrobscrob.chart`. Follow the existing package in the module.
+- Within a feature module:
+  - Screens: `...ui.screen`
+  - ViewModels: `...ui.viewmodel`
+  - Navigation: `...ui.navigation`
+  - Small composables: `...ui.molecule`
+  - Hilt modules: `...di`
+- In `:data:repository`:
+  - Mappers: `...data.repository.mapper`
+  - Hilt modules: `...data.repository.di`
 
-## Development Notes
+---
 
-### Gradle Configuration
-- Uses version catalog (`gradle/libs.versions.toml`) for dependency management
-- Custom convention plugins in `build-logic/` for consistent module setup
-- 29 custom lint rules defined in `app/lint-checks.gradle`
+## ViewModel Conventions (Rule 3)
 
-### Testing Framework
-- Unit tests use Kotest with JUnit 5
-- UI tests use Roborazzi for screenshot testing
-- MockK for mocking, Turbine for Flow testing
-- Custom test helper modules for shared testing utilities
+Reference: `feature/home/.../ui/viewmodel/HomeViewModel.kt`, `feature/scrobble/.../ui/viewmodel/ScrobbleViewModel.kt`.
 
-### Code Quality
-- Linting via Android Lint with custom rules
-- Licensee plugin for dependency license validation
-- Proguard configuration for release builds
+- Annotate with `@HiltViewModel`; take dependencies via `@Inject constructor`.
+- Expose state as `MutableStateFlow<FooUiState>` with `private set` (not `.asStateFlow()` — matches existing style).
+- `FooUiState` is a `data class`, annotated `@Immutable`, with `ImmutableList<T>`
+  for list fields (`kotlinx.collections.immutable`).
+- One-shot events are a `sealed class FooUiEvent` carried **inside the state**
+  as `events: List<FooUiEvent>`. The UI pops them via a public function on the
+  VM — use `popEvent(event)` (or `popEvent()` when the event type is trivial).
+  Some older VMs use `consumeEvent(event)`; prefer `popEvent` for new code.
+- Launch coroutines only via `viewModelScope.launch { }` or `.launchIn(viewModelScope)`.
+  **Do not** create your own `CoroutineScope`, and do not use `GlobalScope`.
+- Class name ends with `ViewModel` and extends `androidx.lifecycle.ViewModel`
+  (or `AndroidViewModel` when an `Application` dependency is genuinely needed).
+- Declare ViewModels as `internal`. ViewModels are never consumed across
+  module boundaries — the Screen wires them via `hiltViewModel()` inside the
+  same module, and navigation crosses modules via public `fooGraph()`
+  extensions, not via VM types.
+- Exception: `TopAlbumsViewModel`, `TopArtistsViewModel`, `ScrobbleViewModel`
+  are public because `:feature:home`'s `HomeScreen` instantiates them via
+  `hiltViewModel<T>()` to embed each as a tab (hub pattern).
+
+## Screen / Content Separation (Rule 4)
+
+Reference: `feature/scrobble/.../ui/screen/ScrobbleScreen.kt`, `feature/home/.../ui/screen/HomeScreen.kt`.
+
+- Top-level composable is `fun FooScreen(viewModel: FooViewModel = hiltViewModel(), navigateToX: (...) -> Unit, modifier: Modifier = Modifier)`.
+  It is stateful: collects state with `.collectAsStateWithLifecycle()` and owns
+  navigation callbacks.
+- A `private fun FooContent(...)` takes **data only** (no ViewModel), is previewable, and contains the Compose layout.
+- Prefer declaring the top-level Screen composable as `internal` when
+  feasible (Screens aren't consumed across modules beyond the hub pattern).
+  Not currently enforced by Konsist — the hub pattern in `:feature:home`
+  forces `TopAlbumsScreen`, `TopArtistsScreen`, `ScrobbleScreen` to stay
+  public, and templates under `:ui_common` (e.g. `WebViewScreen`) are
+  deliberately public as they are reused across modules.
+- Handle one-shot events in the Screen with
+  `LaunchedEffect(uiState.events) { uiState.events.firstOrNull()?.let { event -> ...; viewModel.popEvent(event) } }`.
+
+## Navigation Conventions (Rule 5)
+
+Reference: `feature/home/.../HomeNavigation.kt`, `app/.../NavigationGraph.kt`.
+
+- Routes are `const val FOO_DESTINATION = "foo"` strings. **Do not** introduce
+  type-safe `Nav*` sealed classes unilaterally; follow the existing string
+  route pattern.
+- Each feature exposes `fun NavGraphBuilder.fooGraph(...)`; `:app` composes them
+  in `NavigationGraph.kt`.
+- Navigate helpers are extensions on `NavController`: `fun NavController.navigateToFoo(...)`.
+- Deep link arguments are read in the VM via
+  `savedStateHandle.get<String>("artistName")` etc.
+
+## Repository Conventions (Rule 6)
+
+Reference: `data/repository/.../ScrobbleRepository.kt`, `data/repository/di/RepositoryModule.kt`.
+
+- Interface and its `Impl` class live in the **same file**, same package.
+- Methods return `Flow<T>`; wrap async work with `flow { ... }.flowOn(Dispatchers.IO)`.
+- Hilt bind all repositories in `data/repository/di/RepositoryModule.kt` with
+  `@Binds` and `@Singleton`. `RepositoryModule` includes `ApiModule` and
+  `DatabaseModule` via `@Module(includes = [...])`.
+- Do not catch errors inside the repository. Let them propagate — the
+  ViewModel's `.catch { ... }` maps them to a `UiEvent.Error`.
+
+## Hilt Module Conventions (Rule 7)
+
+- Hilt modules live in a `di` subpackage and are named `FooModule.kt`.
+- Annotate every module with `@Module` + `@InstallIn(...)` (usually `SingletonComponent::class`).
+- Use `@Binds` for interface-to-impl bindings; use `@Provides` only when
+  construction needs logic or third-party types.
+- Aggregate modules with `@Module(includes = [...])` to expose a dependency
+  graph across module boundaries (see `RepositoryModule`).
+
+## Test Conventions (Rule 8)
+
+- **Unit tests**: Kotest `DescribeSpec` (`describe` / `context` / `it`). Files
+  end with `Spec.kt`. Register `extension(CoroutinesListener())` when testing
+  suspend code. Mocks: MockK — prefer explicit `mockk<T>()` + `coEvery { } returns ...`;
+  avoid `mockk(relaxed = true)` unless the intent is genuinely "ignore all
+  unused members".
+- **Flow tests**: Turbine — `flow.test { awaitItem() shouldBe ...; cancelAndConsumeRemainingEvents() }`.
+- **Screenshot tests**: Roborazzi. Files end with `ScreenTest.kt`. Annotate
+  with `@RunWith(AndroidJUnit4::class)` and
+  `@GraphicsMode(GraphicsMode.Mode.NATIVE)`. Use the
+  `composeRule.captureScreenshot(appTheme, fileName) { ... }` helper from
+  `:test_helper:integration`.
+- One test file per class under test.
+
+## Error Handling (Rule 9)
+
+- `core/entity/presentation/SunsetResult.kt` exists as a result type but is
+  **not** the default in UIs today. The repository returns raw `Flow<T>`, and
+  the VM converts errors to `UiEvent.Error` via `.catch { e -> ... }`.
+- Do not scatter `try/catch` blocks across VMs or composables. Centralize on
+  the Flow boundary.
+
+---
+
+## DO / DON'T Summary
+
+**DO**
+
+- Put new code in the module that matches its layer (UI → `:feature:*`,
+  data orchestration → `:data:repository`, HTTP → `:data:api`, DB → `:data:db`).
+- Wire new dependencies through Hilt with `@Binds` + `di/FooModule.kt`.
+- Write a `*Spec.kt` Kotest test next to the class under test.
+- When adding a Compose screen, split stateful `FooScreen` from stateless `FooContent`.
+
+**DON'T**
+
+- Depend on `:data:api` or `:data:db` from a `:feature:*` module. Go through `:data:repository`.
+- Create feature-to-feature dependencies (only `:feature:home` may).
+- Use `GlobalScope` or a custom `CoroutineScope` inside a ViewModel.
+- Emit one-shot events via a separate `SharedFlow`. Use the in-state
+  `events: List<UiEvent>` + `popEvent` pattern the rest of the codebase uses.
+- Introduce a parallel navigation DSL (type-safe routes, sealed `Nav*`, etc.)
+  without first migrating the existing string routes.
+- Catch errors inside a repository to return a fallback value. Let the Flow
+  fail; the VM handles it.
+
+---
+
+## Tech Stack (for reference)
+
+- UI: Jetpack Compose + Material 3
+- Networking: Ktor client
+- DB: SQLDelight + DataStore Preferences
+- Async: Kotlin Coroutines + Flow
+- DI: Dagger Hilt (+ KSP)
+- Image loading: Coil 3
+- Build: Gradle Kotlin DSL, version catalog (`gradle/libs.versions.toml`),
+  custom convention plugins in `build-logic/convention/`.
+- Tests: Kotest (JUnit5 platform), MockK, Turbine, Roborazzi.
+- Code quality: Android Lint (29 custom checks in `app/lint-checks.gradle`),
+  Compose lint, Konsist architecture tests, Licensee.
+
+## Convention Plugins (build-logic/convention)
+
+If you create a new module, **apply an existing convention plugin** rather
+than hand-rolling configuration:
+
+- `FeatureConventionPlugin` — Android library feature modules (SDK, Kotlin,
+  lint, packaging, test deps).
+- `ApplicationConventionPlugin` — the `:app` module.
+- `ComposeConventionPlugin` — modules that use Compose.
+- `DaggerConventionPlugin` — modules that participate in the Hilt graph.
+- `ScreenshotTestConventionPlugin` — modules that contribute Roborazzi screenshots.
+
+---
+
+## Architecture Tests (`:architecture-test`)
+
+Architecture rules are mechanically enforced by [Konsist](https://docs.konsist.lemonappdev.com/)
+in the `:architecture-test` module. Each rule above maps to a `*ArchitectureSpec.kt`
+under `architecture-test/src/test/kotlin/com/mataku/scrobscrob/architecture/`.
+
+- Run locally: `./gradlew :architecture-test:test`
+- Run in CI: `fastlane arch_test` (separate GitHub Actions workflow
+  `arch_test.yml`, independent of the main test job).
+
+When you add a new convention to this file, add a matching Spec. When you
+change a Spec, update the corresponding rule here. Guide and sensor must
+stay paired.
