@@ -37,7 +37,7 @@ import com.mataku.scrobscrob.ui_common.style.LocalTopAppBarState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen(
+internal fun MainScreen(
   modifier: Modifier = Modifier
 ) {
   val navController = rememberNavController()

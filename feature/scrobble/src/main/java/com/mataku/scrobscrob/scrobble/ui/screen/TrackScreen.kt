@@ -60,7 +60,7 @@ import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
-fun SharedTransitionScope.TrackScreen(
+internal fun SharedTransitionScope.TrackScreen(
   animatedContentScope: AnimatedContentScope,
   id: String,
   trackName: String,

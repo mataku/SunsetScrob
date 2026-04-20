@@ -1,4 +1,4 @@
-package com.mataku.scrobscrob.account.ui
+package com.mataku.scrobscrob.account.ui.screen
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -28,7 +28,7 @@ import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ThemeSelectorScreen(
+internal fun ThemeSelectorScreen(
   viewModel: ThemeSelectorViewModel,
   onBackPressed: () -> Unit,
   modifier: Modifier = Modifier

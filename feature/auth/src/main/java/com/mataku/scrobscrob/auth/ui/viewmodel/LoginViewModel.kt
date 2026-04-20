@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(private val repo: SessionRepository) : ViewModel() {
+internal class LoginViewModel @Inject constructor(private val repo: SessionRepository) : ViewModel() {
 
   var uiState: MutableStateFlow<LoginUiState> = MutableStateFlow(LoginUiState.initialize())
     private set

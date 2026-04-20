@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
-class AlbumViewModel @Inject constructor(
+internal class AlbumViewModel @Inject constructor(
   private val albumRepository: AlbumRepository,
   savedStateHandle: SavedStateHandle
 ) : ViewModel() {

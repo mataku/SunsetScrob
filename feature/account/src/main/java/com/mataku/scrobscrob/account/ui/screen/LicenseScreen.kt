@@ -27,7 +27,7 @@ import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun LicenseScreen(
+internal fun LicenseScreen(
   viewModel: LicenseViewModel,
   modifier: Modifier = Modifier
 ) {

@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
-class ArtistViewModel @Inject constructor(
+internal class ArtistViewModel @Inject constructor(
   private val artistRepository: ArtistRepository,
   savedStateHandle: SavedStateHandle
 ) : ViewModel() {

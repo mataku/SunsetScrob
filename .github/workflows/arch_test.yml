@@ -1,0 +1,37 @@
+name: Architecture test
+
+on:
+  pull_request:
+    branches:
+      - '**'
+  push:
+    branches:
+      - develop
+
+concurrency:
+  group: ${{ github.head_ref || 'develop' }}-arch
+  cancel-in-progress: true
+
+env:
+  GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx4g -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -XX:+UseParallelGC -XX:MaxMetaspaceSize=1g"
+
+jobs:
+  arch_test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: ./.github/actions/setup-gradle
+        with:
+          use-build-cache: 'true'
+      - uses: ruby/setup-ruby@7372622e62b60b3cb750dcd2b9e32c247ffec26a # v1.302.0
+        with:
+          bundler-cache: true
+      - name: Run architecture tests
+        env:
+          LAST_FM_API_KEY: ${{ secrets.LAST_FM_API_KEY }}
+          LAST_FM_SHARED_SECRET: ${{ secrets.LAST_FM_SHARED_SECRET }}
+          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON_DEV }}
+        run: |
+          bundle exec fastlane android setup_for_ci
+          bundle exec fastlane android arch_test

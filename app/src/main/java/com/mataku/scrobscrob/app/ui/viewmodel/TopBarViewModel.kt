@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class TopBarViewModel @Inject constructor(
+internal class TopBarViewModel @Inject constructor(
   private val usernameRepository: UsernameRepository
 ) : ViewModel() {
 

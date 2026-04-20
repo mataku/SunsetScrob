@@ -16,7 +16,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun PrivacyPolicyScreen(
+internal fun PrivacyPolicyScreen(
   modifier: Modifier = Modifier
 ) {
   val context = LocalContext.current

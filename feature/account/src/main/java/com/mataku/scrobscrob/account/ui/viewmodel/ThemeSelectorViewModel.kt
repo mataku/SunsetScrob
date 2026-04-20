@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ThemeSelectorViewModel @Inject constructor(
+internal class ThemeSelectorViewModel @Inject constructor(
   private val themeRepository: ThemeRepository
 ) : ViewModel() {
 

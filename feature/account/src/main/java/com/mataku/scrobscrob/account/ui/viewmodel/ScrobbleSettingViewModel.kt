@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ScrobbleSettingViewModel @Inject constructor(
+internal class ScrobbleSettingViewModel @Inject constructor(
   private val scrobbleSettingRepository: ScrobbleSettingRepository
 ) : ViewModel() {
 

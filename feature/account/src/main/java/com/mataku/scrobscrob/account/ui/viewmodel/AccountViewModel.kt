@@ -25,7 +25,7 @@ import java.text.DecimalFormat
 import javax.inject.Inject
 
 @HiltViewModel
-class AccountViewModel @Inject constructor(
+internal class AccountViewModel @Inject constructor(
   private val usernameRepository: UsernameRepository,
   private val themeRepository: ThemeRepository,
   private val sessionRepository: SessionRepository,

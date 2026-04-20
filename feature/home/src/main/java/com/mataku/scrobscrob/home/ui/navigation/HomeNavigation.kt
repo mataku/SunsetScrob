@@ -16,7 +16,7 @@ import com.mataku.scrobscrob.album.ui.navigation.navigateToAlbumInfo
 import com.mataku.scrobscrob.artist.ui.navigation.artistGraph
 import com.mataku.scrobscrob.artist.ui.navigation.navigateToArtistInfo
 import com.mataku.scrobscrob.core.entity.imageUrl
-import com.mataku.scrobscrob.home.ui.HomeScreen
+import com.mataku.scrobscrob.home.ui.screen.HomeScreen
 import com.mataku.scrobscrob.scrobble.ui.navigation.navigateToTrackDetail
 import com.mataku.scrobscrob.scrobble.ui.navigation.scrobbleGraph
 import com.mataku.scrobscrob.ui_common.navigateToLogin

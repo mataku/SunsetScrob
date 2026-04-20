@@ -18,7 +18,7 @@ import com.mataku.scrobscrob.discover.ui.viewmodel.DiscoverViewModel
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun DiscoverScreen(
+internal fun DiscoverScreen(
   viewModel: DiscoverViewModel,
   navigateToWebView: (String) -> Unit,
   modifier: Modifier = Modifier

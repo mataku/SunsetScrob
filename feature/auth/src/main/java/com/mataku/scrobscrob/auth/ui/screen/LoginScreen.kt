@@ -70,7 +70,7 @@ import kotlinx.coroutines.launch
 import com.mataku.scrobscrob.ui_common.R as uiCommonR
 
 @Composable
-fun LoginScreen(
+internal fun LoginScreen(
   viewModel: LoginViewModel,
   navigateToHomeFromAuth: () -> Unit,
   navigateToPrivacyPolicy: () -> Unit,
