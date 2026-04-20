@@ -27,7 +27,7 @@ platform :android do
 
   desc "Run architecture (Konsist) tests"
   lane :arch_test do
-    gradle(task: ":architecture-test:test")
+    gradle(task: ":architecture-spec:test")
   end
 
   desc "Run androidTest on connected device"

@@ -29,7 +29,7 @@ Every Roborazzi test in sunsetscrob must carry three annotations together:
 | `@GraphicsMode(GraphicsMode.Mode.NATIVE)` | Native graphics for accurate rendering | Rendering is wrong |
 | `@Category(VRT::class)` | Platform-tag marker for bucket filtering | **Silent miscategorization** — test leaks into unit-test bucket and/or is skipped by `fastlane screenshot_test` |
 
-The `@Category(VRT::class)` one is the foot-gun. It compiles fine without it; CI classification just quietly breaks. The `:architecture-test:test` Konsist rule will fail eventually, but the skill prevents that round-trip. (Convention is documented in the project's `CLAUDE.md` under **Rule 8**.)
+The `@Category(VRT::class)` one is the foot-gun. It compiles fine without it; CI classification just quietly breaks. The `:architecture-spec:test` Konsist rule will fail eventually, but the skill prevents that round-trip. (Convention is documented in the project's `CLAUDE.md` under **Rule 8**.)
 
 ## Workflow
 

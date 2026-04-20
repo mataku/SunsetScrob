@@ -24,7 +24,6 @@ fun Project.testConfiguration() {
           excludeEngines("kotest")
         }
       }
-      //  architecture-test を architecture-spec に rename したいですね。test タスク実行するのは自然なのですが module name と重複しないといけない理由もないので
       it.jvmArgs("-Xshare:off")
     }
   }

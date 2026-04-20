@@ -2,7 +2,7 @@
 
 Guidance for AI coding agents (Claude Code and similar) working in this repository.
 This document is the **inferential feedforward** part of the project's harness; most
-rules below have a matching Konsist sensor under `:architecture-test` that will fail
+rules below have a matching Konsist sensor under `:architecture-spec` that will fail
 CI if violated. When in doubt, follow the existing code in the module you are editing.
 
 ---
@@ -26,7 +26,7 @@ SHARED_SECRET=YOUR_LAST_FM_SHARED_SECRET
 - `./gradlew installDebug` — install debug build on a device
 - `./gradlew assembleDebug` — build debug APK
 - `./gradlew bundleRelease` — build release AAB
-- `./gradlew :architecture-test:test` — run architecture (Konsist) tests
+- `./gradlew :architecture-spec:test` — run architecture (Konsist) tests
 - `fastlane test` — run unit tests
 - `fastlane screenshot_test` — run Roborazzi screenshot tests
 - `fastlane arch_test` — run architecture tests
@@ -36,7 +36,7 @@ SHARED_SECRET=YOUR_LAST_FM_SHARED_SECRET
 
 ## Module Dependency Rules (enforced by Konsist — Rule 1)
 
-The module graph is strictly directional. Violations break `:architecture-test:test`.
+The module graph is strictly directional. Violations break `:architecture-spec:test`.
 
 - `:core` — pure, depends on **nothing** in this project.
 - `:ui_common` — may depend only on `:core`.
@@ -48,7 +48,7 @@ The module graph is strictly directional. Violations break `:architecture-test:t
   `:feature:home` is the navigation hub and may depend on other feature modules.
   No other `:feature:*` may depend on another `:feature:*`.
 - `:app` — top of the graph; may depend on anything.
-- `:architecture-test` and `:test_helper:*` — orthogonal, not part of the production graph.
+- `:architecture-spec` and `:test_helper:*` — orthogonal, not part of the production graph.
 
 ## Package Structure (enforced by Konsist — Rule 2)
 
@@ -225,13 +225,13 @@ than hand-rolling configuration:
 
 ---
 
-## Architecture Tests (`:architecture-test`)
+## Architecture Tests (`:architecture-spec`)
 
 Architecture rules are mechanically enforced by [Konsist](https://docs.konsist.lemonappdev.com/)
-in the `:architecture-test` module. Each rule above maps to a `*ArchitectureSpec.kt`
-under `architecture-test/src/test/kotlin/com/mataku/scrobscrob/architecture/`.
+in the `:architecture-spec` module. Each rule above maps to a `*ArchitectureSpec.kt`
+under `architecture-spec/src/test/kotlin/com/mataku/scrobscrob/architecture/`.
 
-- Run locally: `./gradlew :architecture-test:test`
+- Run locally: `./gradlew :architecture-spec:test`
 - Run in CI: `fastlane arch_test` (separate GitHub Actions workflow
   `arch_test.yml`, independent of the main test job).
 

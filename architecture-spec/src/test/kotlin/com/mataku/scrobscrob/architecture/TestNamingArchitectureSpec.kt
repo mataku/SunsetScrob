@@ -8,7 +8,7 @@ import io.kotest.matchers.collections.shouldBeEmpty
 class TestNamingArchitectureSpec : DescribeSpec({
 
   val files = Konsist.scopeFromTest().files
-    .filterNot { it.path.contains("/architecture-test/") }
+    .filterNot { it.path.contains("/architecture-spec/") }
 
   describe("Test naming conventions (CLAUDE.md Rule 8)") {
 
