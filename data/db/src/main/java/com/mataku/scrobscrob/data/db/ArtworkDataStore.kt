@@ -11,8 +11,9 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
-import javax.inject.Singleton
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.SingleIn
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
 
@@ -26,7 +27,7 @@ interface ArtworkDataStore {
   suspend fun deleteAll()
 }
 
-@Singleton
+@SingleIn(AppScope::class)
 class ArtworkDataStoreImpl @Inject constructor(
   context: Context
 ) : ArtworkDataStore {

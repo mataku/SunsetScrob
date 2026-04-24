@@ -2,8 +2,7 @@ import com.android.build.api.dsl.LibraryExtension
 
 plugins {
   id("sunsetscrob.android.feature")
-  id("dagger.hilt.android.plugin")
-  id("sunsetscrob.android.dagger")
+  id("sunsetscrob.android.metro")
   id("com.google.devtools.ksp")
   id("kotlinx-serialization")
   id(libs.plugins.sqldelight.get().pluginId)

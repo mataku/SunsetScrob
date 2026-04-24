@@ -4,7 +4,7 @@ import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.hilt.navigation.compose.hiltViewModel
+import dev.zacsweers.metrox.viewmodel.metroViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
@@ -37,7 +37,7 @@ fun NavGraphBuilder.artistGraph(
         ArtistScreen(
           id = contentId,
           animatedContentScope = this@composable,
-          viewModel = hiltViewModel(),
+          viewModel = metroViewModel(),
           onArtistLoadMoreTap = navController::navigateToWebView,
           onBackPressed = navController::popBackStack
         )

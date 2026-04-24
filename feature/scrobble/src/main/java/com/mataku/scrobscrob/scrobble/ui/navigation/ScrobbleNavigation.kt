@@ -5,7 +5,7 @@ import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.hilt.navigation.compose.hiltViewModel
+import dev.zacsweers.metrox.viewmodel.metroViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
@@ -46,7 +46,7 @@ fun NavGraphBuilder.scrobbleGraph(
           trackName = trackName,
           artworkUrl = arguments.getString("imageUrl", ""),
           artistName = artistName,
-          trackViewModel = hiltViewModel(),
+          trackViewModel = metroViewModel(),
           onBackPressed = navController::popBackStack,
           navigateToWebView = navController::navigateToWebView,
           id = id,

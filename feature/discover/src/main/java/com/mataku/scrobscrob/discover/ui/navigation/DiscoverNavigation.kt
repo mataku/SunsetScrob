@@ -4,7 +4,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.ui.Modifier
-import androidx.hilt.navigation.compose.hiltViewModel
+import dev.zacsweers.metrox.viewmodel.metroViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
@@ -19,7 +19,7 @@ fun NavGraphBuilder.discoverGraph(navController: NavController) {
       DISCOVER_START_NAVIGATION,
       content = {
         DiscoverScreen(
-          viewModel = hiltViewModel(),
+          viewModel = metroViewModel(),
           navigateToWebView = navController::navigateToWebView,
           modifier = Modifier
         )

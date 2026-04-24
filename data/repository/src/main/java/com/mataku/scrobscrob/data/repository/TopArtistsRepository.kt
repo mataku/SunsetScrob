@@ -10,8 +10,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import javax.inject.Inject
-import javax.inject.Singleton
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.SingleIn
 
 interface TopArtistsRepository {
   suspend fun fetchTopArtists(
@@ -21,7 +22,7 @@ interface TopArtistsRepository {
   ): Flow<List<TopArtistInfo>>
 }
 
-@Singleton
+@SingleIn(AppScope::class)
 class TopArtistsRepositoryImpl @Inject constructor(
   private val lastFmService: LastFmService,
   private val artworkDataStore: ArtworkDataStore

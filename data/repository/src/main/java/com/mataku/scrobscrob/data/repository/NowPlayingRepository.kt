@@ -11,8 +11,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import javax.inject.Inject
-import javax.inject.Singleton
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.SingleIn
 
 interface NowPlayingRepository {
   suspend fun update(trackInfo: TrackInfo): Flow<Unit>
@@ -20,7 +21,7 @@ interface NowPlayingRepository {
   suspend fun current(): NowPlayingTrackEntity?
 }
 
-@Singleton
+@SingleIn(AppScope::class)
 class NowPlayingRepositoryImpl @Inject constructor(
   private val lastFmService: LastFmService,
   private val sessionKeyDataStore: SessionKeyDataStore,

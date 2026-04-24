@@ -20,11 +20,13 @@ class PackageStructureArchitectureSpec : DescribeSpec({
         ) { it.resideInPackage("..ui.viewmodel..") }
     }
 
-    it("Hilt modules reside in a `...di` package") {
-      scope.classes()
-        .filter { cls -> cls.annotations.any { it.name == "Module" } }
+    it("Metro binding containers reside in a `...di` package") {
+      scope.interfaces()
+        .filter { intf -> intf.annotations.any { it.name == "ContributesTo" } }
+        .filter { it.resideInPackage("com.mataku.scrobscrob..") }
+        .filterNot { it.name.endsWith("Graph") }
         .assertTrue(
-          additionalMessage = "Hilt modules must live in `...di`. CLAUDE.md Rule 2 & 7.",
+          additionalMessage = "Metro binding containers must live in `...di`. CLAUDE.md Rule 2 & 7.",
         ) { it.resideInPackage("..di..") }
     }
   }

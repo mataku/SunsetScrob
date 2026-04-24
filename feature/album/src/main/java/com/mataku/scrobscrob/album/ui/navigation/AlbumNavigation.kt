@@ -8,7 +8,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.offset
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import dev.zacsweers.metrox.viewmodel.metroViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
@@ -42,7 +42,7 @@ fun NavGraphBuilder.albumGraph(
 
       with(sharedTransitionScope) {
         AlbumScreen(
-          viewModel = hiltViewModel(),
+          viewModel = metroViewModel(),
           onAlbumLoadMoreTap = { url ->
             if (url.isNotEmpty()) {
               navController.navigateToWebView(url)

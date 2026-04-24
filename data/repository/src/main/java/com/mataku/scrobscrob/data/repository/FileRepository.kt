@@ -1,12 +1,12 @@
 package com.mataku.scrobscrob.data.repository
 
 import android.content.Context
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.nio.file.Files
-import javax.inject.Inject
-import javax.inject.Singleton
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.SingleIn
 
 interface FileRepository {
   suspend fun cacheImageDirMBSize(): Double
@@ -14,9 +14,9 @@ interface FileRepository {
   suspend fun deleteCacheImageDir()
 }
 
-@Singleton
+@SingleIn(AppScope::class)
 class FileRepositoryImpl @Inject constructor(
-  @param:ApplicationContext private val applicationContext: Context
+  private val applicationContext: Context
 ) : FileRepository {
   override suspend fun cacheImageDirMBSize(): Double {
     return withContext(Dispatchers.IO) {

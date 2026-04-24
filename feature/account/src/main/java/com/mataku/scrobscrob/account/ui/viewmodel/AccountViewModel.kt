@@ -15,17 +15,21 @@ import com.mataku.scrobscrob.data.repository.SessionRepository
 import com.mataku.scrobscrob.data.repository.ThemeRepository
 import com.mataku.scrobscrob.data.repository.UserRepository
 import com.mataku.scrobscrob.data.repository.UsernameRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metrox.viewmodel.ViewModelKey
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.text.DecimalFormat
-import javax.inject.Inject
 
-@HiltViewModel
-internal class AccountViewModel @Inject constructor(
+@Inject
+@ViewModelKey
+@ContributesIntoMap(AppScope::class)
+internal class AccountViewModel(
   private val usernameRepository: UsernameRepository,
   private val themeRepository: ThemeRepository,
   private val sessionRepository: SessionRepository,

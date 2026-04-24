@@ -1,7 +1,5 @@
 package com.mataku.scrobscrob.data.repository.di
 
-import com.mataku.scrobscrob.data.api.di.ApiModule
-import com.mataku.scrobscrob.data.db.di.DatabaseModule
 import com.mataku.scrobscrob.data.repository.AlbumRepository
 import com.mataku.scrobscrob.data.repository.AlbumRepositoryImpl
 import com.mataku.scrobscrob.data.repository.ArtistRepository
@@ -32,73 +30,55 @@ import com.mataku.scrobscrob.data.repository.UserRepository
 import com.mataku.scrobscrob.data.repository.UserRepositoryImpl
 import com.mataku.scrobscrob.data.repository.UsernameRepository
 import com.mataku.scrobscrob.data.repository.UsernameRepositoryImpl
-import dagger.Binds
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.Binds
+import dev.zacsweers.metro.ContributesTo
 
-@Module(includes = [ApiModule::class, DatabaseModule::class])
-@InstallIn(SingletonComponent::class)
-abstract class RepositoryModule {
+@ContributesTo(AppScope::class)
+interface RepositoryModule {
 
-  @Singleton
   @Binds
-  abstract fun provideSessionRepository(repository: SessionRepositoryImpl): SessionRepository
+  fun provideSessionRepository(repository: SessionRepositoryImpl): SessionRepository
 
-  @Singleton
   @Binds
-  abstract fun provideUsernameRepository(repository: UsernameRepositoryImpl): UsernameRepository
+  fun provideUsernameRepository(repository: UsernameRepositoryImpl): UsernameRepository
 
-  @Singleton
   @Binds
-  abstract fun provideTopAlbumsRepository(repository: AlbumRepositoryImpl): AlbumRepository
+  fun provideTopAlbumsRepository(repository: AlbumRepositoryImpl): AlbumRepository
 
-  @Singleton
   @Binds
-  abstract fun provideTopArtistsRepository(repository: TopArtistsRepositoryImpl): TopArtistsRepository
+  fun provideTopArtistsRepository(repository: TopArtistsRepositoryImpl): TopArtistsRepository
 
-  @Singleton
   @Binds
-  abstract fun provideScrobbleRepository(repository: ScrobbleRepositoryImpl): ScrobbleRepository
+  fun provideScrobbleRepository(repository: ScrobbleRepositoryImpl): ScrobbleRepository
 
-  @Singleton
   @Binds
-  abstract fun provideThemeRepository(repository: ThemeRepositoryImpl): ThemeRepository
+  fun provideThemeRepository(repository: ThemeRepositoryImpl): ThemeRepository
 
-  @Singleton
   @Binds
-  abstract fun provideTrackRepository(repository: TrackRepositoryImpl): TrackRepository
+  fun provideTrackRepository(repository: TrackRepositoryImpl): TrackRepository
 
-  @Singleton
   @Binds
-  abstract fun provideArtistRepository(repository: ArtistRepositoryImpl): ArtistRepository
+  fun provideArtistRepository(repository: ArtistRepositoryImpl): ArtistRepository
 
-  @Singleton
   @Binds
-  abstract fun provideNowPlayingRepository(repository: NowPlayingRepositoryImpl): NowPlayingRepository
+  fun provideNowPlayingRepository(repository: NowPlayingRepositoryImpl): NowPlayingRepository
 
-  @Singleton
   @Binds
-  abstract fun provideScrobbleSettingRepository(repository: ScrobbleSettingRepositoryImpl): ScrobbleSettingRepository
+  fun provideScrobbleSettingRepository(repository: ScrobbleSettingRepositoryImpl): ScrobbleSettingRepository
 
-  @Singleton
   @Binds
-  abstract fun provideChartRepository(repository: ChartRepositoryImpl): ChartRepository
+  fun provideChartRepository(repository: ChartRepositoryImpl): ChartRepository
 
-  @Singleton
   @Binds
-  abstract fun provideLicenseRepository(repository: LicenseRepositoryImpl): LicenseRepository
+  fun provideLicenseRepository(repository: LicenseRepositoryImpl): LicenseRepository
 
-  @Singleton
   @Binds
-  abstract fun provideFileRepository(repository: FileRepositoryImpl): FileRepository
+  fun provideFileRepository(repository: FileRepositoryImpl): FileRepository
 
-  @Singleton
   @Binds
-  abstract fun provideUserRepository(repository: UserRepositoryImpl): UserRepository
+  fun provideUserRepository(repository: UserRepositoryImpl): UserRepository
 
-  @Singleton
   @Binds
-  abstract fun provideArtworkRepository(repository: ArtworkRepositoryImpl): ArtworkRepository
+  fun provideArtworkRepository(repository: ArtworkRepositoryImpl): ArtworkRepository
 }

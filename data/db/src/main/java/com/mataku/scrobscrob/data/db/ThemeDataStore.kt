@@ -5,20 +5,20 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.mataku.scrobscrob.data.db.entity.AppThemeEntity
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import javax.inject.Singleton
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.SingleIn
 
 private val Context.themeDataStore by preferencesDataStore("THEME")
 
-@Singleton
+@SingleIn(AppScope::class)
 class ThemeDataStore(
-  @param:ApplicationContext private val context: Context
+  private val context: Context
 ) {
   fun theme(): Flow<AppThemeEntity> =
     context.themeDataStore.data

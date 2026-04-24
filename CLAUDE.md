@@ -20,7 +20,7 @@ Refer to the following documents only when needed:
 ## Project Overview
 
 SunsetScrob is a Last.fm client Android application. Modular Kotlin app using
-Jetpack Compose, MVVM + Repository pattern, Hilt DI, and feature-based modules.
+Jetpack Compose, MVVM + Repository pattern, Metro DI, and feature-based modules.
 
 ## Setup
 
@@ -70,10 +70,10 @@ The module graph is strictly directional. Violations break `:architecture-spec:t
   - ViewModels: `...ui.viewmodel`
   - Navigation: `...ui.navigation`
   - Small composables: `...ui.molecule`
-  - Hilt modules: `...di`
+  - Metro binding containers: `...di`
 - In `:data:repository`:
   - Mappers: `...data.repository.mapper`
-  - Hilt modules: `...data.repository.di`
+  - Metro binding containers: `...data.repository.di`
 
 ---
 
@@ -81,7 +81,10 @@ The module graph is strictly directional. Violations break `:architecture-spec:t
 
 Reference: `feature/home/.../ui/viewmodel/HomeViewModel.kt`, `feature/scrobble/.../ui/viewmodel/ScrobbleViewModel.kt`.
 
-- Annotate with `@HiltViewModel`; take dependencies via `@Inject constructor`.
+- Annotate with `@Inject`, `@ViewModelKey`, and `@ContributesIntoMap(AppScope::class)`
+  (imports from `dev.zacsweers.metro.*` and `dev.zacsweers.metrox.viewmodel.ViewModelKey`).
+  Constructor parameters are resolved by Metro; no `@Inject constructor` needed
+  when `@Inject` is applied at the class level.
 - Expose state as `MutableStateFlow<FooUiState>` with `private set` (not `.asStateFlow()` — matches existing style).
 - `FooUiState` is a `data class`, annotated `@Immutable`, with `ImmutableList<T>`
   for list fields (`kotlinx.collections.immutable`).
@@ -94,18 +97,18 @@ Reference: `feature/home/.../ui/viewmodel/HomeViewModel.kt`, `feature/scrobble/.
 - Class name ends with `ViewModel` and extends `androidx.lifecycle.ViewModel`
   (or `AndroidViewModel` when an `Application` dependency is genuinely needed).
 - Declare ViewModels as `internal`. ViewModels are never consumed across
-  module boundaries — the Screen wires them via `hiltViewModel()` inside the
+  module boundaries — the Screen wires them via `metroViewModel()` inside the
   same module, and navigation crosses modules via public `fooGraph()`
   extensions, not via VM types.
 - Exception: `TopAlbumsViewModel`, `TopArtistsViewModel`, `ScrobbleViewModel`
   are public because `:feature:home`'s `HomeScreen` instantiates them via
-  `hiltViewModel<T>()` to embed each as a tab (hub pattern).
+  `metroViewModel<T>()` to embed each as a tab (hub pattern).
 
 ## Screen / Content Separation (Rule 4)
 
 Reference: `feature/scrobble/.../ui/screen/ScrobbleScreen.kt`, `feature/home/.../ui/screen/HomeScreen.kt`.
 
-- Top-level composable is `fun FooScreen(viewModel: FooViewModel = hiltViewModel(), navigateToX: (...) -> Unit, modifier: Modifier = Modifier)`.
+- Top-level composable is `fun FooScreen(viewModel: FooViewModel = metroViewModel(), navigateToX: (...) -> Unit, modifier: Modifier = Modifier)`.
   It is stateful: collects state with `.collectAsStateWithLifecycle()` and owns
   navigation callbacks.
 - A `private fun FooContent(...)` takes **data only** (no ViewModel), is previewable, and contains the Compose layout.
@@ -137,20 +140,31 @@ Reference: `data/repository/.../ScrobbleRepository.kt`, `data/repository/di/Repo
 
 - Interface and its `Impl` class live in the **same file**, same package.
 - Methods return `Flow<T>`; wrap async work with `flow { ... }.flowOn(Dispatchers.IO)`.
-- Hilt bind all repositories in `data/repository/di/RepositoryModule.kt` with
-  `@Binds` and `@Singleton`. `RepositoryModule` includes `ApiModule` and
-  `DatabaseModule` via `@Module(includes = [...])`.
+- Bind all repositories in `data/repository/di/RepositoryModule.kt` with
+  `@Binds` and `@SingleIn(AppScope::class)`. The interface is annotated
+  `@ContributesTo(AppScope::class)` so Metro auto-aggregates it into the
+  app graph — no explicit `includes` wiring is needed; `:data:api`'s
+  `ApiModule` and `:data:db`'s `DatabaseModule` join automatically because
+  they are also `@ContributesTo(AppScope::class)`.
 - Do not catch errors inside the repository. Let them propagate — the
   ViewModel's `.catch { ... }` maps them to a `UiEvent.Error`.
 
-## Hilt Module Conventions (Rule 7)
+## Metro Binding Container Conventions (Rule 7)
 
-- Hilt modules live in a `di` subpackage and are named `FooModule.kt`.
-- Annotate every module with `@Module` + `@InstallIn(...)` (usually `SingletonComponent::class`).
-- Use `@Binds` for interface-to-impl bindings; use `@Provides` only when
-  construction needs logic or third-party types.
-- Aggregate modules with `@Module(includes = [...])` to expose a dependency
-  graph across module boundaries (see `RepositoryModule`).
+- Binding containers are Kotlin `interface`s, live in a `di` subpackage, and
+  are named `FooModule.kt` / `FooModule` (the `*Module` suffix remains to
+  match existing structure).
+- Annotate every binding container with `@ContributesTo(AppScope::class)`
+  (from `dev.zacsweers.metro.*`). Metro discovers and merges all
+  contributions automatically — there is no equivalent of Hilt's
+  `@InstallIn(...)` or `@Module(includes = [...])`.
+- Use `@Binds` on interface methods for interface-to-impl bindings. Pair
+  with `@SingleIn(AppScope::class)` for app-scoped singletons.
+- Use `@Provides` on a `companion object` function when construction needs
+  logic or third-party types. Scope with `@SingleIn(AppScope::class)` as needed.
+- The root graph is `app/.../di/AppGraph.kt`:
+  `@DependencyGraph(AppScope::class) interface AppGraph : MetroAppComponentProviders, ViewModelGraph, ScrobbleServiceDependencies`.
+  `App` creates it via `createGraphFactory<AppGraph.Factory>().create(this)`.
 
 ## Test Conventions (Rule 8)
 
@@ -189,7 +203,8 @@ Reference: `data/repository/.../ScrobbleRepository.kt`, `data/repository/di/Repo
 
 - Put new code in the module that matches its layer (UI → `:feature:*`,
   data orchestration → `:data:repository`, HTTP → `:data:api`, DB → `:data:db`).
-- Wire new dependencies through Hilt with `@Binds` + `di/FooModule.kt`.
+- Wire new dependencies through Metro with `@Binds` / `@Provides` on a
+  `@ContributesTo(AppScope::class)` interface in `di/FooModule.kt`.
 - Write a `*Spec.kt` Kotest test next to the class under test.
 - When adding a Compose screen, split stateful `FooScreen` from stateless `FooContent`.
 
@@ -213,7 +228,7 @@ Reference: `data/repository/.../ScrobbleRepository.kt`, `data/repository/di/Repo
 - Networking: Ktor client
 - DB: SQLDelight + DataStore Preferences
 - Async: Kotlin Coroutines + Flow
-- DI: Dagger Hilt (+ KSP)
+- DI: Metro (Kotlin compiler plugin; Dagger annotation interop enabled)
 - Image loading: Coil 3
 - Build: Gradle Kotlin DSL, version catalog (`gradle/libs.versions.toml`),
   custom convention plugins in `build-logic/convention/`.
@@ -230,7 +245,7 @@ than hand-rolling configuration:
   lint, packaging, test deps).
 - `ApplicationConventionPlugin` — the `:app` module.
 - `ComposeConventionPlugin` — modules that use Compose.
-- `DaggerConventionPlugin` — modules that participate in the Hilt graph.
+- `MetroConventionPlugin` — modules that participate in the Metro DI graph.
 - `ScreenshotTestConventionPlugin` — modules that contribute Roborazzi screenshots.
 
 ---

@@ -17,8 +17,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import javax.inject.Inject
-import javax.inject.Singleton
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.SingleIn
 
 interface ScrobbleRepository {
   suspend fun recentTracks(page: Int): Flow<List<RecentTrack>>
@@ -26,7 +27,7 @@ interface ScrobbleRepository {
   suspend fun scrobble(currentTrack: NowPlayingTrackEntity): Flow<ScrobbleResult>
 }
 
-@Singleton
+@SingleIn(AppScope::class)
 class ScrobbleRepositoryImpl @Inject constructor(
   private val lastFmService: LastFmService,
   private val usernameDataStore: UsernameDataStore,

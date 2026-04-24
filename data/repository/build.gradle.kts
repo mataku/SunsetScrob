@@ -2,8 +2,7 @@ import com.android.build.api.dsl.LibraryExtension
 
 plugins {
   id("sunsetscrob.android.feature")
-  id("dagger.hilt.android.plugin")
-  id("sunsetscrob.android.dagger")
+  id("sunsetscrob.android.metro")
 }
 
 configure<LibraryExtension>() {
@@ -16,8 +15,8 @@ configure<LibraryExtension>() {
 
 dependencies {
   implementation(project(":core"))
-  implementation(project(":data:api"))
-  implementation(project(":data:db"))
+  api(project(":data:api"))
+  api(project(":data:db"))
 
   implementation(libs.ktor.client.core)
   implementation(libs.timber)

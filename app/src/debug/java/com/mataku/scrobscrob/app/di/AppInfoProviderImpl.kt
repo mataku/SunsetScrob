@@ -6,11 +6,13 @@ import com.airbnb.android.showkase.models.Showkase
 import com.mataku.scrobscrob.BuildConfig
 import com.mataku.scrobscrob.account.AppInfoProvider
 import com.mataku.scrobscrob.app.ui.getBrowserIntent
-import javax.inject.Inject
-import javax.inject.Singleton
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.SingleIn
 
-@Singleton
-class AppInfoProviderImpl @Inject constructor() : AppInfoProvider {
+@Inject
+@SingleIn(AppScope::class)
+class AppInfoProviderImpl : AppInfoProvider {
   override fun appVersion(): String = BuildConfig.VERSION_NAME
 
   override fun navigateToUiCatalogIntent(context: Context) {

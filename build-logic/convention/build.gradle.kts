@@ -3,18 +3,19 @@ plugins {
 }
 
 java {
-  sourceCompatibility = JavaVersion.VERSION_17
-  targetCompatibility = JavaVersion.VERSION_17
+  sourceCompatibility = JavaVersion.VERSION_21
+  targetCompatibility = JavaVersion.VERSION_21
 }
 
 kotlin {
-  jvmToolchain(17)
+  jvmToolchain(21)
 }
 
 dependencies {
   implementation(libs.android.gradle.plugin)
   implementation(libs.kotlin.gradle.plugin)
   implementation(libs.compose.compiler.plugin)
+  implementation(libs.metro.gradle.plugin)
 }
 
 gradlePlugin {
@@ -31,9 +32,9 @@ gradlePlugin {
       id = "sunsetscrob.android.compose"
       implementationClass = "ComposeConventionPlugin"
     }
-    register("androidDagger") {
-      id = "sunsetscrob.android.dagger"
-      implementationClass = "DaggerConventionPlugin"
+    register("androidMetro") {
+      id = "sunsetscrob.android.metro"
+      implementationClass = "MetroConventionPlugin"
     }
     register("androidScreenshotTest") {
       id = "sunsetscrob.android.test.screenshot"

@@ -7,44 +7,41 @@ import com.mataku.scrobscrob.data.db.ScrobbleAppDataStore
 import com.mataku.scrobscrob.data.db.SessionKeyDataStore
 import com.mataku.scrobscrob.data.db.ThemeDataStore
 import com.mataku.scrobscrob.data.db.UsernameDataStore
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesTo
+import dev.zacsweers.metro.Provides
+import dev.zacsweers.metro.SingleIn
 
-@Module
-@InstallIn(SingletonComponent::class)
-class DatabaseModule {
+@ContributesTo(AppScope::class)
+interface DatabaseModule {
 
-  @Singleton
+  @SingleIn(AppScope::class)
   @Provides
-  fun provideSessionKeyStore(@ApplicationContext context: Context): SessionKeyDataStore {
+  fun provideSessionKeyStore(context: Context): SessionKeyDataStore {
     return SessionKeyDataStore(context)
   }
 
-  @Singleton
+  @SingleIn(AppScope::class)
   @Provides
-  fun provideUsernameStore(@ApplicationContext context: Context): UsernameDataStore {
+  fun provideUsernameStore(context: Context): UsernameDataStore {
     return UsernameDataStore(context)
   }
 
-  @Singleton
+  @SingleIn(AppScope::class)
   @Provides
-  fun provideThemeDataStore(@ApplicationContext context: Context): ThemeDataStore {
+  fun provideThemeDataStore(context: Context): ThemeDataStore {
     return ThemeDataStore(context)
   }
 
-  @Singleton
+  @SingleIn(AppScope::class)
   @Provides
-  fun provideScrobbleAppDataStore(@ApplicationContext context: Context): ScrobbleAppDataStore {
+  fun provideScrobbleAppDataStore(context: Context): ScrobbleAppDataStore {
     return ScrobbleAppDataStore(context)
   }
 
-  @Singleton
+  @SingleIn(AppScope::class)
   @Provides
-  fun provideArtworkDataStore(@ApplicationContext context: Context): ArtworkDataStore {
+  fun provideArtworkDataStore(context: Context): ArtworkDataStore {
     return ArtworkDataStoreImpl(context)
   }
 }

@@ -5,15 +5,28 @@ import android.content.Context
 import coil3.ImageLoader
 import coil3.SingletonImageLoader
 import com.mataku.scrobscrob.BuildConfig
-import dagger.hilt.android.HiltAndroidApp
+import com.mataku.scrobscrob.app.di.AppGraph
+import com.mataku.scrobscrob.data.repository.NowPlayingRepository
+import com.mataku.scrobscrob.data.repository.ScrobbleRepository
+import com.mataku.scrobscrob.data.repository.ScrobbleSettingRepository
+import com.mataku.scrobscrob.data.repository.TrackRepository
+import com.mataku.scrobscrob.data.repository.di.ScrobbleServiceDependencies
+import dev.zacsweers.metro.createGraphFactory
+import dev.zacsweers.metrox.android.MetroAppComponentProviders
+import dev.zacsweers.metrox.android.MetroApplication
 import timber.log.Timber
-import javax.inject.Inject
 
-@HiltAndroidApp
-open class App : Application(), SingletonImageLoader.Factory {
+open class App : Application(), MetroApplication, SingletonImageLoader.Factory, ScrobbleServiceDependencies {
 
-  @Inject
-  lateinit var imageLoader: ImageLoader
+  internal val appGraph: AppGraph by lazy { createGraphFactory<AppGraph.Factory>().create(this) }
+
+  override val appComponentProviders: MetroAppComponentProviders
+    get() = appGraph
+
+  override val nowPlayingRepository: NowPlayingRepository get() = appGraph.nowPlayingRepository
+  override val trackRepository: TrackRepository get() = appGraph.trackRepository
+  override val scrobbleRepository: ScrobbleRepository get() = appGraph.scrobbleRepository
+  override val scrobbleSettingRepository: ScrobbleSettingRepository get() = appGraph.scrobbleSettingRepository
 
   override fun onCreate() {
     super.onCreate()
@@ -23,6 +36,6 @@ open class App : Application(), SingletonImageLoader.Factory {
   }
 
   override fun newImageLoader(context: Context): ImageLoader {
-    return imageLoader
+    return appGraph.imageLoader
   }
 }

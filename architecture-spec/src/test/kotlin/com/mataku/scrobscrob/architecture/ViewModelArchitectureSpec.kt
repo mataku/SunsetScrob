@@ -12,13 +12,16 @@ class ViewModelArchitectureSpec : DescribeSpec({
 
   describe("ViewModel conventions (CLAUDE.md Rule 3)") {
 
-    it("classes ending with ViewModel are annotated with @HiltViewModel") {
+    it("classes ending with ViewModel are annotated with @Inject, @ViewModelKey, @ContributesIntoMap") {
       scope.classes()
         .withNameEndingWith("ViewModel")
         .filter { it.resideInPackage("com.mataku.scrobscrob..") }
         .assertTrue(
-          additionalMessage = "All ViewModels must be annotated with @HiltViewModel. CLAUDE.md Rule 3.",
-        ) { vm -> vm.annotations.any { it.name == "HiltViewModel" } }
+          additionalMessage = "All ViewModels must be annotated with @Inject, @ViewModelKey, and @ContributesIntoMap(AppScope::class). CLAUDE.md Rule 3.",
+        ) { vm ->
+          val names = vm.annotations.map { it.name }
+          "Inject" in names && "ViewModelKey" in names && "ContributesIntoMap" in names
+        }
     }
 
     it("classes ending with ViewModel extend ViewModel or AndroidViewModel") {
@@ -36,7 +39,7 @@ class ViewModelArchitectureSpec : DescribeSpec({
 
     it("ViewModels are declared `internal`") {
       // Hub exception: these VMs are consumed by :feature:home via
-      // hiltViewModel<T>() in HomeScreen's tabs, so their type must be
+      // metroViewModel<T>() in HomeScreen's tabs, so their type must be
       // visible across module boundaries. Mirrors Rule 1's feature-to-feature exception.
       val hubConsumedVms = setOf(
         "TopAlbumsViewModel",
