@@ -2,6 +2,7 @@
   extends: [
     'config:recommended',
   ],
+  minimumReleaseAge: '7 days',
   ignoreDeps: [
     'androidx.compose.animation:animation',
     'androidx.compose.ui:ui-tooling',
