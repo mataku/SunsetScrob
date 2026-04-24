@@ -12,13 +12,13 @@ Adopts MVVM + Clean Architecture. No UseCase layer; ViewModel directly uses Repo
 | State Management | StateFlow + ImmutableList |
 | Network | Ktor Client |
 | Local DB | SQLDelight, DataStore |
-| DI | Dagger Hilt |
+| DI | Metro (Kotlin compiler plugin) |
 | Testing | Kotest, MockK, Roborazzi |
 
 ## Module Structure
 
 ```
-app/                    - Application entry point, Hilt initialization, Navigation
+app/                    - Application entry point, Metro AppGraph, Navigation
 core/                   - Entity definitions (bottom layer, referenced by all modules)
 ui_common/              - Shared Composables, theme, colors
 data/
@@ -79,8 +79,10 @@ feature/* ──→ data/repository ──→ data/api ──→ core
 [ScrobbleViewModel.kt](../feature/scrobble/src/main/java/com/mataku/scrobscrob/scrobble/ui/viewmodel/ScrobbleViewModel.kt)
 
 ```kotlin
-@HiltViewModel
-class ExampleViewModel @Inject constructor(
+@Inject
+@ViewModelKey
+@ContributesIntoMap(AppScope::class)
+class ExampleViewModel(
   private val repository: ExampleRepository
 ) : ViewModel() {
 
@@ -130,7 +132,7 @@ class ExampleViewModel @Inject constructor(
 - Define interface and Impl in the same file
 - Return `Flow<T>` (suspend fun + flow builder)
 - Specify thread with `flowOn(Dispatchers.IO)`
-- `@Singleton` + `@Inject constructor`
+- `@SingleIn(AppScope::class)` + `@Inject` on the Impl class
 
 #### Reference Implementation
 
@@ -141,8 +143,9 @@ interface ExampleRepository {
   suspend fun fetchItems(): Flow<List<Item>>
 }
 
-@Singleton
-class ExampleRepositoryImpl @Inject constructor(
+@Inject
+@SingleIn(AppScope::class)
+class ExampleRepositoryImpl(
   private val lastFmService: LastFmService
 ) : ExampleRepository {
   override suspend fun fetchItems() = flow {
@@ -186,8 +189,8 @@ private fun ExampleContent(
 
 | Target | Configuration |
 |--------|---------------|
-| Repository | Add `@Binds` to [RepositoryModule.kt](../data/repository/src/main/java/com/mataku/scrobscrob/data/repository/di/RepositoryModule.kt) |
-| ViewModel | Only `@HiltViewModel` + `@Inject constructor` (no Module needed) |
+| Repository | Add `@Binds` to [RepositoryModule.kt](../data/repository/src/main/java/com/mataku/scrobscrob/data/repository/di/RepositoryModule.kt) (interface with `@ContributesTo(AppScope::class)`; Impl carries `@Inject` + `@SingleIn(AppScope::class)`) |
+| ViewModel | `@Inject` + `@ViewModelKey` + `@ContributesIntoMap(AppScope::class)` on the class (no Module needed). Use `@AssistedInject` + inner `Factory : ViewModelAssistedFactory` when the VM takes `SavedStateHandle`. |
 | DataStore | Provided by [DatabaseModule.kt](../data/db/src/main/java/com/mataku/scrobscrob/data/db/di/DatabaseModule.kt) |
 
 ## Convention Plugins
@@ -197,7 +200,7 @@ private fun ExampleContent(
 | `sunsetscrob.android.application` | For app module |
 | `sunsetscrob.android.feature` | For feature / library modules |
 | `sunsetscrob.android.compose` | Compose configuration |
-| `sunsetscrob.android.dagger` | Hilt DI |
+| `sunsetscrob.android.metro` | Metro DI (applies `dev.zacsweers.metro`, adds `metrox-viewmodel-compose`) |
 | `sunsetscrob.android.test.screenshot` | Roborazzi tests |
 
 ### New Feature Module Example
@@ -208,7 +211,7 @@ Reference: [feature/album/build.gradle.kts](../feature/album/build.gradle.kts)
 plugins {
   id("sunsetscrob.android.feature")
   id("sunsetscrob.android.compose")
-  id("sunsetscrob.android.dagger")
+  id("sunsetscrob.android.metro")
   id("sunsetscrob.android.test.screenshot")
 }
 
@@ -223,7 +226,6 @@ dependencies {
 
   implementation(libs.compose.material3)
   implementation(libs.compose.navigation)
-  implementation(libs.hilt.navigation.compose)
   implementation(libs.coroutines)
   implementation(libs.kotlinx.collection)
 }

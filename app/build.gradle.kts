@@ -66,7 +66,8 @@ ksp {
 
 licensee {
   allow("Apache-2.0")
-  allow("MIT")
+  allow("BSD-3-Clause")
+  allowUrl("https://opensource.org/license/mit")
   allowUrl("https://developer.android.com/guide/playcore/license")
   allowUrl("https://developer.android.com/studio/terms.html")
 }
