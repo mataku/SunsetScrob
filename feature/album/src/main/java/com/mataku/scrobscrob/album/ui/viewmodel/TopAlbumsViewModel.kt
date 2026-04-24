@@ -6,7 +6,10 @@ import com.mataku.scrobscrob.core.entity.TimeRangeFiltering
 import com.mataku.scrobscrob.core.entity.TopAlbumInfo
 import com.mataku.scrobscrob.data.repository.AlbumRepository
 import com.mataku.scrobscrob.data.repository.UsernameRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metrox.viewmodel.ViewModelKey
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -16,10 +19,11 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class TopAlbumsViewModel @Inject constructor(
+@Inject
+@ViewModelKey
+@ContributesIntoMap(AppScope::class)
+class TopAlbumsViewModel(
   private val topAlbumsRepository: AlbumRepository,
   usernameRepository: UsernameRepository,
 ) : ViewModel() {

@@ -2,8 +2,9 @@ package com.mataku.scrobscrob.data.repository
 
 import com.mataku.scrobscrob.data.api.LastFmService
 import com.mataku.scrobscrob.data.db.ArtworkDataStore
-import javax.inject.Inject
-import javax.inject.Singleton
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.SingleIn
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
 
@@ -27,7 +28,7 @@ interface ArtworkRepository {
 //  )
 }
 
-@Singleton
+@SingleIn(AppScope::class)
 class ArtworkRepositoryImpl @Inject constructor(
   private val lastFmService: LastFmService,
   private val artworkDataStore: ArtworkDataStore

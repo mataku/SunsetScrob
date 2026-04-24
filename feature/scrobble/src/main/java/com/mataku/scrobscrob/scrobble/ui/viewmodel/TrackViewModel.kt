@@ -3,22 +3,29 @@ package com.mataku.scrobscrob.scrobble.ui.viewmodel
 import androidx.compose.runtime.Immutable
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.CreationExtras
 import com.mataku.scrobscrob.core.entity.TrackInfo
 import com.mataku.scrobscrob.data.repository.TrackRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metrox.viewmodel.ViewModelAssistedFactory
+import dev.zacsweers.metrox.viewmodel.ViewModelAssistedFactoryKey
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-internal class TrackViewModel @Inject constructor(
+@AssistedInject
+class TrackViewModel(
   private val trackRepository: TrackRepository,
-  savedStateHandle: SavedStateHandle
+  @Assisted savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
   var state = MutableStateFlow(TrackUiState.initialize())
@@ -130,5 +137,15 @@ internal class TrackViewModel @Inject constructor(
 
   sealed class UiEvent {
     object TrackInfoFetchFailure : UiEvent()
+  }
+
+  @AssistedFactory
+  @ViewModelAssistedFactoryKey(TrackViewModel::class)
+  @ContributesIntoMap(AppScope::class)
+  fun interface Factory : ViewModelAssistedFactory {
+    override fun create(extras: CreationExtras): TrackViewModel =
+      create(extras.createSavedStateHandle())
+
+    fun create(@Assisted savedStateHandle: SavedStateHandle): TrackViewModel
   }
 }

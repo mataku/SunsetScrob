@@ -19,15 +19,16 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
-import javax.inject.Singleton
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.SingleIn
 
 interface UserRepository {
   suspend fun getInfo(userName: String): Flow<UserInfo>
   suspend fun getLovedTracks(page: Int): Result<List<LovedTrack>>
 }
 
-@Singleton
+@SingleIn(AppScope::class)
 class UserRepositoryImpl @Inject constructor(
   private val lastFmService: LastFmService,
   private val usernameDataStore: UsernameDataStore,

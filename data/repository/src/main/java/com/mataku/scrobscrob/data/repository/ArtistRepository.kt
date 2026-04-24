@@ -11,8 +11,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import javax.inject.Inject
-import javax.inject.Singleton
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.SingleIn
 
 interface ArtistRepository {
   fun artistInfo(
@@ -26,7 +27,7 @@ interface ArtistRepository {
   ): Flow<List<TopAlbumInfo>>
 }
 
-@Singleton
+@SingleIn(AppScope::class)
 class ArtistRepositoryImpl @Inject constructor(
   private val lastFmService: LastFmService
 ) : ArtistRepository {

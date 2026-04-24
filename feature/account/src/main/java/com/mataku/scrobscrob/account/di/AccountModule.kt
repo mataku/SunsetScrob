@@ -3,19 +3,16 @@ package com.mataku.scrobscrob.account.di
 import android.content.Context
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesTo
+import dev.zacsweers.metro.Provides
+import dev.zacsweers.metro.SingleIn
 
-@Module
-@InstallIn(SingletonComponent::class)
-class AccountModule {
-  @Singleton
+@ContributesTo(AppScope::class)
+interface AccountModule {
+  @SingleIn(AppScope::class)
   @Provides
-  fun provideAppUpdateManager(@ApplicationContext context: Context): AppUpdateManager {
+  fun provideAppUpdateManager(context: Context): AppUpdateManager {
     return AppUpdateManagerFactory.create(context)
   }
 }

@@ -5,7 +5,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.ui.Modifier
-import androidx.hilt.navigation.compose.hiltViewModel
+import dev.zacsweers.metrox.viewmodel.metroViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
@@ -30,7 +30,7 @@ fun NavGraphBuilder.homeGraph(
       HOME_DESTINATION,
       content = {
         HomeScreen(
-          viewModel = hiltViewModel(key = "home"),
+          viewModel = metroViewModel(key = "home"),
           sharedTransitionScope = sharedTransitionScope,
           animatedContentScope = this@composable,
           navigateToTrackDetail = { track, id ->

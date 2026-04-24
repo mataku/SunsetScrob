@@ -3,7 +3,7 @@ import com.android.build.api.dsl.LibraryExtension
 plugins {
   id("sunsetscrob.android.feature")
   id("sunsetscrob.android.compose")
-  id("sunsetscrob.android.dagger")
+  id("sunsetscrob.android.metro")
   id("sunsetscrob.android.test.screenshot")
 }
 
@@ -18,8 +18,6 @@ dependencies {
   implementation(libs.activity.compose)
   implementation(libs.compose.material3)
   implementation(libs.compose.navigation)
-
-  implementation(libs.hilt.navigation.compose)
 
   implementation(libs.coroutines)
 

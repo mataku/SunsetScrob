@@ -4,18 +4,18 @@ import android.content.Context
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
-import javax.inject.Singleton
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.SingleIn
 
 private val Context.sessionKeyDataStore by preferencesDataStore("SESSION_KEY")
 
-@Singleton
+@SingleIn(AppScope::class)
 class SessionKeyDataStore(
-  @param:ApplicationContext private val context: Context
+  private val context: Context
 ) {
   suspend fun sessionKey(): String? {
     val preferences = context.sessionKeyDataStore.data.first()

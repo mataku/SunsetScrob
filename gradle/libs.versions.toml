@@ -6,7 +6,6 @@ coil = "3.4.0"
 core-sprashscreen = "1.0.1"
 coroutines = "1.10.2"
 firebase = "34.12.0"
-hilt = "2.59.2"
 ktor = "3.4.3"
 kotlin = "2.3.21"
 ksp = "2.3.7"
@@ -15,6 +14,7 @@ kotlinx-collections-immutable-jvm = "0.4.0"
 kotlinx-serialization-json = "1.11.0"
 kotest = "6.1.11"
 konsist = "0.17.3"
+metro = "1.0.0-RC3"
 material = "1.13.0"
 mockk = "1.14.9"
 navigation-compose = "2.9.8"
@@ -62,18 +62,15 @@ okhttp-logging-interceptor = { module = "com.squareup.okhttp3:logging-intercepto
 
 activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activity" }
 
-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
-hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
-
-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version = "1.3.0" }
+metro-gradle-plugin = { module = "dev.zacsweers.metro:gradle-plugin", version.ref = "metro" }
+metrox-android = { module = "dev.zacsweers.metro:metrox-android", version.ref = "metro" }
+metrox-viewmodel-compose = { module = "dev.zacsweers.metro:metrox-viewmodel-compose", version.ref = "metro" }
 
 datastore-preferences = { module = "androidx.datastore:datastore-preferences", version = "1.2.1" }
 
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 compose-compiler-plugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
-
-kotlin-metadata-jvm = { module = "org.jetbrains.kotlin:kotlin-metadata-jvm", version.ref = "kotlin" }
 
 lottie-compose = { module = "com.airbnb.android:lottie-compose", version = "6.6.10" }
 
@@ -128,7 +125,7 @@ kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 crashlytics = { id = "com.google.firebase.crashlytics", version = "3.0.7" }
 google-services = { id = "com.google.gms.google-services", version = "4.4.4" }
-hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+metro = { id = "dev.zacsweers.metro", version.ref = "metro" }
 baselineprofile = { id = "androidx.baselineprofile", version.ref = "baselineprofile" }
 sqldelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }

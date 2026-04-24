@@ -3,8 +3,7 @@ import com.android.build.api.dsl.LibraryExtension
 
 plugins {
   id("sunsetscrob.android.feature")
-  id("dagger.hilt.android.plugin")
-  id("sunsetscrob.android.dagger")
+  id("sunsetscrob.android.metro")
   id("kotlinx-serialization")
 }
 

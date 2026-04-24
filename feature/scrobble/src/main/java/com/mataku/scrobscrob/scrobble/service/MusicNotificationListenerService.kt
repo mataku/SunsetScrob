@@ -2,42 +2,25 @@ package com.mataku.scrobscrob.scrobble.service
 
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
-import com.mataku.scrobscrob.data.repository.NowPlayingRepository
-import com.mataku.scrobscrob.data.repository.ScrobbleRepository
-import com.mataku.scrobscrob.data.repository.ScrobbleSettingRepository
-import com.mataku.scrobscrob.data.repository.TrackRepository
-import dagger.hilt.android.AndroidEntryPoint
+import com.mataku.scrobscrob.data.repository.di.ScrobbleServiceDependencies
 import kotlinx.coroutines.Job
-import javax.inject.Inject
 
-@AndroidEntryPoint
-class MusicNotificationListenerService() : NotificationListenerService() {
+class MusicNotificationListenerService : NotificationListenerService() {
 
   private var previousTrackName = ""
-
-  @Inject
-  lateinit var nowPlayingRepository: NowPlayingRepository
-
-  @Inject
-  lateinit var trackRepository: TrackRepository
-
-  @Inject
-  lateinit var scrobbleRepository: ScrobbleRepository
-
-  @Inject
-  lateinit var scrobbleSettingRepository: ScrobbleSettingRepository
 
   private var requester: MusicNotificationRequester? = null
 
   override fun onCreate() {
     super.onCreate()
+    val dependencies = application as ScrobbleServiceDependencies
     val job = Job()
     requester = MusicNotificationRequester(
       job,
-      trackRepository,
-      nowPlayingRepository,
-      scrobbleRepository,
-      scrobbleSettingRepository
+      dependencies.trackRepository,
+      dependencies.nowPlayingRepository,
+      dependencies.scrobbleRepository,
+      dependencies.scrobbleSettingRepository
     )
   }
 

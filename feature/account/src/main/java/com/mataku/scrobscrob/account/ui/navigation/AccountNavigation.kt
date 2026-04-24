@@ -6,7 +6,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.hilt.navigation.compose.hiltViewModel
+import dev.zacsweers.metrox.viewmodel.metroViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
@@ -32,7 +32,7 @@ fun NavGraphBuilder.accountGraph(navController: NavController) {
       content = {
         val context = LocalContext.current
         AccountScreen(
-          viewModel = hiltViewModel(),
+          viewModel = metroViewModel(),
           navigateToScrobbleSetting = navController::navigateToScrobbleSetting,
           navigateToThemeSelector = navController::navigateToThemeSelector,
           navigateToLicenseList = navController::navigateToLicense,
@@ -66,7 +66,7 @@ fun NavGraphBuilder.accountGraph(navController: NavController) {
       SCROBBLE_SETTING_DESTINATION,
       content = {
         ScrobbleSettingScreen(
-          viewModel = hiltViewModel(),
+          viewModel = metroViewModel(),
           modifier = Modifier
         )
       },
@@ -81,7 +81,7 @@ fun NavGraphBuilder.accountGraph(navController: NavController) {
       THEME_SELECTOR_DESTINATION,
       content = {
         ThemeSelectorScreen(
-          viewModel = hiltViewModel(),
+          viewModel = metroViewModel(),
           onBackPressed = navController::popBackStack,
           modifier = Modifier
         )
@@ -97,7 +97,7 @@ fun NavGraphBuilder.accountGraph(navController: NavController) {
       LICENSE_DESTINATION,
       content = {
         LicenseScreen(
-          viewModel = hiltViewModel(),
+          viewModel = metroViewModel(),
           modifier = Modifier
         )
       },

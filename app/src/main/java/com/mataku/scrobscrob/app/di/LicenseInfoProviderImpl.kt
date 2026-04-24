@@ -2,15 +2,15 @@ package com.mataku.scrobscrob.app.di
 
 import android.content.Context
 import com.mataku.scrobscrob.data.repository.di.LicenseInfoProvider
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
-import javax.inject.Singleton
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.SingleIn
 
-@Singleton
-class LicenseInfoProviderImpl @Inject constructor(
-  @param:ApplicationContext
+@Inject
+@SingleIn(AppScope::class)
+class LicenseInfoProviderImpl(
   private val context: Context
 ) : LicenseInfoProvider {
   override suspend fun licenseRawString(): String? {

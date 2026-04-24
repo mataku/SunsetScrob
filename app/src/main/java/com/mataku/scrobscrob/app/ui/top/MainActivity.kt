@@ -1,25 +1,41 @@
 package com.mataku.scrobscrob.app.ui.top
 
+import android.app.Activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.mataku.scrobscrob.app.ui.screen.MainScreen
 import com.mataku.scrobscrob.app.ui.viewmodel.MainViewModel
 import com.mataku.scrobscrob.ui_common.style.Colors
 import com.mataku.scrobscrob.ui_common.style.SunsetTheme
-import dagger.hilt.android.AndroidEntryPoint
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
+import dev.zacsweers.metrox.android.ActivityKey
+import dev.zacsweers.metrox.viewmodel.LocalMetroViewModelFactory
+import dev.zacsweers.metrox.viewmodel.MetroViewModelFactory
 import kotlinx.coroutines.launch
 
-@AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+@ContributesIntoMap(AppScope::class, binding = binding<Activity>())
+@ActivityKey
+@Inject
+class MainActivity(
+  private val viewModelFactory: MetroViewModelFactory,
+) : ComponentActivity() {
   private val viewModel by viewModels<MainViewModel>()
+
+  override val defaultViewModelProviderFactory: ViewModelProvider.Factory
+    get() = viewModelFactory
 
   override fun onCreate(savedInstanceState: Bundle?) {
     // Should Call before onCreate
@@ -46,8 +62,10 @@ class MainActivity : ComponentActivity() {
             }
           )
           setContent {
-            SunsetTheme(theme = theme) {
-              MainScreen()
+            CompositionLocalProvider(LocalMetroViewModelFactory provides viewModelFactory) {
+              SunsetTheme(theme = theme) {
+                MainScreen()
+              }
             }
           }
         }

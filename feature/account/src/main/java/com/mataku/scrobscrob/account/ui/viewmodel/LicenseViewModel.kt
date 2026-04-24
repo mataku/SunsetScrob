@@ -4,7 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mataku.scrobscrob.core.entity.LicenseArtifact
 import com.mataku.scrobscrob.data.repository.LicenseRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metrox.viewmodel.ViewModelKey
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -13,10 +16,11 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
-import javax.inject.Inject
 
-@HiltViewModel
-internal class LicenseViewModel @Inject constructor(
+@Inject
+@ViewModelKey
+@ContributesIntoMap(AppScope::class)
+class LicenseViewModel(
   private val licenseRepository: LicenseRepository
 ) : ViewModel() {
 

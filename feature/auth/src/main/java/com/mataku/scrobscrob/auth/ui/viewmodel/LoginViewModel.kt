@@ -3,17 +3,21 @@ package com.mataku.scrobscrob.auth.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mataku.scrobscrob.data.repository.SessionRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metrox.viewmodel.ViewModelKey
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-internal class LoginViewModel @Inject constructor(private val repo: SessionRepository) : ViewModel() {
+@Inject
+@ViewModelKey
+@ContributesIntoMap(AppScope::class)
+class LoginViewModel(private val repo: SessionRepository) : ViewModel() {
 
   var uiState: MutableStateFlow<LoginUiState> = MutableStateFlow(LoginUiState.initialize())
     private set

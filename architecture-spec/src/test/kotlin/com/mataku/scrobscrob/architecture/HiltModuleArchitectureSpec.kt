@@ -4,26 +4,29 @@ import com.lemonappdev.konsist.api.Konsist
 import com.lemonappdev.konsist.api.verify.assertTrue
 import io.kotest.core.spec.style.DescribeSpec
 
-class HiltModuleArchitectureSpec : DescribeSpec({
+class BindingContainerArchitectureSpec : DescribeSpec({
 
   val scope = Konsist.scopeFromProduction()
 
-  describe("Hilt module conventions (CLAUDE.md Rule 7)") {
+  describe("Metro binding container conventions (CLAUDE.md Rule 7)") {
 
-    it("`@Module` classes are named `*Module`") {
-      scope.classes()
-        .filter { cls -> cls.annotations.any { it.name == "Module" } }
+    it("interfaces annotated with `@ContributesTo` are named `*Module`") {
+      scope.interfaces()
+        .filter { intf -> intf.annotations.any { it.name == "ContributesTo" } }
+        .filter { it.resideInPackage("com.mataku.scrobscrob..") }
+        .filterNot { it.name.endsWith("Graph") }
         .assertTrue(
-          additionalMessage = "Hilt modules must be named `*Module`. CLAUDE.md Rule 7.",
+          additionalMessage = "Metro binding containers must be named `*Module`. CLAUDE.md Rule 7.",
         ) { it.name.endsWith("Module") }
     }
 
-    it("`@Module` classes declare `@InstallIn`") {
-      scope.classes()
-        .filter { cls -> cls.annotations.any { it.name == "Module" } }
+    it("interfaces named `*Module` declare `@ContributesTo(AppScope::class)`") {
+      scope.interfaces()
+        .filter { it.name.endsWith("Module") }
+        .filter { it.resideInPackage("com.mataku.scrobscrob..") }
         .assertTrue(
-          additionalMessage = "Hilt modules must declare `@InstallIn(...)`. CLAUDE.md Rule 7.",
-        ) { cls -> cls.annotations.any { it.name == "InstallIn" } }
+          additionalMessage = "Metro binding containers must declare `@ContributesTo(AppScope::class)`. CLAUDE.md Rule 7.",
+        ) { cls -> cls.annotations.any { it.name == "ContributesTo" } }
     }
   }
 })

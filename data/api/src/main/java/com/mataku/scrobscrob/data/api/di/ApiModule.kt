@@ -10,26 +10,23 @@ import com.mataku.scrobscrob.data.api.BuildConfig
 import com.mataku.scrobscrob.data.api.LastFmHttpClient
 import com.mataku.scrobscrob.data.api.LastFmService
 import com.mataku.scrobscrob.data.api.okhttp.LastfmApiAuthInterceptor
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesTo
+import dev.zacsweers.metro.Provides
+import dev.zacsweers.metro.SingleIn
 import io.ktor.client.engine.okhttp.OkHttp
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import okio.Path.Companion.toOkioPath
 import java.io.File
-import javax.inject.Singleton
 
-@Module
-@InstallIn(SingletonComponent::class)
-class ApiModule {
+@ContributesTo(AppScope::class)
+interface ApiModule {
 
-  @Singleton
+  @SingleIn(AppScope::class)
   @Provides
-  fun provideOkhttpClient(@ApplicationContext context: Context): OkHttpClient {
+  fun provideOkhttpClient(context: Context): OkHttpClient {
     val okhttpClientBuilder = OkHttpClient.Builder()
       .cache(
         Cache(
@@ -45,7 +42,7 @@ class ApiModule {
     return okhttpClientBuilder.build()
   }
 
-  @Singleton
+  @SingleIn(AppScope::class)
   @Provides
   fun provideLastFmService(
     okHttpClient: OkHttpClient
@@ -60,10 +57,10 @@ class ApiModule {
     )
   }
 
-  @Singleton
+  @SingleIn(AppScope::class)
   @Provides
   fun provideImageLoader(
-    @ApplicationContext context: Context,
+    context: Context,
     okHttpClient: OkHttpClient
   ): ImageLoader {
     return ImageLoader.Builder(context)

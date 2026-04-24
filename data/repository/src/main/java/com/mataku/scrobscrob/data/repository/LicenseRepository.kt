@@ -10,14 +10,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import javax.inject.Inject
-import javax.inject.Singleton
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.SingleIn
 
 interface LicenseRepository {
   fun licenseList(): Flow<List<LicenseArtifact>>
 }
 
-@Singleton
+@SingleIn(AppScope::class)
 class LicenseRepositoryImpl @Inject constructor(
   private val licenseInfoProvider: LicenseInfoProvider
 ) : LicenseRepository {

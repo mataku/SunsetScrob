@@ -3,7 +3,7 @@ import com.android.build.api.dsl.ApplicationExtension
 plugins {
   id("sunsetscrob.android.application")
   id("sunsetscrob.android.compose")
-  id("sunsetscrob.android.dagger")
+  id("sunsetscrob.android.metro")
   id("com.google.firebase.crashlytics")
   id("com.google.gms.google-services")
   id("com.google.devtools.ksp")
@@ -45,7 +45,7 @@ dependencies {
   implementation(libs.compose.material3)
   implementation(libs.compose.navigation)
 
-  implementation(libs.hilt.navigation.compose)
+  implementation(libs.metrox.android)
   implementation(libs.core.splashscreen)
   implementation(libs.timber)
 
@@ -64,13 +64,10 @@ ksp {
   arg("skipPrivatePreviews", "true")
 }
 
-hilt {
-  enableAggregatingTask = true
-}
-
 licensee {
   allow("Apache-2.0")
-  allow("MIT")
+  allow("BSD-3-Clause")
+  allowUrl("https://opensource.org/license/mit")
   allowUrl("https://developer.android.com/guide/playcore/license")
   allowUrl("https://developer.android.com/studio/terms.html")
 }

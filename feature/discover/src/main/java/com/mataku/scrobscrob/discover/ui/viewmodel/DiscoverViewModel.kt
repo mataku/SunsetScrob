@@ -8,17 +8,21 @@ import com.mataku.scrobscrob.core.entity.ChartTrack
 import com.mataku.scrobscrob.core.entity.LovedTrack
 import com.mataku.scrobscrob.data.repository.ChartRepository
 import com.mataku.scrobscrob.data.repository.UserRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metrox.viewmodel.ViewModelKey
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-internal class DiscoverViewModel @Inject constructor(
+@Inject
+@ViewModelKey
+@ContributesIntoMap(AppScope::class)
+class DiscoverViewModel(
   private val chartRepository: ChartRepository,
   private val userRepository: UserRepository,
 ) : ViewModel() {

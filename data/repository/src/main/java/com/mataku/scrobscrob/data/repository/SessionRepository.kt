@@ -11,15 +11,16 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.zip
-import javax.inject.Inject
-import javax.inject.Singleton
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.SingleIn
 
 interface SessionRepository {
   suspend fun authorize(userName: String, password: String): Flow<Unit>
   suspend fun logout(): Flow<Unit>
 }
 
-@Singleton
+@SingleIn(AppScope::class)
 class SessionRepositoryImpl @Inject constructor(
   private val lastFmService: LastFmService,
   private val sessionKeyDataStore: SessionKeyDataStore,

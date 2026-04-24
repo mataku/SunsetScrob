@@ -19,8 +19,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
-import javax.inject.Singleton
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.SingleIn
 
 interface ChartRepository {
   fun topArtists(page: Int): Flow<ChartTopArtists>
@@ -33,7 +34,7 @@ interface ChartRepository {
   suspend fun topTagsAsync(page: Int): Result<ImmutableList<Tag>>
 }
 
-@Singleton
+@SingleIn(AppScope::class)
 class ChartRepositoryImpl @Inject constructor(
   private val lastFmService: LastFmService,
   private val artworkDataStore: ArtworkDataStore

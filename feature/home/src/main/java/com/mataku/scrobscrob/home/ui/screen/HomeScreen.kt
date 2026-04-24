@@ -21,7 +21,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
-import androidx.hilt.navigation.compose.hiltViewModel
+import dev.zacsweers.metrox.viewmodel.metroViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mataku.scrobscrob.album.ui.screen.TopAlbumsScreen
 import com.mataku.scrobscrob.artist.ui.screen.TopArtistsScreen
@@ -132,13 +132,13 @@ internal fun HomeScreen(
                   navigateToTrackDetail = navigateToTrackDetail,
                   sharedTransitionScope = sharedTransitionScope,
                   animatedContentScope = animatedContentScope,
-                  viewModel = hiltViewModel(key = "scrobble"),
+                  viewModel = metroViewModel(key = "scrobble"),
                 )
               }
 
               HomeTabType.ARTIST -> {
                 TopArtistsScreen(
-                  viewModel = hiltViewModel(key = "artist"),
+                  viewModel = metroViewModel(key = "artist"),
                   onArtistTap = navigateToArtistDetail,
                   topAppBarScrollBehavior = scrollBehavior,
                   sharedTransitionScope = sharedTransitionScope,
@@ -148,7 +148,7 @@ internal fun HomeScreen(
 
               HomeTabType.ALBUM -> {
                 TopAlbumsScreen(
-                  viewModel = hiltViewModel(key = "album"),
+                  viewModel = metroViewModel(key = "album"),
                   navigateToAlbumInfo = navigateToAlbumDetail,
                   topAppBarScrollBehavior = scrollBehavior,
                   sharedTransitionScope = sharedTransitionScope,

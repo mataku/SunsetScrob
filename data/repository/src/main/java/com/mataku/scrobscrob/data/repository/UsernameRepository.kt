@@ -2,8 +2,9 @@ package com.mataku.scrobscrob.data.repository
 
 import com.mataku.scrobscrob.data.db.UsernameDataStore
 import kotlinx.coroutines.runBlocking
-import javax.inject.Inject
-import javax.inject.Singleton
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.SingleIn
 
 //interface UsernameRepository {
 //    suspend fun username(): Flow<String?>
@@ -29,7 +30,7 @@ interface UsernameRepository {
   suspend fun asyncUsername(): String?
 }
 
-@Singleton
+@SingleIn(AppScope::class)
 class UsernameRepositoryImpl @Inject constructor(
   private val usernameDataStore: UsernameDataStore
 ) : UsernameRepository {

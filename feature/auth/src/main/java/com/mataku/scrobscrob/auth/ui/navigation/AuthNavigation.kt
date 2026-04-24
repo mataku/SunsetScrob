@@ -3,7 +3,7 @@ package com.mataku.scrobscrob.auth.ui.navigation
 import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import dev.zacsweers.metrox.viewmodel.metroViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -14,7 +14,7 @@ import com.mataku.scrobscrob.ui_common.navigateToPrivacyPolicy
 fun NavGraphBuilder.authGraph(navController: NavController) {
   composable(LOGIN_DESTINATION) {
     LoginScreen(
-      viewModel = hiltViewModel(),
+      viewModel = metroViewModel(),
       navigateToHomeFromAuth = navController::navigateToHomeFromAuth,
       navigateToPrivacyPolicy = navController::navigateToPrivacyPolicy,
       modifier = Modifier
