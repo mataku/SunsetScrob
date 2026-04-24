@@ -7,6 +7,16 @@ CI if violated. When in doubt, follow the existing code in the module you are ed
 
 ---
 
+## Documentation
+
+Refer to the following documents only when needed:
+
+| File | Purpose | When to Reference |
+|------|---------|-------------------|
+| `@docs/architecture.md` | Module structure, dependencies, implementation patterns | When implementing new features |
+| `@docs/coding-conventions.md` | Naming conventions, Compose guidelines | When writing code |
+| `@docs/testing.md` | Unit Test, Screenshot Test guidelines | When writing tests |
+
 ## Project Overview
 
 SunsetScrob is a Last.fm client Android application. Modular Kotlin app using
