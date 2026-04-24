@@ -85,6 +85,37 @@ Reference: `feature/home/.../ui/viewmodel/HomeViewModel.kt`, `feature/scrobble/.
   (imports from `dev.zacsweers.metro.*` and `dev.zacsweers.metrox.viewmodel.ViewModelKey`).
   Constructor parameters are resolved by Metro; no `@Inject constructor` needed
   when `@Inject` is applied at the class level.
+- ViewModels that extend `AndroidViewModel` must pin the bound type
+  explicitly with `@ContributesIntoMap(AppScope::class, binding = binding<ViewModel>())`
+  (otherwise Metro contributes into a `Map<_, AndroidViewModel>`
+  multibinding that `MetroViewModelFactory` never reads, and the VM
+  drops out of the graph silently).
+- ViewModels that need `SavedStateHandle` (usually to read navigation
+  arguments) use Metro's assisted-injection pattern instead:
+  ```kotlin
+  @AssistedInject
+  class FooViewModel(
+    private val repo: FooRepository,
+    @Assisted savedStateHandle: SavedStateHandle,
+  ) : ViewModel() {
+    // body
+
+    @AssistedFactory
+    @ViewModelAssistedFactoryKey(FooViewModel::class)
+    @ContributesIntoMap(AppScope::class)
+    fun interface Factory : ViewModelAssistedFactory {
+      override fun create(extras: CreationExtras): FooViewModel =
+        create(extras.createSavedStateHandle())
+
+      fun create(@Assisted savedStateHandle: SavedStateHandle): FooViewModel
+    }
+  }
+  ```
+  The screen still calls `metroViewModel<FooViewModel>()` — Metro's
+  factory tries `assistedFactoryProviders` first and falls through to
+  the regular `viewModelProviders` map. Navigation arguments land in
+  `SavedStateHandle` the same way they did under Hilt. References:
+  `feature/scrobble/.../TrackViewModel.kt`, `feature/album/.../AlbumViewModel.kt`.
 - Expose state as `MutableStateFlow<FooUiState>` with `private set` (not `.asStateFlow()` — matches existing style).
 - `FooUiState` is a `data class`, annotated `@Immutable`, with `ImmutableList<T>`
   for list fields (`kotlinx.collections.immutable`).
@@ -96,13 +127,16 @@ Reference: `feature/home/.../ui/viewmodel/HomeViewModel.kt`, `feature/scrobble/.
   **Do not** create your own `CoroutineScope`, and do not use `GlobalScope`.
 - Class name ends with `ViewModel` and extends `androidx.lifecycle.ViewModel`
   (or `AndroidViewModel` when an `Application` dependency is genuinely needed).
-- Declare ViewModels as `internal`. ViewModels are never consumed across
-  module boundaries — the Screen wires them via `metroViewModel()` inside the
-  same module, and navigation crosses modules via public `fooGraph()`
-  extensions, not via VM types.
-- Exception: `TopAlbumsViewModel`, `TopArtistsViewModel`, `ScrobbleViewModel`
-  are public because `:feature:home`'s `HomeScreen` instantiates them via
-  `metroViewModel<T>()` to embed each as a tab (hub pattern).
+- ViewModel visibility is not enforced. `:app` VMs can stay `internal`
+  (same compilation unit as `AppGraph`), but feature-module VMs must be
+  public — Metro's contribution aggregation runs when `AppGraph` is
+  compiled and cannot see `internal` classes across module boundaries,
+  so an `internal` feature VM silently drops out of the
+  `viewModelProviders` multibinding and fails at runtime with
+  `IllegalArgumentException: Unknown model class`. The Screen still
+  wires its VM via `metroViewModel()` inside the same module, and
+  navigation crosses modules via public `fooGraph()` extensions, not via
+  VM types.
 
 ## Screen / Content Separation (Rule 4)
 

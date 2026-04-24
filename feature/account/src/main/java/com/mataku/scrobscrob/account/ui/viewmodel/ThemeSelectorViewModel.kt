@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 @Inject
 @ViewModelKey
 @ContributesIntoMap(AppScope::class)
-internal class ThemeSelectorViewModel(
+class ThemeSelectorViewModel(
   private val themeRepository: ThemeRepository
 ) : ViewModel() {
 

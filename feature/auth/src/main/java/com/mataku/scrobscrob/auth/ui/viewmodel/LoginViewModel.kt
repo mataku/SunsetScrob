@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 @Inject
 @ViewModelKey
 @ContributesIntoMap(AppScope::class)
-internal class LoginViewModel(private val repo: SessionRepository) : ViewModel() {
+class LoginViewModel(private val repo: SessionRepository) : ViewModel() {
 
   var uiState: MutableStateFlow<LoginUiState> = MutableStateFlow(LoginUiState.initialize())
     private set

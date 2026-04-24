@@ -3,7 +3,6 @@ import com.android.build.api.dsl.LibraryExtension
 plugins {
   id("sunsetscrob.android.feature")
   id("sunsetscrob.android.metro")
-  id("com.google.devtools.ksp")
   id("kotlinx-serialization")
   id(libs.plugins.sqldelight.get().pluginId)
 }

@@ -15,7 +15,7 @@ import timber.log.Timber
 @Inject
 @ViewModelKey
 @ContributesIntoMap(AppScope::class)
-internal class HomeViewModel(
+class HomeViewModel(
   private val usernameRepository: UsernameRepository,
 ) : ViewModel() {
 

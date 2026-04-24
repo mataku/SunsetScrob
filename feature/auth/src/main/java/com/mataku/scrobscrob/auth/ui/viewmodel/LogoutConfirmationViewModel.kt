@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 @Inject
 @ViewModelKey
 @ContributesIntoMap(AppScope::class)
-internal class LogoutConfirmationViewModel(
+class LogoutConfirmationViewModel(
   private val sessionRepository: SessionRepository
 ) : ViewModel() {
 

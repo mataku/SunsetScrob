@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 @Inject
 @ViewModelKey
 @ContributesIntoMap(AppScope::class)
-internal class ScrobbleSettingViewModel(
+class ScrobbleSettingViewModel(
   private val scrobbleSettingRepository: ScrobbleSettingRepository
 ) : ViewModel() {
 

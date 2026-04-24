@@ -20,7 +20,7 @@ import kotlinx.coroutines.flow.update
 @Inject
 @ViewModelKey
 @ContributesIntoMap(AppScope::class)
-internal class LicenseViewModel(
+class LicenseViewModel(
   private val licenseRepository: LicenseRepository
 ) : ViewModel() {
 

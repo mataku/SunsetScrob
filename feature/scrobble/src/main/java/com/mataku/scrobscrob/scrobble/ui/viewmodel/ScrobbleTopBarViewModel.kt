@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 @Inject
 @ViewModelKey
 @ContributesIntoMap(AppScope::class)
-internal class ScrobbleTopBarViewModel(
+class ScrobbleTopBarViewModel(
   private val sessionRepository: SessionRepository
 ) : ViewModel() {
 

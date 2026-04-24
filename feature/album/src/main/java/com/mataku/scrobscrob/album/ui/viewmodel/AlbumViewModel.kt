@@ -2,13 +2,18 @@ package com.mataku.scrobscrob.album.ui.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.CreationExtras
 import com.mataku.scrobscrob.core.entity.AlbumInfo
 import com.mataku.scrobscrob.data.repository.AlbumRepository
 import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
 import dev.zacsweers.metro.ContributesIntoMap
-import dev.zacsweers.metro.Inject
-import dev.zacsweers.metrox.viewmodel.ViewModelKey
+import dev.zacsweers.metrox.viewmodel.ViewModelAssistedFactory
+import dev.zacsweers.metrox.viewmodel.ViewModelAssistedFactoryKey
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
@@ -17,12 +22,10 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 
-@Inject
-@ViewModelKey
-@ContributesIntoMap(AppScope::class)
-internal class AlbumViewModel(
+@AssistedInject
+class AlbumViewModel(
   private val albumRepository: AlbumRepository,
-  savedStateHandle: SavedStateHandle
+  @Assisted savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
   private val artistName = savedStateHandle.get<String>("artistName")
@@ -82,4 +85,14 @@ internal class AlbumViewModel(
     val preloadAlbumName: String = "",
     val preloadArtworkUrl: String = ""
   )
+
+  @AssistedFactory
+  @ViewModelAssistedFactoryKey(AlbumViewModel::class)
+  @ContributesIntoMap(AppScope::class)
+  fun interface Factory : ViewModelAssistedFactory {
+    override fun create(extras: CreationExtras): AlbumViewModel =
+      create(extras.createSavedStateHandle())
+
+    fun create(@Assisted savedStateHandle: SavedStateHandle): AlbumViewModel
+  }
 }

@@ -3,6 +3,7 @@ package com.mataku.scrobscrob.account.ui.viewmodel
 import android.app.Application
 import androidx.compose.runtime.Immutable
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.play.core.appupdate.AppUpdateInfo
 import com.google.android.play.core.appupdate.AppUpdateManager
@@ -18,6 +19,7 @@ import com.mataku.scrobscrob.data.repository.UsernameRepository
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 import dev.zacsweers.metrox.viewmodel.ViewModelKey
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
@@ -28,8 +30,8 @@ import java.text.DecimalFormat
 
 @Inject
 @ViewModelKey
-@ContributesIntoMap(AppScope::class)
-internal class AccountViewModel(
+@ContributesIntoMap(AppScope::class, binding = binding<ViewModel>())
+class AccountViewModel(
   private val usernameRepository: UsernameRepository,
   private val themeRepository: ThemeRepository,
   private val sessionRepository: SessionRepository,

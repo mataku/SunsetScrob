@@ -22,7 +22,7 @@ import kotlinx.coroutines.launch
 @Inject
 @ViewModelKey
 @ContributesIntoMap(AppScope::class)
-internal class DiscoverViewModel(
+class DiscoverViewModel(
   private val chartRepository: ChartRepository,
   private val userRepository: UserRepository,
 ) : ViewModel() {
