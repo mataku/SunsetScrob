@@ -17,8 +17,6 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -37,6 +35,8 @@ import com.mataku.scrobscrob.album.ui.viewmodel.TopAlbumsViewModel
 import com.mataku.scrobscrob.core.entity.TopAlbumInfo
 import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.core.entity.isInvalidArtwork
+import com.mataku.scrobscrob.ui_common.SunsetScaffold
+import com.mataku.scrobscrob.ui_common.SunsetTopAppBarScrollBehavior
 import com.mataku.scrobscrob.ui_common.molecule.FilteringFloatingButton
 import com.mataku.scrobscrob.ui_common.molecule.LoadingIndicator
 import com.mataku.scrobscrob.ui_common.organism.FilteringBottomSheet
@@ -52,7 +52,7 @@ fun TopAlbumsScreen(
   animatedContentScope: AnimatedContentScope,
   viewModel: TopAlbumsViewModel,
   navigateToAlbumInfo: (TopAlbumInfo, String) -> Unit,
-  topAppBarScrollBehavior: TopAppBarScrollBehavior,
+  topAppBarScrollBehavior: SunsetTopAppBarScrollBehavior,
   modifier: Modifier = Modifier
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -72,7 +72,7 @@ fun TopAlbumsScreen(
     }
   }
 
-  Scaffold(
+  SunsetScaffold(
     floatingActionButton = {
       FilteringFloatingButton(
         onClick = {

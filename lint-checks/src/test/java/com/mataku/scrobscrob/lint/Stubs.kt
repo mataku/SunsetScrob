@@ -242,3 +242,43 @@ internal val material3FloatingActionButtonStub: TestFile = kotlin(
     }
   """.trimIndent(),
 ).indented()
+
+internal val material3ScaffoldStub: TestFile = kotlin(
+  """
+    package androidx.compose.material3
+
+    fun Scaffold(
+      content: () -> Unit,
+    ) {}
+  """.trimIndent(),
+).indented()
+
+internal val material3TopAppBarStub: TestFile = kotlin(
+  """
+    package androidx.compose.material3
+
+    fun TopAppBar(
+      title: () -> Unit,
+    ) {}
+
+    object TopAppBarDefaults {
+      fun centerAlignedTopAppBarColors(): Any = Any()
+    }
+
+    interface TopAppBarScrollBehavior
+  """.trimIndent(),
+).indented()
+
+internal val material3SnackbarHostStub: TestFile = kotlin(
+  """
+    package androidx.compose.material3
+
+    fun SnackbarHost(
+      hostState: SnackbarHostState,
+    ) {}
+
+    class SnackbarHostState {
+      suspend fun showSnackbar(message: String): Unit = Unit
+    }
+  """.trimIndent(),
+).indented()

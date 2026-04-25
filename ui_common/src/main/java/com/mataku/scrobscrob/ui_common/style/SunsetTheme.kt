@@ -2,12 +2,9 @@ package com.mataku.scrobscrob.ui_common.style
 
 import androidx.compose.material.ripple.RippleAlpha
 import androidx.compose.material3.ColorScheme
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LocalRippleConfiguration
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RippleConfiguration
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
@@ -16,8 +13,9 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.mataku.scrobscrob.core.entity.AppTheme
+import com.mataku.scrobscrob.ui_common.SunsetSnackbarHostState
+import com.mataku.scrobscrob.ui_common.SunsetTopAppBarScrollBehavior
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SunsetTheme(
   theme: AppTheme = AppTheme.DARK,
@@ -59,12 +57,11 @@ fun SunsetThemePreview(
 val LocalAppTheme = staticCompositionLocalOf { AppTheme.DARK }
 
 val LocalSnackbarHostState = staticCompositionLocalOf {
-  SnackbarHostState()
+  SunsetSnackbarHostState()
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-val LocalTopAppBarState = staticCompositionLocalOf<TopAppBarScrollBehavior> {
-  throw IllegalStateException("TopAppBarScrollBehavior is not provided")
+val LocalTopAppBarState = staticCompositionLocalOf<SunsetTopAppBarScrollBehavior> {
+  throw IllegalStateException("SunsetTopAppBarScrollBehavior is not provided")
 }
 
 const val ANIMATION_DURATION_MILLIS = 700

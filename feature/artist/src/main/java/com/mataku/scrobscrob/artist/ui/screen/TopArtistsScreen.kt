@@ -18,11 +18,8 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,7 +29,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mataku.scrobscrob.artist.ui.molecule.TopArtist
@@ -40,6 +36,8 @@ import com.mataku.scrobscrob.artist.ui.viewmodel.TopArtistsViewModel
 import com.mataku.scrobscrob.core.entity.TopArtistInfo
 import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.core.entity.isInvalidArtwork
+import com.mataku.scrobscrob.ui_common.SunsetScaffold
+import com.mataku.scrobscrob.ui_common.SunsetTopAppBarScrollBehavior
 import com.mataku.scrobscrob.ui_common.molecule.FilteringFloatingButton
 import com.mataku.scrobscrob.ui_common.molecule.LoadingIndicator
 import com.mataku.scrobscrob.ui_common.organism.FilteringBottomSheet
@@ -55,7 +53,7 @@ fun TopArtistsScreen(
   animatedContentScope: AnimatedContentScope,
   viewModel: TopArtistsViewModel,
   onArtistTap: (TopArtistInfo, String) -> Unit,
-  topAppBarScrollBehavior: TopAppBarScrollBehavior,
+  topAppBarScrollBehavior: SunsetTopAppBarScrollBehavior,
   modifier: Modifier = Modifier
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -69,19 +67,13 @@ fun TopArtistsScreen(
   val orientation = remember {
     configuration.orientation
   }
-  val density = LocalDensity.current
 
-  val topAppBarHeightPixel by remember {
-    derivedStateOf {
-      topAppBarScrollBehavior.state.heightOffset
-    }
-  }
   BackHandler(bottomSheetState.isVisible) {
     coroutineScope.launch {
       bottomSheetState.hide()
     }
   }
-  Scaffold(
+  SunsetScaffold(
     floatingActionButton = {
       FilteringFloatingButton(
         onClick = {

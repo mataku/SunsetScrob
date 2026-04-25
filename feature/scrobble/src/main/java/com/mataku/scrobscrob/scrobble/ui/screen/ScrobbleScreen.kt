@@ -10,8 +10,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -25,16 +23,16 @@ import com.mataku.scrobscrob.core.entity.isInvalidArtwork
 import com.mataku.scrobscrob.scrobble.ui.component.Scrobble
 import com.mataku.scrobscrob.scrobble.ui.viewmodel.ScrobbleViewModel
 import com.mataku.scrobscrob.ui_common.SunsetPullToRefreshBox
+import com.mataku.scrobscrob.ui_common.SunsetTopAppBarScrollBehavior
 import com.mataku.scrobscrob.ui_common.organism.InfiniteLoadingIndicator
 import kotlinx.collections.immutable.ImmutableList
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ScrobbleScreen(
   sharedTransitionScope: SharedTransitionScope,
   animatedContentScope: AnimatedContentScope,
   viewModel: ScrobbleViewModel,
-  topAppBarScrollBehavior: TopAppBarScrollBehavior,
+  topAppBarScrollBehavior: SunsetTopAppBarScrollBehavior,
   navigateToTrackDetail: (RecentTrack, String) -> Unit,
   modifier: Modifier = Modifier
 ) {
@@ -59,7 +57,6 @@ fun ScrobbleScreen(
   }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ScrobbleContent(
   sharedTransitionScope: SharedTransitionScope,
@@ -69,7 +66,7 @@ private fun ScrobbleContent(
   hasNext: Boolean,
   onScrobbleTap: (RecentTrack, String) -> Unit,
   onScrollEnd: () -> Unit,
-  scrollBehavior: TopAppBarScrollBehavior
+  scrollBehavior: SunsetTopAppBarScrollBehavior
 ) {
   LazyColumn(
     state = lazyListState,
