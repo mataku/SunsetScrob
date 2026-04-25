@@ -28,10 +28,10 @@ internal fun DiscoverScreen(
     modifier = modifier
       .fillMaxSize()
   ) {
-    if (uiState.recentlyLovedTracks.isNotEmpty()) {
-      item(
-        key = "recently_loved_track_list"
-      ) {
+    item(
+      key = "recently_loved_track_list"
+    ) {
+      if (uiState.recentlyLovedTracks.isNotEmpty()) {
         RecentlyLovedTrackList(
           lovedTrackList = uiState.recentlyLovedTracks,
           onLovedTrackTap = {
@@ -41,10 +41,10 @@ internal fun DiscoverScreen(
       }
     }
 
-    if (uiState.topTracks.isNotEmpty()) {
-      item(
-        key = "chart_track_list"
-      ) {
+    item(
+      key = "chart_track_list"
+    ) {
+      if (uiState.topTracks.isNotEmpty()) {
         ChartTrackList(
           chartTrackList = uiState.topTracks,
           onChartTrackTap = {
@@ -58,10 +58,10 @@ internal fun DiscoverScreen(
       }
     }
 
-    if (uiState.topArtists.isNotEmpty()) {
-      item(
-        key = "chart_artist_list"
-      ) {
+    item(
+      key = "chart_artist_list"
+    ) {
+      if (uiState.topArtists.isNotEmpty()) {
         ChartArtistList(
           chartArtistList = uiState.topArtists,
           onChartArtistTap = {

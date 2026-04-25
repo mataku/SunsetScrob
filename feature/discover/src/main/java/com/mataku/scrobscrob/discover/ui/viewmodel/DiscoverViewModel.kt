@@ -17,7 +17,8 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 @Inject
@@ -39,32 +40,27 @@ class DiscoverViewModel(
 
   private fun fetchInitial() {
     viewModelScope.launch {
-      launch {
-        userRepository.getLovedTracks(requestPage)
-          .catch { }
-          .collect { tracks ->
-            uiState.update {
-              it.copy(recentlyLovedTracks = tracks.toImmutableList())
-            }
-          }
-      }
-      launch {
-        chartRepository.topTracks(requestPage)
-          .catch { }
-          .collect { topTracks ->
-            uiState.update {
-              it.copy(topTracks = topTracks.topTracks.toImmutableList())
-            }
-          }
-      }
-      launch {
-        chartRepository.topArtists(requestPage)
-          .catch { }
-          .collect { topArtists ->
-            uiState.update {
-              it.copy(topArtists = topArtists.topArtists.toImmutableList())
-            }
-          }
+      val lovedTracksFlow = userRepository.getLovedTracks(requestPage)
+        .catch { emit(emptyList()) }
+      val topTracksFlow = chartRepository.topTracks(requestPage)
+        .map { it.topTracks }
+        .catch { emit(persistentListOf()) }
+      val topArtistsFlow = chartRepository.topArtists(requestPage)
+        .map { it.topArtists }
+        .catch { emit(persistentListOf()) }
+
+      combine(
+        lovedTracksFlow,
+        topTracksFlow,
+        topArtistsFlow,
+      ) { lovedTracks, topTracks, topArtists ->
+        DiscoverUiState(
+          recentlyLovedTracks = lovedTracks.toImmutableList(),
+          topTracks = topTracks,
+          topArtists = topArtists,
+        )
+      }.collect { newState ->
+        uiState.value = newState
       }
     }
   }
