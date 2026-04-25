@@ -26,9 +26,9 @@ configure<TestExtension>() {
   targetProjectPath = ":app"
 
   testOptions.managedDevices.allDevices {
-    create<ManagedVirtualDevice>("pixel6Api34") {
-      device = "Pixel 6"
-      apiLevel = 34
+    create<ManagedVirtualDevice>("pixel9Api35") {
+      device = "Pixel 9"
+      apiLevel = 35
       systemImageSource = "google"
     }
   }
@@ -37,7 +37,7 @@ configure<TestExtension>() {
 // This is the configuration block for the Baseline Profile plugin.
 // You can specify to run the generators on a managed devices or connected devices.
 baselineProfile {
-  managedDevices += "pixel6Api34"
+  managedDevices += "pixel9Api35"
   useConnectedDevices = false
 }
 
