@@ -7,6 +7,8 @@ import com.android.tools.lint.detector.api.Issue
 
 class SunsetIssueRegistry : IssueRegistry() {
   override val issues: List<Issue> = listOf(
+    PreferSunsetButtonDetector.ISSUE,
+    PreferSunsetTextButtonDetector.ISSUE,
     PreferSunsetTextDetector.ISSUE,
     PreviewComposableVisibilityDetector.ISSUE,
     RepositoryReturnsFlowDetector.ISSUE,

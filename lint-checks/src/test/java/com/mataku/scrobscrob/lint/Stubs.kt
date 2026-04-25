@@ -78,3 +78,19 @@ internal val material3TextStub: TestFile = kotlin(
     fun Text(text: String) {}
   """.trimIndent(),
 ).indented()
+
+internal val material3ButtonStub: TestFile = kotlin(
+  """
+    package androidx.compose.material3
+
+    fun Button(onClick: () -> Unit) {}
+  """.trimIndent(),
+).indented()
+
+internal val material3TextButtonStub: TestFile = kotlin(
+  """
+    package androidx.compose.material3
+
+    fun TextButton(onClick: () -> Unit) {}
+  """.trimIndent(),
+).indented()

@@ -20,7 +20,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -28,7 +27,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Surface
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -57,7 +55,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mataku.scrobscrob.auth.R
 import com.mataku.scrobscrob.auth.ui.viewmodel.LoginViewModel
+import com.mataku.scrobscrob.ui_common.SunsetButton
 import com.mataku.scrobscrob.ui_common.SunsetText
+import com.mataku.scrobscrob.ui_common.SunsetTextButton
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.LocalSnackbarHostState
 import com.mataku.scrobscrob.ui_common.style.SunsetTheme
@@ -237,7 +237,7 @@ private fun LoginContent(
 
     Spacer(modifier = Modifier.height(48.dp))
 
-    Button(
+    SunsetButton(
       onClick = {
         focusManager.clearFocus()
         onLoginButtonTap(username, password)
@@ -265,11 +265,10 @@ private fun LoginContent(
 
     Spacer(modifier = Modifier.height(32.dp))
 
-    TextButton(onClick = {
-      onPrivacyPolicyTap.invoke()
-    }) {
-      SunsetText.ButtonLabel(text = "Privacy policy")
-    }
+    SunsetTextButton.Label(
+      text = "Privacy policy",
+      onClick = onPrivacyPolicyTap,
+    )
   }
 }
 

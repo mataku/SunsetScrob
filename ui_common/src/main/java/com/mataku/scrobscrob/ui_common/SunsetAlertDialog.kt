@@ -2,7 +2,6 @@ package com.mataku.scrobscrob.ui_common
 
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
@@ -27,7 +26,7 @@ fun SunsetAlertDialog(
       { SunsetText.Body(text = description) }
     } else null,
     confirmButton = {
-      TextButton(onClick = {
+      SunsetTextButton(onClick = {
         onConfirmButton.invoke()
       }) {
         SunsetText.Body(
@@ -38,7 +37,7 @@ fun SunsetAlertDialog(
     },
     dismissButton = if (dismissButtonText.isNotBlank()) {
       {
-        TextButton(onClick = {
+        SunsetTextButton(onClick = {
           onDismissButton.invoke()
         }) {
           SunsetText.Body(

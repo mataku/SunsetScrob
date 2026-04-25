@@ -18,7 +18,6 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -51,6 +50,7 @@ import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.core.entity.UserInfo
 import com.mataku.scrobscrob.ui_common.SunsetAlertDialog
 import com.mataku.scrobscrob.ui_common.SunsetText
+import com.mataku.scrobscrob.ui_common.SunsetTextButton
 import com.mataku.scrobscrob.ui_common.style.LocalSnackbarHostState
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import kotlinx.collections.immutable.persistentListOf
@@ -339,21 +339,21 @@ private fun AccountContent(
         SunsetText.Body(text = stringResource(id = R.string.dialog_notification_permission_required_description))
       },
       dismissButton = {
-        TextButton(onClick = {
-          openDialog.value = false
-        }) {
-          SunsetText.ButtonLabel(text = stringResource(id = R.string.button_back))
-        }
+        SunsetTextButton.Label(
+          text = stringResource(id = R.string.button_back),
+          onClick = {
+            openDialog.value = false
+          },
+        )
       },
       confirmButton = {
-        TextButton(onClick = {
-          openDialog.value = false
-          navigateToNotificationSetting.invoke()
-        }) {
-          SunsetText.ButtonLabel(
-            text = stringResource(id = R.string.button_go_to_setting),
-          )
-        }
+        SunsetTextButton.Label(
+          text = stringResource(id = R.string.button_go_to_setting),
+          onClick = {
+            openDialog.value = false
+            navigateToNotificationSetting.invoke()
+          },
+        )
       }
     )
   }
