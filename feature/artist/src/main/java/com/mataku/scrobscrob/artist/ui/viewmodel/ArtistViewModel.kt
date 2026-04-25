@@ -1,5 +1,6 @@
 package com.mataku.scrobscrob.artist.ui.viewmodel
 
+import androidx.compose.runtime.Immutable
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.createSavedStateHandle
@@ -15,6 +16,7 @@ import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metrox.viewmodel.ViewModelAssistedFactory
 import dev.zacsweers.metrox.viewmodel.ViewModelAssistedFactoryKey
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -29,7 +31,8 @@ class ArtistViewModel(
   private val artistName = savedStateHandle.get<String>("artistName")
   private val artworkUrl = savedStateHandle.get<String>("artworkUrl") ?: ""
 
-  var uiState = MutableStateFlow(ArtistUiState())
+  val uiState: StateFlow<ArtistUiState>
+    field = MutableStateFlow(ArtistUiState())
 
   init {
     if (!artistName.isNullOrEmpty()) {
@@ -57,6 +60,7 @@ class ArtistViewModel(
       .launchIn(viewModelScope)
   }
 
+  @Immutable
   data class ArtistUiState(
     val isLoading: Boolean = false,
     val artistInfo: ArtistInfo? = null,

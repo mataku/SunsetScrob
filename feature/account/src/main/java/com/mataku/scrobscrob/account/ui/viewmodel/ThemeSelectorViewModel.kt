@@ -1,5 +1,6 @@
 package com.mataku.scrobscrob.account.ui.viewmodel
 
+import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mataku.scrobscrob.core.entity.AppTheme
@@ -9,6 +10,7 @@ import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metrox.viewmodel.ViewModelKey
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.update
@@ -21,9 +23,8 @@ class ThemeSelectorViewModel(
   private val themeRepository: ThemeRepository
 ) : ViewModel() {
 
-  var uiState: MutableStateFlow<ThemeSelectorUiState> =
-    MutableStateFlow(ThemeSelectorUiState.initialize())
-    private set
+  val uiState: StateFlow<ThemeSelectorUiState>
+    field = MutableStateFlow(ThemeSelectorUiState.initialize())
 
   init {
     viewModelScope.launch {
@@ -64,6 +65,7 @@ class ThemeSelectorViewModel(
     }
   }
 
+  @Immutable
   data class ThemeSelectorUiState(
     val theme: AppTheme?,
     val event: UiEvent?

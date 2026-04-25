@@ -1,5 +1,6 @@
 package com.mataku.scrobscrob.account.ui.viewmodel
 
+import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mataku.scrobscrob.core.entity.LicenseArtifact
@@ -12,6 +13,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -24,8 +26,8 @@ class LicenseViewModel(
   private val licenseRepository: LicenseRepository
 ) : ViewModel() {
 
-  var uiState: MutableStateFlow<LicenseUiState> = MutableStateFlow(LicenseUiState())
-    private set
+  val uiState: StateFlow<LicenseUiState>
+    field = MutableStateFlow(LicenseUiState())
 
   init {
     fetchLicenseList()
@@ -43,6 +45,7 @@ class LicenseViewModel(
       }.launchIn(viewModelScope)
   }
 
+  @Immutable
   data class LicenseUiState(
     val licenseList: ImmutableList<LicenseArtifact> = persistentListOf()
   )

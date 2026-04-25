@@ -15,6 +15,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
@@ -31,8 +32,8 @@ class TopArtistsViewModel(
 
   private val username: String = usernameRepository.username() ?: ""
 
-  var uiState = MutableStateFlow(TopArtistsUiState.initialize())
-    private set
+  val uiState: StateFlow<TopArtistsUiState>
+    field = MutableStateFlow(TopArtistsUiState.initialize())
 
   private var page: Int = 1
 

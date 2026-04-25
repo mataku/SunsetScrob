@@ -117,9 +117,24 @@ Reference: `feature/home/.../ui/viewmodel/HomeViewModel.kt`, `feature/scrobble/.
   the regular `viewModelProviders` map. Navigation arguments land in
   `SavedStateHandle` the same way they did under Hilt. References:
   `feature/scrobble/.../TrackViewModel.kt`, `feature/album/.../AlbumViewModel.kt`.
-- Expose state as `MutableStateFlow<FooUiState>` with `private set` (not `.asStateFlow()` — matches existing style).
+- Expose state via Kotlin 2.3 explicit backing fields (enabled project-wide
+  with `-Xexplicit-backing-fields` in `build-logic`'s `KotlinConfiguration`):
+  ```kotlin
+  val uiState: StateFlow<FooUiState>
+    field = MutableStateFlow(FooUiState.initialize())
+  ```
+  Public API is `StateFlow<T>` (read-only); inside the same class smart-cast
+  resolves `uiState` to the `MutableStateFlow<T>` backing field, so
+  `uiState.update { ... }` and `uiState.value = ...` continue to work.
+  Do not introduce a separate `_state` property + `.asStateFlow()`, and do
+  not use Compose `mutableStateOf` for ViewModel state — keep everything on
+  Flow so `collectAsStateWithLifecycle()` is the single consumer pattern in
+  Screens. Enforced by the `UiStateMustBeStateFlow` Lint detector in
+  `:lint-checks`.
 - `FooUiState` is a `data class`, annotated `@Immutable`, with `ImmutableList<T>`
-  for list fields (`kotlinx.collections.immutable`).
+  for list fields (`kotlinx.collections.immutable`). Enforced by the
+  `UiStateMustBeImmutable` Lint detector in `:lint-checks` (it flags
+  `*UiState` data classes nested in a `*ViewModel` that lack `@Immutable`).
 - One-shot events are a `sealed class FooUiEvent` carried **inside the state**
   as `events: List<FooUiEvent>`. The UI pops them via a public function on the
   VM — use `popEvent(event)` (or `popEvent()` when the event type is trivial).

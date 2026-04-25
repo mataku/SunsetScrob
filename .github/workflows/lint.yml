@@ -15,6 +15,10 @@ concurrency:
 env:
   GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx4g -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -XX:+UseParallelGC -XX:MaxMetaspaceSize=1g"
 
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -29,14 +33,17 @@ jobs:
           last-fm-api-key: ${{ secrets.LAST_FM_API_KEY }}
           last-fm-shared-secret: ${{ secrets.LAST_FM_SHARED_SECRET }}
           google-services-json: ${{ secrets.GOOGLE_SERVICES_JSON_DEV }}
+
       - name: Run Android Lint
-        run: ./gradlew :app:lintDebug
-      - name: Upload lint reports
-        if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        with:
-          name: lint-reports
-          path: |
-            **/build/reports/lint-results-*.txt
-            **/build/reports/lint-results-*.html
-          if-no-files-found: ignore
+        id: lint
+        run: ./gradlew lintDebug --continue
+
+      - name: Aggregate lint failures
+        if: failure() && steps.lint.conclusion == 'failure'
+        run: ruby scripts/lint_summary.rb
+
+      - name: Comment on PR
+        if: failure() && steps.lint.conclusion == 'failure' && github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh pr comment "${{ github.event.pull_request.number }}" --body-file lint-summary.md

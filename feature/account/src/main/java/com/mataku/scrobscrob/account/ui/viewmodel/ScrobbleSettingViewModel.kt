@@ -1,9 +1,6 @@
 package com.mataku.scrobscrob.account.ui.viewmodel
 
 import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mataku.scrobscrob.account.ui.screen.mappedApp
@@ -15,10 +12,13 @@ import dev.zacsweers.metrox.viewmodel.ViewModelKey
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.collections.immutable.toImmutableSet
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @Inject
@@ -28,23 +28,25 @@ class ScrobbleSettingViewModel(
   private val scrobbleSettingRepository: ScrobbleSettingRepository
 ) : ViewModel() {
 
-  var uiState by mutableStateOf(UiState())
-    private set
+  val uiState: StateFlow<UiState>
+    field = MutableStateFlow(UiState())
 
   init {
     viewModelScope.launch {
       scrobbleSettingRepository.allowedAppsFlow()
         .onStart {
-          uiState = uiState.copy(isLoading = true)
+          uiState.update { it.copy(isLoading = true) }
         }.catch {
 
         }
         .distinctUntilChanged()
         .collect {
-          uiState = uiState.copy(
-            allowedApps = it.toImmutableSet(),
-            isLoading = false
-          )
+          uiState.update { state ->
+            state.copy(
+              allowedApps = it.toImmutableSet(),
+              isLoading = false
+            )
+          }
         }
     }
   }
@@ -60,22 +62,20 @@ class ScrobbleSettingViewModel(
       }
       request
         .onStart {
-          uiState = uiState.copy(isLoading = true)
+          uiState.update { it.copy(isLoading = true) }
         }
         .onCompletion {
-          uiState = uiState.copy(isLoading = false)
+          uiState.update { it.copy(isLoading = false) }
         }.catch {
-          uiState = uiState.copy(event = UiEvent.AllowAppError)
+          uiState.update { it.copy(event = UiEvent.AllowAppError) }
         }.collect {
-          uiState = uiState.copy(
-            event = UiEvent.AllowAppDone,
-          )
+          uiState.update { it.copy(event = UiEvent.AllowAppDone) }
         }
     }
   }
 
   fun popEvent() {
-    uiState = uiState.copy(event = null)
+    uiState.update { it.copy(event = null) }
   }
 
   @Immutable

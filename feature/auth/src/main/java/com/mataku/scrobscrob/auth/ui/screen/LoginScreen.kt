@@ -41,12 +41,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.autofill.ContentType
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.boundsInWindow
-import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentType
 import androidx.compose.ui.semantics.semantics
@@ -80,6 +78,7 @@ internal fun LoginScreen(
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
   val context = LocalContext.current
   val snackbarHostState = LocalSnackbarHostState.current
+  val resources = LocalResources.current
   LaunchedEffect(uiState.events) {
     uiState.events.firstOrNull()?.let {
       when (it) {
@@ -89,19 +88,19 @@ internal fun LoginScreen(
 
         is LoginViewModel.UiEvent.LoginFailed -> {
           coroutineScope.launch {
-            snackbarHostState.showSnackbar(context.getString(R.string.error_login_failed))
+            snackbarHostState.showSnackbar(resources.getString(R.string.error_login_failed))
           }
         }
 
         is LoginViewModel.UiEvent.EmptyPasswordError -> {
           coroutineScope.launch {
-            snackbarHostState.showSnackbar(context.getString(R.string.error_password_required))
+            snackbarHostState.showSnackbar(resources.getString(R.string.error_password_required))
           }
         }
 
         is LoginViewModel.UiEvent.EmptyUsernameError -> {
           coroutineScope.launch {
-            snackbarHostState.showSnackbar(context.getString(R.string.error_username_required))
+            snackbarHostState.showSnackbar(resources.getString(R.string.error_username_required))
           }
         }
       }

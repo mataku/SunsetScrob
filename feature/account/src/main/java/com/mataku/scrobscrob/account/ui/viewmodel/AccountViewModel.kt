@@ -25,6 +25,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.update
@@ -47,8 +48,8 @@ class AccountViewModel(
 
   private val decimalFormat = DecimalFormat("#.##")
 
-  var uiState: MutableStateFlow<AccountUiState> = MutableStateFlow(AccountUiState.initialize())
-    private set
+  val uiState: StateFlow<AccountUiState>
+    field = MutableStateFlow(AccountUiState.initialize())
 
   init {
     val username = usernameRepository.username() ?: ""

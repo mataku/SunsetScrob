@@ -1,5 +1,6 @@
 package com.mataku.scrobscrob.album.ui.viewmodel
 
+import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mataku.scrobscrob.core.entity.TimeRangeFiltering
@@ -14,6 +15,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
@@ -28,8 +30,8 @@ class TopAlbumsViewModel(
   usernameRepository: UsernameRepository,
 ) : ViewModel() {
 
-  var uiState: MutableStateFlow<TopAlbumsUiState> = MutableStateFlow(TopAlbumsUiState.initialized())
-    private set
+  val uiState: StateFlow<TopAlbumsUiState>
+    field = MutableStateFlow(TopAlbumsUiState.initialized())
 
   private val username: String = usernameRepository.username() ?: ""
 
@@ -131,6 +133,7 @@ class TopAlbumsViewModel(
     fetchAlbums(timeRangeFilteringChanged = true)
   }
 
+  @Immutable
   data class TopAlbumsUiState(
     val isLoading: Boolean,
     val topAlbums: ImmutableList<TopAlbumInfo>,

@@ -2,7 +2,6 @@ package com.mataku.scrobscrob.album.ui.screen
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration
-import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.SharedTransitionScope
@@ -22,7 +21,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,7 +30,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mataku.scrobscrob.album.ui.molecule.TopAlbum
@@ -75,15 +72,6 @@ fun TopAlbumsScreen(
     }
   }
 
-  val topAppBarHeightPixel by remember {
-    derivedStateOf {
-      topAppBarScrollBehavior.state.heightOffset
-    }
-  }
-  with(LocalDensity.current) {
-    Log.d("MATAKUDEBUG", "TopAppBarHeight dp: ${topAppBarHeightPixel.toDp()}")
-  }
-  val density = LocalDensity.current
   Scaffold(
     floatingActionButton = {
       FilteringFloatingButton(

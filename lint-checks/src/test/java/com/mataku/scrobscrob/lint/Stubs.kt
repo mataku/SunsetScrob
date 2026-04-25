@@ -37,3 +37,36 @@ internal val flowStub: TestFile = kotlin(
     interface Flow<out T>
   """.trimIndent(),
 ).indented()
+
+internal val stateFlowStub: TestFile = kotlin(
+  """
+    package kotlinx.coroutines.flow
+
+    interface StateFlow<out T> : Flow<T> {
+      val value: T
+    }
+
+    interface MutableStateFlow<T> : StateFlow<T> {
+      override var value: T
+    }
+
+    fun <T> MutableStateFlow(value: T): MutableStateFlow<T> = error("stub")
+  """.trimIndent(),
+).indented()
+
+internal val viewModelStub: TestFile = kotlin(
+  """
+    package androidx.lifecycle
+
+    open class ViewModel
+  """.trimIndent(),
+).indented()
+
+internal val immutableStub: TestFile = kotlin(
+  """
+    package androidx.compose.runtime
+
+    @Target(AnnotationTarget.CLASS)
+    annotation class Immutable
+  """.trimIndent(),
+).indented()

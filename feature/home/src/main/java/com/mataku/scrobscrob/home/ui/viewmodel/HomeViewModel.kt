@@ -12,10 +12,10 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @Inject
 @ViewModelKey
@@ -24,11 +24,10 @@ class HomeViewModel(
   private val usernameRepository: UsernameRepository,
 ) : ViewModel() {
 
-  var uiState = MutableStateFlow(HomeUiState(username = ""))
-    private set
+  val uiState: StateFlow<HomeUiState>
+    field = MutableStateFlow(HomeUiState(username = ""))
 
   init {
-    Timber.d("MATAKUDEBUG home init")
     viewModelScope.launch {
       val username = usernameRepository.asyncUsername().first()
       if (username.isNullOrEmpty()) {

@@ -28,6 +28,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -92,12 +93,13 @@ internal fun AccountScreen(
     }
 
   val snackbarHostState = LocalSnackbarHostState.current
+  val resources = LocalResources.current
 
   val listener = InstallStateUpdatedListener { installState ->
     if (installState.installStatus() == InstallStatus.DOWNLOADED) {
       coroutineScope.launch {
         snackbarHostState.showSnackbar(
-          context.getString(R.string.label_start_update)
+          resources.getString(R.string.label_start_update)
         )
         delay(2000L)
         appUpdateManager.requestCompleteUpdate()

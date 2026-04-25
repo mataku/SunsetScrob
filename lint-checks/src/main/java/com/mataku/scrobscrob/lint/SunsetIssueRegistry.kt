@@ -9,6 +9,8 @@ class SunsetIssueRegistry : IssueRegistry() {
   override val issues: List<Issue> = listOf(
     PreviewComposableVisibilityDetector.ISSUE,
     RepositoryReturnsFlowDetector.ISSUE,
+    UiStateMustBeStateFlowDetector.ISSUE,
+    UiStateMustBeImmutableDetector.ISSUE,
   )
 
   override val api: Int = CURRENT_API

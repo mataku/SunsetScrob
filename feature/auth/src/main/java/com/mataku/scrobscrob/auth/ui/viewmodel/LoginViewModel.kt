@@ -12,6 +12,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
@@ -23,8 +24,8 @@ import kotlinx.coroutines.launch
 @ContributesIntoMap(AppScope::class)
 class LoginViewModel(private val repo: SessionRepository) : ViewModel() {
 
-  var uiState: MutableStateFlow<LoginUiState> = MutableStateFlow(LoginUiState.initialize())
-    private set
+  val uiState: StateFlow<LoginUiState>
+    field = MutableStateFlow(LoginUiState.initialize())
 
   fun popEvent(event: UiEvent) {
     val newEvents = uiState.value.events.filterNot {

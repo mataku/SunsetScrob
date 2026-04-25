@@ -16,6 +16,7 @@ import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metrox.viewmodel.ViewModelAssistedFactory
 import dev.zacsweers.metrox.viewmodel.ViewModelAssistedFactoryKey
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
@@ -28,8 +29,8 @@ class TrackViewModel(
   @Assisted savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
-  var state = MutableStateFlow(TrackUiState.initialize())
-    private set
+  val state: StateFlow<TrackUiState>
+    field = MutableStateFlow(TrackUiState.initialize())
 
   private val trackName: String? = savedStateHandle["trackName"]
   private val artistName: String? = savedStateHandle["artistName"]

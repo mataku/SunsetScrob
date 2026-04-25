@@ -16,6 +16,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
@@ -29,8 +30,8 @@ class DiscoverViewModel(
   private val userRepository: UserRepository,
 ) : ViewModel() {
 
-  var uiState = MutableStateFlow(DiscoverUiState())
-    private set
+  val uiState: StateFlow<DiscoverUiState>
+    field = MutableStateFlow(DiscoverUiState())
 
   private val requestPage = 1
 

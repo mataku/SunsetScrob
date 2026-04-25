@@ -11,6 +11,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
 fun Project.kotlinConfiguration() {
   extensions.getByType<KotlinAndroidProjectExtension>().compilerOptions {
     jvmTarget.set(JvmTarget.JVM_17)
+    freeCompilerArgs.add("-Xexplicit-backing-fields")
   }
   extensions.findByType(ApplicationExtension::class.java)?.apply {
     compileOptions.sourceCompatibility = JavaVersion.VERSION_17

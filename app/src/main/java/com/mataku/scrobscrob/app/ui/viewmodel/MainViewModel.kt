@@ -1,5 +1,6 @@
 package com.mataku.scrobscrob.app.ui.viewmodel
 
+import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mataku.scrobscrob.core.entity.AppTheme
@@ -11,7 +12,6 @@ import dev.zacsweers.metro.Inject
 import dev.zacsweers.metrox.viewmodel.ViewModelKey
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -24,8 +24,8 @@ internal class MainViewModel(
   private val usernameRepository: UsernameRepository,
 ) : ViewModel() {
 
-  private var _state: MutableStateFlow<MainUiState?> = MutableStateFlow(null)
-  val state: StateFlow<MainUiState?> = _state.asStateFlow()
+  val state: StateFlow<MainUiState?>
+    field = MutableStateFlow(null)
 
   init {
     viewModelScope.launch {
@@ -33,13 +33,13 @@ internal class MainViewModel(
 
       themeRepository.currentTheme()
         .catch {
-          _state.value = MainUiState(
+          state.value = MainUiState(
             theme = AppTheme.DARK,
             username = username
           )
         }
         .collect {
-          _state.value = MainUiState(
+          state.value = MainUiState(
             theme = it,
             username = username
           )
@@ -47,6 +47,7 @@ internal class MainViewModel(
     }
   }
 
+  @Immutable
   data class MainUiState(
     val theme: AppTheme,
     val username: String?,
