@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,7 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mataku.scrobscrob.core.entity.ChartArtist
 import com.mataku.scrobscrob.core.entity.imageUrl
-import com.mataku.scrobscrob.ui_common.SunsetTextStyle
+import com.mataku.scrobscrob.ui_common.SunsetText
 import com.mataku.scrobscrob.ui_common.molecule.SunsetImage
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 
@@ -44,9 +43,8 @@ fun ChartArtistCell(
       ),
     verticalAlignment = Alignment.CenterVertically
   ) {
-    Text(
+    SunsetText.Caption(
       text = rank.toString(),
-      style = SunsetTextStyle.caption,
       modifier = Modifier.width(24.dp),
       textAlign = TextAlign.Center
     )
@@ -63,13 +61,11 @@ fun ChartArtistCell(
 
     Spacer(modifier = Modifier.width(16.dp))
 
-    Text(
+    SunsetText.Body(
       text = chartArtist.name,
+      fontWeight = FontWeight.Bold,
       maxLines = 1,
       overflow = TextOverflow.Ellipsis,
-      style = SunsetTextStyle.body.copy(
-        fontWeight = FontWeight.Bold
-      )
     )
   }
 }

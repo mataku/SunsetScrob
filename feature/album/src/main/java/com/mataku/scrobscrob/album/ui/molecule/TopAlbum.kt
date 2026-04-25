@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,7 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mataku.scrobscrob.core.entity.TopAlbumInfo
 import com.mataku.scrobscrob.core.entity.imageUrl
-import com.mataku.scrobscrob.ui_common.SunsetTextStyle
+import com.mataku.scrobscrob.ui_common.SunsetText
 import com.mataku.scrobscrob.ui_common.molecule.SunsetImage
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import kotlinx.collections.immutable.persistentListOf
@@ -80,18 +79,15 @@ internal fun TopAlbum(
       )
     }
     Spacer(modifier = Modifier.height(8.dp))
-    Text(
-      album.title,
+    SunsetText.Body(
+      text = album.title,
+      fontWeight = FontWeight.Medium,
       maxLines = 1,
       overflow = TextOverflow.Ellipsis,
-      style = SunsetTextStyle.body.copy(
-        fontWeight = FontWeight.Medium
-      )
     )
-    Text(
-      album.artist,
+    SunsetText.Label(
+      text = album.artist,
       maxLines = 1,
-      style = SunsetTextStyle.label
     )
     Spacer(modifier = Modifier.height(2.dp))
     val playCountResource = if (album.playCount == "1") {
@@ -99,9 +95,8 @@ internal fun TopAlbum(
     } else {
       uiCommonR.string.playcounts
     }
-    Text(
-      stringResource(playCountResource, album.playCount),
-      style = SunsetTextStyle.caption,
+    SunsetText.Caption(
+      text = stringResource(playCountResource, album.playCount),
       color = MaterialTheme.colorScheme.onSecondary,
       maxLines = 1
     )

@@ -70,3 +70,11 @@ internal val immutableStub: TestFile = kotlin(
     annotation class Immutable
   """.trimIndent(),
 ).indented()
+
+internal val material3TextStub: TestFile = kotlin(
+  """
+    package androidx.compose.material3
+
+    fun Text(text: String) {}
+  """.trimIndent(),
+).indented()

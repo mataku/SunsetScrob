@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -15,7 +14,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mataku.scrobscrob.core.entity.presentation.toReadableIntValue
-import com.mataku.scrobscrob.ui_common.SunsetTextStyle
+import com.mataku.scrobscrob.ui_common.SunsetText
 import com.mataku.scrobscrob.ui_common.molecule.ValueDescription
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 
@@ -35,21 +34,17 @@ internal fun AlbumMetaData(
       modifier = Modifier
         .weight(1F)
     ) {
-      Text(
+      SunsetText.Body(
         text = albumName,
-        style = SunsetTextStyle.body.copy(
-          fontWeight = FontWeight.Bold
-        ),
+        fontWeight = FontWeight.Bold,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis
       )
 
       Spacer(modifier = Modifier.height(4.dp))
 
-      Text(
+      SunsetText.Caption(
         text = artistName,
-        style = SunsetTextStyle.caption,
-        modifier = Modifier,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis
       )

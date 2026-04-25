@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,6 +21,7 @@ import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.test_helper.integration.VRT
 import com.mataku.scrobscrob.test_helper.integration.captureScreenshot
+import com.mataku.scrobscrob.ui_common.SunsetText
 import com.mataku.scrobscrob.ui_common.organism.SunsetNavigationBar
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
@@ -176,7 +176,7 @@ private fun Content(modifier: Modifier = Modifier) {
           .height(44.dp),
         verticalAlignment = Alignment.CenterVertically,
       ) {
-        Text(
+        SunsetText.Body(
           text = "$it Item Item Item Item Item Item Item Item Item Item Item Item Item Item Item Item",
           maxLines = 1
         )

@@ -7,14 +7,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.text.HtmlCompat
 import com.mataku.scrobscrob.core.entity.Wiki
-import com.mataku.scrobscrob.ui_common.SunsetTextStyle
+import com.mataku.scrobscrob.ui_common.SunsetText
 import com.mataku.scrobscrob.ui_common.extension.toAnnotatedString
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 
@@ -29,9 +28,8 @@ fun WikiCell(
     modifier = modifier
       .fillMaxWidth()
   ) {
-    Text(
+    SunsetText.Headline(
       text = "About $name",
-      style = SunsetTextStyle.headline
     )
 
     Spacer(modifier = Modifier.height(16.dp))
@@ -45,11 +43,9 @@ fun WikiCell(
 
       val text = spanned.toAnnotatedString()
 
-      Text(
+      SunsetText.Label(
         text = text,
-        style = SunsetTextStyle.label.copy(
-          color = MaterialTheme.colorScheme.onSecondary
-        )
+        color = MaterialTheme.colorScheme.onSecondary,
       )
     }
   }

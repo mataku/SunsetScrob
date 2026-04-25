@@ -1,10 +1,9 @@
 package com.mataku.scrobscrob.app.ui.navigation
 
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.mataku.scrobscrob.account.R
-import com.mataku.scrobscrob.ui_common.SunsetTextStyle
+import com.mataku.scrobscrob.ui_common.SunsetText
 
 enum class ScreenStyle(
   val route: String,
@@ -18,38 +17,34 @@ enum class ScreenStyle(
   HomeScreenStyle(
     route = "home",
     topAppBarTitle = {
-      Text(
+      SunsetText.Title(
         text = "Home",
-        style = SunsetTextStyle.title,
       )
     },
   ),
   DiscoverScreenStyle(
     route = "discover",
     topAppBarTitle = {
-      Text(
+      SunsetText.Title(
         text = "Discover",
-        style = SunsetTextStyle.title,
       )
     },
   ),
   AccountScreenStyle(
     route = "account",
     topAppBarTitle = {
-      Text(
+      SunsetText.Title(
         text = "Account",
-        style = SunsetTextStyle.title,
       )
     },
   ),
   ThemeSelectorScreenStyle(
     route = "theme_selector",
     topAppBarTitle = {
-      Text(
+      SunsetText.Title(
         text = stringResource(
           id = com.mataku.scrobscrob.account.R.string.title_theme_selector
         ),
-        style = SunsetTextStyle.title,
       )
     },
     navigationRequired = true,
@@ -57,11 +52,10 @@ enum class ScreenStyle(
   LicenseScreenStyle(
     route = "license",
     topAppBarTitle = {
-      Text(
+      SunsetText.Title(
         text = stringResource(
           id = com.mataku.scrobscrob.account.R.string.item_license
         ),
-        style = SunsetTextStyle.title,
       )
     },
     navigationRequired = true,
@@ -69,11 +63,10 @@ enum class ScreenStyle(
   PrivacyPolicyScreenStyle(
     route = "privacy_policy",
     topAppBarTitle = {
-      Text(
+      SunsetText.Title(
         text = stringResource(
           id = com.mataku.scrobscrob.account.R.string.item_privacy_policy
         ),
-        style = SunsetTextStyle.title,
       )
     },
     navigationRequired = true,
@@ -81,9 +74,8 @@ enum class ScreenStyle(
   ScrobbleSettingStyle(
     route = "scrobble_setting",
     topAppBarTitle = {
-      Text(
-        stringResource(id = R.string.label_scrobble_setting),
-        style = SunsetTextStyle.title,
+      SunsetText.Title(
+        text = stringResource(id = R.string.label_scrobble_setting),
       )
     },
     navigationRequired = true
@@ -91,9 +83,8 @@ enum class ScreenStyle(
   WebViewStyle(
     route = "webview",
     topAppBarTitle = {
-      Text(
+      SunsetText.Title(
         text = "",
-        style = SunsetTextStyle.title,
       )
     },
     navigationRequired = true,

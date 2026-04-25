@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import com.mataku.scrobscrob.core.entity.ChartTrack
 import com.mataku.scrobscrob.core.entity.ChartTrackArtist
 import com.mataku.scrobscrob.core.entity.imageUrl
-import com.mataku.scrobscrob.ui_common.SunsetTextStyle
+import com.mataku.scrobscrob.ui_common.SunsetText
 import com.mataku.scrobscrob.ui_common.molecule.SunsetImage
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 
@@ -49,9 +48,8 @@ internal fun ChartTrackCell(
       ),
     verticalAlignment = Alignment.CenterVertically
   ) {
-    Text(
+    SunsetText.Caption(
       text = rank.toString(),
-      style = SunsetTextStyle.caption,
       modifier = Modifier
         .width(24.dp),
       textAlign = TextAlign.Center
@@ -73,23 +71,18 @@ internal fun ChartTrackCell(
         .fillMaxWidth(),
       verticalArrangement = Arrangement.Center
     ) {
-      Text(
+      SunsetText.Body(
         text = chartTrack.name,
-        modifier = Modifier,
+        fontWeight = FontWeight.Medium,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
-        style = SunsetTextStyle.body.copy(
-          fontWeight = FontWeight.Medium
-        )
       )
 
-      Text(
+      SunsetText.Caption(
         text = chartTrack.artist.name,
-        maxLines = 1,
         color = Color.White,
-        modifier = Modifier,
+        maxLines = 1,
         overflow = TextOverflow.Ellipsis,
-        style = SunsetTextStyle.caption
       )
     }
   }

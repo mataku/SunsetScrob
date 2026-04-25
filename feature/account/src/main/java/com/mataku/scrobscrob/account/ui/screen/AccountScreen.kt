@@ -18,7 +18,6 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -51,7 +50,7 @@ import com.mataku.scrobscrob.account.ui.viewmodel.AccountViewModel
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.core.entity.UserInfo
 import com.mataku.scrobscrob.ui_common.SunsetAlertDialog
-import com.mataku.scrobscrob.ui_common.SunsetTextStyle
+import com.mataku.scrobscrob.ui_common.SunsetText
 import com.mataku.scrobscrob.ui_common.style.LocalSnackbarHostState
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import kotlinx.collections.immutable.persistentListOf
@@ -332,18 +331,18 @@ private fun AccountContent(
         openDialog.value = false
       },
       title = {
-        Text(
+        SunsetText.Body(
           text = stringResource(id = R.string.dialog_notification_permission_required),
         )
       },
       text = {
-        Text(text = stringResource(id = R.string.dialog_notification_permission_required_description))
+        SunsetText.Body(text = stringResource(id = R.string.dialog_notification_permission_required_description))
       },
       dismissButton = {
         TextButton(onClick = {
           openDialog.value = false
         }) {
-          Text(text = stringResource(id = R.string.button_back), style = SunsetTextStyle.button)
+          SunsetText.ButtonLabel(text = stringResource(id = R.string.button_back))
         }
       },
       confirmButton = {
@@ -351,9 +350,8 @@ private fun AccountContent(
           openDialog.value = false
           navigateToNotificationSetting.invoke()
         }) {
-          Text(
+          SunsetText.ButtonLabel(
             text = stringResource(id = R.string.button_go_to_setting),
-            style = SunsetTextStyle.button
           )
         }
       }
@@ -396,11 +394,10 @@ private fun AccountMenuCell(
       .padding(horizontal = 16.dp),
     verticalArrangement = Arrangement.SpaceEvenly
   ) {
-    Text(text = title, style = SunsetTextStyle.subtitle)
+    SunsetText.Subtitle(text = title)
     if (description.isNotBlank()) {
-      Text(
+      SunsetText.Caption(
         text = description,
-        style = SunsetTextStyle.caption,
         color = MaterialTheme.colorScheme.onSecondary
       )
     }

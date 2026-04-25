@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,7 +20,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.mataku.scrobscrob.core.entity.TopArtistInfo
 import com.mataku.scrobscrob.ui_common.R
-import com.mataku.scrobscrob.ui_common.SunsetTextStyle
+import com.mataku.scrobscrob.ui_common.SunsetText
 import com.mataku.scrobscrob.ui_common.molecule.SunsetImage
 
 @Composable
@@ -72,10 +71,8 @@ internal fun TopArtist(
     }
 
     Spacer(modifier = Modifier.height(8.dp))
-    Text(
-      artist.name,
-      modifier = Modifier,
-      style = SunsetTextStyle.body,
+    SunsetText.Body(
+      text = artist.name,
       fontWeight = FontWeight.Medium,
       maxLines = 1,
       overflow = TextOverflow.Ellipsis
@@ -86,9 +83,8 @@ internal fun TopArtist(
       R.string.playcounts
     }
     Spacer(modifier = Modifier.height(2.dp))
-    Text(
-      stringResource(playCountResource, artist.playCount),
-      style = SunsetTextStyle.caption,
+    SunsetText.Caption(
+      text = stringResource(playCountResource, artist.playCount),
       color = MaterialTheme.colorScheme.onSecondary,
       maxLines = 1
     )

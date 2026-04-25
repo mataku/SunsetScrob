@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -22,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import com.mataku.scrobscrob.core.entity.TrackAlbumInfo
 import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.scrobble.R
-import com.mataku.scrobscrob.ui_common.SunsetTextStyle
+import com.mataku.scrobscrob.ui_common.SunsetText
 import com.mataku.scrobscrob.ui_common.molecule.SunsetImage
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import kotlinx.collections.immutable.persistentListOf
@@ -37,9 +36,8 @@ fun TrackAlbum(
       .fillMaxWidth()
   ) {
 
-    Text(
+    SunsetText.Headline(
       text = stringResource(id = R.string.label_track_album),
-      style = SunsetTextStyle.headline
     )
 
     Spacer(modifier = Modifier.height(16.dp))
@@ -66,22 +64,20 @@ fun TrackAlbum(
           .height(height),
         verticalArrangement = Arrangement.Center
       ) {
-        Text(
+        SunsetText.Body(
           text = album.title,
           modifier = Modifier.wrapContentSize(),
           maxLines = 1,
           overflow = TextOverflow.Ellipsis,
-          style = SunsetTextStyle.body
         )
 
         Spacer(modifier = Modifier.size(4.dp))
 
-        Text(
+        SunsetText.Label(
           text = album.artist,
           modifier = Modifier.wrapContentSize(),
           maxLines = 1,
           overflow = TextOverflow.Ellipsis,
-          style = SunsetTextStyle.label
         )
       }
     }

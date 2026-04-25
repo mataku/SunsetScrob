@@ -26,7 +26,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
@@ -51,7 +50,7 @@ import com.mataku.scrobscrob.core.entity.Wiki
 import com.mataku.scrobscrob.core.entity.presentation.toReadableIntValue
 import com.mataku.scrobscrob.scrobble.ui.component.TrackDetail
 import com.mataku.scrobscrob.scrobble.ui.viewmodel.TrackViewModel
-import com.mataku.scrobscrob.ui_common.SunsetTextStyle
+import com.mataku.scrobscrob.ui_common.SunsetText
 import com.mataku.scrobscrob.ui_common.component.ArtworkLayerBar
 import com.mataku.scrobscrob.ui_common.component.CircleBackButton
 import com.mataku.scrobscrob.ui_common.molecule.SunsetImage
@@ -314,21 +313,17 @@ private fun TrackDetail2(
       modifier = Modifier
         .weight(1F)
     ) {
-      Text(
+      SunsetText.Body(
         text = trackName,
-        style = SunsetTextStyle.body.copy(
-          fontWeight = FontWeight.Bold
-        ),
+        fontWeight = FontWeight.Bold,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis
       )
 
       Spacer(modifier = Modifier.height(4.dp))
 
-      Text(
+      SunsetText.Caption(
         text = artistName,
-        style = SunsetTextStyle.caption,
-        modifier = Modifier,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis
       )

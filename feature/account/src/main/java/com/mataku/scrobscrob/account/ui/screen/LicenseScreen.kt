@@ -14,7 +14,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -23,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mataku.scrobscrob.account.ui.viewmodel.LicenseViewModel
 import com.mataku.scrobscrob.core.entity.LicenseArtifact
-import com.mataku.scrobscrob.ui_common.SunsetTextStyle
+import com.mataku.scrobscrob.ui_common.SunsetText
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -72,26 +71,23 @@ private fun LicenseCell(
       ),
     verticalArrangement = Arrangement.spacedBy(8.dp)
   ) {
-    Text(
+    SunsetText.Body(
       text = licenseArtifact.name,
-      style = SunsetTextStyle.body
     )
-    Text(
+    SunsetText.Caption(
       text = licenseArtifact.groupId,
-      style = SunsetTextStyle.caption
     )
 
     FlowRow(
       horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
       licenseArtifact.spdxLicenses.forEach {
-        Text(
+        SunsetText.Label(
           text = it.name,
           modifier = Modifier
             .clickable {
               onLicenseArtifactTap.invoke(it.url)
             },
-          style = SunsetTextStyle.label
         )
       }
     }

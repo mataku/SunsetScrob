@@ -16,7 +16,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -31,7 +30,7 @@ import com.mataku.scrobscrob.core.entity.TrackAlbumInfo
 import com.mataku.scrobscrob.core.entity.TrackInfo
 import com.mataku.scrobscrob.core.entity.Wiki
 import com.mataku.scrobscrob.core.entity.presentation.toReadableIntValue
-import com.mataku.scrobscrob.ui_common.SunsetTextStyle
+import com.mataku.scrobscrob.ui_common.SunsetText
 import com.mataku.scrobscrob.ui_common.extension.throttleFirst
 import com.mataku.scrobscrob.ui_common.molecule.SimpleWiki
 import com.mataku.scrobscrob.ui_common.molecule.TopTags
@@ -173,21 +172,17 @@ private fun TrackDescription(
   modifier: Modifier = Modifier
 ) {
   Column(modifier = modifier) {
-    Text(
+    SunsetText.Body(
       text = trackName,
-      style = SunsetTextStyle.body.copy(
-        fontWeight = FontWeight.Bold
-      ),
+      fontWeight = FontWeight.Bold,
       maxLines = 1,
       overflow = TextOverflow.Ellipsis
     )
 
     Spacer(modifier = Modifier.height(4.dp))
 
-    Text(
+    SunsetText.Caption(
       text = artistName,
-      style = SunsetTextStyle.caption,
-      modifier = Modifier,
       maxLines = 1,
       overflow = TextOverflow.Ellipsis
     )

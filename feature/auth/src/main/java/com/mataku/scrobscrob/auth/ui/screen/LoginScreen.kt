@@ -28,7 +28,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -55,11 +54,10 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mataku.scrobscrob.auth.R
 import com.mataku.scrobscrob.auth.ui.viewmodel.LoginViewModel
-import com.mataku.scrobscrob.ui_common.SunsetTextStyle
+import com.mataku.scrobscrob.ui_common.SunsetText
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.LocalSnackbarHostState
 import com.mataku.scrobscrob.ui_common.style.SunsetTheme
@@ -151,10 +149,8 @@ private fun LoginContent(
   ) {
     Spacer(modifier = Modifier.height(24.dp))
 
-    Text(
+    SunsetText.Title(
       text = stringResource(id = uiCommonR.string.login_to_last_fm),
-      fontSize = 20.sp,
-      style = SunsetTextStyle.title,
       fontWeight = FontWeight.Bold,
       modifier = Modifier.align(Alignment.CenterHorizontally)
     )
@@ -174,11 +170,9 @@ private fun LoginContent(
       ),
       singleLine = true,
       label = {
-        Text(
+        SunsetText.Label(
           text = "Username",
-          style = SunsetTextStyle.label.copy(
-            color = MaterialTheme.colorScheme.onSurface
-          )
+          color = MaterialTheme.colorScheme.onSurface,
         )
       },
       colors = OutlinedTextFieldDefaults.colors(
@@ -224,11 +218,9 @@ private fun LoginContent(
         }
       ),
       label = {
-        Text(
+        SunsetText.Label(
           text = "Password",
-          style = SunsetTextStyle.label.copy(
-            color = MaterialTheme.colorScheme.onSurface
-          )
+          color = MaterialTheme.colorScheme.onSurface,
         )
       },
       colors = OutlinedTextFieldDefaults.colors(
@@ -264,9 +256,8 @@ private fun LoginContent(
             .align(alignment = Alignment.CenterVertically)
         )
       } else {
-        Text(
+        SunsetText.Body(
           text = "Let me in!",
-          style = SunsetTextStyle.body,
           fontWeight = FontWeight.Medium,
         )
       }
@@ -277,7 +268,7 @@ private fun LoginContent(
     TextButton(onClick = {
       onPrivacyPolicyTap.invoke()
     }) {
-      Text(text = "Privacy policy", style = SunsetTextStyle.button)
+      SunsetText.ButtonLabel(text = "Privacy policy")
     }
   }
 }
