@@ -8,16 +8,16 @@ plugins {
 
 configure<TestExtension>() {
   namespace = "com.mataku.scrobscrob.baselineprofile"
-  compileSdk = 35
+  compileSdk = 36
 
   compileOptions {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
   }
-  
+
   defaultConfig {
     minSdk = 28
-    targetSdk = 35
+    targetSdk = 36
 
     testInstrumentationRunnerArguments["androidx.benchmark.suppressErrors"] = "EMULATOR"
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

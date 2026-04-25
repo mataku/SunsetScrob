@@ -8,7 +8,7 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 
 class ApplicationConventionPlugin : Plugin<Project> {
-  private val appVersionName = "1.23.0"
+  private val appVersionName = "1.24.0"
 
   override fun apply(target: Project) {
     with(target) {
@@ -18,7 +18,7 @@ class ApplicationConventionPlugin : Plugin<Project> {
 
       extensions.configure<ApplicationExtension> {
         androidSdkConfiguration()
-        defaultConfig.targetSdk = 35
+        defaultConfig.targetSdk = 36
         signingConfigs {
           getByName("debug") {
             storeFile = file("../debug.keystore")
