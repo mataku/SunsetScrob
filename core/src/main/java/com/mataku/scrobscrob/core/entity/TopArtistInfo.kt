@@ -10,5 +10,5 @@ data class TopArtistInfo(
   val topTags: ImmutableList<Tag>,
   val playCount: String,
   val url: String,
-  var imageUrl: String? = null
+  val imageUrl: String? = null
 )

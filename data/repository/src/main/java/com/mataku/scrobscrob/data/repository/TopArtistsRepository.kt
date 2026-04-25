@@ -47,9 +47,10 @@ class TopArtistsRepositoryImpl @Inject constructor(
         artist = artist.name
       )
       if (imageUrl != null) {
-        artist.imageUrl = imageUrl
+        artist.copy(imageUrl = imageUrl)
+      } else {
+        artist
       }
-      artist
     }
     emit(topArtists)
   }.flowOn(Dispatchers.IO)

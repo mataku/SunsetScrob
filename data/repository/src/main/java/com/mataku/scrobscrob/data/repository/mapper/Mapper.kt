@@ -213,7 +213,7 @@ fun ChartTopArtistsResponse.toChartTopArtists(): ChartTopArtists {
       url = chartArtist.url,
       imageList = chartArtist.imageList.toImageList()
     )
-  }
+  }.toImmutableList()
   val pagingAttr = body.pagingAttrBody.toPagingAttr()
   return ChartTopArtists(
     topArtists = topArtists,
@@ -236,7 +236,7 @@ fun ChartTopTracksResponse.toChartTopTracks(): ChartTopTracks {
       imageList = it.imageList.toImageList(),
       mbid = it.mbid
     )
-  }
+  }.toImmutableList()
   val pagingAttr = body.pagingAttrBody.toPagingAttr()
 
   return ChartTopTracks(

@@ -24,6 +24,7 @@ import com.mataku.scrobscrob.ui_common.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.molecule.SunsetImage
 import com.mataku.scrobscrob.ui_common.molecule.ValueDescription
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 internal fun Profile(
@@ -108,7 +109,7 @@ private fun ProfilePreview() {
           playCount = "1000",
           albumCount = "100",
           trackCount = "100",
-          imageList = listOf(),
+          imageList = persistentListOf(),
           url = "",
           artistCount = "100"
         )

@@ -10,6 +10,7 @@ import com.mataku.scrobscrob.data.api.endpoint.ChartTopTracksEndpoint
 import com.mataku.scrobscrob.data.db.ArtworkDataStore
 import com.mataku.scrobscrob.data.repository.mapper.toChartTopArtists
 import com.mataku.scrobscrob.data.repository.mapper.toChartTopTracks
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -38,20 +39,22 @@ class ChartRepositoryImpl @Inject constructor(
       params = params
     )
     val response = lastFmService.request(chartTopArtistsEndpoint)
-    val topArtists = response.toChartTopArtists().topArtists.map { artist ->
+    val chartTopArtists = response.toChartTopArtists()
+    val topArtists = chartTopArtists.topArtists.map { artist ->
       val imageUrl = artworkDataStore.artwork(
         artist = artist.name
       )
       if (imageUrl != null) {
-        artist.imageUrl = imageUrl
+        artist.copy(imageUrl = imageUrl)
+      } else {
+        artist
       }
-      artist
-    }
+    }.toImmutableList()
 
     emit(
       ChartTopArtists(
         topArtists = topArtists,
-        pagingAttr = response.toChartTopArtists().pagingAttr
+        pagingAttr = chartTopArtists.pagingAttr
       )
     )
   }.flowOn(Dispatchers.IO)
@@ -65,21 +68,25 @@ class ChartRepositoryImpl @Inject constructor(
       params = params
     )
     val response = lastFmService.request(chartTopTracksEndpoint)
-    val topTracks = response.toChartTopTracks().topTracks.map { track ->
+    val chartTopTracks = response.toChartTopTracks()
+    val topTracks = chartTopTracks.topTracks.map { track ->
       if (track.imageList.imageUrl().isInvalidArtwork()) {
         val imageUrl = artworkDataStore.artwork(
           artist = track.artist.name,
         )
         if (imageUrl != null) {
-          track.imageUrl = imageUrl
+          track.copy(imageUrl = imageUrl)
+        } else {
+          track
         }
+      } else {
+        track
       }
-      track
-    }
+    }.toImmutableList()
     emit(
       ChartTopTracks(
         topTracks = topTracks,
-        pagingAttr = response.toChartTopTracks().pagingAttr
+        pagingAttr = chartTopTracks.pagingAttr
       )
     )
   }.flowOn(Dispatchers.IO)

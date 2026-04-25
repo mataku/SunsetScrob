@@ -1,7 +1,10 @@
 package com.mataku.scrobscrob.core.entity
 
+import androidx.compose.runtime.Immutable
+
+@Immutable
 data class Track(
-  var artistName: String,
-  var name: String,
-  var albumName: String
+  val artistName: String,
+  val name: String,
+  val albumName: String
 )

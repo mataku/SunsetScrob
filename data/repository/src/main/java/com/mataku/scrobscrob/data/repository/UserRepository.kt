@@ -79,10 +79,13 @@ class UserRepositoryImpl @Inject constructor(
           artist = track.artist,
         )
         if (imageUrl != null) {
-          track.imageUrl = imageUrl
+          track.copy(imageUrl = imageUrl)
+        } else {
+          track
         }
+      } else {
+        track
       }
-      track
     }
     emit(tracks)
   }.flowOn(Dispatchers.IO)

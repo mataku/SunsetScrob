@@ -1,9 +1,11 @@
 package com.mataku.scrobscrob.core.entity
 
 import androidx.compose.runtime.Immutable
+import kotlinx.collections.immutable.ImmutableList
 
+@Immutable
 data class ChartTopArtists(
-  val topArtists: List<ChartArtist>,
+  val topArtists: ImmutableList<ChartArtist>,
   val pagingAttr: PagingAttr
 )
 
@@ -14,5 +16,5 @@ data class ChartArtist(
   val listeners: String,
   val url: String,
   val imageList: List<Image>,
-  var imageUrl: String? = null
+  val imageUrl: String? = null
 )

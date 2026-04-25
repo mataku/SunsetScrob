@@ -18,6 +18,8 @@ import com.mataku.scrobscrob.test_helper.integration.VRT
 import com.mataku.scrobscrob.test_helper.integration.captureScreenshot
 import io.mockk.coEvery
 import io.mockk.mockk
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.flowOf
 import org.junit.Before
 import org.junit.Rule
@@ -41,7 +43,7 @@ class DiscoverScreenTest {
       name = "sooooo looooong artists $it",
       playCount = "10000$it",
       listeners = "100$it",
-      imageList = emptyList(),
+      imageList = persistentListOf(),
       url = ""
     )
   }
@@ -51,7 +53,7 @@ class DiscoverScreenTest {
       name = "sooooo looooong track $it",
       playCount = "10000$it",
       listeners = "100$it",
-      imageList = emptyList(),
+      imageList = persistentListOf(),
       url = "",
       artist = ChartTrackArtist(
         name = "soooo looong artist $it",
@@ -66,7 +68,7 @@ class DiscoverScreenTest {
       name = "sooooo looooong loved track $it",
       artist = "soooo looong loved artist $it",
       url = "",
-      images = emptyList()
+      images = persistentListOf()
     )
   }
 
@@ -77,7 +79,7 @@ class DiscoverScreenTest {
     }.returns(
       flowOf(
         ChartTopTracks(
-          topTracks = topTracks,
+          topTracks = topTracks.toImmutableList(),
           pagingAttr = PagingAttr(
             page = "1",
             totalPages = "1",
@@ -93,7 +95,7 @@ class DiscoverScreenTest {
     }.returns(
       flowOf(
         ChartTopArtists(
-          topArtists = topArtists,
+          topArtists = topArtists.toImmutableList(),
           pagingAttr = PagingAttr(
             page = "1",
             totalPages = "1",
