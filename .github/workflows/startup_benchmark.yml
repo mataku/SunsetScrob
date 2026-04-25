@@ -13,7 +13,7 @@ on:
 
 concurrency:
   group: startup-benchmark
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 env:
   GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx8g -XX:+UseParallelGC -XX:MaxMetaspaceSize=1g"
@@ -42,14 +42,19 @@ jobs:
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@40fd30fb8d7440372e1316f5d1809ec01dcd3699 # v4.0.1
-      - name: Setup env
-        env:
-          LAST_FM_API_KEY: ${{ secrets.LAST_FM_API_KEY }}
-          LAST_FM_SHARED_SECRET: ${{ secrets.LAST_FM_SHARED_SECRET }}
-          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON_DEV }}
+      - uses: ./.github/actions/sunsetscrob-setup
+        with:
+          last-fm-api-key: ${{ secrets.LAST_FM_API_KEY }}
+          last-fm-shared-secret: ${{ secrets.LAST_FM_SHARED_SECRET }}
+          google-services-json: ${{ secrets.GOOGLE_SERVICES_JSON }}
+      - name: Prepare authentication
         run: |
-          bundle exec fastlane android setup_for_ci
+          echo -n "${{ secrets.SUNSETSCROB_KEYSTORE }}" | base64 -d > SunsetScrob.jks
       - name: Run startup benchmark
+        env:
+          SUNSET_KEY_ALIAS: ${{ secrets.SUNSET_KEY_ALIAS }}
+          SUNSET_KEY_PASSWORD: ${{ secrets.SUNSET_KEY_PASSWORD }}
+          SUNSET_STORE_PASSWORD: ${{ secrets.SUNSET_STORE_PASSWORD }}
         run: |
           ./gradlew cleanManagedDevices --unused-only
           ./gradlew :benchmark:pixel9Api35BenchmarkReleaseAndroidTest \
