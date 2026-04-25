@@ -1,5 +1,6 @@
 package com.mataku.scrobscrob.home.ui.viewmodel
 
+import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mataku.scrobscrob.data.repository.UsernameRepository
@@ -7,6 +8,9 @@ import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metrox.viewmodel.ViewModelKey
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
@@ -30,7 +34,7 @@ class HomeViewModel(
       if (username.isNullOrEmpty()) {
         uiState.update {
           it.copy(
-            events = it.events + HomeUiEvent.RedirectToLogin
+            events = (it.events + HomeUiEvent.RedirectToLogin).toImmutableList()
           )
         }
       } else {
@@ -46,7 +50,7 @@ class HomeViewModel(
   fun consumeEvent(event: HomeUiEvent) {
     val newEvents = uiState.value.events.filterNot {
       event == it
-    }
+    }.toImmutableList()
 
     uiState.update {
       it.copy(
@@ -55,9 +59,10 @@ class HomeViewModel(
     }
   }
 
+  @Immutable
   data class HomeUiState(
     val username: String,
-    val events: List<HomeUiEvent> = emptyList()
+    val events: ImmutableList<HomeUiEvent> = persistentListOf()
   )
 
   sealed class HomeUiEvent {

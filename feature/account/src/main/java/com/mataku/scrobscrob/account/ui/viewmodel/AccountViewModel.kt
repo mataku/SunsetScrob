@@ -21,6 +21,9 @@ import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.binding
 import dev.zacsweers.metrox.viewmodel.ViewModelKey
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onCompletion
@@ -124,7 +127,7 @@ class AccountViewModel(
         }
         .onCompletion {
           uiState.update {
-            it.copy(events = it.events + Event.Logout)
+            it.copy(events = (it.events + Event.Logout).toImmutableList())
           }
         }
         .collect {
@@ -136,7 +139,7 @@ class AccountViewModel(
   fun popEvent(event: Event) {
     val newEvents = uiState.value.events.filterNot {
       event == it
-    }
+    }.toImmutableList()
     uiState.update {
       it.copy(
         events = newEvents
@@ -160,9 +163,10 @@ class AccountViewModel(
     appInfoProvider.navigateToUiCatalogIntent(application)
   }
 
+  @Immutable
   data class AccountUiState(
     val theme: AppTheme?,
-    val events: List<Event>,
+    val events: ImmutableList<Event>,
     val appVersion: String,
     val appUpdateInfo: AppUpdateInfo?,
     val imageCacheMB: String?,
@@ -171,7 +175,7 @@ class AccountViewModel(
     companion object {
       fun initialize() = AccountUiState(
         theme = null,
-        events = emptyList(),
+        events = persistentListOf(),
         appVersion = "",
         appUpdateInfo = null,
         imageCacheMB = null,

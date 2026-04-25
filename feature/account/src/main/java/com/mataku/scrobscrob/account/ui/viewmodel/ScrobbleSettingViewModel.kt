@@ -1,5 +1,6 @@
 package com.mataku.scrobscrob.account.ui.viewmodel
 
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -11,6 +12,9 @@ import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metrox.viewmodel.ViewModelKey
+import kotlinx.collections.immutable.ImmutableSet
+import kotlinx.collections.immutable.persistentSetOf
+import kotlinx.collections.immutable.toImmutableSet
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.onCompletion
@@ -38,7 +42,7 @@ class ScrobbleSettingViewModel(
         .distinctUntilChanged()
         .collect {
           uiState = uiState.copy(
-            allowedApps = it,
+            allowedApps = it.toImmutableSet(),
             isLoading = false
           )
         }
@@ -74,8 +78,9 @@ class ScrobbleSettingViewModel(
     uiState = uiState.copy(event = null)
   }
 
+  @Immutable
   data class UiState(
-    val allowedApps: Set<String> = emptySet(),
+    val allowedApps: ImmutableSet<String> = persistentSetOf(),
     val isLoading: Boolean = true,
     val event: UiEvent? = null
   )

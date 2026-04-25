@@ -23,6 +23,7 @@ dependencies {
   implementation(libs.compose.material.icons.extended)
 
   implementation(libs.coroutines)
+  implementation(libs.kotlinx.collection)
   implementation(libs.timber)
 
   implementation(libs.compose.ui.tooling)

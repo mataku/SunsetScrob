@@ -1,0 +1,121 @@
+name: Compose compiler metrics
+
+on:
+  schedule:
+    # Saturday 03:00 UTC (12:00 JST)
+    - cron: '0 3 * * 6'
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "Branch"
+        required: true
+        default: "develop"
+
+concurrency:
+  group: compose-metrics
+  cancel-in-progress: true
+
+env:
+  GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx8g -XX:+UseParallelGC -XX:MaxMetaspaceSize=1g"
+
+jobs:
+  compose_metrics:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          ref: ${{ github.event.inputs.branch || github.ref }}
+      - uses: ./.github/actions/setup-gradle
+        with:
+          use-build-cache: 'false'
+      - uses: ./.github/actions/sunsetscrob-setup
+        with:
+          last-fm-api-key: ${{ secrets.LAST_FM_API_KEY }}
+          last-fm-shared-secret: ${{ secrets.LAST_FM_SHARED_SECRET }}
+          google-services-json: ${{ secrets.GOOGLE_SERVICES_JSON_DEV }}
+      - name: Generate compose compiler reports
+        run: ./gradlew clean assembleDebug -PcomposeCompilerReports=true --no-build-cache
+      - name: Write compose metrics summary
+        if: always()
+        run: |
+          set -euo pipefail
+          mapfile -t json_files < <(find . -path '*/build/compose_metrics/*/*-module.json' 2>/dev/null | sort)
+
+          {
+            echo "## Compose Compiler Metrics"
+            echo ""
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          if [ ${#json_files[@]} -eq 0 ]; then
+            echo "_No compose compiler metrics output found._" >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          totals=$(jq -s '
+            reduce .[] as $m (
+              {skippable:0, restartable:0, composables:0,
+               stableClasses:0, classes:0,
+               stableArgs:0, args:0,
+               memoLambdas:0, lambdas:0};
+                .skippable += ($m.skippableComposables // 0)
+              | .restartable += ($m.restartableComposables // 0)
+              | .composables += ($m.totalComposables // 0)
+              | .stableClasses += ($m.effectivelyStableClasses // 0)
+              | .classes += ($m.totalClasses // 0)
+              | .stableArgs += ($m.knownStableArguments // 0)
+              | .args += ($m.totalArguments // 0)
+              | .memoLambdas += ($m.memoizedLambdas // 0)
+              | .lambdas += ($m.totalLambdas // 0)
+            )
+          ' "${json_files[@]}")
+
+          ratio() {
+            local num=$1 den=$2
+            if [ "$den" -eq 0 ]; then
+              echo "n/a"
+            else
+              awk "BEGIN { printf \"%.1f%%\", ($num/$den)*100 }"
+            fi
+          }
+
+          read -r skippable restartable composables stableClasses classes stableArgs args memoLambdas lambdas < <(
+            echo "$totals" | jq -r '"\(.skippable) \(.restartable) \(.composables) \(.stableClasses) \(.classes) \(.stableArgs) \(.args) \(.memoLambdas) \(.lambdas)"'
+          )
+
+          {
+            echo "### Aggregate"
+            echo ""
+            echo "| Metric | Count | Ratio |"
+            echo "| --- | ---: | ---: |"
+            echo "| Skippable composables | $skippable / $composables | $(ratio "$skippable" "$composables") |"
+            echo "| Restartable composables | $restartable / $composables | $(ratio "$restartable" "$composables") |"
+            echo "| Stable classes | $stableClasses / $classes | $(ratio "$stableClasses" "$classes") |"
+            echo "| Stable arguments | $stableArgs / $args | $(ratio "$stableArgs" "$args") |"
+            echo "| Memoized lambdas | $memoLambdas / $lambdas | $(ratio "$memoLambdas" "$lambdas") |"
+            echo ""
+            echo "### Per module"
+            echo ""
+            echo "| Module | Skippable | Stable classes | Stable args |"
+            echo "| --- | ---: | ---: | ---: |"
+            for f in "${json_files[@]}"; do
+              path=${f#./}
+              path=${path%/build/compose_metrics/*}
+              module=":${path//\//:}"
+              read -r s c sc tc sa ta < <(
+                jq -r '"\(.skippableComposables // 0) \(.totalComposables // 0) \(.effectivelyStableClasses // 0) \(.totalClasses // 0) \(.knownStableArguments // 0) \(.totalArguments // 0)"' "$f"
+              )
+              echo "| \`$module\` | $s/$c ($(ratio "$s" "$c")) | $sc/$tc ($(ratio "$sc" "$tc")) | $sa/$ta ($(ratio "$sa" "$ta")) |"
+            done
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload compose reports
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: compose-compiler-reports
+          path: |
+            **/build/compose_reports/**
+            **/build/compose_metrics/**
+          retention-days: 14
+          if-no-files-found: warn
