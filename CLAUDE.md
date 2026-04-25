@@ -15,6 +15,7 @@ Refer to the following documents only when needed:
 |------|---------|-------------------|
 | `@docs/architecture.md` | Module structure, dependencies, implementation patterns | When implementing new features |
 | `@docs/coding-conventions.md` | Naming conventions, Compose guidelines | When writing code |
+| `@DESIGN.md` | Visual identity, theme intent, UI component conventions | When implementing or modifying UI |
 | `@docs/testing.md` | Unit Test, Screenshot Test guidelines | When writing tests |
 
 ## Project Overview
