@@ -1,0 +1,67 @@
+name: Startup benchmark
+
+on:
+  schedule:
+    # Saturday 03:00 UTC (12:00 JST)
+    - cron: '0 3 * * 6'
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "Branch"
+        required: true
+        default: "develop"
+
+concurrency:
+  group: startup-benchmark
+  cancel-in-progress: false
+
+env:
+  GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx8g -XX:+UseParallelGC -XX:MaxMetaspaceSize=1g"
+
+jobs:
+  startup_benchmark:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          ref: ${{ github.event.inputs.branch || github.ref }}
+      - name: Enable KVM group perms
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - uses: ./.github/actions/setup-gradle
+        with:
+          use-build-cache: 'false'
+
+      - uses: ruby/setup-ruby@0cb964fd540e0a24c900370abf38a33466142735 # v1.305.0
+        with:
+          bundler-cache: true
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@40fd30fb8d7440372e1316f5d1809ec01dcd3699 # v4.0.1
+      - name: Setup env
+        env:
+          LAST_FM_API_KEY: ${{ secrets.LAST_FM_API_KEY }}
+          LAST_FM_SHARED_SECRET: ${{ secrets.LAST_FM_SHARED_SECRET }}
+          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON_DEV }}
+        run: |
+          bundle exec fastlane android setup_for_ci
+      - name: Run startup benchmark
+        run: |
+          ./gradlew cleanManagedDevices --unused-only
+          ./gradlew :benchmark:pixel9Api35BenchmarkReleaseAndroidTest \
+            -Pandroid.testoptions.manageddevices.emulator.gpu="swiftshader_indirect" \
+            -Pandroid.testInstrumentationRunnerArguments.androidx.benchmark.enabledRules=Macrobenchmark
+      - name: Upload benchmark results
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: startup-benchmark-results
+          path: |
+            benchmark/build/outputs/managed_device_android_test_additional_output/**
+            benchmark/build/outputs/androidTest-results/**
+          retention-days: 14
+          if-no-files-found: warn
