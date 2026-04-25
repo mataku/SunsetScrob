@@ -97,12 +97,13 @@ class AccountViewModel(
           }
         }
 
-        val imageCacheDirMBSize = fileRepository.cacheImageDirMBSize()
-        uiState.update {
-          it.copy(
-            imageCacheMB = decimalFormat.format(imageCacheDirMBSize)
-          )
-        }
+        fileRepository.cacheImageDirMBSize()
+          .catch { }
+          .collect { mb ->
+            uiState.update {
+              it.copy(imageCacheMB = decimalFormat.format(mb))
+            }
+          }
       }
     }
   }
@@ -146,11 +147,12 @@ class AccountViewModel(
   fun clearCache() {
     viewModelScope.launch {
       fileRepository.deleteCacheImageDir()
-      uiState.update {
-        it.copy(
-          imageCacheMB = "0"
-        )
-      }
+        .catch { }
+        .collect {
+          uiState.update {
+            it.copy(imageCacheMB = "0")
+          }
+        }
     }
   }
 

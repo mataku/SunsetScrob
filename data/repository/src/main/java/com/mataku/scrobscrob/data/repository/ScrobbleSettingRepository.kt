@@ -12,8 +12,6 @@ import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.SingleIn
 
 interface ScrobbleSettingRepository {
-  suspend fun allowedApps(): Set<String>
-
   suspend fun allowedAppsFlow(): Flow<Set<String>>
 
   suspend fun allowApp(appName: String): Flow<Unit>
@@ -30,10 +28,6 @@ class ScrobbleSettingRepositoryImpl @Inject constructor(
       .catch {
 
       }.map { }
-  }
-
-  override suspend fun allowedApps(): Set<String> {
-    return scrobbleAppDataStore.allowedApps()
   }
 
   override suspend fun allowedAppsFlow(): Flow<Set<String>> =

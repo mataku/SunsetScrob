@@ -74,7 +74,7 @@ class AccountScreenTest {
 
     coEvery {
       fileRepository.cacheImageDirMBSize()
-    }.returns(100.1)
+    }.returns(flowOf(100.1))
 
     coEvery {
       userRepository.getInfo(any())

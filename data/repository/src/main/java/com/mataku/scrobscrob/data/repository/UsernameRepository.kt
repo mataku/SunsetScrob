@@ -1,33 +1,24 @@
 package com.mataku.scrobscrob.data.repository
 
 import com.mataku.scrobscrob.data.db.UsernameDataStore
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.runBlocking
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.SingleIn
 
-//interface UsernameRepository {
-//    suspend fun username(): Flow<String?>
-//    suspend fun setUsername(username: String): Flow<Unit>
-//}
-//
-//@Singleton
-//class UsernameRepositoryImpl @Inject constructor(
-//    private val dataStore: UsernameDataStore
-//) : UsernameRepository {
-//    override suspend fun username(): Flow<String?> = flow {
-//        emit(dataStore.username())
-//    }.flowOn(Dispatchers.IO)
-//
-//    override suspend fun setUsername(username: String): Flow<Unit> {
-//        return dataStore.setUsername(username = username)
-//    }
-//}
-
 interface UsernameRepository {
+  // Synchronous accessor used by ViewModels that need the username during
+  // construction (field initializers in TopAlbums/TopArtists/Account).
+  // Migrating these call sites to a Flow requires restructuring those VMs;
+  // tracked separately.
+  @Suppress("RepositoryReturnsFlow")
   fun username(): String?
 
-  suspend fun asyncUsername(): String?
+  fun asyncUsername(): Flow<String?>
 }
 
 @SingleIn(AppScope::class)
@@ -37,6 +28,7 @@ class UsernameRepositoryImpl @Inject constructor(
   override fun username(): String? =
     runBlocking { usernameDataStore.username() }
 
-  override suspend fun asyncUsername(): String? =
-    usernameDataStore.username()
+  override fun asyncUsername(): Flow<String?> = flow {
+    emit(usernameDataStore.username())
+  }.flowOn(Dispatchers.IO)
 }

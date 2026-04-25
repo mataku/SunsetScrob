@@ -16,6 +16,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -39,29 +40,31 @@ class DiscoverViewModel(
   private fun fetchInitial() {
     viewModelScope.launch {
       launch {
-        val recentlyLovedTracks = userRepository.getLovedTracks(requestPage)
-        uiState.update {
-          it.copy(
-            recentlyLovedTracks = recentlyLovedTracks.getOrNull()?.toImmutableList()
-              ?: persistentListOf()
-          )
-        }
+        userRepository.getLovedTracks(requestPage)
+          .catch { }
+          .collect { tracks ->
+            uiState.update {
+              it.copy(recentlyLovedTracks = tracks.toImmutableList())
+            }
+          }
       }
       launch {
-        val topTracks = chartRepository.topTracksAsync(requestPage)
-        uiState.update {
-          it.copy(
-            topTracks = topTracks.getOrNull()?.topTracks?.toImmutableList() ?: persistentListOf()
-          )
-        }
+        chartRepository.topTracks(requestPage)
+          .catch { }
+          .collect { topTracks ->
+            uiState.update {
+              it.copy(topTracks = topTracks.topTracks.toImmutableList())
+            }
+          }
       }
       launch {
-        val topArtists = chartRepository.topArtistsAsync(requestPage)
-        uiState.update {
-          it.copy(
-            topArtists = topArtists.getOrNull()?.topArtists?.toImmutableList() ?: persistentListOf()
-          )
-        }
+        chartRepository.topArtists(requestPage)
+          .catch { }
+          .collect { topArtists ->
+            uiState.update {
+              it.copy(topArtists = topArtists.topArtists.toImmutableList())
+            }
+          }
       }
     }
   }

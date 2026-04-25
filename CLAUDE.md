@@ -154,6 +154,9 @@ Reference: `feature/scrobble/.../ui/screen/ScrobbleScreen.kt`, `feature/home/...
   deliberately public as they are reused across modules.
 - Handle one-shot events in the Screen with
   `LaunchedEffect(uiState.events) { uiState.events.firstOrNull()?.let { event -> ...; viewModel.popEvent(event) } }`.
+- `@Preview` composables must be declared `private`. Enforced by the
+  `PreviewNotPrivate` Lint detector in `:lint-checks`. Suppress with
+  `@Suppress("PreviewNotPrivate")` only for genuinely shared previews.
 
 ## Navigation Conventions (Rule 5)
 
@@ -174,6 +177,10 @@ Reference: `data/repository/.../ScrobbleRepository.kt`, `data/repository/di/Repo
 
 - Interface and its `Impl` class live in the **same file**, same package.
 - Methods return `Flow<T>`; wrap async work with `flow { ... }.flowOn(Dispatchers.IO)`.
+  Enforced by the `RepositoryReturnsFlow` Lint detector in `:lint-checks`.
+  Suppress with `@Suppress("RepositoryReturnsFlow")` only for genuine
+  synchronous accessors that cannot be Flow-shaped (currently
+  `UsernameRepository.username()`, used as a field initializer).
 - Bind all repositories in `data/repository/di/RepositoryModule.kt` with
   `@Binds` and `@SingleIn(AppScope::class)`. The interface is annotated
   `@ContributesTo(AppScope::class)` so Metro auto-aggregates it into the
@@ -267,8 +274,12 @@ Reference: `data/repository/.../ScrobbleRepository.kt`, `data/repository/di/Repo
 - Build: Gradle Kotlin DSL, version catalog (`gradle/libs.versions.toml`),
   custom convention plugins in `build-logic/convention/`.
 - Tests: Kotest (JUnit5 platform), MockK, Turbine, Roborazzi.
-- Code quality: Android Lint (29 custom checks in `app/lint-checks.gradle`),
-  Compose lint, Konsist architecture tests, Licensee.
+- Code quality: Android Lint (built-in checks enabled via
+  `app/lint-checks.gradle`; project-specific custom detectors in
+  `:lint-checks`), Compose lint (Slack `compose-lint-checks`), Konsist
+  architecture tests, Licensee. Lint fails the build only when `CI=true`
+  (see `build-logic/convention/.../AndroidLintConfiguration.kt`); CI runs
+  it as a standalone job (`.github/workflows/lint.yml`).
 
 ## Convention Plugins (build-logic/convention)
 

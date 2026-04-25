@@ -23,4 +23,6 @@ dependencies {
   implementation(libs.kotlinx.collection)
   testImplementation(libs.ktor.client.mock)
   testImplementation(libs.turbine)
+
+  lintChecks(project(":lint-checks"))
 }
