@@ -8,6 +8,7 @@ import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metrox.viewmodel.ViewModelKey
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -25,7 +26,7 @@ class HomeViewModel(
   init {
     Timber.d("MATAKUDEBUG home init")
     viewModelScope.launch {
-      val username = usernameRepository.asyncUsername()
+      val username = usernameRepository.asyncUsername().first()
       if (username.isNullOrEmpty()) {
         uiState.update {
           it.copy(

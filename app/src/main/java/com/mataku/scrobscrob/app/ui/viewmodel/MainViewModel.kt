@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 @Inject
@@ -28,7 +29,7 @@ internal class MainViewModel(
 
   init {
     viewModelScope.launch {
-      val username = usernameRepository.asyncUsername()
+      val username = usernameRepository.asyncUsername().first()
 
       themeRepository.currentTheme()
         .catch {

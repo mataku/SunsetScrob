@@ -18,7 +18,7 @@ import dev.zacsweers.metro.SingleIn
 interface NowPlayingRepository {
   suspend fun update(trackInfo: TrackInfo): Flow<Unit>
 
-  suspend fun current(): NowPlayingTrackEntity?
+  fun current(): Flow<NowPlayingTrackEntity?>
 }
 
 @SingleIn(AppScope::class)
@@ -29,7 +29,9 @@ class NowPlayingRepositoryImpl @Inject constructor(
 
   private var currentNowPlayingTrackInfo: NowPlayingTrackEntity? = null
 
-  override suspend fun current(): NowPlayingTrackEntity? = currentNowPlayingTrackInfo
+  override fun current(): Flow<NowPlayingTrackEntity?> = flow {
+    emit(currentNowPlayingTrackInfo)
+  }
 
   override suspend fun update(trackInfo: TrackInfo) = flow {
     currentNowPlayingTrackInfo = trackInfo.toNowPlayingTrackEntity()

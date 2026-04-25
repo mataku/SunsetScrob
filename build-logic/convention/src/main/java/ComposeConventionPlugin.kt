@@ -16,6 +16,7 @@ class ComposeConventionPlugin : Plugin<Project> {
         add("implementation", platform(composeBom))
         add("androidTestImplementation", platform(composeBom))
         add("lintChecks", libs.findLibrary("compose-lint").get())
+        add("lintChecks", project(":lint-checks"))
       }
     }
   }

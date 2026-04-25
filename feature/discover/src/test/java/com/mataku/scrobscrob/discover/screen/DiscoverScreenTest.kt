@@ -18,6 +18,7 @@ import com.mataku.scrobscrob.test_helper.integration.VRT
 import com.mataku.scrobscrob.test_helper.integration.captureScreenshot
 import io.mockk.coEvery
 import io.mockk.mockk
+import kotlinx.coroutines.flow.flowOf
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -72,9 +73,9 @@ class DiscoverScreenTest {
   @Before
   fun setup() {
     coEvery {
-      chartRepository.topTracksAsync(1)
+      chartRepository.topTracks(1)
     }.returns(
-      Result.success(
+      flowOf(
         ChartTopTracks(
           topTracks = topTracks,
           pagingAttr = PagingAttr(
@@ -88,9 +89,9 @@ class DiscoverScreenTest {
     )
 
     coEvery {
-      chartRepository.topArtistsAsync(1)
+      chartRepository.topArtists(1)
     }.returns(
-      Result.success(
+      flowOf(
         ChartTopArtists(
           topArtists = topArtists,
           pagingAttr = PagingAttr(
@@ -105,7 +106,7 @@ class DiscoverScreenTest {
 
     coEvery {
       userRepository.getLovedTracks(1)
-    }.returns(Result.success(recentLovedTracks))
+    }.returns(flowOf(recentLovedTracks))
   }
 
   @Test

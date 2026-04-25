@@ -10,6 +10,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
@@ -52,7 +53,7 @@ class MusicNotificationRequester(
     previousTrackName = trackName
 
     coroutineScope.launch {
-      val currentNowPlaying = nowPlayingRepository.current()
+      val currentNowPlaying = nowPlayingRepository.current().first()
       if (currentNowPlaying?.trackName == trackName) {
         return@launch
       }

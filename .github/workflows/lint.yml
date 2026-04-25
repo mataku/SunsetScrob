@@ -1,0 +1,46 @@
+name: Android Lint
+
+on:
+  pull_request:
+    branches:
+      - '**'
+  push:
+    branches:
+      - develop
+
+concurrency:
+  group: ${{ github.head_ref || 'develop' }}-lint
+  cancel-in-progress: true
+
+env:
+  GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx4g -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -XX:+UseParallelGC -XX:MaxMetaspaceSize=1g"
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: ./.github/actions/setup-gradle
+        with:
+          use-build-cache: 'true'
+      - name: Setup local.properties
+        env:
+          LAST_FM_API_KEY: ${{ secrets.LAST_FM_API_KEY }}
+          LAST_FM_SHARED_SECRET: ${{ secrets.LAST_FM_SHARED_SECRET }}
+          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON_DEV }}
+        run: |
+          echo "API_KEY=\"$LAST_FM_API_KEY\"" >> local.properties
+          echo "SHARED_SECRET=\"$LAST_FM_SHARED_SECRET\"" >> local.properties
+          echo "$GOOGLE_SERVICES_JSON" > app/google-services.json
+      - name: Run Android Lint
+        run: ./gradlew :app:lintDebug
+      - name: Upload lint reports
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: lint-reports
+          path: |
+            **/build/reports/lint-results-*.txt
+            **/build/reports/lint-results-*.html
+          if-no-files-found: ignore
