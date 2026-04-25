@@ -60,6 +60,39 @@ jobs:
           ./gradlew :benchmark:pixel9Api35BenchmarkReleaseAndroidTest \
             -Pandroid.testoptions.manageddevices.emulator.gpu="swiftshader_indirect" \
             -Pandroid.testInstrumentationRunnerArguments.androidx.benchmark.enabledRules=Macrobenchmark
+      - name: Write benchmark summary
+        if: always()
+        run: |
+          set -euo pipefail
+          output_dir=benchmark/build/outputs/managed_device_android_test_additional_output
+          json_files=$(find "$output_dir" -name '*-benchmarkData.json' 2>/dev/null | sort || true)
+
+          {
+            echo "## Startup Benchmark"
+            echo ""
+            echo "Device: \`pixel9Api35\` (Pixel 9, API 35)"
+            echo ""
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          if [ -z "$json_files" ]; then
+            echo "_No benchmark JSON output was found._" >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          {
+            echo "| Test | Metric | Min | Median | Max |"
+            echo "| --- | --- | ---: | ---: | ---: |"
+            for f in $json_files; do
+              jq -r '
+                def round1: . * 10 | round / 10;
+                .benchmarks[]
+                | .name as $name
+                | .metrics
+                | to_entries[]
+                | "| \($name) | \(.key) | \(.value.minimum | round1) | \(.value.median | round1) | \(.value.maximum | round1) |"
+              ' "$f"
+            done
+          } >> "$GITHUB_STEP_SUMMARY"
       - name: Upload benchmark results
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
