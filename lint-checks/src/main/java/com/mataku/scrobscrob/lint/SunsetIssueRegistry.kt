@@ -7,12 +7,21 @@ import com.android.tools.lint.detector.api.Issue
 
 class SunsetIssueRegistry : IssueRegistry() {
   override val issues: List<Issue> = listOf(
+    PreferSunsetAlertDialogDetector.ISSUE,
     PreferSunsetButtonDetector.ISSUE,
+    PreferSunsetChipDetector.ISSUE,
+    PreferSunsetCircularProgressIndicatorDetector.ISSUE,
+    PreferSunsetFloatingActionButtonDetector.ISSUE,
+    PreferSunsetHorizontalDividerDetector.ISSUE,
     PreferSunsetIconButtonDetector.ISSUE,
     PreferSunsetIconDetector.ISSUE,
     PreferSunsetIconToggleButtonDetector.ISSUE,
+    PreferSunsetPullToRefreshBoxDetector.ISSUE,
+    PreferSunsetSwitchDetector.ISSUE,
+    PreferSunsetTabRowDetector.ISSUE,
     PreferSunsetTextButtonDetector.ISSUE,
     PreferSunsetTextDetector.ISSUE,
+    PreferSunsetTextFieldDetector.ISSUE,
     PreviewComposableVisibilityDetector.ISSUE,
     RepositoryReturnsFlowDetector.ISSUE,
     UiStateMustBeStateFlowDetector.ISSUE,

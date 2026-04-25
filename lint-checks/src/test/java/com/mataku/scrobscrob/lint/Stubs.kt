@@ -122,3 +122,123 @@ internal val material3IconToggleButtonStub: TestFile = kotlin(
     ) {}
   """.trimIndent(),
 ).indented()
+
+internal val material3HorizontalDividerStub: TestFile = kotlin(
+  """
+    package androidx.compose.material3
+
+    fun HorizontalDivider() {}
+  """.trimIndent(),
+).indented()
+
+internal val material3CircularProgressIndicatorStub: TestFile = kotlin(
+  """
+    package androidx.compose.material3
+
+    fun CircularProgressIndicator() {}
+  """.trimIndent(),
+).indented()
+
+internal val material3SwitchStub: TestFile = kotlin(
+  """
+    package androidx.compose.material3
+
+    fun Switch(
+      checked: Boolean,
+      onCheckedChange: (Boolean) -> Unit,
+    ) {}
+  """.trimIndent(),
+).indented()
+
+internal val material3TabRowStub: TestFile = kotlin(
+  """
+    package androidx.compose.material3
+
+    fun Tab(
+      selected: Boolean,
+      onClick: () -> Unit,
+    ) {}
+
+    fun TabRow(
+      selectedTabIndex: Int,
+    ) {}
+
+    fun PrimaryTabRow(
+      selectedTabIndex: Int,
+    ) {}
+
+    object TabRowDefaults {
+      fun tabIndicatorOffset() {}
+    }
+  """.trimIndent(),
+).indented()
+
+internal val material3OutlinedTextFieldStub: TestFile = kotlin(
+  """
+    package androidx.compose.material3
+
+    fun OutlinedTextField(
+      value: String,
+      onValueChange: (String) -> Unit,
+    ) {}
+
+    object OutlinedTextFieldDefaults {
+      fun colors() {}
+    }
+  """.trimIndent(),
+).indented()
+
+internal val material3AlertDialogStub: TestFile = kotlin(
+  """
+    package androidx.compose.material3
+
+    fun AlertDialog(
+      onDismissRequest: () -> Unit,
+      confirmButton: () -> Unit,
+    ) {}
+  """.trimIndent(),
+).indented()
+
+internal val material3PullToRefreshBoxStub: TestFile = kotlin(
+  """
+    package androidx.compose.material3.pulltorefresh
+
+    fun PullToRefreshBox(
+      isRefreshing: Boolean,
+      onRefresh: () -> Unit,
+      content: () -> Unit,
+    ) {}
+  """.trimIndent(),
+).indented()
+
+internal val material3SuggestionChipStub: TestFile = kotlin(
+  """
+    package androidx.compose.material3
+
+    fun SuggestionChip(
+      onClick: () -> Unit,
+      label: () -> Unit,
+    ) {}
+
+    object SuggestionChipDefaults {
+      fun suggestionChipBorder() {}
+    }
+
+    class ChipColors
+  """.trimIndent(),
+).indented()
+
+internal val material3FloatingActionButtonStub: TestFile = kotlin(
+  """
+    package androidx.compose.material3
+
+    fun FloatingActionButton(
+      onClick: () -> Unit,
+      content: () -> Unit,
+    ) {}
+
+    object FloatingActionButtonDefaults {
+      val shape: Any = Any()
+    }
+  """.trimIndent(),
+).indented()

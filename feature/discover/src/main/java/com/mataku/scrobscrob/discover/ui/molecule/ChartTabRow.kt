@@ -3,15 +3,14 @@ package com.mataku.scrobscrob.discover.ui.molecule
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Tab
-import androidx.compose.material3.TabRow
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mataku.scrobscrob.discover.ui.ChartType
+import com.mataku.scrobscrob.ui_common.SunsetTab
+import com.mataku.scrobscrob.ui_common.SunsetTabRow
 import com.mataku.scrobscrob.ui_common.molecule.TabRowText
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 
@@ -21,16 +20,14 @@ internal fun ChartTabRow(
   onChartTypeTap: (Int, ChartType) -> Unit,
   modifier: Modifier = Modifier
 ) {
-  TabRow(
+  SunsetTabRow(
     selectedTabIndex = selectedChartIndex,
-    containerColor = Color.Transparent,
-    indicator = {},
     divider = {},
     modifier = modifier
   ) {
     repeat(2) {
       val chartType = ChartType.findByIndex(it)
-      Tab(
+      SunsetTab(
         selected = selectedChartIndex == it,
         onClick = {
           onChartTypeTap.invoke(it, chartType)

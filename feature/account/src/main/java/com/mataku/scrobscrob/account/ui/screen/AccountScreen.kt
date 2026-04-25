@@ -14,8 +14,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -49,8 +47,8 @@ import com.mataku.scrobscrob.account.ui.viewmodel.AccountViewModel
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.core.entity.UserInfo
 import com.mataku.scrobscrob.ui_common.SunsetAlertDialog
+import com.mataku.scrobscrob.ui_common.SunsetHorizontalDivider
 import com.mataku.scrobscrob.ui_common.SunsetText
-import com.mataku.scrobscrob.ui_common.SunsetTextButton
 import com.mataku.scrobscrob.ui_common.style.LocalSnackbarHostState
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import kotlinx.collections.immutable.persistentListOf
@@ -221,7 +219,7 @@ private fun AccountContent(
               horizontal = 16.dp
             )
         )
-        HorizontalDivider(
+        SunsetHorizontalDivider(
           modifier = Modifier.padding(vertical = 8.dp),
         )
       }
@@ -289,7 +287,7 @@ private fun AccountContent(
           navigateToLogoutConfirmation.invoke()
         }
 
-        HorizontalDivider(
+        SunsetHorizontalDivider(
           modifier = Modifier.padding(vertical = 8.dp)
         )
       }
@@ -326,35 +324,21 @@ private fun AccountContent(
   }
 
   if (openDialog.value) {
-    AlertDialog(
+    SunsetAlertDialog(
+      title = stringResource(id = R.string.dialog_notification_permission_required),
+      description = stringResource(id = R.string.dialog_notification_permission_required_description),
+      confirmButtonText = stringResource(id = R.string.button_go_to_setting),
+      onConfirmButton = {
+        openDialog.value = false
+        navigateToNotificationSetting.invoke()
+      },
+      dismissButtonText = stringResource(id = R.string.button_back),
+      onDismissButton = {
+        openDialog.value = false
+      },
       onDismissRequest = {
         openDialog.value = false
       },
-      title = {
-        SunsetText.Body(
-          text = stringResource(id = R.string.dialog_notification_permission_required),
-        )
-      },
-      text = {
-        SunsetText.Body(text = stringResource(id = R.string.dialog_notification_permission_required_description))
-      },
-      dismissButton = {
-        SunsetTextButton.Label(
-          text = stringResource(id = R.string.button_back),
-          onClick = {
-            openDialog.value = false
-          },
-        )
-      },
-      confirmButton = {
-        SunsetTextButton.Label(
-          text = stringResource(id = R.string.button_go_to_setting),
-          onClick = {
-            openDialog.value = false
-            navigateToNotificationSetting.invoke()
-          },
-        )
-      }
     )
   }
 

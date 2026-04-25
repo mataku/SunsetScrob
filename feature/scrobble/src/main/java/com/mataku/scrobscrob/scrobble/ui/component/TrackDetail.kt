@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -28,6 +27,7 @@ import com.mataku.scrobscrob.core.entity.TrackAlbumInfo
 import com.mataku.scrobscrob.core.entity.TrackInfo
 import com.mataku.scrobscrob.core.entity.Wiki
 import com.mataku.scrobscrob.core.entity.presentation.toReadableIntValue
+import com.mataku.scrobscrob.ui_common.SunsetHorizontalDivider
 import com.mataku.scrobscrob.ui_common.SunsetIcon
 import com.mataku.scrobscrob.ui_common.SunsetIconToggleButton
 import com.mataku.scrobscrob.ui_common.SunsetText
@@ -102,7 +102,7 @@ internal fun TrackDetail(
     )
 
     trackInfo.album?.let { album ->
-      HorizontalDivider(
+      SunsetHorizontalDivider(
         modifier = Modifier
           .fillMaxWidth()
           .padding(
@@ -138,7 +138,7 @@ internal fun TrackDetail(
         Spacer(modifier = Modifier.height(16.dp))
       }
     }
-    HorizontalDivider()
+    SunsetHorizontalDivider()
     val wiki = trackInfo.wiki
     if (wiki == null) {
       SimpleWiki(

@@ -20,7 +20,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Surface
@@ -44,6 +43,7 @@ import com.mataku.scrobscrob.core.entity.AlbumInfo
 import com.mataku.scrobscrob.core.entity.AlbumInfoTrack
 import com.mataku.scrobscrob.core.entity.Tag
 import com.mataku.scrobscrob.core.entity.Wiki
+import com.mataku.scrobscrob.ui_common.SunsetHorizontalDivider
 import com.mataku.scrobscrob.ui_common.component.ArtworkLayerBar
 import com.mataku.scrobscrob.ui_common.component.CircleBackButton
 import com.mataku.scrobscrob.ui_common.molecule.SimpleWiki
@@ -217,7 +217,7 @@ private fun AlbumDetailContent(
           )
       )
     }
-    HorizontalDivider()
+    SunsetHorizontalDivider()
 
     albumInfo?.let { album ->
       Spacer(modifier = Modifier.height(16.dp))
@@ -229,7 +229,7 @@ private fun AlbumDetailContent(
           )
       )
       Spacer(modifier = Modifier.height(16.dp))
-      HorizontalDivider()
+      SunsetHorizontalDivider()
       val wiki = album.wiki
       if (wiki == null) {
         SimpleWiki(

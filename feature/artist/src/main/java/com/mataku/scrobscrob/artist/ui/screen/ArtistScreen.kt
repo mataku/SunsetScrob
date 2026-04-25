@@ -19,7 +19,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Surface
@@ -43,6 +42,7 @@ import com.mataku.scrobscrob.core.entity.ArtistInfo
 import com.mataku.scrobscrob.core.entity.Stats
 import com.mataku.scrobscrob.core.entity.Tag
 import com.mataku.scrobscrob.core.entity.Wiki
+import com.mataku.scrobscrob.ui_common.SunsetHorizontalDivider
 import com.mataku.scrobscrob.ui_common.component.CircleBackButton
 import com.mataku.scrobscrob.ui_common.molecule.SunsetImage
 import com.mataku.scrobscrob.ui_common.molecule.TopTags
@@ -189,7 +189,7 @@ private fun SharedTransitionScope.ArtistContent(
               vertical = 16.dp
             )
           )
-          HorizontalDivider()
+          SunsetHorizontalDivider()
 
           artistInfo.wiki?.let {
             WikiCell(

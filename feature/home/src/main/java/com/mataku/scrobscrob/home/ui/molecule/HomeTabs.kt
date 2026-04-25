@@ -4,23 +4,19 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Tab
-import androidx.compose.material3.TabRow
-import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.CornerRadius
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mataku.scrobscrob.home.HomeTabType
+import com.mataku.scrobscrob.ui_common.SunsetTab
+import com.mataku.scrobscrob.ui_common.SunsetTabRow
 import com.mataku.scrobscrob.ui_common.SunsetText
-import com.mataku.scrobscrob.ui_common.molecule.TabRowText
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import com.mataku.scrobscrob.ui_common.style.accentColor
@@ -33,14 +29,11 @@ internal fun HomeTabs(
 ) {
   val accentColor = LocalAppTheme.current.accentColor()
 
-  TabRow(
+  SunsetTabRow(
     selectedTabIndex = selectedChartIndex,
-    containerColor = Color.Transparent,
-    contentColor = MaterialTheme.colorScheme.background,
-    indicator = { tabPositions ->
+    indicator = { selectedIndicatorModifier ->
       Box(
-        modifier = Modifier
-          .tabIndicatorOffset(tabPositions[selectedChartIndex])
+        modifier = selectedIndicatorModifier
           .height(3.dp)
           .padding(
             horizontal = 16.dp
@@ -53,14 +46,11 @@ internal fun HomeTabs(
           }
       )
     },
-    divider = {
-      HorizontalDivider()
-    },
     modifier = modifier
   ) {
     repeat(3) {
       val homeTabType = HomeTabType.findByIndex(it)
-      Tab(
+      SunsetTab(
         selected = selectedChartIndex == it,
         onClick = {
           onTabTap.invoke(homeTabType)

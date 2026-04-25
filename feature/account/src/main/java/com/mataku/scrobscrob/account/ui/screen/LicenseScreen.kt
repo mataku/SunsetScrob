@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -22,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mataku.scrobscrob.account.ui.viewmodel.LicenseViewModel
 import com.mataku.scrobscrob.core.entity.LicenseArtifact
+import com.mataku.scrobscrob.ui_common.SunsetHorizontalDivider
 import com.mataku.scrobscrob.ui_common.SunsetText
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
@@ -47,7 +47,7 @@ internal fun LicenseScreen(
             }
           }
         )
-        HorizontalDivider()
+        SunsetHorizontalDivider()
       }
     },
     modifier = modifier

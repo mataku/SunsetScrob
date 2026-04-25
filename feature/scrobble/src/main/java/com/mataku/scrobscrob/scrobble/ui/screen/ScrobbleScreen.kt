@@ -12,7 +12,6 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBarScrollBehavior
-import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -25,6 +24,7 @@ import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.core.entity.isInvalidArtwork
 import com.mataku.scrobscrob.scrobble.ui.component.Scrobble
 import com.mataku.scrobscrob.scrobble.ui.viewmodel.ScrobbleViewModel
+import com.mataku.scrobscrob.ui_common.SunsetPullToRefreshBox
 import com.mataku.scrobscrob.ui_common.organism.InfiniteLoadingIndicator
 import kotlinx.collections.immutable.ImmutableList
 
@@ -41,7 +41,7 @@ fun ScrobbleScreen(
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
   val lazyListState = rememberLazyListState()
 
-  PullToRefreshBox(
+  SunsetPullToRefreshBox(
     isRefreshing = uiState.isRefreshing,
     onRefresh = viewModel::refresh,
     modifier = modifier.fillMaxSize()
