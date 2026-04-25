@@ -21,8 +21,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -56,6 +54,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mataku.scrobscrob.auth.R
 import com.mataku.scrobscrob.auth.ui.viewmodel.LoginViewModel
 import com.mataku.scrobscrob.ui_common.SunsetButton
+import com.mataku.scrobscrob.ui_common.SunsetIcon
+import com.mataku.scrobscrob.ui_common.SunsetIconButton
 import com.mataku.scrobscrob.ui_common.SunsetText
 import com.mataku.scrobscrob.ui_common.SunsetTextButton
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
@@ -206,10 +206,10 @@ private fun LoginContent(
         } else {
           Icons.Filled.VisibilityOff
         }
-        IconButton(onClick = {
+        SunsetIconButton(onClick = {
           passwordVisible = !passwordVisible
         }) {
-          Icon(imageVector = icon, "password visibility toggle")
+          SunsetIcon(imageVector = icon, "password visibility toggle")
         }
       },
       keyboardActions = KeyboardActions(

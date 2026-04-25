@@ -12,8 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -30,6 +28,8 @@ import com.mataku.scrobscrob.core.entity.TrackAlbumInfo
 import com.mataku.scrobscrob.core.entity.TrackInfo
 import com.mataku.scrobscrob.core.entity.Wiki
 import com.mataku.scrobscrob.core.entity.presentation.toReadableIntValue
+import com.mataku.scrobscrob.ui_common.SunsetIcon
+import com.mataku.scrobscrob.ui_common.SunsetIconToggleButton
 import com.mataku.scrobscrob.ui_common.SunsetText
 import com.mataku.scrobscrob.ui_common.extension.throttleFirst
 import com.mataku.scrobscrob.ui_common.molecule.SimpleWiki
@@ -75,15 +75,15 @@ internal fun TrackDetail(
       val iconToggleAction = throttleFirst {
         onLoveIconTap.invoke(trackInfo)
       }
-      IconToggleButton(
+      SunsetIconToggleButton(
         checked = trackInfo.userLoved,
         onCheckedChange = {
           iconToggleAction.invoke()
         },
         modifier = Modifier,
       ) {
-        Icon(
-          Icons.Filled.Favorite,
+        SunsetIcon(
+          imageVector = Icons.Filled.Favorite,
           contentDescription = "favorite",
           tint = favoriteColor,
         )

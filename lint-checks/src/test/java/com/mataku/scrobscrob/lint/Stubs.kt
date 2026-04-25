@@ -94,3 +94,31 @@ internal val material3TextButtonStub: TestFile = kotlin(
     fun TextButton(onClick: () -> Unit) {}
   """.trimIndent(),
 ).indented()
+
+internal val material3IconStub: TestFile = kotlin(
+  """
+    package androidx.compose.material3
+
+    fun Icon(imageVector: Any, contentDescription: String?) {}
+  """.trimIndent(),
+).indented()
+
+internal val material3IconButtonStub: TestFile = kotlin(
+  """
+    package androidx.compose.material3
+
+    fun IconButton(onClick: () -> Unit, content: () -> Unit) {}
+  """.trimIndent(),
+).indented()
+
+internal val material3IconToggleButtonStub: TestFile = kotlin(
+  """
+    package androidx.compose.material3
+
+    fun IconToggleButton(
+      checked: Boolean,
+      onCheckedChange: (Boolean) -> Unit,
+      content: () -> Unit,
+    ) {}
+  """.trimIndent(),
+).indented()

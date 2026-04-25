@@ -10,8 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -31,6 +29,8 @@ import com.mataku.scrobscrob.app.ui.navigation.ScreenStyle
 import com.mataku.scrobscrob.discover.ui.navigation.navigateToDiscover
 import com.mataku.scrobscrob.home.ui.navigation.navigateToHome
 import com.mataku.scrobscrob.ui_common.SunsetBottomNavItem
+import com.mataku.scrobscrob.ui_common.SunsetIcon
+import com.mataku.scrobscrob.ui_common.SunsetIconButton
 import com.mataku.scrobscrob.ui_common.organism.SunsetNavigationBar
 import com.mataku.scrobscrob.ui_common.style.LocalSnackbarHostState
 import com.mataku.scrobscrob.ui_common.style.LocalTopAppBarState
@@ -62,10 +62,10 @@ internal fun MainScreen(
             title = currentScreenStyle.topAppBarTitle,
             navigationIcon = if (currentScreenStyle.navigationRequired) {
               {
-                IconButton(onClick = {
+                SunsetIconButton(onClick = {
                   navController.popBackStack()
                 }) {
-                  Icon(
+                  SunsetIcon(
                     imageVector = Icons.AutoMirrored.Default.ArrowBack,
                     contentDescription = "Back"
                   )
