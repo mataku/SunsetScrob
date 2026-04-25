@@ -1,0 +1,26 @@
+name: "Setup SunsetScrob"
+description: "Write Last.fm credentials to local.properties and google-services.json"
+inputs:
+  last-fm-api-key:
+    description: "Last.fm API key"
+    required: true
+  last-fm-shared-secret:
+    description: "Last.fm shared secret"
+    required: true
+  google-services-json:
+    description: "Contents of google-services.json"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Write local.properties and google-services.json
+      shell: bash
+      env:
+        LAST_FM_API_KEY: ${{ inputs.last-fm-api-key }}
+        LAST_FM_SHARED_SECRET: ${{ inputs.last-fm-shared-secret }}
+        GOOGLE_SERVICES_JSON: ${{ inputs.google-services-json }}
+      run: |
+        echo "API_KEY=\"$LAST_FM_API_KEY\"" >> local.properties
+        echo "SHARED_SECRET=\"$LAST_FM_SHARED_SECRET\"" >> local.properties
+        echo "$GOOGLE_SERVICES_JSON" > app/google-services.json

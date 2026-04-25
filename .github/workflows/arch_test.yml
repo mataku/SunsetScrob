@@ -24,14 +24,10 @@ jobs:
       - uses: ./.github/actions/setup-gradle
         with:
           use-build-cache: 'true'
-      - uses: ruby/setup-ruby@0cb964fd540e0a24c900370abf38a33466142735 # v1.305.0
+      - uses: ./.github/actions/sunsetscrob-setup
         with:
-          bundler-cache: true
+          last-fm-api-key: ${{ secrets.LAST_FM_API_KEY }}
+          last-fm-shared-secret: ${{ secrets.LAST_FM_SHARED_SECRET }}
+          google-services-json: ${{ secrets.GOOGLE_SERVICES_JSON_DEV }}
       - name: Run architecture tests
-        env:
-          LAST_FM_API_KEY: ${{ secrets.LAST_FM_API_KEY }}
-          LAST_FM_SHARED_SECRET: ${{ secrets.LAST_FM_SHARED_SECRET }}
-          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON_DEV }}
-        run: |
-          bundle exec fastlane android setup_for_ci
-          bundle exec fastlane android arch_test
+        run: ./gradlew :architecture-spec:test
