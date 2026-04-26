@@ -37,7 +37,7 @@ class PreferSunsetButtonDetectorSpec : DescribeSpec({
           material3ButtonStub,
           kotlin(
             """
-              package com.mataku.scrobscrob.ui_common.molecule
+              package com.mataku.scrobscrob.ui_common.component
 
               import androidx.compose.material3.Button
 

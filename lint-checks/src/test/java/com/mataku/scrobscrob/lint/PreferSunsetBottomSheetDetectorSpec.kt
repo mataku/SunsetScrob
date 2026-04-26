@@ -43,7 +43,7 @@ class PreferSunsetBottomSheetDetectorSpec : DescribeSpec({
           material3BottomSheetScaffoldStub,
           kotlin(
             """
-              package com.mataku.scrobscrob.ui_common.molecule
+              package com.mataku.scrobscrob.ui_common.component
 
               import androidx.compose.material3.BottomSheetScaffold
 

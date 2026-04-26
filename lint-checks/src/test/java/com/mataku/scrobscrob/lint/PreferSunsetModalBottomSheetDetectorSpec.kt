@@ -41,7 +41,7 @@ class PreferSunsetModalBottomSheetDetectorSpec : DescribeSpec({
           material3ModalBottomSheetStub,
           kotlin(
             """
-              package com.mataku.scrobscrob.ui_common.molecule
+              package com.mataku.scrobscrob.ui_common.component
 
               import androidx.compose.material3.ModalBottomSheet
 

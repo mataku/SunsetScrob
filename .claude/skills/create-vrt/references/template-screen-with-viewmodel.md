@@ -8,8 +8,10 @@ style of `AccountScreenTest`, `ArtistScreenTest`, `TopAlbumsScreenTest`.
 In sunsetscrob the standard pattern is:
 
 1. Mock the ViewModel's repository dependencies with `mockk<FooRepository>()`.
-2. Stub every `Flow`-returning method the VM will collect with `coEvery { repo.thing() } returns flowOf(...)`.
-3. Instantiate the real ViewModel — don't mock the VM itself. Roborazzi captures real render output, so real state is what you want.
+2. Stub every `Flow`-returning method the VM will collect with
+   `coEvery { repo.thing() } returns flowOf(...)`.
+3. Instantiate the real ViewModel — don't mock the VM itself. Roborazzi captures real render output,
+   so real state is what you want.
 4. Pass empty `mockk()` for navigation callbacks when you don't care what they do.
 
 ## Template
@@ -17,7 +19,7 @@ In sunsetscrob the standard pattern is:
 ```kotlin
 package {{PACKAGE}}
 
-import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.test_helper.integration.VRT
@@ -76,25 +78,27 @@ class {{CLASS_NAME}} {
 
 ## Substitutions
 
-| Placeholder | Meaning |
-|---|---|
-| `{{PACKAGE}}` | package of the Screen's source file (e.g. `com.mataku.scrobscrob.artist.ui.screen`) |
-| `{{CLASS_NAME}}` | e.g. `ArtistScreenTest` (usually the Screen already ends with `Screen`, so just append `Test`) |
-| `{{REPO_FIELD}}` | property name for the mocked repo (e.g. `artistRepository`) |
-| `{{REPO_TYPE}}` | repository type (e.g. `ArtistRepository`) |
-| `{{REPO_METHOD}}` | method the VM calls on the repo |
-| `{{STUB_VALUE}}` | realistic test data (entity literal, `persistentListOf(...)` of domain objects, etc.) |
+| Placeholder               | Meaning                                                                                                       |
+|---------------------------|---------------------------------------------------------------------------------------------------------------|
+| `{{PACKAGE}}`             | package of the Screen's source file (e.g. `com.mataku.scrobscrob.artist.ui.screen`)                           |
+| `{{CLASS_NAME}}`          | e.g. `ArtistScreenTest` (usually the Screen already ends with `Screen`, so just append `Test`)                |
+| `{{REPO_FIELD}}`          | property name for the mocked repo (e.g. `artistRepository`)                                                   |
+| `{{REPO_TYPE}}`           | repository type (e.g. `ArtistRepository`)                                                                     |
+| `{{REPO_METHOD}}`         | method the VM calls on the repo                                                                               |
+| `{{STUB_VALUE}}`          | realistic test data (entity literal, `persistentListOf(...)` of domain objects, etc.)                         |
 | `{{SCREEN_CALL_WITH_VM}}` | composable invocation passing a VM constructed with the mocked repos, plus `mockk()` for navigation callbacks |
-| `{{FILE_NAME_SNAKE}}` | snake_case of the Screen name (e.g. `artist_screen`, `top_albums_screen`) |
+| `{{FILE_NAME_SNAKE}}`     | snake_case of the Screen name (e.g. `artist_screen`, `top_albums_screen`)                                     |
 
 ## Example (filled in)
 
-Reference: `feature/artist/src/test/java/com/mataku/scrobscrob/artist/ui/screen/ArtistScreenTest.kt` (abridged).
+Reference:
+`feature/artist/src/test/java/com/mataku/scrobscrob/artist/ui/screen/ArtistScreenTest.kt` (
+abridged).
 
 ```kotlin
 package com.mataku.scrobscrob.artist.ui.screen
 
-import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.lifecycle.SavedStateHandle
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.mataku.scrobscrob.artist.ui.viewmodel.ArtistViewModel
@@ -154,6 +158,11 @@ class ArtistScreenTest {
 
 ## Tips
 
-- If the Screen sits inside a `SharedTransitionLayout` in production, wrap the `content` lambda with `SharedTransitionLayout { AnimatedVisibility(visible = true) { ... } }` the same way the existing tests do. See `TopArtistsScreenTest` for the current pattern.
-- Don't use `mockk(relaxed = true)` just to avoid writing stubs — prefer explicit `coEvery {} returns flowOf(...)` so that if the VM starts collecting a new flow, the test fails loudly instead of silently rendering a blank state.
-- `SavedStateHandle` with a `mapOf(...)` of expected keys is the correct way to inject deep-link args; don't mock it.
+- If the Screen sits inside a `SharedTransitionLayout` in production, wrap the `content` lambda with
+  `SharedTransitionLayout { AnimatedVisibility(visible = true) { ... } }` the same way the existing
+  tests do. See `TopArtistsScreenTest` for the current pattern.
+- Don't use `mockk(relaxed = true)` just to avoid writing stubs — prefer explicit
+  `coEvery {} returns flowOf(...)` so that if the VM starts collecting a new flow, the test fails
+  loudly instead of silently rendering a blank state.
+- `SavedStateHandle` with a `mapOf(...)` of expected keys is the correct way to inject deep-link
+  args; don't mock it.

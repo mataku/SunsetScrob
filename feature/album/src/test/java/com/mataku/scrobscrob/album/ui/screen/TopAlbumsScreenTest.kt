@@ -2,7 +2,7 @@ package com.mataku.scrobscrob.album.ui.screen
 
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.SharedTransitionLayout
-import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.mataku.scrobscrob.album.ui.viewmodel.TopAlbumsViewModel
 import com.mataku.scrobscrob.core.entity.AppTheme
@@ -12,7 +12,7 @@ import com.mataku.scrobscrob.data.repository.AlbumRepository
 import com.mataku.scrobscrob.data.repository.UsernameRepository
 import com.mataku.scrobscrob.test_helper.integration.VRT
 import com.mataku.scrobscrob.test_helper.integration.captureScreenshot
-import com.mataku.scrobscrob.ui_common.rememberSunsetTopAppBarScrollBehavior
+import com.mataku.scrobscrob.ui_common.component.rememberSunsetTopAppBarScrollBehavior
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk

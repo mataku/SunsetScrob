@@ -10,8 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.mataku.scrobscrob.ui_common.SunsetText
-import com.mataku.scrobscrob.ui_common.molecule.SunsetImage
+import com.mataku.scrobscrob.ui_common.component.SunsetText
+import com.mataku.scrobscrob.ui_common.component.SunsetImage
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 
 @Composable

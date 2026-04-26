@@ -31,14 +31,14 @@ import com.mataku.scrobscrob.artist.ui.viewmodel.TopArtistsViewModel
 import com.mataku.scrobscrob.core.entity.TopArtistInfo
 import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.core.entity.isInvalidArtwork
-import com.mataku.scrobscrob.ui_common.SunsetModalBottomSheet
-import com.mataku.scrobscrob.ui_common.SunsetScaffold
-import com.mataku.scrobscrob.ui_common.SunsetTopAppBarScrollBehavior
-import com.mataku.scrobscrob.ui_common.molecule.FilteringFloatingButton
-import com.mataku.scrobscrob.ui_common.molecule.LoadingIndicator
-import com.mataku.scrobscrob.ui_common.organism.FilteringBottomSheet
-import com.mataku.scrobscrob.ui_common.rememberSunsetModalBottomSheetState
-import com.mataku.scrobscrob.ui_common.organism.InfiniteLoadingIndicator
+import com.mataku.scrobscrob.ui_common.component.SunsetModalBottomSheet
+import com.mataku.scrobscrob.ui_common.component.SunsetScaffold
+import com.mataku.scrobscrob.ui_common.component.SunsetTopAppBarScrollBehavior
+import com.mataku.scrobscrob.ui_common.component.FilteringFloatingButton
+import com.mataku.scrobscrob.ui_common.component.LoadingIndicator
+import com.mataku.scrobscrob.ui_common.component.FilteringBottomSheet
+import com.mataku.scrobscrob.ui_common.component.rememberSunsetModalBottomSheetState
+import com.mataku.scrobscrob.ui_common.component.InfiniteLoadingIndicator
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.launch
 

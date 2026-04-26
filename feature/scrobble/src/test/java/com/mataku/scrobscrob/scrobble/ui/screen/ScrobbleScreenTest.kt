@@ -1,7 +1,7 @@
 package com.mataku.scrobscrob.scrobble.ui.screen
 
 import androidx.compose.animation.SharedTransitionScope
-import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.core.entity.RecentTrack
@@ -9,7 +9,7 @@ import com.mataku.scrobscrob.data.repository.ScrobbleRepository
 import com.mataku.scrobscrob.scrobble.ui.viewmodel.ScrobbleViewModel
 import com.mataku.scrobscrob.test_helper.integration.VRT
 import com.mataku.scrobscrob.test_helper.integration.captureScreenshot
-import com.mataku.scrobscrob.ui_common.rememberSunsetTopAppBarScrollBehavior
+import com.mataku.scrobscrob.ui_common.component.rememberSunsetTopAppBarScrollBehavior
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk

@@ -35,7 +35,7 @@ class PreferSunsetAlertDialogDetector : Detector(), SourceCodeScanner {
       issue = ISSUE,
       scope = node,
       location = context.getLocation(node),
-      message = "Use `com.mataku.scrobscrob.ui_common.SunsetAlertDialog` instead of `androidx.compose.material3.AlertDialog`.",
+      message = "Use `com.mataku.scrobscrob.ui_common.component.SunsetAlertDialog` instead of `androidx.compose.material3.AlertDialog`.",
     )
   }
 
@@ -47,7 +47,7 @@ class PreferSunsetAlertDialogDetector : Detector(), SourceCodeScanner {
       id = "PreferSunsetAlertDialog",
       briefDescription = "Prefer SunsetAlertDialog over material3 AlertDialog",
       explanation = """
-        Outside of `:ui_common`, prefer the `com.mataku.scrobscrob.ui_common.SunsetAlertDialog` \
+        Outside of `:ui_common`, prefer the `com.mataku.scrobscrob.ui_common.component.SunsetAlertDialog` \
         wrapper over `androidx.compose.material3.AlertDialog`. Routing all dialogs through \
         SunsetAlertDialog keeps feature modules decoupled from material3 versions and applies \
         the project's standard typography / button styling. Inside `:ui_common` itself the \

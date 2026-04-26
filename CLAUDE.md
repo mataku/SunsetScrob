@@ -166,7 +166,7 @@ Reference: `feature/scrobble/.../ui/screen/ScrobbleScreen.kt`, `feature/home/...
   feasible (Screens aren't consumed across modules beyond the hub pattern).
   Not currently enforced by Konsist — the hub pattern in `:feature:home`
   forces `TopAlbumsScreen`, `TopArtistsScreen`, `ScrobbleScreen` to stay
-  public, and templates under `:ui_common` (e.g. `WebViewScreen`) are
+  public, and shared screens under `:ui_common` (e.g. `WebViewScreen`) are
   deliberately public as they are reused across modules.
 - Handle one-shot events in the Screen with
   `LaunchedEffect(uiState.events) { uiState.events.firstOrNull()?.let { event -> ...; viewModel.popEvent(event) } }`.

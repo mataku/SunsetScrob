@@ -16,7 +16,7 @@ import com.mataku.scrobscrob.core.entity.ChartTrack
 import com.mataku.scrobscrob.core.entity.ChartTrackArtist
 import com.mataku.scrobscrob.core.entity.LovedTrack
 import com.mataku.scrobscrob.core.entity.imageUrl
-import com.mataku.scrobscrob.ui_common.SunsetText
+import com.mataku.scrobscrob.ui_common.component.SunsetText
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList

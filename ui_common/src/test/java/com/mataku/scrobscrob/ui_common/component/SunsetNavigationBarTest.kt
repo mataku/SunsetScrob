@@ -13,7 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -21,8 +21,6 @@ import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.test_helper.integration.VRT
 import com.mataku.scrobscrob.test_helper.integration.captureScreenshot
-import com.mataku.scrobscrob.ui_common.SunsetText
-import com.mataku.scrobscrob.ui_common.organism.SunsetNavigationBar
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test

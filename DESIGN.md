@@ -13,7 +13,7 @@ The runtime source of truth for tokens lives in code, not here:
 - Per-theme color schemes & accents: [
   `ui_common/.../style/SunsetTheme.kt`](ui_common/src/main/java/com/mataku/scrobscrob/ui_common/style/SunsetTheme.kt)
 - Typography: [
-  `ui_common/.../SunsetTextStyle.kt`](ui_common/src/main/java/com/mataku/scrobscrob/ui_common/SunsetTextStyle.kt)
+  `ui_common/.../style/SunsetTextStyle.kt`](ui_common/src/main/java/com/mataku/scrobscrob/ui_common/style/SunsetTextStyle.kt)
 - Theme enum: [
   `core/.../entity/AppTheme.kt`](core/src/main/java/com/mataku/scrobscrob/core/entity/AppTheme.kt)
 
@@ -117,7 +117,7 @@ Notes:
 ## Typography
 
 All text styles live in
-[`SunsetTextStyle`](ui_common/src/main/java/com/mataku/scrobscrob/ui_common/SunsetTextStyle.kt)
+[`SunsetTextStyle`](ui_common/src/main/java/com/mataku/scrobscrob/ui_common/style/SunsetTextStyle.kt)
 and use the bundled **Noto Sans JP** family (Regular / Medium / Bold). All
 styles set `includeFontPadding = false` to keep vertical rhythm tight.
 
@@ -145,41 +145,40 @@ Don't introduce ad-hoc `TextStyle(...)` literals at call sites — extend
 
 ## Components
 
-UI primitives are organized atomic-design-ish under `:ui_common`:
+UI primitives under `:ui_common` are organized by responsibility, not by
+atomic-design layer:
 
 ```
 ui_common/.../
-  Sunset*.kt     — top-level Material 3 wrappers (SunsetText, SunsetButton,
-                   SunsetSurface, SunsetTopAppBar, SunsetTextField, …).
-                   These are the only files allowed to import
-                   androidx.compose.material3.*.
-  component/   — small primitives (one widget, almost no logic)
-  molecule/    — composed primitives (layout + 1–2 components)
-  organism/    — bar/header/sheet-level units
-  template/    — full-screen reusable scaffolds
-  style/       — Colors, SunsetTheme, color extensions
-  extension/   — reusable Modifier / Spanned / Duration helpers
+  component/   — Material 3 wrappers (SunsetText, SunsetButton, SunsetSurface,
+                 SunsetTopAppBar, SunsetTextField, …) and app-specific
+                 composables (NavigationHeader, ContentHeader, SunsetImage,
+                 FilteringBottomSheet, LoadingIndicator, CircleBackButton, …).
+                 These are the only files allowed to import
+                 androidx.compose.material3.*.
+  screen/      — full-screen reusable composables (e.g. WebViewScreen).
+  style/       — Colors, SunsetTheme, SunsetTextStyle, color extensions.
+  extension/   — reusable Modifier / Spanned / Duration helpers.
 ```
 
 When a feature module needs a UI piece that's also useful elsewhere, **lift
-it into `:ui_common`** at the matching layer rather than copy-pasting. New
-Material 3 wrappers go at the top level alongside the existing `Sunset*`
-files; app-specific compositions go under `component/` / `molecule/` /
-`organism/` / `template/` per the atomic-design split.
+it into `:ui_common`** rather than copy-pasting. Material 3 wrappers and
+shared widgets both go under `component/`; full-screen composables go under
+`screen/`.
 
 ### When to use what
 
-| Need                                                     | Use                                                                                     | File                                                        |
-|----------------------------------------------------------|-----------------------------------------------------------------------------------------|-------------------------------------------------------------|
-| Remote image (album art, avatar, etc.)                   | `SunsetImage` (Coil 3, with placeholder + crossfade). Don't call `AsyncImage` directly. | `molecule/SunsetImage.kt`                                   |
-| Top app bar / screen title                               | `NavigationHeader` or `ContentHeader`                                                   | `organism/NavigationHeader.kt`, `organism/ContentHeader.kt` |
-| Bottom navigation                                        | `SunsetNavigationBar`                                                                   | `organism/SunsetNavigationBar.kt`                           |
-| Pageable filter UI                                       | `FilteringBottomSheet` + `FilteringFloatingButton`                                      | `organism/`, `molecule/`                                    |
-| Loading state inside a list/page                         | `LoadingIndicator` (small) / `InfiniteLoadingIndicator` (paging tail)                   | `molecule/`, `organism/`                                    |
-| Back button on artwork hero                              | `CircleBackButton` (translucent over imagery)                                           | `component/CircleBackButton.kt`                             |
-| Wiki / bio block                                         | `SimpleWiki` or `WikiCell`                                                              | `molecule/`                                                 |
-| Tab labels in `TabRow`                                   | `TabRowText`                                                                            | `molecule/TabRowText.kt`                                    |
-| Embedded web content (release notes, OSS licenses, etc.) | `WebViewScreen`                                                                         | `template/WebViewScreen.kt`                                 |
+| Need                                                     | Use                                                                                     | File                                                          |
+|----------------------------------------------------------|-----------------------------------------------------------------------------------------|---------------------------------------------------------------|
+| Remote image (album art, avatar, etc.)                   | `SunsetImage` (Coil 3, with placeholder + crossfade). Don't call `AsyncImage` directly. | `component/SunsetImage.kt`                                    |
+| Top app bar / screen title                               | `NavigationHeader` or `ContentHeader`                                                   | `component/NavigationHeader.kt`, `component/ContentHeader.kt` |
+| Bottom navigation                                        | `SunsetNavigationBar`                                                                   | `component/SunsetNavigationBar.kt`                            |
+| Pageable filter UI                                       | `FilteringBottomSheet` + `FilteringFloatingButton`                                      | `component/`                                                  |
+| Loading state inside a list/page                         | `LoadingIndicator` (small) / `InfiniteLoadingIndicator` (paging tail)                   | `component/`                                                  |
+| Back button on artwork hero                              | `CircleBackButton` (translucent over imagery)                                           | `component/CircleBackButton.kt`                               |
+| Wiki / bio block                                         | `SimpleWiki` or `WikiCell`                                                              | `component/`                                                  |
+| Tab labels in `TabRow`                                   | `TabRowText`                                                                            | `component/TabRowText.kt`                                     |
+| Embedded web content (release notes, OSS licenses, etc.) | `WebViewScreen`                                                                         | `screen/WebViewScreen.kt`                                     |
 
 ### Composition locals
 

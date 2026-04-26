@@ -37,7 +37,7 @@ class PreferSunsetTextDetectorSpec : DescribeSpec({
           material3TextStub,
           kotlin(
             """
-              package com.mataku.scrobscrob.ui_common.molecule
+              package com.mataku.scrobscrob.ui_common.component
 
               import androidx.compose.material3.Text
 

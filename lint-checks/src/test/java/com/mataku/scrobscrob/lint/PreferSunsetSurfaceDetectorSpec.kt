@@ -37,7 +37,7 @@ class PreferSunsetSurfaceDetectorSpec : DescribeSpec({
           material3SurfaceStub,
           kotlin(
             """
-              package com.mataku.scrobscrob.ui_common.organism
+              package com.mataku.scrobscrob.ui_common.component
 
               import androidx.compose.material3.Surface
 

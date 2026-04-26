@@ -35,7 +35,7 @@ class PreferSunsetSwitchDetector : Detector(), SourceCodeScanner {
       issue = ISSUE,
       scope = node,
       location = context.getLocation(node),
-      message = "Use `com.mataku.scrobscrob.ui_common.SunsetSwitch` instead of `androidx.compose.material3.Switch`.",
+      message = "Use `com.mataku.scrobscrob.ui_common.component.SunsetSwitch` instead of `androidx.compose.material3.Switch`.",
     )
   }
 
@@ -47,7 +47,7 @@ class PreferSunsetSwitchDetector : Detector(), SourceCodeScanner {
       id = "PreferSunsetSwitch",
       briefDescription = "Prefer SunsetSwitch over material3 Switch",
       explanation = """
-        Outside of `:ui_common`, prefer the `com.mataku.scrobscrob.ui_common.SunsetSwitch` \
+        Outside of `:ui_common`, prefer the `com.mataku.scrobscrob.ui_common.component.SunsetSwitch` \
         wrapper over `androidx.compose.material3.Switch`. Routing all switches through \
         SunsetSwitch keeps feature modules decoupled from material3 versions and applies the \
         theme accent colors by default. Inside `:ui_common` itself the wrapper has to import \

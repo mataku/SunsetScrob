@@ -2,7 +2,7 @@ package com.mataku.scrobscrob.scrobble.ui.screen
 
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.SharedTransitionLayout
-import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.lifecycle.SavedStateHandle
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.mataku.scrobscrob.core.entity.AppTheme

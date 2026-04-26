@@ -18,9 +18,9 @@ import androidx.compose.ui.unit.dp
 import com.mataku.scrobscrob.core.entity.UserInfo
 import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.core.entity.presentation.toReadableIntValue
-import com.mataku.scrobscrob.ui_common.SunsetText
-import com.mataku.scrobscrob.ui_common.molecule.SunsetImage
-import com.mataku.scrobscrob.ui_common.molecule.ValueDescription
+import com.mataku.scrobscrob.ui_common.component.SunsetText
+import com.mataku.scrobscrob.ui_common.component.SunsetImage
+import com.mataku.scrobscrob.ui_common.component.ValueDescription
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import kotlinx.collections.immutable.persistentListOf
 

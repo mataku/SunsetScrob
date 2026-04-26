@@ -35,7 +35,7 @@ class PreferSunsetScaffoldDetector : Detector(), SourceCodeScanner {
       issue = ISSUE,
       scope = node,
       location = context.getLocation(node),
-      message = "Use `com.mataku.scrobscrob.ui_common.SunsetScaffold` instead of `androidx.compose.material3.Scaffold`.",
+      message = "Use `com.mataku.scrobscrob.ui_common.component.SunsetScaffold` instead of `androidx.compose.material3.Scaffold`.",
     )
   }
 
@@ -47,7 +47,7 @@ class PreferSunsetScaffoldDetector : Detector(), SourceCodeScanner {
       id = "PreferSunsetScaffold",
       briefDescription = "Prefer SunsetScaffold over material3 Scaffold",
       explanation = """
-        Outside of `:ui_common`, prefer the `com.mataku.scrobscrob.ui_common.SunsetScaffold` \
+        Outside of `:ui_common`, prefer the `com.mataku.scrobscrob.ui_common.component.SunsetScaffold` \
         wrapper over `androidx.compose.material3.Scaffold`. Routing the page skeleton through \
         SunsetScaffold keeps feature modules decoupled from material3 versions and centralises \
         topBar / bottomBar / snackbarHost slots in one place. Inside `:ui_common` itself the \

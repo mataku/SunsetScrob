@@ -8,7 +8,7 @@ ViewModel. Matches the style of `HomeTabsTest`, `SunsetNavigationBarScreenTest`.
 ```kotlin
 package {{PACKAGE}}
 
-import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.test_helper.integration.VRT
@@ -52,12 +52,12 @@ class {{CLASS_NAME}} {
 
 ## Substitutions
 
-| Placeholder | Meaning | Example |
-|---|---|---|
-| `{{PACKAGE}}` | package of the composable's source file | `com.mataku.scrobscrob.home.ui.molecule` |
-| `{{CLASS_NAME}}` | `<ComposableName>Test` | `HomeTabsTest` |
+| Placeholder           | Meaning                                                                                                                                                | Example                                           |
+|-----------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------|
+| `{{PACKAGE}}`         | package of the composable's source file                                                                                                                | `com.mataku.scrobscrob.home.ui.molecule`          |
+| `{{CLASS_NAME}}`      | `<ComposableName>Test`                                                                                                                                 | `HomeTabsTest`                                    |
 | `{{COMPOSABLE_CALL}}` | composable invocation with sensible test values — empty lambdas for callbacks, small constants for primitives, `persistentListOf(...)` for list params | `HomeTabs(selectedChartIndex = 0, onTabTap = {})` |
-| `{{FILE_NAME_SNAKE}}` | snake_case of the composable name | `home_tabs`, `sunset_navigation_bar` |
+| `{{FILE_NAME_SNAKE}}` | snake_case of the composable name                                                                                                                      | `home_tabs`, `sunset_navigation_bar`              |
 
 ## Example (filled in)
 
@@ -66,7 +66,7 @@ Reference: `feature/home/src/test/java/com/mataku/scrobscrob/home/ui/molecule/Ho
 ```kotlin
 package com.mataku.scrobscrob.home.ui.molecule
 
-import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.test_helper.integration.VRT
@@ -116,7 +116,8 @@ class HomeTabsTest {
 
 ## Optional variants
 
-Add these test methods only when the layout actually differs for the device variant — don't generate them reflexively.
+Add these test methods only when the layout actually differs for the device variant — don't generate
+them reflexively.
 
 ```kotlin
 @Test
@@ -141,6 +142,7 @@ fun layout_tablet() {
 ```
 
 Landscape needs no extra import. Tablet needs:
+
 ```kotlin
 import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
 ```

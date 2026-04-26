@@ -31,8 +31,8 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.mataku.scrobscrob.core.entity.RecentTrack
 import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.scrobble.R
-import com.mataku.scrobscrob.ui_common.SunsetText
-import com.mataku.scrobscrob.ui_common.molecule.SunsetImage
+import com.mataku.scrobscrob.ui_common.component.SunsetText
+import com.mataku.scrobscrob.ui_common.component.SunsetImage
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 
 @Composable

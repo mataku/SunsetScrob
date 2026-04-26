@@ -35,7 +35,7 @@ class PreferSunsetBottomSheetDetector : Detector(), SourceCodeScanner {
       issue = ISSUE,
       scope = node,
       location = context.getLocation(node),
-      message = "Use `com.mataku.scrobscrob.ui_common.SunsetBottomSheet` instead of `$fqn`.",
+      message = "Use `com.mataku.scrobscrob.ui_common.component.SunsetBottomSheet` instead of `$fqn`.",
     )
   }
 
@@ -52,7 +52,7 @@ class PreferSunsetBottomSheetDetector : Detector(), SourceCodeScanner {
       id = "PreferSunsetBottomSheet",
       briefDescription = "Prefer SunsetBottomSheet over material3 BottomSheetScaffold",
       explanation = """
-        Outside of `:ui_common`, prefer the `com.mataku.scrobscrob.ui_common.SunsetBottomSheet` \
+        Outside of `:ui_common`, prefer the `com.mataku.scrobscrob.ui_common.component.SunsetBottomSheet` \
         wrapper over `androidx.compose.material3.BottomSheetScaffold`, \
         `rememberBottomSheetScaffoldState`, `rememberStandardBottomSheetState`, and `SheetValue`. \
         Routing all standard bottom sheets through SunsetBottomSheet keeps feature modules \

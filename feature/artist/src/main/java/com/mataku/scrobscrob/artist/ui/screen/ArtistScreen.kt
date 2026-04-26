@@ -35,12 +35,12 @@ import com.mataku.scrobscrob.core.entity.ArtistInfo
 import com.mataku.scrobscrob.core.entity.Stats
 import com.mataku.scrobscrob.core.entity.Tag
 import com.mataku.scrobscrob.core.entity.Wiki
-import com.mataku.scrobscrob.ui_common.SunsetBottomSheet
-import com.mataku.scrobscrob.ui_common.SunsetHorizontalDivider
+import com.mataku.scrobscrob.ui_common.component.SunsetBottomSheet
+import com.mataku.scrobscrob.ui_common.component.SunsetHorizontalDivider
 import com.mataku.scrobscrob.ui_common.component.CircleBackButton
-import com.mataku.scrobscrob.ui_common.molecule.SunsetImage
-import com.mataku.scrobscrob.ui_common.molecule.TopTags
-import com.mataku.scrobscrob.ui_common.molecule.WikiCell
+import com.mataku.scrobscrob.ui_common.component.SunsetImage
+import com.mataku.scrobscrob.ui_common.component.TopTags
+import com.mataku.scrobscrob.ui_common.component.WikiCell
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import kotlinx.collections.immutable.persistentListOf
 

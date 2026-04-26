@@ -13,8 +13,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mataku.scrobscrob.core.entity.presentation.toReadableIntValue
-import com.mataku.scrobscrob.ui_common.SunsetText
-import com.mataku.scrobscrob.ui_common.molecule.ValueDescription
+import com.mataku.scrobscrob.ui_common.component.SunsetText
+import com.mataku.scrobscrob.ui_common.component.ValueDescription
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 
 @Composable

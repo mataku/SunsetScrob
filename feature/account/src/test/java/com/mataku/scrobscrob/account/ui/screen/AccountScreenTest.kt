@@ -1,7 +1,7 @@
 package com.mataku.scrobscrob.account.ui.screen
 
 import android.app.Application
-import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.lifecycle.SavedStateHandle
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.android.gms.tasks.Task

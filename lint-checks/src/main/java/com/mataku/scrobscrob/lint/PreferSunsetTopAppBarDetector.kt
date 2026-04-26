@@ -35,7 +35,7 @@ class PreferSunsetTopAppBarDetector : Detector(), SourceCodeScanner {
       issue = ISSUE,
       scope = node,
       location = context.getLocation(node),
-      message = "Use `com.mataku.scrobscrob.ui_common.SunsetTopAppBar` (and `SunsetTopAppBarScrollBehavior`) instead of `$fqn`.",
+      message = "Use `com.mataku.scrobscrob.ui_common.component.SunsetTopAppBar` (and `SunsetTopAppBarScrollBehavior`) instead of `$fqn`.",
     )
   }
 
@@ -51,7 +51,7 @@ class PreferSunsetTopAppBarDetector : Detector(), SourceCodeScanner {
       id = "PreferSunsetTopAppBar",
       briefDescription = "Prefer SunsetTopAppBar over material3 TopAppBar",
       explanation = """
-        Outside of `:ui_common`, prefer the `com.mataku.scrobscrob.ui_common.SunsetTopAppBar` \
+        Outside of `:ui_common`, prefer the `com.mataku.scrobscrob.ui_common.component.SunsetTopAppBar` \
         wrapper (and `SunsetTopAppBarScrollBehavior` / \
         `rememberSunsetTopAppBarScrollBehavior`) over `androidx.compose.material3.TopAppBar` \
         and friends (`TopAppBarDefaults`, `TopAppBarScrollBehavior`). Routing the top bar \

@@ -35,7 +35,7 @@ class PreferSunsetTextButtonDetector : Detector(), SourceCodeScanner {
       issue = ISSUE,
       scope = node,
       location = context.getLocation(node),
-      message = "Use `com.mataku.scrobscrob.ui_common.SunsetTextButton` instead of `androidx.compose.material3.TextButton`.",
+      message = "Use `com.mataku.scrobscrob.ui_common.component.SunsetTextButton` instead of `androidx.compose.material3.TextButton`.",
     )
   }
 
@@ -47,7 +47,7 @@ class PreferSunsetTextButtonDetector : Detector(), SourceCodeScanner {
       id = "PreferSunsetTextButton",
       briefDescription = "Prefer SunsetTextButton over material3 TextButton",
       explanation = """
-        Outside of `:ui_common`, prefer the `com.mataku.scrobscrob.ui_common.SunsetTextButton` \
+        Outside of `:ui_common`, prefer the `com.mataku.scrobscrob.ui_common.component.SunsetTextButton` \
         wrapper over `androidx.compose.material3.TextButton`. Routing all text buttons through \
         SunsetTextButton keeps feature modules decoupled from material3 versions and lets \
         future material upgrades land in one place. Inside `:ui_common` itself the wrapper has \

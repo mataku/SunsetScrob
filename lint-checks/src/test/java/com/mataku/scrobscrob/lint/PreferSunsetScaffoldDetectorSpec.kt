@@ -37,7 +37,7 @@ class PreferSunsetScaffoldDetectorSpec : DescribeSpec({
           material3ScaffoldStub,
           kotlin(
             """
-              package com.mataku.scrobscrob.ui_common.molecule
+              package com.mataku.scrobscrob.ui_common.component
 
               import androidx.compose.material3.Scaffold
 

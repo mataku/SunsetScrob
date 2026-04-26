@@ -44,9 +44,9 @@ import com.mataku.scrobscrob.account.ui.molecule.Profile
 import com.mataku.scrobscrob.account.ui.viewmodel.AccountViewModel
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.core.entity.UserInfo
-import com.mataku.scrobscrob.ui_common.SunsetAlertDialog
-import com.mataku.scrobscrob.ui_common.SunsetHorizontalDivider
-import com.mataku.scrobscrob.ui_common.SunsetText
+import com.mataku.scrobscrob.ui_common.component.SunsetAlertDialog
+import com.mataku.scrobscrob.ui_common.component.SunsetHorizontalDivider
+import com.mataku.scrobscrob.ui_common.component.SunsetText
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.LocalSnackbarHostState
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview

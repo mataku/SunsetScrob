@@ -35,7 +35,7 @@ class PreferSunsetPullToRefreshBoxDetector : Detector(), SourceCodeScanner {
       issue = ISSUE,
       scope = node,
       location = context.getLocation(node),
-      message = "Use `com.mataku.scrobscrob.ui_common.SunsetPullToRefreshBox` instead of `androidx.compose.material3.pulltorefresh.PullToRefreshBox`.",
+      message = "Use `com.mataku.scrobscrob.ui_common.component.SunsetPullToRefreshBox` instead of `androidx.compose.material3.pulltorefresh.PullToRefreshBox`.",
     )
   }
 
@@ -49,7 +49,7 @@ class PreferSunsetPullToRefreshBoxDetector : Detector(), SourceCodeScanner {
       briefDescription = "Prefer SunsetPullToRefreshBox over material3 PullToRefreshBox",
       explanation = """
         Outside of `:ui_common`, prefer the \
-        `com.mataku.scrobscrob.ui_common.SunsetPullToRefreshBox` wrapper over \
+        `com.mataku.scrobscrob.ui_common.component.SunsetPullToRefreshBox` wrapper over \
         `androidx.compose.material3.pulltorefresh.PullToRefreshBox`. Routing all \
         pull-to-refresh through SunsetPullToRefreshBox keeps feature modules decoupled from \
         material3 versions and hides the `ExperimentalMaterial3Api` opt-in. Inside \

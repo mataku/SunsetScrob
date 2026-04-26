@@ -3,7 +3,7 @@ package com.mataku.scrobscrob.app.ui.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.mataku.scrobscrob.account.R
-import com.mataku.scrobscrob.ui_common.SunsetText
+import com.mataku.scrobscrob.ui_common.component.SunsetText
 
 enum class ScreenStyle(
   val route: String,

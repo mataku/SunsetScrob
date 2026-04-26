@@ -5,7 +5,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.mataku.scrobscrob.ui_common.template.WebViewScreen
+import com.mataku.scrobscrob.ui_common.screen.WebViewScreen
 
 fun NavGraphBuilder.commonGraph(navController: NavController) {
   composable(
