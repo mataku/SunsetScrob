@@ -14,6 +14,7 @@ import com.airbnb.android.showkase.annotation.ShowkaseComposable
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import com.mataku.scrobscrob.ui_common.style.backgroundColor
+import com.mataku.scrobscrob.ui_common.style.onSurfaceColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -66,13 +67,15 @@ internal fun SunsetTabRowPreview() {
         SunsetText.Label(
           text = "Tab A",
           modifier = Modifier.padding(16.dp),
+          color = LocalAppTheme.current.onSurfaceColor(),
         )
       }
       SunsetTab(selected = false, onClick = {}) {
         SunsetText.Label(
           text = "Tab B",
           modifier = Modifier.padding(16.dp),
-        )
+          color = LocalAppTheme.current.onSurfaceColor(),
+          )
       }
     }
   }
