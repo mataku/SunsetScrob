@@ -81,7 +81,7 @@ fun NavigationHeader(
   styleName = "Dark"
 )
 @Composable
-private fun NavigationHeaderPreview() {
+internal fun NavigationHeaderPreview() {
   SunsetThemePreview {
     NavigationHeader(text = "Scrobble", onBackPressed = {})
   }
@@ -90,7 +90,7 @@ private fun NavigationHeaderPreview() {
 @Preview
 @ShowkaseComposable(name = "NavigationHeader", group = "Common", styleName = "Light")
 @Composable
-private fun NavigationHeaderLightPreview() {
+internal fun NavigationHeaderLightPreview() {
   SunsetThemePreview(theme = AppTheme.LIGHT) {
     NavigationHeader(text = "Scrobble", onBackPressed = {})
   }
@@ -99,7 +99,7 @@ private fun NavigationHeaderLightPreview() {
 @Preview
 @ShowkaseComposable(name = "NavigationHeader", group = "Common", styleName = "Midnight")
 @Composable
-private fun NavigationHeaderMidnightPreview() {
+internal fun NavigationHeaderMidnightPreview() {
   SunsetThemePreview(theme = AppTheme.MIDNIGHT) {
     NavigationHeader(text = "Scrobble", onBackPressed = {})
   }
@@ -108,7 +108,7 @@ private fun NavigationHeaderMidnightPreview() {
 @Preview
 @ShowkaseComposable(name = "NavigationHeader", group = "Common", styleName = "Last.fm Dark")
 @Composable
-private fun NavigationHeaderLastFmDarkPreview() {
+internal fun NavigationHeaderLastFmDarkPreview() {
   SunsetThemePreview(theme = AppTheme.LASTFM_DARK) {
     NavigationHeader(text = "Scrobble", onBackPressed = {})
   }

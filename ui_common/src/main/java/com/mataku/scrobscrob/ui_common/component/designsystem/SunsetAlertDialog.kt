@@ -3,7 +3,10 @@ package com.mataku.scrobscrob.ui_common.component.designsystem
 import androidx.compose.material3.AlertDialog
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import com.airbnb.android.showkase.annotation.ShowkaseComposable
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
+import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import com.mataku.scrobscrob.ui_common.style.onSurfaceColor
 
 @Composable
@@ -49,4 +52,19 @@ fun SunsetAlertDialog(
       }
     } else null
   )
+}
+
+@Preview
+@ShowkaseComposable(name = "SunsetAlertDialog", group = "Design system")
+@Composable
+internal fun SunsetAlertDialogPreview() {
+  SunsetThemePreview {
+    SunsetAlertDialog(
+      title = "Are you sure?",
+      description = "This action cannot be undone.",
+      confirmButtonText = "OK",
+      onConfirmButton = {},
+      dismissButtonText = "Cancel",
+    )
+  }
 }

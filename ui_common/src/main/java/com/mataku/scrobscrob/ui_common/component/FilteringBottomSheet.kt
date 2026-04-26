@@ -100,7 +100,7 @@ private fun TimeRangeCell(
 @Preview(showBackground = true)
 @Composable
 @ShowkaseComposable(name = "FilteringBottomSheet", group = "BottomSheet")
-private fun FilteringBottomSheetPreview() {
+internal fun FilteringBottomSheetPreview() {
   SunsetThemePreview {
     FilteringBottomSheet(
       selectedTimeRangeFiltering = TimeRangeFiltering.OVERALL,

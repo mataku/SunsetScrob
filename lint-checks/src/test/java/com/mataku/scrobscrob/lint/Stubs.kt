@@ -30,6 +30,19 @@ internal val previewStub: TestFile = kotlin(
   """.trimIndent(),
 ).indented()
 
+internal val showkaseComposableStub: TestFile = kotlin(
+  """
+    package com.airbnb.android.showkase.annotation
+
+    @Target(AnnotationTarget.FUNCTION)
+    @Retention(AnnotationRetention.BINARY)
+    annotation class ShowkaseComposable(
+      val name: String = "",
+      val group: String = "",
+    )
+  """.trimIndent(),
+).indented()
+
 internal val flowStub: TestFile = kotlin(
   """
     package kotlinx.coroutines.flow

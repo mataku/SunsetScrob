@@ -1,8 +1,7 @@
 package com.mataku.scrobscrob.ui_common.component
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.unit.dp
@@ -10,6 +9,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.test_helper.integration.VRT
 import com.mataku.scrobscrob.test_helper.integration.captureScreenshot
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetBottomSheet
 import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetText
 import org.junit.Rule
 import org.junit.Test
@@ -29,13 +29,21 @@ class SunsetBottomSheetTest {
     composeRule.captureScreenshot(
       appTheme = AppTheme.DARK,
       content = {
-        Column {
+        SunsetBottomSheet(
+          sheetContent = {
+            SunsetText.Body(
+              text = "Sheet content",
+              modifier = Modifier.padding(16.dp),
+            )
+          },
+          sheetPeekHeight = 80.dp,
+        ) { padding ->
           SunsetText.Body(
-            text = "Hello",
-          )
-          Spacer(modifier = Modifier.height(20.dp))
-          SunsetText.Body(
-            text = "Helloooooooooooooooooooooooo",
+            text = "Main content",
+            modifier = Modifier
+              .fillMaxSize()
+              .padding(padding)
+              .padding(16.dp),
           )
         }
       },
@@ -48,18 +56,25 @@ class SunsetBottomSheetTest {
     composeRule.captureScreenshot(
       appTheme = AppTheme.LIGHT,
       content = {
-        Column {
+        SunsetBottomSheet(
+          sheetContent = {
+            SunsetText.Body(
+              text = "Sheet content",
+              modifier = Modifier.padding(16.dp),
+            )
+          },
+          sheetPeekHeight = 80.dp,
+        ) { padding ->
           SunsetText.Body(
-            text = "Hello",
-          )
-          Spacer(modifier = Modifier.height(20.dp))
-          SunsetText.Body(
-            text = "Helloooooooooooooooooooooooo",
+            text = "Main content",
+            modifier = Modifier
+              .fillMaxSize()
+              .padding(padding)
+              .padding(16.dp),
           )
         }
       },
       fileName = "sunset_bottom_sheet_light.png",
     )
   }
-
 }

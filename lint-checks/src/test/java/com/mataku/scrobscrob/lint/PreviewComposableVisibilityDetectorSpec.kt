@@ -96,5 +96,57 @@ class PreviewComposableVisibilityDetectorSpec : DescribeSpec({
         .run()
         .expectClean()
     }
+
+    it("internal @Preview composable annotated @ShowkaseComposable is allowed") {
+      lint()
+        .files(
+          composableStub,
+          previewStub,
+          showkaseComposableStub,
+          kotlin(
+            """
+              package com.example
+
+              import androidx.compose.runtime.Composable
+              import androidx.compose.ui.tooling.preview.Preview
+              import com.airbnb.android.showkase.annotation.ShowkaseComposable
+
+              @Preview
+              @ShowkaseComposable(name = "Foo", group = "Design system")
+              @Composable
+              internal fun PreviewFoo() {}
+            """.trimIndent(),
+          ),
+        )
+        .issues(PreviewComposableVisibilityDetector.ISSUE)
+        .run()
+        .expectClean()
+    }
+
+    it("public @Preview composable annotated @ShowkaseComposable is allowed") {
+      lint()
+        .files(
+          composableStub,
+          previewStub,
+          showkaseComposableStub,
+          kotlin(
+            """
+              package com.example
+
+              import androidx.compose.runtime.Composable
+              import androidx.compose.ui.tooling.preview.Preview
+              import com.airbnb.android.showkase.annotation.ShowkaseComposable
+
+              @Preview
+              @ShowkaseComposable(name = "Foo", group = "Design system")
+              @Composable
+              fun PreviewFoo() {}
+            """.trimIndent(),
+          ),
+        )
+        .issues(PreviewComposableVisibilityDetector.ISSUE)
+        .run()
+        .expectClean()
+    }
   }
 })

@@ -50,6 +50,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.airbnb.android.showkase.annotation.ShowkaseComposable
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
@@ -99,8 +100,9 @@ fun SunsetNavigationBar(
 }
 
 @Preview
+@ShowkaseComposable(name = "SunsetNavigationBar", group = "Design system")
 @Composable
-private fun SunsetNavigationBarPreview() {
+internal fun SunsetNavigationBarPreview() {
   SunsetThemePreview {
     Scaffold(
       bottomBar = {

@@ -1,5 +1,8 @@
 package com.mataku.scrobscrob.ui_common.component.designsystem
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.OutlinedTextField
@@ -8,7 +11,11 @@ import androidx.compose.material3.TextFieldColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.airbnb.android.showkase.annotation.ShowkaseComposable
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
+import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import com.mataku.scrobscrob.ui_common.style.accentColor
 
 @Composable
@@ -47,5 +54,34 @@ object SunsetTextFieldDefaults {
     return OutlinedTextFieldDefaults.colors(
       focusedBorderColor = accent,
     )
+  }
+}
+
+@Preview
+@ShowkaseComposable(name = "SunsetTextField", group = "Design system")
+@Composable
+internal fun SunsetTextFieldPreview() {
+  SunsetThemePreview {
+    Column(
+      modifier = Modifier.padding(16.dp),
+      verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+      SunsetTextField(
+        value = "",
+        onValueChange = {},
+        label = { SunsetText.Label(text = "Empty") },
+      )
+      SunsetTextField(
+        value = "Hello",
+        onValueChange = {},
+        label = { SunsetText.Label(text = "Filled") },
+      )
+      SunsetTextField(
+        value = "Disabled",
+        onValueChange = {},
+        enabled = false,
+        label = { SunsetText.Label(text = "Disabled") },
+      )
+    }
   }
 }

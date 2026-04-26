@@ -33,6 +33,15 @@ class PreviewComposableVisibilityDetector : Detector(), SourceCodeScanner {
     val hasComposable = annotations.any { it.qualifiedName == COMPOSABLE_ANNOTATION }
     if (!hasComposable) return
 
+    // `@ShowkaseComposable` previews must be visible to the Showkase KSP processor so that
+    // they are picked up into the in-app component catalog. The processor is configured with
+    // `skipPrivatePreviews=true` in `ui_common/build.gradle.kts`, which drops `private`
+    // previews from the catalog. As a result these previews are required to be `internal`
+    // (or `public`) — see https://github.com/airbnb/Showkase. Skip the visibility rule for
+    // them so the two requirements do not contradict each other.
+    val hasShowkase = annotations.any { it.qualifiedName == SHOWKASE_ANNOTATION }
+    if (hasShowkase) return
+
     if (node.visibility == UastVisibility.PRIVATE) return
 
     context.report(
@@ -46,6 +55,7 @@ class PreviewComposableVisibilityDetector : Detector(), SourceCodeScanner {
   companion object {
     private const val PREVIEW_ANNOTATION = "androidx.compose.ui.tooling.preview.Preview"
     private const val COMPOSABLE_ANNOTATION = "androidx.compose.runtime.Composable"
+    private const val SHOWKASE_ANNOTATION = "com.airbnb.android.showkase.annotation.ShowkaseComposable"
 
     val ISSUE: Issue = Issue.create(
       id = "PreviewNotPrivate",
@@ -55,6 +65,13 @@ class PreviewComposableVisibilityDetector : Detector(), SourceCodeScanner {
         Mark the function `private` so it stays a development-only helper. If you genuinely \
         need a non-private preview (for example a shared preview reused across modules), \
         suppress this with `@Suppress("PreviewNotPrivate")`.
+
+        Exception — `@ShowkaseComposable`: previews additionally annotated with \
+        `@ShowkaseComposable` are skipped by this check. Showkase's KSP processor is \
+        configured with `skipPrivatePreviews=true` in `ui_common/build.gradle.kts`, which \
+        means a `private` preview never reaches the in-app component catalog. Such previews \
+        therefore need to be `internal` (or `public`) so the processor can see them. See \
+        https://github.com/airbnb/Showkase for details.
       """.trimIndent(),
       category = Category.CORRECTNESS,
       priority = 5,

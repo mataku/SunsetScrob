@@ -1,12 +1,20 @@
 package com.mataku.scrobscrob.ui_common.component.designsystem
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.airbnb.android.showkase.annotation.ShowkaseComposable
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
+import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import com.mataku.scrobscrob.ui_common.style.accentColor
 
 @Composable
@@ -24,4 +32,20 @@ fun SunsetFloatingActionButton(
     containerColor = containerColor,
     content = content,
   )
+}
+
+@Preview
+@ShowkaseComposable(name = "SunsetFloatingActionButton", group = "Design system")
+@Composable
+internal fun SunsetFloatingActionButtonPreview() {
+  SunsetThemePreview {
+    Box(modifier = Modifier.padding(16.dp)) {
+      SunsetFloatingActionButton(onClick = {}) {
+        SunsetIcon(
+          imageVector = Icons.Default.Add,
+          contentDescription = "add",
+        )
+      }
+    }
+  }
 }

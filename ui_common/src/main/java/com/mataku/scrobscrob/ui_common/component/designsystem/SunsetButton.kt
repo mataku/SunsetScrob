@@ -1,13 +1,20 @@
 package com.mataku.scrobscrob.ui_common.component.designsystem
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.airbnb.android.showkase.annotation.ShowkaseComposable
+import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 
 @Composable
 fun SunsetButton(
@@ -58,6 +65,27 @@ object SunsetTextButton {
       enabled = enabled,
     ) {
       SunsetText.ButtonLabel(text = text)
+    }
+  }
+}
+
+@Preview
+@ShowkaseComposable(name = "SunsetButton", group = "Design system")
+@Composable
+internal fun SunsetButtonPreview() {
+  SunsetThemePreview {
+    Column(
+      modifier = Modifier.padding(16.dp),
+      verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+      SunsetButton(onClick = {}) {
+        SunsetText.ButtonLabel(text = "Enabled")
+      }
+      SunsetButton(onClick = {}, enabled = false) {
+        SunsetText.ButtonLabel(text = "Disabled")
+      }
+      SunsetTextButton.Label(text = "Text Button", onClick = {})
+      SunsetTextButton.Label(text = "Text Disabled", onClick = {}, enabled = false)
     }
   }
 }

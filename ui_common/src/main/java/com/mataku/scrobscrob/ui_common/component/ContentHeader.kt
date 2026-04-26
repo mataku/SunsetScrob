@@ -86,7 +86,7 @@ fun ContentHeader(
   styleName = "Dark"
 )
 @Composable
-private fun ContentHeaderPreview() {
+internal fun ContentHeaderPreview() {
   SunsetThemePreview {
     ContentHeader(text = "Scrobble")
   }
@@ -95,7 +95,7 @@ private fun ContentHeaderPreview() {
 @Preview
 @ShowkaseComposable(name = "ContentHeader", group = "Common", styleName = "Light")
 @Composable
-private fun ContentHeaderLightPreview() {
+internal fun ContentHeaderLightPreview() {
   SunsetThemePreview(theme = AppTheme.LIGHT) {
     ContentHeader(text = "Scrobble")
   }
@@ -104,7 +104,7 @@ private fun ContentHeaderLightPreview() {
 @Preview
 @ShowkaseComposable(name = "ContentHeader", group = "Common", styleName = "Midnight")
 @Composable
-private fun ContentHeaderMidnightPreview() {
+internal fun ContentHeaderMidnightPreview() {
   SunsetThemePreview(theme = AppTheme.MIDNIGHT) {
     ContentHeader(text = "Scrobble")
   }
@@ -113,7 +113,7 @@ private fun ContentHeaderMidnightPreview() {
 @Preview
 @ShowkaseComposable(name = "ContentHeader", group = "Common", styleName = "Last.fm Dark")
 @Composable
-private fun ContentHeaderLastFmDarkPreview() {
+internal fun ContentHeaderLastFmDarkPreview() {
   SunsetThemePreview(theme = AppTheme.LASTFM_DARK) {
     ContentHeader(
       text = "Scrobble",

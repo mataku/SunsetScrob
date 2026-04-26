@@ -1,13 +1,18 @@
 package com.mataku.scrobscrob.ui_common.component.designsystem
 
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.airbnb.android.showkase.annotation.ShowkaseComposable
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
+import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import com.mataku.scrobscrob.ui_common.style.backgroundColor
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -49,4 +54,26 @@ fun SunsetTab(
     enabled = enabled,
     content = content,
   )
+}
+
+@Preview
+@ShowkaseComposable(name = "SunsetTabRow", group = "Design system")
+@Composable
+internal fun SunsetTabRowPreview() {
+  SunsetThemePreview {
+    SunsetTabRow(selectedTabIndex = 0) {
+      SunsetTab(selected = true, onClick = {}) {
+        SunsetText.Label(
+          text = "Tab A",
+          modifier = Modifier.padding(16.dp),
+        )
+      }
+      SunsetTab(selected = false, onClick = {}) {
+        SunsetText.Label(
+          text = "Tab B",
+          modifier = Modifier.padding(16.dp),
+        )
+      }
+    }
+  }
 }

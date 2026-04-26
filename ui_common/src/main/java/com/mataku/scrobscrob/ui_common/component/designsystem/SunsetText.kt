@@ -1,6 +1,9 @@
 package com.mataku.scrobscrob.ui_common.component.designsystem
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -10,7 +13,11 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.airbnb.android.showkase.annotation.ShowkaseComposable
 import com.mataku.scrobscrob.ui_common.style.SunsetTextStyle
+import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 
 object SunsetText {
   @SuppressLint("ComposeNamingUppercase")
@@ -203,5 +210,25 @@ object SunsetText {
     overflow: TextOverflow = TextOverflow.Clip,
   ) {
     invoke(text, modifier, SunsetTextStyle.button, color, fontWeight, textAlign, maxLines, overflow)
+  }
+}
+
+@Preview
+@ShowkaseComposable(name = "SunsetText", group = "Design system")
+@Composable
+internal fun SunsetTextPreview() {
+  SunsetThemePreview {
+    Column(
+      modifier = Modifier.padding(16.dp),
+      verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+      SunsetText.Headline(text = "Headline")
+      SunsetText.Title(text = "Title")
+      SunsetText.Subtitle(text = "Subtitle")
+      SunsetText.Body(text = "Body")
+      SunsetText.Label(text = "Label")
+      SunsetText.Caption(text = "Caption")
+      SunsetText.ButtonLabel(text = "ButtonLabel")
+    }
   }
 }
