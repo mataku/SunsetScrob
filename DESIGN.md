@@ -40,9 +40,12 @@ Core principles:
    per wrapper, and CI fails on violations. Theming still goes through
    `MaterialTheme` with our `ColorScheme`s; don't introduce a parallel
    theming layer.
-3. **One theme provider.** All themable composables read from
-   `MaterialTheme.colorScheme` (and `LocalAppTheme` when accent or
-   theme-shape branching is genuinely required).
+3. **One theme provider.** Outside `:ui_common`, themable composables read
+   colors via `LocalAppTheme.current.<role>Color()` (`backgroundColor()`,
+   `primaryColor()`, `surfaceColor()`, `accentColor()`, …). The
+   `PreferLocalAppThemeColor` lint detector blocks direct
+   `MaterialTheme.colorScheme.*` access from feature / `:app` code; only
+   `:ui_common` bridges between Material 3 and the Sunset color API.
 4. **Artwork is content, not decoration.** Image loading is centralized in
    `SunsetImage` so placeholder, crossfade, and error behavior stay uniform.
 5. **AI-assistability matters.** Conventions here exist so that adding a new
@@ -85,7 +88,24 @@ Notes:
 
 ### Color usage rules
 
-- Read all colors via `MaterialTheme.colorScheme.*` in composables.
+- In feature / `:app` composables, read colors via
+  `LocalAppTheme.current.<role>Color()`. The available extensions live in
+  `ui_common/.../style/SunsetTheme.kt`:
+
+  | Extension              | Source                                     |
+  |------------------------|--------------------------------------------|
+  | `backgroundColor()`    | `colorScheme().background`                 |
+  | `primaryColor()`       | `colorScheme().primary`                    |
+  | `onPrimaryColor()`     | `colorScheme().onPrimary`                  |
+  | `onSecondaryColor()`   | `colorScheme().onSecondary`                |
+  | `surfaceColor()`       | `colorScheme().surface`                    |
+  | `onSurfaceColor()`     | `colorScheme().onSurface`                  |
+  | `accentColor()`        | per-theme accent (`LightLime` / `DeepOcean` / `LastFmColor`) |
+
+  Direct `MaterialTheme.colorScheme.*` access is banned outside
+  `:ui_common` by the `PreferLocalAppThemeColor` lint detector. If a role
+  you need isn't exposed yet, add a new `<role>Color()` extension in
+  `SunsetTheme.kt` rather than reaching into `MaterialTheme.colorScheme`.
 - Reach into `Colors.X` (the raw palette) **only** inside
   `style/` definitions or for theme-agnostic constants like the heart
   color. New screens should not import `Colors` directly.
@@ -111,11 +131,12 @@ styles set `includeFontPadding = false` to keep vertical rhythm tight.
 | `button`   | 14sp Medium, 1.25sp tracking | Action labels (uses `onSecondary`).                              |
 | `caption`  | 13sp Regular                 | Tertiary metadata, timestamps (uses `onSecondary`).              |
 
-Composable-getter styles (`caption`, `button`) read `MaterialTheme.colorScheme`
-at composition time, so they re-skin per theme automatically. The plain
-`val`-style entries (`body`, `label`, `title`, etc.) inherit color from
-the surrounding `LocalContentColor` — set color explicitly on the parent or on
-the `Text` if you need a non-default.
+Composable-getter styles (`caption`, `button`) read
+`LocalAppTheme.current.onSecondaryColor()` at composition time, so they
+re-skin per theme automatically. The plain `val`-style entries (`body`,
+`label`, `title`, etc.) inherit color from the surrounding
+`LocalContentColor` — set color explicitly on the parent or on the
+`SunsetText` if you need a non-default.
 
 Don't introduce ad-hoc `TextStyle(...)` literals at call sites — extend
 `SunsetTextStyle` instead.
@@ -128,15 +149,23 @@ UI primitives are organized atomic-design-ish under `:ui_common`:
 
 ```
 ui_common/.../
+  Sunset*.kt     — top-level Material 3 wrappers (SunsetText, SunsetButton,
+                   SunsetSurface, SunsetTopAppBar, SunsetTextField, …).
+                   These are the only files allowed to import
+                   androidx.compose.material3.*.
   component/   — small primitives (one widget, almost no logic)
   molecule/    — composed primitives (layout + 1–2 components)
   organism/    — bar/header/sheet-level units
   template/    — full-screen reusable scaffolds
-  style/       — Colors, SunsetTheme
+  style/       — Colors, SunsetTheme, color extensions
+  extension/   — reusable Modifier / Spanned / Duration helpers
 ```
 
 When a feature module needs a UI piece that's also useful elsewhere, **lift
-it into `:ui_common`** at the matching layer rather than copy-pasting.
+it into `:ui_common`** at the matching layer rather than copy-pasting. New
+Material 3 wrappers go at the top level alongside the existing `Sunset*`
+files; app-specific compositions go under `component/` / `molecule/` /
+`organism/` / `template/` per the atomic-design split.
 
 ### When to use what
 
@@ -157,8 +186,10 @@ it into `:ui_common`** at the matching layer rather than copy-pasting.
 Three composition locals are provided by `SunsetTheme` and can be read
 without prop-drilling:
 
-- `LocalAppTheme` — current `AppTheme`. Read this when you need
-  `accentColor()` or `isLight` branching that `MaterialTheme` doesn't expose.
+- `LocalAppTheme` — current `AppTheme`. Primary color-access entry point
+  outside `:ui_common`: call `LocalAppTheme.current.<role>Color()` for
+  background / primary / surface / accent / etc., and use it for `isLight`
+  branching when needed.
 - `LocalSnackbarHostState` — single shared snackbar host. Use this instead of
   creating a new `SnackbarHostState` per screen.
 - `LocalTopAppBarState` — `TopAppBarScrollBehavior` for the current top app
@@ -282,8 +313,9 @@ needed.
 
 **Do**
 
-- Read colors via `MaterialTheme.colorScheme.*`; read accents via
-  `LocalAppTheme.current.accentColor()`.
+- Read colors via `LocalAppTheme.current.<role>Color()`
+  (`backgroundColor`, `primaryColor`, `onSurfaceColor`, `accentColor`, …).
+  Add a new extension in `SunsetTheme.kt` if a role is missing.
 - Use `SunsetTextStyle` entries for text; extend it when a new role is needed.
 - Use `SunsetImage` for any remote image.
 - Use `SunsetX` wrappers from `:ui_common` for any Material 3 component. If
@@ -312,7 +344,7 @@ needed.
   per-theme `*Color` object) and wire it through `ColorScheme`.
 - Don't construct one-off `TextStyle(...)` literals; extend `SunsetTextStyle`.
 - Don't read raw palette objects (`Colors`, `DarkColor`, …) from feature
-  modules. Go through `MaterialTheme.colorScheme` or `accentColor()`.
+  modules. Go through `LocalAppTheme.current.<role>Color()`.
 - Don't use `AsyncImage` / `Image(painter = rememberAsyncImagePainter(...))`
   directly — go through `SunsetImage` so placeholder, crossfade, error, and
   shape conventions stay consistent.
