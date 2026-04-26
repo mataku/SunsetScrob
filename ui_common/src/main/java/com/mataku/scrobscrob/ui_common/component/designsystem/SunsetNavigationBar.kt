@@ -20,7 +20,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -104,24 +103,13 @@ fun SunsetNavigationBar(
 @Composable
 internal fun SunsetNavigationBarPreview() {
   SunsetThemePreview {
-    Scaffold(
-      bottomBar = {
-        SunsetNavigationBar(
-          navController = NavHostController(LocalContext.current),
-          navigateToAccount = {},
-          navigateToDiscover = {},
-          navigateToHome = {},
-          hasNavigationBarScreen = true
-        )
-      }
-    ) {
-      Box(
-        modifier = Modifier
-          .fillMaxSize()
-          .background(LocalAppTheme.current.backgroundColor())
-          .padding(it)
-      )
-    }
+    SunsetNavigationBar(
+      navController = NavHostController(LocalContext.current),
+      navigateToAccount = {},
+      navigateToDiscover = {},
+      navigateToHome = {},
+      hasNavigationBarScreen = true
+    )
   }
 }
 

@@ -3,6 +3,8 @@ package com.mataku.scrobscrob.ui_common.component.designsystem
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -55,7 +57,8 @@ internal fun SunsetBottomSheetPreview() {
           modifier = Modifier.padding(16.dp),
         )
       },
-      sheetPeekHeight = 80.dp,
+      sheetPeekHeight = 160.dp,
+      modifier = Modifier.fillMaxWidth().height(360.dp)
     ) { padding ->
       SunsetText.Body(
         text = "Main content",

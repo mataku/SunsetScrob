@@ -53,18 +53,3 @@ fun SunsetAlertDialog(
     } else null
   )
 }
-
-@Preview
-@ShowkaseComposable(name = "SunsetAlertDialog", group = "Design system")
-@Composable
-internal fun SunsetAlertDialogPreview() {
-  SunsetThemePreview {
-    SunsetAlertDialog(
-      title = "Are you sure?",
-      description = "This action cannot be undone.",
-      confirmButtonText = "OK",
-      onConfirmButton = {},
-      dismissButtonText = "Cancel",
-    )
-  }
-}
