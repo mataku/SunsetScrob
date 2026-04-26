@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -74,14 +73,12 @@ internal fun AlbumMetaData(
 @Preview(showBackground = true)
 private fun AlbumMetaDataPreview() {
   SunsetThemePreview {
-    Surface {
-      AlbumMetaData(
-        albumName = "Drama",
-        artistName = "aespa",
-        listeners = "1000",
-        playCount = "1000"
-      )
-    }
+    AlbumMetaData(
+      albumName = "Drama",
+      artistName = "aespa",
+      listeners = "1000",
+      playCount = "1000"
+    )
   }
 }
 
@@ -89,13 +86,11 @@ private fun AlbumMetaDataPreview() {
 @Preview(showBackground = true)
 private fun AlbumMetaDataPreloadPreview() {
   SunsetThemePreview {
-    Surface {
-      AlbumMetaData(
-        albumName = "Drama",
-        artistName = "aespa",
-        listeners = null,
-        playCount = null
-      )
-    }
+    AlbumMetaData(
+      albumName = "Drama",
+      artistName = "aespa",
+      listeners = null,
+      playCount = null
+    )
   }
 }

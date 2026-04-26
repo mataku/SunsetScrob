@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -225,51 +224,49 @@ private fun TrackMetaData(
 @Preview(showBackground = true)
 private fun TrackDetailPreview() {
   SunsetThemePreview {
-    Surface {
-      TrackDetail(
-        trackInfo = TrackInfo(
-          artist = com.mataku.scrobscrob.core.entity.TrackArtist(
-            name = "aespaaespaaespaaespaaespaaespaaespa",
+    TrackDetail(
+      trackInfo = TrackInfo(
+        artist = com.mataku.scrobscrob.core.entity.TrackArtist(
+          name = "aespaaespaaespaaespaaespaaespaaespa",
+          url = ""
+        ),
+        listeners = "100000",
+        url = "https://example.com",
+        name = "Drama",
+        album = TrackAlbumInfo(
+          artist = "aespaaespaaespaaespaaespaaespa",
+          imageList = persistentListOf(),
+          title = "Drama"
+        ),
+        playCount = "10000",
+        topTags = persistentListOf(
+          Tag(
+            name = "K-POP",
             url = ""
           ),
-          listeners = "100000",
-          url = "https://example.com",
-          name = "Drama",
-          album = TrackAlbumInfo(
-            artist = "aespaaespaaespaaespaaespaaespa",
-            imageList = persistentListOf(),
-            title = "Drama"
+          Tag(
+            name = "K-POP",
+            url = ""
           ),
-          playCount = "10000",
-          topTags = persistentListOf(
-            Tag(
-              name = "K-POP",
-              url = ""
-            ),
-            Tag(
-              name = "K-POP",
-              url = ""
-            ),
-            Tag(
-              name = "K-POP",
-              url = ""
-            )
-          ),
-          wiki = Wiki(
-            published = "01 January 2023",
-            content = "\"Clocks\" emerged in <b>conception during the late</b>stages into the production of Coldplay's second album, A Rush of Blood to the Head. The band's vocalist, Chris Martin, came in studio late one night. A riff popped  up in Martin's mind and wrote it on the  piano. Martin presented the riff to the band's guitarist, Jonny Buckland, who then added guitar chords on the basic track.\n\nDuring the writing of \"Clocks\", the band had already made 10 songs for the album. With this, they thought it was too late for the song's inclusion in the albumclude contrast, contradictions and urgency. Chris Martin sings of being in the state of \"helplessness ...",
-            summary = "\"Clocks\" emerged in <b>conception during the late stages</b> into the production of Coldplay's second album, A Rush of Blood to the Head. The band's vocalist, Chris Martin, came in studio late one night. A riff popped  up in Martin's mind and wrote it on the  piano. Martin presented the riff to the band's guitarist, Jonny Buckland, who then added guitar chords on the basic track.\n\nDuring the writing of \"Clocks\", the band had already made 10 songs for the album. <a href=\"http://www.last.fm/music/Coldplay/_/Clocks\">Read more on Last.fm</a>.",
-          ),
-          userPlayCount = "10000"
-        ),
-        onLoveIconTap = {},
-        onUrlTap = {},
-        modifier = Modifier
-          .padding(
-            vertical = 16.dp
+          Tag(
+            name = "K-POP",
+            url = ""
           )
-      )
-    }
+        ),
+        wiki = Wiki(
+          published = "01 January 2023",
+          content = "\"Clocks\" emerged in <b>conception during the late</b>stages into the production of Coldplay's second album, A Rush of Blood to the Head. The band's vocalist, Chris Martin, came in studio late one night. A riff popped  up in Martin's mind and wrote it on the  piano. Martin presented the riff to the band's guitarist, Jonny Buckland, who then added guitar chords on the basic track.\n\nDuring the writing of \"Clocks\", the band had already made 10 songs for the album. With this, they thought it was too late for the song's inclusion in the albumclude contrast, contradictions and urgency. Chris Martin sings of being in the state of \"helplessness ...",
+          summary = "\"Clocks\" emerged in <b>conception during the late stages</b> into the production of Coldplay's second album, A Rush of Blood to the Head. The band's vocalist, Chris Martin, came in studio late one night. A riff popped  up in Martin's mind and wrote it on the  piano. Martin presented the riff to the band's guitarist, Jonny Buckland, who then added guitar chords on the basic track.\n\nDuring the writing of \"Clocks\", the band had already made 10 songs for the album. <a href=\"http://www.last.fm/music/Coldplay/_/Clocks\">Read more on Last.fm</a>.",
+        ),
+        userPlayCount = "10000"
+      ),
+      onLoveIconTap = {},
+      onUrlTap = {},
+      modifier = Modifier
+        .padding(
+          vertical = 16.dp
+        )
+    )
   }
 }
 
@@ -277,51 +274,49 @@ private fun TrackDetailPreview() {
 @Preview(showBackground = true)
 private fun TrackDetailUserLovedTrackPreview() {
   SunsetThemePreview {
-    Surface {
-      TrackDetail(
-        trackInfo = TrackInfo(
-          artist = com.mataku.scrobscrob.core.entity.TrackArtist(
-            name = "aespaaespaaespaaespaaespaaespaaespa",
+    TrackDetail(
+      trackInfo = TrackInfo(
+        artist = com.mataku.scrobscrob.core.entity.TrackArtist(
+          name = "aespaaespaaespaaespaaespaaespaaespa",
+          url = ""
+        ),
+        listeners = "100000",
+        url = "https://example.com",
+        name = "Drama",
+        album = TrackAlbumInfo(
+          artist = "aespaaespaaespaaespaaespaaespa",
+          imageList = persistentListOf(),
+          title = "Drama"
+        ),
+        playCount = "10000",
+        topTags = persistentListOf(
+          Tag(
+            name = "K-POP",
             url = ""
           ),
-          listeners = "100000",
-          url = "https://example.com",
-          name = "Drama",
-          album = TrackAlbumInfo(
-            artist = "aespaaespaaespaaespaaespaaespa",
-            imageList = persistentListOf(),
-            title = "Drama"
+          Tag(
+            name = "K-POP",
+            url = ""
           ),
-          playCount = "10000",
-          topTags = persistentListOf(
-            Tag(
-              name = "K-POP",
-              url = ""
-            ),
-            Tag(
-              name = "K-POP",
-              url = ""
-            ),
-            Tag(
-              name = "K-POP",
-              url = ""
-            )
-          ),
-          wiki = Wiki(
-            published = "01 January 2023",
-            content = "\"Clocks\" emerged in <b>conception during the late</b>stages into the production of Coldplay's second album, A Rush of Blood to the Head. The band's vocalist, Chris Martin, came in studio late one night. A riff popped  up in Martin's mind and wrote it on the  piano. Martin presented the riff to the band's guitarist, Jonny Buckland, who then added guitar chords on the basic track.\n\nDuring the writing of \"Clocks\", the band had already made 10 songs for the album. With this, they thought it was too late for the song's inclusion in the albumclude contrast, contradictions and urgency. Chris Martin sings of being in the state of \"helplessness ...",
-            summary = "\"Clocks\" emerged in <b>conception during the late stages</b> into the production of Coldplay's second album, A Rush of Blood to the Head. The band's vocalist, Chris Martin, came in studio late one night. A riff popped  up in Martin's mind and wrote it on the  piano. Martin presented the riff to the band's guitarist, Jonny Buckland, who then added guitar chords on the basic track.\n\nDuring the writing of \"Clocks\", the band had already made 10 songs for the album. <a href=\"http://www.last.fm/music/Coldplay/_/Clocks\">Read more on Last.fm</a>.",
-          ),
-          userPlayCount = "10000",
-          userLoved = true
-        ),
-        onLoveIconTap = {},
-        onUrlTap = {},
-        modifier = Modifier
-          .padding(
-            vertical = 16.dp
+          Tag(
+            name = "K-POP",
+            url = ""
           )
-      )
-    }
+        ),
+        wiki = Wiki(
+          published = "01 January 2023",
+          content = "\"Clocks\" emerged in <b>conception during the late</b>stages into the production of Coldplay's second album, A Rush of Blood to the Head. The band's vocalist, Chris Martin, came in studio late one night. A riff popped  up in Martin's mind and wrote it on the  piano. Martin presented the riff to the band's guitarist, Jonny Buckland, who then added guitar chords on the basic track.\n\nDuring the writing of \"Clocks\", the band had already made 10 songs for the album. With this, they thought it was too late for the song's inclusion in the albumclude contrast, contradictions and urgency. Chris Martin sings of being in the state of \"helplessness ...",
+          summary = "\"Clocks\" emerged in <b>conception during the late stages</b> into the production of Coldplay's second album, A Rush of Blood to the Head. The band's vocalist, Chris Martin, came in studio late one night. A riff popped  up in Martin's mind and wrote it on the  piano. Martin presented the riff to the band's guitarist, Jonny Buckland, who then added guitar chords on the basic track.\n\nDuring the writing of \"Clocks\", the band had already made 10 songs for the album. <a href=\"http://www.last.fm/music/Coldplay/_/Clocks\">Read more on Last.fm</a>.",
+        ),
+        userPlayCount = "10000",
+        userLoved = true
+      ),
+      onLoveIconTap = {},
+      onUrlTap = {},
+      modifier = Modifier
+        .padding(
+          vertical = 16.dp
+        )
+    )
   }
 }

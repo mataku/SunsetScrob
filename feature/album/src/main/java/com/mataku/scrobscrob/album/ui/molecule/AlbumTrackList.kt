@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -96,29 +95,27 @@ private fun AlbumTrack(
 @Composable
 private fun AlbumTrackPreview() {
   SunsetThemePreview {
-    Surface(onClick = {}) {
-      AlbumTrackList(
-        tracks = persistentListOf(
-          AlbumInfoTrack(
-            duration = "100",
-            name = "Drama",
-            url = ""
-          ),
-          AlbumInfoTrack(
-            duration = "100",
-            name = "Drama",
-            url = ""
-          ),
-          AlbumInfoTrack(
-            duration = "100",
-            name = "Drama",
-            url = ""
-          )
+    AlbumTrackList(
+      tracks = persistentListOf(
+        AlbumInfoTrack(
+          duration = "100",
+          name = "Drama",
+          url = ""
         ),
-        modifier = Modifier.padding(
-          horizontal = 16.dp
+        AlbumInfoTrack(
+          duration = "100",
+          name = "Drama",
+          url = ""
+        ),
+        AlbumInfoTrack(
+          duration = "100",
+          name = "Drama",
+          url = ""
         )
+      ),
+      modifier = Modifier.padding(
+        horizontal = 16.dp
       )
-    }
+    )
   }
 }

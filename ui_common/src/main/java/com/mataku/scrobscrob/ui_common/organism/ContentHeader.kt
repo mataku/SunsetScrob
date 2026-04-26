@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -25,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.airbnb.android.showkase.annotation.ShowkaseComposable
 import com.mataku.scrobscrob.core.entity.AppTheme
+import com.mataku.scrobscrob.ui_common.SunsetSurface
 import com.mataku.scrobscrob.ui_common.SunsetText
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
@@ -37,9 +37,9 @@ fun ContentHeader(
   modifier: Modifier = Modifier,
   onBackPressed: (() -> Unit)? = null,
 ) {
-  Surface(
+  SunsetSurface(
     shadowElevation = 2.dp,
-    modifier = modifier
+    modifier = modifier,
   ) {
     Row(
       modifier = Modifier

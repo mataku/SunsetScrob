@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FilterList
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
@@ -35,17 +34,15 @@ fun FilteringFloatingButton(
 @Composable
 private fun FilteringFloatingButtonPreview() {
   SunsetThemePreview {
-    Surface {
-      Box(
+    Box(
+      modifier = Modifier
+        .wrapContentSize()
+        .padding(16.dp)
+    ) {
+      FilteringFloatingButton(
+        onClick = {},
         modifier = Modifier
-          .wrapContentSize()
-          .padding(16.dp)
-      ) {
-        FilteringFloatingButton(
-          onClick = {},
-          modifier = Modifier
-        )
-      }
+      )
     }
   }
 }

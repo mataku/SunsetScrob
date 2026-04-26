@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -197,53 +196,51 @@ private fun SharedTransitionScope.ArtistContent(
 @Preview(showBackground = true)
 private fun ArtistContentPreview() {
   SunsetThemePreview {
-    Surface {
-      SharedTransitionLayout {
-        AnimatedContent(
-          targetState = "",
-          label = "artist_content_preview"
-        ) {
-          ArtistContent(
-            artworkUrl = it,
-            artistName = "aespa",
-            artistInfo = ArtistInfo(
-              name = "aespa",
-              images = persistentListOf(),
-              stats = Stats(
-                listeners = "100000",
-                playCount = "1000000"
+    SharedTransitionLayout {
+      AnimatedContent(
+        targetState = "",
+        label = "artist_content_preview"
+      ) {
+        ArtistContent(
+          artworkUrl = it,
+          artistName = "aespa",
+          artistInfo = ArtistInfo(
+            name = "aespa",
+            images = persistentListOf(),
+            stats = Stats(
+              listeners = "100000",
+              playCount = "1000000"
+            ),
+            url = "",
+            tags = persistentListOf(
+              Tag(
+                name = "K-POP",
+                url = ""
               ),
-              url = "",
-              tags = persistentListOf(
-                Tag(
-                  name = "K-POP",
-                  url = ""
-                ),
-                Tag(
-                  name = "K-POP",
-                  url = ""
-                ),
-                Tag(
-                  name = "K-POP",
-                  url = ""
-                ),
-                Tag(
-                  name = "K-POP",
-                  url = ""
-                )
+              Tag(
+                name = "K-POP",
+                url = ""
               ),
-              wiki = Wiki(
-                published = "01 January 2023",
-                summary = LoremIpsum(100).values.joinToString(separator = " "),
-                content = ""
+              Tag(
+                name = "K-POP",
+                url = ""
+              ),
+              Tag(
+                name = "K-POP",
+                url = ""
               )
             ),
-            onArtistLoadMoreTap = {},
-            onBackPressed = {},
-            id = "",
-            animatedContentScope = this
-          )
-        }
+            wiki = Wiki(
+              published = "01 January 2023",
+              summary = LoremIpsum(100).values.joinToString(separator = " "),
+              content = ""
+            )
+          ),
+          onArtistLoadMoreTap = {},
+          onBackPressed = {},
+          id = "",
+          animatedContentScope = this
+        )
       }
     }
   }

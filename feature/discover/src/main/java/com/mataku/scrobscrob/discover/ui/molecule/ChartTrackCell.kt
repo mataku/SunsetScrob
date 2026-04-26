@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -92,22 +91,20 @@ internal fun ChartTrackCell(
 @Preview(showBackground = true)
 private fun ChartTrackCellPreview() {
   SunsetThemePreview {
-    Surface {
-      ChartTrackCell(
-        chartTrack = ChartTrack(
-          name = "Drama",
-          playCount = "10000000",
-          listeners = "10000000",
-          url = "",
-          imageList = emptyList(),
-          artist = ChartTrackArtist(
-            name = "aespa",
-            url = ""
-          ),
-          mbid = ""
+    ChartTrackCell(
+      chartTrack = ChartTrack(
+        name = "Drama",
+        playCount = "10000000",
+        listeners = "10000000",
+        url = "",
+        imageList = emptyList(),
+        artist = ChartTrackArtist(
+          name = "aespa",
+          url = ""
         ),
-        rank = 1,
-        onChartTrackTap = {})
-    }
+        mbid = ""
+      ),
+      rank = 1,
+      onChartTrackTap = {})
   }
 }

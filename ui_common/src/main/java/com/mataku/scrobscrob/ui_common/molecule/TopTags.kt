@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -66,14 +65,12 @@ private fun Tag(
 @Composable
 private fun TopTagsPreview() {
   SunsetThemePreview {
-    Surface {
-      val tagList = listOf("Dance", "Rock", "Jazz").map {
-        Tag(
-          name = it,
-          url = ""
-        )
-      }.toImmutableList()
-      TopTags(tagList = tagList, onTagClick = {})
-    }
+    val tagList = listOf("Dance", "Rock", "Jazz").map {
+      Tag(
+        name = it,
+        url = ""
+      )
+    }.toImmutableList()
+    TopTags(tagList = tagList, onTagClick = {})
   }
 }

@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -87,19 +86,17 @@ fun TrackAlbum(
 @Preview(showBackground = true)
 @Composable
 private fun TrackAlbumPreview() {
-  SunsetThemePreview() {
-    Surface {
-      TrackAlbum(
-        album = TrackAlbumInfo(
-          artist = "Perfume",
-          title = "セラミックガール",
-          imageList = persistentListOf(),
-        ),
-        modifier = Modifier
-          .padding(
-            horizontal = 16.dp
-          )
-      )
-    }
+  SunsetThemePreview {
+    TrackAlbum(
+      album = TrackAlbumInfo(
+        artist = "Perfume",
+        title = "セラミックガール",
+        imageList = persistentListOf(),
+      ),
+      modifier = Modifier
+        .padding(
+          horizontal = 16.dp
+        )
+    )
   }
 }

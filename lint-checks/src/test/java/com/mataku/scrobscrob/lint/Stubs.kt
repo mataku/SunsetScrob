@@ -316,6 +316,14 @@ internal val material3ModalBottomSheetStub: TestFile = kotlin(
   """.trimIndent(),
 ).indented()
 
+internal val material3SurfaceStub: TestFile = kotlin(
+  """
+    package androidx.compose.material3
+
+    fun Surface(content: () -> Unit) {}
+  """.trimIndent(),
+).indented()
+
 internal val material3SnackbarHostStub: TestFile = kotlin(
   """
     package androidx.compose.material3

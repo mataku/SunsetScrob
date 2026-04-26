@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -61,13 +60,11 @@ private fun WikiPreview() {
     summary = "\"Clocks\" emerged in <b>conception during the late stages</b> into the production of Coldplay's second album, A Rush of Blood to the Head. The band's vocalist, Chris Martin, came in studio late one night. A riff popped  up in Martin's mind and wrote it on the  piano. Martin presented the riff to the band's guitarist, Jonny Buckland, who then added guitar chords on the basic track.\n\nDuring the writing of \"Clocks\", the band had already made 10 songs for the album. <a href=\"http://www.last.fm/music/Coldplay/_/Clocks\">Read more on Last.fm</a>.",
   )
   SunsetThemePreview {
-    Surface {
-      WikiCell(
-        wiki = trackWiki,
-        name = "Clocks",
-        modifier = Modifier,
-        onUrlTap = {}
-      )
-    }
+    WikiCell(
+      wiki = trackWiki,
+      name = "Clocks",
+      modifier = Modifier,
+      onUrlTap = {}
+    )
   }
 }

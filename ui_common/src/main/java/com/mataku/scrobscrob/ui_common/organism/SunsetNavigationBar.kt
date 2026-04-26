@@ -21,7 +21,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -104,25 +103,23 @@ fun SunsetNavigationBar(
 @Composable
 private fun SunsetNavigationBarPreview() {
   SunsetThemePreview {
-    Surface {
-      Scaffold(
-        bottomBar = {
-          SunsetNavigationBar(
-            navController = NavHostController(LocalContext.current),
-            navigateToAccount = {},
-            navigateToDiscover = {},
-            navigateToHome = {},
-            hasNavigationBarScreen = true
-          )
-        }
-      ) {
-        Box(
-          modifier = Modifier
-            .fillMaxSize()
-            .background(LocalAppTheme.current.backgroundColor())
-            .padding(it)
+    Scaffold(
+      bottomBar = {
+        SunsetNavigationBar(
+          navController = NavHostController(LocalContext.current),
+          navigateToAccount = {},
+          navigateToDiscover = {},
+          navigateToHome = {},
+          hasNavigationBarScreen = true
         )
       }
+    ) {
+      Box(
+        modifier = Modifier
+          .fillMaxSize()
+          .background(LocalAppTheme.current.backgroundColor())
+          .padding(it)
+      )
     }
   }
 }
@@ -131,16 +128,14 @@ private fun SunsetNavigationBarPreview() {
 @Composable
 private fun SunsetNavigationBarLightPreview() {
   SunsetThemePreview(theme = AppTheme.LIGHT) {
-    Surface {
-      SunsetNavigationBar(
-        navController = NavHostController(LocalContext.current),
-        navigateToAccount = {},
-        navigateToDiscover = {},
-        navigateToHome = {},
-        modifier = Modifier,
-        hasNavigationBarScreen = true
-      )
-    }
+    SunsetNavigationBar(
+      navController = NavHostController(LocalContext.current),
+      navigateToAccount = {},
+      navigateToDiscover = {},
+      navigateToHome = {},
+      modifier = Modifier,
+      hasNavigationBarScreen = true
+    )
   }
 }
 

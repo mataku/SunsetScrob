@@ -20,7 +20,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -58,7 +57,7 @@ import com.mataku.scrobscrob.ui_common.SunsetTextButton
 import com.mataku.scrobscrob.ui_common.SunsetTextField
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.LocalSnackbarHostState
-import com.mataku.scrobscrob.ui_common.style.SunsetTheme
+import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import com.mataku.scrobscrob.ui_common.style.onSurfaceColor
 import kotlinx.coroutines.launch
 import com.mataku.scrobscrob.ui_common.R as uiCommonR
@@ -265,17 +264,15 @@ private fun LoginContent(
 @Preview(showBackground = true)
 @Composable
 private fun LoginScreenPreview() {
-  SunsetTheme {
-    Surface {
-      LoginContent(
-        isLoading = false,
-        onLoginButtonTap = { _, _ -> },
-        onPrivacyPolicyTap = {},
-        username = "",
-        password = "",
-        onUsernameUpdate = {},
-        onPasswordUpdate = {}
-      )
-    }
+  SunsetThemePreview {
+    LoginContent(
+      isLoading = false,
+      onLoginButtonTap = { _, _ -> },
+      onPrivacyPolicyTap = {},
+      username = "",
+      password = "",
+      onUsernameUpdate = {},
+      onPasswordUpdate = {}
+    )
   }
 }

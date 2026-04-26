@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -393,31 +392,29 @@ private fun AccountMenuCell(
 @Composable
 private fun AccountContentPreview() {
   SunsetThemePreview {
-    Surface {
-      AccountContent(
-        theme = AppTheme.DARK,
-        navigateToThemeSelector = {},
-        navigateToLogoutConfirmation = {},
-        navigateToLicenseList = {},
-        navigateToPrivacyPolicy = {},
-        navigateToScrobbleSetting = {},
-        navigateToNotificationSetting = {},
-        requestAppUpdate = {},
-        appUpdateInfo = null,
-        appVersion = "1.0.0",
-        clearCache = {},
-        navigateToUiCatalog = {},
-        imageCacheMB = "0.1",
-        userInfo = UserInfo(
-          name = "mataku",
-          playCount = "10000",
-          albumCount = "100",
-          trackCount = "1000",
-          artistCount = "100",
-          url = "",
-          imageList = persistentListOf()
-        )
+    AccountContent(
+      theme = AppTheme.DARK,
+      navigateToThemeSelector = {},
+      navigateToLogoutConfirmation = {},
+      navigateToLicenseList = {},
+      navigateToPrivacyPolicy = {},
+      navigateToScrobbleSetting = {},
+      navigateToNotificationSetting = {},
+      requestAppUpdate = {},
+      appUpdateInfo = null,
+      appVersion = "1.0.0",
+      clearCache = {},
+      navigateToUiCatalog = {},
+      imageCacheMB = "0.1",
+      userInfo = UserInfo(
+        name = "mataku",
+        playCount = "10000",
+        albumCount = "100",
+        trackCount = "1000",
+        artistCount = "100",
+        url = "",
+        imageList = persistentListOf()
       )
-    }
+    )
   }
 }

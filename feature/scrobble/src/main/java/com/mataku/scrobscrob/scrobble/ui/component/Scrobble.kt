@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -150,23 +149,21 @@ private fun ScrobbleContent(
 @Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)
 private fun ScrobblePreview() {
   SunsetThemePreview {
-    Surface {
-      SharedTransitionLayout {
-        AnimatedContent(
-          targetState = "",
-          label = "scrobble_preview"
-        ) {
-          ScrobbleContent(
-            imageUrl = it,
-            trackName = "裸足でSummer",
-            artistName = "乃木坂46",
-            date = "01 Aug 2022, 04:08",
-            onScrobbleTap = {},
-            animatedContentScope = this,
-            sharedTransitionScope = this@SharedTransitionLayout,
-            id = ""
-          )
-        }
+    SharedTransitionLayout {
+      AnimatedContent(
+        targetState = "",
+        label = "scrobble_preview"
+      ) {
+        ScrobbleContent(
+          imageUrl = it,
+          trackName = "裸足でSummer",
+          artistName = "乃木坂46",
+          date = "01 Aug 2022, 04:08",
+          onScrobbleTap = {},
+          animatedContentScope = this,
+          sharedTransitionScope = this@SharedTransitionLayout,
+          id = ""
+        )
       }
     }
   }

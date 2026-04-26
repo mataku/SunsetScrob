@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -96,11 +95,9 @@ private fun TabText(
 @Composable
 private fun HomeTabsPreview() {
   SunsetThemePreview {
-    Surface {
-      HomeTabs(
-        selectedChartIndex = 0,
-        onTabTap = {}
-      )
-    }
+    HomeTabs(
+      selectedChartIndex = 0,
+      onTabTap = {}
+    )
   }
 }

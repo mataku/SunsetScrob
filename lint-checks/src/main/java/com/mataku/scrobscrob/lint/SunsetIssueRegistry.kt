@@ -22,6 +22,7 @@ class SunsetIssueRegistry : IssueRegistry() {
     PreferSunsetPullToRefreshBoxDetector.ISSUE,
     PreferSunsetScaffoldDetector.ISSUE,
     PreferSunsetSnackbarHostDetector.ISSUE,
+    PreferSunsetSurfaceDetector.ISSUE,
     PreferSunsetSwitchDetector.ISSUE,
     PreferSunsetTabRowDetector.ISSUE,
     PreferSunsetTextButtonDetector.ISSUE,

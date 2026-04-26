@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -61,17 +60,15 @@ fun SimpleWiki(
 @Composable
 private fun SimpleWikiPreview() {
   SunsetThemePreview {
-    Surface {
-      Row(
-        modifier = Modifier
-          .padding(16.dp)
-      ) {
-        SimpleWiki(
-          name = "aespa",
-          url = "https://mataku.com",
-          onUrlTap = {}
-        )
-      }
+    Row(
+      modifier = Modifier
+        .padding(16.dp)
+    ) {
+      SimpleWiki(
+        name = "aespa",
+        url = "https://mataku.com",
+        onUrlTap = {}
+      )
     }
   }
 }

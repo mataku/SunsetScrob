@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -100,18 +99,16 @@ private fun UserListeningCount(
 @Composable
 private fun ProfilePreview() {
   SunsetThemePreview {
-    Surface {
-      Profile(
-        userInfo = UserInfo(
-          name = "mataku",
-          playCount = "1000",
-          albumCount = "100",
-          trackCount = "100",
-          imageList = persistentListOf(),
-          url = "",
-          artistCount = "100"
-        )
+    Profile(
+      userInfo = UserInfo(
+        name = "mataku",
+        playCount = "1000",
+        albumCount = "100",
+        trackCount = "100",
+        imageList = persistentListOf(),
+        url = "",
+        artistCount = "100"
       )
-    }
+    )
   }
 }

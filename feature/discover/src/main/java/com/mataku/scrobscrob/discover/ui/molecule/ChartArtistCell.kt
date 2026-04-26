@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -74,18 +73,16 @@ fun ChartArtistCell(
 @Composable
 private fun ChartArtistPreview() {
   SunsetThemePreview {
-    Surface {
-      ChartArtistCell(
-        chartArtist = ChartArtist(
-          name = "aespa",
-          listeners = "100000000",
-          url = "",
-          imageList = emptyList(),
-          playCount = "100000000"
-        ),
-        rank = 1,
-        onChartArtistTap = {}
-      )
-    }
+    ChartArtistCell(
+      chartArtist = ChartArtist(
+        name = "aespa",
+        listeners = "100000000",
+        url = "",
+        imageList = emptyList(),
+        playCount = "100000000"
+      ),
+      rank = 1,
+      onChartArtistTap = {}
+    )
   }
 }

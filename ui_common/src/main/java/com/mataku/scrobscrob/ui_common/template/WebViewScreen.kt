@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -98,11 +97,9 @@ fun WebViewScreen(
 @Composable
 private fun WebViewScreenPreview() {
   SunsetThemePreview {
-    Surface {
-      WebViewScreen(
-        url = "https://www.google.com",
-        modifier = Modifier.fillMaxWidth(),
-      )
-    }
+    WebViewScreen(
+      url = "https://www.google.com",
+      modifier = Modifier.fillMaxWidth(),
+    )
   }
 }

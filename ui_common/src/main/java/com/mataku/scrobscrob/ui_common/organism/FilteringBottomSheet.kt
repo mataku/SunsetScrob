@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Check
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
@@ -102,12 +101,10 @@ private fun TimeRangeCell(
 @ShowkaseComposable(name = "FilteringBottomSheet", group = "BottomSheet")
 private fun FilteringBottomSheetPreview() {
   SunsetThemePreview {
-    Surface {
-      FilteringBottomSheet(
-        selectedTimeRangeFiltering = TimeRangeFiltering.OVERALL,
-        onClick = {},
-        modifier = Modifier
-      )
-    }
+    FilteringBottomSheet(
+      selectedTimeRangeFiltering = TimeRangeFiltering.OVERALL,
+      onClick = {},
+      modifier = Modifier
+    )
   }
 }

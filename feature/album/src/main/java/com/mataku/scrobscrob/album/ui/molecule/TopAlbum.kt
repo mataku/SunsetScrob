@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -108,24 +107,22 @@ internal fun TopAlbum(
 @Composable
 private fun TopAlbumPreview() {
   SunsetThemePreview {
-    Surface {
-      SharedTransitionLayout {
-        AnimatedContent(targetState = "", label = "top_album_preview") {
-          TopAlbum(
-            album = TopAlbumInfo(
-              artist = "乃木坂46",
-              title = "生まれてから初めて見た夢",
-              imageList = persistentListOf(),
-              playCount = "100000",
-              url = ""
-            ),
-            onAlbumTap = {},
-            modifier = Modifier,
-            sharedTransitionScope = this@SharedTransitionLayout,
-            animatedContentScope = this,
-            id = it
-          )
-        }
+    SharedTransitionLayout {
+      AnimatedContent(targetState = "", label = "top_album_preview") {
+        TopAlbum(
+          album = TopAlbumInfo(
+            artist = "乃木坂46",
+            title = "生まれてから初めて見た夢",
+            imageList = persistentListOf(),
+            playCount = "100000",
+            url = ""
+          ),
+          onAlbumTap = {},
+          modifier = Modifier,
+          sharedTransitionScope = this@SharedTransitionLayout,
+          animatedContentScope = this,
+          id = it
+        )
       }
     }
   }

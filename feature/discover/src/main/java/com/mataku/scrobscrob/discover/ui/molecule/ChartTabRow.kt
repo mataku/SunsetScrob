@@ -2,7 +2,6 @@ package com.mataku.scrobscrob.discover.ui.molecule
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -60,11 +59,9 @@ internal fun ChartTabRow(
 @Composable
 private fun ChartTabRowPreview() {
   SunsetThemePreview {
-    Surface {
-      ChartTabRow(
-        selectedChartIndex = 0,
-        onChartTypeTap = { _, _ -> }
-      )
-    }
+    ChartTabRow(
+      selectedChartIndex = 0,
+      onChartTypeTap = { _, _ -> }
+    )
   }
 }

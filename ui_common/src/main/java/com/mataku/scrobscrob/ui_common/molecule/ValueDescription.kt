@@ -3,7 +3,6 @@ package com.mataku.scrobscrob.ui_common.molecule
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -53,11 +52,9 @@ fun ValueDescription(
 @Composable
 private fun ValueDescriptionPreview() {
   SunsetThemePreview {
-    Surface {
-      ValueDescription(
-        value = "10000",
-        label = "listeners"
-      )
-    }
+    ValueDescription(
+      value = "10000",
+      label = "listeners"
+    )
   }
 }

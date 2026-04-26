@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -68,25 +67,23 @@ internal fun RecentlyLovedTrackList(
 @Composable
 private fun ChartTrackList2Preview() {
   SunsetThemePreview {
-    Surface {
-      ChartTrackList(
-        chartTrackList = (1..10).map {
-          ChartTrack(
-            name = "track name ${it}",
-            url = "",
-            listeners = "100000${it}",
-            imageList = emptyList(),
-            playCount = "100000${it}",
-            artist = ChartTrackArtist(
-              name = "artist name $it",
-              url = ""
-            ),
-            mbid = ""
-          )
-        }.toImmutableList(),
-        onChartTrackTap = {}
-      )
-    }
+    ChartTrackList(
+      chartTrackList = (1..10).map {
+        ChartTrack(
+          name = "track name ${it}",
+          url = "",
+          listeners = "100000${it}",
+          imageList = emptyList(),
+          playCount = "100000${it}",
+          artist = ChartTrackArtist(
+            name = "artist name $it",
+            url = ""
+          ),
+          mbid = ""
+        )
+      }.toImmutableList(),
+      onChartTrackTap = {}
+    )
   }
 }
 
@@ -94,24 +91,22 @@ private fun ChartTrackList2Preview() {
 @Composable
 private fun ChartTrackListPreview() {
   SunsetThemePreview {
-    Surface {
-      ChartTrackList(
-        chartTrackList = (1..10).map {
-          ChartTrack(
-            name = "track name ${it}",
-            url = "",
-            listeners = "100000${it}",
-            imageList = emptyList(),
-            playCount = "100000${it}",
-            artist = ChartTrackArtist(
-              name = "artist name $it",
-              url = ""
-            ),
-            mbid = ""
-          )
-        }.toImmutableList(),
-        onChartTrackTap = {}
-      )
-    }
+    ChartTrackList(
+      chartTrackList = (1..10).map {
+        ChartTrack(
+          name = "track name ${it}",
+          url = "",
+          listeners = "100000${it}",
+          imageList = emptyList(),
+          playCount = "100000${it}",
+          artist = ChartTrackArtist(
+            name = "artist name $it",
+            url = ""
+          ),
+          mbid = ""
+        )
+      }.toImmutableList(),
+      onChartTrackTap = {}
+    )
   }
 }
