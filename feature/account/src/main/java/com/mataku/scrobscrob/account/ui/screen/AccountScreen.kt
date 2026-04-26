@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -49,8 +48,10 @@ import com.mataku.scrobscrob.core.entity.UserInfo
 import com.mataku.scrobscrob.ui_common.SunsetAlertDialog
 import com.mataku.scrobscrob.ui_common.SunsetHorizontalDivider
 import com.mataku.scrobscrob.ui_common.SunsetText
+import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.LocalSnackbarHostState
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
+import com.mataku.scrobscrob.ui_common.style.onSecondaryColor
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -382,7 +383,7 @@ private fun AccountMenuCell(
     if (description.isNotBlank()) {
       SunsetText.Caption(
         text = description,
-        color = MaterialTheme.colorScheme.onSecondary
+        color = LocalAppTheme.current.onSecondaryColor()
       )
     }
   }

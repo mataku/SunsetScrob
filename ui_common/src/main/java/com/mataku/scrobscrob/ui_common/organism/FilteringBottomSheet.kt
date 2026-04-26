@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Check
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -21,7 +20,9 @@ import androidx.compose.ui.unit.dp
 import com.airbnb.android.showkase.annotation.ShowkaseComposable
 import com.mataku.scrobscrob.core.entity.TimeRangeFiltering
 import com.mataku.scrobscrob.ui_common.SunsetText
+import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
+import com.mataku.scrobscrob.ui_common.style.onSurfaceColor
 
 @Composable
 fun FilteringBottomSheet(
@@ -89,7 +90,7 @@ private fun TimeRangeCell(
         imageVector = Icons.Outlined.Check,
         contentDescription = "selected time-range",
         colorFilter = ColorFilter.tint(
-          color = MaterialTheme.colorScheme.onSurface
+          color = LocalAppTheme.current.onSurfaceColor()
         )
       )
     }

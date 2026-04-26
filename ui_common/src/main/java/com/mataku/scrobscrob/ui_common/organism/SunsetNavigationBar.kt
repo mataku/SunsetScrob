@@ -20,7 +20,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -57,6 +56,8 @@ import com.mataku.scrobscrob.ui_common.SunsetBottomNavItem
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import com.mataku.scrobscrob.ui_common.style.backgroundColor
+import com.mataku.scrobscrob.ui_common.style.onSecondaryColor
+import com.mataku.scrobscrob.ui_common.style.primaryColor
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
@@ -118,7 +119,7 @@ private fun SunsetNavigationBarPreview() {
         Box(
           modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
+            .background(LocalAppTheme.current.backgroundColor())
             .padding(it)
         )
       }
@@ -166,8 +167,8 @@ fun SunsetBottomNavigation(
         width = Dp.Hairline,
         brush = Brush.verticalGradient(
           colors = listOf(
-            MaterialTheme.colorScheme.onSecondary.copy(alpha = .4f),
-            MaterialTheme.colorScheme.onSecondary.copy(alpha = .2f),
+            LocalAppTheme.current.onSecondaryColor().copy(alpha = .4f),
+            LocalAppTheme.current.onSecondaryColor().copy(alpha = .2f),
           ),
         ),
         shape = CircleShape
@@ -214,7 +215,7 @@ fun SunsetBottomNavigation(
         .fillMaxSize()
         .clip(CircleShape)
         .alpha(.85F)
-        .background(MaterialTheme.colorScheme.primary)
+        .background(LocalAppTheme.current.primaryColor())
     ) {
       val path = Path().apply {
         addRoundRect(RoundRect(size.toRect(), CornerRadius(size.height)))

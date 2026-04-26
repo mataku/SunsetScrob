@@ -1,13 +1,14 @@
 package com.mataku.scrobscrob.ui_common
 
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
+import com.mataku.scrobscrob.ui_common.style.backgroundColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @JvmInline
@@ -34,7 +35,7 @@ fun SunsetTopAppBar(
   navigationIcon: @Composable () -> Unit = {},
   scrollBehavior: SunsetTopAppBarScrollBehavior? = null,
 ) {
-  val background = MaterialTheme.colorScheme.background
+  val background = LocalAppTheme.current.backgroundColor()
   TopAppBar(
     title = title,
     modifier = modifier,

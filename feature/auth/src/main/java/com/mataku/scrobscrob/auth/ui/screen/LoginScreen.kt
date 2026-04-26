@@ -20,7 +20,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -57,8 +56,10 @@ import com.mataku.scrobscrob.ui_common.SunsetIconButton
 import com.mataku.scrobscrob.ui_common.SunsetText
 import com.mataku.scrobscrob.ui_common.SunsetTextButton
 import com.mataku.scrobscrob.ui_common.SunsetTextField
+import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.LocalSnackbarHostState
 import com.mataku.scrobscrob.ui_common.style.SunsetTheme
+import com.mataku.scrobscrob.ui_common.style.onSurfaceColor
 import kotlinx.coroutines.launch
 import com.mataku.scrobscrob.ui_common.R as uiCommonR
 
@@ -167,7 +168,7 @@ private fun LoginContent(
       label = {
         SunsetText.Label(
           text = "Username",
-          color = MaterialTheme.colorScheme.onSurface,
+          color = LocalAppTheme.current.onSurfaceColor(),
         )
       },
       modifier = Modifier
@@ -212,7 +213,7 @@ private fun LoginContent(
       label = {
         SunsetText.Label(
           text = "Password",
-          color = MaterialTheme.colorScheme.onSurface,
+          color = LocalAppTheme.current.onSurfaceColor(),
         )
       },
       modifier = Modifier

@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -15,7 +14,9 @@ import androidx.core.text.HtmlCompat
 import com.mataku.scrobscrob.core.entity.Wiki
 import com.mataku.scrobscrob.ui_common.SunsetText
 import com.mataku.scrobscrob.ui_common.extension.toAnnotatedString
+import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
+import com.mataku.scrobscrob.ui_common.style.onSecondaryColor
 
 @Composable
 fun WikiCell(
@@ -45,7 +46,7 @@ fun WikiCell(
 
       SunsetText.Label(
         text = text,
-        color = MaterialTheme.colorScheme.onSecondary,
+        color = LocalAppTheme.current.onSecondaryColor(),
       )
     }
   }

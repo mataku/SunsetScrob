@@ -13,7 +13,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Check
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -24,6 +23,7 @@ import com.mataku.scrobscrob.account.ui.viewmodel.ThemeSelectorViewModel
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.ui_common.SunsetText
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
+import com.mataku.scrobscrob.ui_common.style.onSurfaceColor
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -94,7 +94,7 @@ private fun ThemeCell(
         imageVector = Icons.Outlined.Check,
         contentDescription = "selected theme",
         colorFilter = ColorFilter.tint(
-          color = MaterialTheme.colorScheme.onSurface
+          color = LocalAppTheme.current.onSurfaceColor()
         )
       )
     }

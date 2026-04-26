@@ -23,7 +23,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Surface
 import androidx.compose.material3.rememberBottomSheetScaffoldState
@@ -55,7 +54,9 @@ import com.mataku.scrobscrob.ui_common.component.ArtworkLayerBar
 import com.mataku.scrobscrob.ui_common.component.CircleBackButton
 import com.mataku.scrobscrob.ui_common.molecule.SunsetImage
 import com.mataku.scrobscrob.ui_common.molecule.ValueDescription
+import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
+import com.mataku.scrobscrob.ui_common.style.backgroundColor
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
@@ -113,7 +114,7 @@ private fun SharedTransitionScope.TrackContent(
   )
   BottomSheetScaffold(
     modifier = modifier,
-    sheetContainerColor = MaterialTheme.colorScheme.background,
+    sheetContainerColor = LocalAppTheme.current.backgroundColor(),
     scaffoldState = scaffoldState,
     sheetContent = {
       TrackDetailContent(

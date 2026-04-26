@@ -11,7 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.ui_common.SunsetSnackbarHostState
 import com.mataku.scrobscrob.ui_common.SunsetTopAppBarScrollBehavior
@@ -26,7 +25,7 @@ fun SunsetTheme(
   ) {
     CompositionLocalProvider(
       LocalRippleConfiguration provides RippleConfiguration(
-        color = MaterialTheme.colorScheme.onSurface,
+        color = theme.onSurfaceColor(),
         rippleAlpha = if (theme.isLight) {
           LightRippleAlpha
         } else {
@@ -64,12 +63,28 @@ val LocalTopAppBarState = staticCompositionLocalOf<SunsetTopAppBarScrollBehavior
   throw IllegalStateException("SunsetTopAppBarScrollBehavior is not provided")
 }
 
-const val ANIMATION_DURATION_MILLIS = 700
-const val TRANSITION_ANIMATION_DURATION_MILLIS = 600
-val BOTTOM_APP_BAR_HEIGHT = 80.dp
-
 fun AppTheme.backgroundColor(): Color {
   return this.colorScheme().background
+}
+
+fun AppTheme.primaryColor(): Color {
+  return this.colorScheme().primary
+}
+
+fun AppTheme.onPrimaryColor(): Color {
+  return this.colorScheme().onPrimary
+}
+
+fun AppTheme.onSecondaryColor(): Color {
+  return this.colorScheme().onSecondary
+}
+
+fun AppTheme.surfaceColor(): Color {
+  return this.colorScheme().surface
+}
+
+fun AppTheme.onSurfaceColor(): Color {
+  return this.colorScheme().onSurface
 }
 
 fun AppTheme.accentColor(): Color {

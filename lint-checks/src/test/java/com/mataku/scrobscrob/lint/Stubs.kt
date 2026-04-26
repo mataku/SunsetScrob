@@ -269,6 +269,21 @@ internal val material3TopAppBarStub: TestFile = kotlin(
   """.trimIndent(),
 ).indented()
 
+internal val material3ThemeStub: TestFile = kotlin(
+  """
+    package androidx.compose.material3
+
+    class ColorScheme(
+      val background: Any = Any(),
+      val onSurface: Any = Any(),
+    )
+
+    object MaterialTheme {
+      val colorScheme: ColorScheme = ColorScheme()
+    }
+  """.trimIndent(),
+).indented()
+
 internal val material3SnackbarHostStub: TestFile = kotlin(
   """
     package androidx.compose.material3

@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -37,7 +36,9 @@ import com.mataku.scrobscrob.ui_common.molecule.TopTags
 import com.mataku.scrobscrob.ui_common.molecule.ValueDescription
 import com.mataku.scrobscrob.ui_common.molecule.WikiCell
 import com.mataku.scrobscrob.ui_common.style.Colors
+import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
+import com.mataku.scrobscrob.ui_common.style.onSecondaryColor
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
@@ -51,7 +52,7 @@ internal fun TrackDetail(
     targetValue = if (trackInfo.userLoved) {
       Colors.Heart
     } else {
-      MaterialTheme.colorScheme.onSecondary.copy(alpha = 0.4F)
+      LocalAppTheme.current.onSecondaryColor().copy(alpha = 0.4F)
     },
     label = "track_favorite_color",
     animationSpec = tween(500)
@@ -108,7 +109,7 @@ internal fun TrackDetail(
           .padding(
             vertical = 16.dp
           ),
-        color = MaterialTheme.colorScheme.onSecondary.copy(
+        color = LocalAppTheme.current.onSecondaryColor().copy(
           alpha = 0.7F
         )
       )

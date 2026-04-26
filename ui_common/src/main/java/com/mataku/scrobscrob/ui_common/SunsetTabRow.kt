@@ -2,12 +2,13 @@ package com.mataku.scrobscrob.ui_common
 
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
+import com.mataku.scrobscrob.ui_common.style.backgroundColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -15,7 +16,7 @@ fun SunsetTabRow(
   selectedTabIndex: Int,
   modifier: Modifier = Modifier,
   containerColor: Color = Color.Transparent,
-  contentColor: Color = MaterialTheme.colorScheme.background,
+  contentColor: Color = LocalAppTheme.current.backgroundColor(),
   indicator: @Composable (selectedIndicatorModifier: Modifier) -> Unit = {},
   divider: @Composable () -> Unit = { SunsetHorizontalDivider() },
   tabs: @Composable () -> Unit,
