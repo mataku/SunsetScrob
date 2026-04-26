@@ -35,7 +35,7 @@ class PreferSunsetCircularProgressIndicatorDetector : Detector(), SourceCodeScan
       issue = ISSUE,
       scope = node,
       location = context.getLocation(node),
-      message = "Use `com.mataku.scrobscrob.ui_common.component.SunsetCircularProgressIndicator` instead of `androidx.compose.material3.CircularProgressIndicator`.",
+      message = "Use `com.mataku.scrobscrob.ui_common.component.designsystem.SunsetCircularProgressIndicator` instead of `androidx.compose.material3.CircularProgressIndicator`.",
     )
   }
 
@@ -49,7 +49,7 @@ class PreferSunsetCircularProgressIndicatorDetector : Detector(), SourceCodeScan
       briefDescription = "Prefer SunsetCircularProgressIndicator over material3 CircularProgressIndicator",
       explanation = """
         Outside of `:ui_common`, prefer the \
-        `com.mataku.scrobscrob.ui_common.component.SunsetCircularProgressIndicator` wrapper over \
+        `com.mataku.scrobscrob.ui_common.component.designsystem.SunsetCircularProgressIndicator` wrapper over \
         `androidx.compose.material3.CircularProgressIndicator`. Routing all spinners through \
         SunsetCircularProgressIndicator keeps feature modules decoupled from material3 versions \
         and applies the theme accent color by default. Inside `:ui_common` itself the wrapper \

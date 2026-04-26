@@ -37,7 +37,7 @@ class PreferSunsetTabRowDetector : Detector(), SourceCodeScanner {
       issue = ISSUE,
       scope = node,
       location = context.getLocation(node),
-      message = "Use `com.mataku.scrobscrob.ui_common.component.SunsetTabRow` / `SunsetTab` instead of `$fqn`.",
+      message = "Use `com.mataku.scrobscrob.ui_common.component.designsystem.SunsetTabRow` / `SunsetTab` instead of `$fqn`.",
     )
   }
 
@@ -56,7 +56,7 @@ class PreferSunsetTabRowDetector : Detector(), SourceCodeScanner {
       id = "PreferSunsetTabRow",
       briefDescription = "Prefer SunsetTabRow over material3 TabRow / Tab",
       explanation = """
-        Outside of `:ui_common`, prefer the `com.mataku.scrobscrob.ui_common.component.SunsetTabRow` and \
+        Outside of `:ui_common`, prefer the `com.mataku.scrobscrob.ui_common.component.designsystem.SunsetTabRow` and \
         `SunsetTab` wrappers over `androidx.compose.material3.TabRow`, `Tab`, `PrimaryTabRow`, \
         `SecondaryTabRow`, and `TabRowDefaults`. Routing all tabs through SunsetTabRow keeps \
         feature modules decoupled from material3 versions, hides the deprecated `TabRow` API \

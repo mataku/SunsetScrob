@@ -22,8 +22,8 @@ import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.core.entity.isInvalidArtwork
 import com.mataku.scrobscrob.scrobble.ui.component.Scrobble
 import com.mataku.scrobscrob.scrobble.ui.viewmodel.ScrobbleViewModel
-import com.mataku.scrobscrob.ui_common.component.SunsetPullToRefreshBox
-import com.mataku.scrobscrob.ui_common.component.SunsetTopAppBarScrollBehavior
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetPullToRefreshBox
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetTopAppBarScrollBehavior
 import com.mataku.scrobscrob.ui_common.component.InfiniteLoadingIndicator
 import kotlinx.collections.immutable.ImmutableList
 

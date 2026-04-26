@@ -150,29 +150,32 @@ atomic-design layer:
 
 ```
 ui_common/.../
-  component/   — Material 3 wrappers (SunsetText, SunsetButton, SunsetSurface,
-                 SunsetTopAppBar, SunsetTextField, …) and app-specific
-                 composables (NavigationHeader, ContentHeader, SunsetImage,
-                 FilteringBottomSheet, LoadingIndicator, CircleBackButton, …).
-                 These are the only files allowed to import
-                 androidx.compose.material3.*.
+  component/
+    designsystem/ — Material 3 wrappers (SunsetText, SunsetButton,
+                    SunsetSurface, SunsetTopAppBar, SunsetTextField,
+                    SunsetImage, SunsetNavigationBar, …). These are the
+                    only files allowed to import androidx.compose.material3.*.
+    (root)        — app-specific shared composables (NavigationHeader,
+                    ContentHeader, FilteringBottomSheet, LoadingIndicator,
+                    CircleBackButton, …) that compose the `designsystem/`
+                    wrappers.
   screen/      — full-screen reusable composables (e.g. WebViewScreen).
   style/       — Colors, SunsetTheme, SunsetTextStyle, color extensions.
   extension/   — reusable Modifier / Spanned / Duration helpers.
 ```
 
 When a feature module needs a UI piece that's also useful elsewhere, **lift
-it into `:ui_common`** rather than copy-pasting. Material 3 wrappers and
-shared widgets both go under `component/`; full-screen composables go under
-`screen/`.
+it into `:ui_common`** rather than copy-pasting. Material 3 wrappers go under
+`component/designsystem/`; app-specific shared widgets go under `component/`;
+full-screen composables go under `screen/`.
 
 ### When to use what
 
 | Need                                                     | Use                                                                                     | File                                                          |
 |----------------------------------------------------------|-----------------------------------------------------------------------------------------|---------------------------------------------------------------|
-| Remote image (album art, avatar, etc.)                   | `SunsetImage` (Coil 3, with placeholder + crossfade). Don't call `AsyncImage` directly. | `component/SunsetImage.kt`                                    |
+| Remote image (album art, avatar, etc.)                   | `SunsetImage` (Coil 3, with placeholder + crossfade). Don't call `AsyncImage` directly. | `component/designsystem/SunsetImage.kt`                       |
 | Top app bar / screen title                               | `NavigationHeader` or `ContentHeader`                                                   | `component/NavigationHeader.kt`, `component/ContentHeader.kt` |
-| Bottom navigation                                        | `SunsetNavigationBar`                                                                   | `component/SunsetNavigationBar.kt`                            |
+| Bottom navigation                                        | `SunsetNavigationBar`                                                                   | `component/designsystem/SunsetNavigationBar.kt`               |
 | Pageable filter UI                                       | `FilteringBottomSheet` + `FilteringFloatingButton`                                      | `component/`                                                  |
 | Loading state inside a list/page                         | `LoadingIndicator` (small) / `InfiniteLoadingIndicator` (paging tail)                   | `component/`                                                  |
 | Back button on artwork hero                              | `CircleBackButton` (translucent over imagery)                                           | `component/CircleBackButton.kt`                               |
@@ -277,7 +280,7 @@ expose it. Add later when a real second call site appears.
 Follow this sequence when a new `androidx.compose.material3.*` component
 slips into a feature or `:app`:
 
-1. **Wrapper**: add `ui_common/src/main/java/com/mataku/scrobscrob/ui_common/SunsetX.kt`.
+1. **Wrapper**: add `ui_common/src/main/java/com/mataku/scrobscrob/ui_common/component/designsystem/SunsetX.kt`.
    Choose single-function vs `object` + factory based on call-site shape.
 2. **Detector**: add `lint-checks/.../PreferSunsetXDetector.kt`. Use any
    existing `PreferSunsetX*Detector.kt` as a template — they're all

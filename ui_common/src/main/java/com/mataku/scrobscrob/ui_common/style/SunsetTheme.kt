@@ -12,9 +12,9 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import com.mataku.scrobscrob.core.entity.AppTheme
-import com.mataku.scrobscrob.ui_common.component.SunsetSnackbarHostState
-import com.mataku.scrobscrob.ui_common.component.SunsetSurface
-import com.mataku.scrobscrob.ui_common.component.SunsetTopAppBarScrollBehavior
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetSnackbarHostState
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetSurface
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetTopAppBarScrollBehavior
 
 @Composable
 fun SunsetTheme(

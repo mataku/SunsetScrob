@@ -1,4 +1,4 @@
-package com.mataku.scrobscrob.ui_common.component
+package com.mataku.scrobscrob.ui_common.component.designsystem
 
 import androidx.compose.material3.AlertDialog
 import androidx.compose.runtime.Composable

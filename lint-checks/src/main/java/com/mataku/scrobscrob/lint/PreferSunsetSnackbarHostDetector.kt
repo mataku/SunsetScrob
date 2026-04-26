@@ -35,7 +35,7 @@ class PreferSunsetSnackbarHostDetector : Detector(), SourceCodeScanner {
       issue = ISSUE,
       scope = node,
       location = context.getLocation(node),
-      message = "Use `com.mataku.scrobscrob.ui_common.component.SunsetSnackbarHost` (and `SunsetSnackbarHostState`) instead of `$fqn`.",
+      message = "Use `com.mataku.scrobscrob.ui_common.component.designsystem.SunsetSnackbarHost` (and `SunsetSnackbarHostState`) instead of `$fqn`.",
     )
   }
 
@@ -51,7 +51,7 @@ class PreferSunsetSnackbarHostDetector : Detector(), SourceCodeScanner {
       briefDescription = "Prefer SunsetSnackbarHost over material3 SnackbarHost",
       explanation = """
         Outside of `:ui_common`, prefer the \
-        `com.mataku.scrobscrob.ui_common.component.SunsetSnackbarHost` wrapper (and \
+        `com.mataku.scrobscrob.ui_common.component.designsystem.SunsetSnackbarHost` wrapper (and \
         `SunsetSnackbarHostState`) over `androidx.compose.material3.SnackbarHost` and \
         `SnackbarHostState`. Feature modules should reach the host via \
         `LocalSnackbarHostState.current` and call `showSnackbar(...)` on the wrapper rather \

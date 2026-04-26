@@ -39,7 +39,7 @@ class PreferSunsetChipDetector : Detector(), SourceCodeScanner {
       issue = ISSUE,
       scope = node,
       location = context.getLocation(node),
-      message = "Use `com.mataku.scrobscrob.ui_common.component.SunsetChip` instead of `$fqn`.",
+      message = "Use `com.mataku.scrobscrob.ui_common.component.designsystem.SunsetChip` instead of `$fqn`.",
     )
   }
 
@@ -56,7 +56,7 @@ class PreferSunsetChipDetector : Detector(), SourceCodeScanner {
       id = "PreferSunsetChip",
       briefDescription = "Prefer SunsetChip over material3 SuggestionChip",
       explanation = """
-        Outside of `:ui_common`, prefer the `com.mataku.scrobscrob.ui_common.component.SunsetChip` \
+        Outside of `:ui_common`, prefer the `com.mataku.scrobscrob.ui_common.component.designsystem.SunsetChip` \
         wrapper over `androidx.compose.material3.SuggestionChip`, `SuggestionChipDefaults`, \
         and `ChipColors`. Routing all chips through SunsetChip keeps feature modules decoupled \
         from material3 versions and applies the project's standard shape and border. Inside \

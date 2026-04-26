@@ -39,7 +39,7 @@ class PreferSunsetTextFieldDetector : Detector(), SourceCodeScanner {
       issue = ISSUE,
       scope = node,
       location = context.getLocation(node),
-      message = "Use `com.mataku.scrobscrob.ui_common.component.SunsetTextField` instead of `$fqn`.",
+      message = "Use `com.mataku.scrobscrob.ui_common.component.designsystem.SunsetTextField` instead of `$fqn`.",
     )
   }
 
@@ -55,7 +55,7 @@ class PreferSunsetTextFieldDetector : Detector(), SourceCodeScanner {
       id = "PreferSunsetTextField",
       briefDescription = "Prefer SunsetTextField over material3 OutlinedTextField",
       explanation = """
-        Outside of `:ui_common`, prefer the `com.mataku.scrobscrob.ui_common.component.SunsetTextField` \
+        Outside of `:ui_common`, prefer the `com.mataku.scrobscrob.ui_common.component.designsystem.SunsetTextField` \
         wrapper over `androidx.compose.material3.OutlinedTextField` and \
         `OutlinedTextFieldDefaults`. Routing all text fields through SunsetTextField keeps \
         feature modules decoupled from material3 versions and applies the theme accent color \

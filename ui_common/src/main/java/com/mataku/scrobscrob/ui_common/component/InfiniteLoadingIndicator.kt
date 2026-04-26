@@ -9,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetCircularProgressIndicator
 
 @Composable
 fun InfiniteLoadingIndicator(

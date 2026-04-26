@@ -1,4 +1,4 @@
-package com.mataku.scrobscrob.ui_common.component
+package com.mataku.scrobscrob.ui_common.component.designsystem
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.PaddingValues

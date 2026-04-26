@@ -35,7 +35,7 @@ class PreferSunsetModalBottomSheetDetector : Detector(), SourceCodeScanner {
       issue = ISSUE,
       scope = node,
       location = context.getLocation(node),
-      message = "Use `com.mataku.scrobscrob.ui_common.component.SunsetModalBottomSheet` instead of `$fqn`.",
+      message = "Use `com.mataku.scrobscrob.ui_common.component.designsystem.SunsetModalBottomSheet` instead of `$fqn`.",
     )
   }
 
@@ -51,7 +51,7 @@ class PreferSunsetModalBottomSheetDetector : Detector(), SourceCodeScanner {
       id = "PreferSunsetModalBottomSheet",
       briefDescription = "Prefer SunsetModalBottomSheet over material3 ModalBottomSheet",
       explanation = """
-        Outside of `:ui_common`, prefer the `com.mataku.scrobscrob.ui_common.component.SunsetModalBottomSheet` \
+        Outside of `:ui_common`, prefer the `com.mataku.scrobscrob.ui_common.component.designsystem.SunsetModalBottomSheet` \
         wrapper over `androidx.compose.material3.ModalBottomSheet`, \
         `rememberModalBottomSheetState`, and `SheetState`. The wrapper exposes a \
         `SunsetModalBottomSheetState` shim with `isVisible`, `hide()`, and `show()` so \

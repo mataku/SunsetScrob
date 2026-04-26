@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetCircularProgressIndicator
 
 @Composable
 fun LoadingIndicator(

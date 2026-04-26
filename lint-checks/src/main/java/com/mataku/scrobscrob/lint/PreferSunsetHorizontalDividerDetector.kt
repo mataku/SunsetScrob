@@ -35,7 +35,7 @@ class PreferSunsetHorizontalDividerDetector : Detector(), SourceCodeScanner {
       issue = ISSUE,
       scope = node,
       location = context.getLocation(node),
-      message = "Use `com.mataku.scrobscrob.ui_common.component.SunsetHorizontalDivider` instead of `androidx.compose.material3.HorizontalDivider`.",
+      message = "Use `com.mataku.scrobscrob.ui_common.component.designsystem.SunsetHorizontalDivider` instead of `androidx.compose.material3.HorizontalDivider`.",
     )
   }
 
@@ -47,7 +47,7 @@ class PreferSunsetHorizontalDividerDetector : Detector(), SourceCodeScanner {
       id = "PreferSunsetHorizontalDivider",
       briefDescription = "Prefer SunsetHorizontalDivider over material3 HorizontalDivider",
       explanation = """
-        Outside of `:ui_common`, prefer the `com.mataku.scrobscrob.ui_common.component.SunsetHorizontalDivider` \
+        Outside of `:ui_common`, prefer the `com.mataku.scrobscrob.ui_common.component.designsystem.SunsetHorizontalDivider` \
         wrapper over `androidx.compose.material3.HorizontalDivider`. Routing all dividers through \
         SunsetHorizontalDivider keeps feature modules decoupled from material3 versions and \
         unifies the divider color on `MaterialTheme.colorScheme.onSecondary`. Inside `:ui_common` \

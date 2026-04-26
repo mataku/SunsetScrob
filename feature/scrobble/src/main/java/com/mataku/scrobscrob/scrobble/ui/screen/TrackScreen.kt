@@ -43,11 +43,11 @@ import com.mataku.scrobscrob.core.entity.Wiki
 import com.mataku.scrobscrob.core.entity.presentation.toReadableIntValue
 import com.mataku.scrobscrob.scrobble.ui.component.TrackDetail
 import com.mataku.scrobscrob.scrobble.ui.viewmodel.TrackViewModel
-import com.mataku.scrobscrob.ui_common.component.SunsetBottomSheet
-import com.mataku.scrobscrob.ui_common.component.SunsetText
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetBottomSheet
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetText
 import com.mataku.scrobscrob.ui_common.component.ArtworkLayerBar
 import com.mataku.scrobscrob.ui_common.component.CircleBackButton
-import com.mataku.scrobscrob.ui_common.component.SunsetImage
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetImage
 import com.mataku.scrobscrob.ui_common.component.ValueDescription
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import kotlinx.collections.immutable.persistentListOf

@@ -8,8 +8,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mataku.scrobscrob.discover.ui.ChartType
-import com.mataku.scrobscrob.ui_common.component.SunsetTab
-import com.mataku.scrobscrob.ui_common.component.SunsetTabRow
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetTab
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetTabRow
 import com.mataku.scrobscrob.ui_common.component.TabRowText
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 

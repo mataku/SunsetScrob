@@ -11,6 +11,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetText
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 
 @Composable

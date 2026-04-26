@@ -22,14 +22,14 @@ import com.mataku.scrobscrob.app.ui.navigation.NavigationGraph
 import com.mataku.scrobscrob.app.ui.navigation.ScreenStyle
 import com.mataku.scrobscrob.discover.ui.navigation.navigateToDiscover
 import com.mataku.scrobscrob.home.ui.navigation.navigateToHome
-import com.mataku.scrobscrob.ui_common.component.SunsetBottomNavItem
-import com.mataku.scrobscrob.ui_common.component.SunsetIcon
-import com.mataku.scrobscrob.ui_common.component.SunsetIconButton
-import com.mataku.scrobscrob.ui_common.component.SunsetScaffold
-import com.mataku.scrobscrob.ui_common.component.SunsetSnackbarHost
-import com.mataku.scrobscrob.ui_common.component.SunsetTopAppBar
-import com.mataku.scrobscrob.ui_common.component.SunsetNavigationBar
-import com.mataku.scrobscrob.ui_common.component.rememberSunsetTopAppBarScrollBehavior
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetBottomNavItem
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetIcon
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetIconButton
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetScaffold
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetSnackbarHost
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetTopAppBar
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetNavigationBar
+import com.mataku.scrobscrob.ui_common.component.designsystem.rememberSunsetTopAppBarScrollBehavior
 import com.mataku.scrobscrob.ui_common.style.LocalSnackbarHostState
 import com.mataku.scrobscrob.ui_common.style.LocalTopAppBarState
 

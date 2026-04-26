@@ -21,6 +21,8 @@ import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.test_helper.integration.VRT
 import com.mataku.scrobscrob.test_helper.integration.captureScreenshot
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetNavigationBar
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetText
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test

@@ -35,7 +35,7 @@ class PreferSunsetIconDetector : Detector(), SourceCodeScanner {
       issue = ISSUE,
       scope = node,
       location = context.getLocation(node),
-      message = "Use `com.mataku.scrobscrob.ui_common.component.SunsetIcon` instead of `androidx.compose.material3.Icon`.",
+      message = "Use `com.mataku.scrobscrob.ui_common.component.designsystem.SunsetIcon` instead of `androidx.compose.material3.Icon`.",
     )
   }
 
@@ -47,7 +47,7 @@ class PreferSunsetIconDetector : Detector(), SourceCodeScanner {
       id = "PreferSunsetIcon",
       briefDescription = "Prefer SunsetIcon over material3 Icon",
       explanation = """
-        Outside of `:ui_common`, prefer the `com.mataku.scrobscrob.ui_common.component.SunsetIcon` \
+        Outside of `:ui_common`, prefer the `com.mataku.scrobscrob.ui_common.component.designsystem.SunsetIcon` \
         wrapper over `androidx.compose.material3.Icon`. Routing all icons through SunsetIcon \
         keeps feature modules decoupled from material3 versions and lets future material \
         upgrades land in one place. Inside `:ui_common` itself the wrapper has to import \

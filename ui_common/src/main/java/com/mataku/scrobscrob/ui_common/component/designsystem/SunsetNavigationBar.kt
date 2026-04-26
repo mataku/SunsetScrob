@@ -1,4 +1,4 @@
-package com.mataku.scrobscrob.ui_common.component
+package com.mataku.scrobscrob.ui_common.component.designsystem
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Spring

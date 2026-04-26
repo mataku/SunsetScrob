@@ -19,8 +19,8 @@ import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mataku.scrobscrob.account.ui.viewmodel.LicenseViewModel
 import com.mataku.scrobscrob.core.entity.LicenseArtifact
-import com.mataku.scrobscrob.ui_common.component.SunsetHorizontalDivider
-import com.mataku.scrobscrob.ui_common.component.SunsetText
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetHorizontalDivider
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetText
 
 @Composable
 internal fun LicenseScreen(

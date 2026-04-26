@@ -25,10 +25,10 @@ import com.mataku.scrobscrob.core.entity.TrackAlbumInfo
 import com.mataku.scrobscrob.core.entity.TrackInfo
 import com.mataku.scrobscrob.core.entity.Wiki
 import com.mataku.scrobscrob.core.entity.presentation.toReadableIntValue
-import com.mataku.scrobscrob.ui_common.component.SunsetHorizontalDivider
-import com.mataku.scrobscrob.ui_common.component.SunsetIcon
-import com.mataku.scrobscrob.ui_common.component.SunsetIconToggleButton
-import com.mataku.scrobscrob.ui_common.component.SunsetText
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetHorizontalDivider
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetIcon
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetIconToggleButton
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetText
 import com.mataku.scrobscrob.ui_common.extension.throttleFirst
 import com.mataku.scrobscrob.ui_common.component.SimpleWiki
 import com.mataku.scrobscrob.ui_common.component.TopTags

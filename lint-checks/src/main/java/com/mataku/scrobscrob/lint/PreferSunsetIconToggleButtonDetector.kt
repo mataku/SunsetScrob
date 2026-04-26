@@ -35,7 +35,7 @@ class PreferSunsetIconToggleButtonDetector : Detector(), SourceCodeScanner {
       issue = ISSUE,
       scope = node,
       location = context.getLocation(node),
-      message = "Use `com.mataku.scrobscrob.ui_common.component.SunsetIconToggleButton` instead of `androidx.compose.material3.IconToggleButton`.",
+      message = "Use `com.mataku.scrobscrob.ui_common.component.designsystem.SunsetIconToggleButton` instead of `androidx.compose.material3.IconToggleButton`.",
     )
   }
 
@@ -49,7 +49,7 @@ class PreferSunsetIconToggleButtonDetector : Detector(), SourceCodeScanner {
       briefDescription = "Prefer SunsetIconToggleButton over material3 IconToggleButton",
       explanation = """
         Outside of `:ui_common`, prefer the \
-        `com.mataku.scrobscrob.ui_common.component.SunsetIconToggleButton` wrapper over \
+        `com.mataku.scrobscrob.ui_common.component.designsystem.SunsetIconToggleButton` wrapper over \
         `androidx.compose.material3.IconToggleButton`. Routing all toggle icon buttons through \
         SunsetIconToggleButton keeps feature modules decoupled from material3 versions and \
         lets future material upgrades land in one place. Inside `:ui_common` itself the \

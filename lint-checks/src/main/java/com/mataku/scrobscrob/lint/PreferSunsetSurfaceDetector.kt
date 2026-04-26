@@ -35,7 +35,7 @@ class PreferSunsetSurfaceDetector : Detector(), SourceCodeScanner {
       issue = ISSUE,
       scope = node,
       location = context.getLocation(node),
-      message = "Use `com.mataku.scrobscrob.ui_common.component.SunsetSurface` instead of `androidx.compose.material3.Surface`.",
+      message = "Use `com.mataku.scrobscrob.ui_common.component.designsystem.SunsetSurface` instead of `androidx.compose.material3.Surface`.",
     )
   }
 
@@ -47,7 +47,7 @@ class PreferSunsetSurfaceDetector : Detector(), SourceCodeScanner {
       id = "PreferSunsetSurface",
       briefDescription = "Prefer SunsetSurface over material3 Surface",
       explanation = """
-        Outside of `:ui_common`, prefer the `com.mataku.scrobscrob.ui_common.component.SunsetSurface` \
+        Outside of `:ui_common`, prefer the `com.mataku.scrobscrob.ui_common.component.designsystem.SunsetSurface` \
         wrapper over `androidx.compose.material3.Surface`. Routing all surfaces through \
         SunsetSurface keeps feature modules decoupled from material3 versions and lets future \
         material upgrades land in one place. `SunsetThemePreview` already wraps preview content \

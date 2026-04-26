@@ -35,7 +35,7 @@ class PreferSunsetButtonDetector : Detector(), SourceCodeScanner {
       issue = ISSUE,
       scope = node,
       location = context.getLocation(node),
-      message = "Use `com.mataku.scrobscrob.ui_common.component.SunsetButton` instead of `androidx.compose.material3.Button`.",
+      message = "Use `com.mataku.scrobscrob.ui_common.component.designsystem.SunsetButton` instead of `androidx.compose.material3.Button`.",
     )
   }
 
@@ -47,7 +47,7 @@ class PreferSunsetButtonDetector : Detector(), SourceCodeScanner {
       id = "PreferSunsetButton",
       briefDescription = "Prefer SunsetButton over material3 Button",
       explanation = """
-        Outside of `:ui_common`, prefer the `com.mataku.scrobscrob.ui_common.component.SunsetButton` \
+        Outside of `:ui_common`, prefer the `com.mataku.scrobscrob.ui_common.component.designsystem.SunsetButton` \
         wrapper over `androidx.compose.material3.Button`. Routing all primary buttons through \
         SunsetButton keeps feature modules decoupled from material3 versions and lets future \
         material upgrades land in one place. Inside `:ui_common` itself the wrapper has to \

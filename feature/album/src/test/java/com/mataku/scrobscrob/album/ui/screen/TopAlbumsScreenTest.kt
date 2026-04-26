@@ -12,7 +12,7 @@ import com.mataku.scrobscrob.data.repository.AlbumRepository
 import com.mataku.scrobscrob.data.repository.UsernameRepository
 import com.mataku.scrobscrob.test_helper.integration.VRT
 import com.mataku.scrobscrob.test_helper.integration.captureScreenshot
-import com.mataku.scrobscrob.ui_common.component.rememberSunsetTopAppBarScrollBehavior
+import com.mataku.scrobscrob.ui_common.component.designsystem.rememberSunsetTopAppBarScrollBehavior
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk

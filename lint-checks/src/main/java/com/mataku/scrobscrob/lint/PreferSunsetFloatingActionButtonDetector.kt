@@ -39,7 +39,7 @@ class PreferSunsetFloatingActionButtonDetector : Detector(), SourceCodeScanner {
       issue = ISSUE,
       scope = node,
       location = context.getLocation(node),
-      message = "Use `com.mataku.scrobscrob.ui_common.component.SunsetFloatingActionButton` instead of `$fqn`.",
+      message = "Use `com.mataku.scrobscrob.ui_common.component.designsystem.SunsetFloatingActionButton` instead of `$fqn`.",
     )
   }
 
@@ -55,7 +55,7 @@ class PreferSunsetFloatingActionButtonDetector : Detector(), SourceCodeScanner {
       briefDescription = "Prefer SunsetFloatingActionButton over material3 FloatingActionButton",
       explanation = """
         Outside of `:ui_common`, prefer the \
-        `com.mataku.scrobscrob.ui_common.component.SunsetFloatingActionButton` wrapper over \
+        `com.mataku.scrobscrob.ui_common.component.designsystem.SunsetFloatingActionButton` wrapper over \
         `androidx.compose.material3.FloatingActionButton` and \
         `FloatingActionButtonDefaults`. Routing all FABs through SunsetFloatingActionButton \
         keeps feature modules decoupled from material3 versions and applies the theme accent \
