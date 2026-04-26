@@ -7,8 +7,6 @@ import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
@@ -16,9 +14,6 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -36,17 +31,18 @@ import com.mataku.scrobscrob.artist.ui.viewmodel.TopArtistsViewModel
 import com.mataku.scrobscrob.core.entity.TopArtistInfo
 import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.core.entity.isInvalidArtwork
+import com.mataku.scrobscrob.ui_common.SunsetModalBottomSheet
 import com.mataku.scrobscrob.ui_common.SunsetScaffold
 import com.mataku.scrobscrob.ui_common.SunsetTopAppBarScrollBehavior
 import com.mataku.scrobscrob.ui_common.molecule.FilteringFloatingButton
 import com.mataku.scrobscrob.ui_common.molecule.LoadingIndicator
 import com.mataku.scrobscrob.ui_common.organism.FilteringBottomSheet
+import com.mataku.scrobscrob.ui_common.rememberSunsetModalBottomSheetState
 import com.mataku.scrobscrob.ui_common.organism.InfiniteLoadingIndicator
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopArtistsScreen(
   sharedTransitionScope: SharedTransitionScope,
@@ -58,7 +54,7 @@ fun TopArtistsScreen(
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-  val bottomSheetState = rememberModalBottomSheetState()
+  val bottomSheetState = rememberSunsetModalBottomSheetState()
   var showBottomSheet by remember {
     mutableStateOf(false)
   }
@@ -105,15 +101,11 @@ fun TopArtistsScreen(
         .nestedScroll(topAppBarScrollBehavior.nestedScrollConnection)
     )
     if (showBottomSheet) {
-      ModalBottomSheet(
+      SunsetModalBottomSheet(
         onDismissRequest = {
           showBottomSheet = false
         },
         sheetState = bottomSheetState,
-        modifier = Modifier,
-        contentWindowInsets = {
-          WindowInsets.displayCutout
-        },
       ) {
         FilteringBottomSheet(
           selectedTimeRangeFiltering = uiState.selectedTimeRangeFiltering,

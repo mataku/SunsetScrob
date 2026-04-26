@@ -56,17 +56,4 @@ internal fun PrivacyPolicyScreen(
     },
     modifier = modifier.fillMaxSize()
   )
-
-//  val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
-//  ModalBottomSheetLayout(
-//    sheetContent = {
-//      WebViewScreen(
-//        url = "https://mataku.github.io/sunsetscrob/index.html",
-//        modifier = Modifier.height(600.dp)
-//      )
-//    },
-//    sheetState = sheetState,
-//    scrimColor = Color.Transparent
-//  ) {
-//  }
 }

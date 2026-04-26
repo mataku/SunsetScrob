@@ -284,6 +284,38 @@ internal val material3ThemeStub: TestFile = kotlin(
   """.trimIndent(),
 ).indented()
 
+internal val material3BottomSheetScaffoldStub: TestFile = kotlin(
+  """
+    package androidx.compose.material3
+
+    fun BottomSheetScaffold(
+      sheetContent: () -> Unit,
+      content: () -> Unit,
+    ) {}
+
+    fun rememberBottomSheetScaffoldState(): Any = Any()
+
+    fun rememberStandardBottomSheetState(): Any = Any()
+
+    enum class SheetValue { Hidden, Expanded, PartiallyExpanded }
+  """.trimIndent(),
+).indented()
+
+internal val material3ModalBottomSheetStub: TestFile = kotlin(
+  """
+    package androidx.compose.material3
+
+    fun ModalBottomSheet(
+      onDismissRequest: () -> Unit,
+      content: () -> Unit,
+    ) {}
+
+    fun rememberModalBottomSheetState(): Any = Any()
+
+    class SheetState
+  """.trimIndent(),
+).indented()
+
 internal val material3SnackbarHostStub: TestFile = kotlin(
   """
     package androidx.compose.material3

@@ -21,12 +21,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.BottomSheetScaffold
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Surface
-import androidx.compose.material3.rememberBottomSheetScaffoldState
-import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -49,14 +44,13 @@ import com.mataku.scrobscrob.core.entity.Wiki
 import com.mataku.scrobscrob.core.entity.presentation.toReadableIntValue
 import com.mataku.scrobscrob.scrobble.ui.component.TrackDetail
 import com.mataku.scrobscrob.scrobble.ui.viewmodel.TrackViewModel
+import com.mataku.scrobscrob.ui_common.SunsetBottomSheet
 import com.mataku.scrobscrob.ui_common.SunsetText
 import com.mataku.scrobscrob.ui_common.component.ArtworkLayerBar
 import com.mataku.scrobscrob.ui_common.component.CircleBackButton
 import com.mataku.scrobscrob.ui_common.molecule.SunsetImage
 import com.mataku.scrobscrob.ui_common.molecule.ValueDescription
-import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
-import com.mataku.scrobscrob.ui_common.style.backgroundColor
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
@@ -87,7 +81,6 @@ internal fun SharedTransitionScope.TrackScreen(
   )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SharedTransitionScope.TrackContent(
   animatedContentScope: AnimatedContentScope,
@@ -107,15 +100,8 @@ private fun SharedTransitionScope.TrackContent(
   val screenHeight = with(LocalDensity.current) {
     LocalWindowInfo.current.containerSize.height.toDp()
   }
-  val scaffoldState = rememberBottomSheetScaffoldState(
-    bottomSheetState = rememberStandardBottomSheetState(
-      initialValue = SheetValue.PartiallyExpanded
-    )
-  )
-  BottomSheetScaffold(
+  SunsetBottomSheet(
     modifier = modifier,
-    sheetContainerColor = LocalAppTheme.current.backgroundColor(),
-    scaffoldState = scaffoldState,
     sheetContent = {
       TrackDetailContent(
         trackInfo = trackInfo,

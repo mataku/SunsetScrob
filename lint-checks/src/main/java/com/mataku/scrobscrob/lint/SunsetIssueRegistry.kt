@@ -9,6 +9,7 @@ class SunsetIssueRegistry : IssueRegistry() {
   override val issues: List<Issue> = listOf(
     PreferLocalAppThemeColorDetector.ISSUE,
     PreferSunsetAlertDialogDetector.ISSUE,
+    PreferSunsetBottomSheetDetector.ISSUE,
     PreferSunsetButtonDetector.ISSUE,
     PreferSunsetChipDetector.ISSUE,
     PreferSunsetCircularProgressIndicatorDetector.ISSUE,
@@ -17,6 +18,7 @@ class SunsetIssueRegistry : IssueRegistry() {
     PreferSunsetIconButtonDetector.ISSUE,
     PreferSunsetIconDetector.ISSUE,
     PreferSunsetIconToggleButtonDetector.ISSUE,
+    PreferSunsetModalBottomSheetDetector.ISSUE,
     PreferSunsetPullToRefreshBoxDetector.ISSUE,
     PreferSunsetScaffoldDetector.ISSUE,
     PreferSunsetSnackbarHostDetector.ISSUE,

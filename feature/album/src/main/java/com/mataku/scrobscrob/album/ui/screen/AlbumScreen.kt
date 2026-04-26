@@ -18,12 +18,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.BottomSheetScaffold
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Surface
-import androidx.compose.material3.rememberBottomSheetScaffoldState
-import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -42,6 +37,7 @@ import com.mataku.scrobscrob.core.entity.AlbumInfo
 import com.mataku.scrobscrob.core.entity.AlbumInfoTrack
 import com.mataku.scrobscrob.core.entity.Tag
 import com.mataku.scrobscrob.core.entity.Wiki
+import com.mataku.scrobscrob.ui_common.SunsetBottomSheet
 import com.mataku.scrobscrob.ui_common.SunsetHorizontalDivider
 import com.mataku.scrobscrob.ui_common.component.ArtworkLayerBar
 import com.mataku.scrobscrob.ui_common.component.CircleBackButton
@@ -49,9 +45,7 @@ import com.mataku.scrobscrob.ui_common.molecule.SimpleWiki
 import com.mataku.scrobscrob.ui_common.molecule.SunsetImage
 import com.mataku.scrobscrob.ui_common.molecule.TopTags
 import com.mataku.scrobscrob.ui_common.molecule.WikiCell
-import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
-import com.mataku.scrobscrob.ui_common.style.backgroundColor
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
@@ -78,7 +72,6 @@ internal fun SharedTransitionScope.AlbumScreen(
   )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SharedTransitionScope.AlbumContent(
   animatedContentScope: AnimatedContentScope,
@@ -97,15 +90,8 @@ private fun SharedTransitionScope.AlbumContent(
   val screenHeight = with(LocalDensity.current) {
     LocalWindowInfo.current.containerSize.height.toDp()
   }
-  val scaffoldState = rememberBottomSheetScaffoldState(
-    bottomSheetState = rememberStandardBottomSheetState(
-      initialValue = SheetValue.PartiallyExpanded
-    )
-  )
-  BottomSheetScaffold(
+  SunsetBottomSheet(
     modifier = modifier,
-    sheetContainerColor = LocalAppTheme.current.backgroundColor(),
-    scaffoldState = scaffoldState,
     sheetPeekHeight = if (screenHeight >= screenWidth) {
       (screenHeight - screenWidth + 24.dp)
     } else {
