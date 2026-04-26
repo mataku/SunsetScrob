@@ -6,14 +6,14 @@ Adopts MVVM + Clean Architecture. No UseCase layer; ViewModel directly uses Repo
 
 ### Technology Stack
 
-| Area | Technology |
-|------|------------|
-| UI | Jetpack Compose + Material 3 |
-| State Management | StateFlow + ImmutableList |
-| Network | Ktor Client |
-| Local DB | SQLDelight, DataStore |
-| DI | Metro (Kotlin compiler plugin) |
-| Testing | Kotest, MockK, Roborazzi |
+| Area             | Technology                     |
+|------------------|--------------------------------|
+| UI               | Jetpack Compose + Material 3   |
+| State Management | StateFlow + ImmutableList      |
+| Network          | Ktor Client                    |
+| Local DB         | SQLDelight, DataStore          |
+| DI               | Metro (Kotlin compiler plugin) |
+| Testing          | Kotest, MockK, Roborazzi       |
 
 ## Module Structure
 
@@ -35,7 +35,8 @@ feature/
   home/                 - Home tab (integrates other features)
 ```
 
-**Note**: `feature/home` is an integration layer that depends on other feature modules (scrobble, album, artist).
+**Note**: `feature/home` is an integration layer that depends on other feature modules (scrobble,
+album, artist).
 
 ## Dependency Graph
 
@@ -187,21 +188,21 @@ private fun ExampleContent(
 
 ### DI Configuration
 
-| Target | Configuration |
-|--------|---------------|
+| Target     | Configuration                                                                                                                                                                                                                                  |
+|------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Repository | Add `@Binds` to [RepositoryModule.kt](../data/repository/src/main/java/com/mataku/scrobscrob/data/repository/di/RepositoryModule.kt) (interface with `@ContributesTo(AppScope::class)`; Impl carries `@Inject` + `@SingleIn(AppScope::class)`) |
-| ViewModel | `@Inject` + `@ViewModelKey` + `@ContributesIntoMap(AppScope::class)` on the class (no Module needed). Use `@AssistedInject` + inner `Factory : ViewModelAssistedFactory` when the VM takes `SavedStateHandle`. |
-| DataStore | Provided by [DatabaseModule.kt](../data/db/src/main/java/com/mataku/scrobscrob/data/db/di/DatabaseModule.kt) |
+| ViewModel  | `@Inject` + `@ViewModelKey` + `@ContributesIntoMap(AppScope::class)` on the class (no Module needed). Use `@AssistedInject` + inner `Factory : ViewModelAssistedFactory` when the VM takes `SavedStateHandle`.                                 |
+| DataStore  | Provided by [DatabaseModule.kt](../data/db/src/main/java/com/mataku/scrobscrob/data/db/di/DatabaseModule.kt)                                                                                                                                   |
 
 ## Convention Plugins
 
-| Plugin ID | Purpose |
-|-----------|---------|
-| `sunsetscrob.android.application` | For app module |
-| `sunsetscrob.android.feature` | For feature / library modules |
-| `sunsetscrob.android.compose` | Compose configuration |
-| `sunsetscrob.android.metro` | Metro DI (applies `dev.zacsweers.metro`, adds `metrox-viewmodel-compose`) |
-| `sunsetscrob.android.test.screenshot` | Roborazzi tests |
+| Plugin ID                             | Purpose                                                                   |
+|---------------------------------------|---------------------------------------------------------------------------|
+| `sunsetscrob.android.application`     | For app module                                                            |
+| `sunsetscrob.android.feature`         | For feature / library modules                                             |
+| `sunsetscrob.android.compose`         | Compose configuration                                                     |
+| `sunsetscrob.android.metro`           | Metro DI (applies `dev.zacsweers.metro`, adds `metrox-viewmodel-compose`) |
+| `sunsetscrob.android.test.screenshot` | Roborazzi tests                                                           |
 
 ### New Feature Module Example
 
@@ -224,7 +225,6 @@ dependencies {
   implementation(project(":core"))
   implementation(project(":data:repository"))
 
-  implementation(libs.compose.material3)
   implementation(libs.compose.navigation)
   implementation(libs.coroutines)
   implementation(libs.kotlinx.collection)
@@ -238,10 +238,10 @@ dependencies {
 
 ## Testing
 
-| Type | Framework | Command |
-|------|-----------|---------|
-| Unit Test | Kotest + MockK | `fastlane test` |
-| Screenshot Test | Roborazzi | `fastlane screenshot_test` |
+| Type            | Framework      | Command                    |
+|-----------------|----------------|----------------------------|
+| Unit Test       | Kotest + MockK | `fastlane test`            |
+| Screenshot Test | Roborazzi      | `fastlane screenshot_test` |
 
 ### Screenshot Test
 

@@ -5,14 +5,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.mataku.scrobscrob.ui_common.SunsetTextStyle
+import com.mataku.scrobscrob.ui_common.SunsetText
 import com.mataku.scrobscrob.ui_common.molecule.SunsetImage
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 
@@ -34,16 +32,14 @@ internal fun ChartCell(
         .size(140.dp)
     )
     Spacer(modifier = Modifier.height(8.dp))
-    Text(
+    SunsetText.Body(
       text = title,
-      style = SunsetTextStyle.body,
       maxLines = 1,
       overflow = TextOverflow.Ellipsis
     )
     Spacer(modifier = Modifier.height(8.dp))
-    Text(
+    SunsetText.Caption(
       text = subTitle,
-      style = SunsetTextStyle.caption,
       maxLines = 1,
       overflow = TextOverflow.Ellipsis
     )
@@ -54,12 +50,10 @@ internal fun ChartCell(
 @Composable
 private fun ChartCellPreview() {
   SunsetThemePreview {
-    Surface {
-      ChartCell(
-        title = "Title",
-        subTitle = "SubTitle",
-        artworkUrl = ""
-      )
-    }
+    ChartCell(
+      title = "Title",
+      subTitle = "SubTitle",
+      artworkUrl = ""
+    )
   }
 }

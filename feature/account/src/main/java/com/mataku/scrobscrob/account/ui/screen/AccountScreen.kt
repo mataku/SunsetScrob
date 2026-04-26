@@ -14,12 +14,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -51,9 +45,12 @@ import com.mataku.scrobscrob.account.ui.viewmodel.AccountViewModel
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.core.entity.UserInfo
 import com.mataku.scrobscrob.ui_common.SunsetAlertDialog
-import com.mataku.scrobscrob.ui_common.SunsetTextStyle
+import com.mataku.scrobscrob.ui_common.SunsetHorizontalDivider
+import com.mataku.scrobscrob.ui_common.SunsetText
+import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.LocalSnackbarHostState
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
+import com.mataku.scrobscrob.ui_common.style.onSecondaryColor
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -222,7 +219,7 @@ private fun AccountContent(
               horizontal = 16.dp
             )
         )
-        HorizontalDivider(
+        SunsetHorizontalDivider(
           modifier = Modifier.padding(vertical = 8.dp),
         )
       }
@@ -290,7 +287,7 @@ private fun AccountContent(
           navigateToLogoutConfirmation.invoke()
         }
 
-        HorizontalDivider(
+        SunsetHorizontalDivider(
           modifier = Modifier.padding(vertical = 8.dp)
         )
       }
@@ -327,36 +324,21 @@ private fun AccountContent(
   }
 
   if (openDialog.value) {
-    AlertDialog(
+    SunsetAlertDialog(
+      title = stringResource(id = R.string.dialog_notification_permission_required),
+      description = stringResource(id = R.string.dialog_notification_permission_required_description),
+      confirmButtonText = stringResource(id = R.string.button_go_to_setting),
+      onConfirmButton = {
+        openDialog.value = false
+        navigateToNotificationSetting.invoke()
+      },
+      dismissButtonText = stringResource(id = R.string.button_back),
+      onDismissButton = {
+        openDialog.value = false
+      },
       onDismissRequest = {
         openDialog.value = false
       },
-      title = {
-        Text(
-          text = stringResource(id = R.string.dialog_notification_permission_required),
-        )
-      },
-      text = {
-        Text(text = stringResource(id = R.string.dialog_notification_permission_required_description))
-      },
-      dismissButton = {
-        TextButton(onClick = {
-          openDialog.value = false
-        }) {
-          Text(text = stringResource(id = R.string.button_back), style = SunsetTextStyle.button)
-        }
-      },
-      confirmButton = {
-        TextButton(onClick = {
-          openDialog.value = false
-          navigateToNotificationSetting.invoke()
-        }) {
-          Text(
-            text = stringResource(id = R.string.button_go_to_setting),
-            style = SunsetTextStyle.button
-          )
-        }
-      }
     )
   }
 
@@ -396,12 +378,11 @@ private fun AccountMenuCell(
       .padding(horizontal = 16.dp),
     verticalArrangement = Arrangement.SpaceEvenly
   ) {
-    Text(text = title, style = SunsetTextStyle.subtitle)
+    SunsetText.Subtitle(text = title)
     if (description.isNotBlank()) {
-      Text(
+      SunsetText.Caption(
         text = description,
-        style = SunsetTextStyle.caption,
-        color = MaterialTheme.colorScheme.onSecondary
+        color = LocalAppTheme.current.onSecondaryColor()
       )
     }
   }
@@ -411,31 +392,29 @@ private fun AccountMenuCell(
 @Composable
 private fun AccountContentPreview() {
   SunsetThemePreview {
-    Surface {
-      AccountContent(
-        theme = AppTheme.DARK,
-        navigateToThemeSelector = {},
-        navigateToLogoutConfirmation = {},
-        navigateToLicenseList = {},
-        navigateToPrivacyPolicy = {},
-        navigateToScrobbleSetting = {},
-        navigateToNotificationSetting = {},
-        requestAppUpdate = {},
-        appUpdateInfo = null,
-        appVersion = "1.0.0",
-        clearCache = {},
-        navigateToUiCatalog = {},
-        imageCacheMB = "0.1",
-        userInfo = UserInfo(
-          name = "mataku",
-          playCount = "10000",
-          albumCount = "100",
-          trackCount = "1000",
-          artistCount = "100",
-          url = "",
-          imageList = persistentListOf()
-        )
+    AccountContent(
+      theme = AppTheme.DARK,
+      navigateToThemeSelector = {},
+      navigateToLogoutConfirmation = {},
+      navigateToLicenseList = {},
+      navigateToPrivacyPolicy = {},
+      navigateToScrobbleSetting = {},
+      navigateToNotificationSetting = {},
+      requestAppUpdate = {},
+      appUpdateInfo = null,
+      appVersion = "1.0.0",
+      clearCache = {},
+      navigateToUiCatalog = {},
+      imageCacheMB = "0.1",
+      userInfo = UserInfo(
+        name = "mataku",
+        playCount = "10000",
+        albumCount = "100",
+        trackCount = "1000",
+        artistCount = "100",
+        url = "",
+        imageList = persistentListOf()
       )
-    }
+    )
   }
 }

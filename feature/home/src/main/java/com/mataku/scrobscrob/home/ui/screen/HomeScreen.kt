@@ -13,8 +13,6 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -31,11 +29,12 @@ import com.mataku.scrobscrob.core.entity.TopArtistInfo
 import com.mataku.scrobscrob.home.HomeTabType
 import com.mataku.scrobscrob.home.ui.molecule.HomeTabs
 import com.mataku.scrobscrob.scrobble.ui.screen.ScrobbleScreen
+import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.LocalTopAppBarState
+import com.mataku.scrobscrob.ui_common.style.backgroundColor
 import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedBoxWithConstraintsScope")
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun HomeScreen(
   viewModel: HomeViewModel,
@@ -104,7 +103,7 @@ internal fun HomeScreen(
             .fillMaxWidth()
             .height(screenHeight)
         ) {
-          val backgroundColor = MaterialTheme.colorScheme.background
+          val backgroundColor = LocalAppTheme.current.backgroundColor()
           HomeTabs(
             selectedChartIndex = pagerState.currentPage,
             onTabTap = { tabType ->

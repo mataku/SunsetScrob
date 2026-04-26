@@ -104,20 +104,18 @@ modifier = Modifier
 ### Preview
 
 - Define as `private fun`
-- Wrap with `SunsetThemePreview`
-- Define layout boundaries with `Surface`
+- Wrap with `SunsetThemePreview` — it provides a `SunsetSurface` background
+  internally, so don't add another `Surface { }` wrapper
 
 ```kotlin
 @Composable
 @Preview(showBackground = true)
 private fun AlbumContentPreview() {
   SunsetThemePreview {
-    Surface {
-      AlbumContent(
-        albumInfo = AlbumInfo(...),
-        onBackPressed = {}
-      )
-    }
+    AlbumContent(
+      albumInfo = AlbumInfo(...),
+      onBackPressed = {}
+    )
   }
 }
 ```

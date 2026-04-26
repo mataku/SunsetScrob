@@ -8,15 +8,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mataku.scrobscrob.core.entity.ChartArtist
 import com.mataku.scrobscrob.core.entity.imageUrl
-import com.mataku.scrobscrob.ui_common.SunsetTextStyle
+import com.mataku.scrobscrob.ui_common.SunsetText
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -28,9 +26,8 @@ internal fun ChartArtistList(
   modifier: Modifier = Modifier
 ) {
   Column(modifier = modifier.fillMaxWidth()) {
-    Text(
+    SunsetText.Headline(
       text = "Hot Artists",
-      style = SunsetTextStyle.headline,
       maxLines = 1,
       modifier = Modifier
         .padding(
@@ -67,19 +64,17 @@ internal fun ChartArtistList(
 @Composable
 private fun ChartArtistListPreview() {
   SunsetThemePreview {
-    Surface {
-      ChartArtistList(
-        chartArtistList = (1..10).map {
-          ChartArtist(
-            name = "artist name $it",
-            url = "",
-            listeners = "100000$it",
-            playCount = "100000$it",
-            imageList = emptyList()
-          )
-        }.toImmutableList(),
-        onChartArtistTap = {}
-      )
-    }
+    ChartArtistList(
+      chartArtistList = (1..10).map {
+        ChartArtist(
+          name = "artist name $it",
+          url = "",
+          listeners = "100000$it",
+          playCount = "100000$it",
+          imageList = emptyList()
+        )
+      }.toImmutableList(),
+      onChartArtistTap = {}
+    )
   }
 }

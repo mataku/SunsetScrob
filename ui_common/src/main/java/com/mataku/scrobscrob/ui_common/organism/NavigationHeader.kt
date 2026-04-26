@@ -10,9 +10,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -24,8 +21,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.airbnb.android.showkase.annotation.ShowkaseComposable
 import com.mataku.scrobscrob.core.entity.AppTheme
-import com.mataku.scrobscrob.ui_common.SunsetTextStyle
+import com.mataku.scrobscrob.ui_common.SunsetSurface
+import com.mataku.scrobscrob.ui_common.SunsetText
+import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
+import com.mataku.scrobscrob.ui_common.style.backgroundColor
+import com.mataku.scrobscrob.ui_common.style.onSurfaceColor
 
 @Composable
 fun NavigationHeader(
@@ -33,15 +34,15 @@ fun NavigationHeader(
   onBackPressed: () -> Unit,
   modifier: Modifier = Modifier
 ) {
-  Surface(
-    modifier = modifier
+  SunsetSurface(
+    modifier = modifier,
   ) {
     Row(
       modifier = Modifier
         .fillMaxWidth()
         .height(64.dp)
         .background(
-          MaterialTheme.colorScheme.background
+          LocalAppTheme.current.backgroundColor()
         ),
       verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -59,14 +60,12 @@ fun NavigationHeader(
             onBackPressed.invoke()
           },
         colorFilter = ColorFilter.tint(
-          color = MaterialTheme.colorScheme.onSurface
+          color = LocalAppTheme.current.onSurfaceColor()
         ),
         alignment = Alignment.Center
       )
-      Text(
+      SunsetText.Title(
         text = text,
-        style = SunsetTextStyle.title,
-        modifier = Modifier,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis
       )

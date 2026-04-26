@@ -9,8 +9,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import com.mataku.scrobscrob.core.entity.UserInfo
 import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.core.entity.presentation.toReadableIntValue
-import com.mataku.scrobscrob.ui_common.SunsetTextStyle
+import com.mataku.scrobscrob.ui_common.SunsetText
 import com.mataku.scrobscrob.ui_common.molecule.SunsetImage
 import com.mataku.scrobscrob.ui_common.molecule.ValueDescription
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
@@ -54,9 +52,8 @@ internal fun Profile(
       modifier = Modifier
         .height(96.dp)
     ) {
-      Text(
+      SunsetText.Title(
         text = userInfo.name,
-        style = SunsetTextStyle.title
       )
 
       Spacer(modifier = Modifier.height(16.dp))
@@ -102,18 +99,16 @@ private fun UserListeningCount(
 @Composable
 private fun ProfilePreview() {
   SunsetThemePreview {
-    Surface {
-      Profile(
-        userInfo = UserInfo(
-          name = "mataku",
-          playCount = "1000",
-          albumCount = "100",
-          trackCount = "100",
-          imageList = persistentListOf(),
-          url = "",
-          artistCount = "100"
-        )
+    Profile(
+      userInfo = UserInfo(
+        name = "mataku",
+        playCount = "1000",
+        albumCount = "100",
+        trackCount = "100",
+        imageList = persistentListOf(),
+        url = "",
+        artistCount = "100"
       )
-    }
+    )
   }
 }

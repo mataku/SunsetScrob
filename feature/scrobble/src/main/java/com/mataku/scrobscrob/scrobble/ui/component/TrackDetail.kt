@@ -11,12 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconToggleButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -31,14 +25,19 @@ import com.mataku.scrobscrob.core.entity.TrackAlbumInfo
 import com.mataku.scrobscrob.core.entity.TrackInfo
 import com.mataku.scrobscrob.core.entity.Wiki
 import com.mataku.scrobscrob.core.entity.presentation.toReadableIntValue
-import com.mataku.scrobscrob.ui_common.SunsetTextStyle
+import com.mataku.scrobscrob.ui_common.SunsetHorizontalDivider
+import com.mataku.scrobscrob.ui_common.SunsetIcon
+import com.mataku.scrobscrob.ui_common.SunsetIconToggleButton
+import com.mataku.scrobscrob.ui_common.SunsetText
 import com.mataku.scrobscrob.ui_common.extension.throttleFirst
 import com.mataku.scrobscrob.ui_common.molecule.SimpleWiki
 import com.mataku.scrobscrob.ui_common.molecule.TopTags
 import com.mataku.scrobscrob.ui_common.molecule.ValueDescription
 import com.mataku.scrobscrob.ui_common.molecule.WikiCell
 import com.mataku.scrobscrob.ui_common.style.Colors
+import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
+import com.mataku.scrobscrob.ui_common.style.onSecondaryColor
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
@@ -52,7 +51,7 @@ internal fun TrackDetail(
     targetValue = if (trackInfo.userLoved) {
       Colors.Heart
     } else {
-      MaterialTheme.colorScheme.onSecondary.copy(alpha = 0.4F)
+      LocalAppTheme.current.onSecondaryColor().copy(alpha = 0.4F)
     },
     label = "track_favorite_color",
     animationSpec = tween(500)
@@ -76,15 +75,15 @@ internal fun TrackDetail(
       val iconToggleAction = throttleFirst {
         onLoveIconTap.invoke(trackInfo)
       }
-      IconToggleButton(
+      SunsetIconToggleButton(
         checked = trackInfo.userLoved,
         onCheckedChange = {
           iconToggleAction.invoke()
         },
         modifier = Modifier,
       ) {
-        Icon(
-          Icons.Filled.Favorite,
+        SunsetIcon(
+          imageVector = Icons.Filled.Favorite,
           contentDescription = "favorite",
           tint = favoriteColor,
         )
@@ -103,13 +102,13 @@ internal fun TrackDetail(
     )
 
     trackInfo.album?.let { album ->
-      HorizontalDivider(
+      SunsetHorizontalDivider(
         modifier = Modifier
           .fillMaxWidth()
           .padding(
             vertical = 16.dp
           ),
-        color = MaterialTheme.colorScheme.onSecondary.copy(
+        color = LocalAppTheme.current.onSecondaryColor().copy(
           alpha = 0.7F
         )
       )
@@ -139,7 +138,7 @@ internal fun TrackDetail(
         Spacer(modifier = Modifier.height(16.dp))
       }
     }
-    HorizontalDivider()
+    SunsetHorizontalDivider()
     val wiki = trackInfo.wiki
     if (wiki == null) {
       SimpleWiki(
@@ -173,21 +172,17 @@ private fun TrackDescription(
   modifier: Modifier = Modifier
 ) {
   Column(modifier = modifier) {
-    Text(
+    SunsetText.Body(
       text = trackName,
-      style = SunsetTextStyle.body.copy(
-        fontWeight = FontWeight.Bold
-      ),
+      fontWeight = FontWeight.Bold,
       maxLines = 1,
       overflow = TextOverflow.Ellipsis
     )
 
     Spacer(modifier = Modifier.height(4.dp))
 
-    Text(
+    SunsetText.Caption(
       text = artistName,
-      style = SunsetTextStyle.caption,
-      modifier = Modifier,
       maxLines = 1,
       overflow = TextOverflow.Ellipsis
     )
@@ -229,51 +224,49 @@ private fun TrackMetaData(
 @Preview(showBackground = true)
 private fun TrackDetailPreview() {
   SunsetThemePreview {
-    Surface {
-      TrackDetail(
-        trackInfo = TrackInfo(
-          artist = com.mataku.scrobscrob.core.entity.TrackArtist(
-            name = "aespaaespaaespaaespaaespaaespaaespa",
+    TrackDetail(
+      trackInfo = TrackInfo(
+        artist = com.mataku.scrobscrob.core.entity.TrackArtist(
+          name = "aespaaespaaespaaespaaespaaespaaespa",
+          url = ""
+        ),
+        listeners = "100000",
+        url = "https://example.com",
+        name = "Drama",
+        album = TrackAlbumInfo(
+          artist = "aespaaespaaespaaespaaespaaespa",
+          imageList = persistentListOf(),
+          title = "Drama"
+        ),
+        playCount = "10000",
+        topTags = persistentListOf(
+          Tag(
+            name = "K-POP",
             url = ""
           ),
-          listeners = "100000",
-          url = "https://example.com",
-          name = "Drama",
-          album = TrackAlbumInfo(
-            artist = "aespaaespaaespaaespaaespaaespa",
-            imageList = persistentListOf(),
-            title = "Drama"
+          Tag(
+            name = "K-POP",
+            url = ""
           ),
-          playCount = "10000",
-          topTags = persistentListOf(
-            Tag(
-              name = "K-POP",
-              url = ""
-            ),
-            Tag(
-              name = "K-POP",
-              url = ""
-            ),
-            Tag(
-              name = "K-POP",
-              url = ""
-            )
-          ),
-          wiki = Wiki(
-            published = "01 January 2023",
-            content = "\"Clocks\" emerged in <b>conception during the late</b>stages into the production of Coldplay's second album, A Rush of Blood to the Head. The band's vocalist, Chris Martin, came in studio late one night. A riff popped  up in Martin's mind and wrote it on the  piano. Martin presented the riff to the band's guitarist, Jonny Buckland, who then added guitar chords on the basic track.\n\nDuring the writing of \"Clocks\", the band had already made 10 songs for the album. With this, they thought it was too late for the song's inclusion in the albumclude contrast, contradictions and urgency. Chris Martin sings of being in the state of \"helplessness ...",
-            summary = "\"Clocks\" emerged in <b>conception during the late stages</b> into the production of Coldplay's second album, A Rush of Blood to the Head. The band's vocalist, Chris Martin, came in studio late one night. A riff popped  up in Martin's mind and wrote it on the  piano. Martin presented the riff to the band's guitarist, Jonny Buckland, who then added guitar chords on the basic track.\n\nDuring the writing of \"Clocks\", the band had already made 10 songs for the album. <a href=\"http://www.last.fm/music/Coldplay/_/Clocks\">Read more on Last.fm</a>.",
-          ),
-          userPlayCount = "10000"
-        ),
-        onLoveIconTap = {},
-        onUrlTap = {},
-        modifier = Modifier
-          .padding(
-            vertical = 16.dp
+          Tag(
+            name = "K-POP",
+            url = ""
           )
-      )
-    }
+        ),
+        wiki = Wiki(
+          published = "01 January 2023",
+          content = "\"Clocks\" emerged in <b>conception during the late</b>stages into the production of Coldplay's second album, A Rush of Blood to the Head. The band's vocalist, Chris Martin, came in studio late one night. A riff popped  up in Martin's mind and wrote it on the  piano. Martin presented the riff to the band's guitarist, Jonny Buckland, who then added guitar chords on the basic track.\n\nDuring the writing of \"Clocks\", the band had already made 10 songs for the album. With this, they thought it was too late for the song's inclusion in the albumclude contrast, contradictions and urgency. Chris Martin sings of being in the state of \"helplessness ...",
+          summary = "\"Clocks\" emerged in <b>conception during the late stages</b> into the production of Coldplay's second album, A Rush of Blood to the Head. The band's vocalist, Chris Martin, came in studio late one night. A riff popped  up in Martin's mind and wrote it on the  piano. Martin presented the riff to the band's guitarist, Jonny Buckland, who then added guitar chords on the basic track.\n\nDuring the writing of \"Clocks\", the band had already made 10 songs for the album. <a href=\"http://www.last.fm/music/Coldplay/_/Clocks\">Read more on Last.fm</a>.",
+        ),
+        userPlayCount = "10000"
+      ),
+      onLoveIconTap = {},
+      onUrlTap = {},
+      modifier = Modifier
+        .padding(
+          vertical = 16.dp
+        )
+    )
   }
 }
 
@@ -281,51 +274,49 @@ private fun TrackDetailPreview() {
 @Preview(showBackground = true)
 private fun TrackDetailUserLovedTrackPreview() {
   SunsetThemePreview {
-    Surface {
-      TrackDetail(
-        trackInfo = TrackInfo(
-          artist = com.mataku.scrobscrob.core.entity.TrackArtist(
-            name = "aespaaespaaespaaespaaespaaespaaespa",
+    TrackDetail(
+      trackInfo = TrackInfo(
+        artist = com.mataku.scrobscrob.core.entity.TrackArtist(
+          name = "aespaaespaaespaaespaaespaaespaaespa",
+          url = ""
+        ),
+        listeners = "100000",
+        url = "https://example.com",
+        name = "Drama",
+        album = TrackAlbumInfo(
+          artist = "aespaaespaaespaaespaaespaaespa",
+          imageList = persistentListOf(),
+          title = "Drama"
+        ),
+        playCount = "10000",
+        topTags = persistentListOf(
+          Tag(
+            name = "K-POP",
             url = ""
           ),
-          listeners = "100000",
-          url = "https://example.com",
-          name = "Drama",
-          album = TrackAlbumInfo(
-            artist = "aespaaespaaespaaespaaespaaespa",
-            imageList = persistentListOf(),
-            title = "Drama"
+          Tag(
+            name = "K-POP",
+            url = ""
           ),
-          playCount = "10000",
-          topTags = persistentListOf(
-            Tag(
-              name = "K-POP",
-              url = ""
-            ),
-            Tag(
-              name = "K-POP",
-              url = ""
-            ),
-            Tag(
-              name = "K-POP",
-              url = ""
-            )
-          ),
-          wiki = Wiki(
-            published = "01 January 2023",
-            content = "\"Clocks\" emerged in <b>conception during the late</b>stages into the production of Coldplay's second album, A Rush of Blood to the Head. The band's vocalist, Chris Martin, came in studio late one night. A riff popped  up in Martin's mind and wrote it on the  piano. Martin presented the riff to the band's guitarist, Jonny Buckland, who then added guitar chords on the basic track.\n\nDuring the writing of \"Clocks\", the band had already made 10 songs for the album. With this, they thought it was too late for the song's inclusion in the albumclude contrast, contradictions and urgency. Chris Martin sings of being in the state of \"helplessness ...",
-            summary = "\"Clocks\" emerged in <b>conception during the late stages</b> into the production of Coldplay's second album, A Rush of Blood to the Head. The band's vocalist, Chris Martin, came in studio late one night. A riff popped  up in Martin's mind and wrote it on the  piano. Martin presented the riff to the band's guitarist, Jonny Buckland, who then added guitar chords on the basic track.\n\nDuring the writing of \"Clocks\", the band had already made 10 songs for the album. <a href=\"http://www.last.fm/music/Coldplay/_/Clocks\">Read more on Last.fm</a>.",
-          ),
-          userPlayCount = "10000",
-          userLoved = true
-        ),
-        onLoveIconTap = {},
-        onUrlTap = {},
-        modifier = Modifier
-          .padding(
-            vertical = 16.dp
+          Tag(
+            name = "K-POP",
+            url = ""
           )
-      )
-    }
+        ),
+        wiki = Wiki(
+          published = "01 January 2023",
+          content = "\"Clocks\" emerged in <b>conception during the late</b>stages into the production of Coldplay's second album, A Rush of Blood to the Head. The band's vocalist, Chris Martin, came in studio late one night. A riff popped  up in Martin's mind and wrote it on the  piano. Martin presented the riff to the band's guitarist, Jonny Buckland, who then added guitar chords on the basic track.\n\nDuring the writing of \"Clocks\", the band had already made 10 songs for the album. With this, they thought it was too late for the song's inclusion in the albumclude contrast, contradictions and urgency. Chris Martin sings of being in the state of \"helplessness ...",
+          summary = "\"Clocks\" emerged in <b>conception during the late stages</b> into the production of Coldplay's second album, A Rush of Blood to the Head. The band's vocalist, Chris Martin, came in studio late one night. A riff popped  up in Martin's mind and wrote it on the  piano. Martin presented the riff to the band's guitarist, Jonny Buckland, who then added guitar chords on the basic track.\n\nDuring the writing of \"Clocks\", the band had already made 10 songs for the album. <a href=\"http://www.last.fm/music/Coldplay/_/Clocks\">Read more on Last.fm</a>.",
+        ),
+        userPlayCount = "10000",
+        userLoved = true
+      ),
+      onLoveIconTap = {},
+      onUrlTap = {},
+      modifier = Modifier
+        .padding(
+          vertical = 16.dp
+        )
+    )
   }
 }

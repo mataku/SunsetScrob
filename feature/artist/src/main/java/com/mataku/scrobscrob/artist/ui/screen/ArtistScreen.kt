@@ -17,14 +17,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.BottomSheetScaffold
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SheetValue
-import androidx.compose.material3.Surface
-import androidx.compose.material3.rememberBottomSheetScaffoldState
-import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -43,6 +35,8 @@ import com.mataku.scrobscrob.core.entity.ArtistInfo
 import com.mataku.scrobscrob.core.entity.Stats
 import com.mataku.scrobscrob.core.entity.Tag
 import com.mataku.scrobscrob.core.entity.Wiki
+import com.mataku.scrobscrob.ui_common.SunsetBottomSheet
+import com.mataku.scrobscrob.ui_common.SunsetHorizontalDivider
 import com.mataku.scrobscrob.ui_common.component.CircleBackButton
 import com.mataku.scrobscrob.ui_common.molecule.SunsetImage
 import com.mataku.scrobscrob.ui_common.molecule.TopTags
@@ -71,7 +65,6 @@ internal fun SharedTransitionScope.ArtistScreen(
   )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SharedTransitionScope.ArtistContent(
   animatedContentScope: AnimatedContentScope,
@@ -89,16 +82,9 @@ private fun SharedTransitionScope.ArtistContent(
   val screenHeight = with(LocalDensity.current) {
     LocalWindowInfo.current.containerSize.height.toDp()
   }
-  val scaffoldState = rememberBottomSheetScaffoldState(
-    bottomSheetState = rememberStandardBottomSheetState(
-      initialValue = SheetValue.PartiallyExpanded
-    )
-  )
 
-  BottomSheetScaffold(
+  SunsetBottomSheet(
     modifier = modifier,
-    sheetContainerColor = MaterialTheme.colorScheme.background,
-    scaffoldState = scaffoldState,
     sheetPeekHeight = if (screenHeight >= screenWidth) {
       (screenHeight - screenWidth)
     } else {
@@ -189,7 +175,7 @@ private fun SharedTransitionScope.ArtistContent(
               vertical = 16.dp
             )
           )
-          HorizontalDivider()
+          SunsetHorizontalDivider()
 
           artistInfo.wiki?.let {
             WikiCell(
@@ -210,53 +196,51 @@ private fun SharedTransitionScope.ArtistContent(
 @Preview(showBackground = true)
 private fun ArtistContentPreview() {
   SunsetThemePreview {
-    Surface {
-      SharedTransitionLayout {
-        AnimatedContent(
-          targetState = "",
-          label = "artist_content_preview"
-        ) {
-          ArtistContent(
-            artworkUrl = it,
-            artistName = "aespa",
-            artistInfo = ArtistInfo(
-              name = "aespa",
-              images = persistentListOf(),
-              stats = Stats(
-                listeners = "100000",
-                playCount = "1000000"
+    SharedTransitionLayout {
+      AnimatedContent(
+        targetState = "",
+        label = "artist_content_preview"
+      ) {
+        ArtistContent(
+          artworkUrl = it,
+          artistName = "aespa",
+          artistInfo = ArtistInfo(
+            name = "aespa",
+            images = persistentListOf(),
+            stats = Stats(
+              listeners = "100000",
+              playCount = "1000000"
+            ),
+            url = "",
+            tags = persistentListOf(
+              Tag(
+                name = "K-POP",
+                url = ""
               ),
-              url = "",
-              tags = persistentListOf(
-                Tag(
-                  name = "K-POP",
-                  url = ""
-                ),
-                Tag(
-                  name = "K-POP",
-                  url = ""
-                ),
-                Tag(
-                  name = "K-POP",
-                  url = ""
-                ),
-                Tag(
-                  name = "K-POP",
-                  url = ""
-                )
+              Tag(
+                name = "K-POP",
+                url = ""
               ),
-              wiki = Wiki(
-                published = "01 January 2023",
-                summary = LoremIpsum(100).values.joinToString(separator = " "),
-                content = ""
+              Tag(
+                name = "K-POP",
+                url = ""
+              ),
+              Tag(
+                name = "K-POP",
+                url = ""
               )
             ),
-            onArtistLoadMoreTap = {},
-            onBackPressed = {},
-            id = "",
-            animatedContentScope = this
-          )
-        }
+            wiki = Wiki(
+              published = "01 January 2023",
+              summary = LoremIpsum(100).values.joinToString(separator = " "),
+              content = ""
+            )
+          ),
+          onArtistLoadMoreTap = {},
+          onBackPressed = {},
+          id = "",
+          animatedContentScope = this
+        )
       }
     }
   }

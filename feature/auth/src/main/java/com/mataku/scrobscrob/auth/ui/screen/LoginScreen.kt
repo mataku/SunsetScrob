@@ -20,16 +20,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -55,15 +45,20 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mataku.scrobscrob.auth.R
 import com.mataku.scrobscrob.auth.ui.viewmodel.LoginViewModel
-import com.mataku.scrobscrob.ui_common.SunsetTextStyle
+import com.mataku.scrobscrob.ui_common.SunsetButton
+import com.mataku.scrobscrob.ui_common.SunsetCircularProgressIndicator
+import com.mataku.scrobscrob.ui_common.SunsetIcon
+import com.mataku.scrobscrob.ui_common.SunsetIconButton
+import com.mataku.scrobscrob.ui_common.SunsetText
+import com.mataku.scrobscrob.ui_common.SunsetTextButton
+import com.mataku.scrobscrob.ui_common.SunsetTextField
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.LocalSnackbarHostState
-import com.mataku.scrobscrob.ui_common.style.SunsetTheme
-import com.mataku.scrobscrob.ui_common.style.accentColor
+import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
+import com.mataku.scrobscrob.ui_common.style.onSurfaceColor
 import kotlinx.coroutines.launch
 import com.mataku.scrobscrob.ui_common.R as uiCommonR
 
@@ -151,19 +146,15 @@ private fun LoginContent(
   ) {
     Spacer(modifier = Modifier.height(24.dp))
 
-    Text(
+    SunsetText.Title(
       text = stringResource(id = uiCommonR.string.login_to_last_fm),
-      fontSize = 20.sp,
-      style = SunsetTextStyle.title,
       fontWeight = FontWeight.Bold,
       modifier = Modifier.align(Alignment.CenterHorizontally)
     )
 
     Spacer(modifier = Modifier.height(24.dp))
 
-    val theme = LocalAppTheme.current
-
-    OutlinedTextField(
+    SunsetTextField(
       value = username,
       onValueChange = {
         onUsernameUpdate.invoke(it)
@@ -174,16 +165,11 @@ private fun LoginContent(
       ),
       singleLine = true,
       label = {
-        Text(
+        SunsetText.Label(
           text = "Username",
-          style = SunsetTextStyle.label.copy(
-            color = MaterialTheme.colorScheme.onSurface
-          )
+          color = LocalAppTheme.current.onSurfaceColor(),
         )
       },
-      colors = OutlinedTextFieldDefaults.colors(
-        focusedBorderColor = theme.accentColor(),
-      ),
       modifier = Modifier
         .align(Alignment.CenterHorizontally)
         .fillMaxWidth()
@@ -195,7 +181,7 @@ private fun LoginContent(
 
     Spacer(modifier = Modifier.height(16.dp))
 
-    OutlinedTextField(
+    SunsetTextField(
       value = password,
       onValueChange = {
         onPasswordUpdate.invoke(it)
@@ -212,10 +198,10 @@ private fun LoginContent(
         } else {
           Icons.Filled.VisibilityOff
         }
-        IconButton(onClick = {
+        SunsetIconButton(onClick = {
           passwordVisible = !passwordVisible
         }) {
-          Icon(imageVector = icon, "password visibility toggle")
+          SunsetIcon(imageVector = icon, "password visibility toggle")
         }
       },
       keyboardActions = KeyboardActions(
@@ -224,16 +210,11 @@ private fun LoginContent(
         }
       ),
       label = {
-        Text(
+        SunsetText.Label(
           text = "Password",
-          style = SunsetTextStyle.label.copy(
-            color = MaterialTheme.colorScheme.onSurface
-          )
+          color = LocalAppTheme.current.onSurfaceColor(),
         )
       },
-      colors = OutlinedTextFieldDefaults.colors(
-        focusedBorderColor = theme.accentColor(),
-      ),
       modifier = Modifier
         .align(Alignment.CenterHorizontally)
         .fillMaxWidth()
@@ -245,7 +226,7 @@ private fun LoginContent(
 
     Spacer(modifier = Modifier.height(48.dp))
 
-    Button(
+    SunsetButton(
       onClick = {
         focusManager.clearFocus()
         onLoginButtonTap(username, password)
@@ -257,16 +238,15 @@ private fun LoginContent(
       contentPadding = PaddingValues(vertical = 16.dp)
     ) {
       if (isLoading) {
-        CircularProgressIndicator(
+        SunsetCircularProgressIndicator(
           modifier = Modifier
             .size(16.dp)
             .background(color = Color.Transparent)
             .align(alignment = Alignment.CenterVertically)
         )
       } else {
-        Text(
+        SunsetText.Body(
           text = "Let me in!",
-          style = SunsetTextStyle.body,
           fontWeight = FontWeight.Medium,
         )
       }
@@ -274,28 +254,25 @@ private fun LoginContent(
 
     Spacer(modifier = Modifier.height(32.dp))
 
-    TextButton(onClick = {
-      onPrivacyPolicyTap.invoke()
-    }) {
-      Text(text = "Privacy policy", style = SunsetTextStyle.button)
-    }
+    SunsetTextButton.Label(
+      text = "Privacy policy",
+      onClick = onPrivacyPolicyTap,
+    )
   }
 }
 
 @Preview(showBackground = true)
 @Composable
 private fun LoginScreenPreview() {
-  SunsetTheme {
-    Surface {
-      LoginContent(
-        isLoading = false,
-        onLoginButtonTap = { _, _ -> },
-        onPrivacyPolicyTap = {},
-        username = "",
-        password = "",
-        onUsernameUpdate = {},
-        onPasswordUpdate = {}
-      )
-    }
+  SunsetThemePreview {
+    LoginContent(
+      isLoading = false,
+      onLoginButtonTap = { _, _ -> },
+      onPrivacyPolicyTap = {},
+      username = "",
+      password = "",
+      onUsernameUpdate = {},
+      onPasswordUpdate = {}
+    )
   }
 }

@@ -2,8 +2,6 @@ package com.mataku.scrobscrob.album.ui.screen
 
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.SharedTransitionLayout
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.mataku.scrobscrob.album.ui.viewmodel.TopAlbumsViewModel
@@ -14,6 +12,7 @@ import com.mataku.scrobscrob.data.repository.AlbumRepository
 import com.mataku.scrobscrob.data.repository.UsernameRepository
 import com.mataku.scrobscrob.test_helper.integration.VRT
 import com.mataku.scrobscrob.test_helper.integration.captureScreenshot
+import com.mataku.scrobscrob.ui_common.rememberSunsetTopAppBarScrollBehavior
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
@@ -26,7 +25,6 @@ import org.junit.experimental.categories.Category
 import org.junit.runner.RunWith
 import org.robolectric.annotation.GraphicsMode
 
-@OptIn(ExperimentalMaterial3Api::class)
 @RunWith(AndroidJUnit4::class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 @Category(VRT::class)
@@ -104,7 +102,7 @@ class TopAlbumsScreenTest {
               usernameRepository = usernameRepository
             ),
             navigateToAlbumInfo = { _, _ -> },
-            topAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(),
+            topAppBarScrollBehavior = rememberSunsetTopAppBarScrollBehavior(),
             sharedTransitionScope = this,
             animatedContentScope = animatedContentScope
           )
@@ -126,7 +124,7 @@ class TopAlbumsScreenTest {
               usernameRepository = usernameRepository
             ),
             navigateToAlbumInfo = { _, _ -> },
-            topAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(),
+            topAppBarScrollBehavior = rememberSunsetTopAppBarScrollBehavior(),
             sharedTransitionScope = this,
             animatedContentScope = animatedContentScope
           )

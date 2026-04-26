@@ -23,7 +23,7 @@ dependencies {
 
   implementation(libs.compose.ui.tooling)
   implementation(libs.compose.animation)
-  implementation(libs.compose.material3)
+  implementation(libs.compose.foundation)
   implementation(libs.compose.navigation)
 
   implementation(libs.coroutines)

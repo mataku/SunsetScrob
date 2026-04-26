@@ -15,8 +15,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -33,7 +31,7 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.mataku.scrobscrob.core.entity.RecentTrack
 import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.scrobble.R
-import com.mataku.scrobscrob.ui_common.SunsetTextStyle
+import com.mataku.scrobscrob.ui_common.SunsetText
 import com.mataku.scrobscrob.ui_common.molecule.SunsetImage
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 
@@ -113,24 +111,21 @@ private fun ScrobbleContent(
           .height(56.dp),
         verticalArrangement = Arrangement.Center
       ) {
-        Text(
+        SunsetText.Body(
           text = trackName,
+          fontWeight = FontWeight.Medium,
           modifier = Modifier.wrapContentSize(),
           maxLines = 1,
           overflow = TextOverflow.Ellipsis,
-          style = SunsetTextStyle.body.copy(
-            fontWeight = FontWeight.Medium
-          )
         )
 
         Spacer(modifier = Modifier.size(4.dp))
 
-        Text(
+        SunsetText.Caption(
           text = artistName,
           modifier = Modifier.wrapContentSize(),
           maxLines = 1,
           overflow = TextOverflow.Ellipsis,
-          style = SunsetTextStyle.caption
         )
       }
     }
@@ -154,23 +149,21 @@ private fun ScrobbleContent(
 @Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)
 private fun ScrobblePreview() {
   SunsetThemePreview {
-    Surface {
-      SharedTransitionLayout {
-        AnimatedContent(
-          targetState = "",
-          label = "scrobble_preview"
-        ) {
-          ScrobbleContent(
-            imageUrl = it,
-            trackName = "裸足でSummer",
-            artistName = "乃木坂46",
-            date = "01 Aug 2022, 04:08",
-            onScrobbleTap = {},
-            animatedContentScope = this,
-            sharedTransitionScope = this@SharedTransitionLayout,
-            id = ""
-          )
-        }
+    SharedTransitionLayout {
+      AnimatedContent(
+        targetState = "",
+        label = "scrobble_preview"
+      ) {
+        ScrobbleContent(
+          imageUrl = it,
+          trackName = "裸足でSummer",
+          artistName = "乃木坂46",
+          date = "01 Aug 2022, 04:08",
+          onScrobbleTap = {},
+          animatedContentScope = this,
+          sharedTransitionScope = this@SharedTransitionLayout,
+          id = ""
+        )
       }
     }
   }

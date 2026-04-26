@@ -6,28 +6,22 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FilterList
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.FloatingActionButtonDefaults
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
+import com.mataku.scrobscrob.ui_common.SunsetFloatingActionButton
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
-import com.mataku.scrobscrob.ui_common.style.accentColor
 
 @Composable
 fun FilteringFloatingButton(
   onClick: () -> Unit,
   modifier: Modifier = Modifier
 ) {
-  FloatingActionButton(
+  SunsetFloatingActionButton(
     onClick = onClick,
-    containerColor = LocalAppTheme.current.accentColor(),
     modifier = modifier,
-    shape = FloatingActionButtonDefaults.shape
   ) {
     Image(
       painter = rememberVectorPainter(image = Icons.Filled.FilterList),
@@ -40,17 +34,15 @@ fun FilteringFloatingButton(
 @Composable
 private fun FilteringFloatingButtonPreview() {
   SunsetThemePreview {
-    Surface {
-      Box(
+    Box(
+      modifier = Modifier
+        .wrapContentSize()
+        .padding(16.dp)
+    ) {
+      FilteringFloatingButton(
+        onClick = {},
         modifier = Modifier
-          .wrapContentSize()
-          .padding(16.dp)
-      ) {
-        FilteringFloatingButton(
-          onClick = {},
-          modifier = Modifier
-        )
-      }
+      )
     }
   }
 }

@@ -9,14 +9,6 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -31,11 +23,16 @@ import com.mataku.scrobscrob.app.ui.navigation.ScreenStyle
 import com.mataku.scrobscrob.discover.ui.navigation.navigateToDiscover
 import com.mataku.scrobscrob.home.ui.navigation.navigateToHome
 import com.mataku.scrobscrob.ui_common.SunsetBottomNavItem
+import com.mataku.scrobscrob.ui_common.SunsetIcon
+import com.mataku.scrobscrob.ui_common.SunsetIconButton
+import com.mataku.scrobscrob.ui_common.SunsetScaffold
+import com.mataku.scrobscrob.ui_common.SunsetSnackbarHost
+import com.mataku.scrobscrob.ui_common.SunsetTopAppBar
 import com.mataku.scrobscrob.ui_common.organism.SunsetNavigationBar
+import com.mataku.scrobscrob.ui_common.rememberSunsetTopAppBarScrollBehavior
 import com.mataku.scrobscrob.ui_common.style.LocalSnackbarHostState
 import com.mataku.scrobscrob.ui_common.style.LocalTopAppBarState
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun MainScreen(
   modifier: Modifier = Modifier
@@ -47,25 +44,25 @@ internal fun MainScreen(
   val currentScreenStyle = ScreenStyle.fromRoute(route = currentRoute)
 
   CompositionLocalProvider(
-    LocalTopAppBarState provides TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+    LocalTopAppBarState provides rememberSunsetTopAppBarScrollBehavior()
   ) {
-    Scaffold(
+    SunsetScaffold(
       modifier = modifier.fillMaxSize(),
       snackbarHost = {
-        SnackbarHost(hostState = LocalSnackbarHostState.current)
+        SunsetSnackbarHost(hostState = LocalSnackbarHostState.current)
       },
       topBar = if (currentScreenStyle == null) {
         {}
       } else {
         {
-          TopAppBar(
+          SunsetTopAppBar(
             title = currentScreenStyle.topAppBarTitle,
             navigationIcon = if (currentScreenStyle.navigationRequired) {
               {
-                IconButton(onClick = {
+                SunsetIconButton(onClick = {
                   navController.popBackStack()
                 }) {
-                  Icon(
+                  SunsetIcon(
                     imageVector = Icons.AutoMirrored.Default.ArrowBack,
                     contentDescription = "Back"
                   )
@@ -79,10 +76,6 @@ internal fun MainScreen(
             } else {
               null
             },
-            colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-              containerColor = MaterialTheme.colorScheme.background,
-              scrolledContainerColor = MaterialTheme.colorScheme.background
-            ),
           )
         }
       },

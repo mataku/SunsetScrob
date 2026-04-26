@@ -21,14 +21,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.BottomSheetScaffold
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SheetValue
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.rememberBottomSheetScaffoldState
-import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -51,7 +43,8 @@ import com.mataku.scrobscrob.core.entity.Wiki
 import com.mataku.scrobscrob.core.entity.presentation.toReadableIntValue
 import com.mataku.scrobscrob.scrobble.ui.component.TrackDetail
 import com.mataku.scrobscrob.scrobble.ui.viewmodel.TrackViewModel
-import com.mataku.scrobscrob.ui_common.SunsetTextStyle
+import com.mataku.scrobscrob.ui_common.SunsetBottomSheet
+import com.mataku.scrobscrob.ui_common.SunsetText
 import com.mataku.scrobscrob.ui_common.component.ArtworkLayerBar
 import com.mataku.scrobscrob.ui_common.component.CircleBackButton
 import com.mataku.scrobscrob.ui_common.molecule.SunsetImage
@@ -87,7 +80,6 @@ internal fun SharedTransitionScope.TrackScreen(
   )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SharedTransitionScope.TrackContent(
   animatedContentScope: AnimatedContentScope,
@@ -107,15 +99,8 @@ private fun SharedTransitionScope.TrackContent(
   val screenHeight = with(LocalDensity.current) {
     LocalWindowInfo.current.containerSize.height.toDp()
   }
-  val scaffoldState = rememberBottomSheetScaffoldState(
-    bottomSheetState = rememberStandardBottomSheetState(
-      initialValue = SheetValue.PartiallyExpanded
-    )
-  )
-  BottomSheetScaffold(
+  SunsetBottomSheet(
     modifier = modifier,
-    sheetContainerColor = MaterialTheme.colorScheme.background,
-    scaffoldState = scaffoldState,
     sheetContent = {
       TrackDetailContent(
         trackInfo = trackInfo,
@@ -243,55 +228,53 @@ private fun TrackDetailContent(
 @Preview(showBackground = true)
 private fun TrackContentPreview() {
   SunsetThemePreview {
-    Surface {
-      SharedTransitionLayout {
-        AnimatedContent(targetState = "", label = "track_screen_preview") {
-          TrackContent(
-            artworkUrl = it,
-            trackInfo = TrackInfo(
-              artist = com.mataku.scrobscrob.core.entity.TrackArtist(
-                name = "aespaaespaaespaaespaaespaaespaaespa",
+    SharedTransitionLayout {
+      AnimatedContent(targetState = "", label = "track_screen_preview") {
+        TrackContent(
+          artworkUrl = it,
+          trackInfo = TrackInfo(
+            artist = com.mataku.scrobscrob.core.entity.TrackArtist(
+              name = "aespaaespaaespaaespaaespaaespaaespa",
+              url = ""
+            ),
+            listeners = "100000",
+            url = "https://example.com",
+            name = "Drama",
+            album = TrackAlbumInfo(
+              artist = "aespaaespaaespaaespaaespaaespa",
+              imageList = persistentListOf(),
+              title = "Drama"
+            ),
+            playCount = "10000",
+            topTags = persistentListOf(
+              Tag(
+                name = "K-POP",
                 url = ""
               ),
-              listeners = "100000",
-              url = "https://example.com",
-              name = "Drama",
-              album = TrackAlbumInfo(
-                artist = "aespaaespaaespaaespaaespaaespa",
-                imageList = persistentListOf(),
-                title = "Drama"
+              Tag(
+                name = "K-POP",
+                url = ""
               ),
-              playCount = "10000",
-              topTags = persistentListOf(
-                Tag(
-                  name = "K-POP",
-                  url = ""
-                ),
-                Tag(
-                  name = "K-POP",
-                  url = ""
-                ),
-                Tag(
-                  name = "K-POP",
-                  url = ""
-                )
-              ),
-              wiki = Wiki(
-                published = "01 January 2023",
-                content = "\"Clocks\" emerged in <b>conception during the late</b>stages into the production of Coldplay's second album, A Rush of Blood to the Head. The band's vocalist, Chris Martin, came in studio late one night. A riff popped  up in Martin's mind and wrote it on the  piano. Martin presented the riff to the band's guitarist, Jonny Buckland, who then added guitar chords on the basic track.\n\nDuring the writing of \"Clocks\", the band had already made 10 songs for the album. With this, they thought it was too late for the song's inclusion in the albumclude contrast, contradictions and urgency. Chris Martin sings of being in the state of \"helplessness ...",
-                summary = "\"Clocks\" emerged in <b>conception during the late stages</b> into the production of Coldplay's second album, A Rush of Blood to the Head. The band's vocalist, Chris Martin, came in studio late one night. A riff popped  up in Martin's mind and wrote it on the  piano. Martin presented the riff to the band's guitarist, Jonny Buckland, who then added guitar chords on the basic track.\n\nDuring the writing of \"Clocks\", the band had already made 10 songs for the album. <a href=\"http://www.last.fm/music/Coldplay/_/Clocks\">Read more on Last.fm</a>.",
-              ),
-              userPlayCount = "10000"
+              Tag(
+                name = "K-POP",
+                url = ""
+              )
             ),
-            onUrlTap = {},
-            artistName = "aespa",
-            trackName = "Drama",
-            onBackPressed = {},
-            id = "123",
-            animatedContentScope = this,
-            onLoveIconTap = {}
-          )
-        }
+            wiki = Wiki(
+              published = "01 January 2023",
+              content = "\"Clocks\" emerged in <b>conception during the late</b>stages into the production of Coldplay's second album, A Rush of Blood to the Head. The band's vocalist, Chris Martin, came in studio late one night. A riff popped  up in Martin's mind and wrote it on the  piano. Martin presented the riff to the band's guitarist, Jonny Buckland, who then added guitar chords on the basic track.\n\nDuring the writing of \"Clocks\", the band had already made 10 songs for the album. With this, they thought it was too late for the song's inclusion in the albumclude contrast, contradictions and urgency. Chris Martin sings of being in the state of \"helplessness ...",
+              summary = "\"Clocks\" emerged in <b>conception during the late stages</b> into the production of Coldplay's second album, A Rush of Blood to the Head. The band's vocalist, Chris Martin, came in studio late one night. A riff popped  up in Martin's mind and wrote it on the  piano. Martin presented the riff to the band's guitarist, Jonny Buckland, who then added guitar chords on the basic track.\n\nDuring the writing of \"Clocks\", the band had already made 10 songs for the album. <a href=\"http://www.last.fm/music/Coldplay/_/Clocks\">Read more on Last.fm</a>.",
+            ),
+            userPlayCount = "10000"
+          ),
+          onUrlTap = {},
+          artistName = "aespa",
+          trackName = "Drama",
+          onBackPressed = {},
+          id = "123",
+          animatedContentScope = this,
+          onLoveIconTap = {}
+        )
       }
     }
   }
@@ -314,21 +297,17 @@ private fun TrackDetail2(
       modifier = Modifier
         .weight(1F)
     ) {
-      Text(
+      SunsetText.Body(
         text = trackName,
-        style = SunsetTextStyle.body.copy(
-          fontWeight = FontWeight.Bold
-        ),
+        fontWeight = FontWeight.Bold,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis
       )
 
       Spacer(modifier = Modifier.height(4.dp))
 
-      Text(
+      SunsetText.Caption(
         text = artistName,
-        style = SunsetTextStyle.caption,
-        modifier = Modifier,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis
       )

@@ -1,6 +1,5 @@
 package com.mataku.scrobscrob.test_helper.integration
 
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.test.isRoot
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
@@ -26,9 +25,7 @@ fun ComposeContentTestRule.captureScreenshot(
 
   this.setContent {
     SunsetThemePreview(theme = appTheme) {
-      Surface {
-        content()
-      }
+      content()
     }
   }
 
@@ -39,3 +36,5 @@ fun ComposeContentTestRule.captureScreenshot(
     roborazziOptions = DefaultRoborazziOptions,
   )
 }
+
+

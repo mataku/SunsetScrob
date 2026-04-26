@@ -11,9 +11,6 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Check
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
@@ -21,8 +18,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.airbnb.android.showkase.annotation.ShowkaseComposable
 import com.mataku.scrobscrob.core.entity.TimeRangeFiltering
-import com.mataku.scrobscrob.ui_common.SunsetTextStyle
+import com.mataku.scrobscrob.ui_common.SunsetText
+import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
+import com.mataku.scrobscrob.ui_common.style.onSurfaceColor
 
 @Composable
 fun FilteringBottomSheet(
@@ -38,9 +37,8 @@ fun FilteringBottomSheet(
       )
       .navigationBarsPadding()
   ) {
-    Text(
+    SunsetText.Headline(
       text = "Select time-range",
-      style = SunsetTextStyle.headline,
       modifier = Modifier
         .padding(
           horizontal = 16.dp,
@@ -81,9 +79,8 @@ private fun TimeRangeCell(
     .padding(vertical = 12.dp)
     .then(modifier)
   ) {
-    Text(
+    SunsetText.Body(
       text = timeRangeValue,
-      style = SunsetTextStyle.body,
       modifier = Modifier.weight(1F)
     )
 
@@ -92,7 +89,7 @@ private fun TimeRangeCell(
         imageVector = Icons.Outlined.Check,
         contentDescription = "selected time-range",
         colorFilter = ColorFilter.tint(
-          color = MaterialTheme.colorScheme.onSurface
+          color = LocalAppTheme.current.onSurfaceColor()
         )
       )
     }
@@ -104,12 +101,10 @@ private fun TimeRangeCell(
 @ShowkaseComposable(name = "FilteringBottomSheet", group = "BottomSheet")
 private fun FilteringBottomSheetPreview() {
   SunsetThemePreview {
-    Surface {
-      FilteringBottomSheet(
-        selectedTimeRangeFiltering = TimeRangeFiltering.OVERALL,
-        onClick = {},
-        modifier = Modifier
-      )
-    }
+    FilteringBottomSheet(
+      selectedTimeRangeFiltering = TimeRangeFiltering.OVERALL,
+      onClick = {},
+      modifier = Modifier
+    )
   }
 }

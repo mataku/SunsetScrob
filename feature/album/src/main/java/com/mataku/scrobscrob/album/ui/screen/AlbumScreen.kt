@@ -18,14 +18,6 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.BottomSheetScaffold
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SheetValue
-import androidx.compose.material3.Surface
-import androidx.compose.material3.rememberBottomSheetScaffoldState
-import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -44,6 +36,8 @@ import com.mataku.scrobscrob.core.entity.AlbumInfo
 import com.mataku.scrobscrob.core.entity.AlbumInfoTrack
 import com.mataku.scrobscrob.core.entity.Tag
 import com.mataku.scrobscrob.core.entity.Wiki
+import com.mataku.scrobscrob.ui_common.SunsetBottomSheet
+import com.mataku.scrobscrob.ui_common.SunsetHorizontalDivider
 import com.mataku.scrobscrob.ui_common.component.ArtworkLayerBar
 import com.mataku.scrobscrob.ui_common.component.CircleBackButton
 import com.mataku.scrobscrob.ui_common.molecule.SimpleWiki
@@ -77,7 +71,6 @@ internal fun SharedTransitionScope.AlbumScreen(
   )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SharedTransitionScope.AlbumContent(
   animatedContentScope: AnimatedContentScope,
@@ -96,15 +89,8 @@ private fun SharedTransitionScope.AlbumContent(
   val screenHeight = with(LocalDensity.current) {
     LocalWindowInfo.current.containerSize.height.toDp()
   }
-  val scaffoldState = rememberBottomSheetScaffoldState(
-    bottomSheetState = rememberStandardBottomSheetState(
-      initialValue = SheetValue.PartiallyExpanded
-    )
-  )
-  BottomSheetScaffold(
+  SunsetBottomSheet(
     modifier = modifier,
-    sheetContainerColor = MaterialTheme.colorScheme.background,
-    scaffoldState = scaffoldState,
     sheetPeekHeight = if (screenHeight >= screenWidth) {
       (screenHeight - screenWidth + 24.dp)
     } else {
@@ -217,7 +203,7 @@ private fun AlbumDetailContent(
           )
       )
     }
-    HorizontalDivider()
+    SunsetHorizontalDivider()
 
     albumInfo?.let { album ->
       Spacer(modifier = Modifier.height(16.dp))
@@ -229,7 +215,7 @@ private fun AlbumDetailContent(
           )
       )
       Spacer(modifier = Modifier.height(16.dp))
-      HorizontalDivider()
+      SunsetHorizontalDivider()
       val wiki = album.wiki
       if (wiki == null) {
         SimpleWiki(
@@ -259,70 +245,68 @@ private fun AlbumDetailContent(
 @Preview(showBackground = true)
 private fun AlbumContentPreview() {
   SunsetThemePreview {
-    Surface {
-      SharedTransitionLayout {
-        AnimatedContent(
-          targetState = "",
-          label = "album_content_preview"
-        ) {
-          AlbumContent(
-            artworkUrl = it,
-            albumName = "Drama",
+    SharedTransitionLayout {
+      AnimatedContent(
+        targetState = "",
+        label = "album_content_preview"
+      ) {
+        AlbumContent(
+          artworkUrl = it,
+          albumName = "Drama",
+          artistName = "aespa",
+          albumInfo = AlbumInfo(
             artistName = "aespa",
-            albumInfo = AlbumInfo(
-              artistName = "aespa",
-              albumName = "Drama",
-              tracks = persistentListOf(
-                AlbumInfoTrack(
-                  duration = "100",
-                  name = "Drama",
-                  url = ""
-                ),
-                AlbumInfoTrack(
-                  duration = "100",
-                  name = "Drama",
-                  url = ""
-                ),
-                AlbumInfoTrack(
-                  duration = "100",
-                  name = "Drama",
-                  url = ""
-                )
+            albumName = "Drama",
+            tracks = persistentListOf(
+              AlbumInfoTrack(
+                duration = "100",
+                name = "Drama",
+                url = ""
               ),
-              images = persistentListOf(),
-              listeners = "10000",
-              playCount = "1000",
-              url = "",
-              tags = persistentListOf(
-                Tag(
-                  name = "K-POP",
-                  url = ""
-                ),
-                Tag(
-                  name = "K-POP",
-                  url = ""
-                ),
-                Tag(
-                  name = "K-POP",
-                  url = ""
-                ),
-                Tag(
-                  name = "K-POP",
-                  url = ""
-                ),
+              AlbumInfoTrack(
+                duration = "100",
+                name = "Drama",
+                url = ""
               ),
-              wiki = Wiki(
-                published = "01 January 2023",
-                content = "\"Clocks\" emerged in <b>conception during the late</b>stages into the production of Coldplay's second album, A Rush of Blood to the Head. The band's vocalist, Chris Martin, came in studio late one night. A riff popped  up in Martin's mind and wrote it on the  piano. Martin presented the riff to the band's guitarist, Jonny Buckland, who then added guitar chords on the basic track.\n\nDuring the writing of \"Clocks\", the band had already made 10 songs for the album. With this, they thought it was too late for the song's inclusion in the albumclude contrast, contradictions and urgency. Chris Martin sings of being in the state of \"helplessness ...",
-                summary = "\"Clocks\" emerged in <b>conception during the late stages</b> into the production of Coldplay's second album, A Rush of Blood to the Head. The band's vocalist, Chris Martin, came in studio late one night. A riff popped  up in Martin's mind and wrote it on the  piano. Martin presented the riff to the band's guitarist, Jonny Buckland, who then added guitar chords on the basic track.\n\nDuring the writing of \"Clocks\", the band had already made 10 songs for the album. <a href=\"http://www.last.fm/music/Coldplay/_/Clocks\">Read more on Last.fm</a>.",
+              AlbumInfoTrack(
+                duration = "100",
+                name = "Drama",
+                url = ""
               )
             ),
-            onAlbumLoadMoreTap = {},
-            onBackPressed = {},
-            animatedContentScope = this,
-            id = ""
-          )
-        }
+            images = persistentListOf(),
+            listeners = "10000",
+            playCount = "1000",
+            url = "",
+            tags = persistentListOf(
+              Tag(
+                name = "K-POP",
+                url = ""
+              ),
+              Tag(
+                name = "K-POP",
+                url = ""
+              ),
+              Tag(
+                name = "K-POP",
+                url = ""
+              ),
+              Tag(
+                name = "K-POP",
+                url = ""
+              ),
+            ),
+            wiki = Wiki(
+              published = "01 January 2023",
+              content = "\"Clocks\" emerged in <b>conception during the late</b>stages into the production of Coldplay's second album, A Rush of Blood to the Head. The band's vocalist, Chris Martin, came in studio late one night. A riff popped  up in Martin's mind and wrote it on the  piano. Martin presented the riff to the band's guitarist, Jonny Buckland, who then added guitar chords on the basic track.\n\nDuring the writing of \"Clocks\", the band had already made 10 songs for the album. With this, they thought it was too late for the song's inclusion in the albumclude contrast, contradictions and urgency. Chris Martin sings of being in the state of \"helplessness ...",
+              summary = "\"Clocks\" emerged in <b>conception during the late stages</b> into the production of Coldplay's second album, A Rush of Blood to the Head. The band's vocalist, Chris Martin, came in studio late one night. A riff popped  up in Martin's mind and wrote it on the  piano. Martin presented the riff to the band's guitarist, Jonny Buckland, who then added guitar chords on the basic track.\n\nDuring the writing of \"Clocks\", the band had already made 10 songs for the album. <a href=\"http://www.last.fm/music/Coldplay/_/Clocks\">Read more on Last.fm</a>.",
+            )
+          ),
+          onAlbumLoadMoreTap = {},
+          onBackPressed = {},
+          animatedContentScope = this,
+          id = ""
+        )
       }
     }
   }

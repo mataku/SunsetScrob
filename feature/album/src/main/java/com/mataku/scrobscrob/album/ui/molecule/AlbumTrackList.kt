@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,7 +16,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mataku.scrobscrob.core.entity.AlbumInfoTrack
-import com.mataku.scrobscrob.ui_common.SunsetTextStyle
+import com.mataku.scrobscrob.ui_common.SunsetText
 import com.mataku.scrobscrob.ui_common.extension.toReadableString
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import kotlinx.collections.immutable.ImmutableList
@@ -34,11 +32,9 @@ fun AlbumTrackList(
     Column(
       modifier = modifier
     ) {
-      Text(
+      SunsetText.Headline(
         text = "Track list",
-        style = SunsetTextStyle.headline,
         maxLines = 1,
-        modifier = Modifier
       )
       Spacer(modifier = Modifier.height(8.dp))
       tracks.forEachIndexed { index, track ->
@@ -67,22 +63,19 @@ private fun AlbumTrack(
       ),
     verticalAlignment = Alignment.CenterVertically
   ) {
-    Text(
+    SunsetText.Caption(
       text = index.toString(),
-      style = SunsetTextStyle.caption,
       modifier = Modifier.width(16.dp),
       textAlign = TextAlign.Center
     )
 
     Spacer(modifier = Modifier.width(8.dp))
 
-    Text(
+    SunsetText.Body(
       text = trackName,
+      fontWeight = FontWeight.Medium,
       maxLines = 1,
       overflow = TextOverflow.Ellipsis,
-      style = SunsetTextStyle.body.copy(
-        fontWeight = FontWeight.Medium
-      ),
       modifier = Modifier
         .weight(1F)
     )
@@ -91,9 +84,8 @@ private fun AlbumTrack(
 
     val durationRepresentation = duration.toReadableString()
     if (durationRepresentation != null) {
-      Text(
+      SunsetText.Label(
         text = durationRepresentation,
-        style = SunsetTextStyle.label
       )
     }
   }
@@ -103,29 +95,27 @@ private fun AlbumTrack(
 @Composable
 private fun AlbumTrackPreview() {
   SunsetThemePreview {
-    Surface(onClick = {}) {
-      AlbumTrackList(
-        tracks = persistentListOf(
-          AlbumInfoTrack(
-            duration = "100",
-            name = "Drama",
-            url = ""
-          ),
-          AlbumInfoTrack(
-            duration = "100",
-            name = "Drama",
-            url = ""
-          ),
-          AlbumInfoTrack(
-            duration = "100",
-            name = "Drama",
-            url = ""
-          )
+    AlbumTrackList(
+      tracks = persistentListOf(
+        AlbumInfoTrack(
+          duration = "100",
+          name = "Drama",
+          url = ""
         ),
-        modifier = Modifier.padding(
-          horizontal = 16.dp
+        AlbumInfoTrack(
+          duration = "100",
+          name = "Drama",
+          url = ""
+        ),
+        AlbumInfoTrack(
+          duration = "100",
+          name = "Drama",
+          url = ""
         )
+      ),
+      modifier = Modifier.padding(
+        horizontal = 16.dp
       )
-    }
+    )
   }
 }
