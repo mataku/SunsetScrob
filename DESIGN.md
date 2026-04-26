@@ -33,8 +33,13 @@ Core principles:
 
 1. **Dark by default.** `AppTheme.DARK` is the default; four of five themes
    are dark. Light theme is supported but secondary.
-2. **Material 3, lightly customized.** Theming goes through `MaterialTheme`
-   with our `ColorScheme`s. Don't introduce a parallel theming layer.
+2. **Material 3 is wrapped, not imported.** Outside `:ui_common`, code never
+   imports `androidx.compose.material3.*` directly — every Material 3
+   component is fronted by a `SunsetX` wrapper that lives in `:ui_common`.
+   `:lint-checks` enforces this with one `PreferSunsetX` import-based detector
+   per wrapper, and CI fails on violations. Theming still goes through
+   `MaterialTheme` with our `ColorScheme`s; don't introduce a parallel
+   theming layer.
 3. **One theme provider.** All themable composables read from
    `MaterialTheme.colorScheme` (and `LocalAppTheme` when accent or
    theme-shape branching is genuinely required).
@@ -169,6 +174,110 @@ Defined in `SunsetTheme.kt`; reuse rather than redefine:
 
 ---
 
+## Custom wrappers (SunsetX)
+
+Every Material 3 component used by the app is fronted by a `SunsetX` wrapper
+in `:ui_common`. Outside `:ui_common`, `androidx.compose.material3.*` imports
+are banned — call `SunsetText`, `SunsetButton`, `SunsetSurface`, etc. instead.
+This keeps Material upgrades, theme tweaks, and design-system-wide changes in
+one place, and lets feature modules depend on a stable surface that doesn't
+shift with each Material release.
+
+### Allowed imports outside `:ui_common`
+
+`:feature/*` and `:app` modules should only import from:
+
+```
+com.mataku.scrobscrob.ui_common.*       # SunsetText, SunsetButton, ... wrappers
+androidx.compose.foundation.*           # Layout, Modifier, foundation primitives
+androidx.compose.runtime.*              # @Composable, remember, State
+androidx.compose.ui.*                   # Modifier, Color, etc. (Material-free)
+```
+
+`androidx.compose.material3.*` is reserved for `:ui_common` internals. The
+build files reflect this: feature modules declare `libs.compose.foundation`
+explicitly and do **not** depend on `libs.compose.material3`. Only `:ui_common`
+pulls in `compose-material3`.
+
+### Wrapper API patterns
+
+Two shapes are used, picked by what call sites actually look like:
+
+**1. Single function** — when there's one canonical usage, no shared variants.
+Example: `SunsetButton`, `SunsetSurface`.
+
+```kotlin
+@Composable
+fun SunsetSurface(
+  modifier: Modifier = Modifier,
+  shadowElevation: Dp = 0.dp,
+  content: @Composable () -> Unit,
+) { Surface(modifier, shadowElevation = shadowElevation, content = content) }
+```
+
+**2. `object` + factory methods** — when several short, repeated variants exist
+across call sites. Expose a base `operator fun invoke(...)` plus named factory
+composables for each variant. Example: `SunsetText` (`Body`/`Label`/`Title`/
+`Headline`/`Subtitle`/`Caption`/`ButtonLabel`), `SunsetTextButton` (`Label`).
+
+```kotlin
+object SunsetText {
+  @SuppressLint("ComposeNamingUppercase")
+  @Composable
+  operator fun invoke(text: String, style: TextStyle, ...) { /* base */ }
+
+  @Composable
+  fun Body(text: String, color: Color = LocalContentColor.current, ...) { ... }
+
+  @Composable
+  fun Title(text: String, ...) { ... }
+}
+```
+
+`@SuppressLint("ComposeNamingUppercase")` is required on `operator fun invoke`
+because Slack `compose-lint` rejects lowercase composables and `invoke` can't
+be renamed with a leading uppercase letter.
+
+Keep the public API minimal. Add parameters only when multiple call sites need
+them; if `SunsetTextStyle.X.copy(...)` already absorbs the difference, don't
+expose it. Add later when a real second call site appears.
+
+### Adding a new wrapper
+
+Follow this sequence when a new `androidx.compose.material3.*` component
+slips into a feature or `:app`:
+
+1. **Wrapper**: add `ui_common/src/main/java/com/mataku/scrobscrob/ui_common/SunsetX.kt`.
+   Choose single-function vs `object` + factory based on call-site shape.
+2. **Detector**: add `lint-checks/.../PreferSunsetXDetector.kt`. Use any
+   existing `PreferSunsetX*Detector.kt` as a template — they're all
+   import-based scanners with the same shape: ban
+   `androidx.compose.material3.X` outside `com.mataku.scrobscrob.ui_common`
+   and its sub-packages, severity `ERROR`, suppression via
+   `@Suppress("PreferSunsetX")` / `@file:Suppress(...)`.
+3. **Registry**: add `PreferSunsetXDetector.ISSUE` to
+   `lint-checks/.../SunsetIssueRegistry.kt` (alphabetical).
+4. **Spec**: add `lint-checks/src/test/.../PreferSunsetXDetectorSpec.kt`. Use
+   any existing spec as a template; the 6-case shape is fixed (ui_common
+   allowed, ui_common sub-package allowed, feature reported, app reported,
+   `@file:Suppress` opts out, unrelated material3 import is clean). All
+   cases must call `.skipTestModes(TestMode.IMPORT_ALIAS)` — `IMPORT_ALIAS`
+   rewrites imports as `import ... as IMPORT_ALIAS_1_X`, which double-counts
+   for import-based detectors.
+5. **Stub**: add `material3XStub` to `lint-checks/src/test/.../Stubs.kt`.
+6. **Migrate** existing call sites: grep `androidx.compose.material3.X`,
+   replace imports with the `SunsetX` wrapper, replace `style = SunsetTextStyle.body.copy(color = Y)`-style call sites with the matching preset
+   (`SunsetText.Body(color = Y)`) where one exists, leave slot/content forms
+   alone. Run `CI=true ./gradlew lintDebug` and confirm 0 errors.
+
+VRT goldens stay unchanged as long as the wrapper's defaults match the bare
+material3 default. Default-shifting wrappers (e.g. `SunsetText` defaulting to
+`SunsetTextStyle.body` instead of `LocalTextStyle.current`) will rebase
+goldens — verify with `fastlane screenshot_test` and update goldens as
+needed.
+
+---
+
 ## Do's and Don'ts
 
 **Do**
@@ -177,15 +286,28 @@ Defined in `SunsetTheme.kt`; reuse rather than redefine:
   `LocalAppTheme.current.accentColor()`.
 - Use `SunsetTextStyle` entries for text; extend it when a new role is needed.
 - Use `SunsetImage` for any remote image.
+- Use `SunsetX` wrappers from `:ui_common` for any Material 3 component. If
+  `:ui_common` doesn't expose what you need, add a wrapper there + a
+  `PreferSunsetX` lint detector pair (see "Custom wrappers" above) — don't
+  introduce a one-off material3 import.
 - Reuse `:ui_common` organisms/molecules; if the same widget appears in a
   second feature module, promote it to `:ui_common` instead of duplicating.
 - Use `SunsetThemePreview` (not `SunsetTheme`) inside `@Preview` composables —
-  it skips ripple wiring that previews don't need.
+  it skips ripple wiring that previews don't need and provides the
+  `SunsetSurface` background so previews don't need their own `Surface { }`
+  wrapper.
 - Showkase annotations (`@ShowkaseColor`, `@ShowkaseTypography`) on new tokens
   so they appear in the design catalog.
 
 **Don't**
 
+- Don't import `androidx.compose.material3.*` from a feature or `:app`
+  module. The matching `PreferSunsetX` lint detector will fail CI. If you
+  truly need to (rare — usually means a wrapper is missing), suppress
+  with `@Suppress("PreferSunsetX")` and document why in the same commit.
+- Don't add `libs.compose.material3` to a feature module's `build.gradle.kts`.
+  Foundation primitives come from `libs.compose.foundation`, animation from
+  `libs.compose.animation`. Only `:ui_common` depends on `compose-material3`.
 - Don't hard-code `Color(0xFF…)` at a call site. Add it to `Colors` (or a
   per-theme `*Color` object) and wire it through `ColorScheme`.
 - Don't construct one-off `TextStyle(...)` literals; extend `SunsetTextStyle`.
