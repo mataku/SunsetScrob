@@ -24,7 +24,8 @@ interface TopArtistsRepository {
 }
 
 @SingleIn(AppScope::class)
-class TopArtistsRepositoryImpl @Inject constructor(
+@Inject
+class TopArtistsRepositoryImpl(
   private val lastFmService: LastFmService,
   private val artworkDataStore: ArtworkDataStore
 ) : TopArtistsRepository {

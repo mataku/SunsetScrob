@@ -21,7 +21,8 @@ interface SessionRepository {
 }
 
 @SingleIn(AppScope::class)
-class SessionRepositoryImpl @Inject constructor(
+@Inject
+class SessionRepositoryImpl(
   private val lastFmService: LastFmService,
   private val sessionKeyDataStore: SessionKeyDataStore,
   private val usernameDataStore: UsernameDataStore,

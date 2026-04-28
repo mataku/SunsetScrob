@@ -30,7 +30,8 @@ interface ScrobbleRepository {
 }
 
 @SingleIn(AppScope::class)
-class ScrobbleRepositoryImpl @Inject constructor(
+@Inject
+class ScrobbleRepositoryImpl(
   private val lastFmService: LastFmService,
   private val usernameDataStore: UsernameDataStore,
   private val sessionDataStore: SessionKeyDataStore,

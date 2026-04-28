@@ -22,7 +22,8 @@ interface UsernameRepository {
 }
 
 @SingleIn(AppScope::class)
-class UsernameRepositoryImpl @Inject constructor(
+@Inject
+class UsernameRepositoryImpl(
   private val usernameDataStore: UsernameDataStore
 ) : UsernameRepository {
   override fun username(): String? =

@@ -30,7 +30,8 @@ interface AlbumRepository {
 }
 
 @SingleIn(AppScope::class)
-class AlbumRepositoryImpl @Inject constructor(
+@Inject
+class AlbumRepositoryImpl(
   private val lastFmService: LastFmService
 ) : AlbumRepository {
   override suspend fun fetchTopAlbums(

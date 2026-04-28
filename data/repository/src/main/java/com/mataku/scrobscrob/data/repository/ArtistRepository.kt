@@ -28,7 +28,8 @@ interface ArtistRepository {
 }
 
 @SingleIn(AppScope::class)
-class ArtistRepositoryImpl @Inject constructor(
+@Inject
+class ArtistRepositoryImpl(
   private val lastFmService: LastFmService
 ) : ArtistRepository {
   override fun artistInfo(name: String): Flow<ArtistInfo> = flow {

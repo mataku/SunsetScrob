@@ -20,7 +20,8 @@ interface ScrobbleSettingRepository {
 }
 
 @SingleIn(AppScope::class)
-class ScrobbleSettingRepositoryImpl @Inject constructor(
+@Inject
+class ScrobbleSettingRepositoryImpl(
   private val scrobbleAppDataStore: ScrobbleAppDataStore
 ) : ScrobbleSettingRepository {
   override suspend fun allowApp(appName: String): Flow<Unit> {

@@ -22,7 +22,8 @@ interface NowPlayingRepository {
 }
 
 @SingleIn(AppScope::class)
-class NowPlayingRepositoryImpl @Inject constructor(
+@Inject
+class NowPlayingRepositoryImpl(
   private val lastFmService: LastFmService,
   private val sessionKeyDataStore: SessionKeyDataStore,
 ) : NowPlayingRepository {

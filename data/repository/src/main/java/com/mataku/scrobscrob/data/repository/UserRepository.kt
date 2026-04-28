@@ -28,7 +28,8 @@ interface UserRepository {
 }
 
 @SingleIn(AppScope::class)
-class UserRepositoryImpl @Inject constructor(
+@Inject
+class UserRepositoryImpl(
   private val lastFmService: LastFmService,
   private val usernameDataStore: UsernameDataStore,
   private val artworkDataStore: ArtworkDataStore,
