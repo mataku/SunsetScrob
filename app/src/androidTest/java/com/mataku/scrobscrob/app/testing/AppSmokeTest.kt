@@ -18,7 +18,7 @@ import org.junit.Rule
 import org.junit.Test
 
 @OptIn(ExperimentalTestApi::class)
-class SmokeFlowTest {
+class AppSmokeTest {
 
   @get:Rule
   val composeRule = createAndroidComposeRule<MainActivity>()
@@ -56,12 +56,12 @@ class SmokeFlowTest {
     pressBack()
     composeRule.waitUntilExactlyOneExists(hasText("Home"), TIMEOUT_MS)
 
-//    // Bottom nav: Discover tab renders.
+    // Bottom nav: Discover tab renders.
     composeRule.onNodeWithContentDescription("tab Discover").performClick()
     composeRule.waitUntilExactlyOneExists(hasText("Discover"), TIMEOUT_MS)
     composeRule.onNodeWithText("Discover").assertIsDisplayed()
-//
-//    // Bottom nav: Account tab renders.
+
+    // Bottom nav: Account tab renders.
     composeRule.onNodeWithContentDescription("tab Account").performClick()
     composeRule.waitUntilExactlyOneExists(hasText("Account"), TIMEOUT_MS)
     composeRule.onNodeWithText("Account").assertIsDisplayed()
@@ -74,6 +74,6 @@ class SmokeFlowTest {
   }
 
   private companion object {
-    const val TIMEOUT_MS = 10_000L
+    const val TIMEOUT_MS = 5_000L
   }
 }

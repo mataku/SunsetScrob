@@ -67,7 +67,7 @@ If a request hits an unmapped method, the dispatcher returns `501 Not
 Implemented` with the method name in the body. That surfaces in the test as a
 parse failure / empty UI, which is usually loud enough to find.
 
-## Adding a new flow to `SmokeFlowTest`
+## Adding a new flow to `AppSmokeTest`
 
 ```kotlin
 @Test
@@ -89,14 +89,15 @@ Conventions used by the existing flow:
 - Use `hasSetTextAction()` matchers to drive `SunsetTextField` rather than
   searching by label — labels are part of a different semantic node from the
   input field.
-- `TIMEOUT_MS = 10_000L` is generous for emulator boot + first network call.
-  Don't tighten without reason.
+- `TIMEOUT_MS = 5_000L` covers a CI cold emulator's first render + initial
+  mocked API roundtrip. Tighten only if you have a specific reason.
 
 ## Running on CI
 
 `.github/workflows/e2e_test.yml`:
-- Schedule: `0 18 * * 0` (Sunday 18:00 UTC = Monday 03:00 JST). Also
-  `workflow_dispatch` with a `branch` input.
+- Schedule: `0 6 * * 5` (Friday 06:00 UTC = Friday 15:00 JST). Also
+  `workflow_dispatch` — pick the target branch via "Use workflow from"
+  in the GitHub Actions UI.
 - Uses `reactivecircus/android-emulator-runner` on API 34 / x86_64 with an AVD
   snapshot cached via `actions/cache`. First run primes the snapshot; later
   runs reuse it.
