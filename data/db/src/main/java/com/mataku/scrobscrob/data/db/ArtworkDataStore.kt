@@ -28,7 +28,8 @@ interface ArtworkDataStore {
 }
 
 @SingleIn(AppScope::class)
-class ArtworkDataStoreImpl @Inject constructor(
+@Inject
+class ArtworkDataStoreImpl(
   context: Context
 ) : ArtworkDataStore {
   private val sqlDriver = AndroidSqliteDriver(Database.Schema, context, "scrobscrob.db")

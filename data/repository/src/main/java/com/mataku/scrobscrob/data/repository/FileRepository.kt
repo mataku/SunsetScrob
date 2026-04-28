@@ -17,7 +17,8 @@ interface FileRepository {
 }
 
 @SingleIn(AppScope::class)
-class FileRepositoryImpl @Inject constructor(
+@Inject
+class FileRepositoryImpl(
   private val applicationContext: Context
 ) : FileRepository {
   override fun cacheImageDirMBSize(): Flow<Double> = flow {

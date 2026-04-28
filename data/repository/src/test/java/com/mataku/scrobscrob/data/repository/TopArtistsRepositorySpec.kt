@@ -222,7 +222,10 @@ class TopArtistsRepositorySpec : DescribeSpec({
         username = username
       )
         .test {
-          awaitItem().isNotEmpty() shouldBe true
+          awaitItem().let { result ->
+            result.artists.isNotEmpty() shouldBe true
+            result.pagingAttr.totalPages shouldBe "24"
+          }
           awaitComplete()
         }
     }

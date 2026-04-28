@@ -27,7 +27,10 @@ data class TopAlbumsApiResponse(
 @Serializable
 data class AlbumsBody(
   @SerialName("album")
-  val albums: List<AlbumBody>
+  val albums: List<AlbumBody>,
+
+  @SerialName("@attr")
+  val pagingAttrBody: PagingAttrBody = PagingAttrBody()
 )
 
 @Serializable

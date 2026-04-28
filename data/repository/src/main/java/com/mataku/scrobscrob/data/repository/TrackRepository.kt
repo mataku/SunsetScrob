@@ -25,7 +25,8 @@ interface TrackRepository {
 }
 
 @SingleIn(AppScope::class)
-class TrackRepositoryImpl @Inject constructor(
+@Inject
+class TrackRepositoryImpl(
   private val lastFmService: LastFmService,
   private val usernameDataStore: UsernameDataStore,
   private val sessionKeyDataStore: SessionKeyDataStore,

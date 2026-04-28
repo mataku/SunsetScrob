@@ -69,30 +69,33 @@ class ScrobbleViewModel(
             isRefreshing = false
           )
         }
-      }.collect { recentTracks ->
+      }.collect { result ->
+        val tracks = result.tracks
+        val totalPages = result.pagingAttr.totalPages.toIntOrNull() ?: 0
+        val hasNext = tracks.isNotEmpty() && page < totalPages
         val currentList = uiState.value.recentTracks
-        if (currentList.isEmpty() || recentTracks.isEmpty()) {
+        if (currentList.isEmpty() || tracks.isEmpty()) {
           uiState.update { state ->
             state.copy(
               isRefreshing = false,
-              recentTracks = recentTracks.toImmutableList(),
-              hasNext = recentTracks.isNotEmpty()
+              recentTracks = tracks,
+              hasNext = hasNext
             )
           }
         } else {
           val currentFirst = currentList.first()
-          val recentFirst = recentTracks.first()
+          val recentFirst = tracks.first()
           if (currentFirst.date != recentFirst.date) {
             uiState.update { state ->
               state.copy(
                 isRefreshing = false,
-                recentTracks = recentTracks.toImmutableList(),
-                hasNext = recentTracks.isNotEmpty()
+                recentTracks = tracks,
+                hasNext = hasNext
               )
             }
           }
         }
-        page++
+        if (hasNext) page++
       }
     }
   }
@@ -122,17 +125,19 @@ class ScrobbleViewModel(
             isLoading = false
           )
         }
-      }.collect {
+      }.collect { result ->
+        val totalPages = result.pagingAttr.totalPages.toIntOrNull() ?: 0
+        val hasNext = result.tracks.isNotEmpty() && page < totalPages
         val recentTracks = uiState.value.recentTracks.toMutableList()
-        recentTracks.addAll(it)
+        recentTracks.addAll(result.tracks)
         uiState.update { state ->
           state.copy(
             isLoading = false,
             recentTracks = recentTracks.toImmutableList(),
-            hasNext = it.isNotEmpty()
+            hasNext = hasNext
           )
         }
-        page++
+        if (hasNext) page++
       }
     }
   }

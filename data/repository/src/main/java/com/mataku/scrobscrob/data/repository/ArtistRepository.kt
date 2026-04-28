@@ -28,7 +28,8 @@ interface ArtistRepository {
 }
 
 @SingleIn(AppScope::class)
-class ArtistRepositoryImpl @Inject constructor(
+@Inject
+class ArtistRepositoryImpl(
   private val lastFmService: LastFmService
 ) : ArtistRepository {
   override fun artistInfo(name: String): Flow<ArtistInfo> = flow {
@@ -52,6 +53,6 @@ class ArtistRepositoryImpl @Inject constructor(
       params = params
     )
     val response = lastFmService.request(endpoint)
-    emit(response.toTopAlbums())
+    emit(response.toTopAlbums().albums)
   }.flowOn(Dispatchers.IO)
 }

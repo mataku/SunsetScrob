@@ -118,9 +118,9 @@ class ScrobbleRepositorySpec : DescribeSpec({
       )
       repository.recentTracks(page = page)
         .test {
-          awaitItem().let {
-            it.size shouldBe 1
-            it[0].let { track ->
+          awaitItem().let { result ->
+            result.tracks.size shouldBe 1
+            result.tracks[0].let { track ->
               track.artistName shouldBe "aespa"
               track.albumName shouldBe "Drama - The 4th Mini Album"
               track.images.isNotEmpty() shouldBe true
@@ -128,6 +128,7 @@ class ScrobbleRepositorySpec : DescribeSpec({
               track.url shouldBe "https://www.last.fm/music/aespa/_/Drama"
               track.date shouldBe "30 Dec 2023, 15:50"
             }
+            result.pagingAttr.totalPages shouldBe "99951"
           }
           awaitComplete()
         }

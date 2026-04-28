@@ -26,7 +26,8 @@ interface ChartRepository {
 }
 
 @SingleIn(AppScope::class)
-class ChartRepositoryImpl @Inject constructor(
+@Inject
+class ChartRepositoryImpl(
   private val lastFmService: LastFmService,
   private val artworkDataStore: ArtworkDataStore
 ) : ChartRepository {

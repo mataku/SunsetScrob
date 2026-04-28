@@ -18,7 +18,8 @@ interface ThemeRepository {
 }
 
 @SingleIn(AppScope::class)
-class ThemeRepositoryImpl @Inject constructor(
+@Inject
+class ThemeRepositoryImpl(
   private val themeDataStore: ThemeDataStore
 ) : ThemeRepository {
   override suspend fun currentTheme(): Flow<AppTheme> {

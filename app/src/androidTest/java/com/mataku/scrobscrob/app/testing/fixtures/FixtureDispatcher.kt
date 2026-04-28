@@ -15,17 +15,17 @@ class FixtureDispatcher(private val assets: AssetManager) {
 
   fun MockRequestHandleScope.dispatch(request: HttpRequestData): HttpResponseData {
     val method = request.url.parameters["method"].orEmpty()
-    val fixture = method.fixtureName()?.let { name ->
+    val body = method.fixtureName()?.let { name ->
       runCatching { readAsset(name) }.getOrNull()
     }
-    return if (fixture == null) {
+    return if (body == null) {
       respondError(
         HttpStatusCode.NotImplemented,
         "No fixture for method=$method (path=${request.url.encodedPath})"
       )
     } else {
       respond(
-        content = ByteReadChannel(fixture),
+        content = ByteReadChannel(body),
         status = HttpStatusCode.OK,
         headers = headersOf(HttpHeaders.ContentType, "application/json")
       )
@@ -44,6 +44,8 @@ class FixtureDispatcher(private val assets: AssetManager) {
     "user.getlovedtracks" -> "user_loved_tracks.json"
     "chart.gettoptracks" -> "chart_top_tracks.json"
     "chart.gettopartists" -> "chart_top_artists.json"
+    "track.getinfo" -> "track_get_info.json"
+    "album.getinfo" -> "album_get_info.json"
     else -> null
   }
 }

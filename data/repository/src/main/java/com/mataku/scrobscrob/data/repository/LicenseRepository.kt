@@ -19,7 +19,8 @@ interface LicenseRepository {
 }
 
 @SingleIn(AppScope::class)
-class LicenseRepositoryImpl @Inject constructor(
+@Inject
+class LicenseRepositoryImpl(
   private val licenseInfoProvider: LicenseInfoProvider
 ) : LicenseRepository {
 

@@ -87,7 +87,11 @@ class TopAlbumsViewModel(
             )
           }
         }
-        .collect { albums ->
+        .collect { result ->
+          val albums = result.albums
+          val totalPages = result.pagingAttr.totalPages.toIntOrNull() ?: 0
+          val hasNext = albums.isNotEmpty() && page < totalPages
+
           if (albums.isEmpty()) {
             val list = if (timeRangeFilteringChanged) {
               persistentListOf()
@@ -106,15 +110,16 @@ class TopAlbumsViewModel(
             } else {
               val currentAlbums = uiState.value.topAlbums.toMutableList()
               currentAlbums.addAll(albums)
-              currentAlbums
-            }.toImmutableList()
+              currentAlbums.toImmutableList()
+            }
 
             uiState.update {
               it.copy(
-                topAlbums = list
+                topAlbums = list,
+                hasNext = hasNext
               )
             }
-            page++
+            if (hasNext) page++
           }
         }
     }
