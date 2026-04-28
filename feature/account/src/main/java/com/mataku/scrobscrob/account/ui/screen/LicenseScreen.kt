@@ -13,50 +13,79 @@ import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.mataku.scrobscrob.account.R
 import com.mataku.scrobscrob.account.ui.viewmodel.LicenseViewModel
 import com.mataku.scrobscrob.core.entity.LicenseArtifact
 import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetHorizontalDivider
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetIcon
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetIconButton
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetScaffold
 import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetText
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetTopAppBar
 
 @Composable
 internal fun LicenseScreen(
   viewModel: LicenseViewModel,
+  onBackPressed: () -> Unit,
   modifier: Modifier = Modifier
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
   val context = LocalContext.current
-  LazyColumn(
-    content = {
-      items(uiState.licenseList) {
-        LicenseCell(
-          licenseArtifact = it,
-          onLicenseArtifactTap = { url ->
-            if (url.isNotEmpty()) {
-              val intent = Intent(Intent.ACTION_VIEW, url.toUri())
-              runCatching {
-                context.startActivity(intent)
+  SunsetScaffold(
+    modifier = modifier,
+    topBar = {
+      SunsetTopAppBar(
+        title = {
+          SunsetText.Title(text = stringResource(id = R.string.item_license))
+        },
+        navigationIcon = {
+          SunsetIconButton(onClick = onBackPressed) {
+            SunsetIcon(
+              imageVector = Icons.AutoMirrored.Default.ArrowBack,
+              contentDescription = "Back"
+            )
+          }
+        },
+      )
+    }
+  ) { paddingValues ->
+    LazyColumn(
+      content = {
+        items(uiState.licenseList) {
+          LicenseCell(
+            licenseArtifact = it,
+            onLicenseArtifactTap = { url ->
+              if (url.isNotEmpty()) {
+                val intent = Intent(Intent.ACTION_VIEW, url.toUri())
+                runCatching {
+                  context.startActivity(intent)
+                }
               }
             }
-          }
+          )
+          SunsetHorizontalDivider()
+        }
+      },
+      contentPadding = WindowInsets.navigationBars.asPaddingValues(),
+      modifier = Modifier
+        .fillMaxSize()
+        .padding(paddingValues)
+        .padding(
+          horizontal = 16.dp
         )
-        SunsetHorizontalDivider()
-      }
-    },
-    contentPadding = WindowInsets.navigationBars.asPaddingValues(),
-    modifier = modifier
-      .fillMaxSize()
-      .padding(
-        horizontal = 16.dp
-      )
-  )
+    )
+  }
 }
 
 @OptIn(ExperimentalLayoutApi::class)

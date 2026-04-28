@@ -8,52 +8,84 @@ import android.webkit.WebViewClient
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.viewinterop.AndroidView
+import com.mataku.scrobscrob.account.R
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetIcon
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetIconButton
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetScaffold
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetText
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetTopAppBar
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun PrivacyPolicyScreen(
+  onBackPressed: () -> Unit,
   modifier: Modifier = Modifier
 ) {
   val context = LocalContext.current
-  LazyColumn(
-    content = {
-      item {
-        Column(modifier = Modifier.fillMaxSize()) {
-          AndroidView(
-            factory = {
-              WebView(it)
-            },
-            update = { webView ->
-              webView.webViewClient = object : WebViewClient() {
-                override fun shouldOverrideUrlLoading(
-                  view: WebView?,
-                  request: WebResourceRequest?
-                ): Boolean {
-                  val urlStr = request?.url
-                  urlStr?.let {
-                    kotlin.runCatching {
-                      context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(it.toString())))
-                    }.fold(
-                      onSuccess = {},
-                      onFailure = {}
-                    )
-                    return true
-                  }
+  SunsetScaffold(
+    modifier = modifier,
+    topBar = {
+      SunsetTopAppBar(
+        title = {
+          SunsetText.Title(text = stringResource(id = R.string.item_privacy_policy))
+        },
+        navigationIcon = {
+          SunsetIconButton(onClick = onBackPressed) {
+            SunsetIcon(
+              imageVector = Icons.AutoMirrored.Default.ArrowBack,
+              contentDescription = "Back"
+            )
+          }
+        },
+      )
+    }
+  ) { paddingValues ->
+    LazyColumn(
+      content = {
+        item {
+          Column(modifier = Modifier.fillMaxSize()) {
+            AndroidView(
+              factory = {
+                WebView(it)
+              },
+              update = { webView ->
+                webView.webViewClient = object : WebViewClient() {
+                  override fun shouldOverrideUrlLoading(
+                    view: WebView?,
+                    request: WebResourceRequest?
+                  ): Boolean {
+                    val urlStr = request?.url
+                    urlStr?.let {
+                      kotlin.runCatching {
+                        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(it.toString())))
+                      }.fold(
+                        onSuccess = {},
+                        onFailure = {}
+                      )
+                      return true
+                    }
 
-                  return false
+                    return false
+                  }
                 }
+                webView.loadUrl("https://mataku.github.io/sunsetscrob/index.html")
               }
-              webView.loadUrl("https://mataku.github.io/sunsetscrob/index.html")
-            }
-          )
+            )
+          }
         }
-      }
-    },
-    modifier = modifier.fillMaxSize()
-  )
+      },
+      modifier = Modifier
+        .fillMaxSize()
+        .padding(paddingValues)
+    )
+  }
 }

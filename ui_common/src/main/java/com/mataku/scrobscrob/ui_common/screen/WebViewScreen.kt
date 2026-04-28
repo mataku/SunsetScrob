@@ -11,6 +11,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -23,12 +26,18 @@ import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetIcon
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetIconButton
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetScaffold
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetText
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetTopAppBar
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import kotlinx.coroutines.launch
 
 @Composable
 fun WebViewScreen(
   url: String,
+  onBackPressed: () -> Unit,
   modifier: Modifier = Modifier
 ) {
   var title by remember {
@@ -44,52 +53,72 @@ fun WebViewScreen(
 
   val coroutineScope = rememberCoroutineScope()
 
-  Column(
-    modifier = modifier
-      .fillMaxSize()
-  ) {
-    // NOTE: specified height and visibility animation as workaround for compose WebView flickering
-    AndroidView(
-      factory = {
-        WebView(it).apply {
-          layoutParams = ViewGroup.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-          )
+  SunsetScaffold(
+    modifier = modifier,
+    topBar = {
+      SunsetTopAppBar(
+        title = {
+          SunsetText.Title(text = "")
+        },
+        navigationIcon = {
+          SunsetIconButton(onClick = onBackPressed) {
+            SunsetIcon(
+              imageVector = Icons.AutoMirrored.Default.ArrowBack,
+              contentDescription = "Back"
+            )
+          }
+        },
+      )
+    }
+  ) { paddingValues ->
+    Column(
+      modifier = Modifier
+        .fillMaxSize()
+        .padding(paddingValues)
+    ) {
+      // NOTE: specified height and visibility animation as workaround for compose WebView flickering
+      AndroidView(
+        factory = {
+          WebView(it).apply {
+            layoutParams = ViewGroup.LayoutParams(
+              ViewGroup.LayoutParams.MATCH_PARENT,
+              ViewGroup.LayoutParams.WRAP_CONTENT
+            )
 
-          webViewClient = object : WebViewClient() {
-            override fun onPageFinished(view: WebView?, url: String?) {
-              title = view?.title ?: ""
-              if (!visibility) {
-                coroutineScope.launch {
-                  visibilityValue.animateTo(
-                    1F, tween(
-                      durationMillis = 1000,
-                      easing = LinearEasing
+            webViewClient = object : WebViewClient() {
+              override fun onPageFinished(view: WebView?, url: String?) {
+                title = view?.title ?: ""
+                if (!visibility) {
+                  coroutineScope.launch {
+                    visibilityValue.animateTo(
+                      1F, tween(
+                        durationMillis = 1000,
+                        easing = LinearEasing
+                      )
                     )
-                  )
+                  }
+                  visibility = true
                 }
-                visibility = true
+              }
+
+              override fun shouldOverrideUrlLoading(
+                view: WebView?,
+                request: WebResourceRequest?
+              ): Boolean {
+                return false
               }
             }
-
-            override fun shouldOverrideUrlLoading(
-              view: WebView?,
-              request: WebResourceRequest?
-            ): Boolean {
-              return false
-            }
           }
-        }
-      },
-      update = { webView ->
-        webView.loadUrl(url)
-      },
-      modifier = Modifier
-        .fillMaxWidth()
-        .height(screenHeight.dp - 64.dp)
-        .alpha(visibilityValue.value)
-    )
+        },
+        update = { webView ->
+          webView.loadUrl(url)
+        },
+        modifier = Modifier
+          .fillMaxWidth()
+          .height(screenHeight.dp - 64.dp)
+          .alpha(visibilityValue.value)
+      )
+    }
   }
 }
 
@@ -99,6 +128,7 @@ private fun WebViewScreenPreview() {
   SunsetThemePreview {
     WebViewScreen(
       url = "https://www.google.com",
+      onBackPressed = {},
       modifier = Modifier.fillMaxWidth(),
     )
   }
