@@ -10,10 +10,16 @@ import dev.zacsweers.metro.Provides
 import dev.zacsweers.metrox.android.MetroAppComponentProviders
 import dev.zacsweers.metrox.viewmodel.ViewModelGraph
 
-@DependencyGraph(AppScope::class)
-internal interface AppGraph : MetroAppComponentProviders, ViewModelGraph, ScrobbleServiceDependencies {
+internal interface AppGraphContract :
+  MetroAppComponentProviders,
+  ViewModelGraph,
+  ScrobbleServiceDependencies {
 
   val imageLoader: ImageLoader
+}
+
+@DependencyGraph(AppScope::class)
+internal interface AppGraph : AppGraphContract {
 
   @Provides
   fun provideApplicationContext(application: Application): Context = application

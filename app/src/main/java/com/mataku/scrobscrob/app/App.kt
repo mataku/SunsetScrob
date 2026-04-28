@@ -6,6 +6,7 @@ import coil3.ImageLoader
 import coil3.SingletonImageLoader
 import com.mataku.scrobscrob.BuildConfig
 import com.mataku.scrobscrob.app.di.AppGraph
+import com.mataku.scrobscrob.app.di.AppGraphContract
 import com.mataku.scrobscrob.data.repository.NowPlayingRepository
 import com.mataku.scrobscrob.data.repository.ScrobbleRepository
 import com.mataku.scrobscrob.data.repository.ScrobbleSettingRepository
@@ -18,7 +19,10 @@ import timber.log.Timber
 
 open class App : Application(), MetroApplication, SingletonImageLoader.Factory, ScrobbleServiceDependencies {
 
-  internal val appGraph: AppGraph by lazy { createGraphFactory<AppGraph.Factory>().create(this) }
+  internal val appGraph: AppGraphContract by lazy { newAppGraph() }
+
+  internal open fun newAppGraph(): AppGraphContract =
+    createGraphFactory<AppGraph.Factory>().create(this)
 
   override val appComponentProviders: MetroAppComponentProviders
     get() = appGraph

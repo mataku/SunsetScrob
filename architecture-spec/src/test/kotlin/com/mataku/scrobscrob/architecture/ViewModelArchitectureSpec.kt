@@ -37,5 +37,48 @@ class ViewModelArchitectureSpec : DescribeSpec({
           }
         }
     }
+
+    it("AndroidViewModel-derived ViewModels pin the bound type via `binding = binding<ViewModel>()`") {
+      scope.classes()
+        .withNameEndingWith("ViewModel")
+        .filter { it.resideInPackage("com.mataku.scrobscrob..") }
+        .filter { vm -> vm.hasParent { parent -> parent.name == "AndroidViewModel" } }
+        .assertTrue(
+          additionalMessage = "ViewModels extending AndroidViewModel must declare " +
+            "`@ContributesIntoMap(AppScope::class, binding = binding<ViewModel>())`. Without " +
+            "the `binding` argument Metro contributes them into a `Map<_, AndroidViewModel>` " +
+            "multibinding that `MetroViewModelFactory` never reads, so the VM silently drops " +
+            "out of the graph and `metroViewModel<T>()` fails at runtime. CLAUDE.md Rule 3.",
+        ) { vm ->
+          val annotation = vm.annotations.firstOrNull { it.name == "ContributesIntoMap" }
+            ?: return@assertTrue false
+          annotation.arguments.any { it.name == "binding" }
+        }
+    }
+
+    it("`@AssistedInject` ViewModels expose a Factory : ViewModelAssistedFactory with the required annotations") {
+      scope.classes()
+        .withNameEndingWith("ViewModel")
+        .filter { it.resideInPackage("com.mataku.scrobscrob..") }
+        .filter { vm -> vm.annotations.any { it.name == "AssistedInject" } }
+        .assertTrue(
+          additionalMessage = "AssistedInject ViewModels must declare a nested " +
+            "`Factory : ViewModelAssistedFactory` annotated with `@AssistedFactory`, " +
+            "`@ViewModelAssistedFactoryKey(<this>::class)`, and " +
+            "`@ContributesIntoMap(AppScope::class)`. Missing any of the three causes the " +
+            "Factory to drop out of the assisted-factory multibinding and " +
+            "`metroViewModel<T>()` fails at runtime. CLAUDE.md Rule 3.",
+        ) { vm ->
+          val factory = vm.interfaces(includeNested = true)
+            .firstOrNull { intf ->
+              intf.hasParent { parent -> parent.name == "ViewModelAssistedFactory" }
+            }
+            ?: return@assertTrue false
+          val annotationNames = factory.annotations.map { it.name }
+          "AssistedFactory" in annotationNames &&
+            "ViewModelAssistedFactoryKey" in annotationNames &&
+            "ContributesIntoMap" in annotationNames
+        }
+    }
   }
 })
