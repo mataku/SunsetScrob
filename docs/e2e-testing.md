@@ -100,8 +100,14 @@ Conventions used by the existing flow:
 - Uses `reactivecircus/android-emulator-runner` on API 34 / x86_64 with an AVD
   snapshot cached via `actions/cache`. First run primes the snapshot; later
   runs reuse it.
-- Failures upload `**/build/reports/androidTests/**` and
-  `**/build/outputs/androidTest-results/**` as artifacts (7-day retention).
+- Failures upload `**/build/reports/androidTests/**`,
+  `**/build/outputs/androidTest-results/**`, and
+  `app/build/outputs/e2e-recordings/**` as artifacts (7-day retention).
+- A screen recording is captured via `adb shell screenrecord` while the
+  test runs (`--bit-rate 800000 --size 540x960 --time-limit 180`, ~2–3 MB
+  for a 30s flow). The recording is pulled regardless of test result so
+  the script doesn't have to know success/failure, but it's only uploaded
+  on failure via the `if: failure()` artifact step.
 
 ## Gotchas worth remembering
 

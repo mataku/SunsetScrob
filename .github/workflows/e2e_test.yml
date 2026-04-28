@@ -21,7 +21,7 @@ env:
 jobs:
   e2e:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 20
 
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -69,7 +69,20 @@ jobs:
           force-avd-creation: false
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
-          script: ./gradlew :app:connectedDebugAndroidTest
+          script: |
+            mkdir -p app/build/outputs/e2e-recordings
+            ./gradlew :app:assembleDebug :app:assembleDebugAndroidTest
+            adb shell screenrecord --bit-rate 800000 --size 540x960 --time-limit 60 /sdcard/e2e.mp4 &
+            RECORD_PID=$!
+            sleep 1
+            set +e
+            ./gradlew :app:connectedDebugAndroidTest
+            RESULT=$?
+            set -e
+            adb shell pkill -SIGINT screenrecord || true
+            wait $RECORD_PID || true
+            adb pull /sdcard/e2e.mp4 app/build/outputs/e2e-recordings/e2e.mp4 || true
+            exit $RESULT
 
       - name: Upload test reports
         if: failure()
@@ -79,4 +92,5 @@ jobs:
           path: |
             **/build/reports/androidTests/**
             **/build/outputs/androidTest-results/**
+            app/build/outputs/e2e-recordings/**
           retention-days: 7

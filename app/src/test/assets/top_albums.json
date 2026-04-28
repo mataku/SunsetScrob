@@ -2,31 +2,39 @@
   "topalbums": {
     "album": [
       {
-        "name": "真っ白なものは汚したくなる (Complete Edition)",
+        "name": "Drama",
         "playcount": "1989",
         "mbid": "",
-        "url": "https://www.last.fm/music/%E6%AC%85%E5%9D%8246/%E7%9C%9F%E3%81%A3%E7%99%BD%E3%81%AA%E3%82%82%E3%81%AE%E3%81%AF%E6%B1%9A%E3%81%97%E3%81%9F%E3%81%8F%E3%81%AA%E3%82%8B+(Complete+Edition)",
+        "url": "https://www.last.fm/music/aespa/Drama",
         "artist": {
-          "name": "欅坂46",
+          "name": "aespa",
           "mbid": "",
-          "url": "https://www.last.fm/music/%E6%AC%85%E5%9D%8246"
+          "url": "https://www.last.fm/music/aespa"
         },
         "image": [
           {
-            "#text": "https://lastfm-img2.akamaized.net/i/u/34s/42f3bac9af3bdfe372ea42e21157aad0.png",
-            "size": "small"
+            "size": "small",
+            "#text": "https://lastfm.freetls.fastly.net/i/u/34s/5fd2847728aa1c914250ca324cb501bf.jpg"
           },
           {
-            "#text": "https://lastfm-img2.akamaized.net/i/u/64s/42f3bac9af3bdfe372ea42e21157aad0.png",
-            "size": "medium"
+            "size": "medium",
+            "#text": "https://lastfm.freetls.fastly.net/i/u/64s/5fd2847728aa1c914250ca324cb501bf.jpg"
           },
           {
-            "#text": "https://lastfm-img2.akamaized.net/i/u/174s/42f3bac9af3bdfe372ea42e21157aad0.png",
-            "size": "large"
+            "size": "large",
+            "#text": "https://lastfm.freetls.fastly.net/i/u/174s/5fd2847728aa1c914250ca324cb501bf.jpg"
           },
           {
-            "#text": "https://lastfm-img2.akamaized.net/i/u/300x300/42f3bac9af3bdfe372ea42e21157aad0.png",
-            "size": "extralarge"
+            "size": "extralarge",
+            "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/5fd2847728aa1c914250ca324cb501bf.jpg"
+          },
+          {
+            "size": "mega",
+            "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/5fd2847728aa1c914250ca324cb501bf.jpg"
+          },
+          {
+            "size": "",
+            "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/5fd2847728aa1c914250ca324cb501bf.jpg"
           }
         ],
         "@attr": {
@@ -99,11 +107,11 @@
       }
     ],
     "@attr": {
-      "user": "rhythnn",
+      "user": "matakucom",
       "page": "1",
       "perPage": "3",
-      "totalPages": "66",
-      "total": "197"
+      "totalPages": "1",
+      "total": "3"
     }
   }
 }
