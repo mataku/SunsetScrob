@@ -1,37 +1,25 @@
 package com.mataku.scrobscrob.app.ui.screen
 
-import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.LayoutDirection
-import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.mataku.scrobscrob.account.ui.navigation.navigateToAccount
 import com.mataku.scrobscrob.app.ui.navigation.NavigationGraph
-import com.mataku.scrobscrob.app.ui.navigation.ScreenStyle
 import com.mataku.scrobscrob.discover.ui.navigation.navigateToDiscover
 import com.mataku.scrobscrob.home.ui.navigation.navigateToHome
 import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetBottomNavItem
-import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetIcon
-import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetIconButton
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetNavigationBar
 import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetScaffold
 import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetSnackbarHost
-import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetTopAppBar
-import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetNavigationBar
-import com.mataku.scrobscrob.ui_common.component.designsystem.rememberSunsetTopAppBarScrollBehavior
 import com.mataku.scrobscrob.ui_common.style.LocalSnackbarHostState
-import com.mataku.scrobscrob.ui_common.style.LocalTopAppBarState
 
 @Composable
 internal fun MainScreen(
@@ -41,84 +29,38 @@ internal fun MainScreen(
   val navBackStackEntry by navController.currentBackStackEntryAsState()
   val currentRoute = navBackStackEntry?.destination?.route
 
-  val currentScreenStyle = ScreenStyle.fromRoute(route = currentRoute)
-
-  CompositionLocalProvider(
-    LocalTopAppBarState provides rememberSunsetTopAppBarScrollBehavior()
-  ) {
-    SunsetScaffold(
-      modifier = modifier.fillMaxSize(),
-      snackbarHost = {
-        SunsetSnackbarHost(hostState = LocalSnackbarHostState.current)
-      },
-      topBar = if (currentScreenStyle == null) {
-        {}
-      } else {
-        {
-          SunsetTopAppBar(
-            title = currentScreenStyle.topAppBarTitle,
-            navigationIcon = if (currentScreenStyle.navigationRequired) {
-              {
-                SunsetIconButton(onClick = {
-                  navController.popBackStack()
-                }) {
-                  SunsetIcon(
-                    imageVector = Icons.AutoMirrored.Default.ArrowBack,
-                    contentDescription = "Back"
-                  )
-                }
-              }
-            } else {
-              {}
-            },
-            scrollBehavior = if (currentScreenStyle == ScreenStyle.HomeScreenStyle) {
-              LocalTopAppBarState.current
-            } else {
-              null
-            },
-          )
-        }
-      },
-      bottomBar = {
-        val hasNavigationBarScreen = SunsetBottomNavItem.entries.map { it.screenRoute }
-          .contains(currentRoute?.split("?")?.get(0))
-        SunsetNavigationBar(
-          navController = navController,
-          navigateToAccount = navController::navigateToAccount,
-          navigateToDiscover = navController::navigateToDiscover,
-          navigateToHome = navController::navigateToHome,
-          modifier = Modifier
-            .navigationBarsPadding(),
-          hasNavigationBarScreen = hasNavigationBarScreen
-        )
-      },
-    ) {
-      val paddingTop by animateDpAsState(
-        targetValue = if (currentRoute?.startsWith("track_detail?") == true || currentRoute?.startsWith(
-            "top_artists?"
-          ) == true || currentRoute?.startsWith("album_detail?") == true
-        ) {
-          0.dp
-        } else {
-          it.calculateTopPadding()
-        },
-        label = "top_padding",
-        animationSpec = tween(100)
-      )
-      NavigationGraph(
-        navController,
+  SunsetScaffold(
+    modifier = modifier.fillMaxSize(),
+    snackbarHost = {
+      SunsetSnackbarHost(hostState = LocalSnackbarHostState.current)
+    },
+    bottomBar = {
+      val hasNavigationBarScreen = SunsetBottomNavItem.entries.map { it.screenRoute }
+        .contains(currentRoute?.split("?")?.get(0))
+      SunsetNavigationBar(
+        navController = navController,
+        navigateToAccount = navController::navigateToAccount,
+        navigateToDiscover = navController::navigateToDiscover,
+        navigateToHome = navController::navigateToHome,
         modifier = Modifier
-          // ignore bottom padding because of custom bottom nav component
-          .padding(
-            start = it.calculateStartPadding(
-              layoutDirection = LayoutDirection.Ltr
-            ),
-            end = it.calculateEndPadding(
-              layoutDirection = LayoutDirection.Ltr
-            ),
-            top = paddingTop
-          )
+          .navigationBarsPadding(),
+        hasNavigationBarScreen = hasNavigationBarScreen
       )
-    }
+    },
+  ) {
+    NavigationGraph(
+      navController,
+      modifier = Modifier
+        // ignore top/bottom padding because each screen owns its own AppBar
+        // and the bottom nav is a custom overlay
+        .padding(
+          start = it.calculateStartPadding(
+            layoutDirection = LayoutDirection.Ltr
+          ),
+          end = it.calculateEndPadding(
+            layoutDirection = LayoutDirection.Ltr
+          ),
+        )
+    )
   }
 }

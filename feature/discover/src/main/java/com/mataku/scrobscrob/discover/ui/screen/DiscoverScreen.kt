@@ -15,6 +15,9 @@ import com.mataku.scrobscrob.discover.ui.molecule.ChartArtistList
 import com.mataku.scrobscrob.discover.ui.molecule.ChartTrackList
 import com.mataku.scrobscrob.discover.ui.molecule.RecentlyLovedTrackList
 import com.mataku.scrobscrob.discover.ui.viewmodel.DiscoverViewModel
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetScaffold
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetText
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetTopAppBar
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -24,61 +27,73 @@ internal fun DiscoverScreen(
   modifier: Modifier = Modifier
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-  LazyColumn(
-    modifier = modifier
-      .fillMaxSize()
-  ) {
-    item(
-      key = "recently_loved_track_list"
-    ) {
-      if (uiState.recentlyLovedTracks.isNotEmpty()) {
-        RecentlyLovedTrackList(
-          lovedTrackList = uiState.recentlyLovedTracks,
-          onLovedTrackTap = {
-            navigateToWebView.invoke(it.url)
-          },
-        )
-      }
+  SunsetScaffold(
+    modifier = modifier,
+    topBar = {
+      SunsetTopAppBar(
+        title = {
+          SunsetText.Title(text = "Discover")
+        },
+      )
     }
-
-    item(
-      key = "chart_track_list"
+  ) { paddingValues ->
+    LazyColumn(
+      modifier = Modifier
+        .fillMaxSize()
+        .padding(paddingValues)
     ) {
-      if (uiState.topTracks.isNotEmpty()) {
-        ChartTrackList(
-          chartTrackList = uiState.topTracks,
-          onChartTrackTap = {
-            navigateToWebView.invoke(it.url)
-          },
-          modifier = Modifier
-            .padding(
-              top = 32.dp
-            )
-        )
+      item(
+        key = "recently_loved_track_list"
+      ) {
+        if (uiState.recentlyLovedTracks.isNotEmpty()) {
+          RecentlyLovedTrackList(
+            lovedTrackList = uiState.recentlyLovedTracks,
+            onLovedTrackTap = {
+              navigateToWebView.invoke(it.url)
+            },
+          )
+        }
       }
-    }
 
-    item(
-      key = "chart_artist_list"
-    ) {
-      if (uiState.topArtists.isNotEmpty()) {
-        ChartArtistList(
-          chartArtistList = uiState.topArtists,
-          onChartArtistTap = {
-            navigateToWebView.invoke(it.url)
-          },
-          modifier = Modifier
-            .padding(
-              top = 32.dp
-            )
-        )
+      item(
+        key = "chart_track_list"
+      ) {
+        if (uiState.topTracks.isNotEmpty()) {
+          ChartTrackList(
+            chartTrackList = uiState.topTracks,
+            onChartTrackTap = {
+              navigateToWebView.invoke(it.url)
+            },
+            modifier = Modifier
+              .padding(
+                top = 32.dp
+              )
+          )
+        }
       }
-    }
 
-    item(
-      key = "discover_footer"
-    ) {
-      Spacer(modifier = Modifier.height(96.dp))
+      item(
+        key = "chart_artist_list"
+      ) {
+        if (uiState.topArtists.isNotEmpty()) {
+          ChartArtistList(
+            chartArtistList = uiState.topArtists,
+            onChartArtistTap = {
+              navigateToWebView.invoke(it.url)
+            },
+            modifier = Modifier
+              .padding(
+                top = 32.dp
+              )
+          )
+        }
+      }
+
+      item(
+        key = "discover_footer"
+      ) {
+        Spacer(modifier = Modifier.height(96.dp))
+      }
     }
   }
 }

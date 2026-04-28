@@ -18,6 +18,7 @@ fun NavGraphBuilder.commonGraph(navController: NavController) {
     content = {
       WebViewScreen(
         url = it.arguments?.getString("url")!!,
+        onBackPressed = navController::popBackStack,
         modifier = Modifier
       )
     }

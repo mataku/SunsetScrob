@@ -12,16 +12,23 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Check
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.mataku.scrobscrob.account.R
 import com.mataku.scrobscrob.account.ui.viewmodel.ThemeSelectorViewModel
 import com.mataku.scrobscrob.core.entity.AppTheme
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetIcon
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetIconButton
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetScaffold
 import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetText
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetTopAppBar
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.onSurfaceColor
 
@@ -46,23 +53,43 @@ internal fun ThemeSelectorScreen(
     viewModel.popEvent()
   }
 
-  uiState.theme?.let {
-    LazyColumn(
-      content = {
-        items(AppTheme.entries.sortedBy {
-          it.priority
-        }) {
-          ThemeCell(
-            theme = it,
-            selected = it == currentTheme,
-            onTapTheme = { currentTheme ->
-              viewModel.changeTheme(currentTheme)
-            })
-        }
-      },
-      modifier = modifier
-        .fillMaxSize()
-    )
+  SunsetScaffold(
+    modifier = modifier,
+    topBar = {
+      SunsetTopAppBar(
+        title = {
+          SunsetText.Title(text = stringResource(id = R.string.title_theme_selector))
+        },
+        navigationIcon = {
+          SunsetIconButton(onClick = onBackPressed) {
+            SunsetIcon(
+              imageVector = Icons.AutoMirrored.Default.ArrowBack,
+              contentDescription = "Back"
+            )
+          }
+        },
+      )
+    }
+  ) { paddingValues ->
+    uiState.theme?.let {
+      LazyColumn(
+        content = {
+          items(AppTheme.entries.sortedBy {
+            it.priority
+          }) {
+            ThemeCell(
+              theme = it,
+              selected = it == currentTheme,
+              onTapTheme = { currentTheme ->
+                viewModel.changeTheme(currentTheme)
+              })
+          }
+        },
+        modifier = Modifier
+          .fillMaxSize()
+          .padding(paddingValues)
+      )
+    }
   }
   BackHandler() {
     onBackPressed.invoke()

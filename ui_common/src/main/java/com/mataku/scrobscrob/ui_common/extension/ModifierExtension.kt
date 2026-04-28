@@ -17,6 +17,7 @@ import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.node.ModifierNodeElement
 import androidx.compose.ui.node.PointerInputModifierNode
+import androidx.compose.ui.platform.InspectorInfo
 import androidx.compose.ui.unit.IntSize
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -90,6 +91,13 @@ private data class ThrottleClickableElement(
     node.throttleTime = throttleTime
     node.onClick = onClick
     node.interactionSource = interactionSource
+  }
+
+  override fun InspectorInfo.inspectableProperties() {
+    name = "throttleClickable"
+    properties["throttleTime"] = throttleTime
+    properties["onClick"] = onClick
+    properties["interactionSource"] = interactionSource
   }
 }
 

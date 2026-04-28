@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -18,8 +20,12 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mataku.scrobscrob.account.R
 import com.mataku.scrobscrob.account.ui.viewmodel.ScrobbleSettingViewModel
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetIcon
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetIconButton
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetScaffold
 import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetSwitch
 import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetText
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetTopAppBar
 import com.mataku.scrobscrob.ui_common.style.LocalSnackbarHostState
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 
@@ -27,6 +33,7 @@ import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 @Composable
 internal fun ScrobbleSettingScreen(
   viewModel: ScrobbleSettingViewModel,
+  onBackPressed: () -> Unit,
   modifier: Modifier = Modifier
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -48,37 +55,58 @@ internal fun ScrobbleSettingScreen(
   val spotifyAllowed = uiState.allowedApps.contains(SPOTIFY_NAME.mappedApp())
   val youTubeMusicAllowed = uiState.allowedApps.contains(YOUTUBE_MUSIC_NAME.mappedApp())
 
-  LazyColumn(
-    content = {
-      item {
-        ScrobbleSettingCell(
-          title = APPLE_MUSIC_NAME,
-          enabled = appleMusicAllowed,
-          onTapCell = { appName, enable ->
-            viewModel.changeAppScrobbleState(appName, enable)
+  SunsetScaffold(
+    modifier = modifier,
+    topBar = {
+      SunsetTopAppBar(
+        title = {
+          SunsetText.Title(text = stringResource(id = R.string.label_scrobble_setting))
+        },
+        navigationIcon = {
+          SunsetIconButton(onClick = onBackPressed) {
+            SunsetIcon(
+              imageVector = Icons.AutoMirrored.Default.ArrowBack,
+              contentDescription = "Back"
+            )
           }
-        )
+        },
+      )
+    }
+  ) { paddingValues ->
+    LazyColumn(
+      content = {
+        item {
+          ScrobbleSettingCell(
+            title = APPLE_MUSIC_NAME,
+            enabled = appleMusicAllowed,
+            onTapCell = { appName, enable ->
+              viewModel.changeAppScrobbleState(appName, enable)
+            }
+          )
 
-        ScrobbleSettingCell(
-          title = SPOTIFY_NAME,
-          enabled = spotifyAllowed,
-          onTapCell = { appName, enable ->
-            viewModel.changeAppScrobbleState(appName, enable)
-          }
-        )
+          ScrobbleSettingCell(
+            title = SPOTIFY_NAME,
+            enabled = spotifyAllowed,
+            onTapCell = { appName, enable ->
+              viewModel.changeAppScrobbleState(appName, enable)
+            }
+          )
 
-        ScrobbleSettingCell(
-          title = YOUTUBE_MUSIC_NAME,
-          enabled = youTubeMusicAllowed,
-          onTapCell = { appName, enable ->
-            viewModel.changeAppScrobbleState(appName, enable)
-          }
-        )
+          ScrobbleSettingCell(
+            title = YOUTUBE_MUSIC_NAME,
+            enabled = youTubeMusicAllowed,
+            onTapCell = { appName, enable ->
+              viewModel.changeAppScrobbleState(appName, enable)
+            }
+          )
 
-      }
-    },
-    modifier = modifier.fillMaxSize()
-  )
+        }
+      },
+      modifier = Modifier
+        .fillMaxSize()
+        .padding(paddingValues)
+    )
+  }
 }
 
 @Composable

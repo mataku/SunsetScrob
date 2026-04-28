@@ -67,6 +67,7 @@ fun NavGraphBuilder.accountGraph(navController: NavController) {
       content = {
         ScrobbleSettingScreen(
           viewModel = metroViewModel(),
+          onBackPressed = navController::popBackStack,
           modifier = Modifier
         )
       },
@@ -98,6 +99,7 @@ fun NavGraphBuilder.accountGraph(navController: NavController) {
       content = {
         LicenseScreen(
           viewModel = metroViewModel(),
+          onBackPressed = navController::popBackStack,
           modifier = Modifier
         )
       },
@@ -112,6 +114,7 @@ fun NavGraphBuilder.accountGraph(navController: NavController) {
       PRIVACY_POLICY_DESTINATION,
       content = {
         PrivacyPolicyScreen(
+          onBackPressed = navController::popBackStack,
           modifier = Modifier
         )
       },

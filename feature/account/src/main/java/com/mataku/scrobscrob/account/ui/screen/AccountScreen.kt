@@ -46,7 +46,9 @@ import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.core.entity.UserInfo
 import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetAlertDialog
 import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetHorizontalDivider
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetScaffold
 import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetText
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetTopAppBar
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.LocalSnackbarHostState
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
@@ -107,47 +109,58 @@ internal fun AccountScreen(
   appUpdateManager.registerListener(listener)
 
   uiState.theme?.let {
-    AccountContent(
-      theme = it,
-      navigateToThemeSelector = navigateToThemeSelector,
-      navigateToLogoutConfirmation = {
-        openDialog.value = true
-      },
-      navigateToLicenseList = navigateToLicenseList,
-      navigateToPrivacyPolicy = navigateToPrivacyPolicy,
-      navigateToScrobbleSetting = navigateToScrobbleSetting,
-      navigateToNotificationSetting = {
-        val intent = Intent()
-        intent.action = Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS
-        notificationPermissionLauncher.launch(intent)
-        showPermissionHelp.invoke()
-      },
-      appUpdateInfo = uiState.appUpdateInfo,
-      requestAppUpdate = { appUpdateInfo ->
-        if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
-          viewModel.completeUpdate()
-        } else {
-          coroutineScope.launch {
-            kotlin.runCatching {
-              val updateInfo = appUpdateManager.requestAppUpdateInfo()
-              appUpdateManager.startUpdateFlowForResult(
-                updateInfo,
-                context as Activity,
-                AppUpdateOptions.defaultOptions(AppUpdateType.FLEXIBLE),
-                1
-              )
-              appUpdateLauncher.launch(context.intent)
+    SunsetScaffold(
+      modifier = modifier,
+      topBar = {
+        SunsetTopAppBar(
+          title = {
+            SunsetText.Title(text = "Account")
+          },
+        )
+      }
+    ) { paddingValues ->
+      AccountContent(
+        theme = it,
+        navigateToThemeSelector = navigateToThemeSelector,
+        navigateToLogoutConfirmation = {
+          openDialog.value = true
+        },
+        navigateToLicenseList = navigateToLicenseList,
+        navigateToPrivacyPolicy = navigateToPrivacyPolicy,
+        navigateToScrobbleSetting = navigateToScrobbleSetting,
+        navigateToNotificationSetting = {
+          val intent = Intent()
+          intent.action = Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS
+          notificationPermissionLauncher.launch(intent)
+          showPermissionHelp.invoke()
+        },
+        appUpdateInfo = uiState.appUpdateInfo,
+        requestAppUpdate = { appUpdateInfo ->
+          if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
+            viewModel.completeUpdate()
+          } else {
+            coroutineScope.launch {
+              kotlin.runCatching {
+                val updateInfo = appUpdateManager.requestAppUpdateInfo()
+                appUpdateManager.startUpdateFlowForResult(
+                  updateInfo,
+                  context as Activity,
+                  AppUpdateOptions.defaultOptions(AppUpdateType.FLEXIBLE),
+                  1
+                )
+                appUpdateLauncher.launch(context.intent)
+              }
             }
           }
-        }
-      },
-      appVersion = uiState.appVersion,
-      clearCache = viewModel::clearCache,
-      navigateToUiCatalog = viewModel::navigateToUiCatalog,
-      imageCacheMB = uiState.imageCacheMB,
-      userInfo = uiState.userInfo,
-      modifier = modifier
-    )
+        },
+        appVersion = uiState.appVersion,
+        clearCache = viewModel::clearCache,
+        navigateToUiCatalog = viewModel::navigateToUiCatalog,
+        imageCacheMB = uiState.imageCacheMB,
+        userInfo = uiState.userInfo,
+        modifier = Modifier.padding(paddingValues)
+      )
+    }
   }
 
   LaunchedEffect(uiState.events) {

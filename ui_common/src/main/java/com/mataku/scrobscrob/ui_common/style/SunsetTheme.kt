@@ -14,7 +14,6 @@ import androidx.compose.ui.graphics.Color
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetSnackbarHostState
 import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetSurface
-import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetTopAppBarScrollBehavior
 
 @Composable
 fun SunsetTheme(
@@ -59,10 +58,6 @@ val LocalAppTheme = staticCompositionLocalOf { AppTheme.DARK }
 
 val LocalSnackbarHostState = staticCompositionLocalOf {
   SunsetSnackbarHostState()
-}
-
-val LocalTopAppBarState = staticCompositionLocalOf<SunsetTopAppBarScrollBehavior> {
-  throw IllegalStateException("SunsetTopAppBarScrollBehavior is not provided")
 }
 
 fun AppTheme.backgroundColor(): Color {
