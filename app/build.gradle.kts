@@ -17,6 +17,16 @@ configure<ApplicationExtension>() {
   }
 
   namespace = "com.mataku.scrobscrob"
+
+  defaultConfig {
+    testInstrumentationRunner = "com.mataku.scrobscrob.app.testing.MetroTestRunner"
+  }
+
+  sourceSets {
+    getByName("androidTest") {
+      assets.srcDirs("src/test/assets", "src/androidTest/assets")
+    }
+  }
 }
 
 dependencies {
@@ -57,6 +67,14 @@ dependencies {
 
   implementation(libs.coil.compose)
   implementation(libs.coil.okhttp)
+
+  androidTestImplementation(libs.androidx.test.ext.junit)
+  androidTestImplementation(libs.androidx.test.runner)
+  androidTestImplementation(libs.compose.ui.test.junit4)
+  androidTestImplementation(libs.compose.ui.test.android)
+  androidTestImplementation(libs.ktor.client.mock)
+  androidTestImplementation(libs.coroutines.test)
+  debugImplementation(libs.compose.ui.test.manifest)
 }
 
 ksp {

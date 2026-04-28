@@ -9,12 +9,11 @@ import coil3.request.crossfade
 import com.mataku.scrobscrob.data.api.BuildConfig
 import com.mataku.scrobscrob.data.api.LastFmHttpClient
 import com.mataku.scrobscrob.data.api.LastFmService
-import com.mataku.scrobscrob.data.api.okhttp.LastfmApiAuthInterceptor
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.Provides
 import dev.zacsweers.metro.SingleIn
-import io.ktor.client.engine.okhttp.OkHttp
+import io.ktor.client.engine.HttpClientEngine
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -45,17 +44,10 @@ interface ApiModule {
   @SingleIn(AppScope::class)
   @Provides
   fun provideLastFmService(
-    okHttpClient: OkHttpClient
-  ): LastFmService {
-    val okHttpEngine = OkHttp.create {
-      preconfigured = okHttpClient.newBuilder()
-        .addInterceptor(LastfmApiAuthInterceptor())
-        .build()
-    }
-    return LastFmService(
-      LastFmHttpClient.create(okHttpEngine)
-    )
-  }
+    engine: HttpClientEngine
+  ): LastFmService = LastFmService(
+    LastFmHttpClient.create(engine)
+  )
 
   @SingleIn(AppScope::class)
   @Provides

@@ -17,6 +17,7 @@ Refer to the following documents only when needed:
 | `@docs/coding-conventions.md` | Naming conventions, Compose guidelines | When writing code |
 | `@DESIGN.md` | Visual identity, theme intent, UI component conventions | When implementing or modifying UI |
 | `@docs/testing.md` | Unit Test, Screenshot Test guidelines | When writing tests |
+| `@docs/e2e-testing.md` | E2E (instrumentation) test architecture, fixture mocking, weekly CI | When adding fixtures, smoke flows, or touching `app/src/androidTest/` |
 
 ## Project Overview
 
