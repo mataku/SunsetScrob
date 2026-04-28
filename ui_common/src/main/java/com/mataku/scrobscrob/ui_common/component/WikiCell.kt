@@ -15,6 +15,7 @@ import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetText
 import com.mataku.scrobscrob.ui_common.extension.toAnnotatedString
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
+import com.mataku.scrobscrob.ui_common.style.accentColor
 import com.mataku.scrobscrob.ui_common.style.onSecondaryColor
 
 @Composable
@@ -41,7 +42,7 @@ fun WikiCell(
         HtmlCompat.FROM_HTML_MODE_COMPACT
       )
 
-      val text = spanned.toAnnotatedString()
+      val text = spanned.toAnnotatedString(linkColor = LocalAppTheme.current.accentColor())
 
       SunsetText.Label(
         text = text,
