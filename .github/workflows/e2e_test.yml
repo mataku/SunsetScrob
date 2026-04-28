@@ -34,6 +34,9 @@ jobs:
           last-fm-shared-secret: ${{ secrets.LAST_FM_SHARED_SECRET }}
           google-services-json: ${{ secrets.GOOGLE_SERVICES_JSON_DEV }}
 
+      - name: Build debug APK & androidTest APK
+        run: ./gradlew :app:assembleDebug :app:assembleDebugAndroidTest
+
       - name: AVD cache
         uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
         id: avd-cache
@@ -64,7 +67,6 @@ jobs:
           disable-animations: true
           script: |
             mkdir -p app/build/outputs/e2e-recordings
-            ./gradlew :app:assembleDebug :app:assembleDebugAndroidTest
             adb shell screenrecord --bit-rate 800000 --size 540x960 --time-limit 60 /sdcard/e2e.mp4 &
             RECORD_PID=$!
             sleep 1
