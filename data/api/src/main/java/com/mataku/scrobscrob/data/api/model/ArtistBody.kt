@@ -19,7 +19,10 @@ data class ArtistBody(
 @Serializable
 data class TopArtistsBody(
   @SerialName("artist")
-  val artists: List<ArtistBody>
+  val artists: List<ArtistBody>,
+
+  @SerialName("@attr")
+  val pagingAttrBody: PagingAttrBody = PagingAttrBody()
 )
 
 @Serializable

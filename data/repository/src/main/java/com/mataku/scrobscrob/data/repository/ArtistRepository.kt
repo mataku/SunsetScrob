@@ -52,6 +52,6 @@ class ArtistRepositoryImpl @Inject constructor(
       params = params
     )
     val response = lastFmService.request(endpoint)
-    emit(response.toTopAlbums())
+    emit(response.toTopAlbums().albums)
   }.flowOn(Dispatchers.IO)
 }

@@ -87,8 +87,12 @@ class TopArtistsViewModel(
             )
           }
         }
-        .collect {
-          if (it.isEmpty()) {
+        .collect { result ->
+          val fetched = result.artists
+          val totalPages = result.pagingAttr.totalPages.toIntOrNull() ?: 0
+          val hasNext = fetched.isNotEmpty() && page < totalPages
+
+          if (fetched.isEmpty()) {
             val list = if (timeRangeChanged) {
               emptyList<TopArtistInfo>().toImmutableList()
             } else {
@@ -102,18 +106,19 @@ class TopArtistsViewModel(
             }
           } else {
             val artists = if (timeRangeChanged) {
-              it
+              fetched
             } else {
               val current = uiState.value.topArtists.toMutableList()
-              current.addAll(it)
-              current
-            }.toImmutableList()
+              current.addAll(fetched)
+              current.toImmutableList()
+            }
             uiState.update { state ->
               state.copy(
                 topArtists = artists,
+                hasNext = hasNext
               )
             }
-            page++
+            if (hasNext) page++
           }
         }
     }

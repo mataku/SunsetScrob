@@ -1,7 +1,8 @@
 package com.mataku.scrobscrob.data.repository
 
 import com.mataku.scrobscrob.core.entity.NowPlayingTrackEntity
-import com.mataku.scrobscrob.core.entity.RecentTrack
+import com.mataku.scrobscrob.core.entity.PagingAttr
+import com.mataku.scrobscrob.core.entity.RecentTracks
 import com.mataku.scrobscrob.core.entity.ScrobbleResult
 import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.data.api.LastFmService
@@ -13,6 +14,7 @@ import com.mataku.scrobscrob.data.db.SessionKeyDataStore
 import com.mataku.scrobscrob.data.db.UsernameDataStore
 import com.mataku.scrobscrob.data.repository.mapper.toRecentTracks
 import com.mataku.scrobscrob.data.repository.mapper.toScrobbleResult
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -22,7 +24,7 @@ import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.SingleIn
 
 interface ScrobbleRepository {
-  suspend fun recentTracks(page: Int): Flow<List<RecentTrack>>
+  suspend fun recentTracks(page: Int): Flow<RecentTracks>
 
   suspend fun scrobble(currentTrack: NowPlayingTrackEntity): Flow<ScrobbleResult>
 }
@@ -34,8 +36,12 @@ class ScrobbleRepositoryImpl @Inject constructor(
   private val sessionDataStore: SessionKeyDataStore,
   private val artworkDataStore: ArtworkDataStore
 ) : ScrobbleRepository {
-  override suspend fun recentTracks(page: Int): Flow<List<RecentTrack>> = flow<List<RecentTrack>> {
-    val username = usernameDataStore.username() ?: emit(emptyList())
+  override suspend fun recentTracks(page: Int): Flow<RecentTracks> = flow {
+    val username = usernameDataStore.username()
+    if (username == null) {
+      emit(RecentTracks(tracks = persistentListOf(), pagingAttr = PagingAttr()))
+      return@flow
+    }
 
     val params = mapOf(
       "user" to username,
@@ -51,7 +57,7 @@ class ScrobbleRepositoryImpl @Inject constructor(
     val recentTracks = response.toRecentTracks()
     emit(recentTracks)
     // TODO: refactor
-    recentTracks.distinct().forEach { track ->
+    recentTracks.tracks.distinct().forEach { track ->
       val imageUrl = track.images.imageUrl()
       if (imageUrl != null) {
         artworkDataStore.insertArtwork(

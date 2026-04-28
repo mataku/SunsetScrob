@@ -86,15 +86,16 @@ class AlbumRepositorySpec : DescribeSpec({
         username = username,
         timeRangeFiltering = timeRangeFiltering
       ).test {
-        awaitItem().let {
-          it.size shouldBe 1
-          it[0].let { albumInfo ->
+        awaitItem().let { result ->
+          result.albums.size shouldBe 1
+          result.albums[0].let { albumInfo ->
             albumInfo.artist shouldBe "PassCode"
             albumInfo.title shouldBe "ZENITH"
             albumInfo.imageList.isNotEmpty() shouldBe true
             albumInfo.playCount shouldBe "4118"
             albumInfo.url shouldBe "https://www.last.fm/music/PassCode/ZENITH"
           }
+          result.pagingAttr.totalPages shouldBe "1654"
         }
         awaitComplete()
       }

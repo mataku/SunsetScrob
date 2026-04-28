@@ -1,11 +1,12 @@
 package com.mataku.scrobscrob.data.repository
 
 import com.mataku.scrobscrob.core.entity.TimeRangeFiltering
-import com.mataku.scrobscrob.core.entity.TopArtistInfo
+import com.mataku.scrobscrob.core.entity.TopArtists
 import com.mataku.scrobscrob.data.api.LastFmService
 import com.mataku.scrobscrob.data.api.endpoint.UserTopArtistsEndpoint
 import com.mataku.scrobscrob.data.db.ArtworkDataStore
 import com.mataku.scrobscrob.data.repository.mapper.toTopArtists
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -19,7 +20,7 @@ interface TopArtistsRepository {
     page: Int,
     username: String,
     timeRangeFiltering: TimeRangeFiltering
-  ): Flow<List<TopArtistInfo>>
+  ): Flow<TopArtists>
 }
 
 @SingleIn(AppScope::class)
@@ -31,7 +32,7 @@ class TopArtistsRepositoryImpl @Inject constructor(
     page: Int,
     username: String,
     timeRangeFiltering: TimeRangeFiltering
-  ): Flow<List<TopArtistInfo>> = flow {
+  ): Flow<TopArtists> = flow {
     val params = mapOf(
       "limit" to 20,
       "page" to page,
@@ -42,7 +43,8 @@ class TopArtistsRepositoryImpl @Inject constructor(
       params = params
     )
     val response = lastFmService.request(endpoint)
-    val topArtists = response.toTopArtists().map { artist ->
+    val result = response.toTopArtists()
+    val artistsWithArtwork = result.artists.map { artist ->
       val imageUrl = artworkDataStore.artwork(
         artist = artist.name
       )
@@ -51,7 +53,7 @@ class TopArtistsRepositoryImpl @Inject constructor(
       } else {
         artist
       }
-    }
-    emit(topArtists)
+    }.toImmutableList()
+    emit(result.copy(artists = artistsWithArtwork))
   }.flowOn(Dispatchers.IO)
 }

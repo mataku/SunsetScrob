@@ -15,13 +15,16 @@ import com.mataku.scrobscrob.core.entity.LovedTrack
 import com.mataku.scrobscrob.core.entity.NowPlayingTrackEntity
 import com.mataku.scrobscrob.core.entity.PagingAttr
 import com.mataku.scrobscrob.core.entity.RecentTrack
+import com.mataku.scrobscrob.core.entity.RecentTracks
 import com.mataku.scrobscrob.core.entity.Scm
 import com.mataku.scrobscrob.core.entity.ScrobbleResult
 import com.mataku.scrobscrob.core.entity.SpdxLicense
 import com.mataku.scrobscrob.core.entity.Stats
 import com.mataku.scrobscrob.core.entity.Tag
 import com.mataku.scrobscrob.core.entity.TopAlbumInfo
+import com.mataku.scrobscrob.core.entity.TopAlbums
 import com.mataku.scrobscrob.core.entity.TopArtistInfo
+import com.mataku.scrobscrob.core.entity.TopArtists
 import com.mataku.scrobscrob.core.entity.TrackAlbumInfo
 import com.mataku.scrobscrob.core.entity.TrackArtist
 import com.mataku.scrobscrob.core.entity.TrackInfo
@@ -117,9 +120,9 @@ fun TrackInfoApiResponse.toTrackInfo(): TrackInfo {
   )
 }
 
-fun TopAlbumsApiResponse.toTopAlbums(): List<TopAlbumInfo> {
+fun TopAlbumsApiResponse.toTopAlbums(): TopAlbums {
   val body = this.topAlbums
-  return body.albums.map {
+  val albums = body.albums.map {
     TopAlbumInfo(
       artist = it.artist.name,
       title = it.name,
@@ -127,12 +130,16 @@ fun TopAlbumsApiResponse.toTopAlbums(): List<TopAlbumInfo> {
       playCount = it.playcount,
       url = it.url
     )
-  }
+  }.toImmutableList()
+  return TopAlbums(
+    albums = albums,
+    pagingAttr = body.pagingAttrBody.toPagingAttr()
+  )
 }
 
-fun UserTopArtistsApiResponse.toTopArtists(): List<TopArtistInfo> {
+fun UserTopArtistsApiResponse.toTopArtists(): TopArtists {
   val body = this.topArtists
-  return body.artists.map {
+  val artists = body.artists.map {
     TopArtistInfo(
       name = it.name,
       imageList = it.imageList?.toImageList()?.toImmutableList() ?: persistentListOf(),
@@ -140,12 +147,16 @@ fun UserTopArtistsApiResponse.toTopArtists(): List<TopArtistInfo> {
       topTags = persistentListOf(),
       playCount = it.playcount
     )
-  }
+  }.toImmutableList()
+  return TopArtists(
+    artists = artists,
+    pagingAttr = body.pagingAttrBody.toPagingAttr()
+  )
 }
 
-fun RecentTracksApiResponse.toRecentTracks(): List<RecentTrack> {
+fun RecentTracksApiResponse.toRecentTracks(): RecentTracks {
   val body = this.recentTracks
-  return body.tracks.map {
+  val tracks = body.tracks.map {
     RecentTrack(
       artistName = it.artist.name,
       albumName = it.album.name,
@@ -154,7 +165,11 @@ fun RecentTracksApiResponse.toRecentTracks(): List<RecentTrack> {
       url = it.url,
       date = it.date?.date
     )
-  }
+  }.toImmutableList()
+  return RecentTracks(
+    tracks = tracks,
+    pagingAttr = PagingAttr(totalPages = body.attr.totalPages)
+  )
 }
 
 fun TagListBody?.toTagList(): List<Tag> {
