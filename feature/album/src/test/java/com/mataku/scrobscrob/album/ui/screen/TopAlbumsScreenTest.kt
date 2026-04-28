@@ -6,8 +6,10 @@ import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.mataku.scrobscrob.album.ui.viewmodel.TopAlbumsViewModel
 import com.mataku.scrobscrob.core.entity.AppTheme
+import com.mataku.scrobscrob.core.entity.PagingAttr
 import com.mataku.scrobscrob.core.entity.TimeRangeFiltering
 import com.mataku.scrobscrob.core.entity.TopAlbumInfo
+import com.mataku.scrobscrob.core.entity.TopAlbums
 import com.mataku.scrobscrob.data.repository.AlbumRepository
 import com.mataku.scrobscrob.data.repository.UsernameRepository
 import com.mataku.scrobscrob.test_helper.integration.VRT
@@ -17,6 +19,7 @@ import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.flowOf
 import org.junit.Before
 import org.junit.Rule
@@ -71,7 +74,17 @@ class TopAlbumsScreenTest {
         username = username,
         timeRangeFiltering = timeRangeFiltering
       )
-    }.returns(flowOf(topAlbums))
+    }.returns(
+      flowOf(
+        TopAlbums(
+          albums = topAlbums.toImmutableList(),
+          pagingAttr = PagingAttr(
+            page = "1",
+            perPage = "20"
+          )
+        )
+      )
+    )
 
     coEvery {
       albumRepository.fetchTopAlbums(
@@ -79,7 +92,17 @@ class TopAlbumsScreenTest {
         username = username,
         timeRangeFiltering = timeRangeFiltering
       )
-    }.returns(flowOf(topAlbumsPage2))
+    }.returns(
+      flowOf(
+        TopAlbums(
+          albums = topAlbumsPage2.toImmutableList(),
+          pagingAttr = PagingAttr(
+            page = "1",
+            perPage = "20"
+          )
+        )
+      )
+    )
 
     coEvery {
       albumRepository.fetchTopAlbums(
@@ -87,7 +110,17 @@ class TopAlbumsScreenTest {
         username = username,
         timeRangeFiltering = timeRangeFiltering
       )
-    }.returns(flowOf(emptyList()))
+    }.returns(
+      flowOf(
+        TopAlbums(
+          albums = persistentListOf(),
+          pagingAttr = PagingAttr(
+            page = "1",
+            perPage = "20"
+          )
+        )
+      )
+    )
   }
 
   @Test

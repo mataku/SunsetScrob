@@ -6,8 +6,10 @@ import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.mataku.scrobscrob.artist.ui.viewmodel.TopArtistsViewModel
 import com.mataku.scrobscrob.core.entity.AppTheme
+import com.mataku.scrobscrob.core.entity.PagingAttr
 import com.mataku.scrobscrob.core.entity.TimeRangeFiltering
 import com.mataku.scrobscrob.core.entity.TopArtistInfo
+import com.mataku.scrobscrob.core.entity.TopArtists
 import com.mataku.scrobscrob.data.repository.TopArtistsRepository
 import com.mataku.scrobscrob.data.repository.UsernameRepository
 import com.mataku.scrobscrob.test_helper.integration.VRT
@@ -17,6 +19,7 @@ import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.flowOf
 import org.junit.Before
 import org.junit.Rule
@@ -71,7 +74,17 @@ class TopArtistsScreenTest {
         username = username,
         timeRangeFiltering = timeRangeFiltering
       )
-    }.returns(flowOf(artistInfoList))
+    }.returns(
+      flowOf(
+        TopArtists(
+          artists = artistInfoList.toImmutableList(),
+          pagingAttr = PagingAttr(
+            page = "1",
+            perPage = "20"
+          )
+        )
+      )
+    )
 
     coEvery {
       artistRepository.fetchTopArtists(
@@ -79,7 +92,17 @@ class TopArtistsScreenTest {
         username = username,
         timeRangeFiltering = timeRangeFiltering
       )
-    }.returns(flowOf(artistInfoListPage2))
+    }.returns(
+      flowOf(
+        TopArtists(
+          artists = artistInfoListPage2.toImmutableList(),
+          pagingAttr = PagingAttr(
+            page = "1",
+            perPage = "20"
+          )
+        )
+      )
+    )
 
     coEvery {
       artistRepository.fetchTopArtists(
@@ -87,7 +110,17 @@ class TopArtistsScreenTest {
         username = username,
         timeRangeFiltering = timeRangeFiltering
       )
-    }.returns(flowOf(emptyList()))
+    }.returns(
+      flowOf(
+        TopArtists(
+          artists = persistentListOf(),
+          pagingAttr = PagingAttr(
+            page = "1",
+            perPage = "20"
+          )
+        )
+      )
+    )
   }
 
   @Test
