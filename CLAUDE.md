@@ -84,8 +84,7 @@ live in always-loaded `architecture.md` and `coding-conventions.md`.
 - Build: Gradle Kotlin DSL, version catalog (`gradle/libs.versions.toml`),
   custom convention plugins in `build-logic/convention/`.
 - Tests: Kotest (JUnit5 platform), MockK, Turbine, Roborazzi.
-- Code quality: Android Lint (built-in checks enabled via
-  `app/lint-checks.gradle`; project-specific custom detectors in
+- Code quality: Android Lint (project-specific custom detectors in
   `:lint-checks`), Compose lint (Slack `compose-lint-checks`), Konsist
   architecture tests, Licensee. Lint fails the build only when `CI=true`
   (see `build-logic/convention/.../AndroidLintConfiguration.kt`); CI runs
