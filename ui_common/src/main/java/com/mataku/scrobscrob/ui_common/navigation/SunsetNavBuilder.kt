@@ -7,7 +7,6 @@ class SunsetNavBuilder internal constructor(
   internal val entryProviderScope: EntryProviderScope<SunsetNavKey>,
   private val onNavigate: (SunsetNavKey) -> Unit,
   private val onPopBackStack: () -> Unit,
-  private val onReplaceTop: (SunsetNavKey) -> Unit,
 ) {
   inline fun <reified K : SunsetNavKey> destination(
     noinline content: @Composable SunsetDestinationScope.(K) -> Unit,
@@ -25,5 +24,4 @@ class SunsetNavBuilder internal constructor(
 
   fun navigate(key: SunsetNavKey) = onNavigate(key)
   fun popBackStack() = onPopBackStack()
-  fun replaceTop(key: SunsetNavKey) = onReplaceTop(key)
 }

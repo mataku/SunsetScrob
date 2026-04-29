@@ -28,7 +28,7 @@ class NavigationArchitectureSpec : DescribeSpec({
       val violations = files
         .filter { file ->
           file.imports.any { imp ->
-            imp.name.startsWith("androidx.navigation") && !imp.name.startsWith("androidx.navigation3")
+            imp.name.startsWith("androidx.navigation.") && !imp.name.startsWith("androidx.navigation3")
           }
         }
       withClue(

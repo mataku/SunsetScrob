@@ -80,16 +80,8 @@ fun SunsetNavHost(
         entryProvider = entryProvider {
           val sunsetBuilder = SunsetNavBuilder(
             entryProviderScope = this,
-            onNavigate = { key -> backStack.keys.add(key) },
-            onPopBackStack = {
-              if (backStack.keys.isNotEmpty()) {
-                backStack.keys.removeAt(backStack.keys.lastIndex)
-              }
-            },
-            onReplaceTop = { key ->
-              backStack.keys.clear()
-              backStack.keys.add(key)
-            },
+            onNavigate = navigator::navigate,
+            onPopBackStack = navigator::popBackStack,
           )
           sunsetBuilder.builder()
         },
@@ -134,12 +126,17 @@ internal class SunsetDestinationScopeImpl(
   override fun navigate(key: SunsetNavKey) = navigator.navigate(key)
   override fun popBackStack() = navigator.popBackStack()
 
-  // Option C: no per-entry ViewModelStoreOwner decorator exists in Nav3 1.1.1.
-  // We use the Activity-level ViewModelStoreOwner with a stable key derived from
-  // the NavKey identity.  VMs are GC'd when the Activity is destroyed; they survive
-  // configuration changes as long as the Activity is alive.  A future Nav3 release
-  // that adds rememberViewModelStoreOwnerNavEntryDecorator can drop the custom key
-  // and provide a per-entry owner instead.
+  /**
+   * Looks up a Metro-managed ViewModel scoped to this destination's NavKey.
+   *
+   * Implementation note: Currently uses Option C (Activity-scoped ViewModelStore +
+   * `key = navKey.toString()`) because Nav3 1.1.1 does not provide a
+   * `rememberViewModelStoreOwnerNavEntryDecorator`. Two consequences:
+   *  - VMs are GC'd only when the host Activity is destroyed (no per-entry cleanup on pop).
+   *  - Two entries with the same NavKey value share a VM. This app does not push
+   *    duplicate detail screens today, but be aware if that changes.
+   * Replace this implementation when Nav3 ships per-entry VM scoping.
+   */
   @Composable
   override fun <VM : ViewModel> viewModelFor(key: SunsetNavKey, type: Class<VM>): VM {
     val owner = LocalViewModelStoreOwner.current

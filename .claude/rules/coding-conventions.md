@@ -149,7 +149,7 @@ Reference: `feature/home/.../HomeNavigation.kt`, `app/.../SunsetMainScreen.kt`,
 fun SunsetNavBuilder.albumGraph() {
   destination<AlbumKey> { key ->
     AlbumScreen(
-      viewModel = viewModelFor(key),
+      viewModel = viewModelFor<AlbumViewModel>(key),
       id = key.contentId,
       animatedContentScope = animatedContentScope,
       onBackPressed = ::popBackStack,
