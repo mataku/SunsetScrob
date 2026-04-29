@@ -2,7 +2,9 @@ package com.mataku.scrobscrob.app.testing
 
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.hasAnyDescendant
 import androidx.compose.ui.test.hasContentDescription
+import androidx.compose.ui.test.hasScrollAction
 import androidx.compose.ui.test.hasSetTextAction
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
@@ -10,6 +12,7 @@ import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTextInput
 import androidx.test.platform.app.InstrumentationRegistry
 import com.mataku.scrobscrob.app.ui.top.MainActivity
@@ -55,9 +58,18 @@ class AppSmokeTest {
     composeRule.onNodeWithText("Album").performClick()
     composeRule.waitUntilExactlyOneExists(hasText("ZENITH"), TIMEOUT_MS)
     Thread.sleep(STEP_DELAY_MS)
+    // Go to album detail
     composeRule.onNodeWithText("ZENITH").performClick()
     composeRule.waitUntilExactlyOneExists(hasContentDescription("artwork image"), TIMEOUT_MS)
     Thread.sleep(STEP_DELAY_MS)
+
+    // Scroll the album detail content to the bottom.
+    composeRule.waitUntilExactlyOneExists(hasText("About ZENITH"), TIMEOUT_MS)
+    composeRule
+      .onNode(hasScrollAction() and hasAnyDescendant(hasText("About ZENITH")))
+      .performScrollToNode(hasText("About ZENITH"))
+    Thread.sleep(STEP_DELAY_MS)
+
     pressBack()
     composeRule.waitUntilExactlyOneExists(hasText("Home"), TIMEOUT_MS)
     Thread.sleep(STEP_DELAY_MS)
