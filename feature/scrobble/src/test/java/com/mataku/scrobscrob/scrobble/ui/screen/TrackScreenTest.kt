@@ -3,7 +3,6 @@ package com.mataku.scrobscrob.scrobble.ui.screen
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.ui.test.junit4.v2.createComposeRule
-import androidx.lifecycle.SavedStateHandle
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.core.entity.Tag
@@ -12,11 +11,11 @@ import com.mataku.scrobscrob.core.entity.TrackArtist
 import com.mataku.scrobscrob.core.entity.TrackInfo
 import com.mataku.scrobscrob.core.entity.Wiki
 import com.mataku.scrobscrob.data.repository.TrackRepository
+import com.mataku.scrobscrob.scrobble.ui.navigation.TrackDetailKey
 import com.mataku.scrobscrob.scrobble.ui.viewmodel.TrackViewModel
 import com.mataku.scrobscrob.test_helper.integration.VRT
 import com.mataku.scrobscrob.test_helper.integration.captureScreenshot
 import io.mockk.coEvery
-import io.mockk.every
 import io.mockk.mockk
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.flowOf
@@ -75,19 +74,16 @@ class TrackScreenTest {
   )
 
   private val trackRepository = mockk<TrackRepository>()
-  private val savedStateHandle = mockk<SavedStateHandle>()
+  private val key = TrackDetailKey(
+    trackName = trackName,
+    artistName = artistName,
+    imageUrl = artworkUrl ?: "",
+    id = "",
+  )
   private val animatedContentScope = mockk<AnimatedContentScope>(relaxed = true)
 
   @Before
   fun setup() {
-    every {
-      savedStateHandle.get<String>("artistName")
-    }.returns(artistName)
-
-    every {
-      savedStateHandle.get<String>("trackName")
-    }.returns(trackName)
-
     coEvery {
       trackRepository.getInfo(
         trackName = trackName,
@@ -100,7 +96,7 @@ class TrackScreenTest {
   fun layout() = runTest {
     val viewModel = TrackViewModel(
       trackRepository = trackRepository,
-      savedStateHandle = savedStateHandle
+      key = key,
     )
 
     composeRule.captureScreenshot(
@@ -127,7 +123,7 @@ class TrackScreenTest {
   fun layout_light() = runTest {
     val viewModel = TrackViewModel(
       trackRepository = trackRepository,
-      savedStateHandle = savedStateHandle
+      key = key,
     )
 
     composeRule.captureScreenshot(
