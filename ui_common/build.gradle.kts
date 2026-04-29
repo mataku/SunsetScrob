@@ -32,6 +32,10 @@ dependencies {
   implementation(libs.kotlinx.collection)
 
   implementation(libs.compose.ui.tooling)
+
+  implementation(libs.navigation3.runtime)
+  implementation(libs.navigation3.ui)
+  implementation(libs.serialization.json)
 }
 
 ksp {
