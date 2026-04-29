@@ -17,16 +17,6 @@ configure<ApplicationExtension>() {
   }
 
   namespace = "com.mataku.scrobscrob"
-
-  defaultConfig {
-    testInstrumentationRunner = "com.mataku.scrobscrob.app.testing.MetroTestRunner"
-  }
-
-  sourceSets {
-    getByName("androidTest") {
-      assets.srcDirs("src/test/assets", "src/androidTest/assets")
-    }
-  }
 }
 
 dependencies {

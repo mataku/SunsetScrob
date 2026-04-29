@@ -34,50 +34,55 @@ jobs:
           last-fm-shared-secret: ${{ secrets.LAST_FM_SHARED_SECRET }}
           google-services-json: ${{ secrets.GOOGLE_SERVICES_JSON_DEV }}
 
+      - name: Echo Android SDK paths
+        run: |
+          echo "ANDROID_HOME=$ANDROID_HOME"
+          echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT"
+          ls -1 "$ANDROID_HOME" 2>/dev/null || echo "(no SDK dir)"
+          ls -1 "$ANDROID_HOME/system-images" 2>/dev/null || echo "(no system-images yet)"
+          ls -1 ~/.android/avd 2>/dev/null || echo "(no AVD yet)"
+
+      - name: GMD cache
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+        with:
+          path: |
+            ~/.android/avd
+            ~/.android/adb*
+            /usr/local/lib/android/sdk/system-images
+          key: gmd-pixel6-api35-google-x86_64-v1
+
       - name: Build debug APK & androidTest APK
         run: ./gradlew :app:assembleDebug :app:assembleDebugAndroidTest
 
-      - name: AVD cache
-        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
-        id: avd-cache
-        with:
-          path: |
-            ~/.android/avd/*
-            ~/.android/adb*
-          key: avd-api35-x86_64
+      - name: Run E2E tests on GMD
+        run: |
+          mkdir -p app/build/outputs/e2e-recordings
 
-      - name: Create AVD snapshot for caching
-        if: steps.avd-cache.outputs.cache-hit != 'true'
-        uses: reactivecircus/android-emulator-runner@e89f39f1abbbd05b1113a29cf4db69e7540cae5a # v2.37.0
-        with:
-          api-level: 35
-          arch: x86_64
-          force-avd-creation: false
-          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          disable-animations: true
-          script: echo "Generated AVD snapshot."
+          (
+            for _ in $(seq 1 120); do
+              if adb devices | grep -qE 'emulator-[0-9]+[[:space:]]+device$'; then
+                if [ "$(adb shell getprop sys.boot_completed 2>/dev/null | tr -d '\r')" = "1" ]; then
+                  break
+                fi
+              fi
+              sleep 2
+            done
+            adb shell screenrecord --output-format=h264 --bit-rate 800000 --size 540x960 --time-limit 180 - \
+              > app/build/outputs/e2e-recordings/e2e.h264 2>/dev/null || true
+          ) &
+          RECORD_PID=$!
 
-      - name: Run E2E tests
-        uses: reactivecircus/android-emulator-runner@e89f39f1abbbd05b1113a29cf4db69e7540cae5a # v2.37.0
-        with:
-          api-level: 35
-          arch: x86_64
-          force-avd-creation: false
-          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          disable-animations: true
-          script: |
-            mkdir -p app/build/outputs/e2e-recordings
-            adb shell screenrecord --bit-rate 800000 --size 540x960 --time-limit 60 /sdcard/e2e.mp4 &
-            RECORD_PID=$!
-            sleep 1
-            set +e
-            ./gradlew :app:connectedDebugAndroidTest
-            RESULT=$?
-            set -e
-            adb shell pkill -SIGINT screenrecord || true
-            wait $RECORD_PID || true
-            adb pull /sdcard/e2e.mp4 app/build/outputs/e2e-recordings/e2e.mp4 || true
-            exit $RESULT
+          set +e
+          ./gradlew :app:cleanManagedDevices --unused-only
+          ./gradlew :app:pixel6Api35DebugAndroidTest \
+            -Pandroid.testoptions.manageddevices.emulator.gpu="swiftshader_indirect"
+          RESULT=$?
+          set -e
+
+          kill -SIGINT $RECORD_PID 2>/dev/null || true
+          wait $RECORD_PID 2>/dev/null || true
+
+          exit $RESULT
 
       - name: Upload test reports
         if: failure()
