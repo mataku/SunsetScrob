@@ -91,3 +91,6 @@ google-services.json
 
 .kotlin/
 .claude/settings.local.json
+
+# Local planning artifacts (design / plan docs)
+docs/specs/

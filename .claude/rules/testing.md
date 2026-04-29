@@ -1,12 +1,20 @@
+---
+paths:
+  - "**/*Spec.kt"
+  - "**/*Test.kt"
+---
+
 # Testing
 
 ## Commands
 
-| Type | Command |
-|------|---------|
-| Unit Test | `fastlane test` |
-| Screenshot Test | `fastlane screenshot_test` |
-| Instrumentation Test | `fastlane android_test` |
+| Type                 | Command                                                                              |
+|----------------------|--------------------------------------------------------------------------------------|
+| Unit Test            | `./gradlew testDebugUnitTest -PexcludeScreenshotTest=true`                           |
+| Screenshot Test      | `./gradlew verifyRoborazziDebug --no-configuration-cache -PonlyScreenshotTest=true`  |
+| Instrumentation Test | `./gradlew :app:connectedDebugAndroidTest` (see [`e2e-testing.md`](e2e-testing.md))  |
+
+One test file per class under test.
 
 ## Unit Test
 
@@ -41,6 +49,8 @@ class LoginViewModelSpec : DescribeSpec({
 })
 ```
 
+Register `extension(CoroutinesListener())` when testing suspend code.
+
 ### Assertions
 
 ```kotlin
@@ -50,6 +60,10 @@ boolean.shouldBeFalse()
 ```
 
 ### MockK
+
+Prefer explicit `mockk<T>()` + `coEvery { } returns ...`. Avoid
+`mockk(relaxed = true)` unless the intent is genuinely "ignore all
+unused members".
 
 #### Creating Mocks
 
@@ -106,9 +120,28 @@ class ExampleViewModelSpec : DescribeSpec({
 })
 ```
 
-## Screenshot Test
+## Screenshot Test (VRT)
 
 Uses Roborazzi. Create tests per screen.
+
+### Required Annotations (CRITICAL)
+
+Annotate every screenshot test with **all three** of:
+
+- `@RunWith(AndroidJUnit4::class)`
+- `@GraphicsMode(GraphicsMode.Mode.NATIVE)`
+- `@Category(VRT::class)` (marker from `:test_helper:integration`)
+
+`@Category` is what lets the unit-test bucket
+(`testDebugUnitTest -PexcludeScreenshotTest=true`) and the screenshot-test
+bucket (`verifyRoborazziDebug -PonlyScreenshotTest=true`) include or exclude
+screenshot tests via JUnit Platform tags. Vintage maps `@Category(VRT::class)`
+to the tag `com.mataku.scrobscrob.test_helper.integration.VRT`, which
+`TestConfiguration.kt` filters on. **Without it the test silently runs in the
+wrong bucket** — it compiles fine, but ends up in the wrong CI job.
+
+For new VRTs, prefer the `create-vrt` skill to scaffold a test class with
+all three annotations and the `captureScreenshot` wiring already in place.
 
 ### File Location
 
@@ -122,6 +155,7 @@ feature/{name}/src/test/java/com/mataku/scrobscrob/{name}/ui/screen/
 ```kotlin
 @RunWith(AndroidJUnit4::class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
+@Category(VRT::class)
 class AlbumScreenTest {
   @get:Rule
   val composeRule = createComposeRule()
@@ -130,7 +164,7 @@ class AlbumScreenTest {
   fun layout() {
     composeRule.captureScreenshot(
       appTheme = AppTheme.DARK,
-      content = { AlbumContent(...) },
+      content = { AlbumContent(/* ... */) },
       fileName = "album_screen.png"
     )
   }
@@ -139,7 +173,7 @@ class AlbumScreenTest {
   fun layout_light() {
     composeRule.captureScreenshot(
       appTheme = AppTheme.LIGHT,
-      content = { AlbumContent(...) },
+      content = { AlbumContent(/* ... */) },
       fileName = "album_screen_light.png"
     )
   }
@@ -147,6 +181,8 @@ class AlbumScreenTest {
 ```
 
 ### captureScreenshot
+
+Use the helper from `:test_helper:integration`:
 
 ```kotlin
 composeRule.captureScreenshot(
@@ -180,8 +216,8 @@ Test Content instead of Screen (no need to mock ViewModel):
 ```kotlin
 content = {
   AlbumContent(
-    albumInfo = AlbumInfo(...),
-    onBackPressed = {}
+    albumInfo = AlbumInfo(/* ... */),
+    onBackPressed = {},
   )
 }
 ```
@@ -194,13 +230,14 @@ Helper for Unit Tests. Provides `CoroutinesListener`.
 
 ### test_helper:integration
 
-Helper for Screenshot Tests. Provides `captureScreenshot` extension function.
+Helper for Screenshot Tests. Provides `captureScreenshot` extension function
+and the `VRT` category marker.
 
 ## File Naming
 
-| Type | Convention | Example |
-|------|------------|---------|
-| Unit Test | `{Class}Spec.kt` | `LoginViewModelSpec.kt` |
-| Screenshot Test | `{Screen}ScreenTest.kt` | `AlbumScreenTest.kt` |
-| Screenshot (Dark) | `{snake_case}.png` | `album_screen.png` |
+| Type               | Convention               | Example                  |
+|--------------------|--------------------------|--------------------------|
+| Unit Test          | `{Class}Spec.kt`         | `LoginViewModelSpec.kt`  |
+| Screenshot Test    | `{Screen}ScreenTest.kt`  | `AlbumScreenTest.kt`     |
+| Screenshot (Dark)  | `{snake_case}.png`       | `album_screen.png`       |
 | Screenshot (Light) | `{snake_case}_light.png` | `album_screen_light.png` |

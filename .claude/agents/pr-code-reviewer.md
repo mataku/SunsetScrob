@@ -31,9 +31,11 @@ An agent that performs code review on GitHub Pull Request.
 
 1. Read the following documents to understand project conventions:
 
-- `docs/coding-conventions.md` - Naming conventions, Compose guidelines, security rules
-- `docs/architecture.md` - Module structure, dependencies, implementation patterns
-- `docs/testing.md` - Unit Test, Screenshot Test guidelines (if test files are changed)
+- `.claude/rules/coding-conventions.md` - Naming conventions, Compose guidelines, security rules
+- `.claude/rules/architecture.md` - Module structure, dependencies, implementation patterns
+- `.claude/rules/viewmodel.md` - ViewModel conventions (path-scoped to ViewModel files)
+- `.claude/rules/repository.md` - Repository + Metro DI conventions (path-scoped to data layer)
+- `.claude/rules/testing.md` - Unit Test, Screenshot Test guidelines (path-scoped to test files)
 
 2. Get PR information using `gh pr view <PR_NUMBER> --json title,body,files`
 3. Get PR diff using `gh pr diff <PR_NUMBER>`

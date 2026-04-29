@@ -27,22 +27,6 @@
 | Private property | camelCase + `private` | `private val page = 1` |
 | Constant | UPPER_SNAKE_CASE | `const val ALBUM_INFO_DESTINATION` |
 
-## Package Structure
-
-Directory structure within feature modules:
-
-```
-feature/{name}/
-└── src/main/java/com/mataku/scrobscrob/{name}/
-    ├── ui/
-    │   ├── screen/          # Screen Composable
-    │   ├── molecule/        # Reusable medium-sized components
-    │   ├── component/       # Feature-specific small components
-    │   ├── viewmodel/       # ViewModel
-    │   └── navigation/      # Navigation definitions
-    └── di/                  # DI Module (if needed)
-```
-
 ## File Naming
 
 | Type | Convention | Example |
@@ -58,31 +42,20 @@ feature/{name}/
 
 ### Screen and Content Separation
 
-Screen receives ViewModel, Content receives pure state.
+Reference: `feature/scrobble/.../ui/screen/ScrobbleScreen.kt`, `feature/home/.../ui/screen/HomeScreen.kt`.
 
-```kotlin
-@Composable
-fun AlbumScreen(
-  viewModel: AlbumViewModel,
-  onBackPressed: () -> Unit,
-  modifier: Modifier = Modifier
-) {
-  val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-
-  AlbumContent(
-    albumInfo = uiState.albumInfo,
-    onBackPressed = onBackPressed
-  )
-}
-
-@Composable
-private fun AlbumContent(
-  albumInfo: AlbumInfo?,
-  onBackPressed: () -> Unit
-) {
-  // UI implementation
-}
-```
+- Top-level composable is `fun FooScreen(viewModel: FooViewModel = metroViewModel(), navigateToX: (...) -> Unit, modifier: Modifier = Modifier)`.
+  It is stateful: collects state with `.collectAsStateWithLifecycle()` and owns
+  navigation callbacks.
+- A `private fun FooContent(...)` takes **data only** (no ViewModel), is previewable, and contains the Compose layout.
+- Prefer declaring the top-level Screen composable as `internal` when
+  feasible (Screens aren't consumed across modules beyond the hub pattern).
+  Not currently enforced by Konsist — the hub pattern in `:feature:home`
+  forces `TopAlbumsScreen`, `TopArtistsScreen`, `ScrobbleScreen` to stay
+  public, and shared screens under `:ui_common` (e.g. `WebViewScreen`) are
+  deliberately public as they are reused across modules.
+- Handle one-shot events in the Screen with
+  `LaunchedEffect(uiState.events) { uiState.events.firstOrNull()?.let { event -> ...; viewModel.popEvent(event) } }`.
 
 ### Modifier
 
@@ -113,12 +86,16 @@ modifier = Modifier
 private fun AlbumContentPreview() {
   SunsetThemePreview {
     AlbumContent(
-      albumInfo = AlbumInfo(...),
+      albumInfo = AlbumInfo(/* ... */),
       onBackPressed = {}
     )
   }
 }
 ```
+
+`@Preview` composables must be declared `private`. Enforced by the
+`PreviewNotPrivate` Lint detector in `:lint-checks`. Suppress with
+`@Suppress("PreviewNotPrivate")` only for genuinely shared previews.
 
 ### internal fun
 
@@ -151,26 +128,17 @@ data class RecentTrack(
 
 ## Navigation
 
-### NavGraphBuilder Extension Function
+Reference: `feature/home/.../HomeNavigation.kt`, `app/.../NavigationGraph.kt`.
 
-```kotlin
-fun NavGraphBuilder.albumGraph(
-  navController: NavController,
-  sharedTransitionScope: SharedTransitionScope,
-) {
-  composable(
-    "${ALBUM_INFO_DESTINATION}?albumName={albumName}&artistName={artistName}",
-    arguments = listOf(
-      navArgument("albumName") { type = NavType.StringType },
-      navArgument("artistName") { type = NavType.StringType }
-    )
-  ) { ... }
-}
-```
-
-### NavController Extension Function
-
-Encode parameters with `Uri.encode()`:
+- Routes are `const val FOO_DESTINATION = "foo"` strings. **Do not** introduce
+  type-safe `Nav*` sealed classes unilaterally; follow the existing string
+  route pattern.
+- Each feature exposes `fun NavGraphBuilder.fooGraph(...)`; `:app` composes them
+  in `NavigationGraph.kt`.
+- Navigate helpers are extensions on `NavController`: `fun NavController.navigateToFoo(...)`.
+- Deep link arguments are read in the VM via
+  `savedStateHandle.get<String>("artistName")` etc.
+- Encode parameters with `Uri.encode()` when building navigate URLs:
 
 ```kotlin
 fun NavController.navigateToAlbumInfo(
@@ -181,12 +149,6 @@ fun NavController.navigateToAlbumInfo(
   val encodedArtistName = Uri.encode(artistName)
   navigate("${ALBUM_INFO_DESTINATION}?albumName=${encodedAlbumName}&artistName=${encodedArtistName}")
 }
-```
-
-### Destination Constants
-
-```kotlin
-private const val ALBUM_INFO_DESTINATION = "album_detail"
 ```
 
 ## File Order

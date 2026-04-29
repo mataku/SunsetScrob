@@ -1,3 +1,8 @@
+---
+paths:
+  - "app/src/androidTest/**"
+---
+
 # E2E Testing
 
 Smoke-level instrumentation tests that drive the real APK against a mocked

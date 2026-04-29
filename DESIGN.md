@@ -1,7 +1,7 @@
 # DESIGN.md
 
 Design system reference for SunsetScrob. Companion to [`CLAUDE.md`](CLAUDE.md)
-(architecture) and [`docs/coding-conventions.md`](docs/coding-conventions.md)
+(architecture) and [`.claude/rules/coding-conventions.md`](.claude/rules/coding-conventions.md)
 (naming / Compose style). This file documents the **visual identity, theme
 intent, and UI component conventions** so that contributors (human or AI) can
 add screens that look consistent with the rest of the app.
@@ -306,8 +306,8 @@ slips into a feature or `:app`:
 VRT goldens stay unchanged as long as the wrapper's defaults match the bare
 material3 default. Default-shifting wrappers (e.g. `SunsetText` defaulting to
 `SunsetTextStyle.body` instead of `LocalTextStyle.current`) will rebase
-goldens — verify with `fastlane screenshot_test` and update goldens as
-needed.
+goldens — verify with `./gradlew verifyRoborazziDebug --no-configuration-cache -PonlyScreenshotTest=true`
+and update goldens as needed.
 
 ---
 
