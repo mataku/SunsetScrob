@@ -119,9 +119,10 @@ Rules:
 
 - Use convention plugins for common configuration.
 - Write only module-specific configuration in `build.gradle.kts`.
-- Navigation 3 への依存(`androidx.navigation3.*`)は `:ui_common` 経由のみ許可。
-  feature module は `:ui_common/.../navigation/SunsetNavBuilder` 等の DSL のみ
-  使用する。Konsist (`NavigationArchitectureSpec`) で強制。
+- Direct dependency on Navigation 3 (`androidx.navigation3.*`) is allowed only
+  inside `:ui_common`. Feature modules consume the DSL exposed by
+  `:ui_common/.../navigation/SunsetNavBuilder` and friends. Enforced by Konsist
+  (`NavigationArchitectureSpec`).
 
 ## Error Handling
 

@@ -131,19 +131,23 @@ data class RecentTrack(
 Reference: `feature/home/.../HomeNavigation.kt`, `app/.../SunsetMainScreen.kt`,
 `ui_common/.../navigation/SunsetNavHost.kt`.
 
-- 各 destination は `data class FooKey(...) : SunsetNavKey` で定義し、
-  `:feature:*/.../ui/navigation/FooKey.kt` に置く(共通画面の Key は
-  `:ui_common/.../navigation/CommonKeys.kt`)
-- `SunsetNavKey` 実装クラスは `@Immutable` + `@Serializable` 必須。Konsist で強制。
-- 各 feature は `fun SunsetNavBuilder.fooGraph()` を提供し、`:app/SunsetMainScreen.kt`
-  が `SunsetTabHost { fooGraph() }` で合成する
-- 遷移は `navigate(FooKey(...))`、戻るは `popBackStack()`(どちらも
-  `SunsetDestinationScope` のメンバ、destination ブロック内から呼べる)
-- `androidx.navigation3.*` の直接 import は `:ui_common` 内のみ許可。Konsist で強制
-- ViewModel に navigation 引数を渡すときは `viewModelFor(key)` を使う(`metroViewModel`
-  の直接呼び出しは navigation 文脈では禁止)。詳細は `viewmodel.md`
+- Each destination is defined as `data class FooKey(...) : SunsetNavKey` under
+  `:feature:*/.../ui/navigation/FooKey.kt`. Keys for common screens live in
+  `:ui_common/.../navigation/CommonKeys.kt`.
+- `SunsetNavKey` implementations must be annotated `@Immutable` and
+  `@Serializable`. Enforced by Konsist (`NavigationArchitectureSpec`).
+- Each feature exposes `fun SunsetNavBuilder.fooGraph()`.
+  `:app/SunsetMainScreen.kt` composes them with `SunsetTabHost { fooGraph() }`.
+- Navigate with `navigate(FooKey(...))` and go back with `popBackStack()` —
+  both are members of `SunsetDestinationScope`, callable from inside the
+  destination block.
+- Direct imports of `androidx.navigation3.*` are allowed only inside `:ui_common`.
+  Enforced by Konsist.
+- Use `viewModelFor<FooViewModel>(key)` to obtain a ViewModel that needs the
+  NavKey. Direct calls to `metroViewModel(...)` from `*Navigation.kt` files
+  are forbidden (see `viewmodel.md` for the assisted-injection pattern).
 
-例(Album destination):
+Example (Album destination):
 
 ```kotlin
 fun SunsetNavBuilder.albumGraph() {
