@@ -16,6 +16,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.mataku.scrobscrob.app.ui.screen.MainScreen
 import com.mataku.scrobscrob.app.ui.viewmodel.MainViewModel
+import com.mataku.scrobscrob.home.ui.navigation.HOME_NAVIGATION_ROUTE
+import com.mataku.scrobscrob.ui_common.LOGIN_DESTINATION
 import com.mataku.scrobscrob.ui_common.style.Colors
 import com.mataku.scrobscrob.ui_common.style.SunsetTheme
 import dev.zacsweers.metro.AppScope
@@ -65,10 +67,15 @@ class MainActivity(
               )
             }
           )
+          val startDestination = if (uiState.username.isNullOrEmpty()) {
+            LOGIN_DESTINATION
+          } else {
+            HOME_NAVIGATION_ROUTE
+          }
           setContent {
             CompositionLocalProvider(LocalMetroViewModelFactory provides viewModelFactory) {
               SunsetTheme(theme = uiState.theme) {
-                MainScreen()
+                MainScreen(startDestination = startDestination)
               }
             }
           }

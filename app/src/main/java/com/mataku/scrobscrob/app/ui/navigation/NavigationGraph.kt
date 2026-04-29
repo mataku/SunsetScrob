@@ -14,19 +14,19 @@ import androidx.navigation.compose.NavHost
 import com.mataku.scrobscrob.account.ui.navigation.accountGraph
 import com.mataku.scrobscrob.auth.ui.navigation.authGraph
 import com.mataku.scrobscrob.discover.ui.navigation.discoverGraph
-import com.mataku.scrobscrob.home.ui.navigation.HOME_NAVIGATION_ROUTE
 import com.mataku.scrobscrob.home.ui.navigation.homeGraph
 import com.mataku.scrobscrob.ui_common.commonGraph
 
 @Composable
 fun NavigationGraph(
   navController: NavHostController,
+  startDestination: String,
   modifier: Modifier = Modifier
 ) {
   SharedTransitionLayout {
     NavHost(
       navController = navController,
-      startDestination = HOME_NAVIGATION_ROUTE,
+      startDestination = startDestination,
       modifier = modifier,
       enterTransition = {
         fadeIn(tween(250))

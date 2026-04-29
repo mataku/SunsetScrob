@@ -23,6 +23,7 @@ import com.mataku.scrobscrob.ui_common.style.LocalSnackbarHostState
 
 @Composable
 internal fun MainScreen(
+  startDestination: String,
   modifier: Modifier = Modifier
 ) {
   val navController = rememberNavController()
@@ -50,6 +51,7 @@ internal fun MainScreen(
   ) {
     NavigationGraph(
       navController,
+      startDestination = startDestination,
       modifier = Modifier
         // ignore top/bottom padding because each screen owns its own AppBar
         // and the bottom nav is a custom overlay
