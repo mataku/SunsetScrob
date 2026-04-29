@@ -42,6 +42,7 @@ dependencies {
   implementation(libs.activity.ktx)
   implementation(libs.material)
   implementation(libs.coroutines)
+  implementation(libs.kotlinx.collection)
 
   implementation(platform(libs.firebase.bom))
   implementation(libs.firebase.crashlytics)
