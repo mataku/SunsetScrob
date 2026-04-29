@@ -1,7 +1,6 @@
 package com.mataku.scrobscrob.ui_common.navigation
 
 import androidx.compose.animation.AnimatedContentScope
-import androidx.compose.animation.ContentTransform
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.SharedTransitionLayout
@@ -15,12 +14,17 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.HasDefaultViewModelProviderFactory
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.MutableCreationExtras
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation3.runtime.EntryProviderScope
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.LocalNavAnimatedContentScope
 import androidx.navigation3.ui.NavDisplay
+import dev.zacsweers.metrox.viewmodel.LocalMetroViewModelFactory
 import kotlin.reflect.KClass
 
 internal val LocalSunsetSharedTransitionScope =
@@ -130,8 +134,31 @@ internal class SunsetDestinationScopeImpl(
   override fun navigate(key: SunsetNavKey) = navigator.navigate(key)
   override fun popBackStack() = navigator.popBackStack()
 
+  // Option C: no per-entry ViewModelStoreOwner decorator exists in Nav3 1.1.1.
+  // We use the Activity-level ViewModelStoreOwner with a stable key derived from
+  // the NavKey identity.  VMs are GC'd when the Activity is destroyed; they survive
+  // configuration changes as long as the Activity is alive.  A future Nav3 release
+  // that adds rememberViewModelStoreOwnerNavEntryDecorator can drop the custom key
+  // and provide a per-entry owner instead.
   @Composable
   override fun <VM : ViewModel> viewModelFor(key: SunsetNavKey, type: Class<VM>): VM {
-    error("viewModelFor implemented in Task 9")
+    val owner = LocalViewModelStoreOwner.current
+      ?: error("No ViewModelStoreOwner in composition — is this called inside SunsetNavHost?")
+    val baseExtras = if (owner is HasDefaultViewModelProviderFactory) {
+      owner.defaultViewModelCreationExtras
+    } else {
+      androidx.lifecycle.viewmodel.CreationExtras.Empty
+    }
+    val extras = MutableCreationExtras(baseExtras).apply {
+      set(SunsetNavKeyExtra, key)
+    }
+    val factory = LocalMetroViewModelFactory.current
+    return viewModel(
+      modelClass = type.kotlin,
+      viewModelStoreOwner = owner,
+      key = key.toString(),
+      factory = factory,
+      extras = extras,
+    )
   }
 }
