@@ -50,6 +50,7 @@ dependencies {
   implementation(project(":ui_common"))
   implementation(libs.activity.compose)
   implementation(libs.compose.animation)
+  implementation(libs.lifecycle.runtime.compose)
 
 
   implementation(libs.metrox.android)
