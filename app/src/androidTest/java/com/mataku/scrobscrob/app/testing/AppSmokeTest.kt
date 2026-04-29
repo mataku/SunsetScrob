@@ -40,26 +40,33 @@ class AppSmokeTest {
     // Home renders with the Scrobble tab as default.
     composeRule.waitUntilExactlyOneExists(hasText("Home"), TIMEOUT_MS)
     composeRule.onNodeWithText("Home").assertIsDisplayed()
+    Thread.sleep(STEP_DELAY_MS)
 
     // Scrobble tab: tap the first recent track and verify TrackScreen opens, then back.
     composeRule.waitUntilExactlyOneExists(hasText("TRACE"), TIMEOUT_MS)
     composeRule.onNodeWithText("TRACE").performClick()
     composeRule.waitUntilExactlyOneExists(hasContentDescription("artwork image"), TIMEOUT_MS)
+    Thread.sleep(STEP_DELAY_MS)
     pressBack()
     composeRule.waitUntilExactlyOneExists(hasText("Home"), TIMEOUT_MS)
+    Thread.sleep(STEP_DELAY_MS)
 
     // Switch to Album tab on Home, tap an album, verify AlbumScreen opens, then back.
     composeRule.onNodeWithText("Album").performClick()
     composeRule.waitUntilExactlyOneExists(hasText("ZENITH"), TIMEOUT_MS)
+    Thread.sleep(STEP_DELAY_MS)
     composeRule.onNodeWithText("ZENITH").performClick()
     composeRule.waitUntilExactlyOneExists(hasContentDescription("artwork image"), TIMEOUT_MS)
+    Thread.sleep(STEP_DELAY_MS)
     pressBack()
     composeRule.waitUntilExactlyOneExists(hasText("Home"), TIMEOUT_MS)
+    Thread.sleep(STEP_DELAY_MS)
 
     // Bottom nav: Discover tab renders.
     composeRule.onNodeWithContentDescription("tab Discover").performClick()
     composeRule.waitUntilExactlyOneExists(hasText("Discover"), TIMEOUT_MS)
     composeRule.onNodeWithText("Discover").assertIsDisplayed()
+    Thread.sleep(STEP_DELAY_MS)
 
     // Bottom nav: Account tab renders.
     composeRule.onNodeWithContentDescription("tab Account").performClick()
@@ -75,5 +82,6 @@ class AppSmokeTest {
 
   private companion object {
     const val TIMEOUT_MS = 5_000L
+    const val STEP_DELAY_MS = 2_000L
   }
 }
