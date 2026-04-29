@@ -17,32 +17,36 @@ Reference: `feature/home/.../ui/viewmodel/HomeViewModel.kt`, `feature/scrobble/.
   (otherwise Metro contributes into a `Map<_, AndroidViewModel>`
   multibinding that `MetroViewModelFactory` never reads, and the VM
   drops out of the graph silently).
-- ViewModels that need `SavedStateHandle` (usually to read navigation
-  arguments) use Metro's assisted-injection pattern instead:
+- ViewModels that need navigation arguments use Metro's assisted-injection
+  pattern with the destination's `SunsetNavKey` directly:
   ```kotlin
   @AssistedInject
-  class FooViewModel(
-    private val repo: FooRepository,
-    @Assisted savedStateHandle: SavedStateHandle,
+  class AlbumViewModel(
+    private val repo: AlbumRepository,
+    @Assisted private val key: AlbumKey,
   ) : ViewModel() {
-    // body
+    init { fetchAlbumInfo(key.albumName, key.artistName) }
 
     @AssistedFactory
-    @ViewModelAssistedFactoryKey(FooViewModel::class)
+    @ViewModelAssistedFactoryKey(AlbumViewModel::class)
     @ContributesIntoMap(AppScope::class)
     fun interface Factory : ViewModelAssistedFactory {
-      override fun create(extras: CreationExtras): FooViewModel =
-        create(extras.createSavedStateHandle())
+      override fun create(extras: CreationExtras): AlbumViewModel =
+        create(extras.requireKey<AlbumKey>())
 
-      fun create(@Assisted savedStateHandle: SavedStateHandle): FooViewModel
+      fun create(@Assisted key: AlbumKey): AlbumViewModel
     }
   }
   ```
-  The screen still calls `metroViewModel<FooViewModel>()` — Metro's
-  factory tries `assistedFactoryProviders` first and falls through to
-  the regular `viewModelProviders` map. Navigation arguments land in
-  `SavedStateHandle` the same way they did under Hilt. References:
-  `feature/scrobble/.../TrackViewModel.kt`, `feature/album/.../AlbumViewModel.kt`.
+  The screen calls `viewModelFor(key)` from inside the
+  `destination<AlbumKey> { key -> ... }` block (a member of
+  `SunsetDestinationScope`). Process-death restoration is handled by
+  `SunsetNavBackStack`'s `rememberSaveable` + the `@Serializable` on
+  `AlbumKey`. **Do not** add `String`-keyed `SavedStateHandle` lookups for
+  navigation arguments — those are an artifact of the Navigation 2 era.
+
+  Use `SavedStateHandle` only for VM-internal persisted state that is not
+  carried in the NavKey (e.g. user-edited form values).
 - Expose state via Kotlin 2.3 explicit backing fields (enabled project-wide
   with `-Xexplicit-backing-fields` in `build-logic`'s `KotlinConfiguration`):
   ```kotlin
