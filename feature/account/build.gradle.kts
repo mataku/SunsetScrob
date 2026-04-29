@@ -29,8 +29,5 @@ dependencies {
   implementation(libs.app.update)
   implementation(libs.kotlinx.collection)
 
-  implementation(libs.navigation3.runtime)
-  implementation(libs.serialization.json)
-
   implementation(libs.compose.ui.tooling)
 }
