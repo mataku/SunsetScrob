@@ -19,6 +19,9 @@ interface UsernameRepository {
   fun username(): String?
 
   fun asyncUsername(): Flow<String?>
+
+  // Reactive Flow backed by DataStore; emits whenever the stored username changes.
+  fun usernameFlow(): Flow<String?>
 }
 
 @SingleIn(AppScope::class)
@@ -32,4 +35,6 @@ class UsernameRepositoryImpl(
   override fun asyncUsername(): Flow<String?> = flow {
     emit(usernameDataStore.username())
   }.flowOn(Dispatchers.IO)
+
+  override fun usernameFlow(): Flow<String?> = usernameDataStore.usernameFlow()
 }
