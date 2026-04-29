@@ -23,6 +23,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalWindowInfo
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -58,7 +59,7 @@ fun WebViewScreen(
     topBar = {
       SunsetTopAppBar(
         title = {
-          SunsetText.Title(text = "")
+          SunsetText.Title(text = title, maxLines = 1, overflow = TextOverflow.Ellipsis)
         },
         navigationIcon = {
           SunsetIconButton(onClick = onBackPressed) {

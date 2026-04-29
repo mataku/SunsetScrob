@@ -1,5 +1,6 @@
 package com.mataku.scrobscrob.ui_common
 
+import android.net.Uri
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -36,7 +37,7 @@ fun NavController.navigateToPrivacyPolicy() {
 }
 
 fun NavController.navigateToWebView(url: String) {
-  navigate("webview?url=$url")
+  navigate("webview?url=${Uri.encode(url)}")
 }
 
 const val LOGIN_DESTINATION = "login"
