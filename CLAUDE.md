@@ -43,9 +43,8 @@ SHARED_SECRET=YOUR_LAST_FM_SHARED_SECRET
 - `./gradlew assembleDebug` — build debug APK
 - `./gradlew bundleRelease` — build release AAB
 - `./gradlew :architecture-spec:test` — run architecture (Konsist) tests
-- `fastlane test` — run unit tests
-- `fastlane screenshot_test` — run Roborazzi screenshot tests
-- `fastlane arch_test` — run architecture tests
+- `./gradlew testDebugUnitTest -PexcludeScreenshotTest=true` — run unit tests
+- `./gradlew verifyRoborazziDebug --no-configuration-cache -PonlyScreenshotTest=true` — run Roborazzi screenshot tests
 - `make generate_compose_reports` — generate Compose compiler reports
 
 ---
@@ -103,8 +102,8 @@ in the `:architecture-spec` module. Each rule under `.claude/rules/` maps to a
 `architecture-spec/src/test/kotlin/com/mataku/scrobscrob/architecture/`.
 
 - Run locally: `./gradlew :architecture-spec:test`
-- Run in CI: `fastlane arch_test` (separate GitHub Actions workflow
-  `arch_test.yml`, independent of the main test job).
+- Run in CI: separate GitHub Actions workflow `arch_test.yml`,
+  independent of the main test job.
 
 When you add a new convention to a `.claude/rules/` file, add a matching Spec.
 When you change a Spec, update the corresponding rule. Guide and sensor must

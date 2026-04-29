@@ -8,11 +8,11 @@ paths:
 
 ## Commands
 
-| Type                 | Command                    |
-|----------------------|----------------------------|
-| Unit Test            | `fastlane test`            |
-| Screenshot Test      | `fastlane screenshot_test` |
-| Instrumentation Test | `fastlane android_test`    |
+| Type                 | Command                                                                              |
+|----------------------|--------------------------------------------------------------------------------------|
+| Unit Test            | `./gradlew testDebugUnitTest -PexcludeScreenshotTest=true`                           |
+| Screenshot Test      | `./gradlew verifyRoborazziDebug --no-configuration-cache -PonlyScreenshotTest=true`  |
+| Instrumentation Test | `./gradlew :app:connectedDebugAndroidTest` (see [`e2e-testing.md`](e2e-testing.md))  |
 
 One test file per class under test.
 
@@ -132,12 +132,13 @@ Annotate every screenshot test with **all three** of:
 - `@GraphicsMode(GraphicsMode.Mode.NATIVE)`
 - `@Category(VRT::class)` (marker from `:test_helper:integration`)
 
-`@Category` is what lets `fastlane test` / `fastlane screenshot_test`
-include or exclude screenshot tests via JUnit Platform tags. Vintage maps
-`@Category(VRT::class)` to the tag
-`com.mataku.scrobscrob.test_helper.integration.VRT`, which
-`TestConfiguration.kt` filters on. **Without it the test silently runs in
-the wrong bucket** — it compiles fine, but ends up in the wrong CI job.
+`@Category` is what lets the unit-test bucket
+(`testDebugUnitTest -PexcludeScreenshotTest=true`) and the screenshot-test
+bucket (`verifyRoborazziDebug -PonlyScreenshotTest=true`) include or exclude
+screenshot tests via JUnit Platform tags. Vintage maps `@Category(VRT::class)`
+to the tag `com.mataku.scrobscrob.test_helper.integration.VRT`, which
+`TestConfiguration.kt` filters on. **Without it the test silently runs in the
+wrong bucket** — it compiles fine, but ends up in the wrong CI job.
 
 For new VRTs, prefer the `create-vrt` skill to scaffold a test class with
 all three annotations and the `captureScreenshot` wiring already in place.
