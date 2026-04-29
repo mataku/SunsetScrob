@@ -18,7 +18,7 @@ adb shell screenrecord \
 RECORD_PID=$!
 
 set +e
-./gradlew "$GRADLE_TASK"
+./gradlew "$GRADLE_TASK" -PforAndroidTest=true
 RESULT=$?
 set -e
 

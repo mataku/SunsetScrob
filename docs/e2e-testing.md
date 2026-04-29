@@ -21,6 +21,31 @@ The `pixel6Api35` device is declared in `app/build.gradle.kts` via
 First local run downloads the system image and creates the AVD; subsequent
 runs reuse it.
 
+### Avoid overwriting your locally-installed dev app
+
+Without any flag, `connectedDebugAndroidTest` builds the debug APK with
+`applicationId = com.mataku.scrobscrob.dev` — the same as `installDebug`,
+so the test run reinstalls and overwrites your hand-installed dev build.
+
+Pass `-PforAndroidTest=true` to switch the suffix to `.dev.test` for that
+invocation only:
+
+```
+./gradlew :app:connectedDebugAndroidTest -PforAndroidTest=true
+```
+
+This installs as `com.mataku.scrobscrob.dev.test`, leaving your
+`com.mataku.scrobscrob.dev` app untouched. CI does not pass the flag, so
+the e2e workflow keeps using the `.dev` suffix.
+
+Side effect: with the suffix changed, no entry in `google-services.json`
+matches, so the Google Services plugin would normally fail. `app/build.gradle.kts`
+sets `missingGoogleServicesStrategy = WARN` **only when `forAndroidTest=true`
+is passed** — normal builds keep the default ERROR strategy so a real
+applicationId mismatch still fails the build. Under the test variant,
+Firebase features (Crashlytics, etc.) won't initialize — fine for the
+mocked-API e2e suite, but don't rely on Firebase runtime behavior here.
+
 ## Architecture
 
 The instrumentation test process loads a `TestApp` instead of the production

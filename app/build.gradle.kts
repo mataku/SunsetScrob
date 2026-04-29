@@ -1,4 +1,5 @@
 import com.android.build.api.dsl.ApplicationExtension
+import com.google.gms.googleservices.GoogleServicesPlugin
 
 plugins {
   id("sunsetscrob.android.application")
@@ -17,6 +18,12 @@ configure<ApplicationExtension>() {
   }
 
   namespace = "com.mataku.scrobscrob"
+}
+
+if ((findProperty("forAndroidTest") as? String)?.toBoolean() == true) {
+  googleServices {
+    missingGoogleServicesStrategy = GoogleServicesPlugin.MissingGoogleServicesStrategy.WARN
+  }
 }
 
 dependencies {
