@@ -27,7 +27,7 @@ Shared review criteria and output format for code review agents.
 - **Package Structure**: Verify feature module directory structure
 - **Compose Patterns**: Screen/Content separation, Modifier usage, Preview implementation
 - **Data Class**: `@Immutable` annotation, `ImmutableList` usage
-- **Navigation**: Extension function patterns, Uri encoding
+- **Navigation**: Type-safe `SunsetNavKey`, callback hoisting (Screens never own a navigator), `viewModelFor(key)` usage in destinations
 - **Security**: No hardcoded API keys, access tokens, or secrets
 
 ### Architecture (.claude/rules/architecture.md)
