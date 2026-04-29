@@ -1,7 +1,6 @@
 package com.mataku.scrobscrob.data.db
 
 import android.content.Context
-import android.content.res.Configuration
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
@@ -24,15 +23,10 @@ class ThemeDataStore(
   fun theme(): Flow<AppThemeEntity> =
     context.themeDataStore.data
       .catch {
-        AppThemeEntity.DARK
+        AppThemeEntity.FOLLOW_SYSTEM
       }
       .map {
-        val rawPrimaryId = it[THEME_KEY]
-        if (rawPrimaryId == null) {
-          systemDefaultTheme()
-        } else {
-          AppThemeEntity.find(rawPrimaryId)
-        }
+        AppThemeEntity.find(it[THEME_KEY])
       }
 
   suspend fun setTheme(theme: AppThemeEntity): Flow<Unit> {
@@ -42,15 +36,6 @@ class ThemeDataStore(
       }
     ).flowOn(Dispatchers.IO)
       .map { }
-  }
-
-  private fun systemDefaultTheme(): AppThemeEntity {
-    val nightMode = context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-    return if (nightMode == Configuration.UI_MODE_NIGHT_YES) {
-      AppThemeEntity.DARK
-    } else {
-      AppThemeEntity.LIGHT
-    }
   }
 
   companion object {

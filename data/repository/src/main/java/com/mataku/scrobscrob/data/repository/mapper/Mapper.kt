@@ -347,6 +347,7 @@ fun AppThemeEntity.toAppTheme(): AppTheme {
     AppThemeEntity.MIDNIGHT -> AppTheme.MIDNIGHT
     AppThemeEntity.OCEAN -> AppTheme.OCEAN
     AppThemeEntity.LASTFM_DARK -> AppTheme.LASTFM_DARK
+    AppThemeEntity.FOLLOW_SYSTEM -> AppTheme.FOLLOW_SYSTEM
   }
 }
 
@@ -357,6 +358,7 @@ fun AppTheme.toAppThemeEntity(): AppThemeEntity {
     AppTheme.MIDNIGHT -> AppThemeEntity.MIDNIGHT
     AppTheme.OCEAN -> AppThemeEntity.OCEAN
     AppTheme.LASTFM_DARK -> AppThemeEntity.LASTFM_DARK
+    AppTheme.FOLLOW_SYSTEM -> AppThemeEntity.FOLLOW_SYSTEM
   }
 }
 

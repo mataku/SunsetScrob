@@ -1,5 +1,6 @@
 package com.mataku.scrobscrob.ui_common.style
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.ripple.RippleAlpha
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.LocalRippleConfiguration
@@ -20,19 +21,20 @@ fun SunsetTheme(
   theme: AppTheme = AppTheme.DARK,
   content: @Composable () -> Unit,
 ) {
+  val resolvedTheme = theme.resolve(isSystemInDarkTheme())
   MaterialTheme(
-    colorScheme = theme.colorScheme(),
+    colorScheme = resolvedTheme.colorScheme(),
   ) {
     CompositionLocalProvider(
       LocalRippleConfiguration provides RippleConfiguration(
-        color = theme.onSurfaceColor(),
-        rippleAlpha = if (theme.isLight) {
+        color = resolvedTheme.onSurfaceColor(),
+        rippleAlpha = if (resolvedTheme.isLight) {
           LightRippleAlpha
         } else {
           DarkRippleAlpha
         }
       ),
-      LocalAppTheme provides theme,
+      LocalAppTheme provides resolvedTheme,
       content = content
     )
   }
@@ -86,7 +88,7 @@ fun AppTheme.onSurfaceColor(): Color {
 
 fun AppTheme.accentColor(): Color {
   return when (this) {
-    AppTheme.DARK, AppTheme.LIGHT, AppTheme.MIDNIGHT -> {
+    AppTheme.DARK, AppTheme.LIGHT, AppTheme.MIDNIGHT, AppTheme.FOLLOW_SYSTEM -> {
       Colors.LightLime
     }
 
@@ -102,7 +104,7 @@ fun AppTheme.accentColor(): Color {
 
 fun AppTheme.colorScheme(): ColorScheme {
   return when (this) {
-    AppTheme.DARK -> {
+    AppTheme.DARK, AppTheme.FOLLOW_SYSTEM -> {
       darkColorScheme
     }
 

@@ -1,6 +1,7 @@
 package com.mataku.scrobscrob.app.ui.top
 
 import android.app.Activity
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
@@ -48,9 +49,12 @@ class MainActivity(
     lifecycleScope.launch {
       viewModel.state.collect {
         it?.let { uiState ->
-          val theme = uiState.theme
+          val isSystemDark =
+            (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) ==
+              Configuration.UI_MODE_NIGHT_YES
+          val resolvedTheme = uiState.theme.resolve(isSystemDark)
           enableEdgeToEdge(
-            statusBarStyle = if (theme.isLight) {
+            statusBarStyle = if (resolvedTheme.isLight) {
               SystemBarStyle.light(
                 Color.Transparent.toArgb(),
                 Colors.StatusBarDark.toArgb()
@@ -63,7 +67,7 @@ class MainActivity(
           )
           setContent {
             CompositionLocalProvider(LocalMetroViewModelFactory provides viewModelFactory) {
-              SunsetTheme(theme = theme) {
+              SunsetTheme(theme = uiState.theme) {
                 MainScreen()
               }
             }

@@ -5,14 +5,15 @@ enum class AppThemeEntity(val primaryId: Int) {
   LIGHT(2),
   MIDNIGHT(3),
   OCEAN(4),
-  LASTFM_DARK(5);
+  LASTFM_DARK(5),
+  FOLLOW_SYSTEM(6);
 
   companion object {
     fun find(primaryId: Int?): AppThemeEntity {
-      primaryId ?: return DARK
+      primaryId ?: return FOLLOW_SYSTEM
       return AppThemeEntity.entries.find {
         it.primaryId == primaryId
-      } ?: DARK
+      } ?: FOLLOW_SYSTEM
     }
   }
 }

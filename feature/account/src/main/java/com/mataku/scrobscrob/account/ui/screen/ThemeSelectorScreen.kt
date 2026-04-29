@@ -40,7 +40,6 @@ internal fun ThemeSelectorScreen(
   modifier: Modifier = Modifier
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-  val currentTheme = LocalAppTheme.current
 
   // Because there were cases where values flowed in unintentionally, control
   // TODO
@@ -71,7 +70,7 @@ internal fun ThemeSelectorScreen(
       )
     }
   ) { paddingValues ->
-    uiState.theme?.let {
+    uiState.theme?.let { selectedTheme ->
       LazyColumn(
         content = {
           items(AppTheme.entries.sortedBy {
@@ -79,9 +78,9 @@ internal fun ThemeSelectorScreen(
           }) {
             ThemeCell(
               theme = it,
-              selected = it == currentTheme,
-              onTapTheme = { currentTheme ->
-                viewModel.changeTheme(currentTheme)
+              selected = it == selectedTheme,
+              onTapTheme = { tappedTheme ->
+                viewModel.changeTheme(tappedTheme)
               })
           }
         },
