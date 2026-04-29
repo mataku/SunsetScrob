@@ -10,8 +10,13 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.mataku.scrobscrob.chart.ui.navigation.DiscoverKey
 import com.mataku.scrobscrob.discover.ui.screen.DiscoverScreen
+import com.mataku.scrobscrob.discover.ui.viewmodel.DiscoverViewModel
 import com.mataku.scrobscrob.ui_common.navigateToWebView
+import com.mataku.scrobscrob.ui_common.navigation.SunsetNavBuilder
+import com.mataku.scrobscrob.ui_common.navigation.WebViewKey
+import com.mataku.scrobscrob.ui_common.navigation.viewModelFor
 
 fun NavGraphBuilder.discoverGraph(navController: NavController) {
   navigation(route = DISCOVER_NAVIGATION_ROUTE, startDestination = DISCOVER_START_NAVIGATION) {
@@ -47,6 +52,16 @@ fun NavController.navigateToDiscover() {
     }
     launchSingleTop = true
     restoreState = true
+  }
+}
+
+fun SunsetNavBuilder.discoverGraph() {
+  destination<DiscoverKey> {
+    DiscoverScreen(
+      viewModel = viewModelFor<DiscoverViewModel>(DiscoverKey),
+      navigateToWebView = { url -> navigate(WebViewKey(url)) },
+      modifier = Modifier,
+    )
   }
 }
 
