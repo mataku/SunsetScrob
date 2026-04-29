@@ -102,8 +102,8 @@ in the `:architecture-spec` module. Each rule under `.claude/rules/` maps to a
 `architecture-spec/src/test/kotlin/com/mataku/scrobscrob/architecture/`.
 
 - Run locally: `./gradlew :architecture-spec:test`
-- Run in CI: separate GitHub Actions workflow `arch_test.yml`,
-  independent of the main test job.
+- Run in CI: `./gradlew :architecture-spec:test` via the GitHub Actions
+  workflow `arch_test.yml`, independent of the main test job.
 
 When you add a new convention to a `.claude/rules/` file, add a matching Spec.
 When you change a Spec, update the corresponding rule. Guide and sensor must
