@@ -2,11 +2,11 @@
 
 ## Commands
 
-| Type | Command |
-|------|---------|
-| Unit Test | `fastlane test` |
-| Screenshot Test | `fastlane screenshot_test` |
-| Instrumentation Test | `fastlane android_test` |
+| Type                 | Command                    |
+|----------------------|----------------------------|
+| Unit Test            | `fastlane test`            |
+| Screenshot Test      | `fastlane screenshot_test` |
+| Instrumentation Test | `fastlane android_test`    |
 
 ## Unit Test
 
@@ -130,7 +130,7 @@ class AlbumScreenTest {
   fun layout() {
     composeRule.captureScreenshot(
       appTheme = AppTheme.DARK,
-      content = { AlbumContent(...) },
+      content = { AlbumContent(/* ... */) },
       fileName = "album_screen.png"
     )
   }
@@ -139,7 +139,7 @@ class AlbumScreenTest {
   fun layout_light() {
     composeRule.captureScreenshot(
       appTheme = AppTheme.LIGHT,
-      content = { AlbumContent(...) },
+      content = { AlbumContent(/* ... */) },
       fileName = "album_screen_light.png"
     )
   }
@@ -180,8 +180,8 @@ Test Content instead of Screen (no need to mock ViewModel):
 ```kotlin
 content = {
   AlbumContent(
-    albumInfo = AlbumInfo(...),
-    onBackPressed = {}
+    albumInfo = AlbumInfo(/* ... */),
+    onBackPressed = {},
   )
 }
 ```
@@ -198,9 +198,10 @@ Helper for Screenshot Tests. Provides `captureScreenshot` extension function.
 
 ## File Naming
 
-| Type | Convention | Example |
-|------|------------|---------|
-| Unit Test | `{Class}Spec.kt` | `LoginViewModelSpec.kt` |
-| Screenshot Test | `{Screen}ScreenTest.kt` | `AlbumScreenTest.kt` |
-| Screenshot (Dark) | `{snake_case}.png` | `album_screen.png` |
+| Type               | Convention               | Example                  |
+|--------------------|--------------------------|--------------------------|
+| Unit Test          | `{Class}Spec.kt`         | `LoginViewModelSpec.kt`  |
+| Screenshot Test    | `{Screen}ScreenTest.kt`  | `AlbumScreenTest.kt`     |
+| Screenshot (Dark)  | `{snake_case}.png`       | `album_screen.png`       |
 | Screenshot (Light) | `{snake_case}_light.png` | `album_screen_light.png` |
+

@@ -113,7 +113,7 @@ modifier = Modifier
 private fun AlbumContentPreview() {
   SunsetThemePreview {
     AlbumContent(
-      albumInfo = AlbumInfo(...),
+      albumInfo = AlbumInfo(/* ... */),
       onBackPressed = {}
     )
   }

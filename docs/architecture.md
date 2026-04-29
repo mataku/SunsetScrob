@@ -260,7 +260,7 @@ class ExampleScreenTest {
   fun layout() {
     composeRule.captureScreenshot(
       appTheme = AppTheme.DARK,
-      content = { ExampleContent(...) },
+      content = { ExampleContent(/* ... */) },
       fileName = "example_screen.png"
     )
   }
