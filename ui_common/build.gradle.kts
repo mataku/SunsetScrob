@@ -5,6 +5,7 @@ plugins {
   id("sunsetscrob.android.compose")
   id("sunsetscrob.android.test.screenshot")
   id("com.google.devtools.ksp")
+  alias(libs.plugins.kotlin.serialization)
 }
 
 configure<LibraryExtension>() {
