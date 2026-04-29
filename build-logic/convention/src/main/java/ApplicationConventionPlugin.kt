@@ -1,4 +1,5 @@
 import com.android.build.api.dsl.ApplicationExtension
+import com.android.build.api.dsl.ManagedVirtualDevice
 import ext.androidLintConfiguration
 import ext.androidSdkConfiguration
 import ext.kotlinConfiguration
@@ -74,10 +75,24 @@ class ApplicationConventionPlugin : Plugin<Project> {
           applicationId = "com.mataku.scrobscrob"
           versionName = appVersionName
           versionCode = generateVersionCode(appVersionName)
+          testInstrumentationRunner = "com.mataku.scrobscrob.app.testing.MetroTestRunner"
           proguardFiles(
             getDefaultProguardFile("proguard-android-optimize.txt"),
             "proguard-rules.pro"
           )
+        }
+        sourceSets {
+          getByName("androidTest") {
+            assets.srcDirs("src/test/assets", "src/androidTest/assets")
+          }
+        }
+        testOptions.managedDevices.allDevices.create(
+          "pixel6Api35",
+          ManagedVirtualDevice::class.java,
+        ) {
+          device = "Pixel 6"
+          apiLevel = 35
+          systemImageSource = "google"
         }
       }
       testConfiguration()

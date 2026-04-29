@@ -13,7 +13,13 @@ Lives in `app/src/androidTest/`. Runs weekly on CI via
 | Action | Command |
 |--------|---------|
 | Run locally on a connected emulator | `./gradlew :app:connectedDebugAndroidTest` |
+| Run locally on the Gradle Managed Device used by CI | `./gradlew :app:pixel6Api35DebugAndroidTest` |
 | Build the test APK only | `./gradlew :app:assembleDebugAndroidTest` |
+
+The `pixel6Api35` device is declared in `app/build.gradle.kts` via
+`testOptions.managedDevices.allDevices` (Pixel 6, API 35, Google APIs x86_64).
+First local run downloads the system image and creates the AVD; subsequent
+runs reuse it.
 
 ## Architecture
 
@@ -98,17 +104,23 @@ Conventions used by the existing flow:
 - Schedule: `0 6 * * 5` (Friday 06:00 UTC = Friday 15:00 JST). Also
   `workflow_dispatch` — pick the target branch via "Use workflow from"
   in the GitHub Actions UI.
-- Uses `reactivecircus/android-emulator-runner` on API 34 / x86_64 with an AVD
-  snapshot cached via `actions/cache`. First run primes the snapshot; later
-  runs reuse it.
+- Runs the Gradle Managed Device task `:app:pixel6Api35DebugAndroidTest`
+  directly. Gradle/UTP owns the emulator lifecycle (boot, install, run, tear
+  down) instead of `reactivecircus/android-emulator-runner`. The previous
+  runner was prone to "device offline" failures mid-test under combined
+  `adb screenrecord` + UTP load.
+- AVDs (`~/.android/avd`) and the system image
+  (`/usr/local/lib/android/sdk/system-images`) are cached via `actions/cache`
+  with key `gmd-pixel6-api35-google-x86_64-v1`. Bump the key when the device
+  spec or system image changes.
 - Failures upload `**/build/reports/androidTests/**`,
   `**/build/outputs/androidTest-results/**`, and
   `app/build/outputs/e2e-recordings/**` as artifacts (7-day retention).
-- A screen recording is captured via `adb shell screenrecord` while the
-  test runs (`--bit-rate 800000 --size 540x960 --time-limit 180`, ~2–3 MB
-  for a 30s flow). The recording is pulled regardless of test result so
-  the script doesn't have to know success/failure, but it's only uploaded
-  on failure via the `if: failure()` artifact step.
+- A screen recording is captured via `adb shell screenrecord` streamed
+  directly to a host file (`--output-format=h264 ... -` redirected to
+  `app/build/outputs/e2e-recordings/e2e.h264`). Streaming to the host —
+  rather than to `/sdcard` followed by `adb pull` — is what lets the
+  recording survive GMD tearing down the emulator at task end.
 
 ## Gotchas worth remembering
 
