@@ -13,15 +13,15 @@ Detailed conventions are split into `.claude/rules/`. Some are loaded every
 session (no `paths:` frontmatter); others load only when Claude reads matching
 files (`paths:`-scoped).
 
-| File | Scope | Loaded |
-|------|-------|--------|
-| `.claude/rules/architecture.md` | Module deps, package structure, convention plugins, error handling | every session |
-| `.claude/rules/coding-conventions.md` | Naming, Compose conventions, navigation, security | every session |
-| `.claude/rules/viewmodel.md` | ViewModel conventions | when reading `*ViewModel.kt` or `**/viewmodel/**` |
-| `.claude/rules/repository.md` | Repository conventions, Metro DI | when reading `*Repository*.kt`, `**/repository/**`, `**/data/**` |
-| `.claude/rules/testing.md` | Unit + Screenshot test conventions | when reading `*Spec.kt` / `*Test.kt` |
-| `.claude/rules/e2e-testing.md` | E2E (instrumentation) test architecture | when reading `app/src/androidTest/**` |
-| `DESIGN.md` | UI/Theme intent (Stitch design.md spec) | explicit Read only |
+| File                                  | Scope                                                              | Loaded                                                           |
+|---------------------------------------|--------------------------------------------------------------------|------------------------------------------------------------------|
+| `.claude/rules/architecture.md`       | Module deps, package structure, convention plugins, error handling | every session                                                    |
+| `.claude/rules/coding-conventions.md` | Naming, Compose conventions, navigation, security                  | every session                                                    |
+| `.claude/rules/viewmodel.md`          | ViewModel conventions                                              | when reading `*ViewModel.kt` or `**/viewmodel/**`                |
+| `.claude/rules/repository.md`         | Repository conventions, Metro DI                                   | when reading `*Repository*.kt`, `**/repository/**`, `**/data/**` |
+| `.claude/rules/testing.md`            | Unit + Screenshot test conventions                                 | when reading `*Spec.kt` / `*Test.kt`                             |
+| `.claude/rules/e2e-testing.md`        | E2E (instrumentation) test architecture                            | when reading `app/src/androidTest/**`                            |
+| `DESIGN.md`                           | UI/Theme intent (Stitch design.md spec)                            | explicit Read only                                               |
 
 ## Project Overview
 
@@ -44,31 +44,30 @@ SHARED_SECRET=YOUR_LAST_FM_SHARED_SECRET
 - `./gradlew bundleRelease` — build release AAB
 - `./gradlew :architecture-spec:test` — run architecture (Konsist) tests
 - `./gradlew testDebugUnitTest -PexcludeScreenshotTest=true` — run unit tests
-- `./gradlew verifyRoborazziDebug --no-configuration-cache -PonlyScreenshotTest=true` — run Roborazzi screenshot tests
+- `./gradlew verifyRoborazziDebug --no-configuration-cache -PonlyScreenshotTest=true` — run
+  Roborazzi screenshot tests
 - `make generate_compose_reports` — generate Compose compiler reports
 
 ---
 
 ## DO / DON'T Summary
 
+These reminders are kept here because their detail rule is path-scoped
+(`viewmodel.md`, `repository.md`, `testing.md`) and won't load until Claude
+reads a matching file. Layer / package / Compose / navigation rules already
+live in always-loaded `architecture.md` and `coding-conventions.md`.
+
 **DO**
 
-- Put new code in the module that matches its layer (UI → `:feature:*`,
-  data orchestration → `:data:repository`, HTTP → `:data:api`, DB → `:data:db`).
 - Wire new dependencies through Metro with `@Binds` / `@Provides` on a
   `@ContributesTo(AppScope::class)` interface in `di/FooModule.kt`.
 - Write a `*Spec.kt` Kotest test next to the class under test.
-- When adding a Compose screen, split stateful `FooScreen` from stateless `FooContent`.
 
 **DON'T**
 
-- Depend on `:data:api` or `:data:db` from a `:feature:*` module. Go through `:data:repository`.
-- Create feature-to-feature dependencies (only `:feature:home` may).
 - Use `GlobalScope` or a custom `CoroutineScope` inside a ViewModel.
 - Emit one-shot events via a separate `SharedFlow`. Use the in-state
   `events: List<UiEvent>` + `popEvent` pattern the rest of the codebase uses.
-- Introduce a parallel navigation DSL (type-safe routes, sealed `Nav*`, etc.)
-  without first migrating the existing string routes.
 - Catch errors inside a repository to return a fallback value. Let the Flow
   fail; the VM handles it.
 
