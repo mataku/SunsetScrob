@@ -3,8 +3,8 @@ package com.mataku.scrobscrob.artist.ui.screen
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.ui.test.junit4.v2.createComposeRule
-import androidx.lifecycle.SavedStateHandle
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.mataku.scrobscrob.artist.ui.navigation.ArtistKey
 import com.mataku.scrobscrob.artist.ui.viewmodel.ArtistViewModel
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.core.entity.ArtistInfo
@@ -55,20 +55,11 @@ class ArtistScreenTest {
       content = ""
     )
   )
-  private val savedStateHandle = mockk<SavedStateHandle>()
 
   private val animatedContentScope = mockk<AnimatedContentScope>(relaxed = true)
 
   @Before
   fun setup() {
-    every {
-      savedStateHandle.get<String>("artistName")
-    }.returns(artistName)
-
-    every {
-      savedStateHandle.get<String>("artworkUrl")
-    }.returns(artworkUrl)
-
     every {
       artistRepository.artistInfo(artistName)
     }.returns(flowOf(artistInfo))
@@ -76,9 +67,10 @@ class ArtistScreenTest {
 
   @Test
   fun layout() {
+    val key = ArtistKey(artistName = artistName, artworkUrl = artworkUrl, contentId = "")
     val viewModel = ArtistViewModel(
       artistRepository = artistRepository,
-      savedStateHandle = savedStateHandle
+      key = key
     )
     composeRule.captureScreenshot(
       appTheme = AppTheme.DARK,
@@ -99,9 +91,10 @@ class ArtistScreenTest {
 
   @Test
   fun layout_light() {
+    val key = ArtistKey(artistName = artistName, artworkUrl = artworkUrl, contentId = "")
     val viewModel = ArtistViewModel(
       artistRepository = artistRepository,
-      savedStateHandle = savedStateHandle
+      key = key
     )
     composeRule.captureScreenshot(
       appTheme = AppTheme.LIGHT,
