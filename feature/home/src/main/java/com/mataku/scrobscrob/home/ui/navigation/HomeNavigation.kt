@@ -11,15 +11,21 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.mataku.scrobscrob.album.ui.navigation.AlbumKey
 import com.mataku.scrobscrob.album.ui.navigation.albumGraph
 import com.mataku.scrobscrob.album.ui.navigation.navigateToAlbumInfo
+import com.mataku.scrobscrob.artist.ui.navigation.ArtistKey
 import com.mataku.scrobscrob.artist.ui.navigation.artistGraph
 import com.mataku.scrobscrob.artist.ui.navigation.navigateToArtistInfo
 import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.home.ui.screen.HomeScreen
+import com.mataku.scrobscrob.home.ui.viewmodel.HomeViewModel
+import com.mataku.scrobscrob.scrobble.ui.navigation.TrackDetailKey
 import com.mataku.scrobscrob.scrobble.ui.navigation.navigateToTrackDetail
 import com.mataku.scrobscrob.scrobble.ui.navigation.scrobbleGraph
 import com.mataku.scrobscrob.ui_common.navigateToLogin
+import com.mataku.scrobscrob.ui_common.navigation.SunsetNavBuilder
+import com.mataku.scrobscrob.ui_common.navigation.viewModelFor
 
 fun NavGraphBuilder.homeGraph(
   navController: NavController,
@@ -92,6 +98,47 @@ fun NavController.navigateToHome() {
     }
     launchSingleTop = true
     restoreState = true
+  }
+}
+
+fun SunsetNavBuilder.homeGraph() {
+  destination<HomeKey> {
+    HomeScreen(
+      viewModel = viewModelFor<HomeViewModel>(HomeKey),
+      sharedTransitionScope = this,
+      animatedContentScope = animatedContentScope,
+      navigateToTrackDetail = { track, id ->
+        navigate(
+          TrackDetailKey(
+            trackName = track.name,
+            artistName = track.artistName,
+            imageUrl = track.images.imageUrl() ?: "",
+            id = id,
+          ),
+        )
+      },
+      navigateToArtistDetail = { artist, id ->
+        navigate(
+          ArtistKey(
+            artistName = artist.name,
+            artworkUrl = (artist.imageUrl ?: artist.imageList.imageUrl()) ?: "",
+            contentId = id,
+          ),
+        )
+      },
+      navigateToAlbumDetail = { album, id ->
+        navigate(
+          AlbumKey(
+            albumName = album.title,
+            artistName = album.artist,
+            artworkUrl = album.imageList.imageUrl() ?: "",
+            contentId = id,
+          ),
+        )
+      },
+      navigateToLogin = { /* 認証 gate 切替で処理 */ },
+      modifier = Modifier,
+    )
   }
 }
 
