@@ -13,8 +13,8 @@ fun <Tab : Enum<Tab>> SunsetTabHost(
   selectedTab: Tab,
   onTabSelected: (Tab) -> Unit,
   initialKeyForTab: (Tab) -> SunsetNavKey,
-  modifier: Modifier = Modifier,
   bottomBar: @Composable (selectedTab: Tab, onTabSelected: (Tab) -> Unit) -> Unit,
+  modifier: Modifier = Modifier,
   builder: SunsetNavBuilder.() -> Unit,
 ) {
   val backStacksByTab: Map<Tab, SunsetNavBackStack> = tabs.associateWith { tab ->
