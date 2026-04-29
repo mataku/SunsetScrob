@@ -21,7 +21,7 @@ Shared review criteria and output format for code review agents.
 
 ## Review Criteria
 
-### Coding Conventions (docs/coding-conventions.md)
+### Coding Conventions (.claude/rules/coding-conventions.md)
 
 - **Naming**: Check if ViewModel, Composable, and variable names follow conventions
 - **Package Structure**: Verify feature module directory structure
@@ -30,7 +30,7 @@ Shared review criteria and output format for code review agents.
 - **Navigation**: Extension function patterns, Uri encoding
 - **Security**: No hardcoded API keys, access tokens, or secrets
 
-### Architecture (docs/architecture.md)
+### Architecture (.claude/rules/architecture.md)
 
 - **Module Dependencies**: feature depends only on `data/repository`, not directly on `data/api` or
   `data/db`

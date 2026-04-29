@@ -1,7 +1,7 @@
 # DESIGN.md
 
 Design system reference for SunsetScrob. Companion to [`CLAUDE.md`](CLAUDE.md)
-(architecture) and [`docs/coding-conventions.md`](docs/coding-conventions.md)
+(architecture) and [`.claude/rules/coding-conventions.md`](.claude/rules/coding-conventions.md)
 (naming / Compose style). This file documents the **visual identity, theme
 intent, and UI component conventions** so that contributors (human or AI) can
 add screens that look consistent with the rest of the app.

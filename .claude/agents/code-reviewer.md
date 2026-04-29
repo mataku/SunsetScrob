@@ -15,9 +15,11 @@ An agent that performs code review on git diff.
 ## Execution Steps
 
 1. Read the following documents to understand project conventions:
-  - `docs/coding-conventions.md` - Naming conventions, Compose guidelines, security rules
-  - `docs/architecture.md` - Module structure, dependencies, implementation patterns
-  - `docs/testing.md` - Unit Test, Screenshot Test guidelines (if test files are changed)
+  - `.claude/rules/coding-conventions.md` - Naming conventions, Compose guidelines, security rules
+  - `.claude/rules/architecture.md` - Module structure, dependencies, implementation patterns
+  - `.claude/rules/viewmodel.md` - ViewModel conventions (path-scoped to ViewModel files)
+  - `.claude/rules/repository.md` - Repository + Metro DI conventions (path-scoped to data layer)
+  - `.claude/rules/testing.md` - Unit Test, Screenshot Test guidelines (path-scoped to test files)
 2. Run `git diff` to get the changes
 3. Review changed files based on the criteria defined in `.claude/skills/code-review/SKILL.md`
 4. Output CRITICAL issue results in each file described in `CRITICAL output comments Requirements`
