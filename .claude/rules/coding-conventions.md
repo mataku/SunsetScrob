@@ -25,7 +25,7 @@
 |------|------------|---------|
 | Local | camelCase | `uiState`, `isLoading` |
 | Private property | camelCase + `private` | `private val page = 1` |
-| Constant | UPPER_SNAKE_CASE | `const val ALBUM_INFO_DESTINATION` |
+| Constant | UPPER_SNAKE_CASE | `const val MAX_RESULTS = 50` |
 
 ## File Naming
 
@@ -128,26 +128,34 @@ data class RecentTrack(
 
 ## Navigation
 
-Reference: `feature/home/.../HomeNavigation.kt`, `app/.../NavigationGraph.kt`.
+Reference: `feature/home/.../HomeNavigation.kt`, `app/.../SunsetMainScreen.kt`,
+`ui_common/.../navigation/SunsetNavHost.kt`.
 
-- Routes are `const val FOO_DESTINATION = "foo"` strings. **Do not** introduce
-  type-safe `Nav*` sealed classes unilaterally; follow the existing string
-  route pattern.
-- Each feature exposes `fun NavGraphBuilder.fooGraph(...)`; `:app` composes them
-  in `NavigationGraph.kt`.
-- Navigate helpers are extensions on `NavController`: `fun NavController.navigateToFoo(...)`.
-- Deep link arguments are read in the VM via
-  `savedStateHandle.get<String>("artistName")` etc.
-- Encode parameters with `Uri.encode()` when building navigate URLs:
+- 各 destination は `data class FooKey(...) : SunsetNavKey` で定義し、
+  `:feature:*/.../ui/navigation/FooKey.kt` に置く(共通画面の Key は
+  `:ui_common/.../navigation/CommonKeys.kt`)
+- `SunsetNavKey` 実装クラスは `@Immutable` + `@Serializable` 必須。Konsist で強制。
+- 各 feature は `fun SunsetNavBuilder.fooGraph()` を提供し、`:app/SunsetMainScreen.kt`
+  が `SunsetTabHost { fooGraph() }` で合成する
+- 遷移は `navigate(FooKey(...))`、戻るは `popBackStack()`(どちらも
+  `SunsetDestinationScope` のメンバ、destination ブロック内から呼べる)
+- `androidx.navigation3.*` の直接 import は `:ui_common` 内のみ許可。Konsist で強制
+- ViewModel に navigation 引数を渡すときは `viewModelFor(key)` を使う(`metroViewModel`
+  の直接呼び出しは navigation 文脈では禁止)。詳細は `viewmodel.md`
+
+例(Album destination):
 
 ```kotlin
-fun NavController.navigateToAlbumInfo(
-  albumName: String,
-  artistName: String
-) {
-  val encodedAlbumName = Uri.encode(albumName)
-  val encodedArtistName = Uri.encode(artistName)
-  navigate("${ALBUM_INFO_DESTINATION}?albumName=${encodedAlbumName}&artistName=${encodedArtistName}")
+fun SunsetNavBuilder.albumGraph() {
+  destination<AlbumKey> { key ->
+    AlbumScreen(
+      viewModel = viewModelFor(key),
+      id = key.contentId,
+      animatedContentScope = animatedContentScope,
+      onBackPressed = ::popBackStack,
+      onAlbumLoadMoreTap = { url -> if (url.isNotEmpty()) navigate(WebViewKey(url)) },
+    )
+  }
 }
 ```
 
