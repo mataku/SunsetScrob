@@ -5,17 +5,16 @@ import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.layout.offset
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import dev.zacsweers.metrox.viewmodel.metroViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.mataku.scrobscrob.album.ui.screen.AlbumScreen
-import com.mataku.scrobscrob.ui_common.navigateToWebView
+import com.mataku.scrobscrob.album.ui.viewmodel.AlbumViewModel
+import com.mataku.scrobscrob.ui_common.navigation.SunsetNavBuilder
+import com.mataku.scrobscrob.ui_common.navigation.WebViewKey
+import com.mataku.scrobscrob.ui_common.navigation.viewModelFor
 
 fun NavGraphBuilder.albumGraph(
   navController: NavController,
@@ -38,25 +37,8 @@ fun NavGraphBuilder.albumGraph(
       }
     ),
     content = {
-      val contentId = it.arguments?.getString("id", "") ?: ""
-
-      with(sharedTransitionScope) {
-        AlbumScreen(
-          viewModel = metroViewModel(),
-          onAlbumLoadMoreTap = { url ->
-            if (url.isNotEmpty()) {
-              navController.navigateToWebView(url)
-            }
-          },
-          onBackPressed = navController::popBackStack,
-          animatedContentScope = this@composable,
-          id = contentId,
-          modifier = Modifier
-            .offset(
-              y = (-24).dp
-            )
-        )
-      }
+      // TODO: Phase 7 cleanup — old graph body disabled after AlbumViewModel migrated to NavKey injection
+      TODO("Phase 7 cleanup: use SunsetNavBuilder.albumGraph() instead")
     },
     enterTransition = {
       fadeIn(tween(300))
@@ -80,6 +62,18 @@ fun NavController.navigateToAlbumInfo(
     contentId = contentId
   )
   navigate(destination)
+}
+
+fun SunsetNavBuilder.albumGraph() {
+  destination<AlbumKey> { key ->
+    AlbumScreen(
+      viewModel = viewModelFor<AlbumViewModel>(key),
+      onAlbumLoadMoreTap = { url -> if (url.isNotEmpty()) navigate(WebViewKey(url)) },
+      onBackPressed = ::popBackStack,
+      animatedContentScope = animatedContentScope,
+      id = key.contentId,
+    )
+  }
 }
 
 private fun buildAlbumInfoUrl(

@@ -1,6 +1,6 @@
 package com.mataku.scrobscrob.album.ui.viewmodel
 
-import androidx.lifecycle.SavedStateHandle
+import com.mataku.scrobscrob.album.ui.navigation.AlbumKey
 import com.mataku.scrobscrob.core.entity.AlbumInfo
 import com.mataku.scrobscrob.data.repository.AlbumRepository
 import com.mataku.scrobscrob.test_helper.unit.CoroutinesListener
@@ -8,7 +8,6 @@ import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.every
 import io.mockk.mockk
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.flowOf
@@ -17,7 +16,6 @@ class AlbumViewModelSpec : DescribeSpec({
   extension(CoroutinesListener())
 
   val albumRepository = mockk<AlbumRepository>()
-  val savedStateHandle = mockk<SavedStateHandle>()
   val albumName = "Drama"
   val artistName = "aespa"
   val artworkUrl = "https://mataku.com/sample.png"
@@ -32,73 +30,58 @@ class AlbumViewModelSpec : DescribeSpec({
     tracks = persistentListOf()
   )
 
-  describe("#init") {
-    beforeContainer {
-      every {
-        savedStateHandle.get<String>("artistName")
-      }.returns(artistName)
-
-      every {
-        savedStateHandle.get<String>("albumName")
-      }.returns(albumName)
-
-      every {
-        savedStateHandle.get<String>("artworkUrl")
-      }.returns(artworkUrl)
-
-      coEvery {
-        albumRepository.albumInfo(
-          albumName = albumName,
-          artistName = artistName
-        )
-      }.returns(flowOf(albumInfo))
+  describe("AlbumViewModel") {
+    it("initializes with values from AlbumKey") {
+      val repo = mockk<AlbumRepository>(relaxed = true)
+      val key = AlbumKey(albumName = "Help!", artistName = "The Beatles", artworkUrl = "", contentId = "1")
+      val viewModel = AlbumViewModel(repo, key)
+      viewModel.uiState.value.preloadAlbumName shouldBe "Help!"
+      viewModel.uiState.value.preloadArtistName shouldBe "The Beatles"
     }
 
     context("artistName is empty") {
-      every {
-        savedStateHandle.get<String>("artistName")
-      }.returns("")
-
       it("should return initial state") {
+        val key = AlbumKey(albumName = albumName, artistName = "", artworkUrl = artworkUrl, contentId = "1")
         val viewModel = AlbumViewModel(
           albumRepository = albumRepository,
-          savedStateHandle = savedStateHandle
+          key = key
         )
         viewModel.uiState.value shouldBe AlbumViewModel.AlbumUiState()
 
         coVerify(exactly = 0) {
-          albumRepository.albumInfo(
-            any(), any()
-          )
+          albumRepository.albumInfo(any(), any())
         }
       }
     }
 
     context("albumName is empty") {
-      every {
-        savedStateHandle.get<String>("albumName")
-      }.returns("")
-
       it("should return initial state") {
+        val key = AlbumKey(albumName = "", artistName = artistName, artworkUrl = artworkUrl, contentId = "1")
         val viewModel = AlbumViewModel(
           albumRepository = albumRepository,
-          savedStateHandle = savedStateHandle
+          key = key
         )
         viewModel.uiState.value shouldBe AlbumViewModel.AlbumUiState()
 
         coVerify(exactly = 0) {
-          albumRepository.albumInfo(
-            any(), any()
-          )
+          albumRepository.albumInfo(any(), any())
         }
       }
     }
-    
+
     context("required params are passed") {
       it("should return fetched AlbumInfo") {
+        val key = AlbumKey(albumName = albumName, artistName = artistName, artworkUrl = artworkUrl, contentId = "1")
+        coEvery {
+          albumRepository.albumInfo(
+            albumName = albumName,
+            artistName = artistName
+          )
+        }.returns(flowOf(albumInfo))
+
         val viewModel = AlbumViewModel(
           albumRepository = albumRepository,
-          savedStateHandle = savedStateHandle
+          key = key
         )
         viewModel.uiState.value shouldBe AlbumViewModel.AlbumUiState(
           isLoading = false,
