@@ -40,15 +40,12 @@ import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.PathMeasure
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.currentBackStackEntryAsState
 import com.airbnb.android.showkase.annotation.ShowkaseComposable
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
@@ -61,37 +58,18 @@ import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun SunsetNavigationBar(
-  navController: NavHostController,
-  navigateToAccount: () -> Unit,
-  navigateToDiscover: () -> Unit,
-  navigateToHome: () -> Unit,
+  selectedTab: SunsetTab,
+  onTabSelected: (SunsetTab) -> Unit,
   modifier: Modifier = Modifier,
-  hasNavigationBarScreen: Boolean = true,
+  isVisible: Boolean = true,
 ) {
-  val backStackEntry = navController.currentBackStackEntryAsState()
-  val route = backStackEntry.value?.destination?.route
-  val selectedItem = SunsetBottomNavItem.currentItem(route?.split("?")?.get(0))
-
-  if (hasNavigationBarScreen) {
+  if (isVisible) {
     SunsetBottomNavigation(
-      tabs = SunsetBottomNavItem.entries.toImmutableList(),
-      selectedItem = selectedItem,
-      onTabSelected = { item ->
-        if (item == selectedItem) return@SunsetBottomNavigation
-
-        when (item) {
-          SunsetBottomNavItem.ACCOUNT -> {
-            navigateToAccount.invoke()
-          }
-
-          SunsetBottomNavItem.DISCOVER -> {
-            navigateToDiscover.invoke()
-          }
-
-          SunsetBottomNavItem.HOME -> {
-            navigateToHome.invoke()
-          }
-        }
+      tabs = SunsetTab.entries.toImmutableList(),
+      selectedItem = selectedTab,
+      onTabSelected = { tab ->
+        if (tab == selectedTab) return@SunsetBottomNavigation
+        onTabSelected(tab)
       },
       modifier = modifier
     )
@@ -104,11 +82,9 @@ fun SunsetNavigationBar(
 internal fun SunsetNavigationBarPreview() {
   SunsetThemePreview {
     SunsetNavigationBar(
-      navController = NavHostController(LocalContext.current),
-      navigateToAccount = {},
-      navigateToDiscover = {},
-      navigateToHome = {},
-      hasNavigationBarScreen = true
+      selectedTab = SunsetTab.HOME,
+      onTabSelected = {},
+      isVisible = true
     )
   }
 }
@@ -118,21 +94,19 @@ internal fun SunsetNavigationBarPreview() {
 private fun SunsetNavigationBarLightPreview() {
   SunsetThemePreview(theme = AppTheme.LIGHT) {
     SunsetNavigationBar(
-      navController = NavHostController(LocalContext.current),
-      navigateToAccount = {},
-      navigateToDiscover = {},
-      navigateToHome = {},
+      selectedTab = SunsetTab.HOME,
+      onTabSelected = {},
       modifier = Modifier,
-      hasNavigationBarScreen = true
+      isVisible = true
     )
   }
 }
 
 @Composable
 fun SunsetBottomNavigation(
-  tabs: ImmutableList<SunsetBottomNavItem>,
-  selectedItem: SunsetBottomNavItem?,
-  onTabSelected: (SunsetBottomNavItem) -> Unit,
+  tabs: ImmutableList<SunsetTab>,
+  selectedItem: SunsetTab?,
+  onTabSelected: (SunsetTab) -> Unit,
   modifier: Modifier = Modifier,
 ) {
   val screenDp = LocalWindowInfo.current.containerSize.width
@@ -160,7 +134,7 @@ fun SunsetBottomNavigation(
     contentAlignment = Alignment.Center
   ) {
 
-    val selectedTabIndex = SunsetBottomNavItem.entries.indexOf(selectedItem)
+    val selectedTabIndex = SunsetTab.entries.indexOf(selectedItem)
     val animatedSelectedTabIndex by animateFloatAsState(
       targetValue = selectedTabIndex.toFloat(), label = "animatedSelectedTabIndex",
       animationSpec = spring(
@@ -183,7 +157,7 @@ fun SunsetBottomNavigation(
         .clip(CircleShape)
         .blur(50.dp, edgeTreatment = BlurredEdgeTreatment.Unbounded)
     ) {
-      val tabWidth = size.width / SunsetBottomNavItem.entries.size
+      val tabWidth = size.width / SunsetTab.entries.size
       drawCircle(
         color = animatedColor.copy(alpha = .6f),
         radius = size.height / 2,
@@ -206,7 +180,7 @@ fun SunsetBottomNavigation(
       }
       val length = PathMeasure().apply { setPath(path, false) }.length
 
-      val tabWidth = size.width / SunsetBottomNavItem.entries.size
+      val tabWidth = size.width / SunsetTab.entries.size
       drawPath(
         path,
         brush = Brush.horizontalGradient(
@@ -237,9 +211,9 @@ fun SunsetBottomNavigation(
 
 @Composable
 private fun BottomBarTabs(
-  tabs: ImmutableList<SunsetBottomNavItem>,
-  selectedTab: SunsetBottomNavItem?,
-  onTabSelected: (SunsetBottomNavItem) -> Unit,
+  tabs: ImmutableList<SunsetTab>,
+  selectedTab: SunsetTab?,
+  onTabSelected: (SunsetTab) -> Unit,
 ) {
   Row(
     modifier = Modifier
@@ -280,7 +254,7 @@ private fun BottomBarTabs(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
       ) {
-        if (tab == SunsetBottomNavItem.HOME) {
+        if (tab == SunsetTab.HOME) {
           Icon(
             imageVector = ImageVector.vectorResource(id = tab.iconDrawable!!),
             contentDescription = "tab ${tab.title}"
