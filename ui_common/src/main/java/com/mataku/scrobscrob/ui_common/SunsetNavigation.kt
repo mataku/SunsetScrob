@@ -6,6 +6,8 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.mataku.scrobscrob.ui_common.navigation.SunsetNavBuilder
+import com.mataku.scrobscrob.ui_common.navigation.WebViewKey
 import com.mataku.scrobscrob.ui_common.screen.WebViewScreen
 
 fun NavGraphBuilder.commonGraph(navController: NavController) {
@@ -42,3 +44,13 @@ fun NavController.navigateToWebView(url: String) {
 
 const val LOGIN_DESTINATION = "login"
 const val PRIVACY_POLICY_DESTINATION = "privacy_policy"
+
+fun SunsetNavBuilder.commonGraph() {
+  destination<WebViewKey> { key ->
+    WebViewScreen(
+      url = key.url,
+      onBackPressed = ::popBackStack,
+      modifier = Modifier,
+    )
+  }
+}
