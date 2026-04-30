@@ -16,7 +16,6 @@ import com.mataku.scrobscrob.data.api.model.MultipleTag
 import com.mataku.scrobscrob.data.api.model.StatsBody
 import com.mataku.scrobscrob.data.api.model.TagBody
 import com.mataku.scrobscrob.data.api.model.TopAlbumsApiResponse
-import com.mataku.scrobscrob.test_helper.unit.CoroutinesListener
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
@@ -25,8 +24,6 @@ import io.mockk.mockk
 import io.mockk.slot
 
 class ArtistRepositorySpec : DescribeSpec({
-  extension(CoroutinesListener())
-
   describe("artistInfo") {
     it("builds ArtistInfoEndpoint with the artist param and maps to ArtistInfo") {
       val name = "Nayeon"

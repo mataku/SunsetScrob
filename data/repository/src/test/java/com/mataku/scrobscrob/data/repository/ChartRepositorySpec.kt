@@ -15,7 +15,6 @@ import com.mataku.scrobscrob.data.api.model.ChartTrackArtist
 import com.mataku.scrobscrob.data.api.model.ImageBody
 import com.mataku.scrobscrob.data.api.model.PagingAttrBody
 import com.mataku.scrobscrob.data.db.ArtworkDataStore
-import com.mataku.scrobscrob.test_helper.unit.CoroutinesListener
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
@@ -25,8 +24,6 @@ import io.mockk.mockk
 import io.mockk.slot
 
 class ChartRepositorySpec : DescribeSpec({
-  extension(CoroutinesListener())
-
   describe("topArtists") {
     val page = 1
     val fakeResponse = ChartTopArtistsResponse(
