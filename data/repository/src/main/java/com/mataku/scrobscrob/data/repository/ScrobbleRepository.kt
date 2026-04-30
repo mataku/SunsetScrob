@@ -6,6 +6,7 @@ import com.mataku.scrobscrob.core.entity.RecentTracks
 import com.mataku.scrobscrob.core.entity.ScrobbleResult
 import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.data.api.LastFmService
+import com.mataku.scrobscrob.data.api.request
 import com.mataku.scrobscrob.data.api.endpoint.ApiSignature
 import com.mataku.scrobscrob.data.api.endpoint.ScrobbleEndpoint
 import com.mataku.scrobscrob.data.api.endpoint.UserRecentTracksEndpoint

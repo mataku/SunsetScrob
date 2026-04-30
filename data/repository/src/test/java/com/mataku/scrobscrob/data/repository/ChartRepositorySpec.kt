@@ -1,8 +1,7 @@
 package com.mataku.scrobscrob.data.repository
 
 import app.cash.turbine.test
-import com.mataku.scrobscrob.data.api.LastFmHttpClient
-import com.mataku.scrobscrob.data.api.LastFmService
+import com.mataku.scrobscrob.data.api.LastFmServiceImpl
 import com.mataku.scrobscrob.test_helper.unit.CoroutinesListener
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
@@ -75,9 +74,7 @@ class ChartRepositorySpec : DescribeSpec({
         headers = headersOf(HttpHeaders.ContentType, "application/json")
       )
     }
-    val lastFmService = LastFmService(
-      LastFmHttpClient.create(mockEngine)
-    )
+    val lastFmService = LastFmServiceImpl(mockEngine)
 
     it("should parse as ChartTopArtists") {
       val repository = ChartRepositoryImpl(lastFmService, mockk(relaxed = true))
@@ -151,9 +148,7 @@ class ChartRepositorySpec : DescribeSpec({
         headers = headersOf(HttpHeaders.ContentType, "application/json")
       )
     }
-    val lastFmService = LastFmService(
-      LastFmHttpClient.create(mockEngine)
-    )
+    val lastFmService = LastFmServiceImpl(mockEngine)
 
     it("should parse as ChartTopTracks") {
       val repository = ChartRepositoryImpl(lastFmService, mockk(relaxed = true))

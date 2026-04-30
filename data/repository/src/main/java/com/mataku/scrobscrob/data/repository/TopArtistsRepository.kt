@@ -3,6 +3,7 @@ package com.mataku.scrobscrob.data.repository
 import com.mataku.scrobscrob.core.entity.TimeRangeFiltering
 import com.mataku.scrobscrob.core.entity.TopArtists
 import com.mataku.scrobscrob.data.api.LastFmService
+import com.mataku.scrobscrob.data.api.request
 import com.mataku.scrobscrob.data.api.endpoint.UserTopArtistsEndpoint
 import com.mataku.scrobscrob.data.db.ArtworkDataStore
 import com.mataku.scrobscrob.data.repository.mapper.toTopArtists

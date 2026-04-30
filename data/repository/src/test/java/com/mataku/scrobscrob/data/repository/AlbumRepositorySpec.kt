@@ -2,8 +2,7 @@ package com.mataku.scrobscrob.data.repository
 
 import app.cash.turbine.test
 import com.mataku.scrobscrob.core.entity.TimeRangeFiltering
-import com.mataku.scrobscrob.data.api.LastFmHttpClient
-import com.mataku.scrobscrob.data.api.LastFmService
+import com.mataku.scrobscrob.data.api.LastFmServiceImpl
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
 import io.ktor.client.engine.mock.MockEngine
@@ -77,9 +76,7 @@ class AlbumRepositorySpec : DescribeSpec({
           headers = headersOf(HttpHeaders.ContentType, "application/json")
         )
       }
-      val lastFmService = LastFmService(
-        LastFmHttpClient.create(mockEngine)
-      )
+      val lastFmService = LastFmServiceImpl(mockEngine)
       val repository = AlbumRepositoryImpl(lastFmService)
       repository.fetchTopAlbums(
         page = page,
@@ -283,9 +280,7 @@ class AlbumRepositorySpec : DescribeSpec({
           headers = headersOf(HttpHeaders.ContentType, "application/json")
         )
       }
-      val lastFmService = LastFmService(
-        LastFmHttpClient.create(mockEngine)
-      )
+      val lastFmService = LastFmServiceImpl(mockEngine)
       val repository = AlbumRepositoryImpl(lastFmService)
       repository.albumInfo(
         albumName = albumName,

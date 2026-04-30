@@ -7,6 +7,7 @@ import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.core.entity.isInvalidArtwork
 import com.mataku.scrobscrob.data.api.BuildConfig
 import com.mataku.scrobscrob.data.api.LastFmService
+import com.mataku.scrobscrob.data.api.request
 import com.mataku.scrobscrob.data.api.endpoint.UserInfoEndpoint
 import com.mataku.scrobscrob.data.api.endpoint.UserLovedTracksEndpoint
 import com.mataku.scrobscrob.data.db.ArtworkDataStore

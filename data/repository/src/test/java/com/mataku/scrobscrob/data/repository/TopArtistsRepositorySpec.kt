@@ -2,8 +2,7 @@ package com.mataku.scrobscrob.data.repository
 
 import app.cash.turbine.test
 import com.mataku.scrobscrob.core.entity.TimeRangeFiltering
-import com.mataku.scrobscrob.data.api.LastFmHttpClient
-import com.mataku.scrobscrob.data.api.LastFmService
+import com.mataku.scrobscrob.data.api.LastFmServiceImpl
 import com.mataku.scrobscrob.data.db.ArtworkDataStore
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
@@ -210,9 +209,7 @@ class TopArtistsRepositorySpec : DescribeSpec({
       )
     }
     val artworkDatastore = mockk<ArtworkDataStore>(relaxed = true)
-    val lastfmService = LastFmService(
-      LastFmHttpClient.create(mockEngine)
-    )
+    val lastfmService = LastFmServiceImpl(mockEngine)
     val repository = TopArtistsRepositoryImpl(lastfmService, artworkDatastore)
 
     it("should parse as TopArtists") {

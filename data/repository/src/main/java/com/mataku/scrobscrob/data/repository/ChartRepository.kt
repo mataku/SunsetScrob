@@ -5,6 +5,7 @@ import com.mataku.scrobscrob.core.entity.ChartTopTracks
 import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.core.entity.isInvalidArtwork
 import com.mataku.scrobscrob.data.api.LastFmService
+import com.mataku.scrobscrob.data.api.request
 import com.mataku.scrobscrob.data.api.endpoint.ChartTopArtistsEndpoint
 import com.mataku.scrobscrob.data.api.endpoint.ChartTopTracksEndpoint
 import com.mataku.scrobscrob.data.db.ArtworkDataStore
