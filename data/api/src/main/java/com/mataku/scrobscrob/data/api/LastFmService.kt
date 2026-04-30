@@ -1,6 +1,7 @@
 package com.mataku.scrobscrob.data.api
 
 import com.mataku.scrobscrob.data.api.endpoint.Endpoint
+import com.mataku.scrobscrob.data.api.endpoint.HttpMethod
 import com.mataku.scrobscrob.data.api.endpoint.LastFmApiError
 import com.mataku.scrobscrob.data.api.endpoint.LastFmErrorResponse
 import io.ktor.client.HttpClient
@@ -11,27 +12,14 @@ import io.ktor.client.request.post
 import io.ktor.client.request.put
 import io.ktor.client.request.setBody
 import io.ktor.client.request.url
-import io.ktor.http.HttpMethod
 import io.ktor.http.isSuccess
 
 class LastFmService(val httpClient: HttpClient) {
   suspend inline fun <reified T> request(endpoint: Endpoint<T>): T {
-    return when (val requestType = endpoint.requestType) {
-      HttpMethod.Get -> {
-        get(endpoint)
-      }
-
-      HttpMethod.Post -> {
-        post(endpoint)
-      }
-
-      HttpMethod.Put -> {
-        put(endpoint)
-      }
-
-      else -> {
-        throw IllegalStateException("No handleable method: $requestType")
-      }
+    return when (endpoint.requestType) {
+      HttpMethod.GET -> get(endpoint)
+      HttpMethod.POST -> post(endpoint)
+      HttpMethod.PUT -> put(endpoint)
     }
   }
 
