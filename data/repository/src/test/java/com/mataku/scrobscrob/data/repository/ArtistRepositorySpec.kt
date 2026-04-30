@@ -2,192 +2,116 @@ package com.mataku.scrobscrob.data.repository
 
 import app.cash.turbine.test
 import com.mataku.scrobscrob.core.entity.Stats
-import com.mataku.scrobscrob.data.api.LastFmServiceImpl
+import com.mataku.scrobscrob.data.api.LastFmService
+import com.mataku.scrobscrob.data.api.endpoint.ArtistInfoEndpoint
+import com.mataku.scrobscrob.data.api.endpoint.ArtistTopAlbumsEndpoint
+import com.mataku.scrobscrob.data.api.endpoint.Endpoint
+import com.mataku.scrobscrob.data.api.model.AlbumArtistBody
+import com.mataku.scrobscrob.data.api.model.AlbumBody
+import com.mataku.scrobscrob.data.api.model.AlbumsBody
+import com.mataku.scrobscrob.data.api.model.ArtistInfoApiResponse
+import com.mataku.scrobscrob.data.api.model.ArtistInfoBody
+import com.mataku.scrobscrob.data.api.model.ImageBody
+import com.mataku.scrobscrob.data.api.model.MultipleTag
+import com.mataku.scrobscrob.data.api.model.StatsBody
+import com.mataku.scrobscrob.data.api.model.TagBody
+import com.mataku.scrobscrob.data.api.model.TopAlbumsApiResponse
+import com.mataku.scrobscrob.test_helper.unit.CoroutinesListener
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
-import io.ktor.client.engine.mock.MockEngine
-import io.ktor.client.engine.mock.respond
-import io.ktor.http.HttpHeaders
-import io.ktor.http.HttpMethod
-import io.ktor.http.HttpStatusCode
-import io.ktor.http.fullPath
-import io.ktor.http.headersOf
-import io.ktor.utils.io.ByteReadChannel
+import io.kotest.matchers.types.shouldBeInstanceOf
+import io.mockk.coEvery
+import io.mockk.mockk
+import io.mockk.slot
 
 class ArtistRepositorySpec : DescribeSpec({
-  extension(com.mataku.scrobscrob.test_helper.unit.CoroutinesListener())
+  extension(CoroutinesListener())
 
   describe("artistInfo") {
-    val response = """
-     {
-       "artist": {
-         "name": "Nayeon",
-         "url": "https://www.last.fm/music/Nayeon",
-         "image": [
-           {
-             "#text": "https://lastfm.freetls.fastly.net/i/u/34s/2a96cbd8b46e442fc41c2b86b821562f.png",
-             "size": "small"
-           },
-           {
-             "#text": "https://lastfm.freetls.fastly.net/i/u/64s/2a96cbd8b46e442fc41c2b86b821562f.png",
-             "size": "medium"
-           },
-           {
-             "#text": "https://lastfm.freetls.fastly.net/i/u/174s/2a96cbd8b46e442fc41c2b86b821562f.png",
-             "size": "large"
-           },
-           {
-             "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png",
-             "size": "extralarge"
-           },
-           {
-             "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png",
-             "size": "mega"
-           },
-           {
-             "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png",
-             "size": ""
-           }
-         ],
-         "streamable": "0",
-         "ontour": "0",
-         "stats": {
-           "listeners": "384242",
-           "playcount": "15045020"
-         },
-         "similar": {
-           "artist": []
-         },
-         "tags": {
-           "tag": [
-             {
-               "name": "k-pop",
-               "url": "https://www.last.fm/tag/k-pop"
-             },
-             {
-               "name": "better than selena gomez",
-               "url": "https://www.last.fm/tag/better+than+selena+gomez"
-             },
-             {
-               "name": "pop",
-               "url": "https://www.last.fm/tag/pop"
-             },
-             {
-               "name": "female vocalists",
-               "url": "https://www.last.fm/tag/female+vocalists"
-             },
-             {
-               "name": "twice",
-               "url": "https://www.last.fm/tag/twice"
-             }
-           ]
-         },
-         "bio": {
-           "links": {
-             "link": {
-               "#text": "",
-               "rel": "original",
-               "href": "https://last.fm/music/Nayeon/+wiki"
-             }
-           },
-           "published": "16 Apr 2018, 21:15",
-           "summary": "Im Na-yeon (Hangul: 임나연; born in September 22, 1995), known mononymously as Nayeon (Hangul: 나연), is a South Korean singer, dancer and songwriter. She is the lead vocalist of the girl group  TWICE, where she debuted on October 20, 2015, with the mini album The Story Begins.\n\nShe made her solo debut on June 24, 2022, with the mini album IM NAYEON, making her the first TWICE member to debut as a soloist. <a href=\"https://www.last.fm/music/Nayeon\">Read more on Last.fm</a>",
-           "content": "Im Na-yeon (Hangul: 임나연; born in September 22, 1995), known mononymously as Nayeon (Hangul: 나연), is a South Korean singer, dancer and songwriter. She is the lead vocalist of the girl group  TWICE, where she debuted on October 20, 2015, with the mini album The Story Begins.\n\nShe made her solo debut on June 24, 2022, with the mini album IM NAYEON, making her the first TWICE member to debut as a soloist. <a href=\"https://www.last.fm/music/Nayeon\">Read more on Last.fm</a>. User-contributed text is available under the Creative Commons By-SA License; additional terms may apply."
-         }
-       }
-     }
-    """.trimIndent()
-    val mockEngine = MockEngine { request ->
-      request.url.fullPath shouldBe "/2.0/?method=artist.getInfo&format=json&artist=Nayeon"
-      request.method shouldBe HttpMethod.Get
-      respond(
-        content = ByteReadChannel(response),
-        status = HttpStatusCode.OK,
-        headers = headersOf(HttpHeaders.ContentType, "application/json")
+    it("builds ArtistInfoEndpoint with the artist param and maps to ArtistInfo") {
+      val name = "Nayeon"
+      val service = mockk<LastFmService>()
+      val slot = slot<Endpoint<*>>()
+      val fakeResponse = ArtistInfoApiResponse(
+        artistInfo = ArtistInfoBody(
+          name = "Nayeon",
+          url = "https://www.last.fm/music/Nayeon",
+          imageList = listOf(
+            ImageBody(
+              size = "large",
+              url = "https://lastfm.freetls.fastly.net/i/u/174s/2a96cbd8b46e442fc41c2b86b821562f.png",
+            ),
+          ),
+          tags = MultipleTag(
+            tagList = listOf(
+              TagBody(
+                name = "k-pop",
+                url = "https://www.last.fm/tag/k-pop",
+              ),
+            ),
+          ),
+          stats = StatsBody(
+            listeners = "384242",
+            playCount = "15045020",
+          ),
+        ),
       )
-    }
-    val lastfmService = LastFmServiceImpl(mockEngine)
-    it("should parse as ArtistInfo") {
-      val repository = ArtistRepositoryImpl(lastFmService = lastfmService)
-      repository.artistInfo(name = "Nayeon")
-        .test {
-          awaitItem().let {
-            it.name shouldBe "Nayeon"
-            it.images.isNotEmpty() shouldBe true
-            it.url shouldBe "https://www.last.fm/music/Nayeon"
-            it.tags.isNotEmpty() shouldBe true
-            it.stats shouldBe Stats(listeners = "384242", playCount = "15045020")
-          }
-          awaitComplete()
+      coEvery { service.rawRequest(capture(slot), any()) } returns fakeResponse
+
+      val repository = ArtistRepositoryImpl(service)
+      repository.artistInfo(name = name).test {
+        awaitItem().let {
+          it.name shouldBe "Nayeon"
+          it.images.isNotEmpty() shouldBe true
+          it.url shouldBe "https://www.last.fm/music/Nayeon"
+          it.tags.isNotEmpty() shouldBe true
+          it.stats shouldBe Stats(listeners = "384242", playCount = "15045020")
         }
+        awaitComplete()
+      }
+
+      val captured = slot.captured
+      captured.shouldBeInstanceOf<ArtistInfoEndpoint>()
+      captured.params shouldBe mapOf("artist" to name)
     }
   }
 
   describe("topAlbums") {
-    it("should parse as List<TopAlbumInfo>") {
-      val response = """
-        {
-          "topalbums": {
-            "album": [
-              {
-                "name": "SAVAGE - The 1st Mini Album",
-                "playcount": 20996309,
-                "url": "https://www.last.fm/music/aespa/SAVAGE+-+The+1st+Mini+Album",
-                "artist": {
-                  "name": "aespa",
-                  "url": "https://www.last.fm/music/aespa"
-                },
-                "image": [
-                  {
-                    "#text": "https://lastfm.freetls.fastly.net/i/u/34s/9686de538a7ca3b967de4cc7e76e316b.png",
-                    "size": "small"
-                  },
-                  {
-                    "#text": "https://lastfm.freetls.fastly.net/i/u/64s/9686de538a7ca3b967de4cc7e76e316b.png",
-                    "size": "medium"
-                  },
-                  {
-                    "#text": "https://lastfm.freetls.fastly.net/i/u/174s/9686de538a7ca3b967de4cc7e76e316b.png",
-                    "size": "large"
-                  },
-                  {
-                    "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/9686de538a7ca3b967de4cc7e76e316b.png",
-                    "size": "extralarge"
-                  }
-                ]
-              }
-            ],
-            "@attr": {
-              "artist": "aespa",
-              "page": "1",
-              "perPage": "1",
-              "totalPages": "3024",
-              "total": "3024"
-            }
-          }
-        }
-      """.trimIndent()
-
-      val mockEngine = MockEngine { request ->
-        request.url.fullPath shouldBe "/2.0/?method=artist.gettopalbums&format=json&artist=aespa&page=1&limit=1"
-        request.method shouldBe HttpMethod.Get
-        respond(
-          content = ByteReadChannel(response),
-          status = HttpStatusCode.OK,
-          headers = headersOf(HttpHeaders.ContentType, "application/json")
-        )
-      }
-      val lastfmService = LastFmServiceImpl(mockEngine)
-      val repository = ArtistRepositoryImpl(lastfmService)
-      repository.topAlbums(
-        name = "aespa",
-        page = 1,
-        limit = 1
+    it("builds ArtistTopAlbumsEndpoint with artist/page/limit and maps to a non-empty list") {
+      val name = "aespa"
+      val page = 1
+      val limit = 1
+      val service = mockk<LastFmService>()
+      val slot = slot<Endpoint<*>>()
+      val fakeResponse = TopAlbumsApiResponse(
+        topAlbums = AlbumsBody(
+          albums = listOf(
+            AlbumBody(
+              name = "SAVAGE - The 1st Mini Album",
+              url = "https://www.last.fm/music/aespa/SAVAGE+-+The+1st+Mini+Album",
+              artist = AlbumArtistBody(
+                name = "aespa",
+              ),
+              playcount = "20996309",
+            ),
+          ),
+        ),
       )
-        .test {
-          awaitItem().isNotEmpty() shouldBe true
-          awaitComplete()
-        }
+      coEvery { service.rawRequest(capture(slot), any()) } returns fakeResponse
+
+      val repository = ArtistRepositoryImpl(service)
+      repository.topAlbums(name = name, page = page, limit = limit).test {
+        awaitItem().isNotEmpty() shouldBe true
+        awaitComplete()
+      }
+
+      val captured = slot.captured
+      captured.shouldBeInstanceOf<ArtistTopAlbumsEndpoint>()
+      captured.params shouldBe mapOf(
+        "artist" to name,
+        "page" to page.toString(),
+        "limit" to limit.toString(),
+      )
     }
   }
 })
