@@ -39,7 +39,7 @@ class NavigationArchitectureSpec : DescribeSpec({
 
     it("classes implementing SunsetNavKey must be @Immutable and @Serializable") {
       val violations = Konsist.scopeFromProject().classes()
-        .filterNot { it.resideInPath("..architecture-spec..") }
+        .filter { it.containingFile.path.contains("/src/main/") }
         .filter { c -> c.parents().any { it.name == "SunsetNavKey" } }
         .filter { c ->
           !c.hasAnnotation { it.name == "Immutable" } ||
@@ -53,7 +53,7 @@ class NavigationArchitectureSpec : DescribeSpec({
 
     it("NavKey classes live under ui/navigation or ui_common/navigation") {
       val violations = Konsist.scopeFromProject().classes()
-        .filterNot { it.resideInPath("..architecture-spec..") }
+        .filter { it.containingFile.path.contains("/src/main/") }
         .filter { c -> c.parents().any { it.name == "SunsetNavKey" } }
         .filterNot { c ->
           c.resideInPackage("..ui.navigation..") || c.resideInPackage("..ui_common.navigation..")

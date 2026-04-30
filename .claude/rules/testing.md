@@ -49,7 +49,39 @@ class LoginViewModelSpec : DescribeSpec({
 })
 ```
 
-Register `extension(CoroutinesListener())` when testing suspend code.
+Register `extension(CoroutinesListener())` when testing ViewModels (where
+`viewModelScope` needs a deterministic dispatcher). Repository specs that
+collect a `Flow` via Turbine's `.test { ... }` do **not** need it, because
+Turbine pumps the flow on its own dispatcher.
+
+### Repository spec
+
+Repositories mock `LastFmService` and capture the `Endpoint` argument:
+
+```kotlin
+class AlbumRepositorySpec : DescribeSpec({
+  describe("albumInfo") {
+    it("builds AlbumInfoEndpoint and maps to AlbumInfo") {
+      val service = mockk<LastFmService>()
+      val slot = slot<Endpoint<*>>()
+      coEvery { service.rawRequest(capture(slot), any()) } returns fakeAlbumInfoResponse
+
+      val repo = AlbumRepositoryImpl(service)
+      repo.albumInfo("Drama", "aespa").test {
+        awaitItem().albumName shouldBe "Drama"
+        awaitComplete()
+      }
+
+      slot.captured.shouldBeInstanceOf<AlbumInfoEndpoint>()
+      slot.captured.params shouldBe mapOf("album" to "Drama", "artist" to "aespa")
+    }
+  }
+})
+```
+
+URL/method/JSON deserialization is verified separately in
+`:data:api/src/test/.../endpoint/{Endpoint}Spec.kt` — that is where
+`MockEngine` wiring belongs.
 
 ### Assertions
 

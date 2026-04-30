@@ -1,15 +1,18 @@
 package com.mataku.scrobscrob.ui_common.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.maps.shouldContainKey
 import io.kotest.matchers.shouldBe
 import kotlinx.serialization.Serializable
 import kotlin.reflect.KClass
 
+@Immutable
 @Serializable
 private data object FooKey : SunsetNavKey
 
+@Immutable
 @Serializable
 private data class BarKey(val id: String) : SunsetNavKey
 

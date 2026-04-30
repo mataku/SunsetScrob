@@ -38,4 +38,7 @@ dependencies {
 
   implementation(libs.coil.core)
   implementation(libs.coil.okhttp)
+
+  testImplementation(project(":core"))
+  testImplementation(libs.ktor.client.mock)
 }

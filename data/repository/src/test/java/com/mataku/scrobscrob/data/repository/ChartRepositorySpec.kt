@@ -1,167 +1,193 @@
 package com.mataku.scrobscrob.data.repository
 
 import app.cash.turbine.test
-import com.mataku.scrobscrob.data.api.LastFmHttpClient
 import com.mataku.scrobscrob.data.api.LastFmService
-import com.mataku.scrobscrob.test_helper.unit.CoroutinesListener
+import com.mataku.scrobscrob.data.api.endpoint.ChartTopArtistsEndpoint
+import com.mataku.scrobscrob.data.api.endpoint.ChartTopTracksEndpoint
+import com.mataku.scrobscrob.data.api.endpoint.Endpoint
+import com.mataku.scrobscrob.data.api.model.ChartArtist
+import com.mataku.scrobscrob.data.api.model.ChartTopArtistsBody
+import com.mataku.scrobscrob.data.api.model.ChartTopArtistsResponse
+import com.mataku.scrobscrob.data.api.model.ChartTopTracksBody
+import com.mataku.scrobscrob.data.api.model.ChartTopTracksResponse
+import com.mataku.scrobscrob.data.api.model.ChartTrack
+import com.mataku.scrobscrob.data.api.model.ChartTrackArtist
+import com.mataku.scrobscrob.data.api.model.ImageBody
+import com.mataku.scrobscrob.data.api.model.PagingAttrBody
+import com.mataku.scrobscrob.data.db.ArtworkDataStore
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
-import io.ktor.client.engine.mock.MockEngine
-import io.ktor.client.engine.mock.respond
-import io.ktor.http.HttpHeaders
-import io.ktor.http.HttpMethod
-import io.ktor.http.HttpStatusCode
-import io.ktor.http.fullPath
-import io.ktor.http.headersOf
-import io.ktor.utils.io.ByteReadChannel
+import io.kotest.matchers.types.shouldBeInstanceOf
+import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockk
+import io.mockk.slot
 
 class ChartRepositorySpec : DescribeSpec({
-  extension(CoroutinesListener())
-
   describe("topArtists") {
-    val rawResponse = """
-      {
-        "artists": {
-          "artist": [
-            {
-              "name": "The Weeknd",
-              "playcount": "578258095",
-              "listeners": "3680672",
-              "mbid": "c8b03190-306c-4120-bb0b-6f2ebfc06ea9",
-              "url": "https://www.last.fm/music/The+Weeknd",
-              "streamable": "0",
-              "image": [
-                {
-                  "#text": "https://lastfm.freetls.fastly.net/i/u/34s/2a96cbd8b46e442fc41c2b86b821562f.png",
-                  "size": "small"
-                },
-                {
-                  "#text": "https://lastfm.freetls.fastly.net/i/u/64s/2a96cbd8b46e442fc41c2b86b821562f.png",
-                  "size": "medium"
-                },
-                {
-                  "#text": "https://lastfm.freetls.fastly.net/i/u/174s/2a96cbd8b46e442fc41c2b86b821562f.png",
-                  "size": "large"
-                },
-                {
-                  "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png",
-                  "size": "extralarge"
-                },
-                {
-                  "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png",
-                  "size": "mega"
-                }
-              ]
-            }
-          ],
-          "@attr": {
-            "page": "1",
-            "perPage": "1",
-            "totalPages": "5749773",
-            "total": "5749773"
-          }
-        }
-      }
-    """.trimIndent()
     val page = 1
-    val mockEngine = MockEngine { request ->
-      request.url.fullPath shouldBe "/2.0/?method=chart.gettopartists&format=json&limit=10&page=1"
-      request.method shouldBe HttpMethod.Get
-
-      respond(
-        content = ByteReadChannel(rawResponse),
-        status = HttpStatusCode.OK,
-        headers = headersOf(HttpHeaders.ContentType, "application/json")
-      )
-    }
-    val lastFmService = LastFmService(
-      LastFmHttpClient.create(mockEngine)
+    val fakeResponse = ChartTopArtistsResponse(
+      chartTopArtistsBody = ChartTopArtistsBody(
+        topArtists = listOf(
+          ChartArtist(
+            name = "The Weeknd",
+            playCount = "578258095",
+            listeners = "3680672",
+            url = "https://www.last.fm/music/The+Weeknd",
+            imageList = listOf(
+              ImageBody(
+                size = "extralarge",
+                url = "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png",
+              ),
+            ),
+          ),
+        ),
+        pagingAttrBody = PagingAttrBody(
+          page = "1",
+          perPage = "1",
+          totalPages = "5749773",
+          total = "5749773",
+        ),
+      ),
     )
 
-    it("should parse as ChartTopArtists") {
-      val repository = ChartRepositoryImpl(lastFmService, mockk(relaxed = true))
+    context("when artwork lookup returns null") {
+      it("emits artists pass-through and asserts captured endpoint") {
+        val service = mockk<LastFmService>()
+        val artworkDataStore = mockk<ArtworkDataStore>()
+        coEvery { artworkDataStore.artwork(artist = any()) } returns null
+        val slot = slot<Endpoint<*>>()
+        coEvery { service.rawRequest(capture(slot), any()) } returns fakeResponse
 
-      repository.topArtists(page)
-        .test {
-          awaitItem().topArtists.isNotEmpty() shouldBe true
+        val repository = ChartRepositoryImpl(service, artworkDataStore)
+        repository.topArtists(page).test {
+          val item = awaitItem()
+          item.topArtists.size shouldBe 1
+          item.topArtists[0].let { artist ->
+            artist.name shouldBe "The Weeknd"
+            artist.playCount shouldBe "578258095"
+            artist.listeners shouldBe "3680672"
+            artist.url shouldBe "https://www.last.fm/music/The+Weeknd"
+            artist.imageUrl shouldBe null
+          }
           awaitComplete()
         }
+
+        val captured = slot.captured
+        captured.shouldBeInstanceOf<ChartTopArtistsEndpoint>()
+        captured.params shouldBe mapOf("limit" to "10", "page" to page.toString())
+      }
+    }
+
+    context("when artwork lookup returns a cached URL") {
+      it("overrides the artist's imageUrl") {
+        val service = mockk<LastFmService>()
+        val artworkDataStore = mockk<ArtworkDataStore>()
+        coEvery { artworkDataStore.artwork(artist = "The Weeknd") } returns "https://cached.example/weeknd.png"
+        coEvery { service.rawRequest(any(), any()) } returns fakeResponse
+
+        val repository = ChartRepositoryImpl(service, artworkDataStore)
+        repository.topArtists(page).test {
+          awaitItem().topArtists[0].imageUrl shouldBe "https://cached.example/weeknd.png"
+          awaitComplete()
+        }
+      }
     }
   }
 
   describe("topTracks") {
-    val rawResponse = """
-      {
-        "tracks": {
-          "track": [
-            {
-              "name": "My Love Mine All Mine",
-              "duration": "0",
-              "playcount": "16319592",
-              "listeners": "843008",
-              "mbid": "",
-              "url": "https://www.last.fm/music/Mitski/_/My+Love+Mine+All+Mine",
-              "streamable": {
-                "#text": "0",
-                "fulltrack": "0"
-              },
-              "artist": {
-                "name": "Mitski",
-                "mbid": "fa58cf24-0e44-421d-8519-8bf461dcfaa5",
-                "url": "https://www.last.fm/music/Mitski"
-              },
-              "image": [
-                {
-                  "#text": "https://lastfm.freetls.fastly.net/i/u/34s/2a96cbd8b46e442fc41c2b86b821562f.png",
-                  "size": "small"
-                },
-                {
-                  "#text": "https://lastfm.freetls.fastly.net/i/u/64s/2a96cbd8b46e442fc41c2b86b821562f.png",
-                  "size": "medium"
-                },
-                {
-                  "#text": "https://lastfm.freetls.fastly.net/i/u/174s/2a96cbd8b46e442fc41c2b86b821562f.png",
-                  "size": "large"
-                },
-                {
-                  "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png",
-                  "size": "extralarge"
-                }
-              ]
-            }
-          ],
-          "@attr": {
-            "page": "1",
-            "perPage": "1",
-            "totalPages": "37697653",
-            "total": "37697653"
-          }
-        }
-      }
-    """.trimIndent()
     val page = 1
-    val mockEngine = MockEngine { request ->
-      request.url.fullPath shouldBe "/2.0/?method=chart.gettoptracks&format=json&limit=10&page=1"
-      request.method shouldBe HttpMethod.Get
 
-      respond(
-        content = ByteReadChannel(rawResponse),
-        status = HttpStatusCode.OK,
-        headers = headersOf(HttpHeaders.ContentType, "application/json")
-      )
-    }
-    val lastFmService = LastFmService(
-      LastFmHttpClient.create(mockEngine)
-    )
+    context("when track has valid artwork in imageList") {
+      it("emits tracks without invoking artworkDataStore") {
+        val fakeResponse = ChartTopTracksResponse(
+          chartTopTracksBody = ChartTopTracksBody(
+            topTracks = listOf(
+              ChartTrack(
+                name = "My Love Mine All Mine",
+                playCount = "16319592",
+                listeners = "843008",
+                url = "https://www.last.fm/music/Mitski/_/My+Love+Mine+All+Mine",
+                artist = ChartTrackArtist(
+                  name = "Mitski",
+                  url = "https://www.last.fm/music/Mitski",
+                ),
+                imageList = listOf(
+                  ImageBody(
+                    size = "extralarge",
+                    url = "https://lastfm.freetls.fastly.net/i/u/300x300/real-track-image.png",
+                  ),
+                ),
+                mbid = "",
+              ),
+            ),
+            pagingAttrBody = PagingAttrBody(
+              page = "1",
+              perPage = "1",
+              totalPages = "37697653",
+              total = "37697653",
+            ),
+          ),
+        )
+        val service = mockk<LastFmService>()
+        val artworkDataStore = mockk<ArtworkDataStore>()
+        val slot = slot<Endpoint<*>>()
+        coEvery { service.rawRequest(capture(slot), any()) } returns fakeResponse
 
-    it("should parse as ChartTopTracks") {
-      val repository = ChartRepositoryImpl(lastFmService, mockk(relaxed = true))
-      repository.topTracks(page)
-        .test {
-          awaitItem().topTracks.isNotEmpty() shouldBe true
+        val repository = ChartRepositoryImpl(service, artworkDataStore)
+        repository.topTracks(page).test {
+          val item = awaitItem()
+          item.topTracks.size shouldBe 1
+          item.topTracks[0].name shouldBe "My Love Mine All Mine"
+          item.topTracks[0].artist.name shouldBe "Mitski"
           awaitComplete()
         }
+
+        val captured = slot.captured
+        captured.shouldBeInstanceOf<ChartTopTracksEndpoint>()
+        captured.params shouldBe mapOf("limit" to "10", "page" to page.toString())
+
+        coVerify(exactly = 0) { artworkDataStore.artwork(any()) }
+      }
+    }
+
+    context("when track has invalid artwork -> cached override") {
+      it("overrides imageUrl with the cached value") {
+        val fakeResponse = ChartTopTracksResponse(
+          chartTopTracksBody = ChartTopTracksBody(
+            topTracks = listOf(
+              ChartTrack(
+                name = "My Love Mine All Mine",
+                playCount = "16319592",
+                listeners = "843008",
+                url = "https://www.last.fm/music/Mitski/_/My+Love+Mine+All+Mine",
+                artist = ChartTrackArtist(
+                  name = "Mitski",
+                  url = "https://www.last.fm/music/Mitski",
+                ),
+                imageList = emptyList(),
+                mbid = "",
+              ),
+            ),
+            pagingAttrBody = PagingAttrBody(
+              page = "1",
+              perPage = "1",
+              totalPages = "37697653",
+              total = "37697653",
+            ),
+          ),
+        )
+        val service = mockk<LastFmService>()
+        val artworkDataStore = mockk<ArtworkDataStore>()
+        coEvery { artworkDataStore.artwork(artist = "Mitski") } returns "https://cached.example/mitski.png"
+        coEvery { service.rawRequest(any(), any()) } returns fakeResponse
+
+        val repository = ChartRepositoryImpl(service, artworkDataStore)
+        repository.topTracks(page).test {
+          awaitItem().topTracks[0].imageUrl shouldBe "https://cached.example/mitski.png"
+          awaitComplete()
+        }
+      }
     }
   }
 })
