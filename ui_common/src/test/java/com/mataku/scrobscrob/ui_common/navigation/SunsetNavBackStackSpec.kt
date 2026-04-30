@@ -9,13 +9,13 @@ class SunsetNavBackStackSpec : DescribeSpec({
   describe("SunsetNavBackStack") {
     it("starts with the initial key on top") {
       val backStack = SunsetNavBackStack(initial = LoginKey)
-      backStack.keys.last() shouldBe LoginKey
+      backStack.entries.last().key shouldBe LoginKey
       backStack.isEmpty().shouldBeFalse()
     }
 
-    it("isEmpty returns true after popping the only key") {
+    it("isEmpty returns true after popping the only entry") {
       val backStack = SunsetNavBackStack(initial = LoginKey)
-      backStack.keys.removeAt(backStack.keys.lastIndex)
+      backStack.entries.removeAt(backStack.entries.lastIndex)
       backStack.isEmpty().shouldBeTrue()
     }
   }

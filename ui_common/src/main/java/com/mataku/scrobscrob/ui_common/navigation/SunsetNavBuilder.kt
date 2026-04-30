@@ -1,25 +1,20 @@
 package com.mataku.scrobscrob.ui_common.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.navigation3.runtime.EntryProviderScope
+import kotlin.reflect.KClass
 
 class SunsetNavBuilder internal constructor(
-  internal val entryProviderScope: EntryProviderScope<SunsetNavKey>,
+  @PublishedApi
+  internal val handlers:
+    MutableMap<KClass<out SunsetNavKey>, @Composable SunsetDestinationScope.(SunsetNavKey) -> Unit>,
   private val onNavigate: (SunsetNavKey) -> Unit,
   private val onPopBackStack: () -> Unit,
 ) {
   inline fun <reified K : SunsetNavKey> destination(
     noinline content: @Composable SunsetDestinationScope.(K) -> Unit,
   ) {
-    destinationInternal(K::class.java, content)
-  }
-
-  @PublishedApi
-  internal fun <K : SunsetNavKey> destinationInternal(
-    type: Class<K>,
-    content: @Composable SunsetDestinationScope.(K) -> Unit,
-  ) {
-    SunsetEntryRegistrar.register(entryProviderScope, type, content)
+    @Suppress("UNCHECKED_CAST")
+    handlers[K::class] = content as @Composable SunsetDestinationScope.(SunsetNavKey) -> Unit
   }
 
   fun navigate(key: SunsetNavKey) = onNavigate(key)

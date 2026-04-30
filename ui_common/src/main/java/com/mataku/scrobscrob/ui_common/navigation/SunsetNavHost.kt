@@ -19,7 +19,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.MutableCreationExtras
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation3.runtime.EntryProviderScope
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.LocalNavAnimatedContentScope
@@ -50,12 +49,12 @@ fun SunsetNavHost(
 
     val navigator = object : SunsetNavigator {
       override fun navigate(key: SunsetNavKey) {
-        backStack.keys.add(key)
+        backStack.entries.add(SunsetNavEntry(key))
       }
 
       override fun popBackStack() {
-        if (backStack.keys.isNotEmpty()) {
-          backStack.keys.removeAt(backStack.keys.lastIndex)
+        if (backStack.entries.isNotEmpty()) {
+          backStack.entries.removeAt(backStack.entries.lastIndex)
         }
       }
     }
@@ -65,11 +64,11 @@ fun SunsetNavHost(
       LocalSunsetNavigator provides navigator,
     ) {
       NavDisplay(
-        backStack = backStack.keys,
+        backStack = backStack.entries,
         modifier = Modifier,
         onBack = {
-          if (backStack.keys.isNotEmpty()) {
-            backStack.keys.removeAt(backStack.keys.lastIndex)
+          if (backStack.entries.isNotEmpty()) {
+            backStack.entries.removeAt(backStack.entries.lastIndex)
           }
         },
         entryDecorators = listOf(
@@ -78,41 +77,36 @@ fun SunsetNavHost(
         transitionSpec = { fadeIn(tween(250)) togetherWith fadeOut(tween(250)) },
         popTransitionSpec = { EnterTransition.None togetherWith ExitTransition.None },
         entryProvider = entryProvider {
+          val handlers =
+            mutableMapOf<KClass<out SunsetNavKey>, @Composable SunsetDestinationScope.(SunsetNavKey) -> Unit>()
           val sunsetBuilder = SunsetNavBuilder(
-            entryProviderScope = this,
+            handlers = handlers,
             onNavigate = navigator::navigate,
             onPopBackStack = navigator::popBackStack,
           )
           sunsetBuilder.builder()
+
+          addEntryProvider(
+            clazz = SunsetNavEntry::class,
+            metadata = { _ -> emptyMap() },
+          ) { entry ->
+            val handler = handlers[entry.key::class]
+              ?: error("No destination registered for ${entry.key::class}")
+            val sharedScope = LocalSunsetSharedTransitionScope.current
+              ?: error("SunsetNavHost: SharedTransitionScope not provided")
+            val nav = LocalSunsetNavigator.current
+              ?: error("SunsetNavHost: SunsetNavigator not provided")
+            val animatedScope: AnimatedContentScope = LocalNavAnimatedContentScope.current
+
+            val destinationScope = SunsetDestinationScopeImpl(
+              sharedTransitionScope = sharedScope,
+              animatedContentScope = animatedScope,
+              navigator = nav,
+            )
+            destinationScope.handler(entry.key)
+          }
         },
       )
-    }
-  }
-}
-
-internal object SunsetEntryRegistrar {
-  fun <K : SunsetNavKey> register(
-    scope: EntryProviderScope<SunsetNavKey>,
-    type: Class<K>,
-    content: @Composable SunsetDestinationScope.(K) -> Unit,
-  ) {
-    val kClass: KClass<K> = type.kotlin
-    scope.addEntryProvider(
-      clazz = kClass,
-      metadata = { _ -> emptyMap() },
-    ) { key ->
-      val sharedScope = LocalSunsetSharedTransitionScope.current
-        ?: error("SunsetNavHost: SharedTransitionScope not provided")
-      val navigator = LocalSunsetNavigator.current
-        ?: error("SunsetNavHost: SunsetNavigator not provided")
-      val animatedScope: AnimatedContentScope = LocalNavAnimatedContentScope.current
-
-      val destinationScope = SunsetDestinationScopeImpl(
-        sharedTransitionScope = sharedScope,
-        animatedContentScope = animatedScope,
-        navigator = navigator,
-      )
-      destinationScope.content(key)
     }
   }
 }

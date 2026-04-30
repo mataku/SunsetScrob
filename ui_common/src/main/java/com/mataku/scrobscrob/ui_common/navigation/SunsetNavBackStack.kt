@@ -9,8 +9,9 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 
 @Stable
 class SunsetNavBackStack internal constructor(initial: SunsetNavKey) {
-  internal val keys: SnapshotStateList<SunsetNavKey> = mutableStateListOf(initial)
-  fun isEmpty(): Boolean = keys.isEmpty()
+  internal val entries: SnapshotStateList<SunsetNavEntry> =
+    mutableStateListOf(SunsetNavEntry(initial))
+  fun isEmpty(): Boolean = entries.isEmpty()
 }
 
 @Composable
@@ -20,11 +21,11 @@ fun rememberSunsetNavBackStack(initial: SunsetNavKey): SunsetNavBackStack =
   }
 
 internal val SunsetNavBackStackSaver = listSaver<SunsetNavBackStack, SunsetNavKey>(
-  save = { backStack -> backStack.keys.toList() },
+  save = { backStack -> backStack.entries.map(SunsetNavEntry::key) },
   restore = { saved ->
     val first = saved.firstOrNull() ?: error("empty backstack saved state")
     SunsetNavBackStack(first).also { stack ->
-      saved.drop(1).forEach { stack.keys.add(it) }
+      saved.drop(1).forEach { stack.entries.add(SunsetNavEntry(it)) }
     }
   },
 )
