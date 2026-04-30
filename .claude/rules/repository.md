@@ -37,8 +37,46 @@ Reference: `data/repository/.../ScrobbleRepository.kt`, `data/repository/di/Repo
   `@InstallIn(...)` or `@Module(includes = [...])`.
 - Use `@Binds` on interface methods for interface-to-impl bindings. Pair
   with `@SingleIn(AppScope::class)` for app-scoped singletons.
+- **Exception for `internal` impls.** A public `@ContributesTo(AppScope::class)`
+  interface cannot expose an `internal` type via a `@Binds` method (Kotlin
+  visibility). When the `Impl` class needs to stay `internal` (to keep it
+  unreachable from sibling modules), write the binding as an `internal`
+  `@Provides` function on the `companion object` instead. Reference:
+  `:data:api/.../LastFmService.kt` (`internal class LastFmServiceImpl`) and
+  the binding in `:data:api/.../di/ApiModule.kt`.
 - Use `@Provides` on a `companion object` function when construction needs
   logic or third-party types. Scope with `@SingleIn(AppScope::class)` as needed.
 - The root graph is `app/.../di/AppGraph.kt`:
   `@DependencyGraph(AppScope::class) interface AppGraph : MetroAppComponentProviders, ViewModelGraph, ScrobbleServiceDependencies`.
   `App` creates it via `createGraphFactory<AppGraph.Factory>().create(this)`.
+
+## Repository Spec Conventions
+
+Reference: `data/repository/src/test/.../AlbumRepositorySpec.kt`,
+`data/repository/src/test/.../ScrobbleRepositorySpec.kt`.
+
+- Repository unit tests **mock the `LastFmService` interface** with mockk; do
+  not construct `LastFmServiceImpl` or wire up Ktor's `MockEngine`. Capture
+  the `Endpoint` passed to `rawRequest` with `slot<Endpoint<*>>()`.
+- Stub the service via `coEvery { service.rawRequest(capture(slot), any()) } returns fakeResponse`,
+  where `fakeResponse` is a hand-built API response model using **named
+  arguments** for every field. Mappers are exercised transitively through the
+  emitted `Flow` value.
+- Assert both:
+  - the captured endpoint's concrete subclass via `slot.captured.shouldBeInstanceOf<FooEndpoint>()`, and
+  - the captured `params` via `slot.captured.params shouldBe mapOf(...)`. The
+    expected map's value types must match the production code's types
+    exactly (e.g. `Int` vs `String` for `page` / `limit`).
+- For branch logic that should NOT call the API (e.g. early-return on
+  null/empty session key, on a not-yet-scrobbled track), assert with
+  `coVerify(exactly = 0) { service.rawRequest(any(), any()) }`.
+- Assert at least one **field** on the emitted entity (not just
+  `isNotEmpty()`), so the mapper is genuinely exercised.
+- Construct ancillary mocks (e.g. `ArtworkDataStore`) with explicit `coEvery`
+  stubs rather than `mockk(relaxed = true)`, unless the call genuinely is
+  unused by the test path.
+- **Never construct `LastFmServiceImpl`, `MockEngine`, or any other Ktor
+  type inside a repository spec.** That responsibility belongs to the
+  corresponding `:data:api` Endpoint spec — see the `*EndpointSpec.kt`
+  files under `data/api/src/test/.../endpoint/`. Enforced by
+  `RepositoryTestArchitectureSpec` in `:architecture-spec`.
