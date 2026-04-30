@@ -101,7 +101,13 @@ class ArtistRepositorySpec : DescribeSpec({
 
       val repository = ArtistRepositoryImpl(service)
       repository.topAlbums(name = name, page = page, limit = limit).test {
-        awaitItem().isNotEmpty() shouldBe true
+        val albums = awaitItem()
+        albums.size shouldBe 1
+        albums[0].let { album ->
+          album.title shouldBe "SAVAGE - The 1st Mini Album"
+          album.artist shouldBe "aespa"
+          album.playCount shouldBe "20996309"
+        }
         awaitComplete()
       }
 

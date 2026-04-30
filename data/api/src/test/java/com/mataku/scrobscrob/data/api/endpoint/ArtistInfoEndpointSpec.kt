@@ -4,7 +4,9 @@ import com.mataku.scrobscrob.data.api.LastFmServiceImpl
 import com.mataku.scrobscrob.data.api.model.MultipleTag
 import com.mataku.scrobscrob.data.api.request
 import io.kotest.core.spec.style.DescribeSpec
+import io.kotest.matchers.collections.shouldNotBeEmpty
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.types.shouldBeInstanceOf
 import io.ktor.client.engine.mock.MockEngine
 import io.ktor.client.engine.mock.respond
 import io.ktor.http.HttpHeaders
@@ -118,7 +120,7 @@ class ArtistInfoEndpointSpec : DescribeSpec({
       response.artistInfo.name shouldBe "Nayeon"
       response.artistInfo.url shouldBe "https://www.last.fm/music/Nayeon"
       response.artistInfo.imageList?.isNotEmpty() shouldBe true
-      (response.artistInfo.tags as MultipleTag).tagList.isNotEmpty() shouldBe true
+      response.artistInfo.tags.shouldBeInstanceOf<MultipleTag>().tagList.shouldNotBeEmpty()
       response.artistInfo.stats.listeners shouldBe "384242"
       response.artistInfo.stats.playCount shouldBe "15045020"
     }
