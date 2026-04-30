@@ -7,7 +7,7 @@ import android.webkit.WebViewClient
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -20,6 +20,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalWindowInfo
@@ -27,6 +28,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import com.mataku.scrobscrob.ui_common.component.LoadingIndicator
 import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetIcon
 import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetIconButton
 import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetScaffold
@@ -72,7 +74,7 @@ fun WebViewScreen(
       )
     }
   ) { paddingValues ->
-    Column(
+    Box(
       modifier = Modifier
         .fillMaxSize()
         .padding(paddingValues)
@@ -119,6 +121,11 @@ fun WebViewScreen(
           .height(screenHeight.dp - 64.dp)
           .alpha(visibilityValue.value)
       )
+      if (!visibility) {
+        LoadingIndicator(
+          modifier = Modifier.align(Alignment.Center)
+        )
+      }
     }
   }
 }
