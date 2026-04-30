@@ -20,62 +20,87 @@ import io.mockk.slot
 
 class TopArtistsRepositorySpec : DescribeSpec({
   describe("fetchTopArtists") {
-    it("builds UserTopArtistsEndpoint with limit/page/period/user and maps to TopArtists") {
-      val page = 1
-      val username = "sunsetscrob"
-      val timeRange = TimeRangeFiltering.LAST_30_DAYS
-      val service = mockk<LastFmService>()
-      val artworkDataStore = mockk<ArtworkDataStore>(relaxed = true)
-      val slot = slot<Endpoint<*>>()
-      val fakeResponse = UserTopArtistsApiResponse(
-        topArtists = TopArtistsBody(
-          artists = listOf(
-            ArtistBody(
-              name = "PassCode",
-              url = "https://www.last.fm/music/PassCode",
-              playcount = "5793",
-              imageList = listOf(
-                ImageBody(
-                  size = "large",
-                  url = "https://lastfm-img2.akamaized.net/i/u/174s/3a6201efff969f30b97d94a3586ec2ba.png",
-                ),
+    val page = 1
+    val username = "sunsetscrob"
+    val timeRange = TimeRangeFiltering.LAST_30_DAYS
+    val fakeResponse = UserTopArtistsApiResponse(
+      topArtists = TopArtistsBody(
+        artists = listOf(
+          ArtistBody(
+            name = "PassCode",
+            url = "https://www.last.fm/music/PassCode",
+            playcount = "5793",
+            imageList = listOf(
+              ImageBody(
+                size = "large",
+                url = "https://lastfm-img2.akamaized.net/i/u/174s/3a6201efff969f30b97d94a3586ec2ba.png",
               ),
             ),
           ),
-          pagingAttrBody = PagingAttrBody(
-            page = "1",
-            perPage = "20",
-            totalPages = "24",
-            total = "118",
-          ),
         ),
-      )
-      coEvery { service.rawRequest(capture(slot), any()) } returns fakeResponse
+        pagingAttrBody = PagingAttrBody(
+          page = "1",
+          perPage = "20",
+          totalPages = "24",
+          total = "118",
+        ),
+      ),
+    )
 
-      val repository = TopArtistsRepositoryImpl(service, artworkDataStore)
-      repository.fetchTopArtists(
-        page = page,
-        username = username,
-        timeRangeFiltering = timeRange,
-      ).test {
-        val item = awaitItem()
-        item.artists.size shouldBe 1
-        item.artists[0].let { artist ->
-          artist.name shouldBe "PassCode"
-          artist.playCount shouldBe "5793"
-          artist.url shouldBe "https://www.last.fm/music/PassCode"
+    context("no cached artwork") {
+      it("builds UserTopArtistsEndpoint with limit/page/period/user, maps to TopArtists, and does not override imageUrl") {
+        val service = mockk<LastFmService>()
+        val artworkDataStore = mockk<ArtworkDataStore>()
+        val slot = slot<Endpoint<*>>()
+        coEvery { artworkDataStore.artwork(artist = any()) } returns null
+        coEvery { service.rawRequest(capture(slot), any()) } returns fakeResponse
+
+        val repository = TopArtistsRepositoryImpl(service, artworkDataStore)
+        repository.fetchTopArtists(
+          page = page,
+          username = username,
+          timeRangeFiltering = timeRange,
+        ).test {
+          val item = awaitItem()
+          item.artists.size shouldBe 1
+          item.artists[0].let { artist ->
+            artist.name shouldBe "PassCode"
+            artist.playCount shouldBe "5793"
+            artist.url shouldBe "https://www.last.fm/music/PassCode"
+            artist.imageUrl shouldBe null
+          }
+          awaitComplete()
         }
-        awaitComplete()
-      }
 
-      val captured = slot.captured
-      captured.shouldBeInstanceOf<UserTopArtistsEndpoint>()
-      captured.params shouldBe mapOf(
-        "limit" to 20,
-        "page" to page,
-        "period" to timeRange.rawValue,
-        "user" to username,
-      )
+        val captured = slot.captured
+        captured.shouldBeInstanceOf<UserTopArtistsEndpoint>()
+        captured.params shouldBe mapOf(
+          "limit" to 20,
+          "page" to page,
+          "period" to timeRange.rawValue,
+          "user" to username,
+        )
+      }
+    }
+
+    context("cached artwork") {
+      it("overrides imageUrl with the cached artwork URL") {
+        val service = mockk<LastFmService>()
+        val artworkDataStore = mockk<ArtworkDataStore>()
+        coEvery { artworkDataStore.artwork(artist = "PassCode") } returns "https://cached.example/passcode.png"
+        coEvery { service.rawRequest(any(), any()) } returns fakeResponse
+
+        val repository = TopArtistsRepositoryImpl(service, artworkDataStore)
+        repository.fetchTopArtists(
+          page = page,
+          username = username,
+          timeRangeFiltering = timeRange,
+        ).test {
+          val item = awaitItem()
+          item.artists[0].imageUrl shouldBe "https://cached.example/passcode.png"
+          awaitComplete()
+        }
+      }
     }
   }
 })
