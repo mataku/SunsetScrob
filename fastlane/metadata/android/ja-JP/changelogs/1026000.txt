@@ -1,0 +1,2 @@
+- Respect system display theme
+- Update dependencies
