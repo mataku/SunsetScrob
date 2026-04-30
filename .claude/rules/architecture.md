@@ -110,7 +110,6 @@ dependencies {
   implementation(project(":core"))
   implementation(project(":data:repository"))
 
-  implementation(libs.compose.navigation)
   implementation(libs.coroutines)
   implementation(libs.kotlinx.collection)
 }
@@ -120,6 +119,10 @@ Rules:
 
 - Use convention plugins for common configuration.
 - Write only module-specific configuration in `build.gradle.kts`.
+- Direct dependency on Navigation 3 (`androidx.navigation3.*`) is allowed only
+  inside `:ui_common`. Feature modules consume the DSL exposed by
+  `:ui_common/.../navigation/SunsetNavBuilder` and friends. Enforced by Konsist
+  (`NavigationArchitectureSpec`).
 
 ## Error Handling
 

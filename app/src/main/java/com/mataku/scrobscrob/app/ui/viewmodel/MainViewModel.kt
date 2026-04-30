@@ -13,7 +13,7 @@ import dev.zacsweers.metrox.viewmodel.ViewModelKey
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
 @Inject
@@ -29,20 +29,20 @@ internal class MainViewModel(
 
   init {
     viewModelScope.launch {
-      val username = usernameRepository.asyncUsername().first()
-
-      themeRepository.currentTheme()
+      combine(
+        themeRepository.currentTheme(),
+        usernameRepository.usernameFlow(),
+      ) { theme, username ->
+        MainUiState(theme = theme, username = username)
+      }
         .catch {
           state.value = MainUiState(
             theme = AppTheme.DARK,
-            username = username
+            username = null
           )
         }
         .collect {
-          state.value = MainUiState(
-            theme = it,
-            username = username
-          )
+          state.value = it
         }
     }
   }

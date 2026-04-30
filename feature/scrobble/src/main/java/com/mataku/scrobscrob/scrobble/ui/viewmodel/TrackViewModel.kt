@@ -1,13 +1,13 @@
 package com.mataku.scrobscrob.scrobble.ui.viewmodel
 
 import androidx.compose.runtime.Immutable
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.mataku.scrobscrob.core.entity.TrackInfo
 import com.mataku.scrobscrob.data.repository.TrackRepository
+import com.mataku.scrobscrob.scrobble.ui.navigation.TrackDetailKey
+import com.mataku.scrobscrob.ui_common.navigation.requireKey
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Assisted
 import dev.zacsweers.metro.AssistedFactory
@@ -26,14 +26,14 @@ import kotlinx.coroutines.launch
 @AssistedInject
 class TrackViewModel(
   private val trackRepository: TrackRepository,
-  @Assisted savedStateHandle: SavedStateHandle,
+  @Assisted private val key: TrackDetailKey,
 ) : ViewModel() {
 
   val state: StateFlow<TrackUiState>
     field = MutableStateFlow(TrackUiState.initialize())
 
-  private val trackName: String? = savedStateHandle["trackName"]
-  private val artistName: String? = savedStateHandle["artistName"]
+  private val trackName: String = key.trackName
+  private val artistName: String = key.artistName
 
   private var isLoveRequestProcessing = false
 
@@ -85,13 +85,9 @@ class TrackViewModel(
   }
 
   private fun fetchTrackInfo(
-    trackName: String?,
-    artistName: String?
+    trackName: String,
+    artistName: String
   ) {
-    if (trackName == null || artistName == null) {
-      return
-    }
-
     viewModelScope.launch {
       trackRepository.getInfo(
         trackName = trackName,
@@ -145,8 +141,8 @@ class TrackViewModel(
   @ContributesIntoMap(AppScope::class)
   fun interface Factory : ViewModelAssistedFactory {
     override fun create(extras: CreationExtras): TrackViewModel =
-      create(extras.createSavedStateHandle())
+      create(extras.requireKey<TrackDetailKey>())
 
-    fun create(@Assisted savedStateHandle: SavedStateHandle): TrackViewModel
+    fun create(@Assisted key: TrackDetailKey): TrackViewModel
   }
 }

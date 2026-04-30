@@ -18,7 +18,7 @@ dependencies {
   implementation(project(":data:repository"))
   implementation(libs.activity.compose)
   implementation(libs.compose.foundation)
-  implementation(libs.compose.navigation)
+
 
   implementation(libs.compose.material.icons.extended)
 

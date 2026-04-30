@@ -1,13 +1,13 @@
 package com.mataku.scrobscrob.album.ui.viewmodel
 
 import androidx.compose.runtime.Immutable
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
+import com.mataku.scrobscrob.album.ui.navigation.AlbumKey
 import com.mataku.scrobscrob.core.entity.AlbumInfo
 import com.mataku.scrobscrob.data.repository.AlbumRepository
+import com.mataku.scrobscrob.ui_common.navigation.requireKey
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Assisted
 import dev.zacsweers.metro.AssistedFactory
@@ -27,29 +27,22 @@ import kotlinx.coroutines.flow.update
 @AssistedInject
 class AlbumViewModel(
   private val albumRepository: AlbumRepository,
-  @Assisted savedStateHandle: SavedStateHandle,
+  @Assisted private val key: AlbumKey,
 ) : ViewModel() {
-
-  private val artistName = savedStateHandle.get<String>("artistName")
-  private val albumName = savedStateHandle.get<String>("albumName")
-  private val artworkUrl = savedStateHandle.get<String>("artworkUrl") ?: ""
 
   val uiState: StateFlow<AlbumUiState>
     field = MutableStateFlow(AlbumUiState())
 
   init {
-    if (!artistName.isNullOrEmpty() && !albumName.isNullOrEmpty()) {
+    if (key.artistName.isNotEmpty() && key.albumName.isNotEmpty()) {
       uiState.update {
         it.copy(
-          preloadAlbumName = albumName,
-          preloadArtistName = artistName,
-          preloadArtworkUrl = artworkUrl
+          preloadAlbumName = key.albumName,
+          preloadArtistName = key.artistName,
+          preloadArtworkUrl = key.artworkUrl,
         )
       }
-      fetchAlbumInfo(
-        artistName = artistName,
-        albumName = albumName
-      )
+      fetchAlbumInfo(artistName = key.artistName, albumName = key.albumName)
     }
   }
 
@@ -95,8 +88,8 @@ class AlbumViewModel(
   @ContributesIntoMap(AppScope::class)
   fun interface Factory : ViewModelAssistedFactory {
     override fun create(extras: CreationExtras): AlbumViewModel =
-      create(extras.createSavedStateHandle())
+      create(extras.requireKey<AlbumKey>())
 
-    fun create(@Assisted savedStateHandle: SavedStateHandle): AlbumViewModel
+    fun create(@Assisted key: AlbumKey): AlbumViewModel
   }
 }

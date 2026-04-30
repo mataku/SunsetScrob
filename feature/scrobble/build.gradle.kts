@@ -19,7 +19,7 @@ dependencies {
   implementation(libs.compose.ui.tooling)
   implementation(libs.compose.animation)
   implementation(libs.compose.foundation)
-  implementation(libs.compose.navigation)
+
   implementation(libs.compose.material.icons.extended)
 
   implementation(libs.coroutines)

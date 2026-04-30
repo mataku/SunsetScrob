@@ -25,7 +25,7 @@
 |------|------------|---------|
 | Local | camelCase | `uiState`, `isLoading` |
 | Private property | camelCase + `private` | `private val page = 1` |
-| Constant | UPPER_SNAKE_CASE | `const val ALBUM_INFO_DESTINATION` |
+| Constant | UPPER_SNAKE_CASE | `const val MAX_RESULTS = 50` |
 
 ## File Naming
 
@@ -128,26 +128,38 @@ data class RecentTrack(
 
 ## Navigation
 
-Reference: `feature/home/.../HomeNavigation.kt`, `app/.../NavigationGraph.kt`.
+Reference: `feature/home/.../HomeNavigation.kt`, `app/.../SunsetMainScreen.kt`,
+`ui_common/.../navigation/SunsetNavHost.kt`.
 
-- Routes are `const val FOO_DESTINATION = "foo"` strings. **Do not** introduce
-  type-safe `Nav*` sealed classes unilaterally; follow the existing string
-  route pattern.
-- Each feature exposes `fun NavGraphBuilder.fooGraph(...)`; `:app` composes them
-  in `NavigationGraph.kt`.
-- Navigate helpers are extensions on `NavController`: `fun NavController.navigateToFoo(...)`.
-- Deep link arguments are read in the VM via
-  `savedStateHandle.get<String>("artistName")` etc.
-- Encode parameters with `Uri.encode()` when building navigate URLs:
+- Each destination is defined as `data class FooKey(...) : SunsetNavKey` under
+  `:feature:*/.../ui/navigation/FooKey.kt`. Keys for common screens live in
+  `:ui_common/.../navigation/CommonKeys.kt`.
+- `SunsetNavKey` implementations must be annotated `@Immutable` and
+  `@Serializable`. Enforced by Konsist (`NavigationArchitectureSpec`).
+- Each feature exposes `fun SunsetNavBuilder.fooGraph()`.
+  `:app/SunsetMainScreen.kt` composes them with `SunsetTabHost { fooGraph() }`.
+- Navigate with `navigate(FooKey(...))` and go back with `popBackStack()` —
+  both are members of `SunsetDestinationScope`, callable from inside the
+  destination block.
+- Direct imports of `androidx.navigation3.*` are allowed only inside `:ui_common`.
+  Enforced by Konsist.
+- Use `viewModelFor<FooViewModel>(key)` to obtain a ViewModel that needs the
+  NavKey. Direct calls to `metroViewModel(...)` from `*Navigation.kt` files
+  are forbidden (see `viewmodel.md` for the assisted-injection pattern).
+
+Example (Album destination):
 
 ```kotlin
-fun NavController.navigateToAlbumInfo(
-  albumName: String,
-  artistName: String
-) {
-  val encodedAlbumName = Uri.encode(albumName)
-  val encodedArtistName = Uri.encode(artistName)
-  navigate("${ALBUM_INFO_DESTINATION}?albumName=${encodedAlbumName}&artistName=${encodedArtistName}")
+fun SunsetNavBuilder.albumGraph() {
+  destination<AlbumKey> { key ->
+    AlbumScreen(
+      viewModel = viewModelFor<AlbumViewModel>(key),
+      id = key.contentId,
+      animatedContentScope = animatedContentScope,
+      onBackPressed = ::popBackStack,
+      onAlbumLoadMoreTap = { url -> if (url.isNotEmpty()) navigate(WebViewKey(url)) },
+    )
+  }
 }
 ```
 

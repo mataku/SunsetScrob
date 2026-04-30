@@ -1,99 +1,52 @@
 package com.mataku.scrobscrob.home.ui.navigation
 
-import androidx.compose.animation.SharedTransitionScope
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.ui.Modifier
-import dev.zacsweers.metrox.viewmodel.metroViewModel
-import androidx.navigation.NavController
-import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
-import androidx.navigation.navigation
-import com.mataku.scrobscrob.album.ui.navigation.albumGraph
-import com.mataku.scrobscrob.album.ui.navigation.navigateToAlbumInfo
-import com.mataku.scrobscrob.artist.ui.navigation.artistGraph
-import com.mataku.scrobscrob.artist.ui.navigation.navigateToArtistInfo
+import com.mataku.scrobscrob.album.ui.navigation.AlbumKey
+import com.mataku.scrobscrob.artist.ui.navigation.ArtistKey
 import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.home.ui.screen.HomeScreen
-import com.mataku.scrobscrob.scrobble.ui.navigation.navigateToTrackDetail
-import com.mataku.scrobscrob.scrobble.ui.navigation.scrobbleGraph
-import com.mataku.scrobscrob.ui_common.navigateToLogin
+import com.mataku.scrobscrob.home.ui.viewmodel.HomeViewModel
+import com.mataku.scrobscrob.scrobble.ui.navigation.TrackDetailKey
+import com.mataku.scrobscrob.ui_common.navigation.SunsetNavBuilder
+import com.mataku.scrobscrob.ui_common.navigation.viewModelFor
 
-fun NavGraphBuilder.homeGraph(
-  navController: NavController,
-  sharedTransitionScope: SharedTransitionScope,
-) {
-  navigation(route = HOME_NAVIGATION_ROUTE, startDestination = HOME_DESTINATION) {
-    composable(
-      HOME_DESTINATION,
-      content = {
-        HomeScreen(
-          viewModel = metroViewModel(key = "home"),
-          sharedTransitionScope = sharedTransitionScope,
-          animatedContentScope = this@composable,
-          navigateToTrackDetail = { track, id ->
-            navController.navigateToTrackDetail(
-              trackName = track.name,
-              artistName = track.artistName,
-              imageUrl = track.images.imageUrl() ?: "",
-              id = id
-            )
-          },
-          navigateToArtistDetail = { artist, id ->
-            navController.navigateToArtistInfo(
-              artistName = artist.name,
-              artworkUrl = (artist.imageUrl ?: artist.imageList.imageUrl()) ?: "",
-              contentId = id
-            )
-          },
-          navigateToAlbumDetail = { album, id ->
-            navController.navigateToAlbumInfo(
-              albumName = album.title,
-              artistName = album.artist,
-              artworkUrl = album.imageList.imageUrl() ?: "",
-              contentId = id
-            )
-          },
-          navigateToLogin = {
-            navController.navigateToLogin()
-          },
-          modifier = Modifier
+fun SunsetNavBuilder.homeGraph() {
+  destination<HomeKey> {
+    HomeScreen(
+      viewModel = viewModelFor<HomeViewModel>(HomeKey),
+      sharedTransitionScope = this,
+      animatedContentScope = animatedContentScope,
+      navigateToTrackDetail = { track, id ->
+        navigate(
+          TrackDetailKey(
+            trackName = track.name,
+            artistName = track.artistName,
+            imageUrl = track.images.imageUrl() ?: "",
+            id = id,
+          ),
         )
       },
-      enterTransition = {
-        fadeIn(tween(300))
+      navigateToArtistDetail = { artist, id ->
+        navigate(
+          ArtistKey(
+            artistName = artist.name,
+            artworkUrl = (artist.imageUrl ?: artist.imageList.imageUrl()) ?: "",
+            contentId = id,
+          ),
+        )
       },
-      exitTransition = {
-        fadeOut(tween(250))
+      navigateToAlbumDetail = { album, id ->
+        navigate(
+          AlbumKey(
+            albumName = album.title,
+            artistName = album.artist,
+            artworkUrl = album.imageList.imageUrl() ?: "",
+            contentId = id,
+          ),
+        )
       },
-    )
-
-    albumGraph(
-      navController = navController,
-      sharedTransitionScope = sharedTransitionScope
-    )
-    artistGraph(
-      navController = navController,
-      sharedTransitionScope = sharedTransitionScope,
-    )
-    scrobbleGraph(
-      navController = navController,
-      sharedTransitionScope = sharedTransitionScope,
+      navigateToLogin = { /* 認証 gate 切替で処理 */ },
+      modifier = Modifier,
     )
   }
 }
-
-fun NavController.navigateToHome() {
-  navigate(HOME_DESTINATION) {
-    popUpTo(graph.findStartDestination().id) {
-      saveState = true
-    }
-    launchSingleTop = true
-    restoreState = true
-  }
-}
-
-private const val HOME_DESTINATION = "home"
-const val HOME_NAVIGATION_ROUTE = "home_route"

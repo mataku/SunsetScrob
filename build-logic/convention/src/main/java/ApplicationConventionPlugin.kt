@@ -17,9 +17,6 @@ class ApplicationConventionPlugin : Plugin<Project> {
         apply("com.android.application")
       }
 
-      val isAndroidTestRun =
-        (findProperty("forAndroidTest") as? String)?.toBoolean() == true
-
       extensions.configure<ApplicationExtension> {
         androidSdkConfiguration()
         defaultConfig.targetSdk = 36
@@ -37,7 +34,7 @@ class ApplicationConventionPlugin : Plugin<Project> {
         buildTypes {
           getByName("debug") {
             isMinifyEnabled = false
-            applicationIdSuffix = if (isAndroidTestRun) ".dev.test" else ".dev"
+            applicationIdSuffix = ".dev"
             signingConfig = signingConfigs.getByName("debug")
             isDebuggable = true
           }
@@ -95,7 +92,7 @@ class ApplicationConventionPlugin : Plugin<Project> {
         ) {
           device = "Pixel 6"
           apiLevel = 35
-          systemImageSource = "google"
+          systemImageSource = "aosp-atd"
         }
       }
       testConfiguration()

@@ -1,13 +1,13 @@
 package com.mataku.scrobscrob.artist.ui.viewmodel
 
 import androidx.compose.runtime.Immutable
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
+import com.mataku.scrobscrob.artist.ui.navigation.ArtistKey
 import com.mataku.scrobscrob.core.entity.ArtistInfo
 import com.mataku.scrobscrob.data.repository.ArtistRepository
+import com.mataku.scrobscrob.ui_common.navigation.requireKey
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Assisted
 import dev.zacsweers.metro.AssistedFactory
@@ -25,24 +25,21 @@ import kotlinx.coroutines.flow.update
 @AssistedInject
 class ArtistViewModel(
   private val artistRepository: ArtistRepository,
-  @Assisted savedStateHandle: SavedStateHandle,
+  @Assisted private val key: ArtistKey,
 ) : ViewModel() {
-
-  private val artistName = savedStateHandle.get<String>("artistName")
-  private val artworkUrl = savedStateHandle.get<String>("artworkUrl") ?: ""
 
   val uiState: StateFlow<ArtistUiState>
     field = MutableStateFlow(ArtistUiState())
 
   init {
-    if (!artistName.isNullOrEmpty()) {
+    if (key.artistName.isNotEmpty()) {
       uiState.update {
         it.copy(
-          preloadArtistName = artistName,
-          preloadArtworkUrl = artworkUrl
+          preloadArtistName = key.artistName,
+          preloadArtworkUrl = key.artworkUrl
         )
       }
-      fetchArtistDetail(artistName)
+      fetchArtistDetail(key.artistName)
     }
   }
 
@@ -73,8 +70,8 @@ class ArtistViewModel(
   @ContributesIntoMap(AppScope::class)
   fun interface Factory : ViewModelAssistedFactory {
     override fun create(extras: CreationExtras): ArtistViewModel =
-      create(extras.createSavedStateHandle())
+      create(extras.requireKey<ArtistKey>())
 
-    fun create(@Assisted savedStateHandle: SavedStateHandle): ArtistViewModel
+    fun create(@Assisted key: ArtistKey): ArtistViewModel
   }
 }

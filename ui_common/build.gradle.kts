@@ -5,6 +5,7 @@ plugins {
   id("sunsetscrob.android.compose")
   id("sunsetscrob.android.test.screenshot")
   id("com.google.devtools.ksp")
+  alias(libs.plugins.kotlin.serialization)
 }
 
 configure<LibraryExtension>() {
@@ -20,7 +21,7 @@ dependencies {
   implementation(libs.activity.compose)
   implementation(libs.compose.animation)
   implementation(libs.compose.material3)
-  implementation(libs.compose.navigation)
+
 
   implementation(libs.coil.compose)
   implementation(libs.compose.material.icons.extended)
@@ -31,6 +32,11 @@ dependencies {
   implementation(libs.kotlinx.collection)
 
   implementation(libs.compose.ui.tooling)
+
+  implementation(libs.navigation3.runtime)
+  implementation(libs.navigation3.ui)
+  implementation(libs.serialization.json)
+  implementation(libs.metrox.viewmodel.compose)
 }
 
 ksp {

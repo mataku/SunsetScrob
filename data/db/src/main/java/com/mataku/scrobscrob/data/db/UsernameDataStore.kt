@@ -31,6 +31,13 @@ class UsernameDataStore(
     )
   }
 
+  fun usernameFlow(): Flow<String?> =
+    context.dataStore.data
+      .map { preferences ->
+        kotlin.runCatching { preferences[USERNAME_KEY] }.getOrNull()
+      }
+      .flowOn(Dispatchers.IO)
+
   suspend fun setUsername(username: String): Flow<Unit> {
     return flowOf(
       context.dataStore.edit {

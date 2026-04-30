@@ -3,8 +3,8 @@ package com.mataku.scrobscrob.album.ui.screen
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.ui.test.junit4.v2.createComposeRule
-import androidx.lifecycle.SavedStateHandle
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.mataku.scrobscrob.album.ui.navigation.AlbumKey
 import com.mataku.scrobscrob.album.ui.viewmodel.AlbumViewModel
 import com.mataku.scrobscrob.core.entity.AlbumInfo
 import com.mataku.scrobscrob.core.entity.AlbumInfoTrack
@@ -68,23 +68,10 @@ class AlbumScreenTest {
   )
 
   private val albumRepository = mockk<AlbumRepository>()
-  private val savedStateHandle = mockk<SavedStateHandle>()
   private val animatedContentScope = mockk<AnimatedContentScope>(relaxed = true)
 
   @Before
   fun setup() {
-    every {
-      savedStateHandle.get<String>("artistName")
-    }.returns(artistName)
-
-    every {
-      savedStateHandle.get<String>("albumName")
-    }.returns(albumName)
-
-    every {
-      savedStateHandle.get<String>("artworkUrl")
-    }.returns(artworkUrl)
-
     every {
       albumRepository.albumInfo(
         albumName = albumName,
@@ -95,9 +82,10 @@ class AlbumScreenTest {
 
   @Test
   fun layout() {
+    val key = AlbumKey(albumName = albumName, artistName = artistName, artworkUrl = artworkUrl, contentId = "")
     val viewModel = AlbumViewModel(
       albumRepository = albumRepository,
-      savedStateHandle = savedStateHandle
+      key = key
     )
 
     composeRule.captureScreenshot(
@@ -119,9 +107,10 @@ class AlbumScreenTest {
 
   @Test
   fun layout_light() {
+    val key = AlbumKey(albumName = albumName, artistName = artistName, artworkUrl = artworkUrl, contentId = "")
     val viewModel = AlbumViewModel(
       albumRepository = albumRepository,
-      savedStateHandle = savedStateHandle
+      key = key
     )
 
     composeRule.captureScreenshot(

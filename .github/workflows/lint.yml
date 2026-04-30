@@ -42,8 +42,33 @@ jobs:
         if: failure() && steps.lint.conclusion == 'failure'
         run: ruby scripts/lint_summary.rb
 
-      - name: Comment on PR
+      - name: Upsert lint comment on PR
         if: failure() && steps.lint.conclusion == 'failure' && github.event_name == 'pull_request'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh pr comment "${{ github.event.pull_request.number }}" --body-file lint-summary.md
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          REPO: ${{ github.repository }}
+        run: |
+          MARKER='<!-- android-lint-result -->'
+          BODY="$MARKER"$'\n'"$(cat lint-summary.md)"
+          EXISTING_ID=$(gh api --paginate "repos/$REPO/issues/$PR_NUMBER/comments" \
+            --jq ".[] | select(.body | contains(\"$MARKER\")) | .id" | head -n1)
+          if [ -n "$EXISTING_ID" ]; then
+            gh api -X PATCH "repos/$REPO/issues/comments/$EXISTING_ID" -f body="$BODY"
+          else
+            gh api -X POST "repos/$REPO/issues/$PR_NUMBER/comments" -f body="$BODY"
+          fi
+
+      - name: Remove stale lint comment on PR
+        if: success() && github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          REPO: ${{ github.repository }}
+        run: |
+          MARKER='<!-- android-lint-result -->'
+          EXISTING_ID=$(gh api --paginate "repos/$REPO/issues/$PR_NUMBER/comments" \
+            --jq ".[] | select(.body | contains(\"$MARKER\")) | .id" | head -n1)
+          if [ -n "$EXISTING_ID" ]; then
+            gh api -X DELETE "repos/$REPO/issues/comments/$EXISTING_ID"
+          fi

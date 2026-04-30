@@ -18,7 +18,7 @@ lint = "32.2.0"
 metro = "1.0.0"
 material = "1.13.0"
 mockk = "1.14.9"
-navigation-compose = "2.9.8"
+navigation3 = "1.1.1"
 okhttp = "5.3.2"
 robolectric = "4.16.1"
 roborazzi = "1.60.0"
@@ -37,7 +37,8 @@ compose-animation = { module = "androidx.compose.animation:animation" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 compose-runtime = { module = "androidx.compose.runtime:runtime" }
 compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
-compose-navigation = { module = "androidx.navigation:navigation-compose", version.ref = "navigation-compose" }
+navigation3-runtime = { module = "androidx.navigation3:navigation3-runtime", version.ref = "navigation3" }
+navigation3-ui = { module = "androidx.navigation3:navigation3-ui", version.ref = "navigation3" }
 
 core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "core-sprashscreen" }
 
@@ -110,6 +111,8 @@ junit-vintage-engine = { module = "org.junit.vintage:junit-vintage-engine", vers
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version = "5.8.2" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
 androidx-profileinstaller = { group = "androidx.profileinstaller", name = "profileinstaller", version.ref = "profileinstaller" }
+
+lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose" }
 
 compose-lint = { module = "com.slack.lint.compose:compose-lint-checks", version = "1.3.1" }
 

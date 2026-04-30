@@ -12,23 +12,23 @@ class FeatureConventionPlugin : Plugin<Project> {
     with(target) {
       with(pluginManager) {
         apply("com.android.library")
-
-        extensions.configure<LibraryExtension> {
-          androidSdkConfiguration()
-          kotlinConfiguration()
-          androidLintConfiguration()
-          packaging {
-            val excludePatterns = listOf(
-              "META-INF/LICENSE.md",
-              "META-INF/LICENSE-notice.md"
-            )
-            resources.excludes.addAll(excludePatterns)
+        apply("org.jetbrains.kotlin.plugin.serialization")
+      }
+      extensions.configure<LibraryExtension> {
+        androidSdkConfiguration()
+        kotlinConfiguration()
+        androidLintConfiguration()
+        packaging {
+          val excludePatterns = listOf(
+            "META-INF/LICENSE.md",
+            "META-INF/LICENSE-notice.md"
+          )
+          resources.excludes.addAll(excludePatterns)
+        }
+        buildTypes {
+          getByName("debug") {
           }
-          buildTypes {
-            getByName("debug") {
-            }
-            release {
-            }
+          release {
           }
         }
       }

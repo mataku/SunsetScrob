@@ -1,5 +1,4 @@
 import com.android.build.api.dsl.ApplicationExtension
-import com.google.gms.googleservices.GoogleServicesPlugin
 
 plugins {
   id("sunsetscrob.android.application")
@@ -20,12 +19,6 @@ configure<ApplicationExtension>() {
   namespace = "com.mataku.scrobscrob"
 }
 
-if ((findProperty("forAndroidTest") as? String)?.toBoolean() == true) {
-  googleServices {
-    missingGoogleServicesStrategy = GoogleServicesPlugin.MissingGoogleServicesStrategy.WARN
-  }
-}
-
 dependencies {
   implementation(project(":core"))
   implementation(project(":data:repository"))
@@ -42,6 +35,7 @@ dependencies {
   implementation(libs.activity.ktx)
   implementation(libs.material)
   implementation(libs.coroutines)
+  implementation(libs.kotlinx.collection)
 
   implementation(platform(libs.firebase.bom))
   implementation(libs.firebase.crashlytics)
@@ -49,7 +43,8 @@ dependencies {
   implementation(project(":ui_common"))
   implementation(libs.activity.compose)
   implementation(libs.compose.animation)
-  implementation(libs.compose.navigation)
+  implementation(libs.lifecycle.runtime.compose)
+
 
   implementation(libs.metrox.android)
   implementation(libs.core.splashscreen)
