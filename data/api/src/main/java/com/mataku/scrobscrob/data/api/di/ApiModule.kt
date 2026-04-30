@@ -11,7 +11,6 @@ import com.mataku.scrobscrob.data.api.LastFmService
 import com.mataku.scrobscrob.data.api.LastFmServiceImpl
 import com.mataku.scrobscrob.data.api.okhttp.LastfmApiAuthInterceptor
 import dev.zacsweers.metro.AppScope
-import dev.zacsweers.metro.Binds
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.Provides
 import dev.zacsweers.metro.SingleIn
@@ -22,6 +21,20 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import okio.Path.Companion.toOkioPath
 import java.io.File
+
+@ContributesTo(AppScope::class)
+interface HttpEngineModule {
+  companion object {
+    @SingleIn(AppScope::class)
+    @Provides
+    fun provideHttpClientEngine(okHttpClient: OkHttpClient): HttpClientEngine =
+      OkHttp.create {
+        preconfigured = okHttpClient.newBuilder()
+          .addInterceptor(LastfmApiAuthInterceptor())
+          .build()
+      }
+  }
+}
 
 @ContributesTo(AppScope::class)
 interface ApiModule {
@@ -47,15 +60,6 @@ interface ApiModule {
       }
       return builder.build()
     }
-
-    @SingleIn(AppScope::class)
-    @Provides
-    fun provideHttpClientEngine(okHttpClient: OkHttpClient): HttpClientEngine =
-      OkHttp.create {
-        preconfigured = okHttpClient.newBuilder()
-          .addInterceptor(LastfmApiAuthInterceptor())
-          .build()
-      }
 
     @SingleIn(AppScope::class)
     @Provides
