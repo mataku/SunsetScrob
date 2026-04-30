@@ -31,7 +31,7 @@ interface LastFmService {
 
 @SingleIn(AppScope::class)
 @Inject
-class LastFmServiceImpl(engine: HttpClientEngine) : LastFmService {
+internal class LastFmServiceImpl(engine: HttpClientEngine) : LastFmService {
 
   private val httpClient: HttpClient = HttpClient(engine) {
     install(ContentNegotiation) {

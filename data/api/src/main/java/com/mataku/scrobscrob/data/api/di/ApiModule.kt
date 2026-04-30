@@ -26,10 +26,11 @@ import java.io.File
 @ContributesTo(AppScope::class)
 interface ApiModule {
 
-  @Binds
-  fun bindLastFmService(impl: LastFmServiceImpl): LastFmService
-
   companion object {
+
+    @SingleIn(AppScope::class)
+    @Provides
+    internal fun provideLastFmService(impl: LastFmServiceImpl): LastFmService = impl
 
     @SingleIn(AppScope::class)
     @Provides
