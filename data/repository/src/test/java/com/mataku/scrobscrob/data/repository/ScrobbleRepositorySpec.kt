@@ -6,6 +6,7 @@ import com.mataku.scrobscrob.data.api.LastFmService
 import com.mataku.scrobscrob.data.api.endpoint.Endpoint
 import com.mataku.scrobscrob.data.api.endpoint.ScrobbleEndpoint
 import com.mataku.scrobscrob.data.api.endpoint.UserRecentTracksEndpoint
+import com.mataku.scrobscrob.data.api.model.IgnoredMessage
 import com.mataku.scrobscrob.data.api.model.ImageBody
 import com.mataku.scrobscrob.data.api.model.RecentTrack
 import com.mataku.scrobscrob.data.api.model.RecentTrackAlbumBody
@@ -19,12 +20,12 @@ import com.mataku.scrobscrob.data.api.model.ScrobbleAttrBody
 import com.mataku.scrobscrob.data.api.model.ScrobbleBody
 import com.mataku.scrobscrob.data.api.model.ScrobbleResultBody
 import com.mataku.scrobscrob.data.api.model.ScrobbleValueResult
-import com.mataku.scrobscrob.data.api.model.IgnoredMessage
 import com.mataku.scrobscrob.data.db.ArtworkDataStore
 import com.mataku.scrobscrob.data.db.SessionKeyDataStore
 import com.mataku.scrobscrob.data.db.UsernameDataStore
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.string.shouldNotBeBlank
 import io.kotest.matchers.types.shouldBeInstanceOf
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -210,7 +211,7 @@ class ScrobbleRepositorySpec : DescribeSpec({
         captured.params["track[0]"] shouldBe "See You Again"
         captured.params["sk"] shouldBe sessionKey
         captured.params["timestamp[0]"] shouldBe "300000"
-        (captured.params["api_sig"] as String).isNotBlank() shouldBe true
+        captured.params["api_sig"].shouldBeInstanceOf<String>().shouldNotBeBlank()
         captured.params.containsKey("method") shouldBe false
       }
     }
