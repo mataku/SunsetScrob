@@ -9,11 +9,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -27,6 +26,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mataku.scrobscrob.artist.ui.molecule.ArtistDetail
@@ -35,12 +35,13 @@ import com.mataku.scrobscrob.core.entity.ArtistInfo
 import com.mataku.scrobscrob.core.entity.Stats
 import com.mataku.scrobscrob.core.entity.Tag
 import com.mataku.scrobscrob.core.entity.Wiki
-import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetBottomSheet
-import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetHorizontalDivider
+import com.mataku.scrobscrob.ui_common.component.ArtworkLayerBar
 import com.mataku.scrobscrob.ui_common.component.CircleBackButton
-import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetImage
 import com.mataku.scrobscrob.ui_common.component.TopTags
 import com.mataku.scrobscrob.ui_common.component.WikiCell
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetBottomSheet
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetHorizontalDivider
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetImage
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import kotlinx.collections.immutable.persistentListOf
 
@@ -86,7 +87,7 @@ private fun SharedTransitionScope.ArtistContent(
   SunsetBottomSheet(
     modifier = modifier,
     sheetPeekHeight = if (screenHeight >= screenWidth) {
-      (screenHeight - screenWidth)
+      (screenHeight - screenWidth + 24.dp)
     } else {
       (screenWidth - screenHeight)
     },
@@ -124,7 +125,7 @@ private fun SharedTransitionScope.ArtistContent(
                   color = Color.Transparent
                 )
             ) {
-              Spacer(modifier = Modifier.height(24.dp))
+              ArtworkLayerBar()
               CircleBackButton(
                 modifier = Modifier
                   .padding(
@@ -136,6 +137,12 @@ private fun SharedTransitionScope.ArtistContent(
                     indication = null,
                   ) {
                     onBackPressed.invoke()
+                  }
+                  .offset {
+                    IntOffset(
+                      x = 0,
+                      y = (24.dp).value.toInt(),
+                    )
                   }
               )
             }

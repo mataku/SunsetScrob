@@ -13,6 +13,7 @@ import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -27,6 +28,7 @@ fun SunsetBottomSheet(
   sheetContent: @Composable ColumnScope.() -> Unit,
   sheetPeekHeight: Dp,
   modifier: Modifier = Modifier,
+  sheetContainerColor: Color = LocalAppTheme.current.backgroundColor(),
   content: @Composable (PaddingValues) -> Unit,
 ) {
   val scaffoldState = rememberBottomSheetScaffoldState(
@@ -37,7 +39,7 @@ fun SunsetBottomSheet(
   BottomSheetScaffold(
     modifier = modifier,
     scaffoldState = scaffoldState,
-    sheetContainerColor = LocalAppTheme.current.backgroundColor(),
+    sheetContainerColor = sheetContainerColor,
     containerColor = LocalAppTheme.current.backgroundColor(),
     sheetPeekHeight = sheetPeekHeight,
     sheetContent = sheetContent,

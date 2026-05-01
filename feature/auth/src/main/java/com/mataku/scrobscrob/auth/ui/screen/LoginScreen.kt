@@ -149,7 +149,8 @@ private fun LoginContent(
     SunsetText.Title(
       text = stringResource(id = uiCommonR.string.login_to_last_fm),
       fontWeight = FontWeight.Bold,
-      modifier = Modifier.align(Alignment.CenterHorizontally)
+      modifier = Modifier.align(Alignment.CenterHorizontally),
+      color = LocalAppTheme.current.onSurfaceColor(),
     )
 
     Spacer(modifier = Modifier.height(24.dp))

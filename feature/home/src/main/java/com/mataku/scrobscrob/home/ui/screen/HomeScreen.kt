@@ -22,7 +22,9 @@ import com.mataku.scrobscrob.core.entity.TopArtistInfo
 import com.mataku.scrobscrob.home.HomeTabType
 import com.mataku.scrobscrob.home.ui.molecule.HomeTabs
 import com.mataku.scrobscrob.home.ui.viewmodel.HomeViewModel
+import com.mataku.scrobscrob.scrobble.ui.navigation.TrackDetailKey
 import com.mataku.scrobscrob.scrobble.ui.screen.ScrobbleScreen
+import com.mataku.scrobscrob.scrobble.ui.viewmodel.TrackViewModel
 import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetScaffold
 import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetText
 import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetTopAppBar
@@ -38,6 +40,8 @@ internal fun HomeScreen(
   sharedTransitionScope: SharedTransitionScope,
   animatedContentScope: AnimatedContentScope,
   navigateToTrackDetail: (RecentTrack, String) -> Unit,
+  trackViewModelProvider: @Composable (TrackDetailKey) -> TrackViewModel,
+  navigateToWebView: (String) -> Unit,
   navigateToArtistDetail: (TopArtistInfo, String) -> Unit,
   navigateToAlbumDetail: (TopAlbumInfo, String) -> Unit,
   navigateToLogin: () -> Unit,
@@ -109,6 +113,8 @@ internal fun HomeScreen(
             ScrobbleScreen(
               topAppBarScrollBehavior = scrollBehavior,
               navigateToTrackDetail = navigateToTrackDetail,
+              trackViewModelProvider = trackViewModelProvider,
+              navigateToWebView = navigateToWebView,
               sharedTransitionScope = sharedTransitionScope,
               animatedContentScope = animatedContentScope,
               viewModel = metroViewModel(key = "scrobble"),

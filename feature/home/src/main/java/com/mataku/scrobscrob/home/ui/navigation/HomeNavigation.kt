@@ -7,7 +7,9 @@ import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.home.ui.screen.HomeScreen
 import com.mataku.scrobscrob.home.ui.viewmodel.HomeViewModel
 import com.mataku.scrobscrob.scrobble.ui.navigation.TrackDetailKey
+import com.mataku.scrobscrob.scrobble.ui.viewmodel.TrackViewModel
 import com.mataku.scrobscrob.ui_common.navigation.SunsetNavBuilder
+import com.mataku.scrobscrob.ui_common.navigation.WebViewKey
 import com.mataku.scrobscrob.ui_common.navigation.viewModelFor
 
 fun SunsetNavBuilder.homeGraph() {
@@ -26,6 +28,8 @@ fun SunsetNavBuilder.homeGraph() {
           ),
         )
       },
+      trackViewModelProvider = { key -> viewModelFor<TrackViewModel>(key) },
+      navigateToWebView = { url -> navigate(WebViewKey(url)) },
       navigateToArtistDetail = { artist, id ->
         navigate(
           ArtistKey(

@@ -18,6 +18,7 @@ class SunsetIssueRegistry : IssueRegistry() {
     PreferSunsetIconButtonDetector.ISSUE,
     PreferSunsetIconDetector.ISSUE,
     PreferSunsetIconToggleButtonDetector.ISSUE,
+    PreferSunsetListDetailPaneScaffoldDetector.ISSUE,
     PreferSunsetModalBottomSheetDetector.ISSUE,
     PreferSunsetPullToRefreshBoxDetector.ISSUE,
     PreferSunsetScaffoldDetector.ISSUE,

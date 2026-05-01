@@ -27,6 +27,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mataku.scrobscrob.album.ui.molecule.AlbumMetaData
@@ -36,14 +37,14 @@ import com.mataku.scrobscrob.core.entity.AlbumInfo
 import com.mataku.scrobscrob.core.entity.AlbumInfoTrack
 import com.mataku.scrobscrob.core.entity.Tag
 import com.mataku.scrobscrob.core.entity.Wiki
-import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetBottomSheet
-import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetHorizontalDivider
 import com.mataku.scrobscrob.ui_common.component.ArtworkLayerBar
 import com.mataku.scrobscrob.ui_common.component.CircleBackButton
 import com.mataku.scrobscrob.ui_common.component.SimpleWiki
-import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetImage
 import com.mataku.scrobscrob.ui_common.component.TopTags
 import com.mataku.scrobscrob.ui_common.component.WikiCell
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetBottomSheet
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetHorizontalDivider
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetImage
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import kotlinx.collections.immutable.persistentListOf
 
@@ -143,9 +144,12 @@ private fun SharedTransitionScope.AlbumContent(
                   ) {
                     onBackPressed.invoke()
                   }
-                  .offset(
-                    y = 24.dp
-                  )
+                  .offset {
+                    IntOffset(
+                      x = 0,
+                      y = (24.dp).value.toInt(),
+                    )
+                  }
               )
             }
           }

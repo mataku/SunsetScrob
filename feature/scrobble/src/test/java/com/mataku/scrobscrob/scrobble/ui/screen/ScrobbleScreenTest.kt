@@ -93,6 +93,8 @@ class ScrobbleScreenTest {
         ScrobbleScreen(
           viewModel = viewModel,
           navigateToTrackDetail = { _, _ -> },
+          trackViewModelProvider = { mockk(relaxed = true) },
+          navigateToWebView = {},
           topAppBarScrollBehavior = rememberSunsetTopAppBarScrollBehavior(),
           animatedContentScope = mockk(),
           sharedTransitionScope = sharedTransitionScope
@@ -111,9 +113,11 @@ class ScrobbleScreenTest {
         ScrobbleScreen(
           viewModel = viewModel,
           navigateToTrackDetail = { _, _ -> },
+          trackViewModelProvider = { mockk(relaxed = true) },
+          navigateToWebView = {},
           topAppBarScrollBehavior = rememberSunsetTopAppBarScrollBehavior(),
-          sharedTransitionScope = mockk(),
-          animatedContentScope = mockk()
+          animatedContentScope = mockk(),
+          sharedTransitionScope = mockk()
         )
       },
       fileName = "scrobble_screen_light.png"
@@ -130,6 +134,8 @@ class ScrobbleScreenTest {
         ScrobbleScreen(
           viewModel = viewModel,
           navigateToTrackDetail = { _, _ -> },
+          trackViewModelProvider = { mockk(relaxed = true) },
+          navigateToWebView = {},
           topAppBarScrollBehavior = rememberSunsetTopAppBarScrollBehavior(),
           animatedContentScope = mockk(),
           sharedTransitionScope = sharedTransitionScope
