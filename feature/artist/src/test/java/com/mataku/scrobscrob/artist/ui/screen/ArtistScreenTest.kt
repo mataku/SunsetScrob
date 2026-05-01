@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
 import com.mataku.scrobscrob.artist.ui.navigation.ArtistKey
 import com.mataku.scrobscrob.artist.ui.viewmodel.ArtistViewModel
 import com.mataku.scrobscrob.core.entity.AppTheme
@@ -110,6 +111,31 @@ class ArtistScreenTest {
         }
       },
       fileName = "artist_screen_light.png"
+    )
+  }
+
+  @Test
+  fun layout_tablet() {
+    val key = ArtistKey(artistName = artistName, artworkUrl = artworkUrl, contentId = "")
+    val viewModel = ArtistViewModel(
+      artistRepository = artistRepository,
+      key = key
+    )
+    composeRule.captureScreenshot(
+      device = RobolectricDeviceQualifiers.PixelTablet,
+      appTheme = AppTheme.DARK,
+      content = {
+        SharedTransitionLayout {
+          ArtistScreen(
+            viewModel = viewModel,
+            onArtistLoadMoreTap = {},
+            onBackPressed = {},
+            animatedContentScope = animatedContentScope,
+            id = ""
+          )
+        }
+      },
+      fileName = "artist_screen_tablet.png"
     )
   }
 }

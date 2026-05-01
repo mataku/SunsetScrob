@@ -3,6 +3,7 @@ package com.mataku.scrobscrob.scrobble.ui.screen
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.core.entity.PagingAttr
 import com.mataku.scrobscrob.core.entity.RecentTrack
@@ -116,6 +117,25 @@ class ScrobbleScreenTest {
         )
       },
       fileName = "scrobble_screen_light.png"
+    )
+  }
+
+  @Test
+  fun layout_tablet() {
+    val viewModel = ScrobbleViewModel(scrobbleRepository)
+    composeRule.captureScreenshot(
+      device = RobolectricDeviceQualifiers.PixelTablet,
+      appTheme = AppTheme.DARK,
+      content = {
+        ScrobbleScreen(
+          viewModel = viewModel,
+          navigateToTrackDetail = { _, _ -> },
+          topAppBarScrollBehavior = rememberSunsetTopAppBarScrollBehavior(),
+          animatedContentScope = mockk(),
+          sharedTransitionScope = sharedTransitionScope
+        )
+      },
+      fileName = "scrobble_screen_tablet.png"
     )
   }
 }

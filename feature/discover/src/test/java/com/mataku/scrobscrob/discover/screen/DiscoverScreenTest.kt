@@ -2,6 +2,7 @@ package com.mataku.scrobscrob.discover.screen
 
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.core.entity.ChartArtist
 import com.mataku.scrobscrob.core.entity.ChartTopArtists
@@ -138,6 +139,22 @@ class DiscoverScreenTest {
         )
       },
       fileName = "discover_screen_light.png"
+    )
+  }
+
+  @Test
+  fun layout_tablet() {
+    val viewModel = DiscoverViewModel(chartRepository, userRepository)
+    composeTestRule.captureScreenshot(
+      device = RobolectricDeviceQualifiers.PixelTablet,
+      appTheme = AppTheme.DARK,
+      content = {
+        DiscoverScreen(
+          viewModel = viewModel,
+          navigateToWebView = mockk()
+        )
+      },
+      fileName = "discover_screen_tablet.png"
     )
   }
 }

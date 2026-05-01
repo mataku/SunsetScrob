@@ -46,6 +46,8 @@ SHARED_SECRET=YOUR_LAST_FM_SHARED_SECRET
 - `./gradlew testDebugUnitTest -PexcludeScreenshotTest=true` — run unit tests
 - `./gradlew verifyRoborazziDebug --no-configuration-cache -PonlyScreenshotTest=true` — run
   Roborazzi screenshot tests
+- `./gradlew recordRoborazziDebug --no-configuration-cache -PonlyScreenshotTest=true` generate
+  golden images
 - `make generate_compose_reports` — generate Compose compiler reports
 
 ---

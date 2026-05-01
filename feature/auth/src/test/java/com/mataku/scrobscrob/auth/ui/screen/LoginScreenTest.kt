@@ -2,6 +2,7 @@ package com.mataku.scrobscrob.auth.ui.screen
 
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
 import com.mataku.scrobscrob.auth.ui.viewmodel.LoginViewModel
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.test_helper.integration.VRT
@@ -47,6 +48,22 @@ class LoginScreenTest {
         )
       },
       fileName = "login_screen_light.png"
+    )
+  }
+
+  @Test
+  fun layout_tablet() {
+    composeTestRule.captureScreenshot(
+      device = RobolectricDeviceQualifiers.PixelTablet,
+      appTheme = AppTheme.DARK,
+      content = {
+        LoginScreen(
+          viewModel = LoginViewModel(mockk()),
+          navigateToHomeFromAuth = mockk(),
+          navigateToPrivacyPolicy = mockk()
+        )
+      },
+      fileName = "login_screen_tablet.png"
     )
   }
 }

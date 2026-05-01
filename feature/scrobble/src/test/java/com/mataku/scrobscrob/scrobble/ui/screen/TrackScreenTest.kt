@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.core.entity.Tag
 import com.mataku.scrobscrob.core.entity.TrackAlbumInfo
@@ -143,6 +144,34 @@ class TrackScreenTest {
         }
       },
       fileName = "track_screen_light.png"
+    )
+  }
+
+  @Test
+  fun layout_tablet() = runTest {
+    val viewModel = TrackViewModel(
+      trackRepository = trackRepository,
+      key = key,
+    )
+
+    composeRule.captureScreenshot(
+      device = RobolectricDeviceQualifiers.PixelTablet,
+      appTheme = AppTheme.DARK,
+      content = {
+        SharedTransitionLayout {
+          TrackScreen(
+            trackName = trackName,
+            artistName = artistName,
+            artworkUrl = artworkUrl,
+            trackViewModel = viewModel,
+            navigateToWebView = mockk(),
+            onBackPressed = mockk(),
+            animatedContentScope = animatedContentScope,
+            id = ""
+          )
+        }
+      },
+      fileName = "track_screen_tablet.png"
     )
   }
 }

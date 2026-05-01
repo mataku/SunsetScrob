@@ -32,7 +32,7 @@ import org.robolectric.annotation.GraphicsMode
 @RunWith(AndroidJUnit4::class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 @Category(VRT::class)
-class SunsetNavigationBarScreenTest {
+class SunsetNavigationBarTest {
   @get:Rule
   val composeRule = createComposeRule()
 
@@ -124,7 +124,7 @@ class SunsetNavigationBarScreenTest {
   @Test
   fun layout_tablet() = runTest {
     composeRule.captureScreenshot(
-      device = RobolectricDeviceQualifiers.MediumTablet,
+      device = RobolectricDeviceQualifiers.PixelTablet,
       appTheme = AppTheme.DARK,
       content = {
         Scaffold(

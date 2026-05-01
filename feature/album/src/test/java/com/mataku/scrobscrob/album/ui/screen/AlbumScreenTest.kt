@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
 import com.mataku.scrobscrob.album.ui.navigation.AlbumKey
 import com.mataku.scrobscrob.album.ui.viewmodel.AlbumViewModel
 import com.mataku.scrobscrob.core.entity.AlbumInfo
@@ -127,6 +128,32 @@ class AlbumScreenTest {
         }
       },
       appTheme = AppTheme.LIGHT
+    )
+  }
+
+  @Test
+  fun layout_tablet() {
+    val key = AlbumKey(albumName = albumName, artistName = artistName, artworkUrl = artworkUrl, contentId = "")
+    val viewModel = AlbumViewModel(
+      albumRepository = albumRepository,
+      key = key
+    )
+
+    composeRule.captureScreenshot(
+      device = RobolectricDeviceQualifiers.PixelTablet,
+      appTheme = AppTheme.DARK,
+      content = {
+        SharedTransitionLayout {
+          AlbumScreen(
+            viewModel = viewModel,
+            onAlbumLoadMoreTap = {},
+            onBackPressed = {},
+            animatedContentScope = animatedContentScope,
+            id = ""
+          )
+        }
+      },
+      fileName = "album_screen_tablet.png"
     )
   }
 }

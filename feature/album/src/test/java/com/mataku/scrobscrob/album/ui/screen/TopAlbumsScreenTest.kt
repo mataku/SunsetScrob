@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
 import com.mataku.scrobscrob.album.ui.viewmodel.TopAlbumsViewModel
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.core.entity.PagingAttr
@@ -164,6 +165,29 @@ class TopAlbumsScreenTest {
         }
       },
       fileName = "top_albums_screen_light.png"
+    )
+  }
+
+  @Test
+  fun layout_tablet() {
+    composeRule.captureScreenshot(
+      device = RobolectricDeviceQualifiers.PixelTablet,
+      appTheme = AppTheme.DARK,
+      content = {
+        SharedTransitionLayout {
+          TopAlbumsScreen(
+            viewModel = TopAlbumsViewModel(
+              topAlbumsRepository = albumRepository,
+              usernameRepository = usernameRepository
+            ),
+            navigateToAlbumInfo = { _, _ -> },
+            topAppBarScrollBehavior = rememberSunsetTopAppBarScrollBehavior(),
+            sharedTransitionScope = this,
+            animatedContentScope = animatedContentScope
+          )
+        }
+      },
+      fileName = "top_albums_screen_tablet.png"
     )
   }
 }

@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.lifecycle.SavedStateHandle
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
 import com.google.android.gms.tasks.Task
 import com.google.android.play.core.appupdate.AppUpdateInfo
 import com.google.android.play.core.appupdate.AppUpdateManager
@@ -157,6 +158,36 @@ class AccountScreenTest {
         )
       },
       fileName = "account_screen_light.png"
+    )
+  }
+
+  @Test
+  fun layout_tablet() {
+    val viewModel = AccountViewModel(
+      usernameRepository,
+      themeRepository,
+      sessionRepository,
+      appInfoProvider,
+      appUpdateManager,
+      fileRepository,
+      application,
+      userRepository,
+    )
+    composeTestRule.captureScreenshot(
+      device = RobolectricDeviceQualifiers.PixelTablet,
+      appTheme = AppTheme.DARK,
+      content = {
+        AccountScreen(
+          viewModel = viewModel,
+          showPermissionHelp = {},
+          navigateToLogin = mockk(),
+          navigateToPrivacyPolicy = mockk(),
+          navigateToScrobbleSetting = mockk(),
+          navigateToLicenseList = mockk(),
+          navigateToThemeSelector = mockk()
+        )
+      },
+      fileName = "account_screen_tablet.png"
     )
   }
 }

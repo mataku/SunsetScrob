@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
 import com.mataku.scrobscrob.artist.ui.viewmodel.TopArtistsViewModel
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.core.entity.PagingAttr
@@ -166,6 +167,30 @@ class TopArtistsScreenTest {
         }
       },
       fileName = "top_artists_screen_light.png"
+    )
+  }
+
+  @Test
+  fun layout_tablet() {
+    val viewModel = TopArtistsViewModel(
+      topArtistsRepository = artistRepository,
+      usernameRepository = usernameRepository
+    )
+    composeRule.captureScreenshot(
+      device = RobolectricDeviceQualifiers.PixelTablet,
+      appTheme = AppTheme.DARK,
+      content = {
+        SharedTransitionLayout {
+          TopArtistsScreen(
+            viewModel = viewModel,
+            onArtistTap = { _, _ -> },
+            topAppBarScrollBehavior = rememberSunsetTopAppBarScrollBehavior(),
+            animatedContentScope = animatedContentScope,
+            sharedTransitionScope = this
+          )
+        }
+      },
+      fileName = "top_artists_screen_tablet.png"
     )
   }
 }
