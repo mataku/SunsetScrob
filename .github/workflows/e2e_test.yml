@@ -2,8 +2,8 @@ name: E2E test
 
 on:
   schedule:
-    # Friday 06:00 UTC (Friday 15:00 JST)
-    - cron: '0 6 * * 5'
+    # 06:00 UTC (15:00 JST)
+    - cron: '0 6 * * *'
   workflow_dispatch:
 
 concurrency:
