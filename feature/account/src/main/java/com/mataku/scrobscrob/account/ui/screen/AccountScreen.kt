@@ -42,6 +42,9 @@ import com.mataku.scrobscrob.account.BuildConfig
 import com.mataku.scrobscrob.account.R
 import com.mataku.scrobscrob.account.ui.molecule.Profile
 import com.mataku.scrobscrob.account.ui.viewmodel.AccountViewModel
+import com.mataku.scrobscrob.account.ui.viewmodel.LicenseViewModel
+import com.mataku.scrobscrob.account.ui.viewmodel.ScrobbleSettingViewModel
+import com.mataku.scrobscrob.account.ui.viewmodel.ThemeSelectorViewModel
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.core.entity.UserInfo
 import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetAlertDialog
@@ -60,6 +63,9 @@ import kotlinx.coroutines.launch
 @Composable
 internal fun AccountScreen(
   viewModel: AccountViewModel,
+  themeSelectorViewModelProvider: @Composable () -> ThemeSelectorViewModel,
+  licenseViewModelProvider: @Composable () -> LicenseViewModel,
+  scrobbleSettingViewModelProvider: @Composable () -> ScrobbleSettingViewModel,
   showPermissionHelp: () -> Unit,
   navigateToScrobbleSetting: () -> Unit,
   navigateToPrivacyPolicy: () -> Unit,

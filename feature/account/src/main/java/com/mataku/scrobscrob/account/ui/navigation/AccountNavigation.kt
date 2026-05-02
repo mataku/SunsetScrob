@@ -22,6 +22,15 @@ fun SunsetNavBuilder.accountGraph() {
     val context = LocalContext.current
     AccountScreen(
       viewModel = viewModelFor<AccountViewModel>(key),
+      themeSelectorViewModelProvider = {
+        viewModelFor<ThemeSelectorViewModel>(ThemeSelectorKey)
+      },
+      licenseViewModelProvider = {
+        viewModelFor<LicenseViewModel>(LicenseKey)
+      },
+      scrobbleSettingViewModelProvider = {
+        viewModelFor<ScrobbleSettingViewModel>(ScrobbleSettingKey)
+      },
       navigateToScrobbleSetting = { navigate(ScrobbleSettingKey) },
       navigateToThemeSelector = { navigate(ThemeSelectorKey) },
       navigateToLicenseList = { navigate(LicenseKey) },

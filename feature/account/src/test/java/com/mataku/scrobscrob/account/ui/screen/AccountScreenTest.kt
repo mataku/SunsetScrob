@@ -120,6 +120,9 @@ class AccountScreenTest {
       content = {
         AccountScreen(
           viewModel = viewModel,
+          themeSelectorViewModelProvider = { mockk() },
+          licenseViewModelProvider = { mockk() },
+          scrobbleSettingViewModelProvider = { mockk() },
           showPermissionHelp = {},
           navigateToLogin = mockk(),
           navigateToPrivacyPolicy = mockk(),
@@ -149,6 +152,9 @@ class AccountScreenTest {
       content = {
         AccountScreen(
           viewModel = viewModel,
+          themeSelectorViewModelProvider = { mockk() },
+          licenseViewModelProvider = { mockk() },
+          scrobbleSettingViewModelProvider = { mockk() },
           showPermissionHelp = {},
           navigateToLogin = mockk(),
           navigateToPrivacyPolicy = mockk(),
@@ -179,6 +185,9 @@ class AccountScreenTest {
       content = {
         AccountScreen(
           viewModel = viewModel,
+          themeSelectorViewModelProvider = { mockk() },
+          licenseViewModelProvider = { mockk() },
+          scrobbleSettingViewModelProvider = { mockk() },
           showPermissionHelp = {},
           navigateToLogin = mockk(),
           navigateToPrivacyPolicy = mockk(),
