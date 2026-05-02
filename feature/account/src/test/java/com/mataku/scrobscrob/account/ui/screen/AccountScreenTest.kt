@@ -2,6 +2,8 @@ package com.mataku.scrobscrob.account.ui.screen
 
 import android.app.Application
 import androidx.compose.ui.test.junit4.v2.createComposeRule
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
 import androidx.lifecycle.SavedStateHandle
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
@@ -10,6 +12,7 @@ import com.google.android.play.core.appupdate.AppUpdateInfo
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.mataku.scrobscrob.account.AppInfoProvider
 import com.mataku.scrobscrob.account.ui.viewmodel.AccountViewModel
+import com.mataku.scrobscrob.account.ui.viewmodel.ThemeSelectorViewModel
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.core.entity.Image
 import com.mataku.scrobscrob.core.entity.UserInfo
@@ -24,6 +27,7 @@ import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import org.junit.Before
 import org.junit.Rule
@@ -197,6 +201,51 @@ class AccountScreenTest {
         )
       },
       fileName = "account_screen_tablet.png"
+    )
+  }
+
+  @Test
+  fun layout_tablet_theme_selected() {
+    val viewModel = AccountViewModel(
+      usernameRepository,
+      themeRepository,
+      sessionRepository,
+      appInfoProvider,
+      appUpdateManager,
+      fileRepository,
+      application,
+      userRepository,
+    )
+    val themeSelectorViewModel = mockk<ThemeSelectorViewModel> {
+      every { uiState } returns MutableStateFlow(
+        ThemeSelectorViewModel.ThemeSelectorUiState(
+          theme = AppTheme.DARK,
+          event = null,
+        )
+      )
+    }
+    composeTestRule.captureScreenshot(
+      device = RobolectricDeviceQualifiers.PixelTablet,
+      appTheme = AppTheme.DARK,
+      content = {
+        AccountScreen(
+          viewModel = viewModel,
+          themeSelectorViewModelProvider = { themeSelectorViewModel },
+          licenseViewModelProvider = { mockk() },
+          scrobbleSettingViewModelProvider = { mockk() },
+          showPermissionHelp = {},
+          navigateToLogin = mockk(),
+          navigateToPrivacyPolicy = mockk(),
+          navigateToScrobbleSetting = mockk(),
+          navigateToLicenseList = mockk(),
+          navigateToThemeSelector = mockk()
+        )
+      },
+      actionsBeforeCapturing = {
+        composeTestRule.onNodeWithText("Theme").performClick()
+        composeTestRule.waitForIdle()
+      },
+      fileName = "account_screen_tablet_theme.png"
     )
   }
 }
