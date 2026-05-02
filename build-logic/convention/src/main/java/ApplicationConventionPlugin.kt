@@ -83,6 +83,10 @@ class ApplicationConventionPlugin : Plugin<Project> {
             testInstrumentationRunnerArguments["notAnnotation"] =
               "com.mataku.scrobscrob.app.testing.LargeScreenE2E"
           }
+          // Required so AGP/UTP pulls files written via PlatformTestStorage
+          // (e.g. ScreenRecordRule output) back to
+          // build/outputs/managed_device_android_test_additional_output/.
+          testInstrumentationRunnerArguments["useTestStorageService"] = "true"
           proguardFiles(
             getDefaultProguardFile("proguard-android-optimize.txt"),
             "proguard-rules.pro"
@@ -90,7 +94,8 @@ class ApplicationConventionPlugin : Plugin<Project> {
         }
         sourceSets {
           getByName("androidTest") {
-            assets.srcDirs("src/test/assets", "src/androidTest/assets")
+            assets.directories.add("src/test/assets")
+            assets.directories.add("src/androidTest/assets")
           }
         }
         testOptions.managedDevices.allDevices.create(

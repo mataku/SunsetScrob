@@ -9,7 +9,7 @@ configure<LibraryExtension>() {
   namespace = "com.mataku.scrobscrob.data.repository"
 
   sourceSets {
-    getByName("test").resources.srcDirs("src/test/assets")
+    getByName("test").resources.directories.add("src/test/assets")
   }
 }
 

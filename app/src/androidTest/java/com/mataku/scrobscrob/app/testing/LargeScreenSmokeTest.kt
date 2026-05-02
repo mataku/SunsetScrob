@@ -23,8 +23,14 @@ import org.junit.Test
 @OptIn(ExperimentalTestApi::class)
 class LargeScreenSmokeTest {
 
-  @get:Rule
+  // composeRule must be the OUTER rule (higher order) so its activity
+  // teardown runs AFTER screenshotRule.failed — otherwise the screenshot
+  // is captured against an already-destroyed Activity and comes back blank.
+  @get:Rule(order = 1)
   val composeRule = createAndroidComposeRule<MainActivity>()
+
+  @get:Rule(order = 0)
+  val screenshotRule = TestScreenshotRule()
 
   @Before
   fun setUp() {
@@ -39,7 +45,7 @@ class LargeScreenSmokeTest {
   }
 
   @Test
-  fun scrobble_tap_shows_list_and_detail_panes_simultaneously() {
+  fun login_then_navigate_through_tabs_and_details() {
     // Login screen: fill username/password and submit.
     composeRule.waitUntilExactlyOneExists(hasText("Let me in!"), TIMEOUT_MS)
     composeRule.onAllNodes(hasSetTextAction()).onFirst().performTextInput("e2e_user")
@@ -53,6 +59,8 @@ class LargeScreenSmokeTest {
     // Scrobble tab: tap the first recent track to trigger selectDetail
     // on the SunsetListDetailScaffold.
     composeRule.waitUntilExactlyOneExists(hasText("TRACE"), TIMEOUT_MS)
+
+    // Check the second cell id displayed
     composeRule.onNodeWithText("Ummet Ozcan").assertIsDisplayed()
 
     composeRule.onNodeWithText("TRACE").performClick()
@@ -67,6 +75,23 @@ class LargeScreenSmokeTest {
     composeRule.onNodeWithContentDescription("artwork image").assertIsDisplayed()
     composeRule.onNodeWithText("Listeners").assertIsDisplayed()
     composeRule.onNodeWithText("Ummet Ozcan").assertIsDisplayed()
+
+    pressBack()
+
+    // Tablet expectation: list (album row) and detail (artwork) are
+    // both attached to the composition at the same time.
+    composeRule.onNodeWithText("Album").performClick()
+    Thread.sleep(STEP_DELAY_MS)
+    composeRule.onNodeWithText("ZENITH").performClick()
+    composeRule.onNodeWithText("欅坂46").assertIsDisplayed()
+    composeRule.onAllNodes(hasText("ZENITH")).assertCountEquals(2) // list + detail
+    composeRule.onNodeWithText("Track list").assertIsDisplayed()
+  }
+
+  private fun pressBack() {
+    composeRule.runOnUiThread {
+      composeRule.activity.onBackPressedDispatcher.onBackPressed()
+    }
   }
 
   private companion object {
