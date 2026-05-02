@@ -62,10 +62,12 @@ dependencies {
 
   androidTestImplementation(libs.androidx.test.ext.junit)
   androidTestImplementation(libs.androidx.test.runner)
+  androidTestImplementation(libs.androidx.test.uiautomator)
   androidTestImplementation(libs.compose.ui.test.junit4)
   androidTestImplementation(libs.compose.ui.test.android)
   androidTestImplementation(libs.ktor.client.mock)
   androidTestImplementation(libs.coroutines.test)
+  androidTestImplementation(project(":test_helper:integration"))
   debugImplementation(libs.compose.ui.test.manifest)
 }
 
