@@ -2,6 +2,7 @@ package com.mataku.scrobscrob.home.ui.navigation
 
 import androidx.compose.ui.Modifier
 import com.mataku.scrobscrob.album.ui.navigation.AlbumKey
+import com.mataku.scrobscrob.album.ui.viewmodel.AlbumViewModel
 import com.mataku.scrobscrob.artist.ui.navigation.ArtistKey
 import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.home.ui.screen.HomeScreen
@@ -30,6 +31,7 @@ fun SunsetNavBuilder.homeGraph() {
       },
       trackViewModelProvider = { key -> viewModelFor<TrackViewModel>(key) },
       navigateToWebView = { url -> navigate(WebViewKey(url)) },
+      albumViewModelProvider = { key -> viewModelFor<AlbumViewModel>(key) },
       navigateToArtistDetail = { artist, id ->
         navigate(
           ArtistKey(
