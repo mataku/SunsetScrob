@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.imeNestedScroll
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -138,127 +139,129 @@ private fun LoginContent(
     modifier = modifier
       .fillMaxSize()
       .verticalScroll(rememberScrollState())
-      .padding(horizontal = 16.dp)
       .imePadding()
       .imeNestedScroll(),
     horizontalAlignment = Alignment.CenterHorizontally,
     verticalArrangement = Arrangement.Center
   ) {
-    Spacer(modifier = Modifier.height(24.dp))
-
-    SunsetText.Title(
-      text = stringResource(id = uiCommonR.string.login_to_last_fm),
-      fontWeight = FontWeight.Bold,
-      modifier = Modifier.align(Alignment.CenterHorizontally),
-      color = LocalAppTheme.current.onSurfaceColor(),
-    )
-
-    Spacer(modifier = Modifier.height(24.dp))
-
-    SunsetTextField(
-      value = username,
-      onValueChange = {
-        onUsernameUpdate.invoke(it)
-      },
-      keyboardOptions = KeyboardOptions(
-        keyboardType = KeyboardType.Email,
-        imeAction = ImeAction.Next
-      ),
-      singleLine = true,
-      label = {
-        SunsetText.Label(
-          text = "Username",
-          color = LocalAppTheme.current.onSurfaceColor(),
-        )
-      },
+    Column(
       modifier = Modifier
-        .align(Alignment.CenterHorizontally)
+        .widthIn(max = 480.dp)
         .fillMaxWidth()
-        .padding(horizontal = 24.dp)
-        .semantics {
-          contentType = ContentType.Username
-        }
-    )
-
-    Spacer(modifier = Modifier.height(16.dp))
-
-    SunsetTextField(
-      value = password,
-      onValueChange = {
-        onPasswordUpdate.invoke(it)
-      },
-      keyboardOptions = KeyboardOptions(
-        keyboardType = KeyboardType.Password,
-        imeAction = ImeAction.Done
-      ),
-      singleLine = true,
-      visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-      trailingIcon = {
-        val icon = if (passwordVisible) {
-          Icons.Filled.Visibility
-        } else {
-          Icons.Filled.VisibilityOff
-        }
-        SunsetIconButton(onClick = {
-          passwordVisible = !passwordVisible
-        }) {
-          SunsetIcon(imageVector = icon, "password visibility toggle")
-        }
-      },
-      keyboardActions = KeyboardActions(
-        onDone = {
-          focusManager.clearFocus()
-        }
-      ),
-      label = {
-        SunsetText.Label(
-          text = "Password",
-          color = LocalAppTheme.current.onSurfaceColor(),
-        )
-      },
-      modifier = Modifier
-        .align(Alignment.CenterHorizontally)
-        .fillMaxWidth()
-        .padding(horizontal = 24.dp)
-        .semantics {
-          contentType = ContentType.Password
-        }
-    )
-
-    Spacer(modifier = Modifier.height(48.dp))
-
-    SunsetButton(
-      onClick = {
-        focusManager.clearFocus()
-        onLoginButtonTap(username, password)
-      },
-      modifier = Modifier
-        .fillMaxWidth()
-        .padding(horizontal = 24.dp),
-      enabled = !isLoading,
-      contentPadding = PaddingValues(vertical = 16.dp)
+        .padding(horizontal = 40.dp),
+      horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-      if (isLoading) {
-        SunsetCircularProgressIndicator(
-          modifier = Modifier
-            .size(16.dp)
-            .background(color = Color.Transparent)
-            .align(alignment = Alignment.CenterVertically)
-        )
-      } else {
-        SunsetText.Body(
-          text = "Let me in!",
-          fontWeight = FontWeight.Medium,
-        )
+      Spacer(modifier = Modifier.height(24.dp))
+
+      SunsetText.Title(
+        text = stringResource(id = uiCommonR.string.login_to_last_fm),
+        fontWeight = FontWeight.Bold,
+        modifier = Modifier.align(Alignment.CenterHorizontally),
+        color = LocalAppTheme.current.onSurfaceColor(),
+      )
+
+      Spacer(modifier = Modifier.height(24.dp))
+
+      SunsetTextField(
+        value = username,
+        onValueChange = {
+          onUsernameUpdate.invoke(it)
+        },
+        keyboardOptions = KeyboardOptions(
+          keyboardType = KeyboardType.Email,
+          imeAction = ImeAction.Next
+        ),
+        singleLine = true,
+        label = {
+          SunsetText.Label(
+            text = "Username",
+            color = LocalAppTheme.current.onSurfaceColor(),
+          )
+        },
+        modifier = Modifier
+          .fillMaxWidth()
+          .semantics {
+            contentType = ContentType.Username
+          }
+      )
+
+      Spacer(modifier = Modifier.height(16.dp))
+
+      SunsetTextField(
+        value = password,
+        onValueChange = {
+          onPasswordUpdate.invoke(it)
+        },
+        keyboardOptions = KeyboardOptions(
+          keyboardType = KeyboardType.Password,
+          imeAction = ImeAction.Done
+        ),
+        singleLine = true,
+        visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+        trailingIcon = {
+          val icon = if (passwordVisible) {
+            Icons.Filled.Visibility
+          } else {
+            Icons.Filled.VisibilityOff
+          }
+          SunsetIconButton(onClick = {
+            passwordVisible = !passwordVisible
+          }) {
+            SunsetIcon(imageVector = icon, "password visibility toggle")
+          }
+        },
+        keyboardActions = KeyboardActions(
+          onDone = {
+            focusManager.clearFocus()
+          }
+        ),
+        label = {
+          SunsetText.Label(
+            text = "Password",
+            color = LocalAppTheme.current.onSurfaceColor(),
+          )
+        },
+        modifier = Modifier
+          .fillMaxWidth()
+          .semantics {
+            contentType = ContentType.Password
+          }
+      )
+
+      Spacer(modifier = Modifier.height(48.dp))
+
+      SunsetButton(
+        onClick = {
+          focusManager.clearFocus()
+          onLoginButtonTap(username, password)
+        },
+        modifier = Modifier
+          .fillMaxWidth(),
+        enabled = !isLoading,
+        contentPadding = PaddingValues(vertical = 16.dp)
+      ) {
+        if (isLoading) {
+          SunsetCircularProgressIndicator(
+            modifier = Modifier
+              .size(16.dp)
+              .background(color = Color.Transparent)
+              .align(alignment = Alignment.CenterVertically)
+          )
+        } else {
+          SunsetText.Body(
+            text = "Let me in!",
+            fontWeight = FontWeight.Medium,
+          )
+        }
       }
+
+      Spacer(modifier = Modifier.height(32.dp))
+
+      SunsetTextButton.Label(
+        text = "Privacy policy",
+        onClick = onPrivacyPolicyTap,
+      )
     }
-
-    Spacer(modifier = Modifier.height(32.dp))
-
-    SunsetTextButton.Label(
-      text = "Privacy policy",
-      onClick = onPrivacyPolicyTap,
-    )
   }
 }
 
