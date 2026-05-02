@@ -6,77 +6,41 @@ import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.adaptive.layout.AnimatedPane
 import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffold
+import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldDefaults
 import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
-import androidx.compose.material3.adaptive.layout.PaneAdaptedValue
-import androidx.compose.material3.adaptive.layout.ThreePaneScaffoldRole
+import androidx.compose.material3.adaptive.layout.ThreePaneScaffoldDestinationItem
 import androidx.compose.material3.adaptive.layout.calculatePaneScaffoldDirective
-import androidx.compose.material3.adaptive.navigation.ThreePaneScaffoldNavigator
-import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
+import androidx.compose.material3.adaptive.layout.calculateThreePaneScaffoldValue
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3AdaptiveApi::class)
 @Stable
 class SunsetListDetailScaffoldState<T : Any> internal constructor(
-  internal val navigator: ThreePaneScaffoldNavigator<T>,
-  private val coroutineScope: CoroutineScope,
-  private val hasSelectionState: MutableState<Boolean>,
+  private val selectionState: MutableState<T?>,
 ) {
   val selection: T?
-    get() = navigator.currentDestination?.contentKey
-
-  val isDetailVisible: Boolean
-    get() = navigator.scaffoldValue[ThreePaneScaffoldRole.Primary] == PaneAdaptedValue.Expanded
-
-  val isListVisible: Boolean
-    get() = navigator.scaffoldValue[ThreePaneScaffoldRole.Secondary] == PaneAdaptedValue.Expanded
-
-  val showsBothPanes: Boolean
-    get() = isListVisible && isDetailVisible
+    get() = selectionState.value
 
   fun selectDetail(value: T) {
-    hasSelectionState.value = true
-    coroutineScope.launch {
-      navigator.navigateTo(ListDetailPaneScaffoldRole.Detail, value)
-    }
+    selectionState.value = value
   }
 
   fun back(): Boolean {
-    if (!navigator.canNavigateBack()) return false
-    hasSelectionState.value = false
-    coroutineScope.launch { navigator.navigateBack() }
+    if (selectionState.value == null) return false
+    selectionState.value = null
     return true
   }
 }
 
-@OptIn(ExperimentalMaterial3AdaptiveApi::class)
 @Composable
 fun <T : Any> rememberSunsetListDetailScaffoldState(): SunsetListDetailScaffoldState<T> {
-  val hasSelection = rememberSaveable { mutableStateOf(false) }
-  val baseDirective = calculatePaneScaffoldDirective(currentWindowAdaptiveInfo())
-  val effectiveDirective = if (hasSelection.value) {
-    baseDirective
-  } else {
-    baseDirective.copy(maxHorizontalPartitions = 1)
-  }
-  val navigator = rememberListDetailPaneScaffoldNavigator<T>(
-    scaffoldDirective = effectiveDirective,
-  )
-  val scope = rememberCoroutineScope()
-  return remember(navigator, scope) {
-    SunsetListDetailScaffoldState(
-      navigator = navigator,
-      coroutineScope = scope,
-      hasSelectionState = hasSelection,
-    )
+  val selection = remember { mutableStateOf<T?>(null) }
+  return remember(selection) {
+    SunsetListDetailScaffoldState(selection)
   }
 }
 
@@ -88,12 +52,37 @@ fun <T : Any> SunsetListDetailScaffold(
   detailPane: @Composable AnimatedVisibilityScope.(T?) -> Unit,
   modifier: Modifier = Modifier,
 ) {
-  BackHandler(enabled = state.navigator.canNavigateBack()) {
+  BackHandler(enabled = state.selection != null) {
     state.back()
   }
+
+  // Compute directive + scaffold value atomically from the same selection state
+  // so the layout (sizing) and pane visibility flip together. The navigator-based
+  // approach raced because navigator.navigateTo runs in a coroutine relative to the
+  // synchronous directive update, briefly producing single-pane Detail mid-tap.
+  val baseDirective = calculatePaneScaffoldDirective(currentWindowAdaptiveInfo())
+  val effectiveDirective = if (state.selection == null) {
+    baseDirective.copy(maxHorizontalPartitions = 1)
+  } else {
+    baseDirective
+  }
+  val currentDestination: ThreePaneScaffoldDestinationItem<Any> = if (state.selection == null) {
+    ThreePaneScaffoldDestinationItem(pane = ListDetailPaneScaffoldRole.List, contentKey = null)
+  } else {
+    ThreePaneScaffoldDestinationItem(
+      pane = ListDetailPaneScaffoldRole.Detail,
+      contentKey = state.selection,
+    )
+  }
+  val effectiveValue = calculateThreePaneScaffoldValue(
+    maxHorizontalPartitions = effectiveDirective.maxHorizontalPartitions,
+    adaptStrategies = ListDetailPaneScaffoldDefaults.adaptStrategies(),
+    currentDestination = currentDestination,
+  )
+
   ListDetailPaneScaffold(
-    directive = state.navigator.scaffoldDirective,
-    scaffoldState = state.navigator.scaffoldState,
+    directive = effectiveDirective,
+    value = effectiveValue,
     listPane = {
       AnimatedPane {
         listPane()

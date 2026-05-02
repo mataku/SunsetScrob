@@ -1,6 +1,7 @@
 package com.mataku.scrobscrob.app.testing
 
 import androidx.compose.ui.test.ExperimentalTestApi
+import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasSetTextAction
@@ -52,15 +53,20 @@ class LargeScreenSmokeTest {
     // Scrobble tab: tap the first recent track to trigger selectDetail
     // on the SunsetListDetailScaffold.
     composeRule.waitUntilExactlyOneExists(hasText("TRACE"), TIMEOUT_MS)
+    composeRule.onNodeWithText("Ummet Ozcan").assertIsDisplayed()
+
     composeRule.onNodeWithText("TRACE").performClick()
 
     // Detail pane resolves and renders the track artwork.
     composeRule.waitUntilExactlyOneExists(hasContentDescription("artwork image"), TIMEOUT_MS)
 
     // Tablet expectation: list (track row) and detail (artwork) are
-    // both attached to the composition at the same time.
-    composeRule.onNodeWithText("TRACE").assertIsDisplayed()
+    // both attached to the composition at the same time. "TRACE" appears
+    // twice — once in the list row, once in the detail-pane track header.
+    composeRule.onAllNodes(hasText("TRACE")).assertCountEquals(2)
     composeRule.onNodeWithContentDescription("artwork image").assertIsDisplayed()
+    composeRule.onNodeWithText("Listeners").assertIsDisplayed()
+    composeRule.onNodeWithText("Ummet Ozcan").assertIsDisplayed()
   }
 
   private companion object {
