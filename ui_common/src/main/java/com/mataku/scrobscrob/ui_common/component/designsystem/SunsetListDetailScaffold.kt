@@ -70,8 +70,14 @@ fun <T : Any> SunsetListDetailScaffold(
   BackHandler(enabled = state.navigator.canNavigateBack()) {
     state.back()
   }
+  val baseDirective = state.navigator.scaffoldDirective
+  val effectiveDirective = if (state.selection == null) {
+    baseDirective.copy(maxHorizontalPartitions = 1)
+  } else {
+    baseDirective
+  }
   ListDetailPaneScaffold(
-    directive = state.navigator.scaffoldDirective,
+    directive = effectiveDirective,
     scaffoldState = state.navigator.scaffoldState,
     listPane = {
       AnimatedPane {
