@@ -12,9 +12,12 @@ import com.google.android.play.core.appupdate.AppUpdateInfo
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.mataku.scrobscrob.account.AppInfoProvider
 import com.mataku.scrobscrob.account.ui.viewmodel.AccountViewModel
+import com.mataku.scrobscrob.account.ui.viewmodel.LicenseViewModel
 import com.mataku.scrobscrob.account.ui.viewmodel.ThemeSelectorViewModel
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.core.entity.Image
+import com.mataku.scrobscrob.core.entity.LicenseArtifact
+import com.mataku.scrobscrob.core.entity.SpdxLicense
 import com.mataku.scrobscrob.core.entity.UserInfo
 import com.mataku.scrobscrob.data.repository.FileRepository
 import com.mataku.scrobscrob.data.repository.SessionRepository
@@ -246,6 +249,65 @@ class AccountScreenTest {
         composeTestRule.waitForIdle()
       },
       fileName = "account_screen_tablet_theme.png"
+    )
+  }
+
+  @Test
+  fun layout_tablet_license_selected() {
+    val viewModel = AccountViewModel(
+      usernameRepository,
+      themeRepository,
+      sessionRepository,
+      appInfoProvider,
+      appUpdateManager,
+      fileRepository,
+      application,
+      userRepository,
+    )
+    val licenseViewModel = mockk<LicenseViewModel> {
+      every { uiState } returns MutableStateFlow(
+        LicenseViewModel.LicenseUiState(
+          licenseList = persistentListOf(
+            LicenseArtifact(
+              artifactId = "compose-runtime",
+              groupId = "androidx.compose.runtime",
+              name = "Compose Runtime",
+              scm = null,
+              spdxLicenses = persistentListOf(
+                SpdxLicense(
+                  identifier = "Apache-2.0",
+                  name = "Apache License 2.0",
+                  url = "https://www.apache.org/licenses/LICENSE-2.0",
+                )
+              ),
+              version = "1.7.0",
+            ),
+          )
+        )
+      )
+    }
+    composeTestRule.captureScreenshot(
+      device = RobolectricDeviceQualifiers.PixelTablet,
+      appTheme = AppTheme.DARK,
+      content = {
+        AccountScreen(
+          viewModel = viewModel,
+          themeSelectorViewModelProvider = { mockk() },
+          licenseViewModelProvider = { licenseViewModel },
+          scrobbleSettingViewModelProvider = { mockk() },
+          showPermissionHelp = {},
+          navigateToLogin = mockk(),
+          navigateToPrivacyPolicy = mockk(),
+          navigateToScrobbleSetting = mockk(),
+          navigateToLicenseList = mockk(),
+          navigateToThemeSelector = mockk()
+        )
+      },
+      actionsBeforeCapturing = {
+        composeTestRule.onNodeWithText("Licenses").performClick()
+        composeTestRule.waitForIdle()
+      },
+      fileName = "account_screen_tablet_license.png"
     )
   }
 }
