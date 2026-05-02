@@ -97,7 +97,7 @@ class AlbumScreenTest {
             viewModel = viewModel,
             onAlbumLoadMoreTap = {},
             onBackPressed = {},
-            animatedContentScope = animatedContentScope,
+            animatedVisibilityScope = animatedContentScope,
             id = ""
           )
         }
@@ -122,7 +122,7 @@ class AlbumScreenTest {
             viewModel = viewModel,
             onAlbumLoadMoreTap = {},
             onBackPressed = {},
-            animatedContentScope = animatedContentScope,
+            animatedVisibilityScope = animatedContentScope,
             id = ""
           )
         }
@@ -148,7 +148,7 @@ class AlbumScreenTest {
             viewModel = viewModel,
             onAlbumLoadMoreTap = {},
             onBackPressed = {},
-            animatedContentScope = animatedContentScope,
+            animatedVisibilityScope = animatedContentScope,
             id = ""
           )
         }

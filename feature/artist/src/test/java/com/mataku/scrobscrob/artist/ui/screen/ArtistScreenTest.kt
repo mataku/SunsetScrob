@@ -81,7 +81,7 @@ class ArtistScreenTest {
             viewModel = viewModel,
             onArtistLoadMoreTap = {},
             onBackPressed = {},
-            animatedContentScope = animatedContentScope,
+            animatedVisibilityScope = animatedContentScope,
             id = ""
           )
         }
@@ -106,7 +106,7 @@ class ArtistScreenTest {
             onArtistLoadMoreTap = {},
             onBackPressed = {},
             id = "",
-            animatedContentScope = animatedContentScope
+            animatedVisibilityScope = animatedContentScope
           )
         }
       },
@@ -130,7 +130,7 @@ class ArtistScreenTest {
             viewModel = viewModel,
             onArtistLoadMoreTap = {},
             onBackPressed = {},
-            animatedContentScope = animatedContentScope,
+            animatedVisibilityScope = animatedContentScope,
             id = ""
           )
         }

@@ -139,7 +139,9 @@ class TopArtistsScreenTest {
             onArtistTap = { _, _ -> },
             topAppBarScrollBehavior = rememberSunsetTopAppBarScrollBehavior(),
             animatedContentScope = animatedContentScope,
-            sharedTransitionScope = this
+            sharedTransitionScope = this,
+            artistViewModelProvider = { mockk(relaxed = true) },
+            navigateToWebView = {}
           )
         }
       },
@@ -162,7 +164,9 @@ class TopArtistsScreenTest {
             onArtistTap = { _, _ -> },
             topAppBarScrollBehavior = rememberSunsetTopAppBarScrollBehavior(),
             animatedContentScope = animatedContentScope,
-            sharedTransitionScope = this
+            sharedTransitionScope = this,
+            artistViewModelProvider = { mockk(relaxed = true) },
+            navigateToWebView = {}
           )
         }
       },
@@ -186,7 +190,9 @@ class TopArtistsScreenTest {
             onArtistTap = { _, _ -> },
             topAppBarScrollBehavior = rememberSunsetTopAppBarScrollBehavior(),
             animatedContentScope = animatedContentScope,
-            sharedTransitionScope = this
+            sharedTransitionScope = this,
+            artistViewModelProvider = { mockk(relaxed = true) },
+            navigateToWebView = {}
           )
         }
       },
