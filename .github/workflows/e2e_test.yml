@@ -15,6 +15,7 @@ env:
 
 jobs:
   e2e:
+    name: E2E (${{ matrix.artifact-suffix }})
     runs-on: ubuntu-latest
     timeout-minutes: 20
     strategy:
@@ -22,11 +23,9 @@ jobs:
       matrix:
         include:
           - device: pixel6Api35
-            cache-key: gmd-pixel6-api35-google-x86_64-v1
             script: scripts/run_e2e_phone.sh
             artifact-suffix: phone
           - device: pixelTabletApi35
-            cache-key: gmd-pixel-tablet-api35-aosp-atd-x86_64-v1
             script: scripts/run_e2e_tablet.sh
             artifact-suffix: tablet
 
@@ -53,15 +52,6 @@ jobs:
           ls -1 "$ANDROID_HOME" 2>/dev/null || echo "(no SDK dir)"
           ls -1 "$ANDROID_HOME/system-images" 2>/dev/null || echo "(no system-images yet)"
           ls -1 ~/.android/avd 2>/dev/null || echo "(no AVD yet)"
-
-      - name: GMD cache
-        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
-        with:
-          path: |
-            ~/.android/avd
-            ~/.android/adb*
-            /usr/local/lib/android/sdk/system-images
-          key: ${{ matrix.cache-key }}
 
       - name: Build debug APK & androidTest APK
         run: ./gradlew :app:assembleDebug :app:assembleDebugAndroidTest
