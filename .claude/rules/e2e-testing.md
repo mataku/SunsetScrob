@@ -29,9 +29,13 @@ downloads the system image and creates the AVD; subsequent runs reuse it.
 
 ## `@LargeScreenE2E` — tablet-only tests
 
-Tests annotated `@com.mataku.scrobscrob.test_helper.integration.LargeScreenE2E`
+Tests annotated `@com.mataku.scrobscrob.app.testing.LargeScreenE2E`
 require a tablet-sized device and would otherwise fail / no-op on the
-phone GMD. The `defaultConfig` in `ApplicationConventionPlugin.kt` toggles
+phone GMD. The annotation lives in the app's androidTest source set
+(`app/src/androidTest/.../LargeScreenE2E.kt`) — NOT in
+`:test_helper:integration`. Pulling that module onto the androidTest
+classpath would drag Robolectric / Roborazzi onto the real-emulator
+classpath and break Espresso's idle checks. The `defaultConfig` in `ApplicationConventionPlugin.kt` toggles
 `testInstrumentationRunnerArguments` based on the Gradle property
 `includeLargeScreenE2E`:
 

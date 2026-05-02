@@ -78,10 +78,10 @@ class ApplicationConventionPlugin : Plugin<Project> {
           testInstrumentationRunner = "com.mataku.scrobscrob.app.testing.MetroTestRunner"
           if (project.hasProperty("includeLargeScreenE2E")) {
             testInstrumentationRunnerArguments["annotation"] =
-              "com.mataku.scrobscrob.test_helper.integration.LargeScreenE2E"
+              "com.mataku.scrobscrob.app.testing.LargeScreenE2E"
           } else {
             testInstrumentationRunnerArguments["notAnnotation"] =
-              "com.mataku.scrobscrob.test_helper.integration.LargeScreenE2E"
+              "com.mataku.scrobscrob.app.testing.LargeScreenE2E"
           }
           proguardFiles(
             getDefaultProguardFile("proguard-android-optimize.txt"),

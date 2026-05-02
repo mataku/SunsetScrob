@@ -14,7 +14,6 @@ import androidx.compose.ui.test.performTextInput
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
 import com.mataku.scrobscrob.app.ui.top.MainActivity
-import com.mataku.scrobscrob.test_helper.integration.LargeScreenE2E
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
