@@ -25,11 +25,12 @@ import com.mataku.scrobscrob.scrobble.ui.component.Scrobble
 import com.mataku.scrobscrob.scrobble.ui.navigation.TrackDetailKey
 import com.mataku.scrobscrob.scrobble.ui.viewmodel.ScrobbleViewModel
 import com.mataku.scrobscrob.scrobble.ui.viewmodel.TrackViewModel
+import com.mataku.scrobscrob.ui_common.component.InfiniteLoadingIndicator
+import com.mataku.scrobscrob.ui_common.component.LoadingIndicator
 import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetListDetailScaffold
 import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetPullToRefreshBox
 import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetTopAppBarScrollBehavior
 import com.mataku.scrobscrob.ui_common.component.designsystem.rememberSunsetListDetailScaffoldState
-import com.mataku.scrobscrob.ui_common.component.InfiniteLoadingIndicator
 import com.mataku.scrobscrob.ui_common.style.isCompactWidth
 import kotlinx.collections.immutable.ImmutableList
 
@@ -47,75 +48,81 @@ fun ScrobbleScreen(
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
   val lazyListState = rememberLazyListState()
 
-  if (isCompactWidth()) {
-    SunsetPullToRefreshBox(
-      isRefreshing = uiState.isRefreshing,
-      onRefresh = viewModel::refresh,
-      modifier = modifier.fillMaxSize()
-    ) {
-      ScrobbleContent(
-        lazyListState = lazyListState,
-        recentTracks = uiState.recentTracks,
-        hasNext = uiState.hasNext,
-        onScrobbleTap = navigateToTrackDetail,
-        onScrollEnd = viewModel::fetchRecentTracks,
-        scrollBehavior = topAppBarScrollBehavior,
-        sharedTransitionScope = sharedTransitionScope,
-        animatedVisibilityScope = animatedContentScope,
-      )
-    }
-  } else {
-    val scaffoldState = rememberSunsetListDetailScaffoldState<TrackDetailKey>()
-    SunsetListDetailScaffold(
-      state = scaffoldState,
-      modifier = modifier.fillMaxSize(),
-      listPane = {
-        val listPaneScope: AnimatedVisibilityScope = this
-        SunsetPullToRefreshBox(
-          isRefreshing = uiState.isRefreshing,
-          onRefresh = viewModel::refresh,
-          modifier = Modifier.fillMaxSize()
-        ) {
-          ScrobbleContent(
-            lazyListState = lazyListState,
-            recentTracks = uiState.recentTracks,
-            hasNext = uiState.hasNext,
-            onScrobbleTap = { track, id ->
-              scaffoldState.selectDetail(
-                TrackDetailKey(
-                  trackName = track.name,
-                  artistName = track.artistName,
-                  imageUrl = track.images.imageUrl() ?: "",
-                  id = id,
+  Box(modifier = modifier.fillMaxSize()) {
+    if (isCompactWidth()) {
+      SunsetPullToRefreshBox(
+        isRefreshing = uiState.isRefreshing,
+        onRefresh = viewModel::refresh,
+        modifier = Modifier.fillMaxSize()
+      ) {
+        ScrobbleContent(
+          lazyListState = lazyListState,
+          recentTracks = uiState.recentTracks,
+          hasNext = uiState.hasNext,
+          onScrobbleTap = navigateToTrackDetail,
+          onScrollEnd = viewModel::fetchRecentTracks,
+          scrollBehavior = topAppBarScrollBehavior,
+          sharedTransitionScope = sharedTransitionScope,
+          animatedVisibilityScope = animatedContentScope,
+        )
+      }
+    } else {
+      val scaffoldState = rememberSunsetListDetailScaffoldState<TrackDetailKey>()
+      SunsetListDetailScaffold(
+        state = scaffoldState,
+        modifier = Modifier.fillMaxSize(),
+        listPane = {
+          val listPaneScope: AnimatedVisibilityScope = this
+          SunsetPullToRefreshBox(
+            isRefreshing = uiState.isRefreshing,
+            onRefresh = viewModel::refresh,
+            modifier = Modifier.fillMaxSize()
+          ) {
+            ScrobbleContent(
+              lazyListState = lazyListState,
+              recentTracks = uiState.recentTracks,
+              hasNext = uiState.hasNext,
+              onScrobbleTap = { track, id ->
+                scaffoldState.selectDetail(
+                  TrackDetailKey(
+                    trackName = track.name,
+                    artistName = track.artistName,
+                    imageUrl = track.images.imageUrl() ?: "",
+                    id = id,
+                  )
                 )
-              )
-            },
-            onScrollEnd = viewModel::fetchRecentTracks,
-            scrollBehavior = topAppBarScrollBehavior,
-            sharedTransitionScope = sharedTransitionScope,
-            animatedVisibilityScope = listPaneScope,
-            useSharedElement = false,
-          )
-        }
-      },
-      detailPane = { selection: TrackDetailKey? ->
-        val detailPaneScope: AnimatedVisibilityScope = this
-        if (selection != null) {
-          with(sharedTransitionScope) {
-            TrackPaneScreen(
-              animatedVisibilityScope = detailPaneScope,
-              id = "",
-              trackName = selection.trackName,
-              artistName = selection.artistName,
-              artworkUrl = selection.imageUrl,
-              trackViewModel = trackViewModelProvider(selection),
-              navigateToWebView = navigateToWebView,
-              onBackPressed = { scaffoldState.back() },
+              },
+              onScrollEnd = viewModel::fetchRecentTracks,
+              scrollBehavior = topAppBarScrollBehavior,
+              sharedTransitionScope = sharedTransitionScope,
+              animatedVisibilityScope = listPaneScope,
+              useSharedElement = false,
             )
           }
-        }
-      },
-    )
+        },
+        detailPane = { selection: TrackDetailKey? ->
+          val detailPaneScope: AnimatedVisibilityScope = this
+          if (selection != null) {
+            with(sharedTransitionScope) {
+              TrackPaneScreen(
+                animatedVisibilityScope = detailPaneScope,
+                id = "",
+                trackName = selection.trackName,
+                artistName = selection.artistName,
+                artworkUrl = selection.imageUrl,
+                trackViewModel = trackViewModelProvider(selection),
+                navigateToWebView = navigateToWebView,
+                onBackPressed = { scaffoldState.back() },
+              )
+            }
+          }
+        },
+      )
+    }
+
+    if (uiState.isLoading && uiState.recentTracks.isEmpty()) {
+      LoadingIndicator(modifier = Modifier.align(Alignment.Center))
+    }
   }
 }
 
