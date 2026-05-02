@@ -94,6 +94,7 @@ fun ScrobbleScreen(
             scrollBehavior = topAppBarScrollBehavior,
             sharedTransitionScope = sharedTransitionScope,
             animatedVisibilityScope = listPaneScope,
+            useSharedElement = false,
           )
         }
       },
@@ -103,7 +104,7 @@ fun ScrobbleScreen(
           with(sharedTransitionScope) {
             TrackPaneScreen(
               animatedVisibilityScope = detailPaneScope,
-              id = selection.id,
+              id = "",
               trackName = selection.trackName,
               artistName = selection.artistName,
               artworkUrl = selection.imageUrl,
@@ -127,7 +128,8 @@ private fun ScrobbleContent(
   hasNext: Boolean,
   onScrobbleTap: (RecentTrack, String) -> Unit,
   onScrollEnd: () -> Unit,
-  scrollBehavior: SunsetTopAppBarScrollBehavior
+  scrollBehavior: SunsetTopAppBarScrollBehavior,
+  useSharedElement: Boolean = true,
 ) {
   LazyColumn(
     state = lazyListState,
@@ -147,6 +149,7 @@ private fun ScrobbleContent(
         } else {
           "scrobble_${index}${track.hashCode()}"
         }
+        val sharedElementId = if (useSharedElement) id else ""
         Scrobble(
           recentTrack = track,
           onScrobbleTap = {
@@ -156,7 +159,7 @@ private fun ScrobbleContent(
           },
           sharedTransitionScope = sharedTransitionScope,
           animatedVisibilityScope = animatedVisibilityScope,
-          id = id,
+          id = sharedElementId,
         )
       }
       if (hasNext && recentTracks.isNotEmpty()) {

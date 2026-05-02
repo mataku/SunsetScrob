@@ -90,6 +90,7 @@ fun TopArtistsScreen(
             )
           },
           topAppBarScrollBehavior = topAppBarScrollBehavior,
+          useSharedElement = false,
           modifier = Modifier,
         )
       },
@@ -99,7 +100,7 @@ fun TopArtistsScreen(
           with(sharedTransitionScope) {
             ArtistPaneScreen(
               animatedVisibilityScope = detailPaneScope,
-              id = selection.contentId,
+              id = "",
               viewModel = artistViewModelProvider(selection),
               onArtistLoadMoreTap = { url ->
                 if (url.isNotEmpty()) navigateToWebView(url)
@@ -121,6 +122,7 @@ private fun TopArtistsCompact(
   viewModel: TopArtistsViewModel,
   onArtistTap: (TopArtistInfo, String) -> Unit,
   topAppBarScrollBehavior: SunsetTopAppBarScrollBehavior,
+  useSharedElement: Boolean = true,
   modifier: Modifier = Modifier,
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -151,6 +153,7 @@ private fun TopArtistsCompact(
       onArtistTap = onArtistTap,
       onScrollEnd = viewModel::fetchTopArtists,
       maxSpanCount = if (orientation == Configuration.ORIENTATION_LANDSCAPE) 4 else 2,
+      useSharedElement = useSharedElement,
       modifier = Modifier
         .fillMaxSize()
         .nestedScroll(topAppBarScrollBehavior.nestedScrollConnection),
@@ -191,6 +194,7 @@ private fun TopArtistsContent(
   maxSpanCount: Int,
   onArtistTap: (TopArtistInfo, String) -> Unit,
   onScrollEnd: () -> Unit,
+  useSharedElement: Boolean = true,
   modifier: Modifier = Modifier,
 ) {
   LazyVerticalGrid(
@@ -212,13 +216,14 @@ private fun TopArtistsContent(
         } else {
           "top_artist_${index}${artist.hashCode()}"
         }
+        val sharedElementId = if (useSharedElement) id else ""
         TopArtist(
           artist = artist,
           onArtistTap = { onArtistTap.invoke(artist, id) },
           modifier = Modifier.fillMaxWidth(),
           sharedTransitionScope = sharedTransitionScope,
           animatedVisibilityScope = animatedVisibilityScope,
-          id = id,
+          id = sharedElementId,
           imageUrl = imageUrl ?: "",
         )
       }

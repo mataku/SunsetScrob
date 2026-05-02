@@ -90,6 +90,7 @@ fun TopAlbumsScreen(
             )
           },
           topAppBarScrollBehavior = topAppBarScrollBehavior,
+          useSharedElement = false,
           modifier = Modifier,
         )
       },
@@ -99,7 +100,7 @@ fun TopAlbumsScreen(
           with(sharedTransitionScope) {
             AlbumPaneScreen(
               animatedVisibilityScope = detailPaneScope,
-              id = selection.contentId,
+              id = "",
               viewModel = albumViewModelProvider(selection),
               onAlbumLoadMoreTap = { url ->
                 if (url.isNotEmpty()) navigateToWebView(url)
@@ -121,6 +122,7 @@ private fun TopAlbumsCompact(
   viewModel: TopAlbumsViewModel,
   onAlbumTap: (TopAlbumInfo, String) -> Unit,
   topAppBarScrollBehavior: SunsetTopAppBarScrollBehavior,
+  useSharedElement: Boolean = true,
   modifier: Modifier = Modifier,
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -153,6 +155,7 @@ private fun TopAlbumsCompact(
       onScrollEnd = viewModel::fetchAlbums,
       maxSpanCount = if (orientation == Configuration.ORIENTATION_LANDSCAPE) 4 else 2,
       onAlbumTap = onAlbumTap,
+      useSharedElement = useSharedElement,
       modifier = Modifier.nestedScroll(topAppBarScrollBehavior.nestedScrollConnection),
     )
 
@@ -192,6 +195,7 @@ private fun TopAlbumsContent(
   maxSpanCount: Int,
   onAlbumTap: (TopAlbumInfo, String) -> Unit,
   onScrollEnd: () -> Unit,
+  useSharedElement: Boolean = true,
   modifier: Modifier = Modifier,
 ) {
   LazyVerticalGrid(
@@ -208,12 +212,13 @@ private fun TopAlbumsContent(
         } else {
           "top_album_${index}${album.hashCode()}"
         }
+        val sharedElementId = if (useSharedElement) id else ""
         TopAlbum(
           album = album,
           onAlbumTap = { onAlbumTap(album, id) },
           sharedTransitionScope = sharedTransitionScope,
           animatedVisibilityScope = animatedVisibilityScope,
-          id = id,
+          id = sharedElementId,
         )
       }
 
