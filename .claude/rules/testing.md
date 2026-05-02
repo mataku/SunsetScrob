@@ -16,6 +16,25 @@ paths:
 
 One test file per class under test.
 
+## Run new or modified tests before committing
+
+When you add or modify a test, run it locally before committing — for
+**every** test type, including slow Gradle-Managed-Device instrumentation
+tests. Compile-only verification (`assembleDebugAndroidTest`) is not a
+substitute: it only proves the test class builds, not that it passes on a
+real device.
+
+A single GMD run takes ~5–15 minutes once the system image is cached;
+debugging a broken commit after the fact (failure surfaces in CI or via
+the user, root-cause hunt, follow-up commit) costs more than that. Skip
+the local run only with explicit user permission and only when the test
+itself is not the change under verification.
+
+Pair this with the verification commands in the path-scoped guides:
+- VRT: `./gradlew verifyRoborazziDebug --no-configuration-cache -PonlyScreenshotTest=true`
+- E2E (phone): `./gradlew :app:pixel6Api35DebugAndroidTest`
+- E2E (tablet, `@LargeScreenE2E`): `./gradlew :app:pixelTabletApi35DebugAndroidTest -PincludeLargeScreenE2E=true`
+
 ## Unit Test
 
 Uses Kotest + MockK.
