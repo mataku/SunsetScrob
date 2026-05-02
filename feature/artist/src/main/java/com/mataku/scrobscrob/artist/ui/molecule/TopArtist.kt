@@ -1,6 +1,6 @@
 package com.mataku.scrobscrob.artist.ui.molecule
 
-import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -27,7 +27,7 @@ import com.mataku.scrobscrob.ui_common.style.onSecondaryColor
 @Composable
 internal fun TopArtist(
   sharedTransitionScope: SharedTransitionScope,
-  animatedContentScope: AnimatedContentScope,
+  animatedVisibilityScope: AnimatedVisibilityScope,
   id: String,
   artist: TopArtistInfo,
   imageUrl: String,
@@ -60,7 +60,7 @@ internal fun TopArtist(
                   sharedContentState = sharedTransitionScope.rememberSharedContentState(
                     key = id,
                   ),
-                  animatedVisibilityScope = animatedContentScope,
+                  animatedVisibilityScope = animatedVisibilityScope,
                   renderInOverlayDuringTransition = false,
                 )
             }

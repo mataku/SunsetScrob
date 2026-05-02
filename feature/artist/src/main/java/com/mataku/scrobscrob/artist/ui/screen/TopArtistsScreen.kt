@@ -177,7 +177,7 @@ private fun TopArtistsContent(
           modifier = Modifier
             .fillMaxWidth(),
           sharedTransitionScope = sharedTransitionScope,
-          animatedContentScope = animatedContentScope,
+          animatedVisibilityScope = animatedContentScope,
           id = id,
           imageUrl = imageUrl ?: ""
         )
