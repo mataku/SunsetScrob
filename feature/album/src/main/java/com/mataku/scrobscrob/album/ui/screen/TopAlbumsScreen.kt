@@ -171,7 +171,7 @@ private fun TopAlbumsContent(
             onAlbumTap.invoke(album, id)
           },
           sharedTransitionScope = sharedTransitionScope,
-          animatedContentScope = animatedContentScope,
+          animatedVisibilityScope = animatedContentScope,
           id = id
         )
       }
