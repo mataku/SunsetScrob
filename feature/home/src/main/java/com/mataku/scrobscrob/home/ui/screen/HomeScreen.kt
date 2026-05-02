@@ -17,7 +17,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mataku.scrobscrob.album.ui.navigation.AlbumKey
 import com.mataku.scrobscrob.album.ui.screen.TopAlbumsScreen
 import com.mataku.scrobscrob.album.ui.viewmodel.AlbumViewModel
+import com.mataku.scrobscrob.artist.ui.navigation.ArtistKey
 import com.mataku.scrobscrob.artist.ui.screen.TopArtistsScreen
+import com.mataku.scrobscrob.artist.ui.viewmodel.ArtistViewModel
 import com.mataku.scrobscrob.core.entity.RecentTrack
 import com.mataku.scrobscrob.core.entity.TopAlbumInfo
 import com.mataku.scrobscrob.core.entity.TopArtistInfo
@@ -45,6 +47,7 @@ internal fun HomeScreen(
   trackViewModelProvider: @Composable (TrackDetailKey) -> TrackViewModel,
   navigateToWebView: (String) -> Unit,
   albumViewModelProvider: @Composable (AlbumKey) -> AlbumViewModel,
+  artistViewModelProvider: @Composable (ArtistKey) -> ArtistViewModel,
   navigateToArtistDetail: (TopArtistInfo, String) -> Unit,
   navigateToAlbumDetail: (TopAlbumInfo, String) -> Unit,
   navigateToLogin: () -> Unit,
@@ -128,9 +131,11 @@ internal fun HomeScreen(
             TopArtistsScreen(
               viewModel = metroViewModel(key = "artist"),
               onArtistTap = navigateToArtistDetail,
+              artistViewModelProvider = artistViewModelProvider,
+              navigateToWebView = navigateToWebView,
               topAppBarScrollBehavior = scrollBehavior,
               sharedTransitionScope = sharedTransitionScope,
-              animatedContentScope = animatedContentScope
+              animatedContentScope = animatedContentScope,
             )
           }
 
