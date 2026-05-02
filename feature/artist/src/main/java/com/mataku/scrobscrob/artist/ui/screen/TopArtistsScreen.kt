@@ -101,7 +101,9 @@ fun TopArtistsScreen(
               animatedVisibilityScope = detailPaneScope,
               id = selection.contentId,
               viewModel = artistViewModelProvider(selection),
-              onArtistLoadMoreTap = { url -> navigateToWebView(url) },
+              onArtistLoadMoreTap = { url ->
+                if (url.isNotEmpty()) navigateToWebView(url)
+              },
               onBackPressed = { scaffoldState.back() },
             )
           }

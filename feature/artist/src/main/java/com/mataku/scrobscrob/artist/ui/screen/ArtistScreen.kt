@@ -164,41 +164,11 @@ private fun SharedTransitionScope.ArtistContent(
       }
     },
     sheetContent = {
-      Column(
-        modifier = Modifier
-          .fillMaxWidth()
-          .fillMaxHeight(fraction = 0.9F)
-          .verticalScroll(rememberScrollState())
-      ) {
-        val stats = artistInfo?.stats
-        ArtistDetail(
-          artistName = artistName,
-          listeners = stats?.listeners,
-          playCount = stats?.playCount,
-          modifier = Modifier
-            .padding(16.dp)
-        )
-
-        artistInfo?.let { artistInfo ->
-          TopTags(
-            tagList = artistInfo.tags,
-            modifier = Modifier.padding(
-              vertical = 16.dp
-            )
-          )
-          SunsetHorizontalDivider()
-
-          artistInfo.wiki?.let {
-            WikiCell(
-              wiki = it,
-              name = artistName,
-              onUrlTap = onArtistLoadMoreTap,
-              modifier = Modifier
-                .padding(16.dp)
-            )
-          }
-        }
-      }
+      ArtistDetailContent(
+        artistName = artistName,
+        artistInfo = artistInfo,
+        onArtistLoadMoreTap = onArtistLoadMoreTap,
+      )
     },
   )
 }
@@ -242,37 +212,11 @@ private fun SharedTransitionScope.ArtistPaneContent(
     sheetPeekHeight = 280.dp,
     sheetContainerColor = LocalAppTheme.current.backgroundColor().copy(alpha = 0.85f),
     sheetContent = {
-      Column(
-        modifier = Modifier
-          .fillMaxWidth()
-          .fillMaxHeight(fraction = 0.9F)
-          .verticalScroll(rememberScrollState())
-      ) {
-        val stats = artistInfo?.stats
-        ArtistDetail(
-          artistName = artistName,
-          listeners = stats?.listeners,
-          playCount = stats?.playCount,
-          modifier = Modifier.padding(16.dp),
-        )
-
-        artistInfo?.let { info ->
-          TopTags(
-            tagList = info.tags,
-            modifier = Modifier.padding(vertical = 16.dp),
-          )
-          SunsetHorizontalDivider()
-
-          info.wiki?.let {
-            WikiCell(
-              wiki = it,
-              name = artistName,
-              onUrlTap = onArtistLoadMoreTap,
-              modifier = Modifier.padding(16.dp),
-            )
-          }
-        }
-      }
+      ArtistDetailContent(
+        artistName = artistName,
+        artistInfo = artistInfo,
+        onArtistLoadMoreTap = onArtistLoadMoreTap,
+      )
     },
     content = {
       Box(modifier = Modifier.fillMaxSize()) {
@@ -321,6 +265,45 @@ private fun SharedTransitionScope.ArtistPaneContent(
       }
     },
   )
+}
+
+@Composable
+private fun ArtistDetailContent(
+  artistName: String,
+  artistInfo: ArtistInfo?,
+  onArtistLoadMoreTap: (String) -> Unit,
+) {
+  Column(
+    modifier = Modifier
+      .fillMaxWidth()
+      .fillMaxHeight(fraction = 0.9F)
+      .verticalScroll(rememberScrollState())
+  ) {
+    val stats = artistInfo?.stats
+    ArtistDetail(
+      artistName = artistName,
+      listeners = stats?.listeners,
+      playCount = stats?.playCount,
+      modifier = Modifier.padding(16.dp),
+    )
+
+    artistInfo?.let { info ->
+      TopTags(
+        tagList = info.tags,
+        modifier = Modifier.padding(vertical = 16.dp),
+      )
+      SunsetHorizontalDivider()
+
+      info.wiki?.let {
+        WikiCell(
+          wiki = it,
+          name = artistName,
+          onUrlTap = onArtistLoadMoreTap,
+          modifier = Modifier.padding(16.dp),
+        )
+      }
+    }
+  }
 }
 
 @Composable
