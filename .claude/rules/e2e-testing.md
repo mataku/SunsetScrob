@@ -18,13 +18,40 @@ Lives in `app/src/androidTest/`. Runs weekly on CI via
 | Action | Command |
 |--------|---------|
 | Run locally on a connected emulator | `./gradlew :app:connectedDebugAndroidTest` |
-| Run locally on the Gradle Managed Device used by CI | `./gradlew :app:pixel6Api35DebugAndroidTest` |
+| Run locally on the phone GMD used by CI | `./gradlew :app:pixel6Api35DebugAndroidTest` |
+| Run only the tablet (`@LargeScreenE2E`) tests on the tablet GMD | `./gradlew :app:pixelTabletApi35DebugAndroidTest -PincludeLargeScreenE2E=true` |
 | Build the test APK only | `./gradlew :app:assembleDebugAndroidTest` |
 
-The `pixel6Api35` device is declared in `app/build.gradle.kts` via
-`testOptions.managedDevices.allDevices` (Pixel 6, API 35, Google APIs x86_64).
-First local run downloads the system image and creates the AVD; subsequent
-runs reuse it.
+`pixel6Api35` and `pixelTabletApi35` are declared in
+`ApplicationConventionPlugin.kt` via `testOptions.managedDevices.allDevices`
+(Pixel 6 / Pixel Tablet, API 35, AOSP-ATD x86_64). First local run
+downloads the system image and creates the AVD; subsequent runs reuse it.
+
+## `@LargeScreenE2E` — tablet-only tests
+
+Tests annotated `@com.mataku.scrobscrob.test_helper.integration.LargeScreenE2E`
+require a tablet-sized device and would otherwise fail / no-op on the
+phone GMD. The `defaultConfig` in `ApplicationConventionPlugin.kt` toggles
+`testInstrumentationRunnerArguments` based on the Gradle property
+`includeLargeScreenE2E`:
+
+- **default** (no property): `notAnnotation = ...LargeScreenE2E` —
+  excludes large-screen tests, so the phone CI run keeps working.
+- **`-PincludeLargeScreenE2E=true`**: `annotation = ...LargeScreenE2E` —
+  includes only large-screen tests. Pair with the tablet GMD task.
+
+Inside the test class, request landscape via UiAutomator before
+composition reads window dimensions:
+
+```kotlin
+@Before
+fun setUp() {
+  val device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
+  device.setOrientationLandscape()
+}
+```
+
+Reference: `app/src/androidTest/java/.../LargeScreenSmokeTest.kt`.
 
 ### Avoid overwriting your locally-installed dev app
 
