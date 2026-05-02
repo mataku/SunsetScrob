@@ -122,8 +122,8 @@ private fun TopArtistsCompact(
   viewModel: TopArtistsViewModel,
   onArtistTap: (TopArtistInfo, String) -> Unit,
   topAppBarScrollBehavior: SunsetTopAppBarScrollBehavior,
-  useSharedElement: Boolean = true,
   modifier: Modifier = Modifier,
+  useSharedElement: Boolean = true,
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
   val bottomSheetState = rememberSunsetModalBottomSheetState()
@@ -194,8 +194,8 @@ private fun TopArtistsContent(
   maxSpanCount: Int,
   onArtistTap: (TopArtistInfo, String) -> Unit,
   onScrollEnd: () -> Unit,
-  useSharedElement: Boolean = true,
   modifier: Modifier = Modifier,
+  useSharedElement: Boolean = true,
 ) {
   LazyVerticalGrid(
     contentPadding = PaddingValues(horizontal = 8.dp, vertical = 16.dp),

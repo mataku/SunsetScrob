@@ -122,8 +122,8 @@ private fun TopAlbumsCompact(
   viewModel: TopAlbumsViewModel,
   onAlbumTap: (TopAlbumInfo, String) -> Unit,
   topAppBarScrollBehavior: SunsetTopAppBarScrollBehavior,
-  useSharedElement: Boolean = true,
   modifier: Modifier = Modifier,
+  useSharedElement: Boolean = true,
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -195,8 +195,8 @@ private fun TopAlbumsContent(
   maxSpanCount: Int,
   onAlbumTap: (TopAlbumInfo, String) -> Unit,
   onScrollEnd: () -> Unit,
-  useSharedElement: Boolean = true,
   modifier: Modifier = Modifier,
+  useSharedElement: Boolean = true,
 ) {
   LazyVerticalGrid(
     contentPadding = PaddingValues(horizontal = 8.dp, vertical = 16.dp),
