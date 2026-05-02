@@ -51,6 +51,7 @@ fun <T : Any> SunsetListDetailScaffold(
   listPane: @Composable AnimatedVisibilityScope.() -> Unit,
   detailPane: @Composable AnimatedVisibilityScope.(T?) -> Unit,
   modifier: Modifier = Modifier,
+  listPaneProportion: Float = 0.4f,
 ) {
   BackHandler(enabled = state.selection != null) {
     state.back()
@@ -84,7 +85,7 @@ fun <T : Any> SunsetListDetailScaffold(
     directive = effectiveDirective,
     value = effectiveValue,
     listPane = {
-      AnimatedPane {
+      AnimatedPane(modifier = Modifier.preferredWidth(listPaneProportion)) {
         listPane()
       }
     },
