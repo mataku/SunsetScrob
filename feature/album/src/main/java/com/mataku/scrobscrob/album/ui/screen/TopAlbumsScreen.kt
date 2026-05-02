@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -26,18 +27,23 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mataku.scrobscrob.album.ui.molecule.TopAlbum
+import com.mataku.scrobscrob.album.ui.navigation.AlbumKey
+import com.mataku.scrobscrob.album.ui.viewmodel.AlbumViewModel
 import com.mataku.scrobscrob.album.ui.viewmodel.TopAlbumsViewModel
 import com.mataku.scrobscrob.core.entity.TopAlbumInfo
 import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.core.entity.isInvalidArtwork
+import com.mataku.scrobscrob.ui_common.component.FilteringBottomSheet
+import com.mataku.scrobscrob.ui_common.component.FilteringFloatingButton
+import com.mataku.scrobscrob.ui_common.component.InfiniteLoadingIndicator
+import com.mataku.scrobscrob.ui_common.component.LoadingIndicator
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetListDetailScaffold
 import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetModalBottomSheet
 import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetScaffold
 import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetTopAppBarScrollBehavior
-import com.mataku.scrobscrob.ui_common.component.FilteringFloatingButton
-import com.mataku.scrobscrob.ui_common.component.LoadingIndicator
-import com.mataku.scrobscrob.ui_common.component.FilteringBottomSheet
+import com.mataku.scrobscrob.ui_common.component.designsystem.rememberSunsetListDetailScaffoldState
 import com.mataku.scrobscrob.ui_common.component.designsystem.rememberSunsetModalBottomSheetState
-import com.mataku.scrobscrob.ui_common.component.InfiniteLoadingIndicator
+import com.mataku.scrobscrob.ui_common.style.isCompactWidth
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.launch
 
@@ -48,72 +54,121 @@ fun TopAlbumsScreen(
   animatedContentScope: AnimatedContentScope,
   viewModel: TopAlbumsViewModel,
   navigateToAlbumInfo: (TopAlbumInfo, String) -> Unit,
+  albumViewModelProvider: @Composable (AlbumKey) -> AlbumViewModel,
+  navigateToWebView: (String) -> Unit,
   topAppBarScrollBehavior: SunsetTopAppBarScrollBehavior,
-  modifier: Modifier = Modifier
+  modifier: Modifier = Modifier,
+) {
+  if (isCompactWidth()) {
+    TopAlbumsCompact(
+      sharedTransitionScope = sharedTransitionScope,
+      animatedVisibilityScope = animatedContentScope,
+      viewModel = viewModel,
+      onAlbumTap = navigateToAlbumInfo,
+      topAppBarScrollBehavior = topAppBarScrollBehavior,
+      modifier = modifier,
+    )
+  } else {
+    val scaffoldState = rememberSunsetListDetailScaffoldState<AlbumKey>()
+    SunsetListDetailScaffold(
+      state = scaffoldState,
+      modifier = modifier.fillMaxSize(),
+      listPane = {
+        val listPaneScope: AnimatedVisibilityScope = this
+        TopAlbumsCompact(
+          sharedTransitionScope = sharedTransitionScope,
+          animatedVisibilityScope = listPaneScope,
+          viewModel = viewModel,
+          onAlbumTap = { album, id ->
+            scaffoldState.selectDetail(
+              AlbumKey(
+                albumName = album.title,
+                artistName = album.artist,
+                artworkUrl = album.imageList.imageUrl() ?: "",
+                contentId = id,
+              )
+            )
+          },
+          topAppBarScrollBehavior = topAppBarScrollBehavior,
+          useSharedElement = false,
+          modifier = Modifier,
+        )
+      },
+      detailPane = { selection: AlbumKey? ->
+        val detailPaneScope: AnimatedVisibilityScope = this
+        if (selection != null) {
+          with(sharedTransitionScope) {
+            AlbumPaneScreen(
+              animatedVisibilityScope = detailPaneScope,
+              id = "",
+              viewModel = albumViewModelProvider(selection),
+              onAlbumLoadMoreTap = { url ->
+                if (url.isNotEmpty()) navigateToWebView(url)
+              },
+              onBackPressed = { scaffoldState.back() },
+            )
+          }
+        }
+      },
+    )
+  }
+}
+
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@Composable
+private fun TopAlbumsCompact(
+  sharedTransitionScope: SharedTransitionScope,
+  animatedVisibilityScope: AnimatedVisibilityScope,
+  viewModel: TopAlbumsViewModel,
+  onAlbumTap: (TopAlbumInfo, String) -> Unit,
+  topAppBarScrollBehavior: SunsetTopAppBarScrollBehavior,
+  modifier: Modifier = Modifier,
+  useSharedElement: Boolean = true,
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-  var showBottomSheet by remember {
-    mutableStateOf(false)
-  }
+  var showBottomSheet by remember { mutableStateOf(false) }
   val bottomSheetState = rememberSunsetModalBottomSheetState()
   val coroutineScope = rememberCoroutineScope()
   val configuration = LocalConfiguration.current
-  val orientation = remember {
-    configuration.orientation
-  }
+  val orientation = remember { configuration.orientation }
+
   BackHandler(bottomSheetState.isVisible) {
-    coroutineScope.launch {
-      bottomSheetState.hide()
-    }
+    coroutineScope.launch { bottomSheetState.hide() }
   }
 
   SunsetScaffold(
     floatingActionButton = {
       FilteringFloatingButton(
         onClick = {
-          coroutineScope.launch {
-            showBottomSheet = true
-          }
+          coroutineScope.launch { showBottomSheet = true }
         },
-        modifier = modifier
-          .offset(
-            y = (-64).dp
-          )
+        modifier = modifier.offset(y = (-64).dp),
       )
-    }
+    },
   ) {
     TopAlbumsContent(
       sharedTransitionScope = sharedTransitionScope,
-      animatedContentScope = animatedContentScope,
+      animatedVisibilityScope = animatedVisibilityScope,
       albums = uiState.topAlbums,
       hasNext = uiState.hasNext,
       onScrollEnd = viewModel::fetchAlbums,
-      maxSpanCount = if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-        4
-      } else {
-        2
-      },
-      onAlbumTap = navigateToAlbumInfo,
-      modifier = Modifier
-        .nestedScroll(topAppBarScrollBehavior.nestedScrollConnection)
+      maxSpanCount = if (orientation == Configuration.ORIENTATION_LANDSCAPE) 4 else 2,
+      onAlbumTap = onAlbumTap,
+      useSharedElement = useSharedElement,
+      modifier = Modifier.nestedScroll(topAppBarScrollBehavior.nestedScrollConnection),
     )
 
     if (showBottomSheet) {
       SunsetModalBottomSheet(
-        onDismissRequest = {
-          showBottomSheet = false
-        },
+        onDismissRequest = { showBottomSheet = false },
         sheetState = bottomSheetState,
       ) {
         FilteringBottomSheet(
           selectedTimeRangeFiltering = uiState.timeRangeFiltering,
           onClick = {
-            coroutineScope.launch {
-              bottomSheetState.hide()
-            }.invokeOnCompletion {
-              showBottomSheet = false
-            }
+            coroutineScope.launch { bottomSheetState.hide() }
+              .invokeOnCompletion { showBottomSheet = false }
             viewModel.updateTimeRange(it)
           },
         )
@@ -124,11 +179,9 @@ fun TopAlbumsScreen(
   if (uiState.isLoading && uiState.topAlbums.isEmpty()) {
     Box(
       modifier = Modifier.fillMaxSize(),
-      contentAlignment = Alignment.Center
+      contentAlignment = Alignment.Center,
     ) {
-      LoadingIndicator(
-        modifier = Modifier
-      )
+      LoadingIndicator(modifier = Modifier)
     }
   }
 }
@@ -136,61 +189,51 @@ fun TopAlbumsScreen(
 @Composable
 private fun TopAlbumsContent(
   sharedTransitionScope: SharedTransitionScope,
-  animatedContentScope: AnimatedContentScope,
+  animatedVisibilityScope: AnimatedVisibilityScope,
   albums: ImmutableList<TopAlbumInfo>,
   hasNext: Boolean,
   maxSpanCount: Int,
   onAlbumTap: (TopAlbumInfo, String) -> Unit,
   onScrollEnd: () -> Unit,
-  modifier: Modifier = Modifier
+  modifier: Modifier = Modifier,
+  useSharedElement: Boolean = true,
 ) {
   LazyVerticalGrid(
-    contentPadding = PaddingValues(
-      horizontal = 8.dp,
-      vertical = 16.dp
-    ),
+    contentPadding = PaddingValues(horizontal = 8.dp, vertical = 16.dp),
     columns = GridCells.Fixed(maxSpanCount),
     content = {
       itemsIndexed(
         items = albums,
-        key = { _, album ->
-          "${album.hashCode()}"
-        },
-        contentType = { _, _ ->
-          "top_albums"
-        }
+        key = { _, album -> "${album.hashCode()}" },
+        contentType = { _, _ -> "top_albums" },
       ) { index, album ->
         val id = if (album.imageList.imageUrl().isInvalidArtwork()) {
           ""
         } else {
           "top_album_${index}${album.hashCode()}"
         }
+        val sharedElementId = if (useSharedElement) id else ""
         TopAlbum(
           album = album,
-          onAlbumTap = {
-            onAlbumTap.invoke(album, id)
-          },
+          onAlbumTap = { onAlbumTap(album, id) },
           sharedTransitionScope = sharedTransitionScope,
-          animatedContentScope = animatedContentScope,
-          id = id
+          animatedVisibilityScope = animatedVisibilityScope,
+          id = sharedElementId,
         )
       }
 
       if (hasNext && albums.isNotEmpty()) {
         item(
           key = "top_albums_loading",
-          span = {
-            GridItemSpan(maxLineSpan)
-          },
+          span = { GridItemSpan(maxLineSpan) },
         ) {
           InfiniteLoadingIndicator(
             onScrollEnd = onScrollEnd,
-            modifier = Modifier
+            modifier = Modifier,
           )
         }
       }
     },
-    modifier = modifier
-      .fillMaxSize()
+    modifier = modifier.fillMaxSize(),
   )
 }

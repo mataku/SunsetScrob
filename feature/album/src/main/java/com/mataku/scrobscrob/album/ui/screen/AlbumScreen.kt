@@ -1,7 +1,7 @@
 package com.mataku.scrobscrob.album.ui.screen
 
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -25,8 +26,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mataku.scrobscrob.album.ui.molecule.AlbumMetaData
@@ -36,20 +39,22 @@ import com.mataku.scrobscrob.core.entity.AlbumInfo
 import com.mataku.scrobscrob.core.entity.AlbumInfoTrack
 import com.mataku.scrobscrob.core.entity.Tag
 import com.mataku.scrobscrob.core.entity.Wiki
-import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetBottomSheet
-import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetHorizontalDivider
 import com.mataku.scrobscrob.ui_common.component.ArtworkLayerBar
 import com.mataku.scrobscrob.ui_common.component.CircleBackButton
 import com.mataku.scrobscrob.ui_common.component.SimpleWiki
-import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetImage
 import com.mataku.scrobscrob.ui_common.component.TopTags
 import com.mataku.scrobscrob.ui_common.component.WikiCell
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetBottomSheet
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetHorizontalDivider
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetImage
+import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
+import com.mataku.scrobscrob.ui_common.style.backgroundColor
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 internal fun SharedTransitionScope.AlbumScreen(
-  animatedContentScope: AnimatedContentScope,
+  animatedVisibilityScope: AnimatedVisibilityScope,
   id: String,
   viewModel: AlbumViewModel,
   onAlbumLoadMoreTap: (String) -> Unit,
@@ -59,7 +64,7 @@ internal fun SharedTransitionScope.AlbumScreen(
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
   AlbumContent(
-    animatedContentScope = animatedContentScope,
+    animatedVisibilityScope = animatedVisibilityScope,
     id = id,
     artworkUrl = uiState.preloadArtworkUrl,
     albumName = uiState.preloadAlbumName,
@@ -73,7 +78,7 @@ internal fun SharedTransitionScope.AlbumScreen(
 
 @Composable
 private fun SharedTransitionScope.AlbumContent(
-  animatedContentScope: AnimatedContentScope,
+  animatedVisibilityScope: AnimatedVisibilityScope,
   id: String,
   artworkUrl: String,
   albumName: String,
@@ -112,7 +117,7 @@ private fun SharedTransitionScope.AlbumContent(
                       sharedContentState = this@AlbumContent.rememberSharedContentState(
                         key = id
                       ),
-                      animatedVisibilityScope = animatedContentScope,
+                      animatedVisibilityScope = animatedVisibilityScope,
                       renderInOverlayDuringTransition = false,
                     )
                 }
@@ -143,9 +148,12 @@ private fun SharedTransitionScope.AlbumContent(
                   ) {
                     onBackPressed.invoke()
                   }
-                  .offset(
-                    y = 24.dp
-                  )
+                  .offset {
+                    IntOffset(
+                      x = 0,
+                      y = (24.dp).value.toInt(),
+                    )
+                  }
               )
             }
           }
@@ -242,6 +250,104 @@ private fun AlbumDetailContent(
 }
 
 @Composable
+internal fun SharedTransitionScope.AlbumPaneScreen(
+  animatedVisibilityScope: AnimatedVisibilityScope,
+  id: String,
+  viewModel: AlbumViewModel,
+  onAlbumLoadMoreTap: (String) -> Unit,
+  onBackPressed: () -> Unit,
+  modifier: Modifier = Modifier,
+) {
+  val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+  AlbumPaneContent(
+    animatedVisibilityScope = animatedVisibilityScope,
+    id = id,
+    artworkUrl = uiState.preloadArtworkUrl,
+    albumName = uiState.preloadAlbumName,
+    artistName = uiState.preloadArtistName,
+    albumInfo = uiState.albumInfo,
+    onAlbumLoadMoreTap = onAlbumLoadMoreTap,
+    onBackPressed = onBackPressed,
+    modifier = modifier,
+  )
+}
+
+@Composable
+private fun SharedTransitionScope.AlbumPaneContent(
+  animatedVisibilityScope: AnimatedVisibilityScope,
+  id: String,
+  artworkUrl: String,
+  albumName: String,
+  artistName: String,
+  albumInfo: AlbumInfo?,
+  onAlbumLoadMoreTap: (String) -> Unit,
+  onBackPressed: () -> Unit,
+  modifier: Modifier = Modifier,
+) {
+  SunsetBottomSheet(
+    modifier = modifier,
+    sheetPeekHeight = 280.dp,
+    sheetContainerColor = LocalAppTheme.current.backgroundColor().copy(alpha = 0.85f),
+    sheetContent = {
+      AlbumDetailContent(
+        albumName = albumName,
+        artistName = artistName,
+        albumInfo = albumInfo,
+        onAlbumLoadMoreTap = onAlbumLoadMoreTap,
+      )
+    },
+    content = {
+      Box(
+        modifier = Modifier.fillMaxSize()
+      ) {
+        SunsetImage(
+          imageData = artworkUrl,
+          contentDescription = "artwork image",
+          modifier = Modifier
+            .then(
+              if (id.isEmpty() || LocalInspectionMode.current) {
+                Modifier
+              } else {
+                Modifier
+                  .sharedElement(
+                    sharedContentState = this@AlbumPaneContent.rememberSharedContentState(
+                      key = id
+                    ),
+                    animatedVisibilityScope = animatedVisibilityScope,
+                    renderInOverlayDuringTransition = false,
+                  )
+              }
+            )
+            .fillMaxWidth()
+            .aspectRatio(1F),
+          contentScale = ContentScale.FillWidth,
+        )
+        if (!this@AlbumPaneContent.isTransitionActive) {
+          Column(
+            modifier = Modifier
+              .fillMaxWidth()
+              .background(color = Color.Transparent)
+          ) {
+            ArtworkLayerBar()
+            CircleBackButton(
+              modifier = Modifier
+                .padding(start = 4.dp, top = 16.dp)
+                .clickable(
+                  interactionSource = remember { MutableInteractionSource() },
+                  indication = null,
+                ) {
+                  onBackPressed.invoke()
+                }
+            )
+          }
+        }
+      }
+    },
+  )
+}
+
+@Composable
 @Preview(showBackground = true)
 private fun AlbumContentPreview() {
   SunsetThemePreview {
@@ -304,7 +410,7 @@ private fun AlbumContentPreview() {
           ),
           onAlbumLoadMoreTap = {},
           onBackPressed = {},
-          animatedContentScope = this,
+          animatedVisibilityScope = this,
           id = ""
         )
       }

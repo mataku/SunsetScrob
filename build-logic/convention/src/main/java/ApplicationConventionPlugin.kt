@@ -76,6 +76,17 @@ class ApplicationConventionPlugin : Plugin<Project> {
           versionName = appVersionName
           versionCode = generateVersionCode(appVersionName)
           testInstrumentationRunner = "com.mataku.scrobscrob.app.testing.MetroTestRunner"
+          if (project.hasProperty("includeLargeScreenE2E")) {
+            testInstrumentationRunnerArguments["annotation"] =
+              "com.mataku.scrobscrob.app.testing.LargeScreenE2E"
+          } else {
+            testInstrumentationRunnerArguments["notAnnotation"] =
+              "com.mataku.scrobscrob.app.testing.LargeScreenE2E"
+          }
+          // Required so AGP/UTP pulls files written via PlatformTestStorage
+          // (e.g. ScreenRecordRule output) back to
+          // build/outputs/managed_device_android_test_additional_output/.
+          testInstrumentationRunnerArguments["useTestStorageService"] = "true"
           proguardFiles(
             getDefaultProguardFile("proguard-android-optimize.txt"),
             "proguard-rules.pro"
@@ -83,7 +94,8 @@ class ApplicationConventionPlugin : Plugin<Project> {
         }
         sourceSets {
           getByName("androidTest") {
-            assets.srcDirs("src/test/assets", "src/androidTest/assets")
+            assets.directories.add("src/test/assets")
+            assets.directories.add("src/androidTest/assets")
           }
         }
         testOptions.managedDevices.allDevices.create(
@@ -91,6 +103,14 @@ class ApplicationConventionPlugin : Plugin<Project> {
           ManagedVirtualDevice::class.java,
         ) {
           device = "Pixel 6"
+          apiLevel = 35
+          systemImageSource = "aosp-atd"
+        }
+        testOptions.managedDevices.allDevices.create(
+          "pixelTabletApi35",
+          ManagedVirtualDevice::class.java,
+        ) {
+          device = "Pixel Tablet"
           apiLevel = 35
           systemImageSource = "aosp-atd"
         }

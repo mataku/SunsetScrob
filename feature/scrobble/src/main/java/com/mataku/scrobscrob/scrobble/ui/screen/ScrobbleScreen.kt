@@ -1,6 +1,7 @@
 package com.mataku.scrobscrob.scrobble.ui.screen
 
 import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -21,10 +22,16 @@ import com.mataku.scrobscrob.core.entity.RecentTrack
 import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.core.entity.isInvalidArtwork
 import com.mataku.scrobscrob.scrobble.ui.component.Scrobble
+import com.mataku.scrobscrob.scrobble.ui.navigation.TrackDetailKey
 import com.mataku.scrobscrob.scrobble.ui.viewmodel.ScrobbleViewModel
+import com.mataku.scrobscrob.scrobble.ui.viewmodel.TrackViewModel
+import com.mataku.scrobscrob.ui_common.component.InfiniteLoadingIndicator
+import com.mataku.scrobscrob.ui_common.component.LoadingIndicator
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetListDetailScaffold
 import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetPullToRefreshBox
 import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetTopAppBarScrollBehavior
-import com.mataku.scrobscrob.ui_common.component.InfiniteLoadingIndicator
+import com.mataku.scrobscrob.ui_common.component.designsystem.rememberSunsetListDetailScaffoldState
+import com.mataku.scrobscrob.ui_common.style.isCompactWidth
 import kotlinx.collections.immutable.ImmutableList
 
 @Composable
@@ -34,39 +41,102 @@ fun ScrobbleScreen(
   viewModel: ScrobbleViewModel,
   topAppBarScrollBehavior: SunsetTopAppBarScrollBehavior,
   navigateToTrackDetail: (RecentTrack, String) -> Unit,
+  trackViewModelProvider: @Composable (TrackDetailKey) -> TrackViewModel,
+  navigateToWebView: (String) -> Unit,
   modifier: Modifier = Modifier
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
   val lazyListState = rememberLazyListState()
 
-  SunsetPullToRefreshBox(
-    isRefreshing = uiState.isRefreshing,
-    onRefresh = viewModel::refresh,
-    modifier = modifier.fillMaxSize()
-  ) {
-    ScrobbleContent(
-      lazyListState = lazyListState,
-      recentTracks = uiState.recentTracks,
-      hasNext = uiState.hasNext,
-      onScrobbleTap = navigateToTrackDetail,
-      onScrollEnd = viewModel::fetchRecentTracks,
-      scrollBehavior = topAppBarScrollBehavior,
-      sharedTransitionScope = sharedTransitionScope,
-      animatedContentScope = animatedContentScope
-    )
+  Box(modifier = modifier.fillMaxSize()) {
+    if (isCompactWidth()) {
+      SunsetPullToRefreshBox(
+        isRefreshing = uiState.isRefreshing,
+        onRefresh = viewModel::refresh,
+        modifier = Modifier.fillMaxSize()
+      ) {
+        ScrobbleContent(
+          lazyListState = lazyListState,
+          recentTracks = uiState.recentTracks,
+          hasNext = uiState.hasNext,
+          onScrobbleTap = navigateToTrackDetail,
+          onScrollEnd = viewModel::fetchRecentTracks,
+          scrollBehavior = topAppBarScrollBehavior,
+          sharedTransitionScope = sharedTransitionScope,
+          animatedVisibilityScope = animatedContentScope,
+        )
+      }
+    } else {
+      val scaffoldState = rememberSunsetListDetailScaffoldState<TrackDetailKey>()
+      SunsetListDetailScaffold(
+        state = scaffoldState,
+        modifier = Modifier.fillMaxSize(),
+        listPane = {
+          val listPaneScope: AnimatedVisibilityScope = this
+          SunsetPullToRefreshBox(
+            isRefreshing = uiState.isRefreshing,
+            onRefresh = viewModel::refresh,
+            modifier = Modifier.fillMaxSize()
+          ) {
+            ScrobbleContent(
+              lazyListState = lazyListState,
+              recentTracks = uiState.recentTracks,
+              hasNext = uiState.hasNext,
+              onScrobbleTap = { track, id ->
+                scaffoldState.selectDetail(
+                  TrackDetailKey(
+                    trackName = track.name,
+                    artistName = track.artistName,
+                    imageUrl = track.images.imageUrl() ?: "",
+                    id = id,
+                  )
+                )
+              },
+              onScrollEnd = viewModel::fetchRecentTracks,
+              scrollBehavior = topAppBarScrollBehavior,
+              sharedTransitionScope = sharedTransitionScope,
+              animatedVisibilityScope = listPaneScope,
+              useSharedElement = false,
+            )
+          }
+        },
+        detailPane = { selection: TrackDetailKey? ->
+          val detailPaneScope: AnimatedVisibilityScope = this
+          if (selection != null) {
+            with(sharedTransitionScope) {
+              TrackPaneScreen(
+                animatedVisibilityScope = detailPaneScope,
+                id = "",
+                trackName = selection.trackName,
+                artistName = selection.artistName,
+                artworkUrl = selection.imageUrl,
+                trackViewModel = trackViewModelProvider(selection),
+                navigateToWebView = navigateToWebView,
+                onBackPressed = { scaffoldState.back() },
+              )
+            }
+          }
+        },
+      )
+    }
+
+    if (uiState.isLoading && uiState.recentTracks.isEmpty()) {
+      LoadingIndicator(modifier = Modifier.align(Alignment.Center))
+    }
   }
 }
 
 @Composable
 private fun ScrobbleContent(
   sharedTransitionScope: SharedTransitionScope,
-  animatedContentScope: AnimatedContentScope,
+  animatedVisibilityScope: AnimatedVisibilityScope,
   lazyListState: LazyListState,
   recentTracks: ImmutableList<RecentTrack>,
   hasNext: Boolean,
   onScrobbleTap: (RecentTrack, String) -> Unit,
   onScrollEnd: () -> Unit,
-  scrollBehavior: SunsetTopAppBarScrollBehavior
+  scrollBehavior: SunsetTopAppBarScrollBehavior,
+  useSharedElement: Boolean = true,
 ) {
   LazyColumn(
     state = lazyListState,
@@ -86,6 +156,7 @@ private fun ScrobbleContent(
         } else {
           "scrobble_${index}${track.hashCode()}"
         }
+        val sharedElementId = if (useSharedElement) id else ""
         Scrobble(
           recentTrack = track,
           onScrobbleTap = {
@@ -94,8 +165,8 @@ private fun ScrobbleContent(
             )
           },
           sharedTransitionScope = sharedTransitionScope,
-          animatedContentScope = animatedContentScope,
-          id = id,
+          animatedVisibilityScope = animatedVisibilityScope,
+          id = sharedElementId,
         )
       }
       if (hasNext && recentTracks.isNotEmpty()) {

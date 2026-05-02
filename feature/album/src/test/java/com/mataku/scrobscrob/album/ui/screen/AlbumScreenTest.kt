@@ -97,7 +97,7 @@ class AlbumScreenTest {
             viewModel = viewModel,
             onAlbumLoadMoreTap = {},
             onBackPressed = {},
-            animatedContentScope = animatedContentScope,
+            animatedVisibilityScope = animatedContentScope,
             id = ""
           )
         }
@@ -122,7 +122,7 @@ class AlbumScreenTest {
             viewModel = viewModel,
             onAlbumLoadMoreTap = {},
             onBackPressed = {},
-            animatedContentScope = animatedContentScope,
+            animatedVisibilityScope = animatedContentScope,
             id = ""
           )
         }
@@ -148,12 +148,42 @@ class AlbumScreenTest {
             viewModel = viewModel,
             onAlbumLoadMoreTap = {},
             onBackPressed = {},
-            animatedContentScope = animatedContentScope,
+            animatedVisibilityScope = animatedContentScope,
             id = ""
           )
         }
       },
       fileName = "album_screen_tablet.png"
+    )
+  }
+
+  @Test
+  fun pane_layout_tablet() {
+    val key = AlbumKey(
+      albumName = albumName,
+      artistName = artistName,
+      artworkUrl = artworkUrl,
+      contentId = "",
+    )
+    val viewModel = AlbumViewModel(
+      albumRepository = albumRepository,
+      key = key,
+    )
+    composeRule.captureScreenshot(
+      device = RobolectricDeviceQualifiers.PixelTablet,
+      appTheme = AppTheme.DARK,
+      content = {
+        SharedTransitionLayout {
+          AlbumPaneScreen(
+            viewModel = viewModel,
+            onAlbumLoadMoreTap = {},
+            onBackPressed = {},
+            animatedVisibilityScope = animatedContentScope,
+            id = "",
+          )
+        }
+      },
+      fileName = "album_pane_screen_tablet.png",
     )
   }
 }

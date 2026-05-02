@@ -15,8 +15,19 @@ env:
 
 jobs:
   e2e:
+    name: E2E (${{ matrix.artifact-suffix }})
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - device: pixel6Api35
+            script: scripts/run_e2e_phone.sh
+            artifact-suffix: phone
+          - device: pixelTabletApi35
+            script: scripts/run_e2e_tablet.sh
+            artifact-suffix: tablet
 
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -42,57 +53,21 @@ jobs:
           ls -1 "$ANDROID_HOME/system-images" 2>/dev/null || echo "(no system-images yet)"
           ls -1 ~/.android/avd 2>/dev/null || echo "(no AVD yet)"
 
-      - name: GMD cache
-        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
-        with:
-          path: |
-            ~/.android/avd
-            ~/.android/adb*
-            /usr/local/lib/android/sdk/system-images
-          key: gmd-pixel6-api35-google-x86_64-v1
-
       - name: Build debug APK & androidTest APK
         run: ./gradlew :app:assembleDebug :app:assembleDebugAndroidTest
 
-      - name: Run E2E tests on GMD
+      - name: Run E2E tests on ${{ matrix.device }}
         run: |
-          mkdir -p app/build/outputs/e2e-recordings
-
-          ADB="$ANDROID_HOME/platform-tools/adb"
-
-          (
-            for _ in $(seq 1 120); do
-              if "$ADB" devices | grep -qE 'emulator-[0-9]+[[:space:]]+device$'; then
-                if [ "$("$ADB" shell getprop sys.boot_completed 2>/dev/null | tr -d '\r')" = "1" ]; then
-                  break
-                fi
-              fi
-              sleep 2
-            done
-            "$ADB" shell screenrecord --output-format=h264 --bit-rate 800000 --size 540x960 --time-limit 180 - \
-              > app/build/outputs/e2e-recordings/e2e.h264 2>/dev/null || true
-          ) &
-          RECORD_PID=$!
-
-          set +e
-          ./gradlew :app:cleanManagedDevices --unused-only
-          ./gradlew :app:pixel6Api35DebugAndroidTest \
-            -Pandroid.testoptions.manageddevices.emulator.gpu="swiftshader_indirect"
-          RESULT=$?
-          set -e
-
-          kill -SIGINT $RECORD_PID 2>/dev/null || true
-          wait $RECORD_PID 2>/dev/null || true
-
-          exit $RESULT
+          bash ${{ matrix.script }} \
+            -Pandroid.testoptions.manageddevices.emulator.gpu=swiftshader_indirect
 
       - name: Upload test reports
         if: failure()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: e2e-test-reports
+          name: e2e-test-reports-${{ matrix.artifact-suffix }}
           path: |
             **/build/reports/androidTests/**
             **/build/outputs/androidTest-results/**
-            app/build/outputs/e2e-recordings/**
+            **/build/intermediates/managed_device_android_test_additional_output/**
           retention-days: 7

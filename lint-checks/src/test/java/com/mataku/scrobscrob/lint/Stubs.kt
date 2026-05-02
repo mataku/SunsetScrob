@@ -350,3 +350,28 @@ internal val material3SnackbarHostStub: TestFile = kotlin(
     }
   """.trimIndent(),
 ).indented()
+
+internal val material3AdaptiveStub: TestFile = kotlin(
+  """
+    package androidx.compose.material3.adaptive.layout
+
+    fun ListDetailPaneScaffold(
+      listPane: () -> Unit,
+      detailPane: () -> Unit,
+    ) {}
+
+    enum class ListDetailPaneScaffoldRole { List, Detail, Extra }
+
+    fun AnimatedPane(content: () -> Unit) {}
+  """.trimIndent(),
+).indented()
+
+internal val material3AdaptiveNavigationStub: TestFile = kotlin(
+  """
+    package androidx.compose.material3.adaptive.navigation
+
+    fun <T> rememberListDetailPaneScaffoldNavigator(): Any = Any()
+
+    interface ThreePaneScaffoldNavigator<T>
+  """.trimIndent(),
+).indented()

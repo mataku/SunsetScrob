@@ -138,7 +138,9 @@ class TopAlbumsScreenTest {
             navigateToAlbumInfo = { _, _ -> },
             topAppBarScrollBehavior = rememberSunsetTopAppBarScrollBehavior(),
             sharedTransitionScope = this,
-            animatedContentScope = animatedContentScope
+            animatedContentScope = animatedContentScope,
+            albumViewModelProvider = { mockk(relaxed = true) },
+            navigateToWebView = {}
           )
         }
       },
@@ -160,7 +162,9 @@ class TopAlbumsScreenTest {
             navigateToAlbumInfo = { _, _ -> },
             topAppBarScrollBehavior = rememberSunsetTopAppBarScrollBehavior(),
             sharedTransitionScope = this,
-            animatedContentScope = animatedContentScope
+            animatedContentScope = animatedContentScope,
+            albumViewModelProvider = { mockk(relaxed = true) },
+            navigateToWebView = {}
           )
         }
       },
@@ -183,7 +187,9 @@ class TopAlbumsScreenTest {
             navigateToAlbumInfo = { _, _ -> },
             topAppBarScrollBehavior = rememberSunsetTopAppBarScrollBehavior(),
             sharedTransitionScope = this,
-            animatedContentScope = animatedContentScope
+            animatedContentScope = animatedContentScope,
+            albumViewModelProvider = { mockk(relaxed = true) },
+            navigateToWebView = {}
           )
         }
       },

@@ -311,6 +311,136 @@ and update goldens as needed.
 
 ---
 
+## Tablet & adaptive layout
+
+The app is designed phone-first but adapts to tablet (medium/expanded
+width) by branching on width class and switching list-then-detail flows
+into a two-pane scaffold. A single `:ui_common` wrapper —
+`SunsetListDetailScaffold` — owns the adaptive logic so feature modules
+never touch `androidx.compose.material3.adaptive.*` directly.
+
+### Width branching
+
+Screens that have a list-then-detail flow branch on
+`com.mataku.scrobscrob.ui_common.style.isCompactWidth()`:
+
+```kotlin
+@Composable
+fun TopAlbumsScreen(..., navigateToAlbumInfo, albumViewModelProvider, navigateToWebView, ...) {
+  if (isCompactWidth()) {
+    TopAlbumsCompact(... onAlbumTap = navigateToAlbumInfo, ...)
+  } else {
+    val scaffoldState = rememberSunsetListDetailScaffoldState<AlbumKey>()
+    SunsetListDetailScaffold(
+      state = scaffoldState,
+      listPane = { TopAlbumsCompact(..., onAlbumTap = { album, id -> scaffoldState.selectDetail(AlbumKey(...)) }, useSharedElement = false) },
+      detailPane = { selection -> if (selection != null) AlbumPaneScreen(id = "", viewModel = albumViewModelProvider(selection), ...) },
+    )
+  }
+}
+```
+
+`isCompactWidth()` returns `true` when the window's `WindowWidthSizeClass`
+is COMPACT (< 600dp) — a phone in any orientation, or a small foldable
+inner. Anything wider goes through the scaffold path.
+
+### `SunsetListDetailScaffold`
+
+Lives at
+`ui_common/.../component/designsystem/SunsetListDetailScaffold.kt`.
+Wraps Material3 Adaptive's `ListDetailPaneScaffold(directive, value, ...)`
+overload (the one that takes a `ThreePaneScaffoldValue` directly, not
+the `scaffoldState` overload). Holds selection in a plain
+`MutableState<T?>`, with `selectDetail(value)` and `back()` mutators.
+Both `directive` (sizing) and the `ThreePaneScaffoldValue` (visibility)
+are derived from the same selection state in the same recomposition, so
+the layout flips atomically.
+
+Visual modes:
+
+| `state.selection` | `maxHorizontalPartitions` | Panes shown                |
+|-------------------|---------------------------|----------------------------|
+| `null`            | 1                         | List only, full width      |
+| non-null          | default for width class   | List + Detail (two-pane)   |
+
+We intentionally **do not** use
+`rememberListDetailPaneScaffoldNavigator(scaffoldDirective = ...)` to
+flip the directive based on selection. The navigator's `navigateTo` is
+`suspend`, forcing the navigation through `coroutineScope.launch` while
+the directive flip is synchronous — the resulting tear shows up on
+real tablets as a single-pane Detail flash on tap, even though steady
+states look correct in unit-level VRTs. See
+[`feedback_pane_scaffold_value_overload.md`](./.claude/) memory or
+commit history for details.
+
+If you ever need a back stack with multiple detail levels, reach for
+the navigator-based `ListDetailPaneScaffold(directive, scaffoldState,
+...)` overload directly inside `:ui_common` — but expose a new wrapper
+shape rather than mixing both approaches in `SunsetListDetailScaffold`.
+
+### Per-feature pane composable (`*PaneScreen`)
+
+Detail screens that participate in the two-pane scaffold ship two
+`Composable` entry points in the same file:
+
+- The standalone `*Screen` (e.g. `AlbumScreen`, `ArtistScreen`,
+  `TrackScreen`): used by the compact path's Nav3 push. Uses
+  `SunsetBottomSheet` with a peek height computed from
+  `LocalWindowInfo.containerSize` so it resembles a full-screen detail
+  with a bottom sheet rising into the artwork area.
+- The `*PaneScreen` (e.g. `AlbumPaneScreen`, `ArtistPaneScreen`,
+  `TrackPaneScreen`): used as the scaffold's `detailPane`. Uses the
+  same `SunsetBottomSheet` but with a fixed `sheetPeekHeight = 280.dp`
+  and a translucent sheet container
+  (`LocalAppTheme.current.backgroundColor().copy(alpha = 0.85f)`),
+  because the scaffold's pane has a known fixed-ish width and shouldn't
+  fight with screen-relative peek calculation.
+
+Both variants accept `animatedVisibilityScope: AnimatedVisibilityScope`
+(widened from `AnimatedContentScope`) so the same composable works
+under both Nav3's `animatedContentScope` and the scaffold's
+`AnimatedPane` scope.
+
+### Shared element transition disabled in two-pane
+
+Inside the scaffold path, pass `useSharedElement = false` to the inner
+list `*Compact` composable, and pass `id = ""` to the `*PaneScreen` in
+`detailPane`. The molecules (`Scrobble`, `TopAlbum`, `TopArtist`) and
+`*PaneScreen` composables already gate `Modifier.sharedElement(...)` on
+`id.isNotEmpty()`, so the empty `id` skips the transition cleanly. The
+compact (Nav3 push) path keeps shared element transitions — they're
+the right UX for full-screen detail navigation on phone, and they
+visibly break inside a two-pane scaffold (artwork tries to animate
+across pane boundaries).
+
+### Currently adopted
+
+- **Scrobble ↔ Track** (`feature/scrobble`): list-row tap →
+  `TrackPaneScreen` in detail pane on tablet.
+- **TopAlbums ↔ Album** (`feature/album`): grid tap →
+  `AlbumPaneScreen`.
+- **TopArtists ↔ Artist** (`feature/artist`): grid tap →
+  `ArtistPaneScreen`.
+
+Plumbing for the scaffold's `*ViewModelProvider` (e.g.
+`albumViewModelProvider: @Composable (AlbumKey) -> AlbumViewModel`)
+flows from `HomeNavigation` → `HomeScreen` → the `Top*Screen`. The
+`*Navigation.kt` files keep their `destination<*Key>` registrations for
+the compact Nav3 push path.
+
+### Verifying tablet behavior
+
+- Per-pane Roborazzi VRTs at `RobolectricDeviceQualifiers.PixelTablet`:
+  `*_screen_tablet.png` for the standalone variant and
+  `*_pane_screen_tablet.png` for the pane variant.
+- Mechanical end-to-end: `LargeScreenSmokeTest` annotated
+  `@LargeScreenE2E`, runs on the `pixelTabletApi35` Gradle Managed
+  Device. See
+  [`.claude/rules/e2e-testing.md`](.claude/rules/e2e-testing.md) for
+  invocation.
+
+---
+
 ## Do's and Don'ts
 
 **Do**
@@ -332,6 +462,12 @@ and update goldens as needed.
   wrapper.
 - Showkase annotations (`@ShowkaseColor`, `@ShowkaseTypography`) on new tokens
   so they appear in the design catalog.
+- For list-then-detail flows that need to adapt to tablet, branch on
+  `isCompactWidth()` and use `SunsetListDetailScaffold` for the
+  expanded path. Ship a `*PaneScreen` variant alongside the standalone
+  `*Screen` (fixed 280.dp peek + translucent sheet) and pass
+  `useSharedElement = false` / `id = ""` inside the scaffold so shared
+  element transitions stay disabled in two-pane mode.
 
 **Don't**
 
@@ -358,3 +494,14 @@ and update goldens as needed.
 - Don't add a sixth theme without also adding a dedicated `*Color` object
   alongside `DarkColor` / `LightColor` / `LastFmDarkColor` and updating
   `accentColor()` + `colorScheme()` in `SunsetTheme.kt`.
+- Don't import `androidx.compose.material3.adaptive.*` outside
+  `:ui_common`. Consume `SunsetListDetailScaffold`,
+  `rememberSunsetListDetailScaffoldState`, and `isCompactWidth()`
+  instead. Enforced by the `PreferSunsetListDetailPaneScaffold` lint
+  detector.
+- Don't pass `scaffoldDirective` to
+  `rememberListDetailPaneScaffoldNavigator` to flip
+  `maxHorizontalPartitions` based on selection — the navigator's
+  `navigateTo` is `suspend` and the resulting async-vs-sync split
+  produces a single-pane Detail flash on tap. Use the `(directive,
+  value, ...)` overload via `SunsetListDetailScaffold` instead.

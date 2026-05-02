@@ -2,6 +2,8 @@ package com.mataku.scrobscrob.account.ui.screen
 
 import android.app.Application
 import androidx.compose.ui.test.junit4.v2.createComposeRule
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
 import androidx.lifecycle.SavedStateHandle
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
@@ -10,8 +12,12 @@ import com.google.android.play.core.appupdate.AppUpdateInfo
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.mataku.scrobscrob.account.AppInfoProvider
 import com.mataku.scrobscrob.account.ui.viewmodel.AccountViewModel
+import com.mataku.scrobscrob.account.ui.viewmodel.LicenseViewModel
+import com.mataku.scrobscrob.account.ui.viewmodel.ThemeSelectorViewModel
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.core.entity.Image
+import com.mataku.scrobscrob.core.entity.LicenseArtifact
+import com.mataku.scrobscrob.core.entity.SpdxLicense
 import com.mataku.scrobscrob.core.entity.UserInfo
 import com.mataku.scrobscrob.data.repository.FileRepository
 import com.mataku.scrobscrob.data.repository.SessionRepository
@@ -24,6 +30,7 @@ import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import org.junit.Before
 import org.junit.Rule
@@ -120,6 +127,9 @@ class AccountScreenTest {
       content = {
         AccountScreen(
           viewModel = viewModel,
+          themeSelectorViewModelProvider = { mockk() },
+          licenseViewModelProvider = { mockk() },
+          scrobbleSettingViewModelProvider = { mockk() },
           showPermissionHelp = {},
           navigateToLogin = mockk(),
           navigateToPrivacyPolicy = mockk(),
@@ -149,6 +159,9 @@ class AccountScreenTest {
       content = {
         AccountScreen(
           viewModel = viewModel,
+          themeSelectorViewModelProvider = { mockk() },
+          licenseViewModelProvider = { mockk() },
+          scrobbleSettingViewModelProvider = { mockk() },
           showPermissionHelp = {},
           navigateToLogin = mockk(),
           navigateToPrivacyPolicy = mockk(),
@@ -179,6 +192,9 @@ class AccountScreenTest {
       content = {
         AccountScreen(
           viewModel = viewModel,
+          themeSelectorViewModelProvider = { mockk() },
+          licenseViewModelProvider = { mockk() },
+          scrobbleSettingViewModelProvider = { mockk() },
           showPermissionHelp = {},
           navigateToLogin = mockk(),
           navigateToPrivacyPolicy = mockk(),
@@ -188,6 +204,110 @@ class AccountScreenTest {
         )
       },
       fileName = "account_screen_tablet.png"
+    )
+  }
+
+  @Test
+  fun layout_tablet_theme_selected() {
+    val viewModel = AccountViewModel(
+      usernameRepository,
+      themeRepository,
+      sessionRepository,
+      appInfoProvider,
+      appUpdateManager,
+      fileRepository,
+      application,
+      userRepository,
+    )
+    val themeSelectorViewModel = mockk<ThemeSelectorViewModel> {
+      every { uiState } returns MutableStateFlow(
+        ThemeSelectorViewModel.ThemeSelectorUiState(
+          theme = AppTheme.DARK,
+          event = null,
+        )
+      )
+    }
+    composeTestRule.captureScreenshot(
+      device = RobolectricDeviceQualifiers.PixelTablet,
+      appTheme = AppTheme.DARK,
+      content = {
+        AccountScreen(
+          viewModel = viewModel,
+          themeSelectorViewModelProvider = { themeSelectorViewModel },
+          licenseViewModelProvider = { mockk() },
+          scrobbleSettingViewModelProvider = { mockk() },
+          showPermissionHelp = {},
+          navigateToLogin = mockk(),
+          navigateToPrivacyPolicy = mockk(),
+          navigateToScrobbleSetting = mockk(),
+          navigateToLicenseList = mockk(),
+          navigateToThemeSelector = mockk()
+        )
+      },
+      actionsBeforeCapturing = {
+        composeTestRule.onNodeWithText("Theme").performClick()
+        composeTestRule.waitForIdle()
+      },
+      fileName = "account_screen_tablet_theme.png"
+    )
+  }
+
+  @Test
+  fun layout_tablet_license_selected() {
+    val viewModel = AccountViewModel(
+      usernameRepository,
+      themeRepository,
+      sessionRepository,
+      appInfoProvider,
+      appUpdateManager,
+      fileRepository,
+      application,
+      userRepository,
+    )
+    val licenseViewModel = mockk<LicenseViewModel> {
+      every { uiState } returns MutableStateFlow(
+        LicenseViewModel.LicenseUiState(
+          licenseList = persistentListOf(
+            LicenseArtifact(
+              artifactId = "compose-runtime",
+              groupId = "androidx.compose.runtime",
+              name = "Compose Runtime",
+              scm = null,
+              spdxLicenses = persistentListOf(
+                SpdxLicense(
+                  identifier = "Apache-2.0",
+                  name = "Apache License 2.0",
+                  url = "https://www.apache.org/licenses/LICENSE-2.0",
+                )
+              ),
+              version = "1.7.0",
+            ),
+          )
+        )
+      )
+    }
+    composeTestRule.captureScreenshot(
+      device = RobolectricDeviceQualifiers.PixelTablet,
+      appTheme = AppTheme.DARK,
+      content = {
+        AccountScreen(
+          viewModel = viewModel,
+          themeSelectorViewModelProvider = { mockk() },
+          licenseViewModelProvider = { licenseViewModel },
+          scrobbleSettingViewModelProvider = { mockk() },
+          showPermissionHelp = {},
+          navigateToLogin = mockk(),
+          navigateToPrivacyPolicy = mockk(),
+          navigateToScrobbleSetting = mockk(),
+          navigateToLicenseList = mockk(),
+          navigateToThemeSelector = mockk()
+        )
+      },
+      actionsBeforeCapturing = {
+        composeTestRule.onNodeWithText("Licenses").performClick()
+        composeTestRule.waitForIdle()
+      },
+      fileName = "account_screen_tablet_license.png"
     )
   }
 }

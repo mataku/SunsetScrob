@@ -81,7 +81,7 @@ class ArtistScreenTest {
             viewModel = viewModel,
             onArtistLoadMoreTap = {},
             onBackPressed = {},
-            animatedContentScope = animatedContentScope,
+            animatedVisibilityScope = animatedContentScope,
             id = ""
           )
         }
@@ -106,7 +106,7 @@ class ArtistScreenTest {
             onArtistLoadMoreTap = {},
             onBackPressed = {},
             id = "",
-            animatedContentScope = animatedContentScope
+            animatedVisibilityScope = animatedContentScope
           )
         }
       },
@@ -130,12 +130,41 @@ class ArtistScreenTest {
             viewModel = viewModel,
             onArtistLoadMoreTap = {},
             onBackPressed = {},
-            animatedContentScope = animatedContentScope,
+            animatedVisibilityScope = animatedContentScope,
             id = ""
           )
         }
       },
       fileName = "artist_screen_tablet.png"
+    )
+  }
+
+  @Test
+  fun pane_layout_tablet() {
+    val key = ArtistKey(
+      artistName = artistName,
+      artworkUrl = artworkUrl,
+      contentId = "",
+    )
+    val viewModel = ArtistViewModel(
+      artistRepository = artistRepository,
+      key = key,
+    )
+    composeRule.captureScreenshot(
+      device = RobolectricDeviceQualifiers.PixelTablet,
+      appTheme = AppTheme.DARK,
+      content = {
+        SharedTransitionLayout {
+          ArtistPaneScreen(
+            viewModel = viewModel,
+            onArtistLoadMoreTap = {},
+            onBackPressed = {},
+            animatedVisibilityScope = animatedContentScope,
+            id = "",
+          )
+        }
+      },
+      fileName = "artist_pane_screen_tablet.png",
     )
   }
 }

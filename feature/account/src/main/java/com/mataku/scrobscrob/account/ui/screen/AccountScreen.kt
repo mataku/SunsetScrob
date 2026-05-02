@@ -42,16 +42,22 @@ import com.mataku.scrobscrob.account.BuildConfig
 import com.mataku.scrobscrob.account.R
 import com.mataku.scrobscrob.account.ui.molecule.Profile
 import com.mataku.scrobscrob.account.ui.viewmodel.AccountViewModel
+import com.mataku.scrobscrob.account.ui.viewmodel.LicenseViewModel
+import com.mataku.scrobscrob.account.ui.viewmodel.ScrobbleSettingViewModel
+import com.mataku.scrobscrob.account.ui.viewmodel.ThemeSelectorViewModel
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.core.entity.UserInfo
 import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetAlertDialog
 import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetHorizontalDivider
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetListDetailScaffold
 import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetScaffold
 import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetText
 import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetTopAppBar
+import com.mataku.scrobscrob.ui_common.component.designsystem.rememberSunsetListDetailScaffoldState
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.LocalSnackbarHostState
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
+import com.mataku.scrobscrob.ui_common.style.isCompactWidth
 import com.mataku.scrobscrob.ui_common.style.onSecondaryColor
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.delay
@@ -60,6 +66,9 @@ import kotlinx.coroutines.launch
 @Composable
 internal fun AccountScreen(
   viewModel: AccountViewModel,
+  themeSelectorViewModelProvider: @Composable () -> ThemeSelectorViewModel,
+  licenseViewModelProvider: @Composable () -> LicenseViewModel,
+  scrobbleSettingViewModelProvider: @Composable () -> ScrobbleSettingViewModel,
   showPermissionHelp: () -> Unit,
   navigateToScrobbleSetting: () -> Unit,
   navigateToPrivacyPolicy: () -> Unit,
@@ -72,6 +81,8 @@ internal fun AccountScreen(
     mutableStateOf(false)
   }
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+  val compact = isCompactWidth()
+  val scaffoldState = rememberSunsetListDetailScaffoldState<AccountDetail>()
 
   val context = LocalContext.current
   val coroutineScope = rememberCoroutineScope()
@@ -80,7 +91,11 @@ internal fun AccountScreen(
       if (NotificationManagerCompat.getEnabledListenerPackages(context)
           .contains(context.packageName)
       ) {
-        navigateToScrobbleSetting.invoke()
+        if (compact) {
+          navigateToScrobbleSetting.invoke()
+        } else {
+          scaffoldState.selectDetail(AccountDetail.ScrobbleSetting)
+        }
       }
     }
 
@@ -108,57 +123,94 @@ internal fun AccountScreen(
 
   appUpdateManager.registerListener(listener)
 
-  uiState.theme?.let {
-    SunsetScaffold(
-      modifier = modifier,
-      topBar = {
-        SunsetTopAppBar(
-          title = {
-            SunsetText.Title(text = "Account")
-          },
-        )
+  uiState.theme?.let { theme ->
+    val onTapLogout: () -> Unit = { openDialog.value = true }
+    val onTapNotificationSetting: () -> Unit = {
+      val intent = Intent().apply {
+        action = Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS
       }
-    ) { paddingValues ->
-      AccountContent(
-        theme = it,
-        navigateToThemeSelector = navigateToThemeSelector,
-        navigateToLogoutConfirmation = {
-          openDialog.value = true
-        },
-        navigateToLicenseList = navigateToLicenseList,
-        navigateToPrivacyPolicy = navigateToPrivacyPolicy,
-        navigateToScrobbleSetting = navigateToScrobbleSetting,
-        navigateToNotificationSetting = {
-          val intent = Intent()
-          intent.action = Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS
-          notificationPermissionLauncher.launch(intent)
-          showPermissionHelp.invoke()
-        },
-        appUpdateInfo = uiState.appUpdateInfo,
-        requestAppUpdate = { appUpdateInfo ->
-          if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
-            viewModel.completeUpdate()
-          } else {
-            coroutineScope.launch {
-              kotlin.runCatching {
-                val updateInfo = appUpdateManager.requestAppUpdateInfo()
-                appUpdateManager.startUpdateFlowForResult(
-                  updateInfo,
-                  context as Activity,
-                  AppUpdateOptions.defaultOptions(AppUpdateType.FLEXIBLE),
-                  1
-                )
-                appUpdateLauncher.launch(context.intent)
-              }
-            }
+      notificationPermissionLauncher.launch(intent)
+      showPermissionHelp.invoke()
+    }
+    val onRequestAppUpdate: (AppUpdateInfo) -> Unit = { appUpdateInfo ->
+      if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
+        viewModel.completeUpdate()
+      } else {
+        coroutineScope.launch {
+          kotlin.runCatching {
+            val updateInfo = appUpdateManager.requestAppUpdateInfo()
+            appUpdateManager.startUpdateFlowForResult(
+              updateInfo,
+              context as Activity,
+              AppUpdateOptions.defaultOptions(AppUpdateType.FLEXIBLE),
+              1
+            )
+            appUpdateLauncher.launch(context.intent)
           }
-        },
+        }
+      }
+    }
+
+    if (compact) {
+      AccountListPane(
+        theme = theme,
         appVersion = uiState.appVersion,
-        clearCache = viewModel::clearCache,
-        navigateToUiCatalog = viewModel::navigateToUiCatalog,
+        appUpdateInfo = uiState.appUpdateInfo,
         imageCacheMB = uiState.imageCacheMB,
         userInfo = uiState.userInfo,
-        modifier = Modifier.padding(paddingValues)
+        onTapTheme = navigateToThemeSelector,
+        onTapLicense = navigateToLicenseList,
+        onTapPrivacyPolicy = navigateToPrivacyPolicy,
+        onTapScrobbleSetting = navigateToScrobbleSetting,
+        onTapLogout = onTapLogout,
+        onTapNotificationSetting = onTapNotificationSetting,
+        onRequestAppUpdate = onRequestAppUpdate,
+        onClearCache = viewModel::clearCache,
+        onNavigateToUiCatalog = viewModel::navigateToUiCatalog,
+        modifier = modifier,
+      )
+    } else {
+      SunsetListDetailScaffold(
+        state = scaffoldState,
+        modifier = modifier,
+        listPane = {
+          AccountListPane(
+            theme = theme,
+            appVersion = uiState.appVersion,
+            appUpdateInfo = uiState.appUpdateInfo,
+            imageCacheMB = uiState.imageCacheMB,
+            userInfo = uiState.userInfo,
+            onTapTheme = { scaffoldState.selectDetail(AccountDetail.Theme) },
+            onTapLicense = { scaffoldState.selectDetail(AccountDetail.License) },
+            onTapPrivacyPolicy = { scaffoldState.selectDetail(AccountDetail.PrivacyPolicy) },
+            onTapScrobbleSetting = { scaffoldState.selectDetail(AccountDetail.ScrobbleSetting) },
+            onTapLogout = onTapLogout,
+            onTapNotificationSetting = onTapNotificationSetting,
+            onRequestAppUpdate = onRequestAppUpdate,
+            onClearCache = viewModel::clearCache,
+            onNavigateToUiCatalog = viewModel::navigateToUiCatalog,
+          )
+        },
+        detailPane = { selection ->
+          when (selection) {
+            AccountDetail.Theme -> ThemeSelectorScreen(
+              viewModel = themeSelectorViewModelProvider(),
+              onBackPressed = { scaffoldState.back() },
+            )
+            AccountDetail.License -> LicenseScreen(
+              viewModel = licenseViewModelProvider(),
+              onBackPressed = { scaffoldState.back() },
+            )
+            AccountDetail.PrivacyPolicy -> PrivacyPolicyScreen(
+              onBackPressed = { scaffoldState.back() },
+            )
+            AccountDetail.ScrobbleSetting -> ScrobbleSettingScreen(
+              viewModel = scrobbleSettingViewModelProvider(),
+              onBackPressed = { scaffoldState.back() },
+            )
+            null -> Unit
+          }
+        },
       )
     }
   }
@@ -401,6 +453,54 @@ private fun AccountMenuCell(
   }
 }
 
+@Composable
+private fun AccountListPane(
+  theme: AppTheme,
+  appVersion: String,
+  appUpdateInfo: AppUpdateInfo?,
+  imageCacheMB: String?,
+  userInfo: UserInfo?,
+  onTapTheme: () -> Unit,
+  onTapLicense: () -> Unit,
+  onTapPrivacyPolicy: () -> Unit,
+  onTapScrobbleSetting: () -> Unit,
+  onTapLogout: () -> Unit,
+  onTapNotificationSetting: () -> Unit,
+  onRequestAppUpdate: (AppUpdateInfo) -> Unit,
+  onClearCache: () -> Unit,
+  onNavigateToUiCatalog: () -> Unit,
+  modifier: Modifier = Modifier,
+) {
+  SunsetScaffold(
+    modifier = modifier,
+    topBar = {
+      SunsetTopAppBar(
+        title = {
+          SunsetText.Title(text = "Account")
+        },
+      )
+    }
+  ) { paddingValues ->
+    AccountContent(
+      theme = theme,
+      navigateToThemeSelector = onTapTheme,
+      navigateToLogoutConfirmation = onTapLogout,
+      navigateToLicenseList = onTapLicense,
+      navigateToPrivacyPolicy = onTapPrivacyPolicy,
+      navigateToScrobbleSetting = onTapScrobbleSetting,
+      navigateToNotificationSetting = onTapNotificationSetting,
+      appUpdateInfo = appUpdateInfo,
+      requestAppUpdate = onRequestAppUpdate,
+      appVersion = appVersion,
+      clearCache = onClearCache,
+      navigateToUiCatalog = onNavigateToUiCatalog,
+      imageCacheMB = imageCacheMB,
+      userInfo = userInfo,
+      modifier = Modifier.padding(paddingValues)
+    )
+  }
+}
+
 @Preview(showBackground = true)
 @Composable
 private fun AccountContentPreview() {
@@ -430,4 +530,11 @@ private fun AccountContentPreview() {
       )
     )
   }
+}
+
+internal sealed interface AccountDetail {
+  data object Theme : AccountDetail
+  data object License : AccountDetail
+  data object PrivacyPolicy : AccountDetail
+  data object ScrobbleSetting : AccountDetail
 }

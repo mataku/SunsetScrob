@@ -10,7 +10,7 @@ fun SunsetNavBuilder.artistGraph() {
   destination<ArtistKey> { key ->
     ArtistScreen(
       id = key.contentId,
-      animatedContentScope = animatedContentScope,
+      animatedVisibilityScope = animatedContentScope,
       viewModel = viewModelFor<ArtistViewModel>(key),
       onArtistLoadMoreTap = { url -> navigate(WebViewKey(url)) },
       onBackPressed = ::popBackStack,

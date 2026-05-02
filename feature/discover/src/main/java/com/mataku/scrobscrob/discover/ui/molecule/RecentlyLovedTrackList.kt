@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.mataku.scrobscrob.core.entity.ChartTrack
 import com.mataku.scrobscrob.core.entity.ChartTrackArtist
@@ -25,7 +26,8 @@ import kotlinx.collections.immutable.toImmutableList
 internal fun RecentlyLovedTrackList(
   lovedTrackList: ImmutableList<LovedTrack>,
   onLovedTrackTap: (LovedTrack) -> Unit,
-  modifier: Modifier = Modifier
+  modifier: Modifier = Modifier,
+  cellSize: Dp = 140.dp
 ) {
   Column(modifier = modifier.fillMaxWidth()) {
     SunsetText.Headline(
@@ -56,7 +58,8 @@ internal fun RecentlyLovedTrackList(
           modifier = Modifier
             .clickable {
               onLovedTrackTap.invoke(track)
-            }
+            },
+          cellSize = cellSize
         )
       }
     }

@@ -1,7 +1,7 @@
 package com.mataku.scrobscrob.album.ui.molecule
 
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.clickable
@@ -33,7 +33,7 @@ import com.mataku.scrobscrob.ui_common.R as uiCommonR
 @Composable
 internal fun TopAlbum(
   sharedTransitionScope: SharedTransitionScope,
-  animatedContentScope: AnimatedContentScope,
+  animatedVisibilityScope: AnimatedVisibilityScope,
   id: String,
   album: TopAlbumInfo,
   onAlbumTap: () -> Unit,
@@ -69,7 +69,7 @@ internal fun TopAlbum(
                   sharedContentState = sharedTransitionScope.rememberSharedContentState(
                     key = id,
                   ),
-                  animatedVisibilityScope = animatedContentScope,
+                  animatedVisibilityScope = animatedVisibilityScope,
                   renderInOverlayDuringTransition = false,
                 )
             }
@@ -120,7 +120,7 @@ private fun TopAlbumPreview() {
           onAlbumTap = {},
           modifier = Modifier,
           sharedTransitionScope = this@SharedTransitionLayout,
-          animatedContentScope = this,
+          animatedVisibilityScope = this,
           id = it
         )
       }

@@ -12,7 +12,7 @@ fun SunsetNavBuilder.albumGraph() {
       viewModel = viewModelFor<AlbumViewModel>(key),
       onAlbumLoadMoreTap = { url -> if (url.isNotEmpty()) navigate(WebViewKey(url)) },
       onBackPressed = ::popBackStack,
-      animatedContentScope = animatedContentScope,
+      animatedVisibilityScope = animatedContentScope,
       id = key.contentId,
     )
   }

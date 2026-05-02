@@ -18,13 +18,44 @@ Lives in `app/src/androidTest/`. Runs weekly on CI via
 | Action | Command |
 |--------|---------|
 | Run locally on a connected emulator | `./gradlew :app:connectedDebugAndroidTest` |
-| Run locally on the Gradle Managed Device used by CI | `./gradlew :app:pixel6Api35DebugAndroidTest` |
+| Run locally on the phone GMD used by CI | `./gradlew :app:pixel6Api35DebugAndroidTest` |
+| Run only the tablet (`@LargeScreenE2E`) tests on the tablet GMD | `./gradlew :app:pixelTabletApi35DebugAndroidTest -PincludeLargeScreenE2E=true` |
 | Build the test APK only | `./gradlew :app:assembleDebugAndroidTest` |
 
-The `pixel6Api35` device is declared in `app/build.gradle.kts` via
-`testOptions.managedDevices.allDevices` (Pixel 6, API 35, Google APIs x86_64).
-First local run downloads the system image and creates the AVD; subsequent
-runs reuse it.
+`pixel6Api35` and `pixelTabletApi35` are declared in
+`ApplicationConventionPlugin.kt` via `testOptions.managedDevices.allDevices`
+(Pixel 6 / Pixel Tablet, API 35, AOSP-ATD x86_64). First local run
+downloads the system image and creates the AVD; subsequent runs reuse it.
+
+## `@LargeScreenE2E` — tablet-only tests
+
+Tests annotated `@com.mataku.scrobscrob.app.testing.LargeScreenE2E`
+require a tablet-sized device and would otherwise fail / no-op on the
+phone GMD. The annotation lives in the app's androidTest source set
+(`app/src/androidTest/.../LargeScreenE2E.kt`) — NOT in
+`:test_helper:integration`. Pulling that module onto the androidTest
+classpath would drag Robolectric / Roborazzi onto the real-emulator
+classpath and break Espresso's idle checks. The `defaultConfig` in `ApplicationConventionPlugin.kt` toggles
+`testInstrumentationRunnerArguments` based on the Gradle property
+`includeLargeScreenE2E`:
+
+- **default** (no property): `notAnnotation = ...LargeScreenE2E` —
+  excludes large-screen tests, so the phone CI run keeps working.
+- **`-PincludeLargeScreenE2E=true`**: `annotation = ...LargeScreenE2E` —
+  includes only large-screen tests. Pair with the tablet GMD task.
+
+Inside the test class, request landscape via UiAutomator before
+composition reads window dimensions:
+
+```kotlin
+@Before
+fun setUp() {
+  val device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
+  device.setOrientationLandscape()
+}
+```
+
+Reference: `app/src/androidTest/java/.../LargeScreenSmokeTest.kt`.
 
 ### Avoid overwriting your locally-installed dev app
 
@@ -134,23 +165,36 @@ Conventions used by the existing flow:
 - Schedule: `0 6 * * 5` (Friday 06:00 UTC = Friday 15:00 JST). Also
   `workflow_dispatch` — pick the target branch via "Use workflow from"
   in the GitHub Actions UI.
-- Runs the Gradle Managed Device task `:app:pixel6Api35DebugAndroidTest`
-  directly. Gradle/UTP owns the emulator lifecycle (boot, install, run, tear
-  down) instead of `reactivecircus/android-emulator-runner`. The previous
+- Single `e2e` job fanned out via `strategy.matrix` into two parallel
+  variants (`fail-fast: false`, so a tablet failure doesn't cancel the
+  phone run and vice versa):
+  - `pixel6Api35` (artifact-suffix `phone`) — runs the default
+    `:app:pixel6Api35DebugAndroidTest` task. The `notAnnotation` runner
+    arg auto-skips `@LargeScreenE2E` tests.
+  - `pixelTabletApi35` (artifact-suffix `tablet`) — runs
+    `:app:pixelTabletApi35DebugAndroidTest -PincludeLargeScreenE2E=true`,
+    so only `@LargeScreenE2E` tests run.
+- Gradle/UTP owns the emulator lifecycle (boot, install, run, tear down)
+  instead of `reactivecircus/android-emulator-runner`. The previous
   runner was prone to "device offline" failures mid-test under combined
   `adb screenrecord` + UTP load.
 - AVDs (`~/.android/avd`) and the system image
-  (`/usr/local/lib/android/sdk/system-images`) are cached via `actions/cache`
-  with key `gmd-pixel6-api35-google-x86_64-v1`. Bump the key when the device
-  spec or system image changes.
+  (`/usr/local/lib/android/sdk/system-images`) are cached via
+  `actions/cache` with **per-matrix cache keys** —
+  `gmd-pixel6-api35-google-x86_64-v1` for phone and
+  `gmd-pixel-tablet-api35-aosp-atd-x86_64-v1` for tablet. Each matrix
+  variant gets its own cache. Bump the key when the device spec or
+  system image for that variant changes.
 - Failures upload `**/build/reports/androidTests/**`,
   `**/build/outputs/androidTest-results/**`, and
-  `app/build/outputs/e2e-recordings/**` as artifacts (7-day retention).
-- A screen recording is captured via `adb shell screenrecord` streamed
-  directly to a host file (`--output-format=h264 ... -` redirected to
-  `app/build/outputs/e2e-recordings/e2e.h264`). Streaming to the host —
-  rather than to `/sdcard` followed by `adb pull` — is what lets the
-  recording survive GMD tearing down the emulator at task end.
+  `app/build/outputs/e2e-recordings/**` as artifacts named
+  `e2e-test-reports-{phone|tablet}` (7-day retention).
+- A screen recording is captured per matrix variant via
+  `adb shell screenrecord` streamed directly to
+  `app/build/outputs/e2e-recordings/e2e-{phone|tablet}.h264`. Streaming
+  to the host — rather than to `/sdcard` followed by `adb pull` — is
+  what lets the recording survive GMD tearing down the emulator at task
+  end.
 
 ## Gotchas worth remembering
 

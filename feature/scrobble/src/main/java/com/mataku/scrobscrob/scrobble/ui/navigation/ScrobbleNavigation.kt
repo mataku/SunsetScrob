@@ -16,7 +16,7 @@ fun SunsetNavBuilder.scrobbleGraph() {
       onBackPressed = ::popBackStack,
       navigateToWebView = { url -> navigate(WebViewKey(url)) },
       id = key.id,
-      animatedContentScope = animatedContentScope,
+      animatedVisibilityScope = animatedContentScope,
     )
   }
 }

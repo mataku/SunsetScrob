@@ -1,7 +1,7 @@
 package com.mataku.scrobscrob.scrobble.ui.screen
 
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -43,18 +44,20 @@ import com.mataku.scrobscrob.core.entity.Wiki
 import com.mataku.scrobscrob.core.entity.presentation.toReadableIntValue
 import com.mataku.scrobscrob.scrobble.ui.component.TrackDetail
 import com.mataku.scrobscrob.scrobble.ui.viewmodel.TrackViewModel
-import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetBottomSheet
-import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetText
 import com.mataku.scrobscrob.ui_common.component.ArtworkLayerBar
 import com.mataku.scrobscrob.ui_common.component.CircleBackButton
-import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetImage
 import com.mataku.scrobscrob.ui_common.component.ValueDescription
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetBottomSheet
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetImage
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetText
+import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
+import com.mataku.scrobscrob.ui_common.style.backgroundColor
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 internal fun SharedTransitionScope.TrackScreen(
-  animatedContentScope: AnimatedContentScope,
+  animatedVisibilityScope: AnimatedVisibilityScope,
   id: String,
   trackName: String,
   artistName: String,
@@ -67,7 +70,7 @@ internal fun SharedTransitionScope.TrackScreen(
   val uiState by trackViewModel.state.collectAsStateWithLifecycle()
 
   TrackContent(
-    animatedContentScope = animatedContentScope,
+    animatedVisibilityScope = animatedVisibilityScope,
     id = id,
     artworkUrl = artworkUrl,
     trackInfo = uiState.trackInfo,
@@ -82,7 +85,7 @@ internal fun SharedTransitionScope.TrackScreen(
 
 @Composable
 private fun SharedTransitionScope.TrackContent(
-  animatedContentScope: AnimatedContentScope,
+  animatedVisibilityScope: AnimatedVisibilityScope,
   id: String,
   artworkUrl: String?,
   trackName: String,
@@ -136,7 +139,7 @@ private fun SharedTransitionScope.TrackContent(
                       sharedContentState = this@TrackContent.rememberSharedContentState(
                         key = id
                       ),
-                      animatedVisibilityScope = animatedContentScope,
+                      animatedVisibilityScope = animatedVisibilityScope,
                       renderInOverlayDuringTransition = false,
                     )
                 }
@@ -180,6 +183,118 @@ private fun SharedTransitionScope.TrackContent(
           contentScale = ContentScale.FillWidth,
           skipCrossFade = false
         )
+      }
+    }
+  )
+}
+
+@Composable
+internal fun SharedTransitionScope.TrackPaneScreen(
+  animatedVisibilityScope: AnimatedVisibilityScope,
+  id: String,
+  trackName: String,
+  artistName: String,
+  artworkUrl: String?,
+  trackViewModel: TrackViewModel,
+  navigateToWebView: (String) -> Unit,
+  onBackPressed: () -> Unit,
+  modifier: Modifier = Modifier
+) {
+  val uiState by trackViewModel.state.collectAsStateWithLifecycle()
+
+  TrackPaneContent(
+    animatedVisibilityScope = animatedVisibilityScope,
+    id = id,
+    artworkUrl = artworkUrl,
+    trackInfo = uiState.trackInfo,
+    onUrlTap = navigateToWebView,
+    artistName = artistName,
+    trackName = trackName,
+    onBackPressed = onBackPressed,
+    modifier = modifier,
+    onLoveIconTap = trackViewModel::loveOrUnloveTrack
+  )
+}
+
+@Composable
+private fun SharedTransitionScope.TrackPaneContent(
+  animatedVisibilityScope: AnimatedVisibilityScope,
+  id: String,
+  artworkUrl: String?,
+  trackName: String,
+  artistName: String,
+  trackInfo: TrackInfo?,
+  onUrlTap: (String) -> Unit,
+  onBackPressed: () -> Unit,
+  onLoveIconTap: (TrackInfo) -> Unit,
+  modifier: Modifier = Modifier
+) {
+  SunsetBottomSheet(
+    modifier = modifier,
+    sheetPeekHeight = 280.dp,
+    sheetContainerColor = LocalAppTheme.current.backgroundColor().copy(alpha = 0.85f),
+    sheetContent = {
+      TrackDetailContent(
+        trackInfo = trackInfo,
+        trackName = trackName,
+        artistName = artistName,
+        onUrlTap = onUrlTap,
+        modifier = Modifier
+          .fillMaxWidth()
+          .fillMaxHeight(fraction = 0.9F),
+        onLoveIconTap = onLoveIconTap
+      )
+    },
+    content = {
+      Box(
+        modifier = Modifier.fillMaxSize()
+      ) {
+        SunsetImage(
+          imageData = artworkUrl,
+          contentDescription = "artwork image",
+          modifier = Modifier
+            .then(
+              if (id.isEmpty() || LocalInspectionMode.current) {
+                Modifier
+              } else {
+                Modifier
+                  .sharedElement(
+                    sharedContentState = this@TrackPaneContent.rememberSharedContentState(
+                      key = id
+                    ),
+                    animatedVisibilityScope = animatedVisibilityScope,
+                    renderInOverlayDuringTransition = false,
+                  )
+              }
+            )
+            .fillMaxWidth()
+            .aspectRatio(1F),
+          contentScale = ContentScale.FillWidth,
+        )
+        if (!this@TrackPaneContent.isTransitionActive) {
+          Column(
+            modifier = Modifier
+              .fillMaxWidth()
+              .background(
+                color = Color.Transparent
+              )
+          ) {
+            ArtworkLayerBar()
+            CircleBackButton(
+              modifier = Modifier
+                .padding(
+                  start = 4.dp,
+                  top = 16.dp
+                )
+                .clickable(
+                  interactionSource = remember { MutableInteractionSource() },
+                  indication = null,
+                ) {
+                  onBackPressed.invoke()
+                }
+            )
+          }
+        }
       }
     }
   )
@@ -272,7 +387,7 @@ private fun TrackContentPreview() {
           trackName = "Drama",
           onBackPressed = {},
           id = "123",
-          animatedContentScope = this,
+          animatedVisibilityScope = this,
           onLoveIconTap = {}
         )
       }

@@ -1,5 +1,5 @@
-import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import com.android.build.api.dsl.LibraryExtension
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 
 plugins {
   id("sunsetscrob.android.feature")
@@ -21,7 +21,7 @@ configure<LibraryExtension>() {
   namespace = "com.mataku.scrobscrob.data.api"
 
   sourceSets {
-    getByName("test").resources.srcDirs("src/test/assets")
+    getByName("test").resources.directories.add("src/test/assets")
   }
 }
 

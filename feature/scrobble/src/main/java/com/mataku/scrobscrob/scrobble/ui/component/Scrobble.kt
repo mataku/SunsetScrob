@@ -2,7 +2,7 @@ package com.mataku.scrobscrob.scrobble.ui.component
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.clickable
@@ -38,7 +38,7 @@ import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 @Composable
 fun Scrobble(
   sharedTransitionScope: SharedTransitionScope,
-  animatedContentScope: AnimatedContentScope,
+  animatedVisibilityScope: AnimatedVisibilityScope,
   id: String,
   recentTrack: RecentTrack,
   onScrobbleTap: () -> Unit
@@ -50,7 +50,7 @@ fun Scrobble(
     date = recentTrack.date,
     onScrobbleTap = onScrobbleTap,
     sharedTransitionScope = sharedTransitionScope,
-    animatedContentScope = animatedContentScope,
+    animatedVisibilityScope = animatedVisibilityScope,
     id = id
   )
 }
@@ -58,7 +58,7 @@ fun Scrobble(
 @Composable
 private fun ScrobbleContent(
   sharedTransitionScope: SharedTransitionScope,
-  animatedContentScope: AnimatedContentScope,
+  animatedVisibilityScope: AnimatedVisibilityScope,
   id: String,
   imageUrl: String?,
   trackName: String,
@@ -95,7 +95,7 @@ private fun ScrobbleContent(
                     sharedContentState = sharedTransitionScope.rememberSharedContentState(
                       key = id,
                     ),
-                    animatedVisibilityScope = animatedContentScope,
+                    animatedVisibilityScope = animatedVisibilityScope,
                     renderInOverlayDuringTransition = false,
                   )
               }
@@ -160,7 +160,7 @@ private fun ScrobblePreview() {
           artistName = "乃木坂46",
           date = "01 Aug 2022, 04:08",
           onScrobbleTap = {},
-          animatedContentScope = this,
+          animatedVisibilityScope = this,
           sharedTransitionScope = this@SharedTransitionLayout,
           id = ""
         )

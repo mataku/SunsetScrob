@@ -111,7 +111,7 @@ class TrackScreenTest {
             trackViewModel = viewModel,
             navigateToWebView = mockk(),
             onBackPressed = mockk(),
-            animatedContentScope = animatedContentScope,
+            animatedVisibilityScope = animatedContentScope,
             id = ""
           )
         }
@@ -138,7 +138,7 @@ class TrackScreenTest {
             trackViewModel = viewModel,
             navigateToWebView = mockk(),
             onBackPressed = mockk(),
-            animatedContentScope = animatedContentScope,
+            animatedVisibilityScope = animatedContentScope,
             id = ""
           )
         }
@@ -148,7 +148,7 @@ class TrackScreenTest {
   }
 
   @Test
-  fun layout_tablet() = runTest {
+  fun pane_layout_tablet() = runTest {
     val viewModel = TrackViewModel(
       trackRepository = trackRepository,
       key = key,
@@ -159,19 +159,19 @@ class TrackScreenTest {
       appTheme = AppTheme.DARK,
       content = {
         SharedTransitionLayout {
-          TrackScreen(
+          TrackPaneScreen(
             trackName = trackName,
             artistName = artistName,
             artworkUrl = artworkUrl,
             trackViewModel = viewModel,
             navigateToWebView = mockk(),
             onBackPressed = mockk(),
-            animatedContentScope = animatedContentScope,
+            animatedVisibilityScope = animatedContentScope,
             id = ""
           )
         }
       },
-      fileName = "track_screen_tablet.png"
+      fileName = "track_pane_screen_tablet.png"
     )
   }
 }

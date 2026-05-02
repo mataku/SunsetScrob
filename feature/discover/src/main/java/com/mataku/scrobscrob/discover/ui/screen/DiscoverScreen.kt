@@ -18,6 +18,7 @@ import com.mataku.scrobscrob.discover.ui.viewmodel.DiscoverViewModel
 import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetScaffold
 import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetText
 import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetTopAppBar
+import com.mataku.scrobscrob.ui_common.style.isCompactWidth
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -27,6 +28,7 @@ internal fun DiscoverScreen(
   modifier: Modifier = Modifier
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+  val cellSize = if (isCompactWidth()) 140.dp else 200.dp
   SunsetScaffold(
     modifier = modifier,
     topBar = {
@@ -51,6 +53,7 @@ internal fun DiscoverScreen(
             onLovedTrackTap = {
               navigateToWebView.invoke(it.url)
             },
+            cellSize = cellSize
           )
         }
       }
@@ -67,7 +70,8 @@ internal fun DiscoverScreen(
             modifier = Modifier
               .padding(
                 top = 32.dp
-              )
+              ),
+            cellSize = cellSize
           )
         }
       }
@@ -84,7 +88,8 @@ internal fun DiscoverScreen(
             modifier = Modifier
               .padding(
                 top = 32.dp
-              )
+              ),
+            cellSize = cellSize
           )
         }
       }

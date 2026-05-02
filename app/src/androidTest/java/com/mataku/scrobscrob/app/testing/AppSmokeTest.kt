@@ -23,8 +23,14 @@ import org.junit.Test
 @OptIn(ExperimentalTestApi::class)
 class AppSmokeTest {
 
-  @get:Rule
+  // composeRule must be the OUTER rule (higher order) so its activity
+  // teardown runs AFTER screenshotRule.failed — otherwise the screenshot
+  // is captured against an already-destroyed Activity and comes back blank.
+  @get:Rule(order = 1)
   val composeRule = createAndroidComposeRule<MainActivity>()
+
+  @get:Rule(order = 0)
+  val screenshotRule = TestScreenshotRule()
 
   @Before
   fun resetState() {

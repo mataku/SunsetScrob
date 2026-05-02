@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.mataku.scrobscrob.core.entity.ChartArtist
 import com.mataku.scrobscrob.core.entity.imageUrl
@@ -23,7 +24,8 @@ import kotlinx.collections.immutable.toImmutableList
 internal fun ChartArtistList(
   chartArtistList: ImmutableList<ChartArtist>,
   onChartArtistTap: (ChartArtist) -> Unit,
-  modifier: Modifier = Modifier
+  modifier: Modifier = Modifier,
+  cellSize: Dp = 140.dp
 ) {
   Column(modifier = modifier.fillMaxWidth()) {
     SunsetText.Headline(
@@ -53,7 +55,8 @@ internal fun ChartArtistList(
           modifier = Modifier
             .clickable {
               onChartArtistTap.invoke(artist)
-            }
+            },
+          cellSize = cellSize
         )
       }
     }

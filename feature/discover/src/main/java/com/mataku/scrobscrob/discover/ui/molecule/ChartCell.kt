@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetText
 import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetImage
@@ -19,17 +20,18 @@ internal fun ChartCell(
   title: String,
   subTitle: String,
   artworkUrl: String?,
-  modifier: Modifier = Modifier
+  modifier: Modifier = Modifier,
+  cellSize: Dp = 140.dp
 ) {
   Column(
     modifier = modifier
-      .width(140.dp)
+      .width(cellSize)
   ) {
     SunsetImage(
       imageData = artworkUrl,
       contentDescription = "$title artwork",
       modifier = Modifier
-        .size(140.dp)
+        .size(cellSize)
     )
     Spacer(modifier = Modifier.height(8.dp))
     SunsetText.Body(

@@ -14,15 +14,21 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.mataku.scrobscrob.album.ui.navigation.AlbumKey
 import com.mataku.scrobscrob.album.ui.screen.TopAlbumsScreen
+import com.mataku.scrobscrob.album.ui.viewmodel.AlbumViewModel
+import com.mataku.scrobscrob.artist.ui.navigation.ArtistKey
 import com.mataku.scrobscrob.artist.ui.screen.TopArtistsScreen
+import com.mataku.scrobscrob.artist.ui.viewmodel.ArtistViewModel
 import com.mataku.scrobscrob.core.entity.RecentTrack
 import com.mataku.scrobscrob.core.entity.TopAlbumInfo
 import com.mataku.scrobscrob.core.entity.TopArtistInfo
 import com.mataku.scrobscrob.home.HomeTabType
 import com.mataku.scrobscrob.home.ui.molecule.HomeTabs
 import com.mataku.scrobscrob.home.ui.viewmodel.HomeViewModel
+import com.mataku.scrobscrob.scrobble.ui.navigation.TrackDetailKey
 import com.mataku.scrobscrob.scrobble.ui.screen.ScrobbleScreen
+import com.mataku.scrobscrob.scrobble.ui.viewmodel.TrackViewModel
 import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetScaffold
 import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetText
 import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetTopAppBar
@@ -38,6 +44,10 @@ internal fun HomeScreen(
   sharedTransitionScope: SharedTransitionScope,
   animatedContentScope: AnimatedContentScope,
   navigateToTrackDetail: (RecentTrack, String) -> Unit,
+  trackViewModelProvider: @Composable (TrackDetailKey) -> TrackViewModel,
+  navigateToWebView: (String) -> Unit,
+  albumViewModelProvider: @Composable (AlbumKey) -> AlbumViewModel,
+  artistViewModelProvider: @Composable (ArtistKey) -> ArtistViewModel,
   navigateToArtistDetail: (TopArtistInfo, String) -> Unit,
   navigateToAlbumDetail: (TopAlbumInfo, String) -> Unit,
   navigateToLogin: () -> Unit,
@@ -109,6 +119,8 @@ internal fun HomeScreen(
             ScrobbleScreen(
               topAppBarScrollBehavior = scrollBehavior,
               navigateToTrackDetail = navigateToTrackDetail,
+              trackViewModelProvider = trackViewModelProvider,
+              navigateToWebView = navigateToWebView,
               sharedTransitionScope = sharedTransitionScope,
               animatedContentScope = animatedContentScope,
               viewModel = metroViewModel(key = "scrobble"),
@@ -119,9 +131,11 @@ internal fun HomeScreen(
             TopArtistsScreen(
               viewModel = metroViewModel(key = "artist"),
               onArtistTap = navigateToArtistDetail,
+              artistViewModelProvider = artistViewModelProvider,
+              navigateToWebView = navigateToWebView,
               topAppBarScrollBehavior = scrollBehavior,
               sharedTransitionScope = sharedTransitionScope,
-              animatedContentScope = animatedContentScope
+              animatedContentScope = animatedContentScope,
             )
           }
 
@@ -129,9 +143,11 @@ internal fun HomeScreen(
             TopAlbumsScreen(
               viewModel = metroViewModel(key = "album"),
               navigateToAlbumInfo = navigateToAlbumDetail,
+              albumViewModelProvider = albumViewModelProvider,
+              navigateToWebView = navigateToWebView,
               topAppBarScrollBehavior = scrollBehavior,
               sharedTransitionScope = sharedTransitionScope,
-              animatedContentScope = animatedContentScope
+              animatedContentScope = animatedContentScope,
             )
           }
         }
