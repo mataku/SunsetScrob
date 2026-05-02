@@ -431,3 +431,10 @@ private fun AccountContentPreview() {
     )
   }
 }
+
+internal sealed interface AccountDetail {
+  data object Theme : AccountDetail
+  data object License : AccountDetail
+  data object PrivacyPolicy : AccountDetail
+  data object ScrobbleSetting : AccountDetail
+}
