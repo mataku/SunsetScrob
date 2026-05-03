@@ -19,6 +19,7 @@ import dev.zacsweers.metro.SingleIn
 interface SessionRepository {
   suspend fun authorize(userName: String, password: String): Flow<Unit>
   suspend fun logout(): Flow<Unit>
+  suspend fun recoverFromKeystoreLossIfNeeded(): Flow<Unit>
 }
 
 @SingleIn(AppScope::class)
@@ -57,6 +58,17 @@ class SessionRepositoryImpl(
     scrobbleAppDataStore.clear()
     emit(Unit)
   }
+
+  override suspend fun recoverFromKeystoreLossIfNeeded(): Flow<Unit> = flow {
+    val sessionKey = sessionKeyDataStore.sessionKey()
+    val username = usernameDataStore.username()
+    if (sessionKey == null && username != null) {
+      sessionKeyDataStore.remove()
+      usernameDataStore.remove()
+      scrobbleAppDataStore.clear()
+    }
+    emit(Unit)
+  }.flowOn(Dispatchers.IO)
 
   companion object {
     private const val METHOD = "auth.getMobileSession"

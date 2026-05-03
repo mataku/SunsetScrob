@@ -12,7 +12,9 @@ configure<LibraryExtension>() {
 }
 
 dependencies {
+  implementation(libs.datastore)
   implementation(libs.datastore.preferences)
+  implementation(libs.datastore.tink)
   implementation(libs.serialization.json)
   implementation(libs.sqldelight.driver)
   implementation(libs.sqldelight.coroutines)

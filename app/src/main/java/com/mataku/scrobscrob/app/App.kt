@@ -15,9 +15,16 @@ import com.mataku.scrobscrob.data.repository.di.ScrobbleServiceDependencies
 import dev.zacsweers.metro.createGraphFactory
 import dev.zacsweers.metrox.android.MetroAppComponentProviders
 import dev.zacsweers.metrox.android.MetroApplication
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
-open class App : Application(), MetroApplication, SingletonImageLoader.Factory, ScrobbleServiceDependencies {
+open class App : Application(), MetroApplication, SingletonImageLoader.Factory,
+  ScrobbleServiceDependencies {
 
   internal val appGraph: AppGraphContract by lazy { newAppGraph() }
 
@@ -36,6 +43,9 @@ open class App : Application(), MetroApplication, SingletonImageLoader.Factory, 
     super.onCreate()
     if (BuildConfig.DEBUG) {
       Timber.plant(Timber.DebugTree())
+    }
+    CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
+      appGraph.sessionRepository.recoverFromKeystoreLossIfNeeded().catch { }.collect()
     }
   }
 

@@ -85,4 +85,72 @@ class SessionRepositorySpec : DescribeSpec({
       coVerify(exactly = 0) { service.rawRequest(any(), any()) }
     }
   }
+
+  describe("recoverFromKeystoreLossIfNeeded") {
+    it("clears all stores when sessionKey is null but username is present") {
+      val service = mockk<LastFmService>()
+      val sessionKeyDataStore = mockk<SessionKeyDataStore>()
+      val usernameDataStore = mockk<UsernameDataStore>()
+      val scrobbleAppDataStore = mockk<ScrobbleAppDataStore>()
+      coEvery { sessionKeyDataStore.sessionKey() } returns null
+      coEvery { usernameDataStore.username() } returns "matakucom"
+      coEvery { sessionKeyDataStore.remove() } returns Unit
+      coEvery { usernameDataStore.remove() } returns Unit
+      coEvery { scrobbleAppDataStore.clear() } returns Unit
+
+      val repository = SessionRepositoryImpl(
+        service, sessionKeyDataStore, usernameDataStore, scrobbleAppDataStore,
+      )
+      repository.recoverFromKeystoreLossIfNeeded().test {
+        awaitItem() shouldBe Unit
+        awaitComplete()
+      }
+
+      coVerify(exactly = 1) { sessionKeyDataStore.remove() }
+      coVerify(exactly = 1) { usernameDataStore.remove() }
+      coVerify(exactly = 1) { scrobbleAppDataStore.clear() }
+    }
+
+    it("does not touch any store when both sessionKey and username are absent (fresh install)") {
+      val service = mockk<LastFmService>()
+      val sessionKeyDataStore = mockk<SessionKeyDataStore>()
+      val usernameDataStore = mockk<UsernameDataStore>()
+      val scrobbleAppDataStore = mockk<ScrobbleAppDataStore>()
+      coEvery { sessionKeyDataStore.sessionKey() } returns null
+      coEvery { usernameDataStore.username() } returns null
+
+      val repository = SessionRepositoryImpl(
+        service, sessionKeyDataStore, usernameDataStore, scrobbleAppDataStore,
+      )
+      repository.recoverFromKeystoreLossIfNeeded().test {
+        awaitItem() shouldBe Unit
+        awaitComplete()
+      }
+
+      coVerify(exactly = 0) { sessionKeyDataStore.remove() }
+      coVerify(exactly = 0) { usernameDataStore.remove() }
+      coVerify(exactly = 0) { scrobbleAppDataStore.clear() }
+    }
+
+    it("does not touch any store when the user is logged in normally") {
+      val service = mockk<LastFmService>()
+      val sessionKeyDataStore = mockk<SessionKeyDataStore>()
+      val usernameDataStore = mockk<UsernameDataStore>()
+      val scrobbleAppDataStore = mockk<ScrobbleAppDataStore>()
+      coEvery { sessionKeyDataStore.sessionKey() } returns "abcdef0123456789"
+      coEvery { usernameDataStore.username() } returns "matakucom"
+
+      val repository = SessionRepositoryImpl(
+        service, sessionKeyDataStore, usernameDataStore, scrobbleAppDataStore,
+      )
+      repository.recoverFromKeystoreLossIfNeeded().test {
+        awaitItem() shouldBe Unit
+        awaitComplete()
+      }
+
+      coVerify(exactly = 0) { sessionKeyDataStore.remove() }
+      coVerify(exactly = 0) { usernameDataStore.remove() }
+      coVerify(exactly = 0) { scrobbleAppDataStore.clear() }
+    }
+  }
 })

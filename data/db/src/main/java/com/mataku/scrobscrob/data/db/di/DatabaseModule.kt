@@ -7,6 +7,7 @@ import com.mataku.scrobscrob.data.db.ScrobbleAppDataStore
 import com.mataku.scrobscrob.data.db.SessionKeyDataStore
 import com.mataku.scrobscrob.data.db.ThemeDataStore
 import com.mataku.scrobscrob.data.db.UsernameDataStore
+import com.mataku.scrobscrob.data.db.encryptedSessionKeyDataStore
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.Provides
@@ -18,7 +19,7 @@ interface DatabaseModule {
   @SingleIn(AppScope::class)
   @Provides
   fun provideSessionKeyStore(context: Context): SessionKeyDataStore {
-    return SessionKeyDataStore(context)
+    return SessionKeyDataStore(encryptedSessionKeyDataStore(context))
   }
 
   @SingleIn(AppScope::class)

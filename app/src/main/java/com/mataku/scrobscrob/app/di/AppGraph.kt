@@ -3,6 +3,7 @@ package com.mataku.scrobscrob.app.di
 import android.app.Application
 import android.content.Context
 import coil3.ImageLoader
+import com.mataku.scrobscrob.data.repository.SessionRepository
 import com.mataku.scrobscrob.data.repository.di.ScrobbleServiceDependencies
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.DependencyGraph
@@ -16,6 +17,7 @@ internal interface AppGraphContract :
   ScrobbleServiceDependencies {
 
   val imageLoader: ImageLoader
+  val sessionRepository: SessionRepository
 }
 
 @DependencyGraph(AppScope::class)
