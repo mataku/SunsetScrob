@@ -23,6 +23,7 @@ import com.mataku.scrobscrob.data.api.model.ScrobbleValueResult
 import com.mataku.scrobscrob.data.db.ArtworkDataStore
 import com.mataku.scrobscrob.data.db.SessionKeyDataStore
 import com.mataku.scrobscrob.data.db.UsernameDataStore
+import com.mataku.scrobscrob.data.db.entity.ArtworkInsertion
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldNotBeBlank
@@ -99,6 +100,18 @@ class ScrobbleRepositorySpec : DescribeSpec({
       val captured = slot.captured
       captured.shouldBeInstanceOf<UserRecentTracksEndpoint>()
       captured.params shouldBe mapOf("user" to username, "limit" to 50, "page" to page)
+
+      coVerify(exactly = 1) {
+        artworkDataStore.insertArtworks(
+          listOf(
+            ArtworkInsertion(
+              albumName = "Drama - The 4th Mini Album",
+              artist = "aespa",
+              artworkUrl = "https://lastfm.freetls.fastly.net/i/u/174s/07bc2400d02a125e7b1ef0858ca57d71.jpg",
+            ),
+          ),
+        )
+      }
     }
   }
 

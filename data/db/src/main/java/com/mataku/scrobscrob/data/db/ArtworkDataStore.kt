@@ -5,6 +5,7 @@ import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.driver.android.AndroidSqliteDriver
 import com.mataku.scrobscrob.Database
 import com.mataku.scrobscrob.data.db.entity.ArtistArtworkEntity
+import com.mataku.scrobscrob.data.db.entity.ArtworkInsertion
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -23,7 +24,7 @@ interface ArtworkDataStore {
 
   suspend fun artworkList(artists: List<String>): Flow<List<String?>>
   suspend fun artworkList2(artists: List<String>): List<ArtistArtworkEntity>
-  suspend fun insertArtwork(albumName: String, artist: String, artworkUrl: String)
+  suspend fun insertArtworks(insertions: List<ArtworkInsertion>)
   suspend fun deleteAll()
 }
 
@@ -46,14 +47,19 @@ class ArtworkDataStoreImpl(
     artworkQueries.deleteAll()
   }
 
-  override suspend fun insertArtwork(albumName: String, artist: String, artworkUrl: String) {
-    if (artworkUrl.isInvalidArtwork()) return
+  override suspend fun insertArtworks(insertions: List<ArtworkInsertion>) {
+    val valid = insertions.filter { !it.artworkUrl.isInvalidArtwork() }
+    if (valid.isEmpty()) return
     withContext(Dispatchers.IO) {
-      artworkQueries.insert(
-        name = artist,
-        albumName = albumName,
-        url = artworkUrl
-      )
+      artworkQueries.transaction {
+        valid.forEach { item ->
+          artworkQueries.insert(
+            name = item.artist,
+            albumName = item.albumName,
+            url = item.artworkUrl,
+          )
+        }
+      }
     }
   }
 
