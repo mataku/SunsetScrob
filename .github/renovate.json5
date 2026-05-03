@@ -38,6 +38,7 @@
       groupName: 'gradle-libraries',
       matchManagers: [
         'gradle',
+        'gradle-wrapper',
       ],
       timezone: 'Asia/Tokyo',
       schedule: [
@@ -64,6 +65,15 @@
       matchPackageNames: [
         '/^ruby$/',
         '/^ruby/setup-ruby$/',
+      ],
+    }, {
+      groupName: 'ruby',
+      matchManagers: [
+        'bundler',
+      ],
+      timezone: 'Asia/Tokyo',
+      schedule: [
+        '* 13-19 * * 5',
       ],
     },
   ],
