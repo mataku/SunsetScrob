@@ -76,7 +76,7 @@ interface ApiModule {
         .components {
           add(
             OkHttpNetworkFetcherFactory(
-              callFactory = { okHttpClient.newBuilder().build() },
+              callFactory = { okHttpClient },
             ),
           )
         }
