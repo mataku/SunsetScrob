@@ -66,7 +66,7 @@
     {
         "groupId": "androidx.annotation",
         "artifactId": "annotation-experimental",
-        "version": "1.4.1",
+        "version": "1.5.1",
         "name": "Experimental annotation",
         "spdxLicenses": [
             {
@@ -516,6 +516,102 @@
         "artifactId": "material3-android",
         "version": "1.4.0",
         "name": "Compose Material3 Components",
+        "spdxLicenses": [
+            {
+                "identifier": "Apache-2.0",
+                "name": "Apache License 2.0",
+                "url": "https://www.apache.org/licenses/LICENSE-2.0"
+            }
+        ],
+        "scm": {
+            "url": "https://cs.android.com/androidx/platform/frameworks/support"
+        }
+    },
+    {
+        "groupId": "androidx.compose.material3.adaptive",
+        "artifactId": "adaptive",
+        "version": "1.2.0",
+        "name": "Material Adaptive",
+        "spdxLicenses": [
+            {
+                "identifier": "Apache-2.0",
+                "name": "Apache License 2.0",
+                "url": "https://www.apache.org/licenses/LICENSE-2.0"
+            }
+        ],
+        "scm": {
+            "url": "https://cs.android.com/androidx/platform/frameworks/support"
+        }
+    },
+    {
+        "groupId": "androidx.compose.material3.adaptive",
+        "artifactId": "adaptive-android",
+        "version": "1.2.0",
+        "name": "Material Adaptive",
+        "spdxLicenses": [
+            {
+                "identifier": "Apache-2.0",
+                "name": "Apache License 2.0",
+                "url": "https://www.apache.org/licenses/LICENSE-2.0"
+            }
+        ],
+        "scm": {
+            "url": "https://cs.android.com/androidx/platform/frameworks/support"
+        }
+    },
+    {
+        "groupId": "androidx.compose.material3.adaptive",
+        "artifactId": "adaptive-layout",
+        "version": "1.2.0",
+        "name": "Material Adaptive",
+        "spdxLicenses": [
+            {
+                "identifier": "Apache-2.0",
+                "name": "Apache License 2.0",
+                "url": "https://www.apache.org/licenses/LICENSE-2.0"
+            }
+        ],
+        "scm": {
+            "url": "https://cs.android.com/androidx/platform/frameworks/support"
+        }
+    },
+    {
+        "groupId": "androidx.compose.material3.adaptive",
+        "artifactId": "adaptive-layout-android",
+        "version": "1.2.0",
+        "name": "Material Adaptive",
+        "spdxLicenses": [
+            {
+                "identifier": "Apache-2.0",
+                "name": "Apache License 2.0",
+                "url": "https://www.apache.org/licenses/LICENSE-2.0"
+            }
+        ],
+        "scm": {
+            "url": "https://cs.android.com/androidx/platform/frameworks/support"
+        }
+    },
+    {
+        "groupId": "androidx.compose.material3.adaptive",
+        "artifactId": "adaptive-navigation",
+        "version": "1.2.0",
+        "name": "Material Adaptive",
+        "spdxLicenses": [
+            {
+                "identifier": "Apache-2.0",
+                "name": "Apache License 2.0",
+                "url": "https://www.apache.org/licenses/LICENSE-2.0"
+            }
+        ],
+        "scm": {
+            "url": "https://cs.android.com/androidx/platform/frameworks/support"
+        }
+    },
+    {
+        "groupId": "androidx.compose.material3.adaptive",
+        "artifactId": "adaptive-navigation-android",
+        "version": "1.2.0",
+        "name": "Material Adaptive",
         "spdxLicenses": [
             {
                 "identifier": "Apache-2.0",
@@ -1042,7 +1138,7 @@
     {
         "groupId": "androidx.core",
         "artifactId": "core-splashscreen",
-        "version": "1.0.1",
+        "version": "1.2.0",
         "name": "SplashScreen",
         "spdxLicenses": [
             {
@@ -1122,7 +1218,7 @@
     {
         "groupId": "androidx.datastore",
         "artifactId": "datastore",
-        "version": "1.2.1",
+        "version": "1.3.0-alpha08",
         "name": "DataStore",
         "spdxLicenses": [
             {
@@ -1138,7 +1234,7 @@
     {
         "groupId": "androidx.datastore",
         "artifactId": "datastore-android",
-        "version": "1.2.1",
+        "version": "1.3.0-alpha08",
         "name": "DataStore",
         "spdxLicenses": [
             {
@@ -1154,7 +1250,7 @@
     {
         "groupId": "androidx.datastore",
         "artifactId": "datastore-core",
-        "version": "1.2.1",
+        "version": "1.3.0-alpha08",
         "name": "DataStore Core",
         "spdxLicenses": [
             {
@@ -1170,7 +1266,7 @@
     {
         "groupId": "androidx.datastore",
         "artifactId": "datastore-core-android",
-        "version": "1.2.1",
+        "version": "1.3.0-alpha08",
         "name": "DataStore Core",
         "spdxLicenses": [
             {
@@ -1186,7 +1282,7 @@
     {
         "groupId": "androidx.datastore",
         "artifactId": "datastore-core-okio",
-        "version": "1.2.1",
+        "version": "1.3.0-alpha08",
         "name": "DataStore Core Okio",
         "spdxLicenses": [
             {
@@ -1202,7 +1298,7 @@
     {
         "groupId": "androidx.datastore",
         "artifactId": "datastore-core-okio-jvm",
-        "version": "1.2.1",
+        "version": "1.3.0-alpha08",
         "name": "DataStore Core Okio",
         "spdxLicenses": [
             {
@@ -1218,7 +1314,7 @@
     {
         "groupId": "androidx.datastore",
         "artifactId": "datastore-preferences",
-        "version": "1.2.1",
+        "version": "1.3.0-alpha08",
         "name": "Preferences DataStore",
         "spdxLicenses": [
             {
@@ -1234,7 +1330,7 @@
     {
         "groupId": "androidx.datastore",
         "artifactId": "datastore-preferences-android",
-        "version": "1.2.1",
+        "version": "1.3.0-alpha08",
         "name": "Preferences DataStore",
         "spdxLicenses": [
             {
@@ -1250,7 +1346,7 @@
     {
         "groupId": "androidx.datastore",
         "artifactId": "datastore-preferences-core",
-        "version": "1.2.1",
+        "version": "1.3.0-alpha08",
         "name": "Preferences DataStore Core",
         "spdxLicenses": [
             {
@@ -1266,7 +1362,7 @@
     {
         "groupId": "androidx.datastore",
         "artifactId": "datastore-preferences-core-android",
-        "version": "1.2.1",
+        "version": "1.3.0-alpha08",
         "name": "Preferences DataStore Core",
         "spdxLicenses": [
             {
@@ -1282,7 +1378,7 @@
     {
         "groupId": "androidx.datastore",
         "artifactId": "datastore-preferences-external-protobuf",
-        "version": "1.2.1",
+        "version": "1.3.0-alpha08",
         "name": "Preferences External Protobuf",
         "spdxLicenses": [
             {
@@ -1298,8 +1394,40 @@
     {
         "groupId": "androidx.datastore",
         "artifactId": "datastore-preferences-proto",
-        "version": "1.2.1",
+        "version": "1.3.0-alpha08",
         "name": "Preferences DataStore Proto",
+        "spdxLicenses": [
+            {
+                "identifier": "Apache-2.0",
+                "name": "Apache License 2.0",
+                "url": "https://www.apache.org/licenses/LICENSE-2.0"
+            }
+        ],
+        "scm": {
+            "url": "https://cs.android.com/androidx/platform/frameworks/support"
+        }
+    },
+    {
+        "groupId": "androidx.datastore",
+        "artifactId": "datastore-tink",
+        "version": "1.3.0-alpha08",
+        "name": "datastore:datastore-tink",
+        "spdxLicenses": [
+            {
+                "identifier": "Apache-2.0",
+                "name": "Apache License 2.0",
+                "url": "https://www.apache.org/licenses/LICENSE-2.0"
+            }
+        ],
+        "scm": {
+            "url": "https://cs.android.com/androidx/platform/frameworks/support"
+        }
+    },
+    {
+        "groupId": "androidx.datastore",
+        "artifactId": "datastore-tink-android",
+        "version": "1.3.0-alpha08",
+        "name": "datastore:datastore-tink",
         "spdxLicenses": [
             {
                 "identifier": "Apache-2.0",
@@ -1810,7 +1938,7 @@
     {
         "groupId": "androidx.navigation",
         "artifactId": "navigation-common",
-        "version": "2.9.8",
+        "version": "2.7.7",
         "name": "Navigation Common",
         "spdxLicenses": [
             {
@@ -1825,9 +1953,9 @@
     },
     {
         "groupId": "androidx.navigation",
-        "artifactId": "navigation-common-android",
-        "version": "2.9.8",
-        "name": "Navigation Common",
+        "artifactId": "navigation-common-ktx",
+        "version": "2.7.7",
+        "name": "Navigation Common Kotlin Extensions",
         "spdxLicenses": [
             {
                 "identifier": "Apache-2.0",
@@ -1842,23 +1970,7 @@
     {
         "groupId": "androidx.navigation",
         "artifactId": "navigation-compose",
-        "version": "2.9.8",
-        "name": "Compose Navigation",
-        "spdxLicenses": [
-            {
-                "identifier": "Apache-2.0",
-                "name": "Apache License 2.0",
-                "url": "https://www.apache.org/licenses/LICENSE-2.0"
-            }
-        ],
-        "scm": {
-            "url": "https://cs.android.com/androidx/platform/frameworks/support"
-        }
-    },
-    {
-        "groupId": "androidx.navigation",
-        "artifactId": "navigation-compose-android",
-        "version": "2.9.8",
+        "version": "2.7.7",
         "name": "Compose Navigation",
         "spdxLicenses": [
             {
@@ -1874,7 +1986,7 @@
     {
         "groupId": "androidx.navigation",
         "artifactId": "navigation-runtime",
-        "version": "2.9.8",
+        "version": "2.7.7",
         "name": "Navigation Runtime",
         "spdxLicenses": [
             {
@@ -1889,9 +2001,73 @@
     },
     {
         "groupId": "androidx.navigation",
-        "artifactId": "navigation-runtime-android",
-        "version": "2.9.8",
-        "name": "Navigation Runtime",
+        "artifactId": "navigation-runtime-ktx",
+        "version": "2.7.7",
+        "name": "Navigation Runtime Kotlin Extensions",
+        "spdxLicenses": [
+            {
+                "identifier": "Apache-2.0",
+                "name": "Apache License 2.0",
+                "url": "https://www.apache.org/licenses/LICENSE-2.0"
+            }
+        ],
+        "scm": {
+            "url": "https://cs.android.com/androidx/platform/frameworks/support"
+        }
+    },
+    {
+        "groupId": "androidx.navigation3",
+        "artifactId": "navigation3-runtime",
+        "version": "1.1.1",
+        "name": "Androidx Navigation 3 Runtime",
+        "spdxLicenses": [
+            {
+                "identifier": "Apache-2.0",
+                "name": "Apache License 2.0",
+                "url": "https://www.apache.org/licenses/LICENSE-2.0"
+            }
+        ],
+        "scm": {
+            "url": "https://cs.android.com/androidx/platform/frameworks/support"
+        }
+    },
+    {
+        "groupId": "androidx.navigation3",
+        "artifactId": "navigation3-runtime-android",
+        "version": "1.1.1",
+        "name": "Androidx Navigation 3 Runtime",
+        "spdxLicenses": [
+            {
+                "identifier": "Apache-2.0",
+                "name": "Apache License 2.0",
+                "url": "https://www.apache.org/licenses/LICENSE-2.0"
+            }
+        ],
+        "scm": {
+            "url": "https://cs.android.com/androidx/platform/frameworks/support"
+        }
+    },
+    {
+        "groupId": "androidx.navigation3",
+        "artifactId": "navigation3-ui",
+        "version": "1.1.1",
+        "name": "Androidx Navigation 3 UI",
+        "spdxLicenses": [
+            {
+                "identifier": "Apache-2.0",
+                "name": "Apache License 2.0",
+                "url": "https://www.apache.org/licenses/LICENSE-2.0"
+            }
+        ],
+        "scm": {
+            "url": "https://cs.android.com/androidx/platform/frameworks/support"
+        }
+    },
+    {
+        "groupId": "androidx.navigation3",
+        "artifactId": "navigation3-ui-android",
+        "version": "1.1.1",
+        "name": "Androidx Navigation 3 UI",
         "spdxLicenses": [
             {
                 "identifier": "Apache-2.0",
@@ -1906,7 +2082,7 @@
     {
         "groupId": "androidx.navigationevent",
         "artifactId": "navigationevent",
-        "version": "1.0.0",
+        "version": "1.0.2",
         "name": "Navigation Event",
         "spdxLicenses": [
             {
@@ -1922,7 +2098,7 @@
     {
         "groupId": "androidx.navigationevent",
         "artifactId": "navigationevent-android",
-        "version": "1.0.0",
+        "version": "1.0.2",
         "name": "Navigation Event",
         "spdxLicenses": [
             {
@@ -1938,7 +2114,7 @@
     {
         "groupId": "androidx.navigationevent",
         "artifactId": "navigationevent-compose",
-        "version": "1.0.0",
+        "version": "1.0.2",
         "name": "NavigationEvent Compose",
         "spdxLicenses": [
             {
@@ -1954,7 +2130,7 @@
     {
         "groupId": "androidx.navigationevent",
         "artifactId": "navigationevent-compose-android",
-        "version": "1.0.0",
+        "version": "1.0.2",
         "name": "NavigationEvent Compose",
         "spdxLicenses": [
             {
@@ -2178,8 +2354,24 @@
     {
         "groupId": "androidx.tracing",
         "artifactId": "tracing",
-        "version": "1.2.0",
-        "name": "Android Tracing",
+        "version": "2.0.0-alpha06",
+        "name": "Tracing",
+        "spdxLicenses": [
+            {
+                "identifier": "Apache-2.0",
+                "name": "Apache License 2.0",
+                "url": "https://www.apache.org/licenses/LICENSE-2.0"
+            }
+        ],
+        "scm": {
+            "url": "https://cs.android.com/androidx/platform/frameworks/support"
+        }
+    },
+    {
+        "groupId": "androidx.tracing",
+        "artifactId": "tracing-android",
+        "version": "2.0.0-alpha06",
+        "name": "Tracing",
         "spdxLicenses": [
             {
                 "identifier": "Apache-2.0",
@@ -2450,7 +2642,7 @@
     {
         "groupId": "com.airbnb.android",
         "artifactId": "lottie",
-        "version": "6.6.10",
+        "version": "6.7.1",
         "name": "Lottie",
         "spdxLicenses": [
             {
@@ -2466,7 +2658,7 @@
     {
         "groupId": "com.airbnb.android",
         "artifactId": "lottie-compose",
-        "version": "6.6.10",
+        "version": "6.7.1",
         "name": "Lottie Compose",
         "spdxLicenses": [
             {
@@ -2649,9 +2841,57 @@
         ]
     },
     {
+        "groupId": "com.google.code.findbugs",
+        "artifactId": "jsr305",
+        "version": "3.0.2",
+        "name": "FindBugs-jsr305",
+        "spdxLicenses": [
+            {
+                "identifier": "Apache-2.0",
+                "name": "Apache License 2.0",
+                "url": "https://www.apache.org/licenses/LICENSE-2.0"
+            }
+        ],
+        "scm": {
+            "url": "https://code.google.com/p/jsr-305/"
+        }
+    },
+    {
+        "groupId": "com.google.code.gson",
+        "artifactId": "gson",
+        "version": "2.13.2",
+        "name": "Gson",
+        "spdxLicenses": [
+            {
+                "identifier": "Apache-2.0",
+                "name": "Apache License 2.0",
+                "url": "https://www.apache.org/licenses/LICENSE-2.0"
+            }
+        ],
+        "scm": {
+            "url": "https://github.com/google/gson/"
+        }
+    },
+    {
+        "groupId": "com.google.crypto.tink",
+        "artifactId": "tink-android",
+        "version": "1.20.0",
+        "name": "Tink Cryptography API for Android",
+        "spdxLicenses": [
+            {
+                "identifier": "Apache-2.0",
+                "name": "Apache License 2.0",
+                "url": "https://www.apache.org/licenses/LICENSE-2.0"
+            }
+        ],
+        "scm": {
+            "url": "https://github.com/tink-crypto/tink-java.git"
+        }
+    },
+    {
         "groupId": "com.google.errorprone",
         "artifactId": "error_prone_annotations",
-        "version": "2.26.0",
+        "version": "2.41.0",
         "name": "error-prone annotations",
         "spdxLicenses": [
             {
@@ -2935,7 +3175,7 @@
     {
         "groupId": "com.squareup.okio",
         "artifactId": "okio",
-        "version": "3.16.4",
+        "version": "3.17.0",
         "name": "okio",
         "spdxLicenses": [
             {
@@ -2951,7 +3191,7 @@
     {
         "groupId": "com.squareup.okio",
         "artifactId": "okio-jvm",
-        "version": "3.16.4",
+        "version": "3.17.0",
         "name": "okio",
         "spdxLicenses": [
             {
@@ -2967,7 +3207,7 @@
     {
         "groupId": "dev.zacsweers.metro",
         "artifactId": "metrox-android",
-        "version": "1.0.0-RC3",
+        "version": "1.0.0",
         "name": "Metrox Android",
         "spdxLicenses": [
             {
@@ -2983,7 +3223,7 @@
     {
         "groupId": "dev.zacsweers.metro",
         "artifactId": "metrox-viewmodel",
-        "version": "1.0.0-RC3",
+        "version": "1.0.0",
         "name": "Metrox ViewModel",
         "spdxLicenses": [
             {
@@ -2999,7 +3239,7 @@
     {
         "groupId": "dev.zacsweers.metro",
         "artifactId": "metrox-viewmodel-compose",
-        "version": "1.0.0-RC3",
+        "version": "1.0.0",
         "name": "Metrox ViewModel Compose",
         "spdxLicenses": [
             {
@@ -3015,7 +3255,7 @@
     {
         "groupId": "dev.zacsweers.metro",
         "artifactId": "metrox-viewmodel-compose-jvm",
-        "version": "1.0.0-RC3",
+        "version": "1.0.0",
         "name": "Metrox ViewModel Compose",
         "spdxLicenses": [
             {
@@ -3031,7 +3271,7 @@
     {
         "groupId": "dev.zacsweers.metro",
         "artifactId": "metrox-viewmodel-jvm",
-        "version": "1.0.0-RC3",
+        "version": "1.0.0",
         "name": "Metrox ViewModel",
         "spdxLicenses": [
             {
@@ -3047,7 +3287,7 @@
     {
         "groupId": "dev.zacsweers.metro",
         "artifactId": "runtime",
-        "version": "1.0.0-RC3",
+        "version": "1.0.0",
         "name": "Metro Runtime",
         "spdxLicenses": [
             {
@@ -3063,7 +3303,7 @@
     {
         "groupId": "dev.zacsweers.metro",
         "artifactId": "runtime-jvm",
-        "version": "1.0.0-RC3",
+        "version": "1.0.0",
         "name": "Metro Runtime",
         "spdxLicenses": [
             {
@@ -4226,6 +4466,38 @@
         ],
         "scm": {
             "url": "https://github.com/JetBrains/kotlin"
+        }
+    },
+    {
+        "groupId": "org.jetbrains.kotlinx",
+        "artifactId": "atomicfu",
+        "version": "0.28.0",
+        "name": "atomicfu",
+        "spdxLicenses": [
+            {
+                "identifier": "Apache-2.0",
+                "name": "Apache License 2.0",
+                "url": "https://www.apache.org/licenses/LICENSE-2.0"
+            }
+        ],
+        "scm": {
+            "url": "https://github.com/Kotlin/kotlinx.atomicfu"
+        }
+    },
+    {
+        "groupId": "org.jetbrains.kotlinx",
+        "artifactId": "atomicfu-jvm",
+        "version": "0.28.0",
+        "name": "atomicfu",
+        "spdxLicenses": [
+            {
+                "identifier": "Apache-2.0",
+                "name": "Apache License 2.0",
+                "url": "https://www.apache.org/licenses/LICENSE-2.0"
+            }
+        ],
+        "scm": {
+            "url": "https://github.com/Kotlin/kotlinx.atomicfu"
         }
     },
     {
