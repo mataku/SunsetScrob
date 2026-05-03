@@ -11,10 +11,12 @@ import com.mataku.scrobscrob.data.api.model.PagingAttrBody
 import com.mataku.scrobscrob.data.api.model.TopArtistsBody
 import com.mataku.scrobscrob.data.api.model.UserTopArtistsApiResponse
 import com.mataku.scrobscrob.data.db.ArtworkDataStore
+import com.mataku.scrobscrob.data.db.entity.ArtistArtworkEntity
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockk
 import io.mockk.slot
 
@@ -52,7 +54,7 @@ class TopArtistsRepositorySpec : DescribeSpec({
         val service = mockk<LastFmService>()
         val artworkDataStore = mockk<ArtworkDataStore>()
         val slot = slot<Endpoint<*>>()
-        coEvery { artworkDataStore.artwork(artist = any()) } returns null
+        coEvery { artworkDataStore.artworkList2(any()) } returns emptyList()
         coEvery { service.rawRequest(capture(slot), any()) } returns fakeResponse
 
         val repository = TopArtistsRepositoryImpl(service, artworkDataStore)
@@ -80,14 +82,19 @@ class TopArtistsRepositorySpec : DescribeSpec({
           "period" to timeRange.rawValue,
           "user" to username,
         )
+
+        coVerify(exactly = 1) { artworkDataStore.artworkList2(listOf("PassCode")) }
+        coVerify(exactly = 0) { artworkDataStore.artwork(any()) }
       }
     }
 
     context("cached artwork") {
-      it("overrides imageUrl with the cached artwork URL") {
+      it("overrides imageUrl with the cached artwork URL from a single batched lookup") {
         val service = mockk<LastFmService>()
         val artworkDataStore = mockk<ArtworkDataStore>()
-        coEvery { artworkDataStore.artwork(artist = "PassCode") } returns "https://cached.example/passcode.png"
+        coEvery { artworkDataStore.artworkList2(listOf("PassCode")) } returns listOf(
+          ArtistArtworkEntity(name = "PassCode", url = "https://cached.example/passcode.png"),
+        )
         coEvery { service.rawRequest(any(), any()) } returns fakeResponse
 
         val repository = TopArtistsRepositoryImpl(service, artworkDataStore)
@@ -100,6 +107,8 @@ class TopArtistsRepositorySpec : DescribeSpec({
           item.artists[0].imageUrl shouldBe "https://cached.example/passcode.png"
           awaitComplete()
         }
+
+        coVerify(exactly = 0) { artworkDataStore.artwork(any()) }
       }
     }
   }

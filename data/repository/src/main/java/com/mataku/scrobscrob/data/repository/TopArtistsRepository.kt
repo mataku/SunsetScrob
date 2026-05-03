@@ -46,12 +46,16 @@ class TopArtistsRepositoryImpl(
     )
     val response = lastFmService.request(endpoint)
     val result = response.toTopArtists()
+    val artworkByName = if (result.artists.isEmpty()) {
+      emptyMap()
+    } else {
+      artworkDataStore.artworkList2(result.artists.map { it.name })
+        .associate { it.name to it.url }
+    }
     val artistsWithArtwork = result.artists.map { artist ->
-      val imageUrl = artworkDataStore.artwork(
-        artist = artist.name
-      )
-      if (imageUrl != null) {
-        artist.copy(imageUrl = imageUrl)
+      val cachedUrl = artworkByName[artist.name]
+      if (!cachedUrl.isNullOrEmpty()) {
+        artist.copy(imageUrl = cachedUrl)
       } else {
         artist
       }

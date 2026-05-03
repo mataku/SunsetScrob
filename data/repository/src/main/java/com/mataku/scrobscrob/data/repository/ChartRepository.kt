@@ -42,12 +42,16 @@ class ChartRepositoryImpl(
     )
     val response = lastFmService.request(chartTopArtistsEndpoint)
     val chartTopArtists = response.toChartTopArtists()
+    val artworkByName = if (chartTopArtists.topArtists.isEmpty()) {
+      emptyMap()
+    } else {
+      artworkDataStore.artworkList2(chartTopArtists.topArtists.map { it.name })
+        .associate { it.name to it.url }
+    }
     val topArtists = chartTopArtists.topArtists.map { artist ->
-      val imageUrl = artworkDataStore.artwork(
-        artist = artist.name
-      )
-      if (imageUrl != null) {
-        artist.copy(imageUrl = imageUrl)
+      val cachedUrl = artworkByName[artist.name]
+      if (!cachedUrl.isNullOrEmpty()) {
+        artist.copy(imageUrl = cachedUrl)
       } else {
         artist
       }
@@ -71,13 +75,20 @@ class ChartRepositoryImpl(
     )
     val response = lastFmService.request(chartTopTracksEndpoint)
     val chartTopTracks = response.toChartTopTracks()
+    val tracksNeedingArtwork = chartTopTracks.topTracks.filter {
+      it.imageList.imageUrl().isInvalidArtwork()
+    }
+    val artworkByName = if (tracksNeedingArtwork.isEmpty()) {
+      emptyMap()
+    } else {
+      artworkDataStore.artworkList2(tracksNeedingArtwork.map { it.artist.name })
+        .associate { it.name to it.url }
+    }
     val topTracks = chartTopTracks.topTracks.map { track ->
       if (track.imageList.imageUrl().isInvalidArtwork()) {
-        val imageUrl = artworkDataStore.artwork(
-          artist = track.artist.name,
-        )
-        if (imageUrl != null) {
-          track.copy(imageUrl = imageUrl)
+        val cachedUrl = artworkByName[track.artist.name]
+        if (!cachedUrl.isNullOrEmpty()) {
+          track.copy(imageUrl = cachedUrl)
         } else {
           track
         }

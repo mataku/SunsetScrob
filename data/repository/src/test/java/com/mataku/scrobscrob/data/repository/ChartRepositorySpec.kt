@@ -15,6 +15,7 @@ import com.mataku.scrobscrob.data.api.model.ChartTrackArtist
 import com.mataku.scrobscrob.data.api.model.ImageBody
 import com.mataku.scrobscrob.data.api.model.PagingAttrBody
 import com.mataku.scrobscrob.data.db.ArtworkDataStore
+import com.mataku.scrobscrob.data.db.entity.ArtistArtworkEntity
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
@@ -55,7 +56,7 @@ class ChartRepositorySpec : DescribeSpec({
       it("emits artists pass-through and asserts captured endpoint") {
         val service = mockk<LastFmService>()
         val artworkDataStore = mockk<ArtworkDataStore>()
-        coEvery { artworkDataStore.artwork(artist = any()) } returns null
+        coEvery { artworkDataStore.artworkList2(any()) } returns emptyList()
         val slot = slot<Endpoint<*>>()
         coEvery { service.rawRequest(capture(slot), any()) } returns fakeResponse
 
@@ -76,14 +77,19 @@ class ChartRepositorySpec : DescribeSpec({
         val captured = slot.captured
         captured.shouldBeInstanceOf<ChartTopArtistsEndpoint>()
         captured.params shouldBe mapOf("limit" to "10", "page" to page.toString())
+
+        coVerify(exactly = 1) { artworkDataStore.artworkList2(listOf("The Weeknd")) }
+        coVerify(exactly = 0) { artworkDataStore.artwork(any()) }
       }
     }
 
     context("when artwork lookup returns a cached URL") {
-      it("overrides the artist's imageUrl") {
+      it("overrides the artist's imageUrl from a single batched lookup") {
         val service = mockk<LastFmService>()
         val artworkDataStore = mockk<ArtworkDataStore>()
-        coEvery { artworkDataStore.artwork(artist = "The Weeknd") } returns "https://cached.example/weeknd.png"
+        coEvery { artworkDataStore.artworkList2(listOf("The Weeknd")) } returns listOf(
+          ArtistArtworkEntity(name = "The Weeknd", url = "https://cached.example/weeknd.png"),
+        )
         coEvery { service.rawRequest(any(), any()) } returns fakeResponse
 
         val repository = ChartRepositoryImpl(service, artworkDataStore)
@@ -91,6 +97,8 @@ class ChartRepositorySpec : DescribeSpec({
           awaitItem().topArtists[0].imageUrl shouldBe "https://cached.example/weeknd.png"
           awaitComplete()
         }
+
+        coVerify(exactly = 0) { artworkDataStore.artwork(any()) }
       }
     }
   }
@@ -148,11 +156,12 @@ class ChartRepositorySpec : DescribeSpec({
         captured.params shouldBe mapOf("limit" to "10", "page" to page.toString())
 
         coVerify(exactly = 0) { artworkDataStore.artwork(any()) }
+        coVerify(exactly = 0) { artworkDataStore.artworkList2(any()) }
       }
     }
 
     context("when track has invalid artwork -> cached override") {
-      it("overrides imageUrl with the cached value") {
+      it("overrides imageUrl with the cached value from a batched lookup") {
         val fakeResponse = ChartTopTracksResponse(
           chartTopTracksBody = ChartTopTracksBody(
             topTracks = listOf(
@@ -179,7 +188,9 @@ class ChartRepositorySpec : DescribeSpec({
         )
         val service = mockk<LastFmService>()
         val artworkDataStore = mockk<ArtworkDataStore>()
-        coEvery { artworkDataStore.artwork(artist = "Mitski") } returns "https://cached.example/mitski.png"
+        coEvery { artworkDataStore.artworkList2(listOf("Mitski")) } returns listOf(
+          ArtistArtworkEntity(name = "Mitski", url = "https://cached.example/mitski.png"),
+        )
         coEvery { service.rawRequest(any(), any()) } returns fakeResponse
 
         val repository = ChartRepositoryImpl(service, artworkDataStore)
@@ -187,6 +198,8 @@ class ChartRepositorySpec : DescribeSpec({
           awaitItem().topTracks[0].imageUrl shouldBe "https://cached.example/mitski.png"
           awaitComplete()
         }
+
+        coVerify(exactly = 0) { artworkDataStore.artwork(any()) }
       }
     }
   }

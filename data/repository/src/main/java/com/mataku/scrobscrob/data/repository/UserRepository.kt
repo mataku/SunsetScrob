@@ -75,13 +75,21 @@ class UserRepositoryImpl(
         "user" to username
       )
     )
-    val tracks = lastFmService.request(endpoint).toRecentTrackList().map { track ->
+    val rawTracks = lastFmService.request(endpoint).toRecentTrackList()
+    val tracksNeedingArtwork = rawTracks.filter {
+      it.images.imageUrl().isInvalidArtwork()
+    }
+    val artworkByName = if (tracksNeedingArtwork.isEmpty()) {
+      emptyMap()
+    } else {
+      artworkDataStore.artworkList2(tracksNeedingArtwork.map { it.artist })
+        .associate { it.name to it.url }
+    }
+    val tracks = rawTracks.map { track ->
       if (track.images.imageUrl().isInvalidArtwork()) {
-        val imageUrl = artworkDataStore.artwork(
-          artist = track.artist,
-        )
-        if (imageUrl != null) {
-          track.copy(imageUrl = imageUrl)
+        val cachedUrl = artworkByName[track.artist]
+        if (!cachedUrl.isNullOrEmpty()) {
+          track.copy(imageUrl = cachedUrl)
         } else {
           track
         }

@@ -14,6 +14,7 @@ import com.mataku.scrobscrob.data.api.model.RecentTrackDateBody
 import com.mataku.scrobscrob.data.api.model.TrackArtistBody
 import com.mataku.scrobscrob.data.db.ArtworkDataStore
 import com.mataku.scrobscrob.data.db.UsernameDataStore
+import com.mataku.scrobscrob.data.db.entity.ArtistArtworkEntity
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.shouldBe
@@ -94,7 +95,6 @@ class UserRepositorySpec : DescribeSpec({
         val usernameDataStore = mockk<UsernameDataStore>()
         val artworkDataStore = mockk<ArtworkDataStore>()
         coEvery { usernameDataStore.username() } returns username
-        coEvery { artworkDataStore.artwork(any()) } returns null
 
         val slot = slot<Endpoint<*>>()
         val fakeResponse = LovedTracksResponse(
@@ -146,17 +146,22 @@ class UserRepositorySpec : DescribeSpec({
           "page" to page.toString(),
           "user" to username,
         )
+
+        coVerify(exactly = 0) { artworkDataStore.artwork(any()) }
+        coVerify(exactly = 0) { artworkDataStore.artworkList2(any()) }
       }
     }
 
     context("artwork is invalid and a cached URL is found") {
-      it("overrides the loved track's imageUrl with the cached value") {
+      it("overrides the loved track's imageUrl with the cached value from a batched lookup") {
         val username = "matakucom"
         val service = mockk<LastFmService>()
         val usernameDataStore = mockk<UsernameDataStore>()
         val artworkDataStore = mockk<ArtworkDataStore>()
         coEvery { usernameDataStore.username() } returns username
-        coEvery { artworkDataStore.artwork(artist = "aespa") } returns "https://cached.example/aespa.png"
+        coEvery { artworkDataStore.artworkList2(listOf("aespa")) } returns listOf(
+          ArtistArtworkEntity(name = "aespa", url = "https://cached.example/aespa.png"),
+        )
 
         val fakeResponse = LovedTracksResponse(
           lovedTracks = LovedTracksBody(
@@ -186,6 +191,8 @@ class UserRepositorySpec : DescribeSpec({
           awaitItem()[0].imageUrl shouldBe "https://cached.example/aespa.png"
           awaitComplete()
         }
+
+        coVerify(exactly = 0) { artworkDataStore.artwork(any()) }
       }
     }
   }
