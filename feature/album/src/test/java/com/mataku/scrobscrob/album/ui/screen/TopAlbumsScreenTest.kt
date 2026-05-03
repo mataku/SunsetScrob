@@ -1,5 +1,6 @@
 package com.mataku.scrobscrob.album.ui.screen
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.ui.test.junit4.v2.createComposeRule
@@ -124,6 +125,7 @@ class TopAlbumsScreenTest {
     )
   }
 
+  @SuppressLint("ViewModelConstructorInComposable")
   @Test
   fun layout() {
     composeRule.captureScreenshot(
@@ -148,6 +150,7 @@ class TopAlbumsScreenTest {
     )
   }
 
+  @SuppressLint("ViewModelConstructorInComposable")
   @Test
   fun layout_light() {
     composeRule.captureScreenshot(
@@ -172,6 +175,7 @@ class TopAlbumsScreenTest {
     )
   }
 
+  @SuppressLint("ViewModelConstructorInComposable")
   @Test
   fun layout_tablet() {
     composeRule.captureScreenshot(
