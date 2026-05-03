@@ -15,6 +15,8 @@ dependencies {
   implementation(libs.compose.ui.test.android)
   implementation(libs.compose.material3)
 
+  implementation(libs.kotlinx.collection)
+
   implementation(libs.robolectric)
   implementation(libs.roborazzi)
   implementation(libs.androidx.test.ext.junit)
