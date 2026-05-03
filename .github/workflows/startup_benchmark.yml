@@ -66,7 +66,8 @@ jobs:
         run: |
           ./gradlew :benchmark:pixel9Api35BenchmarkReleaseAndroidTest \
             -Pandroid.testoptions.manageddevices.emulator.gpu="swiftshader_indirect" \
-            -Pandroid.testInstrumentationRunnerArguments.androidx.benchmark.enabledRules=Macrobenchmark
+            -Pandroid.testInstrumentationRunnerArguments.androidx.benchmark.enabledRules=Macrobenchmark \
+            -Pandroid.testInstrumentationRunnerArguments.androidx.benchmark.profiling.mode=None
       - name: Write benchmark summary
         if: always()
         run: |
