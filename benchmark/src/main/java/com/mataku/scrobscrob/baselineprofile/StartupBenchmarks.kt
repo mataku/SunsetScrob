@@ -33,7 +33,7 @@ class StartupBenchmarks {
       metrics = listOf(StartupTimingMetric()),
       compilationMode = compilationMode,
       startupMode = StartupMode.COLD,
-      iterations = 5,
+      iterations = 10,
       setupBlock = {
         pressHome()
       },

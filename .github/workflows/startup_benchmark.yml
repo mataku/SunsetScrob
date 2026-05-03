@@ -11,12 +11,15 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx4g -XX:+UseParallelGC -XX:MaxMetaspaceSize=1g" -Dorg.gradle.daemon=false
+  GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx6g -XX:+UseParallelGC -XX:MaxMetaspaceSize=1g" -Dorg.gradle.daemon=false
 
 jobs:
   startup_benchmark:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 30
+    permissions:
+      id-token: write
+      contents: read
 
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -37,8 +40,9 @@ jobs:
           last-fm-shared-secret: ${{ secrets.LAST_FM_SHARED_SECRET }}
           google-services-json: ${{ secrets.GOOGLE_SERVICES_JSON }}
       - name: Prepare authentication
-        run: |
-          echo -n "${{ secrets.SUNSETSCROB_KEYSTORE }}" | base64 -d > SunsetScrob.jks
+        run: echo -n "${{ secrets.SUNSETSCROB_KEYSTORE }}" | base64 -d > SunsetScrob.jks
+
+      # === Generate baseline profile locally on GMD emulator ===
       - name: Generate baseline profile
         env:
           SUNSET_KEY_ALIAS: ${{ secrets.SUNSET_KEY_ALIAS }}
@@ -51,60 +55,124 @@ jobs:
             -Pandroid.testInstrumentationRunnerArguments.androidx.benchmark.enabledRules=BaselineProfile
       - name: Move baseline profile file
         run: mv app/src/release/generated/baselineProfiles/baseline-prof.txt app/src/main/baseline-prof.txt
-      - name: Run startup benchmark
+      - name: Summarize baseline profile
+        run: |
+          set -euo pipefail
+          file=app/src/main/baseline-prof.txt
+          {
+            echo "## Baseline Profile"
+            echo ""
+            if [ ! -s "$file" ]; then
+              echo "_baseline-prof.txt not generated or empty._"
+              exit 0
+            fi
+            total=$(wc -l < "$file")
+            hspl=$(grep -c '^HSPL' "$file" || true)
+            spl=$(grep -c '^SPL' "$file" || true)
+            cold=$(grep -c '^L' "$file" || true)
+            echo "| Marker | Count |"
+            echo "| --- | ---: |"
+            echo "| Total rules | $total |"
+            echo "| HSPL (hot + startup) | $hspl |"
+            echo "| SPL (startup) | $spl |"
+            echo "| L (cold) | $cold |"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      # === Build benchmark APKs with profile baked in ===
+      - name: Build benchmark APKs
         env:
           SUNSET_KEY_ALIAS: ${{ secrets.SUNSET_KEY_ALIAS }}
           SUNSET_KEY_PASSWORD: ${{ secrets.SUNSET_KEY_PASSWORD }}
           SUNSET_STORE_PASSWORD: ${{ secrets.SUNSET_STORE_PASSWORD }}
-        uses: nick-fields/retry@ad984534de44a9489a53aefd81eb77f87c70dc60 # v4.0.0
+        run: ./gradlew :app:assembleBenchmarkRelease :benchmark:assembleBenchmarkRelease
+
+      # === Submit to Firebase Test Lab on a physical Pixel 9 (API 35) ===
+      - id: auth
+        uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3.0.0
         with:
-          timeout_minutes: 15
-          max_attempts: 2
-          command: |
-            ./gradlew :benchmark:pixel9Api35BenchmarkReleaseAndroidTest \
-              -Pandroid.testoptions.manageddevices.emulator.gpu="swiftshader_indirect" \
-              -Pandroid.testInstrumentationRunnerArguments.androidx.benchmark.enabledRules=Macrobenchmark
+          create_credentials_file: true
+          workload_identity_provider: ${{ secrets.WORKFLOW_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.APP_PUBLISHER_GOOGLE_SERVICE_ACCOUNT }}
+          project_id: ${{ secrets.SUNSET_SCROB_PROJECT_ID }}
+      - uses: google-github-actions/setup-gcloud@aa5489c8933f4cc7a4f7d45035b3b1440c9c10db # v3.0.1
+
+      - name: Run startup benchmark on Firebase Test Lab
+        id: ftl
+        run: |
+          set -euo pipefail
+          app_apk=$(find app/build/outputs/apk/benchmarkRelease -name '*.apk' | head -1)
+          test_apk=$(find benchmark/build/outputs/apk -name '*.apk' | head -1)
+          echo "app_apk=$app_apk"
+          echo "test_apk=$test_apk"
+          test -n "$app_apk" && test -n "$test_apk"
+
+          gcloud firebase test android run \
+            --type=instrumentation \
+            --app="$app_apk" \
+            --test="$test_apk" \
+            --device=model=tokay,version=35,locale=en,orientation=portrait \
+            --directories-to-pull=/sdcard/Android/media/com.mataku.scrobscrob.baselineprofile/additional_test_output \
+            --environment-variables=additionalTestOutputDir=/sdcard/Android/media/com.mataku.scrobscrob.baselineprofile/additional_test_output,no-isolated-storage=true \
+            --test-targets="class com.mataku.scrobscrob.baselineprofile.StartupBenchmarks" \
+            --timeout=15m \
+            --no-record-video \
+            --no-performance-metrics \
+            2>&1 | tee ftl-output.log
+
+          # Extract the run-root GCS path. gcloud prints it as a console URL
+          # like https://console.developers.google.com/storage/browser/test-lab-XXX/<run-dir>/
+          # which we convert to the gs:// form gsutil expects.
+          gcs_path=$(grep -oE 'storage/browser/test-lab-[a-z0-9-]+/[^/]+/' ftl-output.log \
+            | head -1 \
+            | sed 's|storage/browser/|gs://|')
+          if [ -z "$gcs_path" ]; then
+            echo "Could not extract GCS results path from gcloud output" >&2
+            exit 1
+          fi
+          echo "gcs_path=$gcs_path"
+          echo "gcs_path=$gcs_path" >> "$GITHUB_OUTPUT"
+
+      - name: Download benchmark results from GCS
+        run: |
+          mkdir -p ftl-results
+          gsutil -m cp -r "${{ steps.ftl.outputs.gcs_path }}*" ftl-results/
+
       - name: Write benchmark summary
         if: always()
         run: |
           set -euo pipefail
-          output_dir=benchmark/build/outputs/managed_device_android_test_additional_output
-          json_files=$(find "$output_dir" -name '*-benchmarkData.json' 2>/dev/null | sort || true)
-
+          json=$(find ftl-results -name '*-benchmarkData.json' 2>/dev/null | sort | head -1 || true)
           {
             echo "## Startup Benchmark"
             echo ""
-            echo "Device: \`pixel9Api35\` (Pixel 9, API 35)"
+            echo "Device: \`tokay\` (Pixel 9, API 35) — Firebase Test Lab physical"
             echo ""
           } >> "$GITHUB_STEP_SUMMARY"
-
-          if [ -z "$json_files" ]; then
+          if [ -z "${json:-}" ] || [ ! -s "$json" ]; then
             echo "_No benchmark JSON output was found._" >> "$GITHUB_STEP_SUMMARY"
             exit 0
           fi
-
           {
             echo "| Test | Metric | Min | Median | Max |"
             echo "| --- | --- | ---: | ---: | ---: |"
-            for f in $json_files; do
-              jq -r '
-                def round1: . * 10 | round / 10;
-                .benchmarks[]
-                | .name as $name
-                | .metrics
-                | to_entries[]
-                | "| \($name) | \(.key) | \(.value.minimum | round1) | \(.value.median | round1) | \(.value.maximum | round1) |"
-              ' "$f"
-            done
+            jq -r '
+              def round1: . * 10 | round / 10;
+              .benchmarks[]
+              | .name as $name
+              | .metrics
+              | to_entries[]
+              | "| \($name) | \(.key) | \(.value.minimum | round1) | \(.value.median | round1) | \(.value.maximum | round1) |"
+            ' "$json"
           } >> "$GITHUB_STEP_SUMMARY"
+
       - name: Upload benchmark results
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: startup-benchmark-results
           path: |
-            benchmark/build/outputs/managed_device_android_test_additional_output/**
-            benchmark/build/outputs/androidTest-results/**
-            benchmark/build/reports/androidTests/managedDevice/**
-          retention-days: 14
+            ftl-results/**/*-benchmarkData.json
+            ftl-results/**/*.perfetto-trace
+            app/src/main/baseline-prof.txt
+          retention-days: 7
           if-no-files-found: warn
