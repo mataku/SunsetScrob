@@ -1,8 +1,7 @@
 package com.mataku.scrobscrob.ui_common.navigation
 
 import androidx.compose.animation.AnimatedContentScope
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.AnimatedContentTransitionScope.SlideDirection
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.core.tween
@@ -35,6 +34,8 @@ internal interface SunsetNavigator {
   fun navigate(key: SunsetNavKey)
   fun popBackStack()
 }
+
+private const val TRANSITION_DURATION_MS = 300
 
 @Composable
 fun SunsetNavHost(
@@ -74,13 +75,25 @@ fun SunsetNavHost(
         entryDecorators = listOf(
           rememberSaveableStateHolderNavEntryDecorator(saveableStateHolder),
         ),
-        transitionSpec = { fadeIn(tween(250)) togetherWith fadeOut(tween(250)) },
-        popTransitionSpec = { EnterTransition.None togetherWith ExitTransition.None },
+        transitionSpec = {
+          slideIntoContainer(SlideDirection.Start, tween(TRANSITION_DURATION_MS)) togetherWith
+            slideOutOfContainer(SlideDirection.Start, tween(TRANSITION_DURATION_MS))
+        },
+        popTransitionSpec = {
+          slideIntoContainer(SlideDirection.End, tween(TRANSITION_DURATION_MS)) togetherWith
+            slideOutOfContainer(SlideDirection.End, tween(TRANSITION_DURATION_MS))
+        },
+        predictivePopTransitionSpec = { _ ->
+          slideIntoContainer(SlideDirection.End, tween(TRANSITION_DURATION_MS)) togetherWith
+            slideOutOfContainer(SlideDirection.End, tween(TRANSITION_DURATION_MS))
+        },
         entryProvider = entryProvider {
           val handlers =
             mutableMapOf<KClass<out SunsetNavKey>, @Composable SunsetDestinationScope.(SunsetNavKey) -> Unit>()
+          val transitionSpecs = mutableMapOf<KClass<out SunsetNavKey>, SunsetTransitionSpec>()
           val sunsetBuilder = SunsetNavBuilder(
             handlers = handlers,
+            transitionSpecs = transitionSpecs,
             onNavigate = navigator::navigate,
             onPopBackStack = navigator::popBackStack,
           )
@@ -88,7 +101,12 @@ fun SunsetNavHost(
 
           addEntryProvider(
             clazz = SunsetNavEntry::class,
-            metadata = { _ -> emptyMap() },
+            metadata = { entry ->
+              when (transitionSpecs[entry.key::class]) {
+                SunsetTransitionSpec.SharedElement -> sharedElementTransitionMetadata()
+                SunsetTransitionSpec.Slide, null -> emptyMap()
+              }
+            },
           ) { entry ->
             val handler = handlers[entry.key::class]
               ?: error("No destination registered for ${entry.key::class}")
@@ -109,6 +127,13 @@ fun SunsetNavHost(
       )
     }
   }
+}
+
+private fun sharedElementTransitionMetadata(): Map<String, Any> {
+  val fade = fadeIn(tween(TRANSITION_DURATION_MS)) togetherWith fadeOut(tween(TRANSITION_DURATION_MS))
+  return NavDisplay.transitionSpec { fade } +
+    NavDisplay.popTransitionSpec { fade } +
+    NavDisplay.predictivePopTransitionSpec { _ -> fade }
 }
 
 internal class SunsetDestinationScopeImpl(

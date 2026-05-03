@@ -21,8 +21,10 @@ class SunsetNavBuilderSpec : DescribeSpec({
     it("registers a handler keyed by the reified K type") {
       val handlers =
         mutableMapOf<KClass<out SunsetNavKey>, @Composable SunsetDestinationScope.(SunsetNavKey) -> Unit>()
+      val transitionSpecs = mutableMapOf<KClass<out SunsetNavKey>, SunsetTransitionSpec>()
       val builder = SunsetNavBuilder(
         handlers = handlers,
+        transitionSpecs = transitionSpecs,
         onNavigate = {},
         onPopBackStack = {},
       )
@@ -38,8 +40,10 @@ class SunsetNavBuilderSpec : DescribeSpec({
     it("keeps a single entry when destination<K> is registered twice for the same K") {
       val handlers =
         mutableMapOf<KClass<out SunsetNavKey>, @Composable SunsetDestinationScope.(SunsetNavKey) -> Unit>()
+      val transitionSpecs = mutableMapOf<KClass<out SunsetNavKey>, SunsetTransitionSpec>()
       val builder = SunsetNavBuilder(
         handlers = handlers,
+        transitionSpecs = transitionSpecs,
         onNavigate = {},
         onPopBackStack = {},
       )
@@ -49,6 +53,40 @@ class SunsetNavBuilderSpec : DescribeSpec({
 
       handlers.size shouldBe 1
       handlers.shouldContainKey(FooKey::class)
+    }
+
+    it("defaults transitionSpec to Slide when not specified") {
+      val handlers =
+        mutableMapOf<KClass<out SunsetNavKey>, @Composable SunsetDestinationScope.(SunsetNavKey) -> Unit>()
+      val transitionSpecs = mutableMapOf<KClass<out SunsetNavKey>, SunsetTransitionSpec>()
+      val builder = SunsetNavBuilder(
+        handlers = handlers,
+        transitionSpecs = transitionSpecs,
+        onNavigate = {},
+        onPopBackStack = {},
+      )
+
+      builder.destination<FooKey> { /* no-op */ }
+
+      transitionSpecs[FooKey::class] shouldBe SunsetTransitionSpec.Slide
+    }
+
+    it("records the transitionSpec passed to destination<K>") {
+      val handlers =
+        mutableMapOf<KClass<out SunsetNavKey>, @Composable SunsetDestinationScope.(SunsetNavKey) -> Unit>()
+      val transitionSpecs = mutableMapOf<KClass<out SunsetNavKey>, SunsetTransitionSpec>()
+      val builder = SunsetNavBuilder(
+        handlers = handlers,
+        transitionSpecs = transitionSpecs,
+        onNavigate = {},
+        onPopBackStack = {},
+      )
+
+      builder.destination<FooKey>(transitionSpec = SunsetTransitionSpec.SharedElement) { /* no-op */ }
+      builder.destination<BarKey>(transitionSpec = SunsetTransitionSpec.Slide) { /* no-op */ }
+
+      transitionSpecs[FooKey::class] shouldBe SunsetTransitionSpec.SharedElement
+      transitionSpecs[BarKey::class] shouldBe SunsetTransitionSpec.Slide
     }
   }
 })

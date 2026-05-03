@@ -3,11 +3,12 @@ package com.mataku.scrobscrob.scrobble.ui.navigation
 import com.mataku.scrobscrob.scrobble.ui.screen.TrackScreen
 import com.mataku.scrobscrob.scrobble.ui.viewmodel.TrackViewModel
 import com.mataku.scrobscrob.ui_common.navigation.SunsetNavBuilder
+import com.mataku.scrobscrob.ui_common.navigation.SunsetTransitionSpec
 import com.mataku.scrobscrob.ui_common.navigation.WebViewKey
 import com.mataku.scrobscrob.ui_common.navigation.viewModelFor
 
 fun SunsetNavBuilder.scrobbleGraph() {
-  destination<TrackDetailKey> { key ->
+  destination<TrackDetailKey>(transitionSpec = SunsetTransitionSpec.SharedElement) { key ->
     TrackScreen(
       trackName = key.trackName,
       artworkUrl = key.imageUrl,
