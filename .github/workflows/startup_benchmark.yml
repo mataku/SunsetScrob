@@ -46,13 +46,24 @@ jobs:
       - name: Prepare authentication
         run: |
           echo -n "${{ secrets.SUNSETSCROB_KEYSTORE }}" | base64 -d > SunsetScrob.jks
-      - name: Run startup benchmark
+      - name: Generate baseline profile
         env:
           SUNSET_KEY_ALIAS: ${{ secrets.SUNSET_KEY_ALIAS }}
           SUNSET_KEY_PASSWORD: ${{ secrets.SUNSET_KEY_PASSWORD }}
           SUNSET_STORE_PASSWORD: ${{ secrets.SUNSET_STORE_PASSWORD }}
         run: |
           ./gradlew cleanManagedDevices --unused-only
+          ./gradlew app:generateReleaseBaselineProfile \
+            -Pandroid.testoptions.manageddevices.emulator.gpu="swiftshader_indirect" \
+            -Pandroid.testInstrumentationRunnerArguments.androidx.benchmark.enabledRules=BaselineProfile
+      - name: Move baseline profile file
+        run: mv app/src/release/generated/baselineProfiles/baseline-prof.txt app/src/main/baseline-prof.txt
+      - name: Run startup benchmark
+        env:
+          SUNSET_KEY_ALIAS: ${{ secrets.SUNSET_KEY_ALIAS }}
+          SUNSET_KEY_PASSWORD: ${{ secrets.SUNSET_KEY_PASSWORD }}
+          SUNSET_STORE_PASSWORD: ${{ secrets.SUNSET_STORE_PASSWORD }}
+        run: |
           ./gradlew :benchmark:pixel9Api35BenchmarkReleaseAndroidTest \
             -Pandroid.testoptions.manageddevices.emulator.gpu="swiftshader_indirect" \
             -Pandroid.testInstrumentationRunnerArguments.androidx.benchmark.enabledRules=Macrobenchmark
