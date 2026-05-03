@@ -15,8 +15,7 @@ Reference: `data/repository/.../ScrobbleRepository.kt`, `data/repository/di/Repo
 - Methods return `Flow<T>`; wrap async work with `flow { ... }.flowOn(Dispatchers.IO)`.
   Enforced by the `RepositoryReturnsFlow` Lint detector in `:lint-checks`.
   Suppress with `@Suppress("RepositoryReturnsFlow")` only for genuine
-  synchronous accessors that cannot be Flow-shaped (currently
-  `UsernameRepository.username()`, used as a field initializer).
+  synchronous accessors that cannot be Flow-shaped, and document why.
 - Bind all repositories in `data/repository/di/RepositoryModule.kt` with
   `@Binds` and `@SingleIn(AppScope::class)`. The interface is annotated
   `@ContributesTo(AppScope::class)` so Metro auto-aggregates it into the

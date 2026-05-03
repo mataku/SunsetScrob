@@ -10,26 +10,6 @@ import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
 
 class UsernameRepositorySpec : DescribeSpec({
-  describe("username") {
-    it("returns the synchronously read username from the data store") {
-      val usernameDataStore = mockk<UsernameDataStore>()
-      coEvery { usernameDataStore.username() } returns "matakucom"
-
-      val repository = UsernameRepositoryImpl(usernameDataStore)
-
-      repository.username() shouldBe "matakucom"
-    }
-
-    it("returns null when the data store has no value yet") {
-      val usernameDataStore = mockk<UsernameDataStore>()
-      coEvery { usernameDataStore.username() } returns null
-
-      val repository = UsernameRepositoryImpl(usernameDataStore)
-
-      repository.username() shouldBe null
-    }
-  }
-
   describe("asyncUsername") {
     it("emits the current username from the data store") {
       val usernameDataStore = mockk<UsernameDataStore>()
