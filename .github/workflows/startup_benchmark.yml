@@ -56,12 +56,14 @@ jobs:
           SUNSET_KEY_ALIAS: ${{ secrets.SUNSET_KEY_ALIAS }}
           SUNSET_KEY_PASSWORD: ${{ secrets.SUNSET_KEY_PASSWORD }}
           SUNSET_STORE_PASSWORD: ${{ secrets.SUNSET_STORE_PASSWORD }}
-        run: |
-          ./gradlew cleanManagedDevices
-          ./gradlew :benchmark:pixel9Api35BenchmarkReleaseAndroidTest \
-            -Pandroid.testoptions.manageddevices.emulator.gpu="swiftshader_indirect" \
-            -Pandroid.testInstrumentationRunnerArguments.androidx.benchmark.enabledRules=Macrobenchmark \
-            -Pandroid.testInstrumentationRunnerArguments.androidx.benchmark.profiling.mode=None
+        uses: nick-fields/retry@ad984534de44a9489a53aefd81eb77f87c70dc60 # v4.0.0
+        with:
+          timeout_minutes: 15
+          max_attempts: 2
+          command: |
+            ./gradlew :benchmark:pixel9Api35BenchmarkReleaseAndroidTest \
+              -Pandroid.testoptions.manageddevices.emulator.gpu="swiftshader_indirect" \
+              -Pandroid.testInstrumentationRunnerArguments.androidx.benchmark.enabledRules=Macrobenchmark
       - name: Write benchmark summary
         if: always()
         run: |
