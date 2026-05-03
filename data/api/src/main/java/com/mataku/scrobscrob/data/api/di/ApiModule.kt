@@ -21,6 +21,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import okio.Path.Companion.toOkioPath
 import java.io.File
+import java.util.concurrent.TimeUnit
 
 @ContributesTo(AppScope::class)
 interface HttpEngineModule {
@@ -49,6 +50,10 @@ interface ApiModule {
     @Provides
     fun provideOkhttpClient(context: Context): OkHttpClient {
       val builder = OkHttpClient.Builder()
+        .connectTimeout(10, TimeUnit.SECONDS)
+        .readTimeout(20, TimeUnit.SECONDS)
+        .writeTimeout(20, TimeUnit.SECONDS)
+        .callTimeout(20, TimeUnit.SECONDS)
         .cache(
           Cache(
             directory = File(context.cacheDir, "sunsetscrob_cache"),
