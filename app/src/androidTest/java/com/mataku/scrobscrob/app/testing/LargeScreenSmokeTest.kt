@@ -95,7 +95,7 @@ class LargeScreenSmokeTest {
   }
 
   private companion object {
-    const val TIMEOUT_MS = 5_000L
-    const val STEP_DELAY_MS = 2_000L
+    const val TIMEOUT_MS = 2_000L
+    const val STEP_DELAY_MS = 1_000L
   }
 }
