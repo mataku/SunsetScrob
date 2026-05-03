@@ -1,16 +1,10 @@
 package com.mataku.scrobscrob.account.ui.screen
 
-import android.app.Application
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import androidx.lifecycle.SavedStateHandle
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
-import com.google.android.gms.tasks.Task
-import com.google.android.play.core.appupdate.AppUpdateInfo
-import com.google.android.play.core.appupdate.AppUpdateManager
-import com.mataku.scrobscrob.account.AppInfoProvider
 import com.mataku.scrobscrob.account.ui.viewmodel.AccountViewModel
 import com.mataku.scrobscrob.account.ui.viewmodel.LicenseViewModel
 import com.mataku.scrobscrob.account.ui.viewmodel.ThemeSelectorViewModel
@@ -19,20 +13,12 @@ import com.mataku.scrobscrob.core.entity.Image
 import com.mataku.scrobscrob.core.entity.LicenseArtifact
 import com.mataku.scrobscrob.core.entity.SpdxLicense
 import com.mataku.scrobscrob.core.entity.UserInfo
-import com.mataku.scrobscrob.data.repository.FileRepository
-import com.mataku.scrobscrob.data.repository.SessionRepository
-import com.mataku.scrobscrob.data.repository.ThemeRepository
-import com.mataku.scrobscrob.data.repository.UserRepository
-import com.mataku.scrobscrob.data.repository.UsernameRepository
 import com.mataku.scrobscrob.test_helper.integration.VRT
 import com.mataku.scrobscrob.test_helper.integration.captureScreenshot
-import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.flowOf
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.experimental.categories.Category
@@ -46,82 +32,34 @@ class AccountScreenTest {
   @get:Rule
   val composeTestRule = createComposeRule()
 
-  private val usernameRepository = mockk<UsernameRepository>()
-  private val themeRepository = mockk<ThemeRepository>()
-  private val sessionRepository = mockk<SessionRepository>()
-  private val appInfoProvider = mockk<AppInfoProvider>()
-  private val appUpdateManager = mockk<AppUpdateManager>()
-  private val application = mockk<Application>()
-  private val appUpdateInfoTask = mockk<Task<AppUpdateInfo>>()
-  private val fileRepository = mockk<FileRepository>()
-  private val userRepository = mockk<UserRepository>()
-  private val savedStateHandle = mockk<SavedStateHandle>()
-
-  private val appVersion = "1.0.0"
-
-  @Before
-  fun setup() {
-    coEvery {
-      usernameRepository.username()
-    }.returns("matakucom")
-    every {
-      appInfoProvider.appVersion()
-    }.returns(appVersion)
-
-    coEvery {
-      themeRepository.currentTheme()
-    }.returns(flowOf(AppTheme.DARK))
-
-    coEvery {
-      appUpdateManager.appUpdateInfo
-    }.returns(appUpdateInfoTask)
-
-    every {
-      appUpdateInfoTask.addOnSuccessListener(any())
-    }.returns(appUpdateInfoTask)
-
-    coEvery {
-      fileRepository.cacheImageDirMBSize()
-    }.returns(flowOf(100.1))
-
-    coEvery {
-      userRepository.getInfo(any())
-    }.returns(
-      flowOf(
-        UserInfo(
+  private fun stubAccountViewModel(
+    theme: AppTheme = AppTheme.DARK
+  ): AccountViewModel = mockk<AccountViewModel>(relaxed = true).apply {
+    every { uiState } returns MutableStateFlow(
+      AccountViewModel.AccountUiState(
+        theme = theme,
+        events = persistentListOf(),
+        appVersion = "1.0.0",
+        appUpdateInfo = null,
+        imageCacheMB = "100.1",
+        userInfo = UserInfo(
           name = "nicole",
           playCount = "102030",
           artistCount = "800",
           trackCount = "1000",
           albumCount = "200",
           imageList = persistentListOf(
-            Image(
-              size = "small",
-              url = "https://www.example.com/image.jpg"
-            )
+            Image(size = "small", url = "https://www.example.com/image.jpg")
           ),
           url = "https://www.example.com"
         )
       )
     )
-
-    every {
-      savedStateHandle.get<String>("username")
-    }.returns("nicole")
   }
 
   @Test
   fun layout() {
-    val viewModel = AccountViewModel(
-      usernameRepository,
-      themeRepository,
-      sessionRepository,
-      appInfoProvider,
-      appUpdateManager,
-      fileRepository,
-      application,
-      userRepository,
-    )
+    val viewModel = stubAccountViewModel()
     composeTestRule.captureScreenshot(
       appTheme = AppTheme.DARK,
       content = {
@@ -144,16 +82,7 @@ class AccountScreenTest {
 
   @Test
   fun layout_light() {
-    val viewModel = AccountViewModel(
-      usernameRepository,
-      themeRepository,
-      sessionRepository,
-      appInfoProvider,
-      appUpdateManager,
-      fileRepository,
-      application,
-      userRepository,
-    )
+    val viewModel = stubAccountViewModel(theme = AppTheme.LIGHT)
     composeTestRule.captureScreenshot(
       appTheme = AppTheme.LIGHT,
       content = {
@@ -176,16 +105,7 @@ class AccountScreenTest {
 
   @Test
   fun layout_tablet() {
-    val viewModel = AccountViewModel(
-      usernameRepository,
-      themeRepository,
-      sessionRepository,
-      appInfoProvider,
-      appUpdateManager,
-      fileRepository,
-      application,
-      userRepository,
-    )
+    val viewModel = stubAccountViewModel()
     composeTestRule.captureScreenshot(
       device = RobolectricDeviceQualifiers.PixelTablet,
       appTheme = AppTheme.DARK,
@@ -209,16 +129,7 @@ class AccountScreenTest {
 
   @Test
   fun layout_tablet_theme_selected() {
-    val viewModel = AccountViewModel(
-      usernameRepository,
-      themeRepository,
-      sessionRepository,
-      appInfoProvider,
-      appUpdateManager,
-      fileRepository,
-      application,
-      userRepository,
-    )
+    val viewModel = stubAccountViewModel()
     val themeSelectorViewModel = mockk<ThemeSelectorViewModel> {
       every { uiState } returns MutableStateFlow(
         ThemeSelectorViewModel.ThemeSelectorUiState(
@@ -254,16 +165,7 @@ class AccountScreenTest {
 
   @Test
   fun layout_tablet_license_selected() {
-    val viewModel = AccountViewModel(
-      usernameRepository,
-      themeRepository,
-      sessionRepository,
-      appInfoProvider,
-      appUpdateManager,
-      fileRepository,
-      application,
-      userRepository,
-    )
+    val viewModel = stubAccountViewModel()
     val licenseViewModel = mockk<LicenseViewModel> {
       every { uiState } returns MutableStateFlow(
         LicenseViewModel.LicenseUiState(
