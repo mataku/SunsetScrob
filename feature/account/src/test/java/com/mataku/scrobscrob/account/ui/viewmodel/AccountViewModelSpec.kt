@@ -32,7 +32,7 @@ private fun createViewModel(
   sessionRepository: SessionRepository = mockk(),
 ): AccountViewModel {
   val usernameRepository = mockk<UsernameRepository>()
-  every { usernameRepository.username() } returns username
+  every { usernameRepository.asyncUsername() } returns flowOf(username)
   val themeRepository = mockk<ThemeRepository>()
   coEvery { themeRepository.currentTheme() } returns themeFlow
   val appInfoProvider = mockk<AppInfoProvider>()

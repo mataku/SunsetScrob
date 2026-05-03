@@ -27,6 +27,7 @@ import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -52,9 +53,9 @@ class AccountViewModel(
     field = MutableStateFlow(AccountUiState.initialize())
 
   init {
-    val username = usernameRepository.username() ?: ""
     val appVersion = appInfoProvider.appVersion()
     viewModelScope.launch {
+      val username = usernameRepository.asyncUsername().first() ?: ""
       launch {
         themeRepository.currentTheme()
           .catch {
