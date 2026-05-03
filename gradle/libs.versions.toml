@@ -112,8 +112,6 @@ turbine = { module = "app.cash.turbine:turbine", version = "1.0.0" }
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
 roborazzi = { module = "io.github.takahirom.roborazzi:roborazzi", version.ref = "roborazzi" }
 
-junit-vintage-engine = { module = "org.junit.vintage:junit-vintage-engine", version = "5.8.2" }
-junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version = "5.8.2" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
 androidx-profileinstaller = { group = "androidx.profileinstaller", name = "profileinstaller", version.ref = "profileinstaller" }
 

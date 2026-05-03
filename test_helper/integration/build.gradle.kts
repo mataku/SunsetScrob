@@ -21,7 +21,6 @@ dependencies {
   implementation(libs.roborazzi)
   implementation(libs.androidx.test.ext.junit)
   implementation(libs.compose.ui.test.junit4)
-  implementation(libs.junit.vintage.engine)
   // for robolectric
   implementation(libs.compose.ui.test.manifest)
 }
