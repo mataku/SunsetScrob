@@ -34,7 +34,7 @@ class TopAlbumsViewModelSpec : DescribeSpec({
       it("skips the fetch and disables pagination") {
         val albumRepository = mockk<AlbumRepository>()
         val usernameRepository = mockk<UsernameRepository>()
-        every { usernameRepository.username() } returns ""
+        every { usernameRepository.asyncUsername() } returns flowOf("")
 
         val viewModel = TopAlbumsViewModel(albumRepository, usernameRepository)
 
@@ -48,7 +48,7 @@ class TopAlbumsViewModelSpec : DescribeSpec({
       it("fetches the first page and populates topAlbums") {
         val albumRepository = mockk<AlbumRepository>()
         val usernameRepository = mockk<UsernameRepository>()
-        every { usernameRepository.username() } returns "matakucom"
+        every { usernameRepository.asyncUsername() } returns flowOf("matakucom")
         coEvery {
           albumRepository.fetchTopAlbums(
             page = 1,
@@ -75,7 +75,7 @@ class TopAlbumsViewModelSpec : DescribeSpec({
       it("disables pagination when the fetch fails") {
         val albumRepository = mockk<AlbumRepository>()
         val usernameRepository = mockk<UsernameRepository>()
-        every { usernameRepository.username() } returns "matakucom"
+        every { usernameRepository.asyncUsername() } returns flowOf("matakucom")
         coEvery {
           albumRepository.fetchTopAlbums(any(), any(), any())
         } returns flow { throw RuntimeException("boom") }
@@ -91,7 +91,7 @@ class TopAlbumsViewModelSpec : DescribeSpec({
     it("changes the filter and re-fetches with timeRangeFilteringChanged=true (resets pagination)") {
       val albumRepository = mockk<AlbumRepository>()
       val usernameRepository = mockk<UsernameRepository>()
-      every { usernameRepository.username() } returns "matakucom"
+      every { usernameRepository.asyncUsername() } returns flowOf("matakucom")
       coEvery {
         albumRepository.fetchTopAlbums(
           page = 1,
@@ -127,7 +127,7 @@ class TopAlbumsViewModelSpec : DescribeSpec({
     it("ignores the call when the filter is unchanged") {
       val albumRepository = mockk<AlbumRepository>()
       val usernameRepository = mockk<UsernameRepository>()
-      every { usernameRepository.username() } returns "matakucom"
+      every { usernameRepository.asyncUsername() } returns flowOf("matakucom")
       coEvery {
         albumRepository.fetchTopAlbums(
           page = 1,
