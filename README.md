@@ -92,6 +92,38 @@ Compose module picks them up:
 
 Lint failures break CI on PR, and a summary is auto-posted as a PR comment.
 
+### UI quality
+
+UI changes are guarded at three layers — pixel-level regression on every
+render, mock-API end-to-end smoke on the real APK, and a single source of
+truth for components / navigation in `:ui_common` so call sites don't drift.
+
+#### Visual regression (Roborazzi)
+
+Roborazzi renders every screen to PNG and diffs against goldens checked
+into each module's `screenshot/`. The verify task runs on push / PR, so
+unintended layout shifts fail before review. Phone and tablet variants
+both have goldens. Regenerate intentional changes with the `record` task.
+
+#### End-to-end against a mocked API
+
+Smoke instrumentation tests in `app/src/androidTest/` drive the real APK
+against a Ktor `MockEngine` that serves canned JSON fixtures. A weekly CI
+job runs them on Gradle Managed Devices for both phone and tablet form
+factors, so adaptive layout breakage surfaces outside Roborazzi's static
+renders. Schema drift against the real Last.fm API is intentionally out
+of scope. Setup and fixture conventions live in
+[`.claude/rules/e2e-testing.md`](.claude/rules/e2e-testing.md).
+
+#### Shared UI primitives in `:ui_common`
+
+Material 3 components and Navigation 3 APIs are fronted by `Sunset*`
+wrappers in `:ui_common`. Direct `androidx.compose.material3.*` and
+`androidx.navigation3.*` imports outside `:ui_common` are blocked by
+`:lint-checks` detectors and Konsist specs, so theme tweaks, Material /
+Nav upgrades, and transition tuning land in one place. The full
+component, navigation, and theming spec is in [`DESIGN.md`](DESIGN.md).
+
 <details>
 <summary> module graph </summary>
 

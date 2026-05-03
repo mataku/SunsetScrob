@@ -21,7 +21,7 @@ files (`paths:`-scoped).
 | `.claude/rules/repository.md`         | Repository conventions, Metro DI                                   | when reading `*Repository*.kt`, `**/repository/**`, `**/data/**` |
 | `.claude/rules/testing.md`            | Unit + Screenshot test conventions                                 | when reading `*Spec.kt` / `*Test.kt`                             |
 | `.claude/rules/e2e-testing.md`        | E2E (instrumentation) test architecture                            | when reading `app/src/androidTest/**`                            |
-| `DESIGN.md`                           | UI/Theme intent (Stitch design.md spec)                            | explicit Read only                                               |
+| `DESIGN.md`                           | UI/Theme intent + `:ui_common` wrapping (Material 3, Navigation 3, adaptive) | explicit Read only                                     |
 
 ## Project Overview
 

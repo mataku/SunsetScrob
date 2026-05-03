@@ -56,33 +56,41 @@ Core principles:
 
 ## Themes
 
-There are five themes, declared in
+There are six themes, declared in
 [`AppTheme.kt`](core/src/main/java/com/mataku/scrobscrob/core/entity/AppTheme.kt)
 and applied in
 [`SunsetTheme.kt`](ui_common/src/main/java/com/mataku/scrobscrob/ui_common/style/SunsetTheme.kt).
 The user picks one in account settings; `ThemeRepository` persists it; the
-root `SunsetTheme(theme = ...)` propagates the chosen `ColorScheme` and a
-matching `LocalAppTheme`.
+root `SunsetTheme(theme = ...)` calls `theme.resolve(isSystemInDarkTheme())`
+to collapse `FOLLOW_SYSTEM` into `DARK`/`LIGHT`, then propagates the chosen
+`ColorScheme` and a matching `LocalAppTheme`.
 
-| Theme            | `isLight` | Intent                                                         | Surface / Background                                         | Accent (`accentColor()`)         |
-|------------------|-----------|----------------------------------------------------------------|--------------------------------------------------------------|----------------------------------|
-| `DARK` (default) | false     | Neutral dark — the canonical look the app is designed against. | `Colors.ContentBackground` (`#263238`)                       | `Colors.LightLime`               |
-| `LIGHT`          | true      | Bright variant for users who don't want a dark UI.             | `#F5F5F5`                                                    | `Colors.LightLime`               |
-| `MIDNIGHT`       | false     | Pure-black OLED-friendly variant.                              | `Color.Black`                                                | `Colors.LightLime`               |
-| `OCEAN`          | false     | Deep-blue accent variant for users who want a colored dark.    | `Colors.DeepOceanBackground` (`#191c38`) / surface `#37474F` | `Colors.DeepOcean`               |
-| `LASTFM_DARK`    | false     | Last.fm-flavored dark, accented in Last.fm red.                | `#37474F` / background `Colors.ContentBackground`            | `Colors.LastFmColor` (`#bb0414`) |
+| Theme            | `isLight`        | Intent                                                                          | Surface / Background                                         | Accent (`accentColor()`)         |
+|------------------|------------------|---------------------------------------------------------------------------------|--------------------------------------------------------------|----------------------------------|
+| `FOLLOW_SYSTEM`  | resolves at runtime | Resolves to `DARK` or `LIGHT` based on `isSystemInDarkTheme()`. No own scheme. | (resolved theme's)                                           | `Colors.LightLime`               |
+| `DARK` (default) | false            | Neutral dark — the canonical look the app is designed against.                  | `Colors.ContentBackground` (`#263238`)                       | `Colors.LightLime`               |
+| `LIGHT`          | true             | Bright variant for users who don't want a dark UI.                              | `#F5F5F5`                                                    | `Colors.LightLime`               |
+| `MIDNIGHT`       | false            | Pure-black OLED-friendly variant.                                               | `Color.Black`                                                | `Colors.LightLime`               |
+| `OCEAN`          | false            | Deep-blue accent variant for users who want a colored dark.                     | `Colors.DeepOceanBackground` (`#191c38`) / surface `#37474F` | `Colors.DeepOcean`               |
+| `LASTFM_DARK`    | false            | Last.fm-flavored dark, accented in Last.fm red.                                 | `#37474F` / background `Colors.ContentBackground`            | `Colors.LastFmColor` (`#bb0414`) |
 
 Notes:
 
-- `priority` on `AppTheme` controls picker ordering: `DARK (1) → MIDNIGHT (2)
-  → OCEAN (3) → LASTFM_DARK (4) → LIGHT (5)`.
+- `priority` on `AppTheme` controls picker ordering, lowest first:
+  `FOLLOW_SYSTEM (0) → DARK (1) → MIDNIGHT (2) → OCEAN (3) → LASTFM_DARK (4) → LIGHT (5)`.
+  `displayName` is the user-facing label shown in the picker.
+- `FOLLOW_SYSTEM` does not have its own `ColorScheme`; `AppTheme.resolve(...)`
+  returns `DARK` or `LIGHT` and `SunsetTheme` keys off the resolved value.
+  Always pass the resolved theme to `LocalAppTheme`.
 - `DARK` and `LASTFM_DARK` use named token objects (`DarkColor`,
-  `LastFmDarkColor`); `MIDNIGHT` and `OCEAN` are inlined inside
-  `SunsetTheme.kt` instead of having their own `*Color` object. If you add a
-  sixth theme, prefer the named-object pattern.
+  `LastFmDarkColor`); `MIDNIGHT` and `OCEAN` are inlined as `private val`
+  schemes inside `SunsetTheme.kt` instead of having their own `*Color`
+  object. If you add a seventh theme that needs its own scheme, prefer the
+  named-object pattern.
 - `accentColor()` is **not** part of `ColorScheme`. Use it for theme-specific
   highlight colors (e.g. selected indicators) where Material 3's
-  `primary`/`tertiary` mapping doesn't fit.
+  `primary`/`tertiary` mapping doesn't fit. `FOLLOW_SYSTEM` returns
+  `LightLime` directly (it isn't routed through `resolve()` for accent).
 - Ripple is overridden per `isLight` via `LocalRippleConfiguration`. Don't
   override ripple again locally — call sites get it from `SunsetTheme`.
 
@@ -152,17 +160,34 @@ atomic-design layer:
 ui_common/.../
   component/
     designsystem/ — Material 3 wrappers (SunsetText, SunsetButton,
-                    SunsetSurface, SunsetTopAppBar, SunsetTextField,
-                    SunsetImage, SunsetNavigationBar, …). These are the
-                    only files allowed to import androidx.compose.material3.*.
+                    SunsetTextButton, SunsetIcon, SunsetIconButton,
+                    SunsetIconToggleButton, SunsetSurface, SunsetTopAppBar,
+                    SunsetTextField, SunsetImage, SunsetNavigationBar,
+                    SunsetScaffold, SunsetSnackbarHost, SunsetTabRow,
+                    SunsetTab, SunsetSwitch, SunsetChip,
+                    SunsetCircularProgressIndicator, SunsetHorizontalDivider,
+                    SunsetAlertDialog, SunsetBottomSheet,
+                    SunsetModalBottomSheet, SunsetFloatingActionButton,
+                    SunsetPullToRefreshBox, SunsetListDetailScaffold).
     (root)        — app-specific shared composables (NavigationHeader,
                     ContentHeader, FilteringBottomSheet, LoadingIndicator,
                     CircleBackButton, …) that compose the `designsystem/`
                     wrappers.
+  navigation/  — Nav 3 wrappers (SunsetNavKey, SunsetNavBuilder,
+                    SunsetNavHost, SunsetTabHost, SunsetNavBackStack,
+                    SunsetDestinationScope, SunsetTransitionSpec,
+                    CommonKeys). See "Navigation wrappers (SunsetNav*)".
   screen/      — full-screen reusable composables (e.g. WebViewScreen).
-  style/       — Colors, SunsetTheme, SunsetTextStyle, color extensions.
+  style/       — Colors, SunsetTheme, SunsetTextStyle, color extensions,
+                    WindowAdaptive (`isCompactWidth()`).
   extension/   — reusable Modifier / Spanned / Duration helpers.
 ```
+
+`androidx.compose.material3.*` (and `androidx.compose.material3.adaptive.*`)
+imports are confined to `:ui_common`, not literally to `component/designsystem/`
+— `style/SunsetTheme.kt` and `style/WindowAdaptive.kt` legitimately import
+material3 too. The `PreferSunsetX` lint detectors enforce the module-level
+boundary, not a directory-level one.
 
 When a feature module needs a UI piece that's also useful elsewhere, **lift
 it into `:ui_common`** rather than copy-pasting. Material 3 wrappers go under
@@ -185,25 +210,19 @@ full-screen composables go under `screen/`.
 
 ### Composition locals
 
-Three composition locals are provided by `SunsetTheme` and can be read
-without prop-drilling:
+Two composition locals live alongside `SunsetTheme` and can be read without
+prop-drilling:
 
-- `LocalAppTheme` — current `AppTheme`. Primary color-access entry point
-  outside `:ui_common`: call `LocalAppTheme.current.<role>Color()` for
-  background / primary / surface / accent / etc., and use it for `isLight`
-  branching when needed.
-- `LocalSnackbarHostState` — single shared snackbar host. Use this instead of
-  creating a new `SnackbarHostState` per screen.
-- `LocalTopAppBarState` — `TopAppBarScrollBehavior` for the current top app
-  bar. Throws if read outside a screen that provides one (by design).
-
-### Animation / sizing constants
-
-Defined in `SunsetTheme.kt`; reuse rather than redefine:
-
-- `ANIMATION_DURATION_MILLIS = 700`
-- `TRANSITION_ANIMATION_DURATION_MILLIS = 600`
-- `BOTTOM_APP_BAR_HEIGHT = 80.dp`
+- `LocalAppTheme` — `staticCompositionLocalOf` set by `SunsetTheme` to the
+  resolved `AppTheme`. Primary color-access entry point outside
+  `:ui_common`: call `LocalAppTheme.current.<role>Color()` for background /
+  primary / surface / accent / etc., and use it for `isLight` branching when
+  needed.
+- `LocalSnackbarHostState` — `staticCompositionLocalOf` defaulting to a fresh
+  `SunsetSnackbarHostState` (the wrapper's own state class, not Material 3's
+  `SnackbarHostState`). Use it instead of creating a state per screen so that
+  any screen can post via `LocalSnackbarHostState.current` and the host is
+  rendered once at the `:app` scaffold level via `SunsetSnackbarHost`.
 
 ---
 
@@ -311,6 +330,82 @@ and update goldens as needed.
 
 ---
 
+## Navigation wrappers (SunsetNav*)
+
+Navigation 3 (`androidx.navigation3.*`) is wrapped in `:ui_common` for the
+same reason Material 3 is: feature and `:app` modules depend on a stable,
+SunsetScrob-flavored navigation DSL, not on Nav 3 directly. This keeps Nav 3
+upgrades, transition tuning, back-stack mechanics, and ViewModel scoping in
+one place, and matches the "Material 3 is wrapped, not imported" principle
+from the previous section.
+
+Outside `:ui_common`, `androidx.navigation3.*` imports are banned, and Nav 2
+(`androidx.navigation.*`, anywhere in the project) is fully removed. Both
+constraints are enforced by `NavigationArchitectureSpec` in
+`:architecture-spec`, not left to review.
+
+### Wrapper inventory
+
+All under `ui_common/.../navigation/`:
+
+| API                                                       | Role                                                                                                       |
+|-----------------------------------------------------------|------------------------------------------------------------------------------------------------------------|
+| `SunsetNavKey`                                            | Marker interface for destinations. `Serializable`, `@Immutable`. Replaces Nav 3's `NavKey` at the API edge. |
+| `SunsetNavBuilder`                                        | DSL receiver. Features call `destination<FooKey> { ... }` on it.                                           |
+| `SunsetNavHost`                                           | Single-stack host. Wraps `NavDisplay` + `SharedTransitionLayout` + the standard slide / predictive-pop transitions. |
+| `SunsetTabHost`                                           | Tabbed host: one `SunsetNavBackStack` per tab, saved state per tab. Used by `SunsetMainScreen`.            |
+| `SunsetNavBackStack` / `rememberSunsetNavBackStack(...)`  | Saveable back stack created from an initial `SunsetNavKey`.                                                |
+| `SunsetDestinationScope`                                  | Receiver inside a `destination { ... }` block. Exposes `navigate`, `popBackStack`, `animatedContentScope`, `viewModelFor<VM>(key)`, and `SharedTransitionScope` membership. |
+| `SunsetTransitionSpec`                                    | `Slide` (default) or `SharedElement`. Per-destination transition selection on `destination<K>(transitionSpec = ...)`. |
+| `CommonKeys.kt`                                           | Cross-feature keys living in `:ui_common` itself (`LoginKey`, `PrivacyPolicyKey`, `WebViewKey`).           |
+
+`SunsetNavEntry` and `NavKeyExtras` are internal plumbing for back-stack
+serialization and Metro VM extras — not part of the public surface, don't
+reference them from feature code.
+
+### Allowed imports outside `:ui_common`
+
+`:feature/*` and `:app` modules consume the navigation DSL via:
+
+```
+com.mataku.scrobscrob.ui_common.navigation.*   # SunsetNavBuilder, SunsetNavKey, viewModelFor, ...
+```
+
+They do **not** import `androidx.navigation3.*` directly. Inside a
+`*Navigation.kt` block, navigation actions are members of
+`SunsetDestinationScope` — call `navigate(FooKey(...))` and `popBackStack()`
+directly. Don't reach for a `NavController` or any other Nav 3 type.
+
+ViewModel acquisition inside `*Navigation.kt` files goes through
+`viewModelFor<FooViewModel>(key)` — direct `metroViewModel(...)` calls from
+those files are blocked by `NavigationArchitectureSpec` so that the NavKey
+flows into Metro's `CreationExtras`. See
+`.claude/rules/viewmodel.md` for the assisted-injection pattern on the VM
+side, and `.claude/rules/coding-conventions.md` "Navigation" for the full
+call-site walkthrough.
+
+### Adding a new wrapper
+
+When SunsetScrob needs Nav 3 functionality that the current DSL doesn't
+expose (a new entry decorator, a multi-back-stack shape, a different host,
+etc.), mirror the SunsetX flow:
+
+1. **Wrapper**: add the API under `ui_common/.../navigation/SunsetX.kt`.
+   Keep the public surface minimal — accept only what real call sites need;
+   add parameters later when a second call site appears.
+2. **Spec**: extend `NavigationArchitectureSpec` if the new API introduces a
+   constraint that should hold across the project (e.g. "only
+   `*Navigation.kt` may call X", "all implementations of Y must be
+   `@Immutable`"). Architecture rules are mechanical — encoded as Konsist,
+   not left to review (see `feedback_mechanize_conventions`).
+3. **Migrate**: grep `androidx.navigation3.X`, replace call sites with the
+   wrapper, confirm `:architecture-spec:test` stays green.
+
+Don't add `androidx.navigation3.*` imports to feature/`:app` modules even
+temporarily — introduce the wrapper first.
+
+---
+
 ## Tablet & adaptive layout
 
 The app is designed phone-first but adapts to tablet (medium/expanded
@@ -369,9 +464,7 @@ flip the directive based on selection. The navigator's `navigateTo` is
 `suspend`, forcing the navigation through `coroutineScope.launch` while
 the directive flip is synchronous — the resulting tear shows up on
 real tablets as a single-pane Detail flash on tap, even though steady
-states look correct in unit-level VRTs. See
-[`feedback_pane_scaffold_value_overload.md`](./.claude/) memory or
-commit history for details.
+states look correct in unit-level VRTs. See commit history for details.
 
 If you ever need a back stack with multiple detail levels, reach for
 the navigator-based `ListDetailPaneScaffold(directive, scaffoldState,
@@ -491,9 +584,12 @@ the compact Nav3 push path.
   `CircleBackButton`.
 - Don't override `LocalRippleConfiguration` locally; `SunsetTheme` already
   picks the right alpha per `isLight`.
-- Don't add a sixth theme without also adding a dedicated `*Color` object
-  alongside `DarkColor` / `LightColor` / `LastFmDarkColor` and updating
-  `accentColor()` + `colorScheme()` in `SunsetTheme.kt`.
+- Don't add a new theme that needs its own `ColorScheme` without also
+  adding a dedicated `*Color` object alongside `DarkColor` / `LightColor` /
+  `LastFmDarkColor` and updating `accentColor()` + `colorScheme()` in
+  `SunsetTheme.kt`. (`FOLLOW_SYSTEM` is the exception — it intentionally
+  has no scheme of its own and resolves to `DARK`/`LIGHT` at composition
+  time via `AppTheme.resolve(...)`.)
 - Don't import `androidx.compose.material3.adaptive.*` outside
   `:ui_common`. Consume `SunsetListDetailScaffold`,
   `rememberSunsetListDetailScaffoldState`, and `isCompactWidth()`

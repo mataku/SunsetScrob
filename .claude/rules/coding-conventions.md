@@ -128,6 +128,11 @@ data class RecentTrack(
 
 ## Navigation
 
+Design intent (why navigation is wrapped in `:ui_common`, the wrapper
+inventory, allowed imports, how to add a new wrapper) lives in
+[`DESIGN.md`](../../DESIGN.md) under "Navigation wrappers (SunsetNav*)".
+This section covers only the call-site shape feature modules write.
+
 Reference: `feature/home/.../HomeNavigation.kt`, `app/.../SunsetMainScreen.kt`,
 `ui_common/.../navigation/SunsetNavHost.kt`.
 
@@ -141,8 +146,6 @@ Reference: `feature/home/.../HomeNavigation.kt`, `app/.../SunsetMainScreen.kt`,
 - Navigate with `navigate(FooKey(...))` and go back with `popBackStack()` —
   both are members of `SunsetDestinationScope`, callable from inside the
   destination block.
-- Direct imports of `androidx.navigation3.*` are allowed only inside `:ui_common`.
-  Enforced by Konsist.
 - Use `viewModelFor<FooViewModel>(key)` to obtain a ViewModel that needs the
   NavKey. Direct calls to `metroViewModel(...)` from `*Navigation.kt` files
   are forbidden (see `viewmodel.md` for the assisted-injection pattern).
