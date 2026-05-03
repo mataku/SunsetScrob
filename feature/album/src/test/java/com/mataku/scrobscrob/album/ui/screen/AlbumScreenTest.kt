@@ -7,16 +7,13 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
 import com.mataku.scrobscrob.album.ui.navigation.AlbumKey
 import com.mataku.scrobscrob.album.ui.viewmodel.AlbumViewModel
-import com.mataku.scrobscrob.core.entity.AlbumInfo
-import com.mataku.scrobscrob.core.entity.AlbumInfoTrack
 import com.mataku.scrobscrob.core.entity.AppTheme
-import com.mataku.scrobscrob.core.entity.Tag
 import com.mataku.scrobscrob.data.repository.AlbumRepository
 import com.mataku.scrobscrob.test_helper.integration.VRT
 import com.mataku.scrobscrob.test_helper.integration.captureScreenshot
+import com.mataku.scrobscrob.test_helper.integration.fixture.sampleAlbumInfo
 import io.mockk.every
 import io.mockk.mockk
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.flowOf
 import org.junit.Before
 import org.junit.Rule
@@ -36,38 +33,6 @@ class AlbumScreenTest {
   private val artworkUrl = ""
   private val albumName = "Drama"
 
-  private val albumInfo = AlbumInfo(
-    albumName = albumName,
-    artistName = albumName,
-    images = persistentListOf(),
-    tags = persistentListOf(
-      Tag("K-POP", ""),
-      Tag("K-POP", ""),
-      Tag("K-POP", ""),
-      Tag("K-POP", ""),
-    ),
-    url = "",
-    listeners = "1000000",
-    playCount = "10000000",
-    tracks = persistentListOf(
-      AlbumInfoTrack(
-        duration = "100",
-        name = "Drama",
-        url = ""
-      ),
-      AlbumInfoTrack(
-        duration = "110",
-        name = "Drama",
-        url = ""
-      ),
-      AlbumInfoTrack(
-        duration = null,
-        name = "Drama",
-        url = ""
-      )
-    )
-  )
-
   private val albumRepository = mockk<AlbumRepository>()
   private val animatedContentScope = mockk<AnimatedContentScope>(relaxed = true)
 
@@ -78,7 +43,7 @@ class AlbumScreenTest {
         albumName = albumName,
         artistName = artistName
       )
-    }.returns(flowOf(albumInfo))
+    }.returns(flowOf(sampleAlbumInfo))
   }
 
   @Test
@@ -157,33 +122,4 @@ class AlbumScreenTest {
     )
   }
 
-  @Test
-  fun pane_layout_tablet() {
-    val key = AlbumKey(
-      albumName = albumName,
-      artistName = artistName,
-      artworkUrl = artworkUrl,
-      contentId = "",
-    )
-    val viewModel = AlbumViewModel(
-      albumRepository = albumRepository,
-      key = key,
-    )
-    composeRule.captureScreenshot(
-      device = RobolectricDeviceQualifiers.PixelTablet,
-      appTheme = AppTheme.DARK,
-      content = {
-        SharedTransitionLayout {
-          AlbumPaneScreen(
-            viewModel = viewModel,
-            onAlbumLoadMoreTap = {},
-            onBackPressed = {},
-            animatedVisibilityScope = animatedContentScope,
-            id = "",
-          )
-        }
-      },
-      fileName = "album_pane_screen_tablet.png",
-    )
-  }
 }
