@@ -17,6 +17,7 @@ import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
@@ -27,10 +28,10 @@ import kotlinx.coroutines.launch
 @ContributesIntoMap(AppScope::class)
 class TopArtistsViewModel(
   private val topArtistsRepository: TopArtistsRepository,
-  usernameRepository: UsernameRepository
+  private val usernameRepository: UsernameRepository
 ) : ViewModel() {
 
-  private val username: String = usernameRepository.username() ?: ""
+  private var username: String = ""
 
   val uiState: StateFlow<TopArtistsUiState>
     field = MutableStateFlow(TopArtistsUiState.initialize())
@@ -38,15 +39,18 @@ class TopArtistsViewModel(
   private var page: Int = 1
 
   init {
-    if (username.isBlank()) {
-      uiState.update {
-        it.copy(
-          isLoading = false,
-          hasNext = false
-        )
+    viewModelScope.launch {
+      username = usernameRepository.asyncUsername().first() ?: ""
+      if (username.isBlank()) {
+        uiState.update {
+          it.copy(
+            isLoading = false,
+            hasNext = false
+          )
+        }
+      } else {
+        fetchTopArtists()
       }
-    } else {
-      fetchTopArtists()
     }
   }
 

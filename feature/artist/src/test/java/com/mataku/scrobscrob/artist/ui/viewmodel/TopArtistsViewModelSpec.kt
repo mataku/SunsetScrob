@@ -34,7 +34,7 @@ class TopArtistsViewModelSpec : DescribeSpec({
       it("skips the fetch and disables pagination") {
         val repository = mockk<TopArtistsRepository>()
         val usernameRepository = mockk<UsernameRepository>()
-        every { usernameRepository.username() } returns ""
+        every { usernameRepository.asyncUsername() } returns flowOf("")
 
         val viewModel = TopArtistsViewModel(repository, usernameRepository)
 
@@ -48,7 +48,7 @@ class TopArtistsViewModelSpec : DescribeSpec({
       it("fetches the first page and populates topArtists") {
         val repository = mockk<TopArtistsRepository>()
         val usernameRepository = mockk<UsernameRepository>()
-        every { usernameRepository.username() } returns "matakucom"
+        every { usernameRepository.asyncUsername() } returns flowOf("matakucom")
         coEvery {
           repository.fetchTopArtists(
             page = 1,
@@ -75,7 +75,7 @@ class TopArtistsViewModelSpec : DescribeSpec({
       it("disables pagination when the fetch fails") {
         val repository = mockk<TopArtistsRepository>()
         val usernameRepository = mockk<UsernameRepository>()
-        every { usernameRepository.username() } returns "matakucom"
+        every { usernameRepository.asyncUsername() } returns flowOf("matakucom")
         coEvery {
           repository.fetchTopArtists(any(), any(), any())
         } returns flow { throw RuntimeException("boom") }
@@ -91,7 +91,7 @@ class TopArtistsViewModelSpec : DescribeSpec({
     it("changes the filter and re-fetches with the new range") {
       val repository = mockk<TopArtistsRepository>()
       val usernameRepository = mockk<UsernameRepository>()
-      every { usernameRepository.username() } returns "matakucom"
+      every { usernameRepository.asyncUsername() } returns flowOf("matakucom")
       coEvery {
         repository.fetchTopArtists(
           page = 1,
@@ -127,7 +127,7 @@ class TopArtistsViewModelSpec : DescribeSpec({
     it("ignores the call when the filter is unchanged") {
       val repository = mockk<TopArtistsRepository>()
       val usernameRepository = mockk<UsernameRepository>()
-      every { usernameRepository.username() } returns "matakucom"
+      every { usernameRepository.asyncUsername() } returns flowOf("matakucom")
       coEvery {
         repository.fetchTopArtists(
           page = 1,
