@@ -1,6 +1,9 @@
 name: E2E test
 
 on:
+  push:
+    branches:
+      - develop
   schedule:
     # 06:00 UTC (15:00 JST)
     - cron: '0 6 * * *'
@@ -71,3 +74,26 @@ jobs:
             **/build/outputs/androidTest-results/**
             **/build/intermediates/managed_device_android_test_additional_output/**
           retention-days: 7
+
+  notify-failure:
+    name: Notify Discord on failure
+    needs: e2e
+    if: failure()
+    runs-on: ubuntu-slim
+    env:
+      LANG: C.UTF-8
+      LC_ALL: C.UTF-8
+    steps:
+      - name: Send Discord notification
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          DISCORD_USER_ID: ${{ secrets.DISCORD_USER_ID }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          REF_NAME: ${{ github.ref_name }}
+        run: |
+          payload=$(jq -n \
+            --arg content "<@${DISCORD_USER_ID}> E2E test failed on \`${REF_NAME}\`. ${RUN_URL}" \
+            '{content: $content, allowed_mentions: {parse: ["users"]}}')
+          curl -fsS -X POST -H "Content-Type: application/json" \
+            -d "$payload" \
+            "$DISCORD_WEBHOOK_URL"
