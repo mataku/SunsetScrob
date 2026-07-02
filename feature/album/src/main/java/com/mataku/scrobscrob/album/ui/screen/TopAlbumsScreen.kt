@@ -30,6 +30,8 @@ import com.mataku.scrobscrob.album.ui.molecule.TopAlbum
 import com.mataku.scrobscrob.album.ui.navigation.AlbumKey
 import com.mataku.scrobscrob.album.ui.viewmodel.AlbumViewModel
 import com.mataku.scrobscrob.album.ui.viewmodel.TopAlbumsViewModel
+import com.mataku.scrobscrob.album.ui.viewmodel.TopAlbumsViewModel.TopAlbumsUiState
+import com.mataku.scrobscrob.core.entity.TimeRangeFiltering
 import com.mataku.scrobscrob.core.entity.TopAlbumInfo
 import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.core.entity.isInvalidArtwork
@@ -59,12 +61,15 @@ fun TopAlbumsScreen(
   topAppBarScrollBehavior: SunsetTopAppBarScrollBehavior,
   modifier: Modifier = Modifier,
 ) {
+  val uiState by viewModel.uiState.collectAsStateWithLifecycle()
   if (isCompactWidth()) {
     TopAlbumsCompact(
       sharedTransitionScope = sharedTransitionScope,
       animatedVisibilityScope = animatedContentScope,
-      viewModel = viewModel,
+      uiState = uiState,
       onAlbumTap = navigateToAlbumInfo,
+      onScrollEnd = viewModel::fetchAlbums,
+      onUpdateTimeRange = viewModel::updateTimeRange,
       topAppBarScrollBehavior = topAppBarScrollBehavior,
       modifier = modifier,
     )
@@ -78,7 +83,7 @@ fun TopAlbumsScreen(
         TopAlbumsCompact(
           sharedTransitionScope = sharedTransitionScope,
           animatedVisibilityScope = listPaneScope,
-          viewModel = viewModel,
+          uiState = uiState,
           onAlbumTap = { album, id ->
             scaffoldState.selectDetail(
               AlbumKey(
@@ -89,6 +94,8 @@ fun TopAlbumsScreen(
               )
             )
           },
+          onScrollEnd = viewModel::fetchAlbums,
+          onUpdateTimeRange = viewModel::updateTimeRange,
           topAppBarScrollBehavior = topAppBarScrollBehavior,
           useSharedElement = false,
           modifier = Modifier,
@@ -119,14 +126,14 @@ fun TopAlbumsScreen(
 private fun TopAlbumsCompact(
   sharedTransitionScope: SharedTransitionScope,
   animatedVisibilityScope: AnimatedVisibilityScope,
-  viewModel: TopAlbumsViewModel,
+  uiState: TopAlbumsUiState,
   onAlbumTap: (TopAlbumInfo, String) -> Unit,
+  onScrollEnd: () -> Unit,
+  onUpdateTimeRange: (TimeRangeFiltering) -> Unit,
   topAppBarScrollBehavior: SunsetTopAppBarScrollBehavior,
   modifier: Modifier = Modifier,
   useSharedElement: Boolean = true,
 ) {
-  val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-
   var showBottomSheet by remember { mutableStateOf(false) }
   val bottomSheetState = rememberSunsetModalBottomSheetState()
   val coroutineScope = rememberCoroutineScope()
@@ -152,7 +159,7 @@ private fun TopAlbumsCompact(
       animatedVisibilityScope = animatedVisibilityScope,
       albums = uiState.topAlbums,
       hasNext = uiState.hasNext,
-      onScrollEnd = viewModel::fetchAlbums,
+      onScrollEnd = onScrollEnd,
       maxSpanCount = if (orientation == Configuration.ORIENTATION_LANDSCAPE) 4 else 2,
       onAlbumTap = onAlbumTap,
       useSharedElement = useSharedElement,
@@ -169,7 +176,7 @@ private fun TopAlbumsCompact(
           onClick = {
             coroutineScope.launch { bottomSheetState.hide() }
               .invokeOnCompletion { showBottomSheet = false }
-            viewModel.updateTimeRange(it)
+            onUpdateTimeRange(it)
           },
         )
       }
