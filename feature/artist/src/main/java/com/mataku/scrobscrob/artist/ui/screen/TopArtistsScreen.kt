@@ -31,6 +31,8 @@ import com.mataku.scrobscrob.artist.ui.molecule.TopArtist
 import com.mataku.scrobscrob.artist.ui.navigation.ArtistKey
 import com.mataku.scrobscrob.artist.ui.viewmodel.ArtistViewModel
 import com.mataku.scrobscrob.artist.ui.viewmodel.TopArtistsViewModel
+import com.mataku.scrobscrob.artist.ui.viewmodel.TopArtistsViewModel.TopArtistsUiState
+import com.mataku.scrobscrob.core.entity.TimeRangeFiltering
 import com.mataku.scrobscrob.core.entity.TopArtistInfo
 import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.core.entity.isInvalidArtwork
@@ -60,12 +62,15 @@ fun TopArtistsScreen(
   topAppBarScrollBehavior: SunsetTopAppBarScrollBehavior,
   modifier: Modifier = Modifier,
 ) {
+  val uiState by viewModel.uiState.collectAsStateWithLifecycle()
   if (isCompactWidth()) {
     TopArtistsCompact(
       sharedTransitionScope = sharedTransitionScope,
       animatedVisibilityScope = animatedContentScope,
-      viewModel = viewModel,
+      uiState = uiState,
       onArtistTap = onArtistTap,
+      onScrollEnd = viewModel::fetchTopArtists,
+      onUpdateTimeRange = viewModel::updateTimeRange,
       topAppBarScrollBehavior = topAppBarScrollBehavior,
       modifier = modifier,
     )
@@ -79,7 +84,7 @@ fun TopArtistsScreen(
         TopArtistsCompact(
           sharedTransitionScope = sharedTransitionScope,
           animatedVisibilityScope = listPaneScope,
-          viewModel = viewModel,
+          uiState = uiState,
           onArtistTap = { artist, id ->
             scaffoldState.selectDetail(
               ArtistKey(
@@ -89,6 +94,8 @@ fun TopArtistsScreen(
               )
             )
           },
+          onScrollEnd = viewModel::fetchTopArtists,
+          onUpdateTimeRange = viewModel::updateTimeRange,
           topAppBarScrollBehavior = topAppBarScrollBehavior,
           useSharedElement = false,
           modifier = Modifier,
@@ -119,13 +126,14 @@ fun TopArtistsScreen(
 private fun TopArtistsCompact(
   sharedTransitionScope: SharedTransitionScope,
   animatedVisibilityScope: AnimatedVisibilityScope,
-  viewModel: TopArtistsViewModel,
+  uiState: TopArtistsUiState,
   onArtistTap: (TopArtistInfo, String) -> Unit,
+  onScrollEnd: () -> Unit,
+  onUpdateTimeRange: (TimeRangeFiltering) -> Unit,
   topAppBarScrollBehavior: SunsetTopAppBarScrollBehavior,
   modifier: Modifier = Modifier,
   useSharedElement: Boolean = true,
 ) {
-  val uiState by viewModel.uiState.collectAsStateWithLifecycle()
   val bottomSheetState = rememberSunsetModalBottomSheetState()
   var showBottomSheet by remember { mutableStateOf(false) }
   val coroutineScope = rememberCoroutineScope()
@@ -151,7 +159,7 @@ private fun TopArtistsCompact(
       artists = uiState.topArtists,
       hasNext = uiState.hasNext,
       onArtistTap = onArtistTap,
-      onScrollEnd = viewModel::fetchTopArtists,
+      onScrollEnd = onScrollEnd,
       maxSpanCount = if (orientation == Configuration.ORIENTATION_LANDSCAPE) 4 else 2,
       useSharedElement = useSharedElement,
       modifier = Modifier
@@ -166,7 +174,7 @@ private fun TopArtistsCompact(
         FilteringBottomSheet(
           selectedTimeRangeFiltering = uiState.selectedTimeRangeFiltering,
           onClick = {
-            viewModel.updateTimeRange(it)
+            onUpdateTimeRange(it)
             coroutineScope.launch { bottomSheetState.hide() }
               .invokeOnCompletion { showBottomSheet = false }
           },
