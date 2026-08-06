@@ -3,12 +3,11 @@ name: Deploy app to firebase app distribution
 on:
   workflow_dispatch:
     inputs:
-      branch:
-        description: "Branch"
-        required: true
-        default: "develop"
       release_notes:
         description: "Release notes"
+        required: false
+      test_case_ids:
+        description: "App Testing agent test case IDs (comma-separated)"
         required: false
   schedule:
     - cron: '00 13 1 * *'
@@ -25,8 +24,6 @@ jobs:
       contents: read
     steps:
     - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      with:
-        ref: ${{ github.event.inputs.branch }}
     - id: auth
       uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3.0.0
       with:
@@ -42,7 +39,7 @@ jobs:
     - name: Prepare release notes
       run: |
         echo "${{ github.event.inputs.release_notes }}" >> release_notes.txt
-        echo "${{ github.event.inputs.branch }}@$(git rev-parse HEAD)" >> release_notes.txt
+        echo "${{ github.ref_name }}@$(git rev-parse HEAD)" >> release_notes.txt
     - name: Prepare authentication
       run: |
         echo -n "${{ secrets.SUNSETSCROB_KEYSTORE }}" | base64 -d > SunsetScrob.jks
@@ -55,6 +52,22 @@ jobs:
         SUNSET_KEY_ALIAS: ${{ secrets.SUNSET_KEY_ALIAS }}
         SUNSET_KEY_PASSWORD: ${{ secrets.SUNSET_KEY_PASSWORD }}
         SUNSET_STORE_PASSWORD: ${{ secrets.SUNSET_STORE_PASSWORD }}
+        FIREBASE_TEST_CASE_IDS: ${{ github.event.inputs.test_case_ids }}
       run: |
         bundle exec fastlane android setup_for_ci
-        bundle exec fastlane android deploy_to_firebase_app_distribution
+        ./gradlew assembleRelease
+        npm ci
+        args=(
+          appdistribution:distribute
+          app/build/outputs/apk/release/app-release.apk
+          --app "$FIREBASE_APP_ID"
+          --groups tester
+          --release-notes-file release_notes.txt
+        )
+        if [ -n "$FIREBASE_TEST_CASE_IDS" ]; then
+          args+=(
+            --test-case-ids "$FIREBASE_TEST_CASE_IDS"
+            --test-devices "model=tokay,version=36,locale=ja,orientation=portrait"
+          )
+        fi
+        npx --no-install firebase "${args[@]}"

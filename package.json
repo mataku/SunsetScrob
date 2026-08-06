@@ -1,0 +1,7 @@
+{
+  "name": "sunsetscrob",
+  "private": true,
+  "devDependencies": {
+    "firebase-tools": "15.26.0"
+  }
+}

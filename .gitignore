@@ -79,6 +79,9 @@ vendor/
 # direnv
 .envrc
 
+# npm
+node_modules/
+
 # others
 *.p12
 app/*.json
