@@ -22,6 +22,9 @@ jobs:
     permissions:
       id-token: write
       contents: read
+    env:
+      TEST_DEVICE_MODEL: tokay
+      TEST_DEVICE_VERSION: "36"
     steps:
     - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
     - id: auth
@@ -30,6 +33,20 @@ jobs:
         create_credentials_file: true
         workload_identity_provider: ${{ secrets.WORKFLOW_IDENTITY_PROVIDER }}
         service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT }}
+    - name: Verify test device availability
+      if: github.event.inputs.test_case_ids != ''
+      env:
+        GOOGLE_SERVICE_ACCOUNT: ${{ secrets.GOOGLE_SERVICE_ACCOUNT }}
+      run: |
+        gcloud auth login --brief --cred-file="${{ steps.auth.outputs.credentials_file_path }}"
+        project_id="${GOOGLE_SERVICE_ACCOUNT#*@}"
+        project_id="${project_id%%.iam.gserviceaccount.com}"
+        model_json=$(gcloud firebase test android models describe "$TEST_DEVICE_MODEL" --project "$project_id" --format=json)
+        if ! echo "$model_json" | jq -e --arg v "$TEST_DEVICE_VERSION" '.supportedVersionIds | index($v) != null' > /dev/null; then
+          echo "::error::$TEST_DEVICE_MODEL (API $TEST_DEVICE_VERSION) is no longer supported on Firebase Test Lab"
+          echo "$model_json" | jq -r '"Supported versions: " + (.supportedVersionIds | join(", "))'
+          exit 1
+        fi
     - uses: ./.github/actions/setup-gradle
       with:
         use-build-cache: 'true'
@@ -67,7 +84,7 @@ jobs:
         if [ -n "$FIREBASE_TEST_CASE_IDS" ]; then
           args+=(
             --test-case-ids "$FIREBASE_TEST_CASE_IDS"
-            --test-devices "model=tokay,version=36,locale=ja,orientation=portrait"
+            --test-devices "model=${TEST_DEVICE_MODEL},version=${TEST_DEVICE_VERSION},locale=ja,orientation=portrait"
           )
         fi
         npx --no-install firebase "${args[@]}"
