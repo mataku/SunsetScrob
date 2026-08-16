@@ -16,14 +16,14 @@ kotlinx-serialization-json = "1.11.0"
 kotest = "6.2.3"
 konsist = "0.17.3"
 lint = "32.3.1"
-metro = "1.4.0"
+metro = "1.4.1"
 material = "1.14.0"
 material3-adaptive = "1.2.0"
 mockk = "1.14.11"
 navigation3 = "1.1.5"
 okhttp = "5.4.0"
 robolectric = "4.16.1"
-roborazzi = "1.70.0"
+roborazzi = "1.71.0"
 showkase = "1.0.5"
 sqldelight = "2.3.2"
 espresso-core = "3.7.0"
@@ -120,7 +120,7 @@ androidx-profileinstaller = { group = "androidx.profileinstaller", name = "profi
 
 lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose" }
 
-compose-lint = { module = "com.slack.lint.compose:compose-lint-checks", version = "1.5.3" }
+compose-lint = { module = "com.slack.lint.compose:compose-lint-checks", version = "1.5.4" }
 
 lint-api = { module = "com.android.tools.lint:lint-api", version.ref = "lint" }
 lint-checks-dep = { module = "com.android.tools.lint:lint-checks", version.ref = "lint" }
