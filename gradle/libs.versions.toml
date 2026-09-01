@@ -1,12 +1,12 @@
 [versions]
 activity = "1.13.0"
-agp = "9.3.1"
+agp = "9.3.2"
 compose = "2026.08.00"
 coil = "3.5.0"
 core-sprashscreen = "1.2.0"
 coroutines = "1.11.0"
 datastore = "1.3.0-alpha10"
-firebase = "34.17.0"
+firebase = "34.18.0"
 ktor = "3.5.2"
 kotlin = "2.4.10"
 ksp = "2.3.11"
@@ -15,7 +15,7 @@ kotlinx-collections-immutable-jvm = "0.5.1"
 kotlinx-serialization-json = "1.11.0"
 kotest = "6.2.4"
 konsist = "0.17.3"
-lint = "32.3.1"
+lint = "32.3.2"
 metro = "1.4.2"
 material = "1.14.0"
 material3-adaptive = "1.3.0"
@@ -23,7 +23,7 @@ mockk = "1.14.11"
 navigation3 = "1.1.6"
 okhttp = "5.5.0"
 robolectric = "4.16.1"
-roborazzi = "1.72.0"
+roborazzi = "1.73.0"
 showkase = "1.0.5"
 sqldelight = "2.3.2"
 espresso-core = "3.7.0"
@@ -140,7 +140,7 @@ licensee = { id = "app.cash.licensee", version.ref = "licensee" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-crashlytics = { id = "com.google.firebase.crashlytics", version = "3.0.7" }
+crashlytics = { id = "com.google.firebase.crashlytics", version = "3.0.8" }
 google-services = { id = "com.google.gms.google-services", version = "4.5.0" }
 metro = { id = "dev.zacsweers.metro", version.ref = "metro" }
 baselineprofile = { id = "androidx.baselineprofile", version.ref = "baselineprofile" }
