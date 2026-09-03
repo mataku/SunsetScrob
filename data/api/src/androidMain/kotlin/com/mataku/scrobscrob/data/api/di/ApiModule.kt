@@ -6,7 +6,7 @@ import coil3.disk.DiskCache
 import coil3.memory.MemoryCache
 import coil3.network.okhttp.OkHttpNetworkFetcherFactory
 import coil3.request.crossfade
-import com.mataku.scrobscrob.data.api.BuildConfig
+import com.mataku.scrobscrob.core.AppBuildInfo
 import com.mataku.scrobscrob.data.api.LastFmService
 import com.mataku.scrobscrob.data.api.LastFmServiceImpl
 import com.mataku.scrobscrob.data.api.okhttp.LastfmApiAuthInterceptor
@@ -81,7 +81,7 @@ interface ApiModule {
 
     @SingleIn(AppScope::class)
     @Provides
-    fun provideOkhttpClient(context: Context): OkHttpClient {
+    fun provideOkhttpClient(context: Context, appBuildInfo: AppBuildInfo): OkHttpClient {
       val builder = OkHttpClient.Builder()
         .connectTimeout(10, TimeUnit.SECONDS)
         .readTimeout(20, TimeUnit.SECONDS)
@@ -93,7 +93,7 @@ interface ApiModule {
             maxSize = 512L * 1024L * 1024L,
           ),
         )
-      if (BuildConfig.DEBUG) {
+      if (appBuildInfo.isDebug) {
         builder.addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
       }
       return builder.build()

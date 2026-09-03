@@ -1,7 +1,7 @@
 package com.mataku.scrobscrob.data.repository
 
 import app.cash.turbine.test
-import com.mataku.scrobscrob.data.api.BuildConfig
+import com.mataku.scrobscrob.core.AppBuildInfo
 import com.mataku.scrobscrob.data.api.LastFmService
 import com.mataku.scrobscrob.data.api.endpoint.Endpoint
 import com.mataku.scrobscrob.data.api.endpoint.UserLovedTracksEndpoint
@@ -29,14 +29,16 @@ class UserRepositorySpec : DescribeSpec({
     context("debug build") {
       it("emits the hard-coded debug user without calling the API") {
         // The production code short-circuits to a hard-coded UserInfo when
-        // BuildConfig.DEBUG is true. Unit tests run in the debug variant, so
-        // this branch is what the test exercises.
-        if (!BuildConfig.DEBUG) return@it
-
+        // appBuildInfo.isDebug is true.
         val service = mockk<LastFmService>()
         val usernameDataStore = mockk<UsernameDataStore>()
         val artworkDataStore = mockk<ArtworkDataStore>()
-        val repository = UserRepositoryImpl(service, usernameDataStore, artworkDataStore)
+        val repository = UserRepositoryImpl(
+          service,
+          usernameDataStore,
+          artworkDataStore,
+          appBuildInfo = AppBuildInfo(isDebug = true),
+        )
 
         repository.getInfo("ignored").test {
           awaitItem().let { user ->
@@ -62,7 +64,12 @@ class UserRepositorySpec : DescribeSpec({
         val artworkDataStore = mockk<ArtworkDataStore>()
         coEvery { usernameDataStore.username() } returns null
 
-        val repository = UserRepositoryImpl(service, usernameDataStore, artworkDataStore)
+        val repository = UserRepositoryImpl(
+          service,
+          usernameDataStore,
+          artworkDataStore,
+          appBuildInfo = AppBuildInfo(isDebug = false),
+        )
         repository.getLovedTracks(page = 1).test {
           awaitItem().shouldBeEmpty()
           awaitComplete()
@@ -78,7 +85,12 @@ class UserRepositorySpec : DescribeSpec({
         val artworkDataStore = mockk<ArtworkDataStore>()
         coEvery { usernameDataStore.username() } returns ""
 
-        val repository = UserRepositoryImpl(service, usernameDataStore, artworkDataStore)
+        val repository = UserRepositoryImpl(
+          service,
+          usernameDataStore,
+          artworkDataStore,
+          appBuildInfo = AppBuildInfo(isDebug = false),
+        )
         repository.getLovedTracks(page = 1).test {
           awaitItem().shouldBeEmpty()
           awaitComplete()
@@ -126,7 +138,12 @@ class UserRepositorySpec : DescribeSpec({
         )
         coEvery { service.rawRequest(capture(slot), any()) } returns fakeResponse
 
-        val repository = UserRepositoryImpl(service, usernameDataStore, artworkDataStore)
+        val repository = UserRepositoryImpl(
+          service,
+          usernameDataStore,
+          artworkDataStore,
+          appBuildInfo = AppBuildInfo(isDebug = false),
+        )
         repository.getLovedTracks(page = page).test {
           awaitItem().let { tracks ->
             tracks.size shouldBe 1
@@ -186,7 +203,12 @@ class UserRepositorySpec : DescribeSpec({
         )
         coEvery { service.rawRequest(any(), any()) } returns fakeResponse
 
-        val repository = UserRepositoryImpl(service, usernameDataStore, artworkDataStore)
+        val repository = UserRepositoryImpl(
+          service,
+          usernameDataStore,
+          artworkDataStore,
+          appBuildInfo = AppBuildInfo(isDebug = false),
+        )
         repository.getLovedTracks(page = 1).test {
           awaitItem()[0].imageUrl shouldBe "https://cached.example/aespa.png"
           awaitComplete()

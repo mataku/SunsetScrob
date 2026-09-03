@@ -1,6 +1,6 @@
 package com.mataku.scrobscrob.data.repository
 
-import com.mataku.scrobscrob.data.api.BuildConfig
+import com.mataku.scrobscrob.data.api.LastFmApiCredentials
 import com.mataku.scrobscrob.data.api.LastFmService
 import com.mataku.scrobscrob.data.api.request
 import com.mataku.scrobscrob.data.api.endpoint.ApiSignature
@@ -56,7 +56,7 @@ class SessionRepositoryImpl(
   }.flowOn(Dispatchers.IO)
 
   override fun webAuthUrl(): Flow<String> = flowOf(
-    "https://www.last.fm/api/auth/?api_key=${BuildConfig.API_KEY}&cb=${URLEncoder.encode(CALLBACK_URL, Charsets.UTF_8.name())}"
+    "https://www.last.fm/api/auth/?api_key=${LastFmApiCredentials.API_KEY}&cb=${URLEncoder.encode(CALLBACK_URL, Charsets.UTF_8.name())}"
   )
 
   override suspend fun logout(): Flow<Unit> = flow {

@@ -5,7 +5,7 @@ import com.mataku.scrobscrob.core.entity.LovedTrack
 import com.mataku.scrobscrob.core.entity.UserInfo
 import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.core.entity.isInvalidArtwork
-import com.mataku.scrobscrob.data.api.BuildConfig
+import com.mataku.scrobscrob.core.AppBuildInfo
 import com.mataku.scrobscrob.data.api.LastFmService
 import com.mataku.scrobscrob.data.api.request
 import com.mataku.scrobscrob.data.api.endpoint.UserInfoEndpoint
@@ -34,6 +34,7 @@ class UserRepositoryImpl(
   private val lastFmService: LastFmService,
   private val usernameDataStore: UsernameDataStore,
   private val artworkDataStore: ArtworkDataStore,
+  private val appBuildInfo: AppBuildInfo,
 ) : UserRepository {
   override suspend fun getInfo(userName: String): Flow<UserInfo> = flow {
     val endpoint = UserInfoEndpoint(
@@ -41,7 +42,7 @@ class UserRepositoryImpl(
         "user" to userName
       )
     )
-    val userInfo = if (BuildConfig.DEBUG) {
+    val userInfo = if (appBuildInfo.isDebug) {
       UserInfo(
         name = "matakucom",
         playCount = "102654",

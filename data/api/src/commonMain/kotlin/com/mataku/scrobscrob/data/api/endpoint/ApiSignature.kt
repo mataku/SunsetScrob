@@ -1,6 +1,6 @@
 package com.mataku.scrobscrob.data.api.endpoint
 
-import com.mataku.scrobscrob.data.api.BuildConfig
+import com.mataku.scrobscrob.data.api.LastFmApiCredentials
 import java.security.MessageDigest
 
 class ApiSignature {
@@ -8,11 +8,11 @@ class ApiSignature {
     @JvmStatic
     fun generateApiSig(params: MutableMap<String, String>): String {
       var str = ""
-      params["api_key"] = BuildConfig.API_KEY
+      params["api_key"] = LastFmApiCredentials.API_KEY
       params.toSortedMap().forEach { (k, v) ->
         str += k + v
       }
-      str += BuildConfig.SHARED_SECRET
+      str += LastFmApiCredentials.SHARED_SECRET
 
       val messageDigest = MessageDigest.getInstance("MD5")
       val byteData = str.toByteArray()
