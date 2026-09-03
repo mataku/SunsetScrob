@@ -1,6 +1,5 @@
 package com.mataku.scrobscrob.ui_common.component
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,34 +11,22 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.unit.dp
-import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
 import com.mataku.scrobscrob.core.entity.AppTheme
-import com.mataku.scrobscrob.test_helper.integration.VRT
+import com.mataku.scrobscrob.test_helper.integration.ScreenshotDevice
 import com.mataku.scrobscrob.test_helper.integration.captureScreenshot
 import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetNavigationBar
 import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetTab
 import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetText
 import kotlinx.coroutines.test.runTest
-import org.junit.Rule
-import org.junit.Test
-import org.junit.experimental.categories.Category
-import org.junit.runner.RunWith
-import org.robolectric.annotation.GraphicsMode
+import org.junit.jupiter.api.Tag
+import org.junit.jupiter.api.Test
 
-@RunWith(AndroidJUnit4::class)
-@GraphicsMode(GraphicsMode.Mode.NATIVE)
-@Category(VRT::class)
+@Tag("VRT")
 class SunsetNavigationBarTest {
-  @get:Rule
-  val composeRule = createComposeRule()
-
-  @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
   @Test
   fun layout() = runTest {
-    composeRule.captureScreenshot(
+    captureScreenshot(
       appTheme = AppTheme.DARK,
       content = {
         Scaffold(
@@ -64,11 +51,10 @@ class SunsetNavigationBarTest {
     )
   }
 
-  @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
   @Test
   fun layout_landscape() = runTest {
-    composeRule.captureScreenshot(
-      device = "w411dp-h914dp-land-420dpi",
+    captureScreenshot(
+      device = ScreenshotDevice.Pixel7Landscape,
       appTheme = AppTheme.DARK,
       content = {
         Scaffold(
@@ -95,7 +81,7 @@ class SunsetNavigationBarTest {
 
   @Test
   fun layout_light() = runTest {
-    composeRule.captureScreenshot(
+    captureScreenshot(
       appTheme = AppTheme.LIGHT,
       content = {
         Scaffold(
@@ -120,11 +106,10 @@ class SunsetNavigationBarTest {
     )
   }
 
-  @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
   @Test
   fun layout_tablet() = runTest {
-    composeRule.captureScreenshot(
-      device = RobolectricDeviceQualifiers.PixelTablet,
+    captureScreenshot(
+      device = ScreenshotDevice.PixelTablet,
       appTheme = AppTheme.DARK,
       content = {
         Scaffold(
