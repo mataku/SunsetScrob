@@ -122,7 +122,7 @@ private fun LoginContent(
 
       Spacer(modifier = Modifier.height(16.dp))
 
-      SunsetText.Body(
+      SunsetText.Label(
         text = stringResource(id = R.string.web_auth_description),
         color = LocalAppTheme.current.onSurfaceColor(),
         textAlign = TextAlign.Center,
