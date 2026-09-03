@@ -5,6 +5,7 @@
   minimumReleaseAge: '7 days',
   ignoreDeps: [
     'com.jakewharton.timber:timber',
+    'org.junit.vintage:junit-vintage-engine',
   ],
   prConcurrentLimit: 3,
   rebaseWhen: 'conflicted',
