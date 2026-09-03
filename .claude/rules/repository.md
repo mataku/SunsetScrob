@@ -24,6 +24,11 @@ Reference: `data/repository/.../ScrobbleRepository.kt`, `data/repository/di/Repo
   they are also `@ContributesTo(AppScope::class)`.
 - Do not catch errors inside the repository. Let them propagate — the
   ViewModel's `.catch { ... }` maps them to a `UiEvent.Error`.
+- Call the API through the typed `LastFmService.request(endpoint)`
+  extension. `rawRequest(endpoint, typeInfo)` is the type-erased member
+  that exists so the inline extension can be reified and so specs can
+  stub it with MockK; production code never calls it directly. Enforced
+  by Konsist (`LastFmServiceArchitectureSpec`).
 
 ## Metro Binding Container Conventions
 
