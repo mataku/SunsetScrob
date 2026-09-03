@@ -56,10 +56,7 @@ class LoginViewModel(private val repo: SessionRepository) : ViewModel() {
     }
 
     viewModelScope.launch {
-      repo.authorize(
-        userName = username,
-        password = password
-      )
+      repo.authorize(token = password)
         .onStart {
           uiState.update {
             it.copy(

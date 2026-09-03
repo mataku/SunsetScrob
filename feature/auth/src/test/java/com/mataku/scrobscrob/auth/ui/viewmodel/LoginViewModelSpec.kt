@@ -49,9 +49,7 @@ class LoginViewModelSpec : DescribeSpec({
       val username = "username"
       val password = "password"
       coEvery {
-        sessionRepository.authorize(
-          username, password
-        )
+        sessionRepository.authorize(password)
       }.returns(flow {
         throw TimeoutException()
       })
@@ -70,9 +68,7 @@ class LoginViewModelSpec : DescribeSpec({
       val username = "username"
       val password = "password"
       coEvery {
-        sessionRepository.authorize(
-          username, password
-        )
+        sessionRepository.authorize(password)
       }.returns(
         flowOf(Unit)
       )

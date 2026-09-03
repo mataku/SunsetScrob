@@ -17,6 +17,7 @@ dependencies {
   implementation(project(":core"))
   implementation(project(":data:repository"))
   implementation(libs.activity.compose)
+  implementation(libs.androidx.browser)
   implementation(libs.compose.foundation)
 
 
