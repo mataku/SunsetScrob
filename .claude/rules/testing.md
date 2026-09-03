@@ -292,3 +292,8 @@ and the `VRT` category marker.
 | Screenshot Test    | `{Screen}ScreenTest.kt`  | `AlbumScreenTest.kt`     |
 | Screenshot (Dark)  | `{snake_case}.png`       | `album_screen.png`       |
 | Screenshot (Light) | `{snake_case}_light.png` | `album_screen_light.png` |
+
+### Determinism guards
+
+- `captureScreenshot` disables Material ripples (`LocalRippleConfiguration provides null`) so a test that clicks in `actionsBeforeCapturing` never captures a half-faded press highlight. Do not re-enable ripples inside a VRT.
+- Modules applying `sunsetscrob.android.test.screenshot` fail when `-PonlyScreenshotTest=true` discovers zero tests (`failOnNoDiscoveredTests`). The JUnit4-based VRTs run on the JUnit Platform through `junit-vintage-engine`, which that plugin adds as `testRuntimeOnly`; removing it silently turns every VRT run into a no-op, which is exactly what the guard is for.
