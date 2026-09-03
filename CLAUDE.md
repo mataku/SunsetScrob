@@ -83,7 +83,7 @@ live in always-loaded `architecture.md` and `coding-conventions.md`.
 - Image loading: Coil 3
 - Build: Gradle Kotlin DSL, version catalog (`gradle/libs.versions.toml`), custom convention plugins in `build-logic/convention/` (`sunsetscrob.library` / `compose` / `metro` / `test.screenshot` for KMP modules, `sunsetscrob.android.*` for not-yet-migrated Android modules).
 - Tests: Kotest (JUnit5 platform), MockK, Turbine, Roborazzi.
-- Code quality: Android Lint (project-specific custom detectors in `:lint-checks`), Compose lint (Slack `compose-lint-checks`), Konsist architecture tests, Licensee. Lint fails the build only when `CI=true` (see `build-logic/convention/.../AndroidLintConfiguration.kt`); CI runs it as a standalone job (`.github/workflows/lint.yml`). KMP modules have no lint task, so the `@Preview` privacy rule is enforced by Konsist for them instead.
+- Code quality: Android Lint (project-specific custom detectors in `:lint-checks`), Compose lint (Slack `compose-lint-checks`), Konsist architecture tests, Licensee. Lint fails the build only when `CI=true` (see `build-logic/convention/.../AndroidLintConfiguration.kt`); CI runs it as a standalone job (`.github/workflows/lint.yml`). KMP modules have no lint task, so neither Android Lint nor Compose lint run on them at all — Konsist is the enforcement mechanism for KMP modules, and new conventions for those modules must be written as Konsist specs.
 
 ---
 
