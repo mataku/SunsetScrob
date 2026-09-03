@@ -26,5 +26,12 @@ class ComposableScreenArchitectureSpec : DescribeSpec({
     // Screen visibility (internal) intentionally not enforced — the hub pattern
     // in :feature:home requires TopAlbumsScreen/TopArtistsScreen/ScrobbleScreen
     // to stay public. Revisit if the hub pattern changes.
+
+    it("@Preview composables are private") {
+      scope.functions()
+        .filter { fn -> fn.annotations.any { it.name == "Preview" } }
+        .filterNot { fn -> fn.annotations.any { it.name == "Suppress" && it.text.contains("PreviewNotPrivate") } }
+        .assertTrue(additionalMessage = "@Preview composables must be private (coding-conventions.md).") { it.hasPrivateModifier }
+    }
   }
 })

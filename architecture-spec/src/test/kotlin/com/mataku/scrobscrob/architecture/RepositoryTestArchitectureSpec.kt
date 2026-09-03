@@ -7,9 +7,9 @@ import io.kotest.matchers.collections.shouldBeEmpty
 
 class RepositoryTestArchitectureSpec : DescribeSpec({
   describe(":data:repository test sources must not depend on Ktor") {
-    it("no *Spec.kt under data/repository/src/test/ imports io.ktor.*") {
+    it("no *Spec.kt under data/repository tests imports io.ktor.*") {
       val violations = Konsist.scopeFromTest().files
-        .filter { it.path.contains("/data/repository/src/test/") }
+        .filter { it.path.contains("/data/repository/") && it.path.isTestSourcePath() }
         .filter { it.name.endsWith("Spec.kt") }
         .filter { file -> file.imports.any { it.name.startsWith("io.ktor.") } }
 

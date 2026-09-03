@@ -14,7 +14,7 @@ class ModuleDependencyArchitectureSpec : DescribeSpec({
 
   val files = Konsist.scopeFromProject().files
     .filterNot { it.path.contains("/architecture-spec/") }
-    .filter { it.path.contains("/src/main/") }
+    .filter { it.path.isProductionSourcePath() }
 
   describe("Module dependency rules (CLAUDE.md Rule 1)") {
 
