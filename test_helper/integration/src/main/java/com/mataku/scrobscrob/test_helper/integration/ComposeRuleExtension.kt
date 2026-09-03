@@ -1,6 +1,9 @@
 package com.mataku.scrobscrob.test_helper.integration
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.LocalRippleConfiguration
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.test.isRoot
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
@@ -14,6 +17,7 @@ private val DefaultRoborazziOptions = RoborazziOptions(
   compareOptions = RoborazziOptions.CompareOptions(changeThreshold = 0.005F),
 )
 
+@OptIn(ExperimentalMaterial3Api::class)
 fun ComposeContentTestRule.captureScreenshot(
   appTheme: AppTheme,
   fileName: String,
@@ -25,7 +29,9 @@ fun ComposeContentTestRule.captureScreenshot(
 
   this.setContent {
     SunsetThemePreview(theme = appTheme) {
-      content()
+      CompositionLocalProvider(LocalRippleConfiguration provides null) {
+        content()
+      }
     }
   }
 
