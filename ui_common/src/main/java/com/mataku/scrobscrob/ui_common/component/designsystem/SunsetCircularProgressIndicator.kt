@@ -8,7 +8,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.airbnb.android.showkase.annotation.ShowkaseComposable
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import com.mataku.scrobscrob.ui_common.style.accentColor
@@ -25,7 +24,6 @@ fun SunsetCircularProgressIndicator(
 }
 
 @Preview
-@ShowkaseComposable(name = "SunsetCircularProgressIndicator", group = "Design system")
 @Composable
 internal fun SunsetCircularProgressIndicatorPreview() {
   SunsetThemePreview {

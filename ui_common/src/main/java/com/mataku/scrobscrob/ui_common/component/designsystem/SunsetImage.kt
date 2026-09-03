@@ -17,7 +17,6 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
-import com.airbnb.android.showkase.annotation.ShowkaseComposable
 import com.mataku.scrobscrob.ui_common.R
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
@@ -61,7 +60,6 @@ fun SunsetImage(
 }
 
 @Preview(showBackground = true)
-@ShowkaseComposable(name = "SunsetImage", group = "Design system")
 @Composable
 internal fun SunsetImagePreview() {
   SunsetThemePreview {

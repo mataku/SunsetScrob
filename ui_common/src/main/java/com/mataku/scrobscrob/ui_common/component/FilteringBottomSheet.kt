@@ -16,7 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.airbnb.android.showkase.annotation.ShowkaseComposable
 import com.mataku.scrobscrob.core.entity.TimeRangeFiltering
 import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetText
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
@@ -99,7 +98,6 @@ private fun TimeRangeCell(
 
 @Preview(showBackground = true)
 @Composable
-@ShowkaseComposable(name = "FilteringBottomSheet", group = "BottomSheet")
 internal fun FilteringBottomSheetPreview() {
   SunsetThemePreview {
     FilteringBottomSheet(

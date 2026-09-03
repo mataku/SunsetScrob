@@ -13,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.airbnb.android.showkase.annotation.ShowkaseComposable
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import com.mataku.scrobscrob.ui_common.style.accentColor
@@ -58,7 +57,6 @@ object SunsetTextFieldDefaults {
 }
 
 @Preview
-@ShowkaseComposable(name = "SunsetTextField", group = "Design system")
 @Composable
 internal fun SunsetTextFieldPreview() {
   SunsetThemePreview {

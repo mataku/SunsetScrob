@@ -7,7 +7,6 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import com.airbnb.android.showkase.annotation.ShowkaseTypography
 import com.mataku.scrobscrob.ui_common.R
 
 object SunsetTextStyle {
@@ -28,7 +27,6 @@ object SunsetTextStyle {
       )
     )
 
-  @ShowkaseTypography(name = "body1")
   val body = TextStyle(
     fontSize = 16.sp,
     fontFamily = notoSansJpFamily,
@@ -37,7 +35,6 @@ object SunsetTextStyle {
     )
   )
 
-  @ShowkaseTypography(name = "body2")
   val label = TextStyle(
     fontSize = 14.sp,
     fontFamily = notoSansJpFamily,
@@ -58,7 +55,6 @@ object SunsetTextStyle {
       )
     )
 
-  @ShowkaseTypography(name = "header title")
   val title = TextStyle(
     fontWeight = FontWeight.Medium,
     fontSize = 20.sp,
@@ -79,7 +75,6 @@ object SunsetTextStyle {
     )
   )
 
-  @ShowkaseTypography(name = "subtitle")
   val subtitle = TextStyle(
     fontWeight = FontWeight.Medium,
     fontSize = 16.sp,

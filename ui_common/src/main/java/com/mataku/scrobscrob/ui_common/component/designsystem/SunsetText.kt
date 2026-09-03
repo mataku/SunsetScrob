@@ -15,7 +15,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.airbnb.android.showkase.annotation.ShowkaseComposable
 import com.mataku.scrobscrob.ui_common.style.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 
@@ -214,7 +213,6 @@ object SunsetText {
 }
 
 @Preview
-@ShowkaseComposable(name = "SunsetText", group = "Design system")
 @Composable
 internal fun SunsetTextPreview() {
   SunsetThemePreview {

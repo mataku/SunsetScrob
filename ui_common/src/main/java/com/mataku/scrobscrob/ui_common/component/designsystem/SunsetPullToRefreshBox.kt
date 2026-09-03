@@ -10,7 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.airbnb.android.showkase.annotation.ShowkaseComposable
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -30,7 +29,6 @@ fun SunsetPullToRefreshBox(
 }
 
 @Preview
-@ShowkaseComposable(name = "SunsetPullToRefreshBox", group = "Design system")
 @Composable
 internal fun SunsetPullToRefreshBoxPreview() {
   SunsetThemePreview {

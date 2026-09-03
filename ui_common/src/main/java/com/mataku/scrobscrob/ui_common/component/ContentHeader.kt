@@ -22,7 +22,6 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.airbnb.android.showkase.annotation.ShowkaseComposable
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetSurface
 import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetText
@@ -79,12 +78,6 @@ fun ContentHeader(
 }
 
 @Preview
-@ShowkaseComposable(
-  name = "ContentHeader",
-  group = "Common",
-  defaultStyle = true,
-  styleName = "Dark"
-)
 @Composable
 internal fun ContentHeaderPreview() {
   SunsetThemePreview {
@@ -93,7 +86,6 @@ internal fun ContentHeaderPreview() {
 }
 
 @Preview
-@ShowkaseComposable(name = "ContentHeader", group = "Common", styleName = "Light")
 @Composable
 internal fun ContentHeaderLightPreview() {
   SunsetThemePreview(theme = AppTheme.LIGHT) {
@@ -102,7 +94,6 @@ internal fun ContentHeaderLightPreview() {
 }
 
 @Preview
-@ShowkaseComposable(name = "ContentHeader", group = "Common", styleName = "Midnight")
 @Composable
 internal fun ContentHeaderMidnightPreview() {
   SunsetThemePreview(theme = AppTheme.MIDNIGHT) {
@@ -111,7 +102,6 @@ internal fun ContentHeaderMidnightPreview() {
 }
 
 @Preview
-@ShowkaseComposable(name = "ContentHeader", group = "Common", styleName = "Last.fm Dark")
 @Composable
 internal fun ContentHeaderLastFmDarkPreview() {
   SunsetThemePreview(theme = AppTheme.LASTFM_DARK) {

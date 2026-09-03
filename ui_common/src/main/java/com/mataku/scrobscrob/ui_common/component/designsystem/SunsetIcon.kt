@@ -18,7 +18,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.airbnb.android.showkase.annotation.ShowkaseComposable
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 
 @Composable
@@ -69,7 +68,6 @@ fun SunsetIconToggleButton(
 }
 
 @Preview
-@ShowkaseComposable(name = "SunsetIcon", group = "Design system")
 @Composable
 internal fun SunsetIconPreview() {
   SunsetThemePreview {

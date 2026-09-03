@@ -4,7 +4,6 @@ plugins {
   id("sunsetscrob.android.feature")
   id("sunsetscrob.android.compose")
   id("sunsetscrob.android.test.screenshot")
-  id("com.google.devtools.ksp")
   alias(libs.plugins.kotlin.serialization)
 }
 
@@ -29,9 +28,6 @@ dependencies {
   implementation(libs.coil.compose)
   implementation(libs.compose.material.icons.extended)
 
-  implementation(libs.showkase.annotation)
-  kspDebug(libs.showkase.processor)
-  implementation(libs.showkase)
   implementation(libs.kotlinx.collection)
 
   implementation(libs.compose.ui.tooling)
@@ -40,8 +36,4 @@ dependencies {
   implementation(libs.navigation3.ui)
   implementation(libs.serialization.json)
   implementation(libs.metrox.viewmodel.compose)
-}
-
-ksp {
-  arg("skipPrivatePreviews", "true")
 }

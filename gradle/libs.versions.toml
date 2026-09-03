@@ -32,7 +32,6 @@ jetbrains-navigation3 = "1.1.1"
 jetbrains-lifecycle = "2.11.0"
 jetbrains-material-icons = "1.7.3"
 kotlinx-collections-immutable = "0.5.1"
-showkase = "1.0.5"
 sqldelight = "2.3.2"
 espresso-core = "3.7.0"
 baselineprofile = "1.5.0-rc01"
@@ -117,10 +116,6 @@ coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", ve
 compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
 compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
 compose-ui-test-android = { module = "androidx.compose.ui:ui-test" }
-
-showkase = { module = "com.airbnb.android:showkase", version.ref = "showkase" }
-showkase-annotation = { module = "com.airbnb.android:showkase-annotation", version.ref = "showkase" }
-showkase-processor = { module = "com.airbnb.android:showkase-processor", version.ref = "showkase" }
 
 turbine = { module = "app.cash.turbine:turbine", version = "1.2.1" }
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }

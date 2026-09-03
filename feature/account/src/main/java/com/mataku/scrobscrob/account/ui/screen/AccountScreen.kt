@@ -38,7 +38,6 @@ import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.android.play.core.ktx.requestAppUpdateInfo
 import com.google.android.play.core.ktx.requestCompleteUpdate
 import com.mataku.scrobscrob.account.AccountMenu
-import com.mataku.scrobscrob.account.BuildConfig
 import com.mataku.scrobscrob.account.R
 import com.mataku.scrobscrob.account.ui.molecule.Profile
 import com.mataku.scrobscrob.account.ui.viewmodel.AccountViewModel
@@ -166,7 +165,6 @@ internal fun AccountScreen(
         onTapNotificationSetting = onTapNotificationSetting,
         onRequestAppUpdate = onRequestAppUpdate,
         onClearCache = viewModel::clearCache,
-        onNavigateToUiCatalog = viewModel::navigateToUiCatalog,
         modifier = modifier,
       )
     } else {
@@ -188,7 +186,6 @@ internal fun AccountScreen(
             onTapNotificationSetting = onTapNotificationSetting,
             onRequestAppUpdate = onRequestAppUpdate,
             onClearCache = viewModel::clearCache,
-            onNavigateToUiCatalog = viewModel::navigateToUiCatalog,
           )
         },
         detailPane = { selection ->
@@ -261,7 +258,6 @@ private fun AccountContent(
   navigateToPrivacyPolicy: () -> Unit,
   navigateToNotificationSetting: () -> Unit,
   requestAppUpdate: (AppUpdateInfo) -> Unit,
-  navigateToUiCatalog: () -> Unit,
   modifier: Modifier = Modifier
 ) {
   val context = LocalContext.current
@@ -374,17 +370,6 @@ private fun AccountContent(
           navigateToPrivacyPolicy.invoke()
         }
       }
-
-      if (BuildConfig.DEBUG) {
-        item(key = "ui_catalog") {
-          AccountMenuCell(
-            title = "UI Catalog",
-            description = "",
-          ) {
-            navigateToUiCatalog.invoke()
-          }
-        }
-      }
     }
   }
 
@@ -468,7 +453,6 @@ private fun AccountListPane(
   onTapNotificationSetting: () -> Unit,
   onRequestAppUpdate: (AppUpdateInfo) -> Unit,
   onClearCache: () -> Unit,
-  onNavigateToUiCatalog: () -> Unit,
   modifier: Modifier = Modifier,
 ) {
   SunsetScaffold(
@@ -493,7 +477,6 @@ private fun AccountListPane(
       requestAppUpdate = onRequestAppUpdate,
       appVersion = appVersion,
       clearCache = onClearCache,
-      navigateToUiCatalog = onNavigateToUiCatalog,
       imageCacheMB = imageCacheMB,
       userInfo = userInfo,
       modifier = Modifier.padding(paddingValues)
@@ -517,7 +500,6 @@ private fun AccountContentPreview() {
       appUpdateInfo = null,
       appVersion = "1.0.0",
       clearCache = {},
-      navigateToUiCatalog = {},
       imageCacheMB = "0.1",
       userInfo = UserInfo(
         name = "mataku",
