@@ -4,13 +4,13 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class AuthMobileSessionApiResponse(
+data class AuthSessionApiResponse(
   @SerialName("session")
-  val mobileSession: MobileSessionBody
+  val session: SessionBody
 )
 
 @Serializable
-data class MobileSessionBody(
+data class SessionBody(
   @SerialName("name")
   val name: String,
   @SerialName("key")

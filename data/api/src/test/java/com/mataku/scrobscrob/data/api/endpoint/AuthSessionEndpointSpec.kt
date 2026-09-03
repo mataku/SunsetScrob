@@ -13,9 +13,9 @@ import io.ktor.http.fullPath
 import io.ktor.http.headersOf
 import io.ktor.utils.io.ByteReadChannel
 
-class AuthMobileSessionEndpointSpec : DescribeSpec({
-  describe("AuthMobileSessionEndpoint") {
-    it("issues POST auth.getMobileSession and decodes the response") {
+class AuthSessionEndpointSpec : DescribeSpec({
+  describe("AuthSessionEndpoint") {
+    it("issues GET auth.getSession and decodes the response") {
       val rawJson = """
         {
           "session": {
@@ -28,8 +28,8 @@ class AuthMobileSessionEndpointSpec : DescribeSpec({
 
       val mockEngine = MockEngine { request ->
         request.url.fullPath shouldBe
-          "/2.0/?method=auth.getMobileSession&format=json&username=matakucom&password=secret&api_key=apikey&api_sig=deadbeef"
-        request.method shouldBe HttpMethod.Post
+          "/2.0/?method=auth.getSession&format=json&token=tok123&api_key=apikey&api_sig=deadbeef"
+        request.method shouldBe HttpMethod.Get
         respond(
           content = ByteReadChannel(rawJson),
           status = HttpStatusCode.OK,
@@ -37,10 +37,9 @@ class AuthMobileSessionEndpointSpec : DescribeSpec({
         )
       }
       val service = LastFmServiceImpl(mockEngine)
-      val endpoint = AuthMobileSessionEndpoint(
+      val endpoint = AuthSessionEndpoint(
         params = mapOf(
-          "username" to "matakucom",
-          "password" to "secret",
+          "token" to "tok123",
           "api_key" to "apikey",
           "api_sig" to "deadbeef",
         ),
@@ -48,8 +47,8 @@ class AuthMobileSessionEndpointSpec : DescribeSpec({
 
       val response = service.request(endpoint)
 
-      response.mobileSession.name shouldBe "matakucom"
-      response.mobileSession.key shouldBe "abcdef0123456789"
+      response.session.name shouldBe "matakucom"
+      response.session.key shouldBe "abcdef0123456789"
     }
   }
 })
