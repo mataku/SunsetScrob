@@ -2672,38 +2672,6 @@
         }
     },
     {
-        "groupId": "com.airbnb.android",
-        "artifactId": "showkase",
-        "version": "1.0.5",
-        "name": "null",
-        "spdxLicenses": [
-            {
-                "identifier": "Apache-2.0",
-                "name": "Apache License 2.0",
-                "url": "https://www.apache.org/licenses/LICENSE-2.0"
-            }
-        ],
-        "scm": {
-            "url": "https://github.com/airbnb/Showkase"
-        }
-    },
-    {
-        "groupId": "com.airbnb.android",
-        "artifactId": "showkase-annotation",
-        "version": "1.0.5",
-        "name": "null",
-        "spdxLicenses": [
-            {
-                "identifier": "Apache-2.0",
-                "name": "Apache License 2.0",
-                "url": "https://www.apache.org/licenses/LICENSE-2.0"
-            }
-        ],
-        "scm": {
-            "url": "https://github.com/airbnb/Showkase"
-        }
-    },
-    {
         "groupId": "com.google.accompanist",
         "artifactId": "accompanist-drawablepainter",
         "version": "0.37.3",
