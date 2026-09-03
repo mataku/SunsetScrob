@@ -34,6 +34,7 @@ class ScreenshotTestConventionPlugin : Plugin<Project> {
       dependencies {
         listOf(
           "androidx-test-ext-junit",
+          "androidx-espresso-core",
           "compose-ui-test-junit4",
           "robolectric",
           "roborazzi",
@@ -41,12 +42,13 @@ class ScreenshotTestConventionPlugin : Plugin<Project> {
           add("testImplementation", libs.findLibrary(it).get())
         }
         add("testImplementation", project(":test_helper:integration"))
+        add("testRuntimeOnly", libs.findLibrary("junit-vintage-engine").get())
         add("debugImplementation", libs.findLibrary("compose-ui-test-manifest").get())
       }
 
-      // Avoid to fail if no tests are discovered like `./gradlew testDebugUnitTest -PexcludeScreenshotTest=true`
       tasks.withType(Test::class.java) {
-        failOnNoDiscoveredTests.set(false)
+        failOnNoDiscoveredTests.set(hasProperty("onlyScreenshotTest"))
+        jvmArgs("--add-opens=java.base/jdk.internal.access=ALL-UNNAMED")
       }
     }
   }
