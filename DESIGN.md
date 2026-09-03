@@ -9,13 +9,13 @@ add screens that look consistent with the rest of the app.
 The runtime source of truth for tokens lives in code, not here:
 
 - Color palette: [
-  `ui_common/.../style/Colors.kt`](ui_common/src/main/java/com/mataku/scrobscrob/ui_common/style/Colors.kt)
+  `ui_common/.../style/Colors.kt`](ui_common/src/commonMain/kotlin/com/mataku/scrobscrob/ui_common/style/Colors.kt)
 - Per-theme color schemes & accents: [
-  `ui_common/.../style/SunsetTheme.kt`](ui_common/src/main/java/com/mataku/scrobscrob/ui_common/style/SunsetTheme.kt)
+  `ui_common/.../style/SunsetTheme.kt`](ui_common/src/commonMain/kotlin/com/mataku/scrobscrob/ui_common/style/SunsetTheme.kt)
 - Typography: [
-  `ui_common/.../style/SunsetTextStyle.kt`](ui_common/src/main/java/com/mataku/scrobscrob/ui_common/style/SunsetTextStyle.kt)
+  `ui_common/.../style/SunsetTextStyle.kt`](ui_common/src/commonMain/kotlin/com/mataku/scrobscrob/ui_common/style/SunsetTextStyle.kt)
 - Theme enum: [
-  `core/.../entity/AppTheme.kt`](core/src/main/java/com/mataku/scrobscrob/core/entity/AppTheme.kt)
+  `core/.../entity/AppTheme.kt`](core/src/commonMain/kotlin/com/mataku/scrobscrob/core/entity/AppTheme.kt)
 
 Where this doc and code disagree, **code wins** — update this doc.
 
@@ -63,9 +63,9 @@ Core principles:
 ## Themes
 
 There are six themes, declared in
-[`AppTheme.kt`](core/src/main/java/com/mataku/scrobscrob/core/entity/AppTheme.kt)
+[`AppTheme.kt`](core/src/commonMain/kotlin/com/mataku/scrobscrob/core/entity/AppTheme.kt)
 and applied in
-[`SunsetTheme.kt`](ui_common/src/main/java/com/mataku/scrobscrob/ui_common/style/SunsetTheme.kt).
+[`SunsetTheme.kt`](ui_common/src/commonMain/kotlin/com/mataku/scrobscrob/ui_common/style/SunsetTheme.kt).
 The user picks one in account settings; `ThemeRepository` persists it; the
 root `SunsetTheme(theme = ...)` calls `theme.resolve(isSystemInDarkTheme())`
 to collapse `FOLLOW_SYSTEM` into `DARK`/`LIGHT`, then propagates the chosen
@@ -131,7 +131,7 @@ Notes:
 ## Typography
 
 All text styles live in
-[`SunsetTextStyle`](ui_common/src/main/java/com/mataku/scrobscrob/ui_common/style/SunsetTextStyle.kt)
+[`SunsetTextStyle`](ui_common/src/commonMain/kotlin/com/mataku/scrobscrob/ui_common/style/SunsetTextStyle.kt)
 and use the bundled **Noto Sans JP** family (Regular / Medium / Bold). All
 styles set `includeFontPadding = false` to keep vertical rhythm tight.
 
@@ -305,7 +305,7 @@ expose it. Add later when a real second call site appears.
 Follow this sequence when a new `androidx.compose.material3.*` component
 slips into a feature or `:app`:
 
-1. **Wrapper**: add `ui_common/src/main/java/com/mataku/scrobscrob/ui_common/component/designsystem/SunsetX.kt`.
+1. **Wrapper**: add `ui_common/src/commonMain/kotlin/com/mataku/scrobscrob/ui_common/component/designsystem/SunsetX.kt`.
    Choose single-function vs `object` + factory based on call-site shape.
 2. **Detector**: add `lint-checks/.../PreferSunsetXDetector.kt`. Use any
    existing `PreferSunsetX*Detector.kt` as a template — they're all

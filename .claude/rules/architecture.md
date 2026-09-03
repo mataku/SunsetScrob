@@ -107,7 +107,7 @@ Plugin IDs (used in `build.gradle.kts`):
 
 ### New Feature Module Example
 
-Reference: [feature/album/build.gradle.kts](../../feature/album/build.gradle.kts)
+Reference: [ui_common/build.gradle.kts](../../ui_common/build.gradle.kts); feature modules still on sunsetscrob.android.* follow the older shape until they migrate
 
 ```kotlin
 plugins {
