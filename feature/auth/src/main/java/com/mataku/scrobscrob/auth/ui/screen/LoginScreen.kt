@@ -157,6 +157,7 @@ private fun LoginContent(
       SunsetTextButton.Label(
         text = "Privacy policy",
         onClick = onPrivacyPolicyTap,
+        color = LocalAppTheme.current.onSurfaceColor(),
       )
     }
   }
