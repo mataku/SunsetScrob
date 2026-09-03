@@ -1,6 +1,7 @@
 package com.mataku.scrobscrob.app.ui.top
 
 import android.app.Activity
+import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -18,6 +19,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mataku.scrobscrob.app.ui.screen.SunsetMainScreen
 import com.mataku.scrobscrob.app.ui.viewmodel.MainViewModel
+import com.mataku.scrobscrob.auth.webauth.LastFmWebAuth
+import com.mataku.scrobscrob.auth.webauth.LastFmWebAuthLauncher
+import com.mataku.scrobscrob.auth.webauth.WebAuthCallbackChannel
 import com.mataku.scrobscrob.ui_common.style.Colors
 import com.mataku.scrobscrob.ui_common.style.SunsetTheme
 import dev.zacsweers.metro.AppScope
@@ -33,6 +37,8 @@ import dev.zacsweers.metrox.viewmodel.MetroViewModelFactory
 @Inject
 class MainActivity(
   private val viewModelFactory: MetroViewModelFactory,
+  private val webAuthLauncher: LastFmWebAuthLauncher,
+  private val webAuthCallback: WebAuthCallbackChannel,
 ) : ComponentActivity() {
   private val viewModel by viewModels<MainViewModel>()
 
@@ -44,6 +50,9 @@ class MainActivity(
 
     enableEdgeToEdge()
     super.onCreate(savedInstanceState)
+    if (savedInstanceState == null) {
+      handleWebAuthCallback(intent)
+    }
 
     setContent {
       val uiState by viewModel.state.collectAsStateWithLifecycle()
@@ -71,9 +80,23 @@ class MainActivity(
 
       CompositionLocalProvider(LocalMetroViewModelFactory provides viewModelFactory) {
         SunsetTheme(theme = state.theme) {
-          SunsetMainScreen(isAuthenticated = isAuthenticated)
+          SunsetMainScreen(
+            isAuthenticated = isAuthenticated,
+            webAuthLauncher = webAuthLauncher,
+          )
         }
       }
     }
+  }
+
+  override fun onNewIntent(intent: Intent) {
+    super.onNewIntent(intent)
+    setIntent(intent)
+    handleWebAuthCallback(intent)
+  }
+
+  private fun handleWebAuthCallback(intent: Intent?) {
+    val token = intent?.dataString?.let(LastFmWebAuth::tokenFromCallback) ?: return
+    webAuthCallback.offer(token)
   }
 }
