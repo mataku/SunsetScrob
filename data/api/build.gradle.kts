@@ -9,8 +9,23 @@ val localProperties = Properties().apply {
   val file = rootProject.file("local.properties")
   if (file.exists()) file.inputStream().use { load(it) }
 }
-val apiKey = localProperties.getProperty("API_KEY") ?: "\"\""
-val sharedSecret = localProperties.getProperty("SHARED_SECRET") ?: "\"\""
+
+fun String?.toKotlinStringLiteral(): String {
+  val trimmed = (this ?: "").trim()
+  val unquoted = if (trimmed.length >= 2 && trimmed.startsWith("\"") && trimmed.endsWith("\"")) {
+    trimmed.substring(1, trimmed.length - 1)
+  } else {
+    trimmed
+  }
+  val escaped = unquoted
+    .replace("\\", "\\\\")
+    .replace("\"", "\\\"")
+    .replace("$", "\\$")
+  return "\"$escaped\""
+}
+
+val apiKey = localProperties.getProperty("API_KEY").toKotlinStringLiteral()
+val sharedSecret = localProperties.getProperty("SHARED_SECRET").toKotlinStringLiteral()
 val generatedCredentialsDir = layout.buildDirectory.dir("generated/lastfm/commonMain/kotlin")
 
 val generateLastFmApiCredentials by tasks.registering {

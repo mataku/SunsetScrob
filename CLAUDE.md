@@ -30,7 +30,7 @@ Jetpack Compose, MVVM + Repository pattern, Metro DI, and feature-based modules.
 
 ## Setup
 
-Before building, create `local.properties` with Last.fm API credentials:
+Before building, create `local.properties` with Last.fm API credentials (with or without surrounding quotes):
 
 ```
 API_KEY=YOUR_LAST_FM_API_KEY

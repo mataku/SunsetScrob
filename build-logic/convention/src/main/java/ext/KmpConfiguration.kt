@@ -26,7 +26,11 @@ fun KotlinMultiplatformExtension.androidNamespace(): String? =
 
 fun Project.kmpTargetsConfiguration() {
   kotlinMultiplatform().apply {
-    jvm()
+    jvm {
+      compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_17)
+      }
+    }
     androidLibraryTarget {
       compileSdk = 37
       minSdk = 30
