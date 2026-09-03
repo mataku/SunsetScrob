@@ -1,5 +1,4 @@
 <resources>
-  <string name="error_password_required">Password is required</string>
-  <string name="error_username_required">Username is required</string>
   <string name="error_login_failed">Login failed</string>
+  <string name="web_auth_description">You will be taken to last.fm to sign in. Your password is never shared with this app.</string>
 </resources>
