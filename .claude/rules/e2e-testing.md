@@ -114,7 +114,7 @@ Production-side hooks that make this possible:
   `ApiModule`.
 - **`AuthModule`** (in `feature/auth/.../di/`) — binds `LastFmWebAuthLauncher`.
   Excluding it lets `FakeWebAuthModule` return `e2e_token` synchronously
-  instead of opening an Auth Tab, so no test touches Chrome, last.fm, or
+  instead of opening a Custom Tab, so no test touches Chrome, last.fm, or
   `sunsetscrob.mataku.com`.
 - **`ImageLoaderModule`** (in `data/api/.../di/`) — a separate
   `@ContributesTo(AppScope::class)` interface whose only job is to provide
@@ -233,7 +233,7 @@ Conventions used by the existing flow:
   separate (non-weekly, opt-in) job that hits the real API.
 - Login error paths, edge cases, deep-linked navigation. Those live in unit /
   screenshot tests where they're cheaper.
-- The real browser round-trip (Auth Tab, Digital Asset Links verification,
+- The real browser round-trip (Partial Custom Tab, Digital Asset Links verification,
   Chrome fallback). `WebAuthCallbackTest` covers the App Link path by
   delivering the callback `Intent` directly via
   `Instrumentation.callActivityOnNewIntent` — not `startActivity`, due to an

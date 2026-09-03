@@ -1,7 +1,11 @@
 package com.mataku.scrobscrob.auth.ui.screen
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -37,9 +41,9 @@ import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetTextButton
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.LocalSnackbarHostState
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
+import com.mataku.scrobscrob.ui_common.style.onSecondaryColor
 import com.mataku.scrobscrob.ui_common.style.onSurfaceColor
 import kotlinx.coroutines.launch
-import com.mataku.scrobscrob.ui_common.R as uiCommonR
 
 @Composable
 internal fun LoginScreen(
@@ -70,14 +74,20 @@ internal fun LoginScreen(
       viewModel.popEvent(it)
     }
   }
-  LoginContent(
-    isLoading = uiState.isLoading,
-    onSignInTap = {
-      uiState.webAuthUrl?.let(launchWebAuth)
-    },
-    onPrivacyPolicyTap = navigateToPrivacyPolicy,
-    modifier = modifier
-  )
+  Box(modifier = modifier.fillMaxSize()) {
+    LoginContent(
+      isLoading = uiState.isLoading,
+      onSignInTap = {
+        uiState.webAuthUrl?.let { url ->
+          viewModel.onWebAuthOpened()
+          launchWebAuth(url)
+        }
+      },
+      onPrivacyPolicyTap = navigateToPrivacyPolicy,
+      modifier = Modifier.padding(top = 24.dp)
+    )
+    WebAuthScrim(visible = uiState.isWebAuthOpen)
+  }
 }
 
 @Composable
@@ -104,7 +114,7 @@ private fun LoginContent(
       Spacer(modifier = Modifier.height(24.dp))
 
       SunsetText.Title(
-        text = stringResource(id = uiCommonR.string.login_to_last_fm),
+        text = stringResource(id = R.string.web_auth_title),
         fontWeight = FontWeight.Bold,
         modifier = Modifier.align(Alignment.CenterHorizontally),
         color = LocalAppTheme.current.onSurfaceColor(),
@@ -112,7 +122,7 @@ private fun LoginContent(
 
       Spacer(modifier = Modifier.height(16.dp))
 
-      SunsetText.Body(
+      SunsetText.Label(
         text = stringResource(id = R.string.web_auth_description),
         color = LocalAppTheme.current.onSurfaceColor(),
         textAlign = TextAlign.Center,
@@ -136,21 +146,51 @@ private fun LoginContent(
           )
         } else {
           SunsetText.Body(
-            text = "Sign in with Last.fm",
+            text = stringResource(id = R.string.web_auth_sign_in),
             fontWeight = FontWeight.Medium,
           )
         }
       }
 
+      Spacer(modifier = Modifier.height(12.dp))
+
+      SunsetText.Caption(
+        text = stringResource(id = R.string.web_auth_password_notice),
+        color = LocalAppTheme.current.onSecondaryColor(),
+        textAlign = TextAlign.Center,
+      )
+
       Spacer(modifier = Modifier.height(32.dp))
 
       SunsetTextButton.Label(
-        text = "Privacy policy",
+        text = stringResource(id = R.string.web_auth_privacy_policy),
         onClick = onPrivacyPolicyTap,
+        color = LocalAppTheme.current.onSurfaceColor(),
       )
     }
   }
 }
+
+@Composable
+private fun WebAuthScrim(
+  visible: Boolean,
+  modifier: Modifier = Modifier
+) {
+  AnimatedVisibility(
+    visible = visible,
+    enter = fadeIn(),
+    exit = fadeOut(),
+    modifier = modifier
+  ) {
+    Box(
+      modifier = Modifier
+        .fillMaxSize()
+        .background(color = Color.Black.copy(alpha = SCRIM_ALPHA))
+    )
+  }
+}
+
+private const val SCRIM_ALPHA = 0.32f
 
 @Preview(showBackground = true)
 @Composable

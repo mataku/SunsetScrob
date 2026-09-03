@@ -57,10 +57,15 @@ class LoginViewModel(
     }
   }
 
+  fun onWebAuthOpened() {
+    uiState.update { it.copy(isWebAuthOpen = true) }
+  }
+
   fun onWebAuthResult(result: LastFmWebAuthResult) {
+    uiState.update { it.copy(isWebAuthOpen = false) }
     when (result) {
       is LastFmWebAuthResult.Success -> authorize(result.token)
-      LastFmWebAuthResult.Canceled -> Unit
+      LastFmWebAuthResult.Closed -> Unit
       LastFmWebAuthResult.Failed -> uiState.update { state ->
         state.copy(events = (state.events + UiEvent.LoginFailed).toImmutableList())
       }
@@ -105,12 +110,14 @@ class LoginViewModel(
   @Immutable
   data class LoginUiState(
     val isLoading: Boolean,
+    val isWebAuthOpen: Boolean,
     val webAuthUrl: String?,
     val events: ImmutableList<UiEvent>,
   ) {
     companion object {
       fun initialize() = LoginUiState(
         isLoading = false,
+        isWebAuthOpen = false,
         webAuthUrl = null,
         events = persistentListOf(),
       )

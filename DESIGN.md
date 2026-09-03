@@ -604,14 +604,16 @@ the compact Nav3 push path.
 
 ## Authentication (Last.fm web auth)
 
-The app never sees the user's Last.fm password. `LoginScreen` shows a single "Sign in with Last.fm" button; tapping it opens `https://www.last.fm/api/auth/?api_key=…&cb=https://sunsetscrob.mataku.com/auth/lastfm` in a Chrome Auth Tab (`androidx.browser` 1.10.0, Chrome 137+). Last.fm redirects to the callback with `?token=…`, the Auth Tab returns the URI through an `ActivityResultLauncher`, and `LoginViewModel.authorize(token)` exchanges it via `auth.getSession` (`SessionRepository.authorize`).
+The app never sees the user's Last.fm password. `LoginScreen` shows a single "Sign in with Last.fm" button; tapping it opens `https://www.last.fm/api/auth/?api_key=…&cb=https://sunsetscrob.mataku.com/auth/lastfm` in a Partial Custom Tab (`androidx.browser` 1.10.0): `WebAuthCustomTabs` builds a `CustomTabsIntent` with a fixed initial height of 90% of the window (`ACTIVITY_HEIGHT_FIXED`, so the sheet cannot be dragged) and a 16dp rounded toolbar, which Chrome 107+ renders as a bottom sheet; other browsers ignore the extras and open a full-screen Custom Tab. `CustomTabsWebAuthLauncher` starts the tab through an `ActivityResultLauncher` (`startActivityForResult`) rather than `launchUrl`: Chrome only honours the height extra when it can identify the calling package, which requires either a bound `CustomTabsSession` or a for-result launch, and a plain `startActivity` silently falls back to full screen. Last.fm redirects to the callback with `?token=…`, Chrome resolves the verified App Link and re-enters `MainActivity`, and `LoginViewModel.authorize(token)` exchanges it via `auth.getSession` (`SessionRepository.authorize`).
 
 Two delivery paths converge on the same ViewModel entry point:
 
 | Path | When | Mechanism |
 |------|------|-----------|
-| Auth Tab result | Chrome 137+ | `AuthTabWebAuthLauncher.rememberLaunch` → `LoginViewModel.onWebAuthResult` |
-| App Link fallback | Browser without Auth Tab support (falls back to a plain Custom Tab) | `MainActivity` (`singleTask`, `onNewIntent`) parses the intent with `LastFmWebAuth.tokenFromCallback` and pushes the token into `WebAuthCallbackChannel`, which `LoginViewModel` collects |
+| App Link callback | Last.fm redirects to `sunsetscrob.mataku.com/auth/lastfm` | `MainActivity` (`singleTask`, `onNewIntent`) parses the intent with `LastFmWebAuth.tokenFromCallback` and pushes the token into `WebAuthCallbackChannel`, which `LoginViewModel` collects; `singleTask` also clears the Custom Tab off the task |
+| Launcher result | The Custom Tab could not be started at all (no browser), or the E2E fake | `CustomTabsWebAuthLauncher.rememberLaunch` → `LoginViewModel.onWebAuthResult` (`Failed` shows the login error; `Success` is only produced by `FakeWebAuthLauncher`) |
+
+While the sheet is up, `LoginScreen` dims itself with a 32% black scrim (`LoginUiState.isWebAuthOpen`, set by `onWebAuthOpened` before launching), because Chrome does not dim the app behind a fixed-height Partial Custom Tab and the undimmed strip above the sheet otherwise reads as a rendering glitch. The scrim is cleared by any launcher result: `Closed` (the tab finished, delivered through the `ActivityResultLauncher` whether the user dismissed it or the App Link re-entered `MainActivity`), `Failed`, or `Success`. Closing the sheet without authorizing therefore only removes the scrim; the login screen stays put. Auth Tab (`AuthTabIntent`) was dropped because it has no partial-height API.
 
 `WebAuthCallbackChannel` is a conflated, consume-once channel so a token is exchanged exactly once even if the Activity is recreated. `MainActivity` only reads the launch intent when `savedInstanceState == null` for the same reason.
 

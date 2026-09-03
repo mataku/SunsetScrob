@@ -5,8 +5,8 @@ and why `LoginScreen` does **not** drive that transition itself.
 
 ## Summary
 
-`LoginViewModel.authorize(token)` — called from either the Auth Tab result or
-the App Link callback — persists the session key and username via
+`LoginViewModel.authorize(token)` — called from the App Link callback (or the
+launcher result in E2E) — persists the session key and username via
 `SessionRepository.authorize(token)` (a side effect on the underlying
 DataStore). The browser round-trip itself is described in `DESIGN.md` under
 Authentication. The screen transition happens because `SunsetMainScreen`

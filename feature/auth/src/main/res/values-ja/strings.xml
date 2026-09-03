@@ -1,4 +1,8 @@
 <resources>
   <string name="error_login_failed">ログインに失敗しました</string>
-  <string name="web_auth_description">Last.fm のログイン画面が開きます。\nパスワードはこのアプリには保存されません。</string>
+  <string name="web_auth_title">Last.fm アカウントを連携</string>
+  <string name="web_auth_description">ブラウザで Last.fm のログイン画面が開きます。\nアクセスを許可すると連携が完了します。</string>
+  <string name="web_auth_sign_in">Last.fm でログイン</string>
+  <string name="web_auth_password_notice">パスワードはこのアプリには保存されません</string>
+  <string name="web_auth_privacy_policy">プライバシーポリシー</string>
 </resources>
