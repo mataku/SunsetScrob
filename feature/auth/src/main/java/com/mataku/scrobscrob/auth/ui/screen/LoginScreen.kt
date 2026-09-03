@@ -41,9 +41,9 @@ import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetTextButton
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.LocalSnackbarHostState
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
+import com.mataku.scrobscrob.ui_common.style.onSecondaryColor
 import com.mataku.scrobscrob.ui_common.style.onSurfaceColor
 import kotlinx.coroutines.launch
-import com.mataku.scrobscrob.ui_common.R as uiCommonR
 
 @Composable
 internal fun LoginScreen(
@@ -114,7 +114,7 @@ private fun LoginContent(
       Spacer(modifier = Modifier.height(24.dp))
 
       SunsetText.Title(
-        text = stringResource(id = uiCommonR.string.login_to_last_fm),
+        text = stringResource(id = R.string.web_auth_title),
         fontWeight = FontWeight.Bold,
         modifier = Modifier.align(Alignment.CenterHorizontally),
         color = LocalAppTheme.current.onSurfaceColor(),
@@ -146,16 +146,24 @@ private fun LoginContent(
           )
         } else {
           SunsetText.Body(
-            text = "Sign in with Last.fm",
+            text = stringResource(id = R.string.web_auth_sign_in),
             fontWeight = FontWeight.Medium,
           )
         }
       }
 
+      Spacer(modifier = Modifier.height(12.dp))
+
+      SunsetText.Caption(
+        text = stringResource(id = R.string.web_auth_password_notice),
+        color = LocalAppTheme.current.onSecondaryColor(),
+        textAlign = TextAlign.Center,
+      )
+
       Spacer(modifier = Modifier.height(32.dp))
 
       SunsetTextButton.Label(
-        text = "Privacy policy",
+        text = stringResource(id = R.string.web_auth_privacy_policy),
         onClick = onPrivacyPolicyTap,
         color = LocalAppTheme.current.onSurfaceColor(),
       )
