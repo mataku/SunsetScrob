@@ -1,6 +1,7 @@
 plugins {
   id("sunsetscrob.library")
   id("sunsetscrob.compose")
+  id("sunsetscrob.test.screenshot")
 }
 
 kotlin {
