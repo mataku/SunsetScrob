@@ -10,12 +10,6 @@ import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.SingleIn
 
-interface FileRepository {
-  fun cacheImageDirMBSize(): Flow<Double>
-
-  fun deleteCacheImageDir(): Flow<Unit>
-}
-
 @SingleIn(AppScope::class)
 @Inject
 class FileRepositoryImpl(

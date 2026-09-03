@@ -1,28 +1,28 @@
-import com.android.build.api.dsl.LibraryExtension
-
 plugins {
-  id("sunsetscrob.android.feature")
-  id("sunsetscrob.android.metro")
+  id("sunsetscrob.library")
+  id("sunsetscrob.metro")
 }
 
-configure<LibraryExtension>() {
-  namespace = "com.mataku.scrobscrob.data.repository"
+kotlin {
+  android {
+    namespace = "com.mataku.scrobscrob.data.repository"
+  }
 
   sourceSets {
-    getByName("test").resources.directories.add("src/test/assets")
+    commonMain.dependencies {
+      implementation(project(":core"))
+      api(project(":data:api"))
+      api(project(":data:db"))
+      implementation(libs.coroutines.core)
+      implementation(libs.ktor.client.core)
+      implementation(libs.kotlinx.collections.immutable)
+    }
+    androidMain.dependencies {
+      implementation(libs.coroutines)
+      implementation(libs.timber)
+    }
+    jvmTest.dependencies {
+      implementation(libs.ktor.client.mock)
+    }
   }
-}
-
-dependencies {
-  implementation(project(":core"))
-  api(project(":data:api"))
-  api(project(":data:db"))
-
-  implementation(libs.ktor.client.core)
-  implementation(libs.timber)
-  implementation(libs.kotlinx.collection)
-  testImplementation(libs.ktor.client.mock)
-  testImplementation(libs.turbine)
-
-  lintChecks(project(":lint-checks"))
 }
