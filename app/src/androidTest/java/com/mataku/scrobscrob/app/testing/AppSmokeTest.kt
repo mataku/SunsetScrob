@@ -5,15 +5,12 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasAnyDescendant
 import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasScrollAction
-import androidx.compose.ui.test.hasSetTextAction
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
-import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
-import androidx.compose.ui.test.performTextInput
 import androidx.test.platform.app.InstrumentationRegistry
 import com.mataku.scrobscrob.app.ui.top.MainActivity
 import org.junit.Before
@@ -40,11 +37,9 @@ class AppSmokeTest {
 
   @Test
   fun login_then_navigate_through_tabs_and_details() {
-    // Login screen: fill username/password and submit.
-    composeRule.waitUntilExactlyOneExists(hasText("Let me in!"), TIMEOUT_MS)
-    composeRule.onAllNodes(hasSetTextAction()).onFirst().performTextInput("e2e_user")
-    composeRule.onAllNodes(hasSetTextAction())[1].performTextInput("e2e_password")
-    composeRule.onNodeWithText("Let me in!").performClick()
+    // Login screen: the fake launcher returns a token immediately on tap.
+    composeRule.waitUntilExactlyOneExists(hasText("Sign in with Last.fm"), TIMEOUT_MS)
+    composeRule.onNodeWithText("Sign in with Last.fm").performClick()
 
     // Home renders with the Scrobble tab as default.
     composeRule.waitUntilExactlyOneExists(hasText("Home"), TIMEOUT_MS)

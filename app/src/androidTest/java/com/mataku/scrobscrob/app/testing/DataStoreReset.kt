@@ -1,11 +1,13 @@
 package com.mataku.scrobscrob.app.testing
 
 import android.content.Context
+import com.mataku.scrobscrob.data.db.ScrobbleAppDataStore
+import com.mataku.scrobscrob.data.db.UsernameDataStore
+import kotlinx.coroutines.runBlocking
 
 internal fun resetDataStores(context: Context) {
-  val datastoreDir = context.filesDir.resolve("datastore")
-  if (!datastoreDir.exists()) return
-  datastoreDir.listFiles()?.forEach { file ->
-    if (file.isFile) file.delete()
+  runBlocking {
+    UsernameDataStore(context).remove()
+    ScrobbleAppDataStore(context).clear()
   }
 }
