@@ -68,5 +68,17 @@ class HtmlAnnotatedStringSpec : DescribeSpec({
     it("keeps a lone < that is not a tag") {
       "a < b".htmlToAnnotatedString(linkStyle).text shouldBe "a < b"
     }
+
+    it("collapses whitespace runs and raw newlines into a single space") {
+      "a  b\n\nc\td".htmlToAnnotatedString(linkStyle).text shouldBe "a b c d"
+    }
+
+    it("does not add a space after a tag-generated line break") {
+      "one<br>\ntwo<p>\n three</p>".htmlToAnnotatedString(linkStyle).text shouldBe "one\ntwo\nthree\n"
+    }
+
+    it("drops leading whitespace") {
+      "\n  lead".htmlToAnnotatedString(linkStyle).text shouldBe "lead"
+    }
   }
 })

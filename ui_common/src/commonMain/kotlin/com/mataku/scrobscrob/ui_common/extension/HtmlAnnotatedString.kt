@@ -19,9 +19,14 @@ private val namedEntities = mapOf(
 
 private class OpenTag(val name: String, val start: Int, val href: String? = null)
 
+private class ParserState {
+  val open = ArrayDeque<OpenTag>()
+  var lastChar: Char? = null
+}
+
 fun String.htmlToAnnotatedString(linkStyle: SpanStyle): AnnotatedString = buildAnnotatedString {
   val html = this@htmlToAnnotatedString
-  val open = ArrayDeque<OpenTag>()
+  val state = ParserState()
   var index = 0
   while (index < html.length) {
     val char = html[index]
@@ -32,7 +37,7 @@ fun String.htmlToAnnotatedString(linkStyle: SpanStyle): AnnotatedString = buildA
           append(html.substring(index + 1))
           break
         }
-        handleTag(html.substring(index + 1, close).trim(), open, linkStyle)
+        handleTag(html.substring(index + 1, close).trim(), state, linkStyle)
         index = close + 1
       }
       char == '&' -> {
@@ -40,14 +45,24 @@ fun String.htmlToAnnotatedString(linkStyle: SpanStyle): AnnotatedString = buildA
         val decoded = if (semicolon in index + 2..index + 8) decodeEntity(html.substring(index + 1, semicolon)) else null
         if (decoded == null) {
           append('&')
+          state.lastChar = '&'
           index++
         } else {
           append(decoded)
+          state.lastChar = decoded.lastOrNull()
           index = semicolon + 1
         }
       }
+      char == ' ' || char == '\n' || char == '\t' || char == '\r' -> {
+        if (state.lastChar != null && state.lastChar != '\n' && state.lastChar != ' ') {
+          append(' ')
+          state.lastChar = ' '
+        }
+        index++
+      }
       else -> {
         append(char)
+        state.lastChar = char
         index++
       }
     }
@@ -59,17 +74,23 @@ private fun isTagStart(html: String, index: Int): Boolean {
   return next.isLetter() || next == '/'
 }
 
-private fun AnnotatedString.Builder.handleTag(raw: String, open: ArrayDeque<OpenTag>, linkStyle: SpanStyle) {
+private fun AnnotatedString.Builder.handleTag(raw: String, state: ParserState, linkStyle: SpanStyle) {
   val closing = raw.startsWith("/")
   val body = raw.removePrefix("/").removeSuffix("/").trim()
   val name = body.takeWhile { !it.isWhitespace() }.lowercase()
   when (name) {
-    "br" -> append('\n')
-    "p" -> if (closing || length > 0) append('\n')
+    "br" -> {
+      append('\n')
+      state.lastChar = '\n'
+    }
+    "p" -> if (closing || length > 0) {
+      append('\n')
+      state.lastChar = '\n'
+    }
     "b", "strong", "i", "em", "a" -> {
       if (closing) {
-        val tag = open.lastOrNull { it.name == name } ?: return
-        open.remove(tag)
+        val tag = state.open.lastOrNull { it.name == name } ?: return
+        state.open.remove(tag)
         val end = length
         if (tag.start >= end) return
         when (name) {
@@ -82,7 +103,7 @@ private fun AnnotatedString.Builder.handleTag(raw: String, open: ArrayDeque<Open
         }
       } else {
         val href = if (name == "a") hrefPattern.find(body)?.groupValues?.get(1) else null
-        open.addLast(OpenTag(name = name, start = length, href = href))
+        state.open.addLast(OpenTag(name = name, start = length, href = href))
       }
     }
     else -> Unit
