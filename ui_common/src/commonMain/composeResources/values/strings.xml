@@ -1,0 +1,4 @@
+<resources>
+  <string name="playcounts">%1$s times</string>
+  <string name="playcount">%1$s time</string>
+</resources>

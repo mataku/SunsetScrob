@@ -39,10 +39,8 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.PathMeasure
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalWindowInfo
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -54,6 +52,7 @@ import com.mataku.scrobscrob.ui_common.style.onSecondaryColor
 import com.mataku.scrobscrob.ui_common.style.primaryColor
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import org.jetbrains.compose.resources.vectorResource
 
 @Composable
 fun SunsetNavigationBar(
@@ -254,7 +253,7 @@ private fun BottomBarTabs(
       ) {
         if (tab == SunsetTab.HOME) {
           Icon(
-            imageVector = ImageVector.vectorResource(id = tab.iconDrawable!!),
+            imageVector = vectorResource(tab.iconDrawable!!),
             contentDescription = "tab ${tab.title}"
           )
         } else {

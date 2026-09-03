@@ -1,6 +1,5 @@
 package com.mataku.scrobscrob.ui_common.component.designsystem
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -19,7 +18,6 @@ import com.mataku.scrobscrob.ui_common.style.SunsetTextStyle
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 
 object SunsetText {
-  @SuppressLint("ComposeNamingUppercase")
   @Composable
   operator fun invoke(
     text: String,
@@ -43,7 +41,6 @@ object SunsetText {
     )
   }
 
-  @SuppressLint("ComposeNamingUppercase")
   @Composable
   operator fun invoke(
     text: AnnotatedString,

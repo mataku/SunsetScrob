@@ -1,6 +1,5 @@
 package com.mataku.scrobscrob.ui_common.component.designsystem
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -34,7 +33,6 @@ fun SunsetButton(
 }
 
 object SunsetTextButton {
-  @SuppressLint("ComposeNamingUppercase")
   @Composable
   operator fun invoke(
     onClick: () -> Unit,

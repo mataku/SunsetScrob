@@ -1,6 +1,5 @@
 package com.mataku.scrobscrob.ui_common.component.designsystem
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
@@ -16,7 +15,9 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.backhandler.BackHandler
 
 @Stable
 class SunsetListDetailScaffoldState<T : Any> internal constructor(
@@ -44,7 +45,7 @@ fun <T : Any> rememberSunsetListDetailScaffoldState(): SunsetListDetailScaffoldS
   }
 }
 
-@OptIn(ExperimentalMaterial3AdaptiveApi::class)
+@OptIn(ExperimentalMaterial3AdaptiveApi::class, ExperimentalComposeUiApi::class)
 @Composable
 fun <T : Any> SunsetListDetailScaffold(
   state: SunsetListDetailScaffoldState<T>,

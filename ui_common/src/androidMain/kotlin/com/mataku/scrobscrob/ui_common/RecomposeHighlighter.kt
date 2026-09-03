@@ -34,13 +34,15 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 import kotlin.math.min
 
+private const val RECOMPOSE_HIGHLIGHTER_ENABLED = false
+
 /**
  * A [Modifier] that draws a border around elements that are recomposing. The border increases in
  * size and interpolates from red to green as more recompositions occur before a timeout.
  */
 @Stable
 fun Modifier.recomposeHighlighter(): Modifier {
-  return if (BuildConfig.DEBUG) {
+  return if (RECOMPOSE_HIGHLIGHTER_ENABLED) {
     this.then(recomposeModifier)
   } else {
     this

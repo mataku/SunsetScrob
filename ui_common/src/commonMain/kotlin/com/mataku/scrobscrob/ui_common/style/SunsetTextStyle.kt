@@ -3,18 +3,16 @@ package com.mataku.scrobscrob.ui_common.style
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import com.mataku.scrobscrob.ui_common.R
+
+expect val notoSansJpFontFamily: FontFamily
+
+expect fun noFontPaddingPlatformTextStyle(): PlatformTextStyle?
 
 object SunsetTextStyle {
-  private val notoSansJpFamily = FontFamily(
-    Font(R.font.notosansjp_regular, FontWeight.Normal),
-    Font(R.font.notosansjp_bold, FontWeight.Bold),
-    Font(R.font.notosansjp_medium, FontWeight.Medium),
-  )
+  private val notoSansJpFamily: FontFamily get() = notoSansJpFontFamily
 
   val caption
     @Composable
@@ -22,25 +20,19 @@ object SunsetTextStyle {
       fontSize = 13.sp,
       color = LocalAppTheme.current.onSecondaryColor(),
       fontFamily = notoSansJpFamily,
-      platformStyle = PlatformTextStyle(
-        includeFontPadding = false
-      )
+      platformStyle = noFontPaddingPlatformTextStyle()
     )
 
   val body = TextStyle(
     fontSize = 16.sp,
     fontFamily = notoSansJpFamily,
-    platformStyle = PlatformTextStyle(
-      includeFontPadding = false
-    )
+    platformStyle = noFontPaddingPlatformTextStyle()
   )
 
   val label = TextStyle(
     fontSize = 14.sp,
     fontFamily = notoSansJpFamily,
-    platformStyle = PlatformTextStyle(
-      includeFontPadding = false
-    )
+    platformStyle = noFontPaddingPlatformTextStyle()
   )
 
   val button
@@ -50,9 +42,7 @@ object SunsetTextStyle {
       letterSpacing = 1.25.sp,
       color = LocalAppTheme.current.onSecondaryColor(),
       fontFamily = notoSansJpFamily,
-      platformStyle = PlatformTextStyle(
-        includeFontPadding = false
-      )
+      platformStyle = noFontPaddingPlatformTextStyle()
     )
 
   val title = TextStyle(
@@ -60,9 +50,7 @@ object SunsetTextStyle {
     fontSize = 20.sp,
     letterSpacing = 0.15.sp,
     fontFamily = notoSansJpFamily,
-    platformStyle = PlatformTextStyle(
-      includeFontPadding = false
-    ),
+    platformStyle = noFontPaddingPlatformTextStyle(),
   )
 
   val headline = TextStyle(
@@ -70,9 +58,7 @@ object SunsetTextStyle {
     fontSize = 18.sp,
     letterSpacing = 0.15.sp,
     fontFamily = notoSansJpFamily,
-    platformStyle = PlatformTextStyle(
-      includeFontPadding = false
-    )
+    platformStyle = noFontPaddingPlatformTextStyle()
   )
 
   val subtitle = TextStyle(
@@ -80,8 +66,6 @@ object SunsetTextStyle {
     fontSize = 16.sp,
     letterSpacing = 0.15.sp,
     fontFamily = notoSansJpFamily,
-    platformStyle = PlatformTextStyle(
-      includeFontPadding = false
-    )
+    platformStyle = noFontPaddingPlatformTextStyle()
   )
 }

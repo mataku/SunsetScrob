@@ -9,18 +9,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalInspectionMode
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
-import com.mataku.scrobscrob.ui_common.R
+import com.mataku.scrobscrob.ui_common.generated.resources.Res
+import com.mataku.scrobscrob.ui_common.generated.resources.no_image
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import com.mataku.scrobscrob.ui_common.style.onSurfaceColor
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.vectorResource
 
 @Composable
 fun SunsetImage(
@@ -39,7 +39,7 @@ fun SunsetImage(
         )
     ) {
       Image(
-        imageVector = ImageVector.vectorResource(id = R.drawable.no_image),
+        imageVector = vectorResource(Res.drawable.no_image),
         contentDescription = contentDescription,
         modifier = Modifier,
         contentScale = contentScale,
@@ -54,7 +54,7 @@ fun SunsetImage(
       modifier = modifier,
       contentDescription = contentDescription,
       contentScale = contentScale,
-      error = painterResource(R.drawable.no_image),
+      error = painterResource(Res.drawable.no_image),
     )
   }
 }
