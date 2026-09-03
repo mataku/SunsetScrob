@@ -18,7 +18,7 @@ class AuthTabWebAuthLauncher : LastFmWebAuthLauncher {
     val activityLauncher = rememberLauncherForActivityResult(
       AuthTabIntent.AuthenticateUserResultContract()
     ) { result ->
-      currentOnResult(result.toWebAuthResult())
+      currentOnResult(mapAuthTabResult(result.resultCode, result.resultUri?.toString()))
     }
     return remember(activityLauncher) {
       { url ->
@@ -36,12 +36,5 @@ class AuthTabWebAuthLauncher : LastFmWebAuthLauncher {
         }
       }
     }
-  }
-
-  private fun AuthTabIntent.AuthResult.toWebAuthResult(): LastFmWebAuthResult {
-    if (resultCode == AuthTabIntent.RESULT_CANCELED) return LastFmWebAuthResult.Canceled
-    if (resultCode != AuthTabIntent.RESULT_OK) return LastFmWebAuthResult.Failed
-    val token = resultUri?.toString()?.let(LastFmWebAuth::tokenFromCallback)
-    return if (token == null) LastFmWebAuthResult.Failed else LastFmWebAuthResult.Success(token)
   }
 }

@@ -16,7 +16,7 @@ fun SunsetNavBuilder.authGraph(webAuthLauncher: LastFmWebAuthLauncher) {
     LoginScreen(
       viewModel = viewModelFor<LoginViewModel>(key),
       webAuthLauncher = webAuthLauncher,
-      navigateToHomeFromAuth = { /* 認証完了は :app の SunsetMainScreen が isAuthenticated 切替で処理 */ },
+      navigateToHomeFromAuth = { /* Auth completion is handled by :app's SunsetMainScreen via the isAuthenticated switch */ },
       navigateToPrivacyPolicy = { navigate(PrivacyPolicyKey) },
       modifier = Modifier.padding(top = 24.dp),
     )

@@ -11,6 +11,7 @@ import androidx.core.net.toUri
 import androidx.test.platform.app.InstrumentationRegistry
 import com.mataku.scrobscrob.app.testing.di.E2E_TOKEN
 import com.mataku.scrobscrob.app.ui.top.MainActivity
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -44,7 +45,10 @@ class WebAuthCallbackTest {
 
     composeRule.waitUntilExactlyOneExists(hasText("Home"), TIMEOUT_MS)
     composeRule.onNodeWithText("Home").assertIsDisplayed()
+  }
 
+  @After
+  fun restoreLaunchIntent() {
     composeRule.activityRule.scenario.onActivity { activity ->
       activity.intent = Intent(Intent.ACTION_MAIN)
         .addCategory(Intent.CATEGORY_LAUNCHER)
