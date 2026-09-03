@@ -93,11 +93,12 @@ JSON from `assets/`.
 MetroTestRunner (testInstrumentationRunner)
   └─ newApplication() ─► TestApp
                           └─ newAppGraph() ─► TestAppGraph
-                                                ├─ excludes HttpEngineModule, AuthModule
+                                                ├─ excludes HttpEngineModule, AuthModule, ImageLoaderModule
                                                 ├─ includes MockApiModule (MockEngine)
                                                 │                   └─ FixtureDispatcher
                                                 │                         └─ assets/*.json
-                                                └─ includes FakeWebAuthModule (LastFmWebAuthLauncher → fixed token)
+                                                ├─ includes FakeWebAuthModule (LastFmWebAuthLauncher → fixed token)
+                                                └─ includes FakeImageLoaderModule (Coil FakeImageLoaderEngine, solid colour)
 ```
 
 Production-side hooks that make this possible:
@@ -115,6 +116,13 @@ Production-side hooks that make this possible:
   Excluding it lets `FakeWebAuthModule` return `e2e_token` synchronously
   instead of opening an Auth Tab, so no test touches Chrome, last.fm, or
   `sunsetscrob.mataku.com`.
+- **`ImageLoaderModule`** (in `data/api/.../di/`) — a separate
+  `@ContributesTo(AppScope::class)` interface whose only job is to provide
+  the Coil `ImageLoader`, split out of `ApiModule` for the same surgical-
+  exclusion reason as `HttpEngineModule`. Excluding it lets
+  `FakeImageLoaderModule` bind Coil's `FakeImageLoaderEngine`, so artwork
+  renders as a solid colour instead of being fetched from
+  `lastfm.freetls.fastly.net`.
 
 ## Adding a fixture for a new endpoint
 

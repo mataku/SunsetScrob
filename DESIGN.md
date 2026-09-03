@@ -617,6 +617,6 @@ Two delivery paths converge on the same ViewModel entry point:
 
 The callback host/path (`sunsetscrob.mataku.com/auth/lastfm`) is a contract with the Cloudflare Worker in the `sunsetscrob.mataku.com` repository, which serves `/.well-known/assetlinks.json` for both `com.mataku.scrobscrob` and `com.mataku.scrobscrob.dev`. The `cb` URL and the `data` element of the manifest intent-filter must change together with that repository.
 
-`LastFmWebAuthLauncher` is the test seam: the E2E graph excludes `AuthModule` and binds a fake that returns a fixed token synchronously, so instrumentation tests never open a browser or reach the network. See `.claude/rules/e2e-testing.md`.
+`LastFmWebAuthLauncher` is the test seam: the E2E graph excludes `AuthModule` and binds a fake that returns a fixed token synchronously, so instrumentation tests never open a browser or reach the network: the Last.fm API is served by `MockApiModule`, the browser round-trip by `FakeWebAuthModule`, and artwork by `FakeImageLoaderModule` (Coil `FakeImageLoaderEngine`). See `.claude/rules/e2e-testing.md`.
 
 `SessionRepository.webAuthUrl()` is a `Flow<String>` rather than a plain accessor because the API key lives in `:data:api`'s `BuildConfig`, which feature modules may not import, and the `RepositoryReturnsFlow` Lint rule keeps repository interfaces Flow-shaped.
