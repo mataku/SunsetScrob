@@ -123,6 +123,9 @@ Rules:
   inside `:ui_common`. Feature modules consume the DSL exposed by
   `:ui_common/.../navigation/SunsetNavBuilder` and friends. Enforced by Konsist
   (`NavigationArchitectureSpec`).
+- Direct dependency on `androidx.browser` (Auth Tab / Custom Tabs) is allowed
+  only inside `:feature:auth`, behind `LastFmWebAuthLauncher`. Enforced by
+  Konsist (`ModuleDependencyArchitectureSpec`).
 
 ## Error Handling
 
