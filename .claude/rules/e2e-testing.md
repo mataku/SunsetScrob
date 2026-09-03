@@ -93,10 +93,11 @@ JSON from `assets/`.
 MetroTestRunner (testInstrumentationRunner)
   └─ newApplication() ─► TestApp
                           └─ newAppGraph() ─► TestAppGraph
-                                                ├─ excludes HttpEngineModule
-                                                └─ includes MockApiModule (MockEngine)
-                                                                    └─ FixtureDispatcher
-                                                                          └─ assets/*.json
+                                                ├─ excludes HttpEngineModule, AuthModule
+                                                ├─ includes MockApiModule (MockEngine)
+                                                │                   └─ FixtureDispatcher
+                                                │                         └─ assets/*.json
+                                                └─ includes FakeWebAuthModule (LastFmWebAuthLauncher → fixed token)
 ```
 
 Production-side hooks that make this possible:
@@ -110,6 +111,10 @@ Production-side hooks that make this possible:
   `HttpClientEngine`. Keeping it in its own binding container is what lets
   `TestAppGraph` exclude *only* the engine binding without touching the rest of
   `ApiModule`.
+- **`AuthModule`** (in `feature/auth/.../di/`) — binds `LastFmWebAuthLauncher`.
+  Excluding it lets `FakeWebAuthModule` return `e2e_token` synchronously
+  instead of opening an Auth Tab, so no test touches Chrome, last.fm, or
+  `sunsetscrob.mataku.com`.
 
 ## Adding a fixture for a new endpoint
 
@@ -147,15 +152,14 @@ fun some_flow() {
 Conventions used by the existing flow:
 
 - `@Before resetState()` calls `resetDataStores()` so previous runs don't leak
-  a logged-in session into the next test.
-- Anchor on **hardcoded English** strings (`"Let me in!"`, `"Home"`) rather
-  than on translated `stringResource`s. The CI emulator is en-US by default,
-  but local devices may not be — anchoring on translated text wedges the test
-  on a non-English locale. If a flow has no hardcoded anchor, look up the
-  string via `composeRule.activity.getString(R.string.foo)`.
-- Use `hasSetTextAction()` matchers to drive `SunsetTextField` rather than
-  searching by label — labels are part of a different semantic node from the
-  input field.
+  a logged-in session into the next test. It calls the running graph's
+  `SessionRepository.logout()` rather than deleting files, because DataStore
+  caches in-process across test classes.
+- Anchor on **hardcoded English** strings (`"Sign in with Last.fm"`, `"Home"`)
+  rather than on translated `stringResource`s. The CI emulator is en-US by
+  default, but local devices may not be — anchoring on translated text wedges
+  the test on a non-English locale. If a flow has no hardcoded anchor, look up
+  the string via `composeRule.activity.getString(R.string.foo)`.
 - `TIMEOUT_MS = 5_000L` covers a CI cold emulator's first render + initial
   mocked API roundtrip. Tighten only if you have a specific reason.
 
@@ -221,6 +225,12 @@ Conventions used by the existing flow:
   separate (non-weekly, opt-in) job that hits the real API.
 - Login error paths, edge cases, deep-linked navigation. Those live in unit /
   screenshot tests where they're cheaper.
+- The real browser round-trip (Auth Tab, Digital Asset Links verification,
+  Chrome fallback). `WebAuthCallbackTest` covers the App Link path by
+  delivering the callback `Intent` directly via
+  `Instrumentation.callActivityOnNewIntent` — not `startActivity`, due to an
+  `ActivityScenario` teardown issue with `setIntent`; install-time
+  `autoVerify` is OS behaviour and is not asserted.
 - `feature:account` Play Store / file-system dependencies. They aren't mocked
   — the screen happens to render fine without `appUpdateInfo`, but if a future
   account flow blocks on Play Core, plan to provide a fake `AppUpdateManager`

@@ -601,3 +601,22 @@ the compact Nav3 push path.
   `navigateTo` is `suspend` and the resulting async-vs-sync split
   produces a single-pane Detail flash on tap. Use the `(directive,
   value, ...)` overload via `SunsetListDetailScaffold` instead.
+
+## Authentication (Last.fm web auth)
+
+The app never sees the user's Last.fm password. `LoginScreen` shows a single "Sign in with Last.fm" button; tapping it opens `https://www.last.fm/api/auth/?api_key=…&cb=https://sunsetscrob.mataku.com/auth/lastfm` in a Chrome Auth Tab (`androidx.browser` 1.10.0, Chrome 137+). Last.fm redirects to the callback with `?token=…`, the Auth Tab returns the URI through an `ActivityResultLauncher`, and `LoginViewModel.authorize(token)` exchanges it via `auth.getSession` (`SessionRepository.authorize`).
+
+Two delivery paths converge on the same ViewModel entry point:
+
+| Path | When | Mechanism |
+|------|------|-----------|
+| Auth Tab result | Chrome 137+ | `AuthTabWebAuthLauncher.rememberLaunch` → `LoginViewModel.onWebAuthResult` |
+| App Link fallback | Browser without Auth Tab support (falls back to a plain Custom Tab) | `MainActivity` (`singleTask`, `onNewIntent`) parses the intent with `LastFmWebAuth.tokenFromCallback` and pushes the token into `WebAuthCallbackChannel`, which `LoginViewModel` collects |
+
+`WebAuthCallbackChannel` is a conflated, consume-once channel so a token is exchanged exactly once even if the Activity is recreated. `MainActivity` only reads the launch intent when `savedInstanceState == null` for the same reason.
+
+The callback host/path (`sunsetscrob.mataku.com/auth/lastfm`) is a contract with the Cloudflare Worker in the `sunsetscrob.mataku.com` repository, which serves `/.well-known/assetlinks.json` for both `com.mataku.scrobscrob` and `com.mataku.scrobscrob.dev`. The `cb` URL and the `data` element of the manifest intent-filter must change together with that repository.
+
+`LastFmWebAuthLauncher` is the test seam: the E2E graph excludes `AuthModule` and binds a fake that returns a fixed token synchronously, so instrumentation tests never open a browser or reach the network. See `.claude/rules/e2e-testing.md`.
+
+`SessionRepository.webAuthUrl()` is a `Flow<String>` rather than a plain accessor because the API key lives in `:data:api`'s `BuildConfig`, which feature modules may not import, and the `RepositoryReturnsFlow` Lint rule keeps repository interfaces Flow-shaped.
