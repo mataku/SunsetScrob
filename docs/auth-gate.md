@@ -5,10 +5,13 @@ and why `LoginScreen` does **not** drive that transition itself.
 
 ## Summary
 
-`LoginScreen` only persists the username (a side effect on
-`UsernameDataStore`). The screen transition happens because
-`SunsetMainScreen` observes `MainViewModel.state.username` as a Flow and
-flips its `if (isAuthenticated)` branch in response.
+`LoginViewModel.authorize(token)` — called from either the Auth Tab result or
+the App Link callback — persists the session key and username via
+`SessionRepository.authorize(token)` (a side effect on the underlying
+DataStore). The browser round-trip itself is described in `DESIGN.md` under
+Authentication. The screen transition happens because `SunsetMainScreen`
+observes `MainViewModel.state.username` as a Flow and flips its
+`if (isAuthenticated)` branch in response.
 
 ```kotlin
 // app/.../SunsetMainScreen.kt

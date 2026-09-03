@@ -119,5 +119,15 @@ class ModuleDependencyArchitectureSpec : DescribeSpec({
           },
       ) { violations.shouldBeEmpty() }
     }
+
+    it("only :feature:auth may import androidx.browser") {
+      val violations = files
+        .filter { file -> file.imports.any { imp -> imp.name.startsWith("androidx.browser") } }
+        .filterNot { it.path.contains("/feature/auth/") }
+      withClue(
+        ":feature:auth is the only module allowed to import androidx.browser (Auth Tab / Custom Tabs). Offending files:\n" +
+          violations.joinToString("\n") { it.path },
+      ) { violations.shouldBeEmpty() }
+    }
   }
 })

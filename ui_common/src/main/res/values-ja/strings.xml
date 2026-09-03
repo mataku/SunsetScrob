@@ -25,7 +25,5 @@
   <string name="error_message_fetch_top_artists">アーティストの取得に失敗しました。時間をおいてお試しください。</string>
   <string name="error_message_bad_network">通信環境をお確かめの上お試しください。</string>
 
-  <string name="error_password_required">パスワードを入力してください</string>
-  <string name="error_username_required">ユーザIDを入力してください</string>
   <string name="error_login_failed">ログインに失敗しました</string>
 </resources>

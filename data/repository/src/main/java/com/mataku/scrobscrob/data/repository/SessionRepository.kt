@@ -1,23 +1,27 @@
 package com.mataku.scrobscrob.data.repository
 
+import com.mataku.scrobscrob.data.api.BuildConfig
 import com.mataku.scrobscrob.data.api.LastFmService
 import com.mataku.scrobscrob.data.api.request
 import com.mataku.scrobscrob.data.api.endpoint.ApiSignature
-import com.mataku.scrobscrob.data.api.endpoint.AuthMobileSessionEndpoint
+import com.mataku.scrobscrob.data.api.endpoint.AuthSessionEndpoint
 import com.mataku.scrobscrob.data.db.ScrobbleAppDataStore
 import com.mataku.scrobscrob.data.db.SessionKeyDataStore
 import com.mataku.scrobscrob.data.db.UsernameDataStore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.zip
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.SingleIn
+import java.net.URLEncoder
 
 interface SessionRepository {
-  suspend fun authorize(userName: String, password: String): Flow<Unit>
+  suspend fun authorize(token: String): Flow<Unit>
+  fun webAuthUrl(): Flow<String>
   suspend fun logout(): Flow<Unit>
   suspend fun recoverFromKeystoreLossIfNeeded(): Flow<Unit>
 }
@@ -31,18 +35,17 @@ class SessionRepositoryImpl(
   private val scrobbleAppDataStore: ScrobbleAppDataStore
 ) :
   SessionRepository {
-  override suspend fun authorize(userName: String, password: String): Flow<Unit> = flow {
+  override suspend fun authorize(token: String): Flow<Unit> = flow {
     val params = mutableMapOf(
-      "username" to userName,
-      "password" to password,
+      "token" to token,
       "method" to METHOD
     )
     val apiSig = ApiSignature.generateApiSig(params)
     params["api_sig"] = apiSig
-    val endpoint = AuthMobileSessionEndpoint(
+    val endpoint = AuthSessionEndpoint(
       params = params
     )
-    val result = lastFmService.request(endpoint).mobileSession
+    val result = lastFmService.request(endpoint).session
     sessionKeyDataStore.setSessionKey(result.key).zip(
       usernameDataStore.setUsername(result.name)
     ) { sessionKeyResult, usernameResult ->
@@ -51,6 +54,10 @@ class SessionRepositoryImpl(
       emit(Unit)
     }
   }.flowOn(Dispatchers.IO)
+
+  override fun webAuthUrl(): Flow<String> = flowOf(
+    "https://www.last.fm/api/auth/?api_key=${BuildConfig.API_KEY}&cb=${URLEncoder.encode(CALLBACK_URL, Charsets.UTF_8.name())}"
+  )
 
   override suspend fun logout(): Flow<Unit> = flow {
     sessionKeyDataStore.remove()
@@ -71,6 +78,7 @@ class SessionRepositoryImpl(
   }.flowOn(Dispatchers.IO)
 
   companion object {
-    private const val METHOD = "auth.getMobileSession"
+    private const val METHOD = "auth.getSession"
+    private const val CALLBACK_URL = "https://sunsetscrob.mataku.com/auth/lastfm"
   }
 }

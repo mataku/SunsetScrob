@@ -1,11 +1,16 @@
 package com.mataku.scrobscrob.auth.ui.viewmodel
 
+import com.mataku.scrobscrob.auth.webauth.LastFmWebAuthResult
+import com.mataku.scrobscrob.auth.webauth.WebAuthCallbackChannel
 import com.mataku.scrobscrob.data.repository.SessionRepository
+import com.mataku.scrobscrob.test_helper.unit.CoroutinesListener
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.shouldBe
 import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
@@ -13,52 +18,44 @@ import java.util.concurrent.TimeoutException
 
 class LoginViewModelSpec : DescribeSpec({
 
-  extension(com.mataku.scrobscrob.test_helper.unit.CoroutinesListener())
+  extension(CoroutinesListener())
 
-  val sessionRepository = mockk<SessionRepository>()
+  val webAuthUrl = "https://www.last.fm/api/auth/?api_key=key&cb=cb"
+  val token = "abc123"
+
+  fun repository(): SessionRepository = mockk<SessionRepository>().also {
+    every { it.webAuthUrl() } returns flowOf(webAuthUrl)
+  }
+
+  describe("initial state") {
+    it("exposes the web auth URL and no events") {
+      val viewModel = LoginViewModel(repository(), WebAuthCallbackChannel())
+      viewModel.uiState.value.let {
+        it.webAuthUrl shouldBe webAuthUrl
+        it.isLoading.shouldBeFalse()
+        it.events.shouldBeEmpty()
+      }
+    }
+  }
 
   describe("#popEvent") {
     it("should clear event") {
-      val viewModel = LoginViewModel(sessionRepository)
+      val repo = repository()
+      coEvery { repo.authorize(token) } returns flowOf(Unit)
+      val viewModel = LoginViewModel(repo, WebAuthCallbackChannel())
+      viewModel.authorize(token)
       viewModel.popEvent(LoginViewModel.UiEvent.LoginSuccess)
       viewModel.uiState.value.events.shouldBeEmpty()
     }
   }
 
   describe("#authorize") {
-    context("username is blank") {
-      it("should return LoginScreenState.UiEvent.EmptyUsernameError") {
-        val viewModel = LoginViewModel(sessionRepository)
-        viewModel.authorize(username = "", password = "password")
-        viewModel.uiState.value.events shouldBe listOf(LoginViewModel.UiEvent.EmptyUsernameError)
-      }
-    }
-
-    context("password is blank") {
-      it("should return LoginScreenState.UiEvent.EmptyPasswordError") {
-        val viewModel = LoginViewModel(sessionRepository)
-        viewModel.authorize(username = "username", password = "")
-        viewModel.uiState.value.let {
-          it.events shouldBe listOf(LoginViewModel.UiEvent.EmptyPasswordError)
-          it.isLoading.shouldBeFalse()
-        }
-      }
-    }
-
     context("failed to login") {
-      val username = "username"
-      val password = "password"
-      coEvery {
-        sessionRepository.authorize(
-          username, password
-        )
-      }.returns(flow {
-        throw TimeoutException()
-      })
-
-      it("should return LoginScreenState.UiEvent.LoginFailed") {
-        val viewModel = LoginViewModel(sessionRepository)
-        viewModel.authorize(username, password)
+      it("should emit LoginFailed and stop loading") {
+        val repo = repository()
+        coEvery { repo.authorize(token) } returns flow { throw TimeoutException() }
+        val viewModel = LoginViewModel(repo, WebAuthCallbackChannel())
+        viewModel.authorize(token)
         viewModel.uiState.value.let {
           it.events shouldBe listOf(LoginViewModel.UiEvent.LoginFailed)
           it.isLoading.shouldBeFalse()
@@ -67,19 +64,11 @@ class LoginViewModelSpec : DescribeSpec({
     }
 
     context("success") {
-      val username = "username"
-      val password = "password"
-      coEvery {
-        sessionRepository.authorize(
-          username, password
-        )
-      }.returns(
-        flowOf(Unit)
-      )
-
-      it("should return LoginScreenState.UiEvent.LoginSuccess") {
-        val viewModel = LoginViewModel(sessionRepository)
-        viewModel.authorize(username, password)
+      it("should emit LoginSuccess and stop loading") {
+        val repo = repository()
+        coEvery { repo.authorize(token) } returns flowOf(Unit)
+        val viewModel = LoginViewModel(repo, WebAuthCallbackChannel())
+        viewModel.authorize(token)
         viewModel.uiState.value.let {
           it.events shouldBe listOf(LoginViewModel.UiEvent.LoginSuccess)
           it.isLoading.shouldBeFalse()
@@ -88,21 +77,52 @@ class LoginViewModelSpec : DescribeSpec({
     }
   }
 
-  describe("#updateUsername") {
-    it("should update username") {
-      val updatedUsername = "updated"
-      val viewModel = LoginViewModel(sessionRepository)
-      viewModel.updateUsername(updatedUsername)
-      viewModel.uiState.value.username.shouldBe(updatedUsername)
+  describe("#onWebAuthResult") {
+    it("authorizes with the token on Success") {
+      val repo = repository()
+      coEvery { repo.authorize(token) } returns flowOf(Unit)
+      val viewModel = LoginViewModel(repo, WebAuthCallbackChannel())
+      viewModel.onWebAuthResult(LastFmWebAuthResult.Success(token))
+      viewModel.uiState.value.events shouldBe listOf(LoginViewModel.UiEvent.LoginSuccess)
+      coVerify(exactly = 1) { repo.authorize(token) }
+    }
+
+    it("does nothing on Canceled") {
+      val repo = repository()
+      val viewModel = LoginViewModel(repo, WebAuthCallbackChannel())
+      viewModel.onWebAuthResult(LastFmWebAuthResult.Canceled)
+      viewModel.uiState.value.events.shouldBeEmpty()
+      coVerify(exactly = 0) { repo.authorize(any()) }
+    }
+
+    it("emits LoginFailed on Failed") {
+      val repo = repository()
+      val viewModel = LoginViewModel(repo, WebAuthCallbackChannel())
+      viewModel.onWebAuthResult(LastFmWebAuthResult.Failed)
+      viewModel.uiState.value.events shouldBe listOf(LoginViewModel.UiEvent.LoginFailed)
+      coVerify(exactly = 0) { repo.authorize(any()) }
     }
   }
 
-  describe("#updatePassword") {
-    it("should update password") {
-      val updatedPassword = "updated"
-      val viewModel = LoginViewModel(sessionRepository)
-      viewModel.updatePassword(updatedPassword)
-      viewModel.uiState.value.password.shouldBe(updatedPassword)
+  describe("callback channel") {
+    it("authorizes with a token delivered through WebAuthCallbackChannel") {
+      val repo = repository()
+      coEvery { repo.authorize(token) } returns flowOf(Unit)
+      val channel = WebAuthCallbackChannel()
+      val viewModel = LoginViewModel(repo, channel)
+      channel.offer(token)
+      viewModel.uiState.value.events shouldBe listOf(LoginViewModel.UiEvent.LoginSuccess)
+      coVerify(exactly = 1) { repo.authorize(token) }
+    }
+
+    it("authorizes with a token offered before the ViewModel existed") {
+      val repo = repository()
+      coEvery { repo.authorize(token) } returns flowOf(Unit)
+      val channel = WebAuthCallbackChannel()
+      channel.offer(token)
+      val viewModel = LoginViewModel(repo, channel)
+      viewModel.uiState.value.events shouldBe listOf(LoginViewModel.UiEvent.LoginSuccess)
+      coVerify(exactly = 1) { repo.authorize(token) }
     }
   }
 })

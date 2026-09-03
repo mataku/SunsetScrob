@@ -17,6 +17,7 @@ import com.mataku.scrobscrob.account.ui.navigation.accountGraph
 import com.mataku.scrobscrob.album.ui.navigation.albumGraph
 import com.mataku.scrobscrob.artist.ui.navigation.artistGraph
 import com.mataku.scrobscrob.auth.ui.navigation.authGraph
+import com.mataku.scrobscrob.auth.webauth.LastFmWebAuthLauncher
 import com.mataku.scrobscrob.chart.ui.navigation.DiscoverKey
 import com.mataku.scrobscrob.discover.ui.navigation.discoverGraph
 import com.mataku.scrobscrob.home.ui.navigation.HomeKey
@@ -37,6 +38,7 @@ import kotlinx.collections.immutable.toImmutableList
 @Composable
 internal fun SunsetMainScreen(
   isAuthenticated: Boolean,
+  webAuthLauncher: LastFmWebAuthLauncher,
   modifier: Modifier = Modifier,
 ) {
   if (isAuthenticated) {
@@ -83,7 +85,7 @@ internal fun SunsetMainScreen(
   } else {
     val backStack = rememberSunsetNavBackStack(initial = LoginKey)
     SunsetNavHost(backStack = backStack, modifier = modifier.fillMaxSize()) {
-      authGraph()
+      authGraph(webAuthLauncher)
       commonGraph()
       accountGraph()
     }

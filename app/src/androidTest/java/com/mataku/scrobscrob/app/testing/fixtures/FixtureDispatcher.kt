@@ -36,7 +36,7 @@ class FixtureDispatcher(private val assets: AssetManager) {
     assets.open(path).bufferedReader().use { it.readText() }
 
   private fun String.fixtureName(): String? = when (lowercase()) {
-    "auth.getmobilesession" -> "mobile_session.json"
+    "auth.getsession" -> "session.json"
     "user.getrecenttracks" -> "recent_tracks.json"
     "user.getinfo" -> "user_get_info.json"
     "user.gettopalbums" -> "top_albums.json"

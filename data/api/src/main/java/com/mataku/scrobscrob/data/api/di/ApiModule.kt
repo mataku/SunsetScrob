@@ -38,34 +38,8 @@ interface HttpEngineModule {
 }
 
 @ContributesTo(AppScope::class)
-interface ApiModule {
-
+interface ImageLoaderModule {
   companion object {
-
-    @SingleIn(AppScope::class)
-    @Provides
-    internal fun provideLastFmService(impl: LastFmServiceImpl): LastFmService = impl
-
-    @SingleIn(AppScope::class)
-    @Provides
-    fun provideOkhttpClient(context: Context): OkHttpClient {
-      val builder = OkHttpClient.Builder()
-        .connectTimeout(10, TimeUnit.SECONDS)
-        .readTimeout(20, TimeUnit.SECONDS)
-        .writeTimeout(20, TimeUnit.SECONDS)
-        .callTimeout(20, TimeUnit.SECONDS)
-        .cache(
-          Cache(
-            directory = File(context.cacheDir, "sunsetscrob_cache"),
-            maxSize = 512L * 1024L * 1024L,
-          ),
-        )
-      if (BuildConfig.DEBUG) {
-        builder.addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-      }
-      return builder.build()
-    }
-
     @SingleIn(AppScope::class)
     @Provides
     fun provideImageLoader(
@@ -93,5 +67,36 @@ interface ApiModule {
             .build()
         }
         .build()
+  }
+}
+
+@ContributesTo(AppScope::class)
+interface ApiModule {
+
+  companion object {
+
+    @SingleIn(AppScope::class)
+    @Provides
+    internal fun provideLastFmService(impl: LastFmServiceImpl): LastFmService = impl
+
+    @SingleIn(AppScope::class)
+    @Provides
+    fun provideOkhttpClient(context: Context): OkHttpClient {
+      val builder = OkHttpClient.Builder()
+        .connectTimeout(10, TimeUnit.SECONDS)
+        .readTimeout(20, TimeUnit.SECONDS)
+        .writeTimeout(20, TimeUnit.SECONDS)
+        .callTimeout(20, TimeUnit.SECONDS)
+        .cache(
+          Cache(
+            directory = File(context.cacheDir, "sunsetscrob_cache"),
+            maxSize = 512L * 1024L * 1024L,
+          ),
+        )
+      if (BuildConfig.DEBUG) {
+        builder.addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+      }
+      return builder.build()
+    }
   }
 }
