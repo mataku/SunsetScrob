@@ -1,7 +1,11 @@
 package com.mataku.scrobscrob.auth.ui.screen
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -70,14 +74,20 @@ internal fun LoginScreen(
       viewModel.popEvent(it)
     }
   }
-  LoginContent(
-    isLoading = uiState.isLoading,
-    onSignInTap = {
-      uiState.webAuthUrl?.let(launchWebAuth)
-    },
-    onPrivacyPolicyTap = navigateToPrivacyPolicy,
-    modifier = modifier
-  )
+  Box(modifier = modifier.fillMaxSize()) {
+    LoginContent(
+      isLoading = uiState.isLoading,
+      onSignInTap = {
+        uiState.webAuthUrl?.let { url ->
+          viewModel.onWebAuthOpened()
+          launchWebAuth(url)
+        }
+      },
+      onPrivacyPolicyTap = navigateToPrivacyPolicy,
+      modifier = Modifier.padding(top = 24.dp)
+    )
+    WebAuthScrim(visible = uiState.isWebAuthOpen)
+  }
 }
 
 @Composable
@@ -151,6 +161,27 @@ private fun LoginContent(
     }
   }
 }
+
+@Composable
+private fun WebAuthScrim(
+  visible: Boolean,
+  modifier: Modifier = Modifier
+) {
+  AnimatedVisibility(
+    visible = visible,
+    enter = fadeIn(),
+    exit = fadeOut(),
+    modifier = modifier
+  ) {
+    Box(
+      modifier = Modifier
+        .fillMaxSize()
+        .background(color = Color.Black.copy(alpha = SCRIM_ALPHA))
+    )
+  }
+}
+
+private const val SCRIM_ALPHA = 0.32f
 
 @Preview(showBackground = true)
 @Composable

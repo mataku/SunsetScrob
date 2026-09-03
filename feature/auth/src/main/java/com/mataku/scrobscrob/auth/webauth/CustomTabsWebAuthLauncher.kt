@@ -19,7 +19,9 @@ class CustomTabsWebAuthLauncher : LastFmWebAuthLauncher {
     val currentOnResult by rememberUpdatedState(onResult)
     val activityLauncher = rememberLauncherForActivityResult(
       ActivityResultContracts.StartActivityForResult()
-    ) {}
+    ) {
+      currentOnResult(LastFmWebAuthResult.Closed)
+    }
     return remember(activityLauncher, containerHeightPx) {
       { url ->
         runCatching {

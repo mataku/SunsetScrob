@@ -1,8 +1,5 @@
 package com.mataku.scrobscrob.auth.ui.navigation
 
-import androidx.compose.foundation.layout.padding
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import com.mataku.scrobscrob.auth.ui.screen.LoginScreen
 import com.mataku.scrobscrob.auth.ui.viewmodel.LoginViewModel
 import com.mataku.scrobscrob.auth.webauth.LastFmWebAuthLauncher
@@ -18,7 +15,6 @@ fun SunsetNavBuilder.authGraph(webAuthLauncher: LastFmWebAuthLauncher) {
       webAuthLauncher = webAuthLauncher,
       navigateToHomeFromAuth = { /* Auth completion is handled by :app's SunsetMainScreen via the isAuthenticated switch */ },
       navigateToPrivacyPolicy = { navigate(PrivacyPolicyKey) },
-      modifier = Modifier.padding(top = 24.dp),
     )
   }
 }

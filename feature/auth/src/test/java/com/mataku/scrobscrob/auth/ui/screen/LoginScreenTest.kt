@@ -72,6 +72,23 @@ class LoginScreenTest {
   }
 
   @Test
+  fun layout_webAuthOpen() {
+    val viewModel = viewModel().apply { onWebAuthOpened() }
+    composeTestRule.captureScreenshot(
+      appTheme = AppTheme.LIGHT,
+      content = {
+        LoginScreen(
+          viewModel = viewModel,
+          webAuthLauncher = launcher,
+          navigateToHomeFromAuth = {},
+          navigateToPrivacyPolicy = {}
+        )
+      },
+      fileName = "login_screen_web_auth_open.png"
+    )
+  }
+
+  @Test
   fun layout_tablet() {
     composeTestRule.captureScreenshot(
       device = RobolectricDeviceQualifiers.PixelTablet,
