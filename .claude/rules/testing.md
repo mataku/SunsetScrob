@@ -10,8 +10,8 @@ paths:
 
 | Type                 | Command                                                                              |
 |----------------------|--------------------------------------------------------------------------------------|
-| Unit Test            | `./gradlew testDebugUnitTest -PexcludeScreenshotTest=true`                           |
-| Screenshot Test      | `./gradlew verifyRoborazziDebug --no-configuration-cache -PonlyScreenshotTest=true`  |
+| Unit Test            | `./gradlew jvmTest testDebugUnitTest -PexcludeScreenshotTest=true`                   |
+| Screenshot Test      | `./gradlew verifyRoborazziJvm verifyRoborazziDebug --no-configuration-cache -PonlyScreenshotTest=true` |
 | Instrumentation Test | `./gradlew :app:connectedDebugAndroidTest` (see [`e2e-testing.md`](e2e-testing.md))  |
 
 One test file per class under test.
@@ -31,9 +31,11 @@ the local run only with explicit user permission and only when the test
 itself is not the change under verification.
 
 Pair this with the verification commands in the path-scoped guides:
-- VRT: `./gradlew verifyRoborazziDebug --no-configuration-cache -PonlyScreenshotTest=true`
+- VRT: `./gradlew verifyRoborazziJvm verifyRoborazziDebug --no-configuration-cache -PonlyScreenshotTest=true`
 - E2E (phone): `./gradlew :app:pixel6Api35DebugAndroidTest`
 - E2E (tablet, `@LargeScreenE2E`): `./gradlew :app:pixelTabletApi35DebugAndroidTest -PincludeLargeScreenE2E=true`
+
+Running `testDebugUnitTest` / `jvmTest` alone (e.g. `-PexcludeScreenshotTest=true`) does not compare goldens — only the `verifyRoborazzi*` tasks do — so a change that can affect a VRT must be checked with the verify task, not just the plain unit-test command.
 
 ## Unit Test
 
@@ -175,90 +177,46 @@ class ExampleViewModelSpec : DescribeSpec({
 
 Uses Roborazzi. Create tests per screen.
 
-### Required Annotations (CRITICAL)
+### KMP modules (JVM rendering)
 
-Annotate every screenshot test with **all three** of:
+Screenshot tests in KMP modules live under `src/jvmTest/kotlin`, are JUnit 5 classes and render through Compose Desktop. Two things are required:
 
-- `@RunWith(AndroidJUnit4::class)`
-- `@GraphicsMode(GraphicsMode.Mode.NATIVE)`
-- `@Category(VRT::class)` (marker from `:test_helper:integration`)
-
-`@Category` is what lets the unit-test bucket
-(`testDebugUnitTest -PexcludeScreenshotTest=true`) and the screenshot-test
-bucket (`verifyRoborazziDebug -PonlyScreenshotTest=true`) include or exclude
-screenshot tests via JUnit Platform tags. Vintage maps `@Category(VRT::class)`
-to the tag `com.mataku.scrobscrob.test_helper.integration.VRT`, which
-`TestConfiguration.kt` filters on. **Without it the test silently runs in the
-wrong bucket** — it compiles fine, but ends up in the wrong CI job.
-
-For new VRTs, prefer the `create-vrt` skill to scaffold a test class with
-all three annotations and the `captureScreenshot` wiring already in place.
-
-### File Location
-
-```
-feature/{name}/src/test/java/com/mataku/scrobscrob/{name}/ui/screen/
-└── {Feature}ScreenTest.kt
-```
-
-### Test Class Structure
+- `@Tag("VRT")` on the class (`org.junit.jupiter.api.Tag`). This is what `-PonlyScreenshotTest=true` / `-PexcludeScreenshotTest=true` filter on; without it the class runs in the unit-test bucket. Enforced by `ScreenshotTestArchitectureSpec`.
+- `captureScreenshot` from `:test_helper:integration` (`jvmMain`), a top-level function, no rule needed.
 
 ```kotlin
-@RunWith(AndroidJUnit4::class)
-@GraphicsMode(GraphicsMode.Mode.NATIVE)
-@Category(VRT::class)
+@Tag("VRT")
 class AlbumScreenTest {
-  @get:Rule
-  val composeRule = createComposeRule()
-
   @Test
   fun layout() {
-    composeRule.captureScreenshot(
+    captureScreenshot(
       appTheme = AppTheme.DARK,
       content = { AlbumContent(/* ... */) },
-      fileName = "album_screen.png"
+      fileName = "album_screen.png",
     )
   }
 
   @Test
-  fun layout_light() {
-    composeRule.captureScreenshot(
-      appTheme = AppTheme.LIGHT,
-      content = { AlbumContent(/* ... */) },
-      fileName = "album_screen_light.png"
+  fun layout_tablet_two_pane() {
+    captureScreenshot(
+      appTheme = AppTheme.DARK,
+      device = ScreenshotDevice.PixelTablet,
+      content = { /* ... */ },
+      actionsBeforeCapturing = {
+        onAllNodesWithText("Item 1").onFirst().performClick()
+        waitForIdle()
+      },
+      fileName = "album_screen_tablet_two_pane.png",
     )
   }
 }
 ```
 
-### captureScreenshot
+`device` is a `ScreenshotDevice` (`Pixel7`, `Pixel7Landscape`, `PixelTablet`). `actionsBeforeCapturing` runs with a `ComposeUiTest` receiver, so node finders and `waitForIdle()` are called directly. Goldens are written to `<module>/screenshot/`.
 
-Use the helper from `:test_helper:integration`:
+### Android-only modules (Robolectric)
 
-```kotlin
-composeRule.captureScreenshot(
-  appTheme = AppTheme.DARK,           // DARK or LIGHT
-  content = { Composable() },          // Test target
-  fileName = "screen_name.png",        // Save file name
-  device = RobolectricDeviceQualifiers.Pixel7,  // Optional
-  actionsBeforeCapturing = {}          // Actions before capture
-)
-```
-
-### Theme-based Testing
-
-- Dark: `fun layout()` → `{screen_name}.png`
-- Light: `fun layout_light()` → `{screen_name}_light.png`
-
-### Device Specification
-
-```kotlin
-// Tablet
-device = RobolectricDeviceQualifiers.MediumTablet
-
-// Landscape
-device = "w411dp-h914dp-land-420dpi"
-```
+Modules still on `sunsetscrob.android.test.screenshot` keep the JUnit 4 form: `@RunWith(AndroidJUnit4::class)`, `@GraphicsMode(GraphicsMode.Mode.NATIVE)`, `@Category(VRT::class)`, a `createComposeRule()` rule and `composeRule.captureScreenshot(...)` with `RobolectricDeviceQualifiers`. When a module migrates to KMP its VRTs are rewritten to the JVM form and its goldens are re-recorded on the JVM.
 
 ### Test Target
 
@@ -281,8 +239,7 @@ Helper for Unit Tests. Provides `CoroutinesListener`.
 
 ### test_helper:integration
 
-Helper for Screenshot Tests. Provides `captureScreenshot` extension function
-and the `VRT` category marker.
+Provides `captureScreenshot` for both worlds (`jvmMain`: top-level function + `ScreenshotDevice`; `androidMain`: `ComposeContentTestRule` extension), the `VRT` category marker and shared fixtures.
 
 ## File Naming
 
@@ -296,4 +253,4 @@ and the `VRT` category marker.
 ### Determinism guards
 
 - `captureScreenshot` disables Material ripples (`LocalRippleConfiguration provides null`) so a test that clicks in `actionsBeforeCapturing` never captures a half-faded press highlight. Do not re-enable ripples inside a VRT.
-- Modules applying `sunsetscrob.android.test.screenshot` fail when `-PonlyScreenshotTest=true` discovers zero tests (`failOnNoDiscoveredTests`). The JUnit4-based VRTs run on the JUnit Platform through `junit-vintage-engine`, which that plugin adds as `testRuntimeOnly`; removing it silently turns every VRT run into a no-op, which is exactly what the guard is for.
+- Modules applying `sunsetscrob.android.test.screenshot` fail when `-PonlyScreenshotTest=true` discovers zero tests (`failOnNoDiscoveredTests`). KMP modules run VRTs on JUnit Jupiter; Android-only modules still run JUnit 4 VRTs through `junit-vintage-engine`, which `sunsetscrob.android.test.screenshot` adds.

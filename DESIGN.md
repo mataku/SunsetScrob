@@ -54,6 +54,12 @@ Core principles:
 
 ---
 
+## Multiplatform
+
+`:core`, `:ui_common`, `:data:*` and `:test_helper:*` are Kotlin Multiplatform modules with `android` and `jvm` targets. The jvm target exists to render screenshot tests on Compose Desktop (Skia) without Robolectric and as the seed for a future web target; there is no desktop app. Android-only pieces (WebView, Custom Tabs, Tink, SQLite driver, DataStore files, Metro binding containers) sit in `androidMain`; everything the screenshots need is in `commonMain`.
+
+---
+
 ## Themes
 
 There are six themes, declared in
@@ -553,8 +559,6 @@ the compact Nav3 push path.
   it skips ripple wiring that previews don't need and provides the
   `SunsetSurface` background so previews don't need their own `Surface { }`
   wrapper.
-- Showkase annotations (`@ShowkaseColor`, `@ShowkaseTypography`) on new tokens
-  so they appear in the design catalog.
 - For list-then-detail flows that need to adapt to tablet, branch on
   `isCompactWidth()` and use `SunsetListDetailScaffold` for the
   expanded path. Ship a `*PaneScreen` variant alongside the standalone

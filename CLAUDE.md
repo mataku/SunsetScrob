@@ -43,11 +43,9 @@ SHARED_SECRET=YOUR_LAST_FM_SHARED_SECRET
 - `./gradlew assembleDebug` — build debug APK
 - `./gradlew bundleRelease` — build release AAB
 - `./gradlew :architecture-spec:test` — run architecture (Konsist) tests
-- `./gradlew testDebugUnitTest -PexcludeScreenshotTest=true` — run unit tests
-- `./gradlew verifyRoborazziDebug --no-configuration-cache -PonlyScreenshotTest=true` — run
-  Roborazzi screenshot tests
-- `./gradlew recordRoborazziDebug --no-configuration-cache -PonlyScreenshotTest=true` generate
-  golden images
+- `./gradlew jvmTest testDebugUnitTest -PexcludeScreenshotTest=true` — run unit tests (KMP modules + Android modules)
+- `./gradlew verifyRoborazziJvm verifyRoborazziDebug --no-configuration-cache -PonlyScreenshotTest=true` — run Roborazzi screenshot tests (JVM for KMP modules, Robolectric for the rest)
+- `./gradlew recordRoborazziJvm recordRoborazziDebug --no-configuration-cache -PonlyScreenshotTest=true` — generate golden images
 - `make generate_compose_reports` — generate Compose compiler reports
 
 ---
@@ -77,20 +75,15 @@ live in always-loaded `architecture.md` and `coding-conventions.md`.
 
 ## Tech Stack (for reference)
 
-- UI: Jetpack Compose + Material 3
+- UI: Compose Multiplatform (android + jvm targets) + Material 3
 - Networking: Ktor client
 - DB: SQLDelight + DataStore Preferences
 - Async: Kotlin Coroutines + Flow
 - DI: Metro (Kotlin compiler plugin; Dagger annotation interop enabled)
 - Image loading: Coil 3
-- Build: Gradle Kotlin DSL, version catalog (`gradle/libs.versions.toml`),
-  custom convention plugins in `build-logic/convention/`.
+- Build: Gradle Kotlin DSL, version catalog (`gradle/libs.versions.toml`), custom convention plugins in `build-logic/convention/` (`sunsetscrob.library` / `compose` / `metro` / `test.screenshot` for KMP modules, `sunsetscrob.android.*` for not-yet-migrated Android modules).
 - Tests: Kotest (JUnit5 platform), MockK, Turbine, Roborazzi.
-- Code quality: Android Lint (project-specific custom detectors in
-  `:lint-checks`), Compose lint (Slack `compose-lint-checks`), Konsist
-  architecture tests, Licensee. Lint fails the build only when `CI=true`
-  (see `build-logic/convention/.../AndroidLintConfiguration.kt`); CI runs
-  it as a standalone job (`.github/workflows/lint.yml`).
+- Code quality: Android Lint (project-specific custom detectors in `:lint-checks`), Compose lint (Slack `compose-lint-checks`), Konsist architecture tests, Licensee. Lint fails the build only when `CI=true` (see `build-logic/convention/.../AndroidLintConfiguration.kt`); CI runs it as a standalone job (`.github/workflows/lint.yml`). KMP modules have no lint task, so the `@Preview` privacy rule is enforced by Konsist for them instead.
 
 ---
 

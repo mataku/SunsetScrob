@@ -53,6 +53,8 @@ Reference: `data/repository/.../ScrobbleRepository.kt`, `data/repository/di/Repo
 - The root graph is `app/.../di/AppGraph.kt`:
   `@DependencyGraph(AppScope::class) interface AppGraph : MetroAppComponentProviders, ViewModelGraph, ScrobbleServiceDependencies`.
   `App` creates it via `createGraphFactory<AppGraph.Factory>().create(this)`.
+- In KMP modules, binding containers live in `src/androidMain/kotlin/.../di/` because they receive `Context` from `:app`. Interfaces that a common class needs (for example `LicenseInfoProvider`) stay in `commonMain`.
+- Build-time facts are injected, not read from `BuildConfig`: `AppBuildInfo(isDebug)` is provided by `AppGraph`; Last.fm credentials come from the generated `LastFmApiCredentials` object in `:data:api` (`local.properties` → `generateLastFmApiCredentials`).
 
 ## Repository Spec Conventions
 

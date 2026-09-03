@@ -93,9 +93,7 @@ private fun AlbumContentPreview() {
 }
 ```
 
-`@Preview` composables must be declared `private`. Enforced by the
-`PreviewNotPrivate` Lint detector in `:lint-checks`. Suppress with
-`@Suppress("PreviewNotPrivate")` only for genuinely shared previews.
+`@Preview` composables must be declared `private`. KMP modules have no lint task, so the rule is enforced by Konsist (`ComposableScreenArchitectureSpec`, "@Preview composables are private") for them and by the `PreviewNotPrivate` detector in `:lint-checks` for the remaining Android modules; `@Suppress("PreviewNotPrivate")` opts out of both. Suppress only for genuinely shared previews.
 
 ### internal fun
 
