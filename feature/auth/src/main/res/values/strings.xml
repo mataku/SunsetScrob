@@ -1,4 +1,4 @@
 <resources>
   <string name="error_login_failed">Login failed</string>
-  <string name="web_auth_description">You will be taken to last.fm to sign in. Your password is never shared with this app.</string>
+  <string name="web_auth_description">The Last.fm sign-in page will open. Your password is not stored in this app.</string>
 </resources>

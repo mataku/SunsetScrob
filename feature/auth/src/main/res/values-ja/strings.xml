@@ -1,4 +1,4 @@
 <resources>
   <string name="error_login_failed">ログインに失敗しました</string>
-  <string name="web_auth_description">last.fm のページでログインします。パスワードがこのアプリに渡されることはありません。</string>
+  <string name="web_auth_description">Last.fm のログイン画面が開きます。パスワードはこのアプリには保存されません。</string>
 </resources>
