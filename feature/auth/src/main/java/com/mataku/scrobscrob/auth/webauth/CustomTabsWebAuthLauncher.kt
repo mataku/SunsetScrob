@@ -1,36 +1,31 @@
 package com.mataku.scrobscrob.auth.webauth
 
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.browser.auth.AuthTabIntent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.core.net.toUri
 import dev.zacsweers.metro.Inject
 
 @Inject
-class AuthTabWebAuthLauncher : LastFmWebAuthLauncher {
+class CustomTabsWebAuthLauncher : LastFmWebAuthLauncher {
 
   @Composable
   override fun rememberLaunch(onResult: (LastFmWebAuthResult) -> Unit): (String) -> Unit {
+    val containerHeightPx = LocalWindowInfo.current.containerSize.height
     val currentOnResult by rememberUpdatedState(onResult)
     val activityLauncher = rememberLauncherForActivityResult(
-      AuthTabIntent.AuthenticateUserResultContract()
-    ) { result ->
-      currentOnResult(mapAuthTabResult(result.resultCode, result.resultUri?.toString()))
-    }
-    return remember(activityLauncher) {
+      ActivityResultContracts.StartActivityForResult()
+    ) {}
+    return remember(activityLauncher, containerHeightPx) {
       { url ->
         runCatching {
-          AuthTabIntent.Builder()
-            .build()
-            .launch(
-              activityLauncher,
-              url.toUri(),
-              LastFmWebAuth.CALLBACK_HOST,
-              LastFmWebAuth.CALLBACK_PATH,
-            )
+          val intent = WebAuthCustomTabs.intent(WebAuthCustomTabs.sheetHeightPx(containerHeightPx)).intent
+          intent.data = url.toUri()
+          activityLauncher.launch(intent)
         }.onFailure {
           currentOnResult(LastFmWebAuthResult.Failed)
         }

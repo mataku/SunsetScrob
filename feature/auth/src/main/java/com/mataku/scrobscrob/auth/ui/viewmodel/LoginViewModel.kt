@@ -60,7 +60,6 @@ class LoginViewModel(
   fun onWebAuthResult(result: LastFmWebAuthResult) {
     when (result) {
       is LastFmWebAuthResult.Success -> authorize(result.token)
-      LastFmWebAuthResult.Canceled -> Unit
       LastFmWebAuthResult.Failed -> uiState.update { state ->
         state.copy(events = (state.events + UiEvent.LoginFailed).toImmutableList())
       }

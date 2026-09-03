@@ -87,14 +87,6 @@ class LoginViewModelSpec : DescribeSpec({
       coVerify(exactly = 1) { repo.authorize(token) }
     }
 
-    it("does nothing on Canceled") {
-      val repo = repository()
-      val viewModel = LoginViewModel(repo, WebAuthCallbackChannel())
-      viewModel.onWebAuthResult(LastFmWebAuthResult.Canceled)
-      viewModel.uiState.value.events.shouldBeEmpty()
-      coVerify(exactly = 0) { repo.authorize(any()) }
-    }
-
     it("emits LoginFailed on Failed") {
       val repo = repository()
       val viewModel = LoginViewModel(repo, WebAuthCallbackChannel())
