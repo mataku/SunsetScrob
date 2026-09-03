@@ -1,9 +1,9 @@
 package com.mataku.scrobscrob.data.db
 
-import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringSetPreferencesKey
-import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
@@ -13,14 +13,12 @@ import kotlinx.coroutines.flow.map
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.SingleIn
 
-private val Context.dataStore by preferencesDataStore("ScrobbleApp")
-
 @SingleIn(AppScope::class)
 class ScrobbleAppDataStore(
-  private val context: Context
+  private val dataStore: DataStore<Preferences>
 ) {
   suspend fun allowedApps(): Set<String> {
-    val preferences = context.dataStore.data.first()
+    val preferences = dataStore.data.first()
     return kotlin.runCatching {
       preferences[ALLOWED_PACKAGES_KEY]
     }.fold(
@@ -34,7 +32,7 @@ class ScrobbleAppDataStore(
   }
 
   suspend fun allowedAppsFlow(): Flow<Set<String>> {
-    return context.dataStore.data.map {
+    return dataStore.data.map {
       it[ALLOWED_PACKAGES_KEY] ?: emptySet()
     }
   }
@@ -42,7 +40,7 @@ class ScrobbleAppDataStore(
   suspend fun allowApp(appName: String): Flow<Unit> = flow {
     val packages = allowedApps().toMutableSet()
     packages.add(appName)
-    context.dataStore.edit {
+    dataStore.edit {
       it[ALLOWED_PACKAGES_KEY] = packages
     }
 
@@ -52,14 +50,14 @@ class ScrobbleAppDataStore(
   suspend fun disallowApp(appName: String): Flow<Unit> = flow {
     val packages = allowedApps().toMutableSet()
     packages.remove(appName)
-    context.dataStore.edit {
+    dataStore.edit {
       it[ALLOWED_PACKAGES_KEY] = packages
     }
     emit(Unit)
   }.flowOn(Dispatchers.IO)
 
   suspend fun clear() {
-    context.dataStore.edit {
+    dataStore.edit {
       it.clear()
     }
   }

@@ -1,8 +1,7 @@
 package com.mataku.scrobscrob.data.db
 
-import android.content.Context
 import app.cash.sqldelight.coroutines.asFlow
-import app.cash.sqldelight.driver.android.AndroidSqliteDriver
+import app.cash.sqldelight.db.SqlDriver
 import com.mataku.scrobscrob.Database
 import com.mataku.scrobscrob.data.db.entity.ArtistArtworkEntity
 import com.mataku.scrobscrob.data.db.entity.ArtworkInsertion
@@ -31,9 +30,8 @@ interface ArtworkDataStore {
 @SingleIn(AppScope::class)
 @Inject
 class ArtworkDataStoreImpl(
-  context: Context
+  sqlDriver: SqlDriver
 ) : ArtworkDataStore {
-  private val sqlDriver = AndroidSqliteDriver(Database.Schema, context, "scrobscrob.db")
   private val artworkQueries = Database(sqlDriver).artworkQueries
 
   override suspend fun artwork(artist: String): String? {

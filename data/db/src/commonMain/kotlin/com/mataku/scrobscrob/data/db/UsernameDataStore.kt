@@ -1,9 +1,9 @@
 package com.mataku.scrobscrob.data.db
 
-import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
-import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
@@ -13,14 +13,12 @@ import kotlinx.coroutines.flow.map
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.SingleIn
 
-private val Context.dataStore by preferencesDataStore("USERNAME")
-
 @SingleIn(AppScope::class)
 class UsernameDataStore(
-  private val context: Context
+  private val dataStore: DataStore<Preferences>
 ) {
   suspend fun username(): String? {
-    val preferences = context.dataStore.data.first()
+    val preferences = dataStore.data.first()
     return kotlin.runCatching {
       preferences[USERNAME_KEY]
     }.fold(
@@ -32,7 +30,7 @@ class UsernameDataStore(
   }
 
   fun usernameFlow(): Flow<String?> =
-    context.dataStore.data
+    dataStore.data
       .map { preferences ->
         kotlin.runCatching { preferences[USERNAME_KEY] }.getOrNull()
       }
@@ -40,7 +38,7 @@ class UsernameDataStore(
 
   suspend fun setUsername(username: String): Flow<Unit> {
     return flowOf(
-      context.dataStore.edit {
+      dataStore.edit {
         it[USERNAME_KEY] = username
       }
     ).flowOn(Dispatchers.IO)
@@ -48,7 +46,7 @@ class UsernameDataStore(
   }
 
   suspend fun remove() {
-    context.dataStore.edit {
+    dataStore.edit {
       it.clear()
     }
   }
