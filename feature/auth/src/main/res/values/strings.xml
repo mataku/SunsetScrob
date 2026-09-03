@@ -1,4 +1,4 @@
 <resources>
   <string name="error_login_failed">Login failed</string>
-  <string name="web_auth_description">The Last.fm sign-in page will open. Your password is not stored in this app.</string>
+  <string name="web_auth_description">The Last.fm sign-in page will open.\nYour password is not stored in this app.</string>
 </resources>
