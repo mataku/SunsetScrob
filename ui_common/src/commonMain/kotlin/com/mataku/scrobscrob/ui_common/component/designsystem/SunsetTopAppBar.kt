@@ -55,7 +55,7 @@ fun SunsetTopAppBar(
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
-internal fun SunsetTopAppBarPreview() {
+private fun SunsetTopAppBarPreview() {
   SunsetThemePreview {
     SunsetTopAppBar(
       title = { SunsetText.Title(text = "Top App Bar") },

@@ -69,7 +69,7 @@ fun SunsetIconToggleButton(
 
 @Preview
 @Composable
-internal fun SunsetIconPreview() {
+private fun SunsetIconPreview() {
   SunsetThemePreview {
     Row(
       modifier = Modifier.padding(16.dp),

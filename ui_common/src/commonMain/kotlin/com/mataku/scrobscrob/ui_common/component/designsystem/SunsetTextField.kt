@@ -58,7 +58,7 @@ object SunsetTextFieldDefaults {
 
 @Preview
 @Composable
-internal fun SunsetTextFieldPreview() {
+private fun SunsetTextFieldPreview() {
   SunsetThemePreview {
     Column(
       modifier = Modifier.padding(16.dp),

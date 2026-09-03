@@ -61,7 +61,7 @@ fun SunsetImage(
 
 @Preview(showBackground = true)
 @Composable
-internal fun SunsetImagePreview() {
+private fun SunsetImagePreview() {
   SunsetThemePreview {
     Column(
       modifier = Modifier

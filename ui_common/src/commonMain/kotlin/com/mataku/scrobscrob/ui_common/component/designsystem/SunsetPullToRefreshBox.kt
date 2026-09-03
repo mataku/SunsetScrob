@@ -30,7 +30,7 @@ fun SunsetPullToRefreshBox(
 
 @Preview
 @Composable
-internal fun SunsetPullToRefreshBoxPreview() {
+private fun SunsetPullToRefreshBoxPreview() {
   SunsetThemePreview {
     SunsetPullToRefreshBox(
       isRefreshing = true,

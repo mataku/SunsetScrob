@@ -35,7 +35,7 @@ fun SunsetFloatingActionButton(
 
 @Preview
 @Composable
-internal fun SunsetFloatingActionButtonPreview() {
+private fun SunsetFloatingActionButtonPreview() {
   SunsetThemePreview {
     Box(modifier = Modifier.padding(16.dp)) {
       SunsetFloatingActionButton(onClick = {}) {

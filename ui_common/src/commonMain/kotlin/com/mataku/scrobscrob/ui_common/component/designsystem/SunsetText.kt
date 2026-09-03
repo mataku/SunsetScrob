@@ -211,7 +211,7 @@ object SunsetText {
 
 @Preview
 @Composable
-internal fun SunsetTextPreview() {
+private fun SunsetTextPreview() {
   SunsetThemePreview {
     Column(
       modifier = Modifier.padding(16.dp),

@@ -76,7 +76,7 @@ fun SunsetNavigationBar(
 
 @Preview
 @Composable
-internal fun SunsetNavigationBarPreview() {
+private fun SunsetNavigationBarPreview() {
   SunsetThemePreview {
     SunsetNavigationBar(
       selectedTab = SunsetTab.HOME,

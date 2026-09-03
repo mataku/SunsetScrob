@@ -25,7 +25,7 @@ fun SunsetCircularProgressIndicator(
 
 @Preview
 @Composable
-internal fun SunsetCircularProgressIndicatorPreview() {
+private fun SunsetCircularProgressIndicatorPreview() {
   SunsetThemePreview {
     Box(modifier = Modifier.padding(16.dp)) {
       SunsetCircularProgressIndicator()

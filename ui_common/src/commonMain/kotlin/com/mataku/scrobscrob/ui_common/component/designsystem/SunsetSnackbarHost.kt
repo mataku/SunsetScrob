@@ -41,7 +41,7 @@ fun SunsetSnackbarHost(
 
 @Preview
 @Composable
-internal fun SunsetSnackbarHostPreview() {
+private fun SunsetSnackbarHostPreview() {
   SunsetThemePreview {
     val hostState = remember { SunsetSnackbarHostState() }
     LaunchedEffect(Unit) {

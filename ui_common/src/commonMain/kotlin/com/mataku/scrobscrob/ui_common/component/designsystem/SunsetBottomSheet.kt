@@ -48,7 +48,7 @@ fun SunsetBottomSheet(
 
 @Preview
 @Composable
-internal fun SunsetBottomSheetPreview() {
+private fun SunsetBottomSheetPreview() {
   SunsetThemePreview {
     SunsetBottomSheet(
       sheetContent = {

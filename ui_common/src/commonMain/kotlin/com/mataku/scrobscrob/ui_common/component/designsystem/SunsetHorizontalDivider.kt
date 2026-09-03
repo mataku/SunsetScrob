@@ -30,7 +30,7 @@ fun SunsetHorizontalDivider(
 
 @Preview
 @Composable
-internal fun SunsetHorizontalDividerPreview() {
+private fun SunsetHorizontalDividerPreview() {
   SunsetThemePreview {
     Column(
       modifier = Modifier

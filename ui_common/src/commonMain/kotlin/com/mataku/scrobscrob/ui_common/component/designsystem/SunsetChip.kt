@@ -45,7 +45,7 @@ object SunsetChipDefaults {
 
 @Preview
 @Composable
-internal fun SunsetChipPreview() {
+private fun SunsetChipPreview() {
   SunsetThemePreview {
     Row(
       modifier = Modifier.padding(16.dp),

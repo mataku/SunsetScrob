@@ -45,7 +45,7 @@ object SunsetSwitchDefaults {
 
 @Preview
 @Composable
-internal fun SunsetSwitchPreview() {
+private fun SunsetSwitchPreview() {
   SunsetThemePreview {
     Row(
       modifier = Modifier.padding(16.dp),

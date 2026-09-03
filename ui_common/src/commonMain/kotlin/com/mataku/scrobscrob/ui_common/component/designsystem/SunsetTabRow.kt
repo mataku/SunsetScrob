@@ -58,7 +58,7 @@ fun SunsetTab(
 
 @Preview
 @Composable
-internal fun SunsetTabRowPreview() {
+private fun SunsetTabRowPreview() {
   SunsetThemePreview {
     SunsetTabRow(selectedTabIndex = 0) {
       SunsetTab(selected = true, onClick = {}) {

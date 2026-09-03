@@ -73,7 +73,7 @@ object SunsetTextButton {
 
 @Preview
 @Composable
-internal fun SunsetButtonPreview() {
+private fun SunsetButtonPreview() {
   SunsetThemePreview {
     Column(
       modifier = Modifier.padding(16.dp),
