@@ -20,13 +20,6 @@ kotlin {
       implementation(libs.kotlinx.collections.immutable)
       implementation(libs.roborazzi.core)
     }
-    androidMain.dependencies {
-      implementation(libs.robolectric)
-      implementation(libs.roborazzi)
-      implementation(libs.androidx.test.ext.junit)
-      implementation(libs.compose.ui.test.junit4)
-      implementation(libs.compose.ui.test.manifest)
-    }
     jvmMain.dependencies {
       api(compose.desktop.currentOs)
       api(libs.roborazzi.compose.desktop)

@@ -25,10 +25,6 @@ gradlePlugin {
       id = "sunsetscrob.android.application"
       implementationClass = "ApplicationConventionPlugin"
     }
-    register("androidFeature") {
-      id = "sunsetscrob.android.feature"
-      implementationClass = "FeatureConventionPlugin"
-    }
     register("androidCompose") {
       id = "sunsetscrob.android.compose"
       implementationClass = "ComposeConventionPlugin"
@@ -36,10 +32,6 @@ gradlePlugin {
     register("androidMetro") {
       id = "sunsetscrob.android.metro"
       implementationClass = "MetroConventionPlugin"
-    }
-    register("androidScreenshotTest") {
-      id = "sunsetscrob.android.test.screenshot"
-      implementationClass = "ScreenshotTestConventionPlugin"
     }
     register("kmpLibrary") {
       id = "sunsetscrob.library"
