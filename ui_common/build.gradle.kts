@@ -7,7 +7,6 @@ plugins {
 kotlin {
   android {
     namespace = "com.mataku.scrobscrob.ui_common"
-    experimentalProperties["android.experimental.kmp.enableAndroidResources"] = true
   }
 
   sourceSets {
