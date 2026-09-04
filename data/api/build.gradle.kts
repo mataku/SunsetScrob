@@ -24,29 +24,39 @@ fun String?.toKotlinStringLiteral(): String {
   return "\"$escaped\""
 }
 
-val apiKey = localProperties.getProperty("API_KEY").toKotlinStringLiteral()
-val sharedSecret = localProperties.getProperty("SHARED_SECRET").toKotlinStringLiteral()
 val generatedCredentialsDir = layout.buildDirectory.dir("generated/lastfm/commonMain/kotlin")
 
-val generateLastFmApiCredentials by tasks.registering {
-  val outDir = generatedCredentialsDir
-  inputs.property("apiKey", apiKey)
-  inputs.property("sharedSecret", sharedSecret)
-  outputs.dir(outDir)
-  doLast {
-    val file = outDir.get().file("com/mataku/scrobscrob/data/api/LastFmApiCredentials.kt").asFile
+abstract class GenerateLastFmApiCredentialsTask : DefaultTask() {
+  @get:Input
+  abstract val apiKey: Property<String>
+
+  @get:Input
+  abstract val sharedSecret: Property<String>
+
+  @get:OutputDirectory
+  abstract val outputDir: DirectoryProperty
+
+  @TaskAction
+  fun generate() {
+    val file = outputDir.get().file("com/mataku/scrobscrob/data/api/LastFmApiCredentials.kt").asFile
     file.parentFile.mkdirs()
     file.writeText(
       """
       package com.mataku.scrobscrob.data.api
 
       object LastFmApiCredentials {
-        const val API_KEY: String = $apiKey
-        const val SHARED_SECRET: String = $sharedSecret
+        const val API_KEY: String = ${apiKey.get()}
+        const val SHARED_SECRET: String = ${sharedSecret.get()}
       }
       """.trimIndent()
     )
   }
+}
+
+val generateLastFmApiCredentials = tasks.register<GenerateLastFmApiCredentialsTask>("generateLastFmApiCredentials") {
+  apiKey.set(localProperties.getProperty("API_KEY").toKotlinStringLiteral())
+  sharedSecret.set(localProperties.getProperty("SHARED_SECRET").toKotlinStringLiteral())
+  outputDir.set(generatedCredentialsDir)
 }
 
 kotlin {
