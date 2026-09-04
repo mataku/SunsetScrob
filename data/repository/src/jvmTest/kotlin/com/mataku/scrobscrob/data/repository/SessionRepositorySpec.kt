@@ -190,7 +190,7 @@ class SessionRepositorySpec : DescribeSpec({
     }
   }
 
-  describe("syncSessionWithBackup") {
+  describe("restoreSessionFromBackupIfNeeded") {
     it("restores session key and username from backup when no local session exists") {
       val service = mockk<LastFmService>()
       val sessionKeyDataStore = mockk<SessionKeyDataStore>()
@@ -208,7 +208,7 @@ class SessionRepositorySpec : DescribeSpec({
       val repository = SessionRepositoryImpl(
         service, sessionKeyDataStore, usernameDataStore, scrobbleAppDataStore, sessionBackupStore,
       )
-      repository.syncSessionWithBackup().test {
+      repository.restoreSessionFromBackupIfNeeded().test {
         awaitItem() shouldBe Unit
         awaitComplete()
       }
@@ -219,22 +219,18 @@ class SessionRepositorySpec : DescribeSpec({
       }
     }
 
-    it("backfills the backup without restoring when a local session exists") {
+    it("does not restore or back up when a local session exists") {
       val service = mockk<LastFmService>()
       val sessionKeyDataStore = mockk<SessionKeyDataStore>()
       val usernameDataStore = mockk<UsernameDataStore>()
       val scrobbleAppDataStore = mockk<ScrobbleAppDataStore>()
       val sessionBackupStore = mockk<SessionBackupStore>()
       coEvery { sessionKeyDataStore.sessionKey() } returns "abcdef0123456789"
-      coEvery { usernameDataStore.username() } returns "matakucom"
-      coEvery {
-        sessionBackupStore.save(SessionBackupPayload(sessionKey = "abcdef0123456789", username = "matakucom"))
-      } returns Unit
 
       val repository = SessionRepositoryImpl(
         service, sessionKeyDataStore, usernameDataStore, scrobbleAppDataStore, sessionBackupStore,
       )
-      repository.syncSessionWithBackup().test {
+      repository.restoreSessionFromBackupIfNeeded().test {
         awaitItem() shouldBe Unit
         awaitComplete()
       }
@@ -242,29 +238,6 @@ class SessionRepositorySpec : DescribeSpec({
       coVerify(exactly = 0) { sessionBackupStore.restore() }
       coVerify(exactly = 0) { sessionKeyDataStore.setSessionKey(any()) }
       coVerify(exactly = 0) { usernameDataStore.setUsername(any()) }
-      coVerify(exactly = 1) {
-        sessionBackupStore.save(SessionBackupPayload(sessionKey = "abcdef0123456789", username = "matakucom"))
-      }
-    }
-
-    it("does not back up when a local session exists but username is absent") {
-      val service = mockk<LastFmService>()
-      val sessionKeyDataStore = mockk<SessionKeyDataStore>()
-      val usernameDataStore = mockk<UsernameDataStore>()
-      val scrobbleAppDataStore = mockk<ScrobbleAppDataStore>()
-      val sessionBackupStore = mockk<SessionBackupStore>()
-      coEvery { sessionKeyDataStore.sessionKey() } returns "abcdef0123456789"
-      coEvery { usernameDataStore.username() } returns null
-
-      val repository = SessionRepositoryImpl(
-        service, sessionKeyDataStore, usernameDataStore, scrobbleAppDataStore, sessionBackupStore,
-      )
-      repository.syncSessionWithBackup().test {
-        awaitItem() shouldBe Unit
-        awaitComplete()
-      }
-
-      coVerify(exactly = 0) { sessionBackupStore.restore() }
       coVerify(exactly = 0) { sessionBackupStore.save(any()) }
     }
 
@@ -280,13 +253,80 @@ class SessionRepositorySpec : DescribeSpec({
       val repository = SessionRepositoryImpl(
         service, sessionKeyDataStore, usernameDataStore, scrobbleAppDataStore, sessionBackupStore,
       )
-      repository.syncSessionWithBackup().test {
+      repository.restoreSessionFromBackupIfNeeded().test {
         awaitItem() shouldBe Unit
         awaitComplete()
       }
 
       coVerify(exactly = 0) { sessionKeyDataStore.setSessionKey(any()) }
       coVerify(exactly = 0) { usernameDataStore.setUsername(any()) }
+    }
+  }
+
+  describe("backfillSessionBackup") {
+    it("backs up the local session when both session key and username are present") {
+      val service = mockk<LastFmService>()
+      val sessionKeyDataStore = mockk<SessionKeyDataStore>()
+      val usernameDataStore = mockk<UsernameDataStore>()
+      val scrobbleAppDataStore = mockk<ScrobbleAppDataStore>()
+      val sessionBackupStore = mockk<SessionBackupStore>()
+      coEvery { sessionKeyDataStore.sessionKey() } returns "abcdef0123456789"
+      coEvery { usernameDataStore.username() } returns "matakucom"
+      coEvery {
+        sessionBackupStore.save(SessionBackupPayload(sessionKey = "abcdef0123456789", username = "matakucom"))
+      } returns Unit
+
+      val repository = SessionRepositoryImpl(
+        service, sessionKeyDataStore, usernameDataStore, scrobbleAppDataStore, sessionBackupStore,
+      )
+      repository.backfillSessionBackup().test {
+        awaitItem() shouldBe Unit
+        awaitComplete()
+      }
+
+      coVerify(exactly = 1) {
+        sessionBackupStore.save(SessionBackupPayload(sessionKey = "abcdef0123456789", username = "matakucom"))
+      }
+      coVerify(exactly = 0) { sessionBackupStore.restore() }
+    }
+
+    it("does not back up when no local session key exists") {
+      val service = mockk<LastFmService>()
+      val sessionKeyDataStore = mockk<SessionKeyDataStore>()
+      val usernameDataStore = mockk<UsernameDataStore>()
+      val scrobbleAppDataStore = mockk<ScrobbleAppDataStore>()
+      val sessionBackupStore = mockk<SessionBackupStore>()
+      coEvery { sessionKeyDataStore.sessionKey() } returns null
+
+      val repository = SessionRepositoryImpl(
+        service, sessionKeyDataStore, usernameDataStore, scrobbleAppDataStore, sessionBackupStore,
+      )
+      repository.backfillSessionBackup().test {
+        awaitItem() shouldBe Unit
+        awaitComplete()
+      }
+
+      coVerify(exactly = 0) { sessionBackupStore.save(any()) }
+    }
+
+    it("does not back up when a local session exists but username is absent") {
+      val service = mockk<LastFmService>()
+      val sessionKeyDataStore = mockk<SessionKeyDataStore>()
+      val usernameDataStore = mockk<UsernameDataStore>()
+      val scrobbleAppDataStore = mockk<ScrobbleAppDataStore>()
+      val sessionBackupStore = mockk<SessionBackupStore>()
+      coEvery { sessionKeyDataStore.sessionKey() } returns "abcdef0123456789"
+      coEvery { usernameDataStore.username() } returns null
+
+      val repository = SessionRepositoryImpl(
+        service, sessionKeyDataStore, usernameDataStore, scrobbleAppDataStore, sessionBackupStore,
+      )
+      repository.backfillSessionBackup().test {
+        awaitItem() shouldBe Unit
+        awaitComplete()
+      }
+
+      coVerify(exactly = 0) { sessionBackupStore.save(any()) }
     }
   }
 })

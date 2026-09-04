@@ -30,8 +30,12 @@ class MainViewModelSpec : DescribeSpec({
         callOrder.add("recover")
         flowOf(Unit)
       }
-      coEvery { sessionRepository.syncSessionWithBackup() } answers {
+      coEvery { sessionRepository.restoreSessionFromBackupIfNeeded() } answers {
         callOrder.add("restore")
+        flowOf(Unit)
+      }
+      coEvery { sessionRepository.backfillSessionBackup() } answers {
+        callOrder.add("backfill")
         flowOf(Unit)
       }
       coEvery { themeRepository.currentTheme() } returns flowOf(AppTheme.DARK)
@@ -40,7 +44,7 @@ class MainViewModelSpec : DescribeSpec({
       val viewModel = MainViewModel(themeRepository, usernameRepository, sessionRepository)
 
       viewModel.state.filterNotNull().first().username shouldBe "matakucom"
-      callOrder shouldBe listOf("recover", "restore")
+      callOrder.take(2) shouldBe listOf("recover", "restore")
     }
 
     it("keeps state null until the backup restore completes") {
@@ -49,10 +53,11 @@ class MainViewModelSpec : DescribeSpec({
       val sessionRepository = mockk<SessionRepository>()
       val gate = CompletableDeferred<Unit>()
       coEvery { sessionRepository.recoverFromKeystoreLossIfNeeded() } returns flowOf(Unit)
-      coEvery { sessionRepository.syncSessionWithBackup() } returns flow {
+      coEvery { sessionRepository.restoreSessionFromBackupIfNeeded() } returns flow {
         gate.await()
         emit(Unit)
       }
+      coEvery { sessionRepository.backfillSessionBackup() } returns flowOf(Unit)
       coEvery { themeRepository.currentTheme() } returns flowOf(AppTheme.DARK)
       every { usernameRepository.usernameFlow() } returns flowOf("matakucom")
 
@@ -70,9 +75,10 @@ class MainViewModelSpec : DescribeSpec({
       coEvery { sessionRepository.recoverFromKeystoreLossIfNeeded() } returns flow {
         throw IllegalStateException("keystore broken")
       }
-      coEvery { sessionRepository.syncSessionWithBackup() } returns flow {
+      coEvery { sessionRepository.restoreSessionFromBackupIfNeeded() } returns flow {
         throw IllegalStateException("gms unavailable")
       }
+      coEvery { sessionRepository.backfillSessionBackup() } returns flowOf(Unit)
       coEvery { themeRepository.currentTheme() } returns flowOf(AppTheme.DARK)
       every { usernameRepository.usernameFlow() } returns flowOf(null)
 
@@ -81,6 +87,23 @@ class MainViewModelSpec : DescribeSpec({
       val state = viewModel.state.filterNotNull().first()
       state.theme shouldBe AppTheme.DARK
       state.username.shouldBeNull()
+    }
+
+    it("does not block state emission on the backfill") {
+      val themeRepository = mockk<ThemeRepository>()
+      val usernameRepository = mockk<UsernameRepository>()
+      val sessionRepository = mockk<SessionRepository>()
+      coEvery { sessionRepository.recoverFromKeystoreLossIfNeeded() } returns flowOf(Unit)
+      coEvery { sessionRepository.restoreSessionFromBackupIfNeeded() } returns flowOf(Unit)
+      coEvery { sessionRepository.backfillSessionBackup() } returns flow {
+        CompletableDeferred<Unit>().await()
+      }
+      coEvery { themeRepository.currentTheme() } returns flowOf(AppTheme.DARK)
+      every { usernameRepository.usernameFlow() } returns flowOf("matakucom")
+
+      val viewModel = MainViewModel(themeRepository, usernameRepository, sessionRepository)
+
+      viewModel.state.filterNotNull().first().username shouldBe "matakucom"
     }
   }
 })

@@ -27,7 +27,8 @@ interface SessionRepository {
   fun webAuthUrl(): Flow<String>
   suspend fun logout(): Flow<Unit>
   suspend fun recoverFromKeystoreLossIfNeeded(): Flow<Unit>
-  suspend fun syncSessionWithBackup(): Flow<Unit>
+  suspend fun restoreSessionFromBackupIfNeeded(): Flow<Unit>
+  suspend fun backfillSessionBackup(): Flow<Unit>
 }
 
 @SingleIn(AppScope::class)
@@ -84,7 +85,7 @@ class SessionRepositoryImpl(
     emit(Unit)
   }.flowOn(Dispatchers.IO)
 
-  override suspend fun syncSessionWithBackup(): Flow<Unit> = flow {
+  override suspend fun restoreSessionFromBackupIfNeeded(): Flow<Unit> = flow {
     val localSessionKey = sessionKeyDataStore.sessionKey()
     if (localSessionKey == null) {
       val payload = sessionBackupStore.restore()
@@ -92,7 +93,13 @@ class SessionRepositoryImpl(
         sessionKeyDataStore.setSessionKey(payload.sessionKey).collect()
         usernameDataStore.setUsername(payload.username).collect()
       }
-    } else {
+    }
+    emit(Unit)
+  }.flowOn(Dispatchers.IO)
+
+  override suspend fun backfillSessionBackup(): Flow<Unit> = flow {
+    val localSessionKey = sessionKeyDataStore.sessionKey()
+    if (localSessionKey != null) {
       val localUsername = usernameDataStore.username()
       if (localUsername != null) {
         sessionBackupStore.save(SessionBackupPayload(sessionKey = localSessionKey, username = localUsername))
