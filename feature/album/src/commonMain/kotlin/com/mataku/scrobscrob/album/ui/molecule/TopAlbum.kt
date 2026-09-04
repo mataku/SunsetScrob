@@ -15,7 +15,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,8 +26,11 @@ import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetImage
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import com.mataku.scrobscrob.ui_common.style.onSecondaryColor
+import com.mataku.scrobscrob.ui_common.generated.resources.Res
+import com.mataku.scrobscrob.ui_common.generated.resources.playcount
+import com.mataku.scrobscrob.ui_common.generated.resources.playcounts
 import kotlinx.collections.immutable.persistentListOf
-import com.mataku.scrobscrob.ui_common.R as uiCommonR
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 internal fun TopAlbum(
@@ -91,9 +93,9 @@ internal fun TopAlbum(
     )
     Spacer(modifier = Modifier.height(2.dp))
     val playCountResource = if (album.playCount == "1") {
-      uiCommonR.string.playcount
+      Res.string.playcount
     } else {
-      uiCommonR.string.playcounts
+      Res.string.playcounts
     }
     SunsetText.Caption(
       text = stringResource(playCountResource, album.playCount),

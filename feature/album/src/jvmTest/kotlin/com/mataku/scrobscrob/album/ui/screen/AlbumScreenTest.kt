@@ -2,33 +2,22 @@ package com.mataku.scrobscrob.album.ui.screen
 
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.SharedTransitionLayout
-import androidx.compose.ui.test.junit4.v2.createComposeRule
-import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
 import com.mataku.scrobscrob.album.ui.navigation.AlbumKey
 import com.mataku.scrobscrob.album.ui.viewmodel.AlbumViewModel
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.data.repository.AlbumRepository
-import com.mataku.scrobscrob.test_helper.integration.VRT
+import com.mataku.scrobscrob.test_helper.integration.ScreenshotDevice
 import com.mataku.scrobscrob.test_helper.integration.captureScreenshot
 import com.mataku.scrobscrob.test_helper.integration.fixture.sampleAlbumInfo
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
-import org.junit.Before
-import org.junit.Rule
-import org.junit.Test
-import org.junit.experimental.categories.Category
-import org.junit.runner.RunWith
-import org.robolectric.annotation.GraphicsMode
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Tag
+import org.junit.jupiter.api.Test
 
-@RunWith(AndroidJUnit4::class)
-@GraphicsMode(GraphicsMode.Mode.NATIVE)
-@Category(VRT::class)
+@Tag("VRT")
 class AlbumScreenTest {
-  @get:Rule
-  val composeRule = createComposeRule()
-
   private val artistName = "aespa"
   private val artworkUrl = ""
   private val albumName = "Drama"
@@ -36,7 +25,7 @@ class AlbumScreenTest {
   private val albumRepository = mockk<AlbumRepository>()
   private val animatedContentScope = mockk<AnimatedContentScope>(relaxed = true)
 
-  @Before
+  @BeforeEach
   fun setup() {
     every {
       albumRepository.albumInfo(
@@ -54,7 +43,7 @@ class AlbumScreenTest {
       key = key
     )
 
-    composeRule.captureScreenshot(
+    captureScreenshot(
       appTheme = AppTheme.DARK,
       content = {
         SharedTransitionLayout {
@@ -79,7 +68,7 @@ class AlbumScreenTest {
       key = key
     )
 
-    composeRule.captureScreenshot(
+    captureScreenshot(
       fileName = "album_screen_light.png",
       content = {
         SharedTransitionLayout {
@@ -104,8 +93,8 @@ class AlbumScreenTest {
       key = key
     )
 
-    composeRule.captureScreenshot(
-      device = RobolectricDeviceQualifiers.PixelTablet,
+    captureScreenshot(
+      device = ScreenshotDevice.PixelTablet,
       appTheme = AppTheme.DARK,
       content = {
         SharedTransitionLayout {

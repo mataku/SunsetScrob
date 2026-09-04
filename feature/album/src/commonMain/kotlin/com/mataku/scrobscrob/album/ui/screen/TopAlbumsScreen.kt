@@ -1,8 +1,5 @@
 package com.mataku.scrobscrob.album.ui.screen
 
-import android.annotation.SuppressLint
-import android.content.res.Configuration
-import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.SharedTransitionScope
@@ -21,9 +18,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.backhandler.BackHandler
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mataku.scrobscrob.album.ui.molecule.TopAlbum
@@ -49,7 +48,6 @@ import com.mataku.scrobscrob.ui_common.style.isCompactWidth
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.launch
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun TopAlbumsScreen(
   sharedTransitionScope: SharedTransitionScope,
@@ -121,7 +119,7 @@ fun TopAlbumsScreen(
   }
 }
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun TopAlbumsCompact(
   sharedTransitionScope: SharedTransitionScope,
@@ -137,8 +135,8 @@ private fun TopAlbumsCompact(
   var showBottomSheet by remember { mutableStateOf(false) }
   val bottomSheetState = rememberSunsetModalBottomSheetState()
   val coroutineScope = rememberCoroutineScope()
-  val configuration = LocalConfiguration.current
-  val orientation = remember { configuration.orientation }
+  val containerSize = LocalWindowInfo.current.containerSize
+  val isLandscape = containerSize.width > containerSize.height
 
   BackHandler(bottomSheetState.isVisible) {
     coroutineScope.launch { bottomSheetState.hide() }
@@ -160,7 +158,7 @@ private fun TopAlbumsCompact(
       albums = uiState.topAlbums,
       hasNext = uiState.hasNext,
       onScrollEnd = onScrollEnd,
-      maxSpanCount = if (orientation == Configuration.ORIENTATION_LANDSCAPE) 4 else 2,
+      maxSpanCount = if (isLandscape) 4 else 2,
       onAlbumTap = onAlbumTap,
       useSharedElement = useSharedElement,
       modifier = Modifier.nestedScroll(topAppBarScrollBehavior.nestedScrollConnection),
