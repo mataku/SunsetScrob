@@ -10,8 +10,8 @@ paths:
 
 | Type                 | Command                                                                              |
 |----------------------|--------------------------------------------------------------------------------------|
-| Unit Test            | `./gradlew jvmTest testDebugUnitTest -PexcludeScreenshotTest=true`                   |
-| Screenshot Test      | `./gradlew verifyRoborazziJvm verifyRoborazziDebug --no-configuration-cache -PonlyScreenshotTest=true` |
+| Unit Test            | `./gradlew jvmTest -PexcludeScreenshotTest=true`                                     |
+| Screenshot Test      | `./gradlew verifyRoborazziJvm --no-configuration-cache -PonlyScreenshotTest=true`    |
 | Instrumentation Test | `./gradlew :app:connectedDebugAndroidTest` (see [`e2e-testing.md`](e2e-testing.md))  |
 
 One test file per class under test.
@@ -31,11 +31,11 @@ the local run only with explicit user permission and only when the test
 itself is not the change under verification.
 
 Pair this with the verification commands in the path-scoped guides:
-- VRT: `./gradlew verifyRoborazziJvm verifyRoborazziDebug --no-configuration-cache -PonlyScreenshotTest=true`
+- VRT: `./gradlew verifyRoborazziJvm --no-configuration-cache -PonlyScreenshotTest=true`
 - E2E (phone): `./gradlew :app:pixel6Api35DebugAndroidTest`
 - E2E (tablet, `@LargeScreenE2E`): `./gradlew :app:pixelTabletApi35DebugAndroidTest -PincludeLargeScreenE2E=true`
 
-Running `testDebugUnitTest` / `jvmTest` alone (e.g. `-PexcludeScreenshotTest=true`) does not compare goldens — only the `verifyRoborazzi*` tasks do — so a change that can affect a VRT must be checked with the verify task, not just the plain unit-test command.
+Running `jvmTest` alone (e.g. `-PexcludeScreenshotTest=true`) does not compare goldens — only the `verifyRoborazzi*` tasks do — so a change that can affect a VRT must be checked with the verify task, not just the plain unit-test command.
 
 ## Unit Test
 
@@ -177,9 +177,9 @@ class ExampleViewModelSpec : DescribeSpec({
 
 Uses Roborazzi. Create tests per screen.
 
-### KMP modules (JVM rendering)
+### JVM rendering
 
-Screenshot tests in KMP modules live under `src/jvmTest/kotlin`, are JUnit 5 classes and render through Compose Desktop. Two things are required:
+Screenshot tests live under `src/jvmTest/kotlin`, are JUnit 5 classes and render through Compose Desktop (JVM Skia, not Robolectric). Two things are required:
 
 - `@Tag("VRT")` on the class (`org.junit.jupiter.api.Tag`). This is what `-PonlyScreenshotTest=true` / `-PexcludeScreenshotTest=true` filter on; without it the class runs in the unit-test bucket. Enforced by `ScreenshotTestArchitectureSpec`.
 - `captureScreenshot` from `:test_helper:integration` (`jvmMain`), a top-level function, no rule needed.
@@ -214,10 +214,6 @@ class AlbumScreenTest {
 
 `device` is a `ScreenshotDevice` (`Pixel7`, `Pixel7Landscape`, `PixelTablet`). `actionsBeforeCapturing` runs with a `ComposeUiTest` receiver, so node finders and `waitForIdle()` are called directly. Goldens are written to `<module>/screenshot/`.
 
-### Android-only modules (Robolectric)
-
-Modules still on `sunsetscrob.android.test.screenshot` keep the JUnit 4 form: `@RunWith(AndroidJUnit4::class)`, `@GraphicsMode(GraphicsMode.Mode.NATIVE)`, `@Category(VRT::class)`, a `createComposeRule()` rule and `composeRule.captureScreenshot(...)` with `RobolectricDeviceQualifiers`. When a module migrates to KMP its VRTs are rewritten to the JVM form and its goldens are re-recorded on the JVM.
-
 ### Test Target
 
 Test Content instead of Screen (no need to mock ViewModel):
@@ -239,7 +235,7 @@ Helper for Unit Tests. Provides `CoroutinesListener`.
 
 ### test_helper:integration
 
-Provides `captureScreenshot` for both worlds (`jvmMain`: top-level function + `ScreenshotDevice`; `androidMain`: `ComposeContentTestRule` extension), the `VRT` category marker and shared fixtures.
+Provides the top-level `captureScreenshot` function and `ScreenshotDevice` (`jvmMain`) and shared fixtures (`commonMain`).
 
 ## File Naming
 
@@ -253,4 +249,4 @@ Provides `captureScreenshot` for both worlds (`jvmMain`: top-level function + `S
 ### Determinism guards
 
 - `captureScreenshot` disables Material ripples (`LocalRippleConfiguration provides null`) so a test that clicks in `actionsBeforeCapturing` never captures a half-faded press highlight. Do not re-enable ripples inside a VRT.
-- Modules applying `sunsetscrob.android.test.screenshot` fail when `-PonlyScreenshotTest=true` discovers zero tests (`failOnNoDiscoveredTests`). KMP modules run VRTs on JUnit Jupiter; Android-only modules still run JUnit 4 VRTs through `junit-vintage-engine`, which `sunsetscrob.android.test.screenshot` adds.
+- Modules applying `sunsetscrob.test.screenshot` fail when `-PonlyScreenshotTest=true` discovers zero tests (`failOnNoDiscoveredTests`), so a VRT class that lost its `@Tag("VRT")` surfaces as a failed build rather than a silently skipped test.

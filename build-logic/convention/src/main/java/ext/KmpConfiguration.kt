@@ -10,7 +10,6 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 private const val VRT_TAG = "VRT"
-private const val ROBOLECTRIC_VRT_TAG = "com.mataku.scrobscrob.test_helper.integration.VRT"
 
 fun Project.kotlinMultiplatform(): KotlinMultiplatformExtension =
   extensions.getByType<KotlinMultiplatformExtension>()
@@ -47,10 +46,10 @@ fun Project.kmpTestConfiguration() {
     maxParallelForks = Runtime.getRuntime().availableProcessors()
     useJUnitPlatform {
       if (project.hasProperty("excludeScreenshotTest")) {
-        excludeTags(VRT_TAG, ROBOLECTRIC_VRT_TAG)
+        excludeTags(VRT_TAG)
       }
       if (project.hasProperty("onlyScreenshotTest")) {
-        includeTags(VRT_TAG, ROBOLECTRIC_VRT_TAG)
+        includeTags(VRT_TAG)
         excludeEngines("kotest")
       }
     }

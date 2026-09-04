@@ -26,22 +26,11 @@ class ScreenshotTestArchitectureSpec : DescribeSpec({
       ) { violations.shouldBeEmpty() }
     }
 
-    it("Robolectric screenshot classes carry @Category(VRT::class)") {
-      val violations = testFiles
-        .filter { it.path.contains("/src/test/") }
-        .filter { it.text.contains("captureScreenshot(") }
-        .flatMap { it.classes() }
-        .filterNot { cls -> cls.annotations.any { it.name == "Category" && it.text.contains("VRT") } }
-      withClue(
-        "Classes that call captureScreenshot under src/test must be annotated @Category(VRT::class). Offending classes:\n" +
-          violations.joinToString("\n") { it.fullyQualifiedName ?: it.name },
-      ) { violations.shouldBeEmpty() }
-    }
-
     it("modules applying sunsetscrob.library have no src/main or src/test") {
       val root = File(System.getProperty("user.dir")).parentFile
       val violations = root.walkTopDown()
-        .filter { it.name == "build.gradle.kts" && !it.path.contains("/build/") }
+        .onEnter { it.name != ".git" && it.name != "build" }
+        .filter { it.name == "build.gradle.kts" }
         .filter { it.readText().contains("id(\"sunsetscrob.library\")") }
         .map { it.parentFile }
         .filter { File(it, "src/main").exists() || File(it, "src/test").exists() }

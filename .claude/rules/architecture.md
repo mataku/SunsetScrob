@@ -21,7 +21,7 @@ data/
 test_helper/
   unit/                 - Shared unit test fixtures (KMP: android + jvm)
   integration/          - Shared screenshot/integration test fixtures (KMP: android + jvm)
-feature/
+feature/                (all KMP: android + jvm)
   album/                - Album details
   artist/               - Artist details
   auth/                 - Login authentication
@@ -30,6 +30,8 @@ feature/
   discover/             - Charts and discovery
   home/                 - Home tab (integrates other features)
 ```
+
+Every library module is KMP; `:app` is the only Android-only module.
 
 ```
 feature/* ──→ data/repository ──→ data/api ──→ core
@@ -73,23 +75,22 @@ The module graph is strictly directional. Violations break `:architecture-spec:t
 ## Source Sets (KMP modules)
 
 - `src/commonMain/kotlin` — everything that has no Android dependency. Screens, ViewModels, repositories, entities.
-- `src/androidMain/kotlin` — Android-only code and every Metro binding container (`di/*Module.kt`), because `:app` is Android and provides `Context`. Also `AndroidManifest.xml` and `res/` for resources that unmigrated Android modules still read through `R`.
+- `src/androidMain/kotlin` — Android-only code and every Metro binding container (`di/*Module.kt`), because `:app` is Android and provides `Context`. Also `AndroidManifest.xml`. There is no `res/`: drawables, strings and fonts live in `commonMain/composeResources`.
 - `src/jvmMain/kotlin` — JVM-only actuals (fonts loaded from the classpath, text style shims).
 - `src/commonMain/composeResources` — drawables and strings read through the generated `Res` class.
 - `src/jvmTest/kotlin` — Kotest specs and JVM screenshot tests. No `src/test`.
-- `expect`/`actual` is used only where the platform API differs (`toReadableIntValue`, `notoSansJpFontFamily`, `noFontPaddingPlatformTextStyle`, `SunsetWebView`, `EqualizerAnimation`). Prefer injecting a platform object (`SqlDriver`, `DataStore<Preferences>`, `AppBuildInfo`) or a small interface bound in `androidMain` / `:app` (`LastFmWebAuthLauncher`, `InAppUpdateManager`, `NotificationListenerPermission`) over `expect` declarations; an interface needs no JVM actual when only Android will ever implement it.
+- `expect`/`actual` is used only where the platform API differs (`toReadableIntValue`, `noFontPaddingPlatformTextStyle`, `SunsetWebView`, `EqualizerAnimation`). Prefer injecting a platform object (`SqlDriver`, `DataStore<Preferences>`, `AppBuildInfo`) or a small interface bound in `androidMain` / `:app` (`LastFmWebAuthLauncher`, `InAppUpdateManager`, `NotificationListenerPermission`) over `expect` declarations; an interface needs no JVM actual when only Android will ever implement it.
 
 ## Convention Plugins
 
 If you create a new module, **apply an existing convention plugin** rather
 than hand-rolling configuration:
 
-- `FeatureConventionPlugin` — Android library feature modules (SDK, Kotlin,
-  lint, packaging, test deps).
-- `ApplicationConventionPlugin` — the `:app` module.
-- `ComposeConventionPlugin` — modules that use Compose.
-- `MetroConventionPlugin` — modules that participate in the Metro DI graph.
-- `ScreenshotTestConventionPlugin` — modules that contribute Roborazzi screenshots.
+- `KmpLibraryConventionPlugin` — every library module (android + jvm targets, SDK levels, jvmTest deps).
+- `KmpComposeConventionPlugin` — library modules that use Compose.
+- `KmpMetroConventionPlugin` — library modules that participate in the Metro DI graph.
+- `KmpScreenshotTestConventionPlugin` — library modules that contribute Roborazzi screenshots.
+- `ApplicationConventionPlugin`, `ComposeConventionPlugin`, `MetroConventionPlugin` — the `:app` module only.
 
 Plugin IDs (used in `build.gradle.kts`):
 
@@ -99,15 +100,13 @@ Plugin IDs (used in `build.gradle.kts`):
 | `sunsetscrob.compose`                 | Compose Multiplatform, compiler plugin, Compose Resources (`Res` is public); enables Android resources so `composeResources` are packaged into the APK assets |
 | `sunsetscrob.metro`                   | Metro DI (`dev.zacsweers.metro`, adds `metrox-viewmodel-compose`)                |
 | `sunsetscrob.test.screenshot`         | Roborazzi on the JVM (`recordRoborazziJvm` / `verifyRoborazziJvm`); pins the test JVM locale to `en_US` so Compose Resources translations render deterministically |
-| `sunsetscrob.android.application`     | For app module                                                                   |
-| `sunsetscrob.android.feature`         | Android-only feature modules that have not been migrated to KMP yet              |
-| `sunsetscrob.android.compose`         | Compose for Android-only modules                                                 |
-| `sunsetscrob.android.metro`           | Metro for Android-only modules                                                   |
-| `sunsetscrob.android.test.screenshot` | Roborazzi via Robolectric for Android-only modules                               |
+| `sunsetscrob.android.application`     | `:app` only                                                                      |
+| `sunsetscrob.android.compose`         | Compose for `:app` only                                                          |
+| `sunsetscrob.android.metro`           | Metro for `:app` only                                                            |
 
 ### New Feature Module Example
 
-Reference: [ui_common/build.gradle.kts](../../ui_common/build.gradle.kts); feature modules still on sunsetscrob.android.* follow the older shape until they migrate
+Reference: [ui_common/build.gradle.kts](../../ui_common/build.gradle.kts) and [feature/home/build.gradle.kts](../../feature/home/build.gradle.kts)
 
 ```kotlin
 plugins {

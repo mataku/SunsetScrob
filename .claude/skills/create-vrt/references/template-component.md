@@ -1,34 +1,22 @@
 # Template: component (no ViewModel)
 
-Use this when the composable takes only inline values / lambdas and doesn't need a
-ViewModel. Matches the style of `HomeTabsTest`, `SunsetNavigationBarScreenTest`.
+Use this when the composable takes only inline values / lambdas and doesn't need a ViewModel. Matches the style of `HomeTabsTest`, `SunsetNavigationBarScreenTest`.
 
 ## Template
 
 ```kotlin
 package {{PACKAGE}}
 
-import androidx.compose.ui.test.junit4.v2.createComposeRule
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.mataku.scrobscrob.core.entity.AppTheme
-import com.mataku.scrobscrob.test_helper.integration.VRT
 import com.mataku.scrobscrob.test_helper.integration.captureScreenshot
-import org.junit.Rule
-import org.junit.Test
-import org.junit.experimental.categories.Category
-import org.junit.runner.RunWith
-import org.robolectric.annotation.GraphicsMode
+import org.junit.jupiter.api.Tag
+import org.junit.jupiter.api.Test
 
-@RunWith(AndroidJUnit4::class)
-@GraphicsMode(GraphicsMode.Mode.NATIVE)
-@Category(VRT::class)
+@Tag("VRT")
 class {{CLASS_NAME}} {
-  @get:Rule
-  val composeTestRule = createComposeRule()
-
   @Test
   fun layout() {
-    composeTestRule.captureScreenshot(
+    captureScreenshot(
       appTheme = AppTheme.DARK,
       content = {
         {{COMPOSABLE_CALL}}
@@ -39,7 +27,7 @@ class {{CLASS_NAME}} {
 
   @Test
   fun layout_light() {
-    composeTestRule.captureScreenshot(
+    captureScreenshot(
       appTheme = AppTheme.LIGHT,
       content = {
         {{COMPOSABLE_CALL}}
@@ -61,32 +49,21 @@ class {{CLASS_NAME}} {
 
 ## Example (filled in)
 
-Reference: `feature/home/src/test/java/com/mataku/scrobscrob/home/ui/molecule/HomeTabsTest.kt`.
+Reference: `feature/home/src/jvmTest/kotlin/com/mataku/scrobscrob/home/ui/molecule/HomeTabsTest.kt`.
 
 ```kotlin
 package com.mataku.scrobscrob.home.ui.molecule
 
-import androidx.compose.ui.test.junit4.v2.createComposeRule
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.mataku.scrobscrob.core.entity.AppTheme
-import com.mataku.scrobscrob.test_helper.integration.VRT
 import com.mataku.scrobscrob.test_helper.integration.captureScreenshot
-import org.junit.Rule
-import org.junit.Test
-import org.junit.experimental.categories.Category
-import org.junit.runner.RunWith
-import org.robolectric.annotation.GraphicsMode
+import org.junit.jupiter.api.Tag
+import org.junit.jupiter.api.Test
 
-@RunWith(AndroidJUnit4::class)
-@GraphicsMode(GraphicsMode.Mode.NATIVE)
-@Category(VRT::class)
+@Tag("VRT")
 class HomeTabsTest {
-  @get:Rule
-  val composeTestRule = createComposeRule()
-
   @Test
   fun layout() {
-    composeTestRule.captureScreenshot(
+    captureScreenshot(
       appTheme = AppTheme.DARK,
       content = {
         HomeTabs(
@@ -100,7 +77,7 @@ class HomeTabsTest {
 
   @Test
   fun layout_light() {
-    composeTestRule.captureScreenshot(
+    captureScreenshot(
       appTheme = AppTheme.LIGHT,
       content = {
         HomeTabs(
@@ -116,14 +93,13 @@ class HomeTabsTest {
 
 ## Optional variants
 
-Add these test methods only when the layout actually differs for the device variant — don't generate
-them reflexively.
+Add these test methods only when the layout actually differs for the device variant — don't generate them reflexively. Both need `import com.mataku.scrobscrob.test_helper.integration.ScreenshotDevice`.
 
 ```kotlin
 @Test
 fun layout_landscape() {
-  composeTestRule.captureScreenshot(
-    device = "w411dp-h914dp-land-420dpi",
+  captureScreenshot(
+    device = ScreenshotDevice.Pixel7Landscape,
     appTheme = AppTheme.DARK,
     content = { {{COMPOSABLE_CALL}} },
     fileName = "{{FILE_NAME_SNAKE}}_landscape.png"
@@ -132,8 +108,8 @@ fun layout_landscape() {
 
 @Test
 fun layout_tablet() {
-  composeTestRule.captureScreenshot(
-    device = RobolectricDeviceQualifiers.MediumTablet,
+  captureScreenshot(
+    device = ScreenshotDevice.PixelTablet,
     appTheme = AppTheme.DARK,
     content = { {{COMPOSABLE_CALL}} },
     fileName = "{{FILE_NAME_SNAKE}}_tablet.png"
@@ -141,8 +117,11 @@ fun layout_tablet() {
 }
 ```
 
-Landscape needs no extra import. Tablet needs:
+To interact before capturing (open a pane, select a row), pass `actionsBeforeCapturing`; it runs with a `ComposeUiTest` receiver, so node finders and `waitForIdle()` are called directly:
 
 ```kotlin
-import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
+actionsBeforeCapturing = {
+  onAllNodesWithText("Item 1").onFirst().performClick()
+  waitForIdle()
+},
 ```

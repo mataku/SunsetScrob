@@ -53,7 +53,7 @@ fun SunsetNavBuilder.homeGraph() {
           ),
         )
       },
-      navigateToLogin = { /* 認証 gate 切替で処理 */ },
+      navigateToLogin = {},
       modifier = Modifier,
     )
   }

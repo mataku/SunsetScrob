@@ -1,26 +1,15 @@
 package com.mataku.scrobscrob.home.ui.molecule
 
-import androidx.compose.ui.test.junit4.v2.createComposeRule
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.mataku.scrobscrob.core.entity.AppTheme
-import com.mataku.scrobscrob.test_helper.integration.VRT
 import com.mataku.scrobscrob.test_helper.integration.captureScreenshot
-import org.junit.Rule
-import org.junit.Test
-import org.junit.experimental.categories.Category
-import org.junit.runner.RunWith
-import org.robolectric.annotation.GraphicsMode
+import org.junit.jupiter.api.Tag
+import org.junit.jupiter.api.Test
 
-@RunWith(AndroidJUnit4::class)
-@GraphicsMode(GraphicsMode.Mode.NATIVE)
-@Category(VRT::class)
+@Tag("VRT")
 class HomeTabsTest {
-  @get:Rule
-  val composeTestRule = createComposeRule()
-
   @Test
   fun layout() {
-    composeTestRule.captureScreenshot(
+    captureScreenshot(
       appTheme = AppTheme.DARK,
       content = {
         HomeTabs(
@@ -34,7 +23,7 @@ class HomeTabsTest {
 
   @Test
   fun layout_light() {
-    composeTestRule.captureScreenshot(
+    captureScreenshot(
       appTheme = AppTheme.LIGHT,
       content = {
         HomeTabs(
