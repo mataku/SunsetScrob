@@ -1,4 +1,4 @@
-name: Deploy to Google Play Console internal app sharing
+name: Internal app sharing
 
 on:
   workflow_dispatch:

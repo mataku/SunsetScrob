@@ -1,4 +1,4 @@
-name: Release to Google Play Console internal track
+name: Internal track release
 
 on:
   push:

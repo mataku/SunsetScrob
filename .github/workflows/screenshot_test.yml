@@ -1,4 +1,4 @@
-name: Run layout test
+name: Screenshot test
 
 on:
   workflow_dispatch:

@@ -1,6 +1,6 @@
 # ref: https://docs.github.com/en/actions/using-workflows/caching-dependencies-to-speed-up-workflows#force-deleting-cache-entries
 
-name: cleanup all caches
+name: Cache cleanup
 on:
   workflow_dispatch:
   schedule:
