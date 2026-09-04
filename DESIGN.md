@@ -56,7 +56,7 @@ Core principles:
 
 ## Multiplatform
 
-`:core`, `:ui_common`, `:data:*` and `:test_helper:*` are Kotlin Multiplatform modules with `android` and `jvm` targets. The jvm target exists to render screenshot tests on Compose Desktop (Skia) without Robolectric; there is no desktop app. Android-only pieces (WebView, Custom Tabs, Tink, SQLite driver, DataStore files, Metro binding containers) sit in `androidMain`; everything the screenshots need is in `commonMain`. `commonMain` currently uses JVM-only APIs directly (`java.text.SimpleDateFormat`, `java.security.MessageDigest`, `java.net.URLEncoder`, `java.io.Serializable`, `Character.toChars`, `Dispatchers.IO`) because both existing targets — android and jvm — run on the JVM; a `wasmJs` target would need `expect`/`actual` work across these files first, so it is not a target this branch prepares for.
+`:core`, `:ui_common`, `:data:*`, `:test_helper:*` and every `:feature:*` except `:feature:home` are Kotlin Multiplatform modules with `android` and `jvm` targets. The jvm target exists to render screenshot tests on Compose Desktop (Skia) without Robolectric; there is no desktop app. Android-only pieces (the `WebView` behind `SunsetWebView`, Custom Tabs, Play in-app updates, Tink, SQLite driver, DataStore files, Metro binding containers) sit in `androidMain`; everything the screenshots need is in `commonMain`. `commonMain` currently uses JVM-only APIs directly (`java.text.SimpleDateFormat`, `java.security.MessageDigest`, `java.net.URLEncoder`, `java.io.Serializable`, `Character.toChars`, `Dispatchers.IO`) because both existing targets — android and jvm — run on the JVM; a `wasmJs` target would need `expect`/`actual` work across these files first, so it is not a target this branch prepares for.
 
 ---
 

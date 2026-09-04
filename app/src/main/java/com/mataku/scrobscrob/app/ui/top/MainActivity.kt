@@ -17,6 +17,8 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.mataku.scrobscrob.account.permission.NotificationListenerPermission
+import com.mataku.scrobscrob.account.update.InAppUpdateManager
 import com.mataku.scrobscrob.app.ui.screen.SunsetMainScreen
 import com.mataku.scrobscrob.app.ui.viewmodel.MainViewModel
 import com.mataku.scrobscrob.auth.webauth.LastFmWebAuth
@@ -39,6 +41,8 @@ class MainActivity(
   private val viewModelFactory: MetroViewModelFactory,
   private val webAuthLauncher: LastFmWebAuthLauncher,
   private val webAuthCallback: WebAuthCallbackChannel,
+  private val inAppUpdateManager: InAppUpdateManager,
+  private val notificationListenerPermission: NotificationListenerPermission,
 ) : ComponentActivity() {
   private val viewModel by viewModels<MainViewModel>()
 
@@ -83,6 +87,8 @@ class MainActivity(
           SunsetMainScreen(
             isAuthenticated = isAuthenticated,
             webAuthLauncher = webAuthLauncher,
+            inAppUpdateManager = inAppUpdateManager,
+            notificationListenerPermission = notificationListenerPermission,
           )
         }
       }

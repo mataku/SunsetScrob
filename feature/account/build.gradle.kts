@@ -1,33 +1,28 @@
-import com.android.build.api.dsl.LibraryExtension
-
 plugins {
-  id("sunsetscrob.android.feature")
-  id("sunsetscrob.android.compose")
-  id("sunsetscrob.android.metro")
-  id("sunsetscrob.android.test.screenshot")
-  id("io.github.takahirom.roborazzi")
+  id("sunsetscrob.library")
+  id("sunsetscrob.compose")
+  id("sunsetscrob.metro")
+  id("sunsetscrob.test.screenshot")
 }
 
-configure<LibraryExtension>() {
-  buildFeatures {
-    buildConfig = true
+kotlin {
+  android {
+    namespace = "com.mataku.scrobscrob.account"
   }
-  namespace = "com.mataku.scrobscrob.account"
-}
 
-dependencies {
-  implementation(project(":ui_common"))
-  implementation(project(":core"))
-  implementation(project(":data:repository"))
-
-  implementation(libs.activity.compose)
-  implementation(libs.compose.foundation)
-
-  implementation(libs.compose.material.icons.extended)
-  implementation(libs.coroutines)
-  implementation(libs.timber)
-  implementation(libs.app.update)
-  implementation(libs.kotlinx.collection)
-
-  implementation(libs.compose.ui.tooling)
+  sourceSets {
+    commonMain.dependencies {
+      implementation(project(":ui_common"))
+      implementation(project(":core"))
+      implementation(project(":data:repository"))
+      implementation(libs.jetbrains.compose.material.icons.extended)
+      implementation(libs.jetbrains.compose.ui.backhandler)
+      implementation(libs.jetbrains.lifecycle.runtime.compose)
+      implementation(libs.kotlinx.collections.immutable)
+    }
+    androidMain.dependencies {
+      implementation(libs.activity.compose)
+      implementation(libs.app.update)
+    }
+  }
 }
