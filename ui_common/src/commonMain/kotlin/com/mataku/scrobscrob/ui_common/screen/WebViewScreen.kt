@@ -1,0 +1,119 @@
+package com.mataku.scrobscrob.ui_common.screen
+
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.platform.LocalWindowInfo
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.mataku.scrobscrob.ui_common.component.LoadingIndicator
+import com.mataku.scrobscrob.ui_common.component.SunsetWebView
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetIcon
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetIconButton
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetScaffold
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetText
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetTopAppBar
+import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
+import kotlinx.coroutines.launch
+
+@Composable
+fun WebViewScreen(
+  url: String,
+  onBackPressed: () -> Unit,
+  modifier: Modifier = Modifier
+) {
+  var title by remember {
+    mutableStateOf("")
+  }
+  var visibility by remember {
+    mutableStateOf(false)
+  }
+  val visibilityValue = remember {
+    Animatable(0F)
+  }
+  val screenHeight = LocalWindowInfo.current.containerSize.height
+
+  val coroutineScope = rememberCoroutineScope()
+
+  SunsetScaffold(
+    modifier = modifier,
+    topBar = {
+      SunsetTopAppBar(
+        title = {
+          SunsetText.Title(text = title, maxLines = 1, overflow = TextOverflow.Ellipsis)
+        },
+        navigationIcon = {
+          SunsetIconButton(onClick = onBackPressed) {
+            SunsetIcon(
+              imageVector = Icons.AutoMirrored.Default.ArrowBack,
+              contentDescription = "Back"
+            )
+          }
+        },
+      )
+    }
+  ) { paddingValues ->
+    Box(
+      modifier = Modifier
+        .fillMaxSize()
+        .padding(paddingValues)
+    ) {
+      // NOTE: specified height and visibility animation as workaround for compose WebView flickering
+      SunsetWebView(
+        url = url,
+        onPageFinished = { pageTitle ->
+          title = pageTitle
+          if (!visibility) {
+            coroutineScope.launch {
+              visibilityValue.animateTo(
+                1F, tween(
+                  durationMillis = 1000,
+                  easing = LinearEasing
+                )
+              )
+            }
+            visibility = true
+          }
+        },
+        modifier = Modifier
+          .fillMaxWidth()
+          .height(screenHeight.dp - 64.dp)
+          .alpha(visibilityValue.value)
+      )
+      if (!visibility) {
+        LoadingIndicator(
+          modifier = Modifier.align(Alignment.Center)
+        )
+      }
+    }
+  }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun WebViewScreenPreview() {
+  SunsetThemePreview {
+    WebViewScreen(
+      url = "https://www.google.com",
+      onBackPressed = {},
+      modifier = Modifier.fillMaxWidth(),
+    )
+  }
+}

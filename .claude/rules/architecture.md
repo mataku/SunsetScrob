@@ -77,7 +77,7 @@ The module graph is strictly directional. Violations break `:architecture-spec:t
 - `src/jvmMain/kotlin` — JVM-only actuals (fonts loaded from the classpath, text style shims).
 - `src/commonMain/composeResources` — drawables and strings read through the generated `Res` class.
 - `src/jvmTest/kotlin` — Kotest specs and JVM screenshot tests. No `src/test`.
-- `expect`/`actual` is used only where the platform API differs (`toReadableIntValue`, `notoSansJpFontFamily`, `noFontPaddingPlatformTextStyle`). Prefer injecting a platform object (`SqlDriver`, `DataStore<Preferences>`, `AppBuildInfo`) over `expect` declarations.
+- `expect`/`actual` is used only where the platform API differs (`toReadableIntValue`, `notoSansJpFontFamily`, `noFontPaddingPlatformTextStyle`, `SunsetWebView`, `EqualizerAnimation`). Prefer injecting a platform object (`SqlDriver`, `DataStore<Preferences>`, `AppBuildInfo`) or a small interface bound in `androidMain` / `:app` (`LastFmWebAuthLauncher`, `InAppUpdateManager`, `NotificationListenerPermission`) over `expect` declarations; an interface needs no JVM actual when only Android will ever implement it.
 
 ## Convention Plugins
 

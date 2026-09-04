@@ -12,8 +12,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.LayoutDirection
+import com.mataku.scrobscrob.account.permission.NotificationListenerPermission
 import com.mataku.scrobscrob.account.ui.navigation.AccountKey
 import com.mataku.scrobscrob.account.ui.navigation.accountGraph
+import com.mataku.scrobscrob.account.update.InAppUpdateManager
 import com.mataku.scrobscrob.album.ui.navigation.albumGraph
 import com.mataku.scrobscrob.artist.ui.navigation.artistGraph
 import com.mataku.scrobscrob.auth.ui.navigation.authGraph
@@ -39,6 +41,8 @@ import kotlinx.collections.immutable.toImmutableList
 internal fun SunsetMainScreen(
   isAuthenticated: Boolean,
   webAuthLauncher: LastFmWebAuthLauncher,
+  inAppUpdateManager: InAppUpdateManager,
+  notificationListenerPermission: NotificationListenerPermission,
   modifier: Modifier = Modifier,
 ) {
   if (isAuthenticated) {
@@ -77,7 +81,7 @@ internal fun SunsetMainScreen(
         albumGraph()
         artistGraph()
         scrobbleGraph()
-        accountGraph()
+        accountGraph(inAppUpdateManager, notificationListenerPermission)
         discoverGraph()
         commonGraph()
       }
@@ -87,7 +91,7 @@ internal fun SunsetMainScreen(
     SunsetNavHost(backStack = backStack, modifier = modifier.fillMaxSize()) {
       authGraph(webAuthLauncher)
       commonGraph()
-      accountGraph()
+      accountGraph(inAppUpdateManager, notificationListenerPermission)
     }
   }
 }

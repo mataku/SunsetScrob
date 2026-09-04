@@ -101,3 +101,7 @@ in the `:architecture-spec` module. Each rule under `.claude/rules/` maps to a
 When you add a new convention to a `.claude/rules/` file, add a matching Spec.
 When you change a Spec, update the corresponding rule. Guide and sensor must
 stay paired.
+
+### When a convention deserves a Konsist spec or Lint detector
+
+Add a mechanical rule only for conventions whose violation would otherwise go unnoticed: the build passes, the tests pass and the app appears to work, but the code has drifted (a class in the wrong package, a ViewModel that silently drops out of the Metro graph, a VRT class missing its tag, a repository that swallows errors). Those are the problems a reviewer would only catch by knowing the convention, so the sensor has to know it instead. Do not add a rule for anything the compiler, the DI graph, a failing test or an existing check already reports; a second sensor for the same failure adds maintenance without adding signal.
