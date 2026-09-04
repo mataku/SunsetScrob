@@ -6,10 +6,13 @@ import com.mataku.scrobscrob.data.api.request
 import com.mataku.scrobscrob.data.api.endpoint.ApiSignature
 import com.mataku.scrobscrob.data.api.endpoint.AuthSessionEndpoint
 import com.mataku.scrobscrob.data.db.ScrobbleAppDataStore
+import com.mataku.scrobscrob.data.db.SessionBackupPayload
+import com.mataku.scrobscrob.data.db.SessionBackupStore
 import com.mataku.scrobscrob.data.db.SessionKeyDataStore
 import com.mataku.scrobscrob.data.db.UsernameDataStore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
@@ -24,6 +27,8 @@ interface SessionRepository {
   fun webAuthUrl(): Flow<String>
   suspend fun logout(): Flow<Unit>
   suspend fun recoverFromKeystoreLossIfNeeded(): Flow<Unit>
+  suspend fun restoreSessionFromBackupIfNeeded(): Flow<Unit>
+  suspend fun backfillSessionBackup(): Flow<Unit>
 }
 
 @SingleIn(AppScope::class)
@@ -32,7 +37,8 @@ class SessionRepositoryImpl(
   private val lastFmService: LastFmService,
   private val sessionKeyDataStore: SessionKeyDataStore,
   private val usernameDataStore: UsernameDataStore,
-  private val scrobbleAppDataStore: ScrobbleAppDataStore
+  private val scrobbleAppDataStore: ScrobbleAppDataStore,
+  private val sessionBackupStore: SessionBackupStore
 ) :
   SessionRepository {
   override suspend fun authorize(token: String): Flow<Unit> = flow {
@@ -51,6 +57,7 @@ class SessionRepositoryImpl(
     ) { sessionKeyResult, usernameResult ->
       Pair(sessionKeyResult, usernameResult)
     }.collect {
+      sessionBackupStore.save(SessionBackupPayload(sessionKey = result.key, username = result.name))
       emit(Unit)
     }
   }.flowOn(Dispatchers.IO)
@@ -63,6 +70,7 @@ class SessionRepositoryImpl(
     sessionKeyDataStore.remove()
     usernameDataStore.remove()
     scrobbleAppDataStore.clear()
+    sessionBackupStore.clear()
     emit(Unit)
   }
 
@@ -73,6 +81,29 @@ class SessionRepositoryImpl(
       sessionKeyDataStore.remove()
       usernameDataStore.remove()
       scrobbleAppDataStore.clear()
+    }
+    emit(Unit)
+  }.flowOn(Dispatchers.IO)
+
+  override suspend fun restoreSessionFromBackupIfNeeded(): Flow<Unit> = flow {
+    val localSessionKey = sessionKeyDataStore.sessionKey()
+    if (localSessionKey == null) {
+      val payload = sessionBackupStore.restore()
+      if (payload != null) {
+        sessionKeyDataStore.setSessionKey(payload.sessionKey).collect()
+        usernameDataStore.setUsername(payload.username).collect()
+      }
+    }
+    emit(Unit)
+  }.flowOn(Dispatchers.IO)
+
+  override suspend fun backfillSessionBackup(): Flow<Unit> = flow {
+    val localSessionKey = sessionKeyDataStore.sessionKey()
+    if (localSessionKey != null) {
+      val localUsername = usernameDataStore.username()
+      if (localUsername != null) {
+        sessionBackupStore.save(SessionBackupPayload(sessionKey = localSessionKey, username = localUsername))
+      }
     }
     emit(Unit)
   }.flowOn(Dispatchers.IO)

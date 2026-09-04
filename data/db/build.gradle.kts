@@ -20,8 +20,10 @@ kotlin {
     }
     androidMain.dependencies {
       implementation(libs.coroutines)
+      implementation(libs.coroutines.play.services)
       implementation(libs.datastore.tink)
       implementation(libs.sqldelight.driver)
+      implementation(libs.play.services.blockstore)
     }
   }
 }

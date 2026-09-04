@@ -8,7 +8,9 @@ import app.cash.sqldelight.driver.android.AndroidSqliteDriver
 import com.mataku.scrobscrob.Database
 import com.mataku.scrobscrob.data.db.ArtworkDataStore
 import com.mataku.scrobscrob.data.db.ArtworkDataStoreImpl
+import com.mataku.scrobscrob.data.db.BlockStoreSessionBackupStore
 import com.mataku.scrobscrob.data.db.ScrobbleAppDataStore
+import com.mataku.scrobscrob.data.db.SessionBackupStore
 import com.mataku.scrobscrob.data.db.SessionKeyDataStore
 import com.mataku.scrobscrob.data.db.ThemeDataStore
 import com.mataku.scrobscrob.data.db.UsernameDataStore
@@ -53,5 +55,11 @@ interface DatabaseModule {
   @Provides
   fun provideArtworkDataStore(context: Context): ArtworkDataStore {
     return ArtworkDataStoreImpl(AndroidSqliteDriver(Database.Schema, context, "scrobscrob.db"))
+  }
+
+  @SingleIn(AppScope::class)
+  @Provides
+  fun provideSessionBackupStore(context: Context): SessionBackupStore {
+    return BlockStoreSessionBackupStore(context)
   }
 }
