@@ -1,33 +1,22 @@
 package com.mataku.scrobscrob.auth.ui.screen
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.test.junit4.v2.createComposeRule
-import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
 import com.mataku.scrobscrob.auth.ui.viewmodel.LoginViewModel
 import com.mataku.scrobscrob.auth.webauth.LastFmWebAuthLauncher
 import com.mataku.scrobscrob.auth.webauth.LastFmWebAuthResult
 import com.mataku.scrobscrob.auth.webauth.WebAuthCallbackChannel
 import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.data.repository.SessionRepository
-import com.mataku.scrobscrob.test_helper.integration.VRT
+import com.mataku.scrobscrob.test_helper.integration.ScreenshotDevice
 import com.mataku.scrobscrob.test_helper.integration.captureScreenshot
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
-import org.junit.Rule
-import org.junit.Test
-import org.junit.experimental.categories.Category
-import org.junit.runner.RunWith
-import org.robolectric.annotation.GraphicsMode
+import org.junit.jupiter.api.Tag
+import org.junit.jupiter.api.Test
 
-@RunWith(AndroidJUnit4::class)
-@GraphicsMode(GraphicsMode.Mode.NATIVE)
-@Category(VRT::class)
+@Tag("VRT")
 class LoginScreenTest {
-  @get:Rule
-  val composeTestRule = createComposeRule()
-
   private val launcher = object : LastFmWebAuthLauncher {
     @Composable
     override fun rememberLaunch(onResult: (LastFmWebAuthResult) -> Unit): (String) -> Unit = {}
@@ -41,7 +30,7 @@ class LoginScreenTest {
 
   @Test
   fun layout() {
-    composeTestRule.captureScreenshot(
+    captureScreenshot(
       appTheme = AppTheme.DARK,
       content = {
         LoginScreen(
@@ -57,7 +46,7 @@ class LoginScreenTest {
 
   @Test
   fun layout_light() {
-    composeTestRule.captureScreenshot(
+    captureScreenshot(
       appTheme = AppTheme.LIGHT,
       content = {
         LoginScreen(
@@ -74,7 +63,7 @@ class LoginScreenTest {
   @Test
   fun layout_webAuthOpen() {
     val viewModel = viewModel().apply { onWebAuthOpened() }
-    composeTestRule.captureScreenshot(
+    captureScreenshot(
       appTheme = AppTheme.LIGHT,
       content = {
         LoginScreen(
@@ -90,8 +79,8 @@ class LoginScreenTest {
 
   @Test
   fun layout_tablet() {
-    composeTestRule.captureScreenshot(
-      device = RobolectricDeviceQualifiers.PixelTablet,
+    captureScreenshot(
+      device = ScreenshotDevice.PixelTablet,
       appTheme = AppTheme.DARK,
       content = {
         LoginScreen(

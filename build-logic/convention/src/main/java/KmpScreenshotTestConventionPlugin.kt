@@ -24,6 +24,8 @@ class KmpScreenshotTestConventionPlugin : Plugin<Project> {
       }
       tasks.withType(Test::class.java).configureEach {
         failOnNoDiscoveredTests.set(hasProperty("onlyScreenshotTest"))
+        systemProperty("user.language", "en")
+        systemProperty("user.country", "US")
       }
     }
   }

@@ -98,7 +98,7 @@ Plugin IDs (used in `build.gradle.kts`):
 | `sunsetscrob.library`                 | KMP library (android + jvm targets, SDK levels, jvmTest dependencies, VRT tags)  |
 | `sunsetscrob.compose`                 | Compose Multiplatform, compiler plugin, Compose Resources (`Res` is public); enables Android resources so `composeResources` are packaged into the APK assets |
 | `sunsetscrob.metro`                   | Metro DI (`dev.zacsweers.metro`, adds `metrox-viewmodel-compose`)                |
-| `sunsetscrob.test.screenshot`         | Roborazzi on the JVM (`recordRoborazziJvm` / `verifyRoborazziJvm`)               |
+| `sunsetscrob.test.screenshot`         | Roborazzi on the JVM (`recordRoborazziJvm` / `verifyRoborazziJvm`); pins the test JVM locale to `en_US` so Compose Resources translations render deterministically |
 | `sunsetscrob.android.application`     | For app module                                                                   |
 | `sunsetscrob.android.feature`         | Android-only feature modules that have not been migrated to KMP yet              |
 | `sunsetscrob.android.compose`         | Compose for Android-only modules                                                 |

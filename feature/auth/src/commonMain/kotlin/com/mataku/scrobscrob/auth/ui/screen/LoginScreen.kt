@@ -24,14 +24,18 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalResources
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.mataku.scrobscrob.auth.R
+import com.mataku.scrobscrob.auth.generated.resources.Res
+import com.mataku.scrobscrob.auth.generated.resources.error_login_failed
+import com.mataku.scrobscrob.auth.generated.resources.web_auth_description
+import com.mataku.scrobscrob.auth.generated.resources.web_auth_password_notice
+import com.mataku.scrobscrob.auth.generated.resources.web_auth_privacy_policy
+import com.mataku.scrobscrob.auth.generated.resources.web_auth_sign_in
+import com.mataku.scrobscrob.auth.generated.resources.web_auth_title
 import com.mataku.scrobscrob.auth.ui.viewmodel.LoginViewModel
 import com.mataku.scrobscrob.auth.webauth.LastFmWebAuthLauncher
 import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetButton
@@ -44,6 +48,8 @@ import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import com.mataku.scrobscrob.ui_common.style.onSecondaryColor
 import com.mataku.scrobscrob.ui_common.style.onSurfaceColor
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.getString
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 internal fun LoginScreen(
@@ -56,7 +62,6 @@ internal fun LoginScreen(
   val coroutineScope = rememberCoroutineScope()
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
   val snackbarHostState = LocalSnackbarHostState.current
-  val resources = LocalResources.current
   val launchWebAuth = webAuthLauncher.rememberLaunch(onResult = viewModel::onWebAuthResult)
   LaunchedEffect(uiState.events) {
     uiState.events.firstOrNull()?.let {
@@ -67,7 +72,7 @@ internal fun LoginScreen(
 
         is LoginViewModel.UiEvent.LoginFailed -> {
           coroutineScope.launch {
-            snackbarHostState.showSnackbar(resources.getString(R.string.error_login_failed))
+            snackbarHostState.showSnackbar(getString(Res.string.error_login_failed))
           }
         }
       }
@@ -114,7 +119,7 @@ private fun LoginContent(
       Spacer(modifier = Modifier.height(24.dp))
 
       SunsetText.Title(
-        text = stringResource(id = R.string.web_auth_title),
+        text = stringResource(Res.string.web_auth_title),
         fontWeight = FontWeight.Bold,
         modifier = Modifier.align(Alignment.CenterHorizontally),
         color = LocalAppTheme.current.onSurfaceColor(),
@@ -123,7 +128,7 @@ private fun LoginContent(
       Spacer(modifier = Modifier.height(16.dp))
 
       SunsetText.Label(
-        text = stringResource(id = R.string.web_auth_description),
+        text = stringResource(Res.string.web_auth_description),
         color = LocalAppTheme.current.onSurfaceColor(),
         textAlign = TextAlign.Center,
       )
@@ -146,7 +151,7 @@ private fun LoginContent(
           )
         } else {
           SunsetText.Body(
-            text = stringResource(id = R.string.web_auth_sign_in),
+            text = stringResource(Res.string.web_auth_sign_in),
             fontWeight = FontWeight.Medium,
           )
         }
@@ -155,7 +160,7 @@ private fun LoginContent(
       Spacer(modifier = Modifier.height(12.dp))
 
       SunsetText.Caption(
-        text = stringResource(id = R.string.web_auth_password_notice),
+        text = stringResource(Res.string.web_auth_password_notice),
         color = LocalAppTheme.current.onSecondaryColor(),
         textAlign = TextAlign.Center,
       )
@@ -163,7 +168,7 @@ private fun LoginContent(
       Spacer(modifier = Modifier.height(32.dp))
 
       SunsetTextButton.Label(
-        text = stringResource(id = R.string.web_auth_privacy_policy),
+        text = stringResource(Res.string.web_auth_privacy_policy),
         onClick = onPrivacyPolicyTap,
         color = LocalAppTheme.current.onSurfaceColor(),
       )
