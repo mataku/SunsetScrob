@@ -4,6 +4,7 @@ import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mataku.scrobscrob.core.entity.AppTheme
+import com.mataku.scrobscrob.data.repository.SessionRepository
 import com.mataku.scrobscrob.data.repository.ThemeRepository
 import com.mataku.scrobscrob.data.repository.UsernameRepository
 import dev.zacsweers.metro.AppScope
@@ -13,6 +14,7 @@ import dev.zacsweers.metrox.viewmodel.ViewModelKey
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
@@ -22,6 +24,7 @@ import kotlinx.coroutines.launch
 internal class MainViewModel(
   private val themeRepository: ThemeRepository,
   private val usernameRepository: UsernameRepository,
+  private val sessionRepository: SessionRepository,
 ) : ViewModel() {
 
   val state: StateFlow<MainUiState?>
@@ -29,6 +32,8 @@ internal class MainViewModel(
 
   init {
     viewModelScope.launch {
+      sessionRepository.recoverFromKeystoreLossIfNeeded().catch { }.collect()
+      sessionRepository.restoreSessionFromBackupIfNeeded().catch { }.collect()
       combine(
         themeRepository.currentTheme(),
         usernameRepository.usernameFlow(),

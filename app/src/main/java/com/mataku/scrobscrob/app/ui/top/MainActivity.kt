@@ -50,7 +50,8 @@ class MainActivity(
     get() = viewModelFactory
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    installSplashScreen()
+    val splashScreen = installSplashScreen()
+    splashScreen.setKeepOnScreenCondition { viewModel.state.value == null }
 
     enableEdgeToEdge()
     super.onCreate(savedInstanceState)
