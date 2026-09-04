@@ -19,6 +19,7 @@ import io.kotest.matchers.string.shouldStartWith
 import io.kotest.matchers.types.shouldBeInstanceOf
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.coVerifyOrder
 import io.mockk.mockk
 import io.mockk.slot
 import kotlinx.coroutines.flow.flowOf
@@ -212,8 +213,10 @@ class SessionRepositorySpec : DescribeSpec({
         awaitComplete()
       }
 
-      coVerify(exactly = 1) { sessionKeyDataStore.setSessionKey("abcdef0123456789") }
-      coVerify(exactly = 1) { usernameDataStore.setUsername("matakucom") }
+      coVerifyOrder {
+        sessionKeyDataStore.setSessionKey("abcdef0123456789")
+        usernameDataStore.setUsername("matakucom")
+      }
     }
 
     it("does not touch Block Store when a local session exists") {
