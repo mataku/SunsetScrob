@@ -50,7 +50,15 @@
       groupName: 'compose_compiler_kotlin',
       matchPackageNames: [
         'org.jetbrains.kotlin.{/,}**',
-        'com.google.devtools.ksp{/,}**',
+      ],
+    },
+    {
+      groupName: 'compose-multiplatform',
+      matchPackageNames: [
+        'org.jetbrains.compose{/,}**',
+        'org.jetbrains.androidx.{/,}**',
+        'androidx.compose{/,}**',
+        'androidx.navigation3{/,}**',
       ],
     },
     {
