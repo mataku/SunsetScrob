@@ -11,10 +11,8 @@ class KmpScreenshotTestConventionPlugin : Plugin<Project> {
       pluginManager.apply("io.github.takahirom.roborazzi")
       val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
       kotlinMultiplatform().apply {
-        compilerOptions {
-          freeCompilerArgs.add("-opt-in=androidx.compose.ui.test.ExperimentalTestApi")
-        }
         sourceSets.named("jvmTest") {
+          languageSettings.optIn("androidx.compose.ui.test.ExperimentalTestApi")
           dependencies {
             implementation(project(":test_helper:integration"))
             implementation(libs.findLibrary("jetbrains-compose-ui-test").get())
@@ -26,6 +24,11 @@ class KmpScreenshotTestConventionPlugin : Plugin<Project> {
         failOnNoDiscoveredTests.set(hasProperty("onlyScreenshotTest"))
         systemProperty("user.language", "en")
         systemProperty("user.country", "US")
+        // Roborazzi renders through Compose Desktop, so each forked test JVM
+        // registers as a GUI app and appears in the macOS Dock. Headless mode
+        // would break the Skia render path, so keep AWT functional and only
+        // suppress the Dock and menu bar entry. Ignored outside macOS.
+        systemProperty("apple.awt.UIElement", "true")
       }
     }
   }

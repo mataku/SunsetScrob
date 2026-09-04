@@ -41,7 +41,7 @@ class KmpComposeConventionPlugin : Plugin<Project> {
         }
         sourceSets.named("androidMain") {
           dependencies {
-            implementation(libs.findLibrary("compose-ui-tooling").get())
+            implementation(libs.findLibrary("jetbrains-compose-ui-tooling").get())
           }
         }
       }
