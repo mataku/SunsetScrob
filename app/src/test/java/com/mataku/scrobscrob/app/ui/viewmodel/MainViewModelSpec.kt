@@ -30,7 +30,7 @@ class MainViewModelSpec : DescribeSpec({
         callOrder.add("recover")
         flowOf(Unit)
       }
-      coEvery { sessionRepository.restoreSessionFromBackupIfNeeded() } answers {
+      coEvery { sessionRepository.syncSessionWithBackup() } answers {
         callOrder.add("restore")
         flowOf(Unit)
       }
@@ -49,7 +49,7 @@ class MainViewModelSpec : DescribeSpec({
       val sessionRepository = mockk<SessionRepository>()
       val gate = CompletableDeferred<Unit>()
       coEvery { sessionRepository.recoverFromKeystoreLossIfNeeded() } returns flowOf(Unit)
-      coEvery { sessionRepository.restoreSessionFromBackupIfNeeded() } returns flow {
+      coEvery { sessionRepository.syncSessionWithBackup() } returns flow {
         gate.await()
         emit(Unit)
       }
@@ -70,7 +70,7 @@ class MainViewModelSpec : DescribeSpec({
       coEvery { sessionRepository.recoverFromKeystoreLossIfNeeded() } returns flow {
         throw IllegalStateException("keystore broken")
       }
-      coEvery { sessionRepository.restoreSessionFromBackupIfNeeded() } returns flow {
+      coEvery { sessionRepository.syncSessionWithBackup() } returns flow {
         throw IllegalStateException("gms unavailable")
       }
       coEvery { themeRepository.currentTheme() } returns flowOf(AppTheme.DARK)

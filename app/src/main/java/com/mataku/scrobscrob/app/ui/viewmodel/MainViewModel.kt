@@ -33,7 +33,7 @@ internal class MainViewModel(
   init {
     viewModelScope.launch {
       sessionRepository.recoverFromKeystoreLossIfNeeded().catch { }.collect()
-      sessionRepository.restoreSessionFromBackupIfNeeded().catch { }.collect()
+      sessionRepository.syncSessionWithBackup().catch { }.collect()
       combine(
         themeRepository.currentTheme(),
         usernameRepository.usernameFlow(),
