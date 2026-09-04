@@ -47,6 +47,7 @@ class AppSmokeTest {
     Thread.sleep(STEP_DELAY_MS)
 
     // Scrobble tab: tap the first recent track and verify TrackScreen opens, then back.
+    composeRule.waitUntilExactlyOneExists(hasText("Supernova"), TIMEOUT_MS)
     composeRule.waitUntilExactlyOneExists(hasText("TRACE"), TIMEOUT_MS)
     composeRule.onNodeWithText("TRACE").performClick()
     composeRule.waitUntilExactlyOneExists(hasContentDescription("artwork image"), TIMEOUT_MS)

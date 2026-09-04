@@ -53,6 +53,7 @@ class LargeScreenSmokeTest {
 
     // Scrobble tab: tap the first recent track to trigger selectDetail
     // on the SunsetListDetailScaffold.
+    composeRule.waitUntilExactlyOneExists(hasText("Supernova"), TIMEOUT_MS)
     composeRule.waitUntilExactlyOneExists(hasText("TRACE"), TIMEOUT_MS)
 
     // Check the second cell id displayed
