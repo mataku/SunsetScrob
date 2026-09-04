@@ -11,10 +11,8 @@ class KmpScreenshotTestConventionPlugin : Plugin<Project> {
       pluginManager.apply("io.github.takahirom.roborazzi")
       val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
       kotlinMultiplatform().apply {
-        compilerOptions {
-          freeCompilerArgs.add("-opt-in=androidx.compose.ui.test.ExperimentalTestApi")
-        }
         sourceSets.named("jvmTest") {
+          languageSettings.optIn("androidx.compose.ui.test.ExperimentalTestApi")
           dependencies {
             implementation(project(":test_helper:integration"))
             implementation(libs.findLibrary("jetbrains-compose-ui-test").get())
