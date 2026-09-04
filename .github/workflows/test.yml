@@ -53,4 +53,4 @@ jobs:
           last-fm-shared-secret: ${{ secrets.LAST_FM_SHARED_SECRET }}
           google-services-json: ${{ secrets.GOOGLE_SERVICES_JSON_DEV }}
       - name: Run tests
-        run: ./gradlew testDebugUnitTest -PexcludeScreenshotTest=true
+        run: ./gradlew jvmTest testDebugUnitTest -PexcludeScreenshotTest=true

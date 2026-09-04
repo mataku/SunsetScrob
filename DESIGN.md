@@ -9,13 +9,13 @@ add screens that look consistent with the rest of the app.
 The runtime source of truth for tokens lives in code, not here:
 
 - Color palette: [
-  `ui_common/.../style/Colors.kt`](ui_common/src/main/java/com/mataku/scrobscrob/ui_common/style/Colors.kt)
+  `ui_common/.../style/Colors.kt`](ui_common/src/commonMain/kotlin/com/mataku/scrobscrob/ui_common/style/Colors.kt)
 - Per-theme color schemes & accents: [
-  `ui_common/.../style/SunsetTheme.kt`](ui_common/src/main/java/com/mataku/scrobscrob/ui_common/style/SunsetTheme.kt)
+  `ui_common/.../style/SunsetTheme.kt`](ui_common/src/commonMain/kotlin/com/mataku/scrobscrob/ui_common/style/SunsetTheme.kt)
 - Typography: [
-  `ui_common/.../style/SunsetTextStyle.kt`](ui_common/src/main/java/com/mataku/scrobscrob/ui_common/style/SunsetTextStyle.kt)
+  `ui_common/.../style/SunsetTextStyle.kt`](ui_common/src/commonMain/kotlin/com/mataku/scrobscrob/ui_common/style/SunsetTextStyle.kt)
 - Theme enum: [
-  `core/.../entity/AppTheme.kt`](core/src/main/java/com/mataku/scrobscrob/core/entity/AppTheme.kt)
+  `core/.../entity/AppTheme.kt`](core/src/commonMain/kotlin/com/mataku/scrobscrob/core/entity/AppTheme.kt)
 
 Where this doc and code disagree, **code wins** — update this doc.
 
@@ -54,12 +54,18 @@ Core principles:
 
 ---
 
+## Multiplatform
+
+`:core`, `:ui_common`, `:data:*` and `:test_helper:*` are Kotlin Multiplatform modules with `android` and `jvm` targets. The jvm target exists to render screenshot tests on Compose Desktop (Skia) without Robolectric; there is no desktop app. Android-only pieces (WebView, Custom Tabs, Tink, SQLite driver, DataStore files, Metro binding containers) sit in `androidMain`; everything the screenshots need is in `commonMain`. `commonMain` currently uses JVM-only APIs directly (`java.text.SimpleDateFormat`, `java.security.MessageDigest`, `java.net.URLEncoder`, `java.io.Serializable`, `Character.toChars`, `Dispatchers.IO`) because both existing targets — android and jvm — run on the JVM; a `wasmJs` target would need `expect`/`actual` work across these files first, so it is not a target this branch prepares for.
+
+---
+
 ## Themes
 
 There are six themes, declared in
-[`AppTheme.kt`](core/src/main/java/com/mataku/scrobscrob/core/entity/AppTheme.kt)
+[`AppTheme.kt`](core/src/commonMain/kotlin/com/mataku/scrobscrob/core/entity/AppTheme.kt)
 and applied in
-[`SunsetTheme.kt`](ui_common/src/main/java/com/mataku/scrobscrob/ui_common/style/SunsetTheme.kt).
+[`SunsetTheme.kt`](ui_common/src/commonMain/kotlin/com/mataku/scrobscrob/ui_common/style/SunsetTheme.kt).
 The user picks one in account settings; `ThemeRepository` persists it; the
 root `SunsetTheme(theme = ...)` calls `theme.resolve(isSystemInDarkTheme())`
 to collapse `FOLLOW_SYSTEM` into `DARK`/`LIGHT`, then propagates the chosen
@@ -124,10 +130,7 @@ Notes:
 
 ## Typography
 
-All text styles live in
-[`SunsetTextStyle`](ui_common/src/main/java/com/mataku/scrobscrob/ui_common/style/SunsetTextStyle.kt)
-and use the bundled **Noto Sans JP** family (Regular / Medium / Bold). All
-styles set `includeFontPadding = false` to keep vertical rhythm tight.
+All text styles live in [`SunsetTextStyle`](ui_common/src/commonMain/kotlin/com/mataku/scrobscrob/ui_common/style/SunsetTextStyle.kt) and use the bundled **Noto Sans JP** family (Regular / Medium / Bold). All styles set `includeFontPadding = false` on Android to keep vertical rhythm tight; `noFontPaddingPlatformTextStyle()` returns `null` on the JVM, so this has no effect on the jvm target.
 
 | Style      | Size / Weight                | Use                                                              |
 |------------|------------------------------|------------------------------------------------------------------|
@@ -299,7 +302,7 @@ expose it. Add later when a real second call site appears.
 Follow this sequence when a new `androidx.compose.material3.*` component
 slips into a feature or `:app`:
 
-1. **Wrapper**: add `ui_common/src/main/java/com/mataku/scrobscrob/ui_common/component/designsystem/SunsetX.kt`.
+1. **Wrapper**: add `ui_common/src/commonMain/kotlin/com/mataku/scrobscrob/ui_common/component/designsystem/SunsetX.kt`.
    Choose single-function vs `object` + factory based on call-site shape.
 2. **Detector**: add `lint-checks/.../PreferSunsetXDetector.kt`. Use any
    existing `PreferSunsetX*Detector.kt` as a template — they're all
@@ -553,8 +556,6 @@ the compact Nav3 push path.
   it skips ripple wiring that previews don't need and provides the
   `SunsetSurface` background so previews don't need their own `Surface { }`
   wrapper.
-- Showkase annotations (`@ShowkaseColor`, `@ShowkaseTypography`) on new tokens
-  so they appear in the design catalog.
 - For list-then-detail flows that need to adapt to tablet, branch on
   `isCompactWidth()` and use `SunsetListDetailScaffold` for the
   expanded path. Ship a `*PaneScreen` variant alongside the standalone

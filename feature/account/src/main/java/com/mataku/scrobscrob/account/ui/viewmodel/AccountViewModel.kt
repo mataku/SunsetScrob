@@ -161,10 +161,6 @@ class AccountViewModel(
     }
   }
 
-  fun navigateToUiCatalog() {
-    appInfoProvider.navigateToUiCatalogIntent(application)
-  }
-
   @Immutable
   data class AccountUiState(
     val theme: AppTheme?,

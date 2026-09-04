@@ -16,6 +16,7 @@ dependencies {
   implementation(libs.kotlin.gradle.plugin)
   implementation(libs.compose.compiler.plugin)
   implementation(libs.metro.gradle.plugin)
+  implementation(libs.jetbrains.compose.gradle.plugin)
 }
 
 gradlePlugin {
@@ -39,6 +40,22 @@ gradlePlugin {
     register("androidScreenshotTest") {
       id = "sunsetscrob.android.test.screenshot"
       implementationClass = "ScreenshotTestConventionPlugin"
+    }
+    register("kmpLibrary") {
+      id = "sunsetscrob.library"
+      implementationClass = "KmpLibraryConventionPlugin"
+    }
+    register("kmpCompose") {
+      id = "sunsetscrob.compose"
+      implementationClass = "KmpComposeConventionPlugin"
+    }
+    register("kmpMetro") {
+      id = "sunsetscrob.metro"
+      implementationClass = "KmpMetroConventionPlugin"
+    }
+    register("kmpScreenshotTest") {
+      id = "sunsetscrob.test.screenshot"
+      implementationClass = "KmpScreenshotTestConventionPlugin"
     }
   }
 }

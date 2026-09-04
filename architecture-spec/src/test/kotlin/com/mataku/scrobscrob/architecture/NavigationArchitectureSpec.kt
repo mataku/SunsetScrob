@@ -10,7 +10,7 @@ class NavigationArchitectureSpec : DescribeSpec({
 
   val files = Konsist.scopeFromProject().files
     .filterNot { it.path.contains("/architecture-spec/") }
-    .filter { it.path.contains("/src/main/") }
+    .filter { it.path.isProductionSourcePath() }
 
   describe("Navigation 3 dependency boundary") {
 
@@ -39,7 +39,7 @@ class NavigationArchitectureSpec : DescribeSpec({
 
     it("classes implementing SunsetNavKey must be @Immutable and @Serializable") {
       val violations = Konsist.scopeFromProject().classes()
-        .filter { it.containingFile.path.contains("/src/main/") }
+        .filter { it.containingFile.path.isProductionSourcePath() }
         .filter { c -> c.parents().any { it.name == "SunsetNavKey" } }
         .filter { c ->
           !c.hasAnnotation { it.name == "Immutable" } ||
@@ -53,7 +53,7 @@ class NavigationArchitectureSpec : DescribeSpec({
 
     it("NavKey classes live under ui/navigation or ui_common/navigation") {
       val violations = Konsist.scopeFromProject().classes()
-        .filter { it.containingFile.path.contains("/src/main/") }
+        .filter { it.containingFile.path.isProductionSourcePath() }
         .filter { c -> c.parents().any { it.name == "SunsetNavKey" } }
         .filterNot { c ->
           c.resideInPackage("..ui.navigation..") || c.resideInPackage("..ui_common.navigation..")

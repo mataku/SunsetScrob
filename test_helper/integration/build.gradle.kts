@@ -1,30 +1,36 @@
-import com.android.build.api.dsl.LibraryExtension
-
 plugins {
-  id("sunsetscrob.android.feature")
-  id("sunsetscrob.android.compose")
+  id("sunsetscrob.library")
+  id("sunsetscrob.compose")
 }
 
-configure<LibraryExtension>() {
-  namespace = "com.mataku.scrobscrob.test_helper.integration"
-}
+kotlin {
+  android {
+    namespace = "com.mataku.scrobscrob.test_helper.integration"
+  }
 
-dependencies {
-  implementation(project(":core"))
-  implementation(project(":ui_common"))
-  implementation(libs.compose.ui.test.android)
-  implementation(libs.compose.material3)
+  compilerOptions {
+    freeCompilerArgs.add("-opt-in=androidx.compose.ui.test.ExperimentalTestApi")
+  }
 
-  implementation(libs.kotlinx.collection)
-
-  implementation(libs.robolectric)
-  implementation(libs.roborazzi)
-  implementation(libs.androidx.test.ext.junit)
-  implementation(libs.compose.ui.test.junit4)
-  // for robolectric
-  implementation(libs.compose.ui.test.manifest)
-}
-
-tasks.withType(Test::class.java) {
-  failOnNoDiscoveredTests = false
+  sourceSets {
+    commonMain.dependencies {
+      implementation(project(":core"))
+      implementation(project(":ui_common"))
+      implementation(libs.jetbrains.compose.ui.test)
+      implementation(libs.kotlinx.collections.immutable)
+      implementation(libs.roborazzi.core)
+    }
+    androidMain.dependencies {
+      implementation(libs.robolectric)
+      implementation(libs.roborazzi)
+      implementation(libs.androidx.test.ext.junit)
+      implementation(libs.compose.ui.test.junit4)
+      implementation(libs.compose.ui.test.manifest)
+    }
+    jvmMain.dependencies {
+      api(compose.desktop.currentOs)
+      api(libs.roborazzi.compose.desktop)
+      api(libs.coroutines.swing)
+    }
+  }
 }

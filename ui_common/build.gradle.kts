@@ -1,47 +1,33 @@
-import com.android.build.api.dsl.LibraryExtension
-
 plugins {
-  id("sunsetscrob.android.feature")
-  id("sunsetscrob.android.compose")
-  id("sunsetscrob.android.test.screenshot")
-  id("com.google.devtools.ksp")
-  alias(libs.plugins.kotlin.serialization)
+  id("sunsetscrob.library")
+  id("sunsetscrob.compose")
+  id("sunsetscrob.test.screenshot")
 }
 
-configure<LibraryExtension>() {
-  namespace = "com.mataku.scrobscrob.ui_common"
-
-  buildFeatures {
-    buildConfig = true
+kotlin {
+  android {
+    namespace = "com.mataku.scrobscrob.ui_common"
+    experimentalProperties["android.experimental.kmp.enableAndroidResources"] = true
   }
-}
 
-dependencies {
-  implementation(project(":core"))
-  implementation(libs.activity.compose)
-  implementation(libs.compose.animation)
-  implementation(libs.compose.material3)
-  implementation(libs.compose.material3.adaptive)
-  implementation(libs.compose.material3.adaptive.layout)
-  implementation(libs.compose.material3.adaptive.navigation)
-
-
-  implementation(libs.coil.compose)
-  implementation(libs.compose.material.icons.extended)
-
-  implementation(libs.showkase.annotation)
-  kspDebug(libs.showkase.processor)
-  implementation(libs.showkase)
-  implementation(libs.kotlinx.collection)
-
-  implementation(libs.compose.ui.tooling)
-
-  implementation(libs.navigation3.runtime)
-  implementation(libs.navigation3.ui)
-  implementation(libs.serialization.json)
-  implementation(libs.metrox.viewmodel.compose)
-}
-
-ksp {
-  arg("skipPrivatePreviews", "true")
+  sourceSets {
+    commonMain.dependencies {
+      implementation(project(":core"))
+      implementation(libs.jetbrains.compose.material3.adaptive)
+      implementation(libs.jetbrains.compose.material3.adaptive.layout)
+      implementation(libs.jetbrains.compose.material3.adaptive.navigation)
+      implementation(libs.jetbrains.compose.material.icons.extended)
+      implementation(libs.jetbrains.compose.ui.backhandler)
+      implementation(libs.jetbrains.navigation3.ui)
+      implementation(libs.navigation3.runtime)
+      implementation(libs.jetbrains.lifecycle.viewmodel.compose)
+      implementation(libs.metrox.viewmodel.compose)
+      implementation(libs.coil.compose)
+      implementation(libs.kotlinx.collections.immutable)
+      implementation(libs.serialization.json)
+    }
+    androidMain.dependencies {
+      implementation(libs.activity.compose)
+    }
+  }
 }

@@ -3,6 +3,8 @@ package com.mataku.scrobscrob.app.di
 import android.app.Application
 import android.content.Context
 import coil3.ImageLoader
+import com.mataku.scrobscrob.BuildConfig
+import com.mataku.scrobscrob.core.AppBuildInfo
 import com.mataku.scrobscrob.data.repository.SessionRepository
 import com.mataku.scrobscrob.data.repository.di.ScrobbleServiceDependencies
 import dev.zacsweers.metro.AppScope
@@ -25,6 +27,9 @@ internal interface AppGraph : AppGraphContract {
 
   @Provides
   fun provideApplicationContext(application: Application): Context = application
+
+  @Provides
+  fun provideAppBuildInfo(): AppBuildInfo = AppBuildInfo(isDebug = BuildConfig.DEBUG)
 
   @DependencyGraph.Factory
   fun interface Factory {

@@ -10,7 +10,7 @@ class LastFmServiceArchitectureSpec : DescribeSpec({
   describe("LastFmService.rawRequest usage") {
     it("only LastFmService.kt may call rawRequest(); production code must use the typed request(endpoint) extension") {
       val violations = Konsist.scopeFromProject().files
-        .filter { it.path.contains("/src/main/") }
+        .filter { it.path.isProductionSourcePath() }
         .filterNot { it.path.endsWith("/data/api/LastFmService.kt") }
         .filter { it.text.contains("rawRequest(") }
 

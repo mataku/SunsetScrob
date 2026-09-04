@@ -16,6 +16,11 @@ Reference: `data/repository/.../ScrobbleRepository.kt`, `data/repository/di/Repo
   Enforced by the `RepositoryReturnsFlow` Lint detector in `:lint-checks`.
   Suppress with `@Suppress("RepositoryReturnsFlow")` only for genuine
   synchronous accessors that cannot be Flow-shaped, and document why.
+- All `*Repository` interfaces now live in `:data:repository` (a KMP module,
+  no Lint task), so the Flow-return rule is enforced there by Konsist
+  (`RepositoryArchitectureSpec` in `:architecture-spec`); the
+  `RepositoryReturnsFlow` Lint detector still covers `*Repository`
+  interfaces in Android-only modules.
 - Bind all repositories in `data/repository/di/RepositoryModule.kt` with
   `@Binds` and `@SingleIn(AppScope::class)`. The interface is annotated
   `@ContributesTo(AppScope::class)` so Metro auto-aggregates it into the
@@ -53,6 +58,8 @@ Reference: `data/repository/.../ScrobbleRepository.kt`, `data/repository/di/Repo
 - The root graph is `app/.../di/AppGraph.kt`:
   `@DependencyGraph(AppScope::class) interface AppGraph : MetroAppComponentProviders, ViewModelGraph, ScrobbleServiceDependencies`.
   `App` creates it via `createGraphFactory<AppGraph.Factory>().create(this)`.
+- In KMP modules, binding containers live in `src/androidMain/kotlin/.../di/` because they receive `Context` from `:app`. Interfaces that a common class needs (for example `LicenseInfoProvider`) stay in `commonMain`.
+- Build-time facts are injected, not read from `BuildConfig`: `AppBuildInfo(isDebug)` is provided by `AppGraph`; Last.fm credentials come from the generated `LastFmApiCredentials` object in `:data:api` (`local.properties` → `generateLastFmApiCredentials`).
 
 ## Repository Spec Conventions
 

@@ -6,7 +6,6 @@ plugins {
   id("sunsetscrob.android.metro")
   id("com.google.firebase.crashlytics")
   id("com.google.gms.google-services")
-  id("com.google.devtools.ksp")
   id("app.cash.licensee")
   id("androidx.baselineprofile")
 }
@@ -53,9 +52,6 @@ dependencies {
   implementation(libs.compose.material.icons.extended)
   implementation(libs.androidx.profileinstaller)
   baselineProfile(project(":benchmark"))
-  debugImplementation(libs.showkase)
-  implementation(libs.showkase.annotation)
-  kspDebug(libs.showkase.processor)
 
   implementation(libs.coil.compose)
   implementation(libs.coil.okhttp)
@@ -71,10 +67,6 @@ dependencies {
   androidTestImplementation(libs.coroutines.test)
   androidTestImplementation(libs.coil.test)
   debugImplementation(libs.compose.ui.test.manifest)
-}
-
-ksp {
-  arg("skipPrivatePreviews", "true")
 }
 
 licensee {

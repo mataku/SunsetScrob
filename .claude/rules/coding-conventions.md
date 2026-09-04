@@ -93,9 +93,7 @@ private fun AlbumContentPreview() {
 }
 ```
 
-`@Preview` composables must be declared `private`. Enforced by the
-`PreviewNotPrivate` Lint detector in `:lint-checks`. Suppress with
-`@Suppress("PreviewNotPrivate")` only for genuinely shared previews.
+`@Preview` composables must be declared `private`. KMP modules have no lint task, so the rule is enforced by Konsist (`ComposableScreenArchitectureSpec`, "@Preview composables are private") for them and by the `PreviewNotPrivate` detector in `:lint-checks` for the remaining Android modules; `@Suppress("PreviewNotPrivate")` opts out of both. Suppress only for genuinely shared previews. Because KMP modules have no lint task, Slack `compose-lint-checks` and the project's `:lint-checks` detectors do not run on them at all: `PreviewNotPrivate` is replaced by the Konsist check above, `RepositoryReturnsFlow` is replaced by the Konsist `RepositoryArchitectureSpec` (see `.claude/rules/repository.md`), and `PreferLocalAppThemeColor` plus the `PreferSunsetX` family (e.g. `PreferSunsetButtonDetector`, `PreferSunsetTextDetector`) still apply only to Android feature modules, as before — new conventions that must hold in KMP modules have to be written as Konsist specs, not Lint detectors.
 
 ### internal fun
 

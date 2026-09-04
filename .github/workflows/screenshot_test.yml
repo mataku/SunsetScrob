@@ -19,11 +19,11 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx8g -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -XX:+UseParallelGC -XX:MaxMetaspaceSize=1g"
+  GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx4g -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -XX:+UseParallelGC -XX:MaxMetaspaceSize=1g"
 
 jobs:
   screenshot_test:
-    runs-on: ubuntu-latest
+    runs-on: macos-26
     timeout-minutes: 20
 
     steps:
@@ -39,7 +39,7 @@ jobs:
           last-fm-shared-secret: ${{ secrets.LAST_FM_SHARED_SECRET }}
           google-services-json: ${{ secrets.GOOGLE_SERVICES_JSON_DEV }}
       - name: Run screenshot tests
-        run: ./gradlew verifyRoborazziDebug --no-configuration-cache -PonlyScreenshotTest=true
+        run: ./gradlew verifyRoborazziJvm verifyRoborazziDebug --no-configuration-cache -PonlyScreenshotTest=true
       - name: Upload test reports
         if: failure()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
