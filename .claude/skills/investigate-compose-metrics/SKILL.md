@@ -34,8 +34,8 @@ explicitly asks for a fix in a follow-up turn.
 find . -path '*/build/compose_metrics/*-module.json'
 ```
 
-Each module that applies the `sunsetscrob.android.compose` convention
-plugin produces:
+Each module that applies the `sunsetscrob.compose` (or, for `:app`,
+`sunsetscrob.android.compose`) convention plugin produces:
 
 - `<mod>/build/compose_metrics/debug/<mod>-module.json`
 - `<mod>/build/compose_reports/<mod>-classes.txt`

@@ -130,7 +130,7 @@ Notes:
 
 ## Typography
 
-All text styles live in [`SunsetTextStyle`](ui_common/src/commonMain/kotlin/com/mataku/scrobscrob/ui_common/style/SunsetTextStyle.kt) and use the bundled **Noto Sans JP** family (Regular / Medium / Bold). All styles set `includeFontPadding = false` on Android to keep vertical rhythm tight; `noFontPaddingPlatformTextStyle()` returns `null` on the JVM, so this has no effect on the jvm target.
+All text styles live in [`SunsetTextStyle`](ui_common/src/commonMain/kotlin/com/mataku/scrobscrob/ui_common/style/SunsetTextStyle.kt) and use the bundled **Noto Sans JP** family (Regular / Medium / Bold), loaded once for both targets from `ui_common/src/commonMain/composeResources/font` through `notoSansJpFontFamily()`; every style is therefore a `@Composable` getter. All styles set `includeFontPadding = false` on Android to keep vertical rhythm tight; `noFontPaddingPlatformTextStyle()` returns `null` on the JVM, so this has no effect on the jvm target.
 
 | Style      | Size / Weight                | Use                                                              |
 |------------|------------------------------|------------------------------------------------------------------|
@@ -328,7 +328,7 @@ slips into a feature or `:app`:
 VRT goldens stay unchanged as long as the wrapper's defaults match the bare
 material3 default. Default-shifting wrappers (e.g. `SunsetText` defaulting to
 `SunsetTextStyle.body` instead of `LocalTextStyle.current`) will rebase
-goldens — verify with `./gradlew verifyRoborazziDebug --no-configuration-cache -PonlyScreenshotTest=true`
+goldens — verify with `./gradlew verifyRoborazziJvm --no-configuration-cache -PonlyScreenshotTest=true`
 and update goldens as needed.
 
 ---
@@ -526,7 +526,7 @@ the compact Nav3 push path.
 
 ### Verifying tablet behavior
 
-- Per-pane Roborazzi VRTs at `RobolectricDeviceQualifiers.PixelTablet`:
+- Per-pane Roborazzi VRTs at `ScreenshotDevice.PixelTablet`:
   `*_screen_tablet.png` for the standalone variant and
   `*_pane_screen_tablet.png` for the pane variant.
 - Mechanical end-to-end: `LargeScreenSmokeTest` annotated
