@@ -1,5 +1,6 @@
 plugins {
   alias(libs.plugins.kotlin)
+  id("sunsetscrob.lint")
 }
 
 dependencies {

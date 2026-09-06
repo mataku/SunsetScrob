@@ -13,6 +13,7 @@ class KmpLibraryConventionPlugin : Plugin<Project> {
         apply("org.jetbrains.kotlin.multiplatform")
         apply("com.android.kotlin.multiplatform.library")
         apply("org.jetbrains.kotlin.plugin.serialization")
+        apply("sunsetscrob.lint")
       }
       kmpTargetsConfiguration()
       kmpTestConfiguration()
