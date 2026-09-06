@@ -16,6 +16,7 @@ kotlin {
     commonMain.dependencies {
       implementation(project(":core"))
       implementation(project(":ui_common"))
+      implementation(libs.jetbrains.compose.material3)
       implementation(libs.jetbrains.compose.ui.test)
       implementation(libs.kotlinx.collections.immutable)
       implementation(libs.roborazzi.core)

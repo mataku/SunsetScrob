@@ -35,7 +35,6 @@ class KmpComposeConventionPlugin : Plugin<Project> {
             implementation(compose.animation)
             implementation(compose.ui)
             implementation(compose.components.resources)
-            implementation(libs.findLibrary("jetbrains-compose-material3").get())
             implementation(libs.findLibrary("jetbrains-compose-ui-tooling-preview").get())
           }
         }

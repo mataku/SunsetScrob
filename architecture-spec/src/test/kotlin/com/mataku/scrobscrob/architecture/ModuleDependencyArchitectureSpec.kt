@@ -6,8 +6,10 @@ import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.collections.shouldBeEmpty
 
 private const val ROOT = "com.mataku.scrobscrob."
+// `:feature:discover` still keeps `DiscoverKey` under the older `chart` package.
+private val DISCOVER_SUBPACKAGES = listOf("chart", "discover")
 private val FEATURE_SUBPACKAGES = listOf(
-  "home", "album", "artist", "scrobble", "auth", "account", "chart",
+  "home", "album", "artist", "scrobble", "auth", "account", "chart", "discover",
 )
 
 class ModuleDependencyArchitectureSpec : DescribeSpec({
@@ -100,13 +102,13 @@ class ModuleDependencyArchitectureSpec : DescribeSpec({
         .filter { it.path.contains("/feature/") && it.path.contains("/src/") }
         .filterNot { it.path.contains("/feature/home/") }
         .mapNotNull { file ->
-          val selfSub = FEATURE_SUBPACKAGES.firstOrNull { sub ->
+          val selfSubs = FEATURE_SUBPACKAGES.filter { sub ->
             file.path.contains("/feature/$sub/") ||
-              (sub == "chart" && file.path.contains("/feature/discover/"))
+              (sub in DISCOVER_SUBPACKAGES && file.path.contains("/feature/discover/"))
           }
           val crossImports = file.imports.filter { imp ->
             FEATURE_SUBPACKAGES.any { other ->
-              other != selfSub && imp.name.startsWith("${ROOT}$other.")
+              other !in selfSubs && imp.name.startsWith("${ROOT}$other.")
             }
           }
           if (crossImports.isEmpty()) null else file to crossImports
@@ -117,6 +119,24 @@ class ModuleDependencyArchitectureSpec : DescribeSpec({
           violations.joinToString("\n") { (file, imps) ->
             "${file.path} -> ${imps.joinToString { it.name }}"
           },
+      ) { violations.shouldBeEmpty() }
+    }
+
+    it("only :ui_common and :test_helper:integration may import Material 3") {
+      val violations = files
+        .filter { file ->
+          file.imports.any { imp ->
+            imp.name.startsWith("androidx.compose.material3") ||
+              imp.name.startsWith("org.jetbrains.compose.material3")
+          }
+        }
+        .filterNot { it.path.contains("/ui_common/src/") }
+        .filterNot { it.path.contains("/test_helper/integration/src/") }
+      withClue(
+        "Material 3 is wrapped by the SunsetX components in :ui_common; " +
+          ":test_helper:integration is allowed only so screenshots can disable ripples. " +
+          "See DESIGN.md \"Custom wrappers (SunsetX)\". Offending files:\n" +
+          violations.joinToString("\n") { it.path },
       ) { violations.shouldBeEmpty() }
     }
 

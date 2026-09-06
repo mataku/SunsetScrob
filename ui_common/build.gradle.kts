@@ -12,6 +12,7 @@ kotlin {
   sourceSets {
     commonMain.dependencies {
       implementation(project(":core"))
+      implementation(libs.jetbrains.compose.material3)
       implementation(libs.jetbrains.compose.material3.adaptive)
       implementation(libs.jetbrains.compose.material3.adaptive.layout)
       implementation(libs.jetbrains.compose.material3.adaptive.navigation)
