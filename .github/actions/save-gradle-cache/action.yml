@@ -63,8 +63,8 @@ runs:
       with:
         path: |
           ~/.gradle/caches/jars-*
-          ~/.gradle/caches/transforms-*
           ~/.gradle/caches/modules-*
+          ~/.gradle/caches/[0-9]*.*
         key: gradle-dependencies-develop
 
     - name: Save gradle build results
@@ -74,5 +74,4 @@ runs:
         path: |
           .gradle
           ~/.gradle/caches/build-cache-*
-          ~/.gradle/caches/[0-9]*.* # TODO: specify latest only
         key: gradle-build-cache-${{ runner.os }}-${{ inputs.cache-key }}-develop

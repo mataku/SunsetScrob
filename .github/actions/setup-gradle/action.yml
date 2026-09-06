@@ -29,8 +29,8 @@ runs:
       with:
         path: |
           ~/.gradle/caches/jars-*
-          ~/.gradle/caches/transforms-*
           ~/.gradle/caches/modules-*
+          ~/.gradle/caches/[0-9]*.*
         key: gradle-dependencies-develop
     - name: Restore gradle build results
       uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
@@ -39,5 +39,5 @@ runs:
         path: |
           .gradle
           ~/.gradle/caches/build-cache-*
-          ~/.gradle/caches/[0-9]*.* # TODO: specify latest only
         key: gradle-build-cache-${{ runner.os }}-${{ inputs.cache-key }}-develop
+
