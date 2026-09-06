@@ -88,6 +88,12 @@ Compose:
     active: true
   ViewModelForwarding:
     active: true
+    # These are @Composable lambda factories (e.g. "@Composable (FooKey) -> FooViewModel")
+    # used to hoist ViewModel creation up to :feature:home, the navigation hub. The rule's
+    # naive type-name match treats them as ViewModel instances being forwarded, but they are
+    # providers, not the ViewModel itself, which is the deliberate architecture documented in
+    # architecture.md for feature-to-feature navigation.
+    allowedForwardingOfTypes: "@Composable \\(.*\\) -> .*ViewModel"
   ViewModelInjection:
     active: true
     viewModelFactories: metroViewModel,viewModelFor

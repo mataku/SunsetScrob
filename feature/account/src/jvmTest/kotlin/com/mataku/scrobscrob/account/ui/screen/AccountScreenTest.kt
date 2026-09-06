@@ -67,12 +67,11 @@ class AccountScreenTest {
     )
   }
 
-  @Composable
-  private fun Screen(
+  private fun screenContent(
     viewModel: AccountViewModel,
     themeSelectorViewModel: ThemeSelectorViewModel = mockk(),
     licenseViewModel: LicenseViewModel = mockk(),
-  ) {
+  ): @Composable () -> Unit = {
     AccountScreen(
       viewModel = viewModel,
       inAppUpdateManager = inAppUpdateManager,
@@ -93,7 +92,7 @@ class AccountScreenTest {
     val viewModel = stubAccountViewModel()
     captureScreenshot(
       appTheme = AppTheme.DARK,
-      content = { Screen(viewModel = viewModel) },
+      content = screenContent(viewModel = viewModel),
       fileName = "account_screen.png"
     )
   }
@@ -103,7 +102,7 @@ class AccountScreenTest {
     val viewModel = stubAccountViewModel(theme = AppTheme.LIGHT)
     captureScreenshot(
       appTheme = AppTheme.LIGHT,
-      content = { Screen(viewModel = viewModel) },
+      content = screenContent(viewModel = viewModel),
       fileName = "account_screen_light.png"
     )
   }
@@ -114,7 +113,7 @@ class AccountScreenTest {
     captureScreenshot(
       device = ScreenshotDevice.PixelTablet,
       appTheme = AppTheme.DARK,
-      content = { Screen(viewModel = viewModel) },
+      content = screenContent(viewModel = viewModel),
       fileName = "account_screen_tablet.png"
     )
   }
@@ -133,12 +132,10 @@ class AccountScreenTest {
     captureScreenshot(
       device = ScreenshotDevice.PixelTablet,
       appTheme = AppTheme.DARK,
-      content = {
-        Screen(
-          viewModel = viewModel,
-          themeSelectorViewModel = themeSelectorViewModel,
-        )
-      },
+      content = screenContent(
+        viewModel = viewModel,
+        themeSelectorViewModel = themeSelectorViewModel,
+      ),
       actionsBeforeCapturing = {
         onNodeWithText("Theme").performClick()
         waitForIdle()
@@ -175,12 +172,10 @@ class AccountScreenTest {
     captureScreenshot(
       device = ScreenshotDevice.PixelTablet,
       appTheme = AppTheme.DARK,
-      content = {
-        Screen(
-          viewModel = viewModel,
-          licenseViewModel = licenseViewModel,
-        )
-      },
+      content = screenContent(
+        viewModel = viewModel,
+        licenseViewModel = licenseViewModel,
+      ),
       actionsBeforeCapturing = {
         onNodeWithText("Licenses").performClick()
         waitForIdle()
