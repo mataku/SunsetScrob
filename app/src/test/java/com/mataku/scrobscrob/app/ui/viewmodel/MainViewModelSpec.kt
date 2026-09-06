@@ -43,7 +43,7 @@ class MainViewModelSpec : DescribeSpec({
 
       val viewModel = MainViewModel(themeRepository, usernameRepository, sessionRepository)
 
-      viewModel.state.filterNotNull().first().username shouldBe "matakucom"
+      viewModel.uiState.filterNotNull().first().username shouldBe "matakucom"
       callOrder.take(2) shouldBe listOf("recover", "restore")
     }
 
@@ -63,9 +63,9 @@ class MainViewModelSpec : DescribeSpec({
 
       val viewModel = MainViewModel(themeRepository, usernameRepository, sessionRepository)
 
-      viewModel.state.value.shouldBeNull()
+      viewModel.uiState.value.shouldBeNull()
       gate.complete(Unit)
-      viewModel.state.filterNotNull().first().username shouldBe "matakucom"
+      viewModel.uiState.filterNotNull().first().username shouldBe "matakucom"
     }
 
     it("still emits state when the session calls fail") {
@@ -84,7 +84,7 @@ class MainViewModelSpec : DescribeSpec({
 
       val viewModel = MainViewModel(themeRepository, usernameRepository, sessionRepository)
 
-      val state = viewModel.state.filterNotNull().first()
+      val state = viewModel.uiState.filterNotNull().first()
       state.theme shouldBe AppTheme.DARK
       state.username.shouldBeNull()
     }
@@ -103,7 +103,7 @@ class MainViewModelSpec : DescribeSpec({
 
       val viewModel = MainViewModel(themeRepository, usernameRepository, sessionRepository)
 
-      viewModel.state.filterNotNull().first().username shouldBe "matakucom"
+      viewModel.uiState.filterNotNull().first().username shouldBe "matakucom"
     }
   }
 })

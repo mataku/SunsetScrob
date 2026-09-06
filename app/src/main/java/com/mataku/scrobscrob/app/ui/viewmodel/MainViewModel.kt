@@ -27,7 +27,7 @@ internal class MainViewModel(
   private val sessionRepository: SessionRepository,
 ) : ViewModel() {
 
-  val state: StateFlow<MainUiState?>
+  val uiState: StateFlow<MainUiState?>
     field = MutableStateFlow(null)
 
   init {
@@ -44,13 +44,13 @@ internal class MainViewModel(
         MainUiState(theme = theme, username = username)
       }
         .catch {
-          state.value = MainUiState(
+          uiState.value = MainUiState(
             theme = AppTheme.DARK,
             username = null
           )
         }
         .collect {
-          state.value = it
+          uiState.value = it
         }
     }
   }

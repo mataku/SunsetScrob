@@ -114,7 +114,7 @@ class ScrobbleScreenTest {
   fun layout_tablet_two_pane() {
     val scrobbleViewModel = stubScrobbleViewModel()
     val trackViewModel = mockk<TrackViewModel>(relaxed = true).apply {
-      every { state } returns MutableStateFlow(
+      every { uiState } returns MutableStateFlow(
         TrackViewModel.TrackUiState(
           isLoading = false,
           trackInfo = sampleTrackInfo,

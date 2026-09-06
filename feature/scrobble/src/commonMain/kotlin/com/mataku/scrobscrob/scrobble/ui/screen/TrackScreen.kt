@@ -67,7 +67,7 @@ internal fun SharedTransitionScope.TrackScreen(
   onBackPressed: () -> Unit,
   modifier: Modifier = Modifier
 ) {
-  val uiState by trackViewModel.state.collectAsStateWithLifecycle()
+  val uiState by trackViewModel.uiState.collectAsStateWithLifecycle()
 
   TrackContent(
     animatedVisibilityScope = animatedVisibilityScope,
@@ -200,7 +200,7 @@ internal fun SharedTransitionScope.TrackPaneScreen(
   onBackPressed: () -> Unit,
   modifier: Modifier = Modifier
 ) {
-  val uiState by trackViewModel.state.collectAsStateWithLifecycle()
+  val uiState by trackViewModel.uiState.collectAsStateWithLifecycle()
 
   TrackPaneContent(
     animatedVisibilityScope = animatedVisibilityScope,

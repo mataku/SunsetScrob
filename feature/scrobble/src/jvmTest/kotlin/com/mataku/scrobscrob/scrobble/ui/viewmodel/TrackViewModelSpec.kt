@@ -45,7 +45,7 @@ class TrackViewModelSpec : DescribeSpec({
           )
         }
 
-        viewModel.state.value.isLoading shouldBe false
+        viewModel.uiState.value.isLoading shouldBe false
       }
     }
   }
