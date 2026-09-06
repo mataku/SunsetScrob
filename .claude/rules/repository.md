@@ -12,8 +12,8 @@ paths:
 Reference: `data/repository/.../ScrobbleRepository.kt`, `data/repository/di/RepositoryModule.kt`.
 
 - Interface and its `Impl` class live in the **same file**, same package.
-- Methods return `Flow<T>`; wrap async work with `flow { ... }.flowOn(Dispatchers.IO)`. Enforced by the `RepositoryReturnsFlow` Lint detector in `:lint-checks`. Suppress with `@Suppress("RepositoryReturnsFlow")` only for genuine synchronous accessors that cannot be Flow-shaped, and document why.
-- All `*Repository` interfaces now live in `:data:repository` (a KMP module, no Lint task), so the Flow-return rule is enforced there by Konsist (`RepositoryArchitectureSpec` in `:architecture-spec`); the `RepositoryReturnsFlow` Lint detector still covers `*Repository` interfaces in Android-only modules.
+- Methods return `Flow<T>`; wrap async work with `flow { ... }.flowOn(Dispatchers.IO)`. Enforced by Konsist (`RepositoryArchitectureSpec` in `:architecture-spec`, "`*Repository` interfaces declare methods returning `Flow<T>`").
+- All `*Repository` interfaces live in `:data:repository`, a KMP module with no Lint task, so this rule is enforced by Konsist alone.
 - Bind all repositories in `data/repository/di/RepositoryModule.kt` with `@Binds` and `@SingleIn(AppScope::class)`. The interface is annotated `@ContributesTo(AppScope::class)` so Metro auto-aggregates it into the app graph — no explicit `includes` wiring is needed; `:data:api`'s `ApiModule` and `:data:db`'s `DatabaseModule` join automatically because they are also `@ContributesTo(AppScope::class)`.
 - Do not catch errors inside the repository. Let them propagate — the ViewModel's `.catch { ... }` maps them to a `UiEvent.Error`.
 - Call the API through the typed `LastFmService.request(endpoint)` extension. `rawRequest(endpoint, typeInfo)` is the type-erased member that exists so the inline extension can be reified and so specs can stub it with MockK; production code never calls it directly. Enforced by Konsist (`LastFmServiceArchitectureSpec`).

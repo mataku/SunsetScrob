@@ -59,7 +59,7 @@ Conventions are encoded as executable specs and enforced at the CI boundary, so 
 | Unit         | Kotest + MockK                     | push / PR       |
 | Architecture | Konsist (`:architecture-spec`)     | push / PR       |
 | Lint         | Android Lint                       | push / PR       |
-| Custom Lint  | `:lint-checks` (project detectors) | push / PR       |
+| Static analysis | detekt (compose-rules + ktlint formatting, all modules) | push / PR |
 | VRT          | Roborazzi screenshot tests         | push / PR       |
 | E2E          | Compose integration tests          | develop / daily |
 | Compose perf | Compose compiler metrics           | weekly          |
@@ -82,13 +82,13 @@ Examples:
 
 Lint runs with AGP defaults plus targeted disables in `AndroidLintConfiguration` (`build-logic/convention/.../ext/`).
 It fails the build only when `CI=true` — locally, issues surface via reports and IDE highlights.
-Project-specific rules are implemented as custom detectors in `:lint-checks`, registered through the `:app` Compose convention plugin:
+There are no project-specific custom detectors any more; project-specific conventions are enforced instead by Konsist (declaration-level, all modules) and detekt (expression-level, all modules):
 
-- `@Preview` composables must be `private` (also enforced by Konsist, which covers the KMP modules)
-- `UiState` must be `@Immutable` and exposed as `StateFlow`
-- Use the project's `Sunset*` wrappers instead of Material3 primitives directly (`SunsetText`, `SunsetButton`, `SunsetTopAppBar`, …)
+- `@Preview` composables must be `private` — Konsist
+- `UiState` must be `@Immutable` and exposed as `StateFlow` — Konsist
+- Use the project's `Sunset*` wrappers instead of Material3 primitives directly — Konsist blocks importing Material 3 outside `:ui_common`
 
-Since every library module is KMP, these detectors only run over `:app`; the equivalent guarantees for library modules come from Konsist specs.
+Since every library module is KMP, Android Lint runs over `:app` only; the equivalent guarantees for library modules come from Konsist and detekt.
 Lint failures break CI on PR, and a summary is auto-posted as a PR comment.
 
 ### UI quality
@@ -113,7 +113,7 @@ Setup and fixture conventions live in [`.claude/rules/e2e-testing.md`](.claude/r
 #### Shared UI primitives in `:ui_common`
 
 Material 3 components and Navigation 3 APIs are fronted by `Sunset*` wrappers in `:ui_common`.
-Imports of Material 3 and Navigation 3 outside `:ui_common` are blocked by Konsist specs — plus `:lint-checks` detectors on `:app`, which is the only module Android Lint still runs on — so theme tweaks, Material / Nav upgrades, and transition tuning land in one place.
+Imports of Material 3 and Navigation 3 outside `:ui_common` are blocked by Konsist specs, so theme tweaks, Material / Nav upgrades, and transition tuning land in one place.
 The full component, navigation, and theming spec is in [`DESIGN.md`](DESIGN.md).
 
 <details>

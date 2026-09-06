@@ -23,8 +23,8 @@ The visual mood is **dark-first, artwork-forward, low-chrome**: album art is the
 Core principles:
 
 1. **Dark by default.** `AppTheme.DARK` is the default; four of the five concrete themes are dark. Light theme is supported but secondary.
-2. **Material 3 is wrapped, not imported.** Outside `:ui_common`, code never imports `androidx.compose.material3.*` directly — every Material 3 component is fronted by a `SunsetX` wrapper that lives in `:ui_common`. Two sensors back this up. `:lint-checks` ships one `PreferSunsetX` import-based detector per wrapper, which covers `:app`; every library module is KMP and has no Android Lint task, so for those `ModuleDependencyArchitectureSpec` asserts that only `:ui_common` and `:test_helper:integration` import material3. The dependency itself is declared per module rather than by `sunsetscrob.compose`, so a feature module that tries anyway does not even compile. Theming still goes through `MaterialTheme` with our `ColorScheme`s; don't introduce a parallel theming layer.
-3. **One theme provider.** Outside `:ui_common`, themable composables read colors via `LocalAppTheme.current.<role>Color()` (`backgroundColor()`, `primaryColor()`, `surfaceColor()`, `accentColor()`, …). The `PreferLocalAppThemeColor` lint detector blocks direct `MaterialTheme.colorScheme.*` access from `:app` code, and feature modules have no material3 dependency to reach through in the first place; only `:ui_common` bridges between Material 3 and the Sunset color API.
+2. **Material 3 is wrapped, not imported.** Outside `:ui_common`, code never imports `androidx.compose.material3.*` directly — every Material 3 component is fronted by a `SunsetX` wrapper that lives in `:ui_common`. `ModuleDependencyArchitectureSpec` (Konsist) asserts that only `:ui_common` and `:test_helper:integration` may import material3, across every module including `:app`. The dependency itself is declared per module rather than by `sunsetscrob.compose`, so a feature module that tries anyway does not even compile. Theming still goes through `MaterialTheme` with our `ColorScheme`s; don't introduce a parallel theming layer.
+3. **One theme provider.** Outside `:ui_common`, themable composables read colors via `LocalAppTheme.current.<role>Color()` (`backgroundColor()`, `primaryColor()`, `surfaceColor()`, `accentColor()`, …). The same Material 3 import rule blocks direct `MaterialTheme.colorScheme.*` access outside `:ui_common`, and feature modules have no material3 dependency to reach through in the first place; only `:ui_common` bridges between Material 3 and the Sunset color API.
 4. **Artwork is content, not decoration.** Image loading is centralized in `SunsetImage` so placeholder, crossfade, and error behavior stay uniform.
 5. **AI-assistability matters.** Conventions here exist so that adding a new screen by analogy to an existing one produces a result that fits the rest of the app.
 
@@ -135,7 +135,7 @@ ui_common/.../
 ```
 
 `androidx.compose.material3.*` (and `androidx.compose.material3.adaptive.*`) imports are confined to `:ui_common`, not literally to `component/designsystem/` — `style/SunsetTheme.kt` and `style/WindowAdaptive.kt` legitimately import material3 too.
-Both the `PreferSunsetX` detectors and the Konsist spec draw the boundary at the module, not at a directory.
+The Konsist spec draws the boundary at the module, not at a directory.
 
 When a feature module needs a UI piece that's also useful elsewhere, **lift it into `:ui_common`** rather than copy-pasting.
 Material 3 wrappers go under `component/designsystem/`; app-specific shared widgets go under `component/`; full-screen composables go under `screen/`.
@@ -228,11 +228,9 @@ Add later when a real second call site appears.
 Follow this sequence when a new `androidx.compose.material3.*` component slips into a feature or `:app`:
 
 1. **Wrapper**: add `ui_common/src/commonMain/kotlin/com/mataku/scrobscrob/ui_common/component/designsystem/SunsetX.kt`. Choose single-function vs `object` + factory based on call-site shape.
-2. **Detector**: add `lint-checks/.../PreferSunsetXDetector.kt`. Use any existing `PreferSunsetX*Detector.kt` as a template — they're all import-based scanners with the same shape: ban `androidx.compose.material3.X` outside `com.mataku.scrobscrob.ui_common` and its sub-packages, severity `ERROR`, suppression via `@Suppress("PreferSunsetX")` / `@file:Suppress(...)`.
-3. **Registry**: add `PreferSunsetXDetector.ISSUE` to `lint-checks/.../SunsetIssueRegistry.kt` (alphabetical).
-4. **Spec**: add `lint-checks/src/test/.../PreferSunsetXDetectorSpec.kt`. Use any existing spec as a template; the 6-case shape is fixed (ui_common allowed, ui_common sub-package allowed, feature reported, app reported, `@file:Suppress` opts out, unrelated material3 import is clean). All cases must call `.skipTestModes(TestMode.IMPORT_ALIAS)` — `IMPORT_ALIAS` rewrites imports as `import ... as IMPORT_ALIAS_1_X`, which double-counts for import-based detectors.
-5. **Stub**: add `material3XStub` to `lint-checks/src/test/.../Stubs.kt`.
-6. **Migrate** existing call sites: grep `androidx.compose.material3.X`, replace imports with the `SunsetX` wrapper, replace `style = SunsetTextStyle.body.copy(color = Y)`-style call sites with the matching preset (`SunsetText.Body(color = Y)`) where one exists, leave slot/content forms alone. Run `CI=true ./gradlew lintDebug` and confirm 0 errors.
+2. **Migrate** existing call sites: grep `androidx.compose.material3.X`, replace imports with the `SunsetX` wrapper, replace `style = SunsetTextStyle.body.copy(color = Y)`-style call sites with the matching preset (`SunsetText.Body(color = Y)`) where one exists, leave slot/content forms alone. Run `./gradlew :architecture-spec:test` and confirm the Material 3 import rule stays green.
+
+No per-wrapper detector or spec is needed: `ModuleDependencyArchitectureSpec` already bans any `androidx.compose.material3.*` import outside `:ui_common` and `:test_helper:integration`, so it catches a stray import of the new component automatically, with no extra wiring per wrapper.
 
 VRT goldens stay unchanged as long as the wrapper's defaults match the bare material3 default.
 Default-shifting wrappers (e.g. `SunsetText` defaulting to `SunsetTextStyle.body` instead of `LocalTextStyle.current`) will rebase goldens — verify with `./gradlew verifyRoborazziJvm -PonlyScreenshotTest=true` and update goldens as needed.
@@ -377,14 +375,14 @@ The `*Navigation.kt` files keep their `destination<*Key>` registrations for the 
 - Read colors via `LocalAppTheme.current.<role>Color()` (`backgroundColor`, `primaryColor`, `onSurfaceColor`, `accentColor`, …). Add a new extension in `SunsetTheme.kt` if a role is missing.
 - Use `SunsetTextStyle` entries for text; extend it when a new role is needed.
 - Use `SunsetImage` for any remote image.
-- Use `SunsetX` wrappers from `:ui_common` for any Material 3 component. If `:ui_common` doesn't expose what you need, add a wrapper there + a `PreferSunsetX` lint detector pair (see "Custom wrappers" above) — don't introduce a one-off material3 import.
+- Use `SunsetX` wrappers from `:ui_common` for any Material 3 component. If `:ui_common` doesn't expose what you need, add a wrapper there (see "Adding a new wrapper" above) — don't introduce a one-off material3 import.
 - Reuse `:ui_common` organisms/molecules; if the same widget appears in a second feature module, promote it to `:ui_common` instead of duplicating.
 - Use `SunsetThemePreview` (not `SunsetTheme`) inside `@Preview` composables — it skips ripple wiring that previews don't need and provides the `SunsetSurface` background so previews don't need their own `Surface { }` wrapper.
 - For list-then-detail flows that need to adapt to tablet, branch on `isCompactWidth()` and use `SunsetListDetailScaffold` for the expanded path. Ship a `*PaneScreen` variant alongside the standalone `*Screen` (fixed 280.dp peek + translucent sheet) and pass `useSharedElement = false` / `id = ""` inside the scaffold so shared element transitions stay disabled in two-pane mode.
 
 **Don't**
 
-- Don't import `androidx.compose.material3.*` from a feature or `:app` module. In `:app` the matching `PreferSunsetX` lint detector will fail CI; in a KMP feature module the import doesn't resolve at all, because material3 is declared only by `:ui_common` and `:test_helper:integration`. If you truly need to (rare — usually means a wrapper is missing), suppress with `@Suppress("PreferSunsetX")` and document why in the same commit.
+- Don't import `androidx.compose.material3.*` from a feature or `:app` module. `ModuleDependencyArchitectureSpec` fails CI in `:app`; in a KMP feature module the import doesn't resolve at all, because material3 is declared only by `:ui_common` and `:test_helper:integration`. If you truly need to (rare — usually means a wrapper is missing), that means a new wrapper belongs in `:ui_common` instead.
 - Don't add `libs.jetbrains.compose.material3` to a feature module's `build.gradle.kts`. Foundation primitives come from `compose.foundation`, animation from `compose.animation`; material3 belongs to `:ui_common`, and `ModuleDependencyArchitectureSpec` fails the build if it leaks elsewhere.
 - Don't hard-code `Color(0xFF…)` at a call site. Add it to `Colors` (or a per-theme `*Color` object) and wire it through `ColorScheme`.
 - Don't construct one-off `TextStyle(...)` literals; extend `SunsetTextStyle`.
@@ -393,7 +391,7 @@ The `*Navigation.kt` files keep their `destination<*Key>` registrations for the 
 - Don't introduce a new bottom bar, top bar, or back button. Use the existing `SunsetNavigationBar` / `NavigationHeader` / `ContentHeader` / `CircleBackButton`.
 - Don't override `LocalRippleConfiguration` locally; `SunsetTheme` already picks the right alpha per `isLight`.
 - Don't add a new theme that needs its own `ColorScheme` without also adding a dedicated `*Color` object alongside `DarkColor` / `LightColor` / `LastFmDarkColor` and updating `accentColor()` + `colorScheme()` in `SunsetTheme.kt`. (`FOLLOW_SYSTEM` is the exception — it intentionally has no scheme of its own and resolves to `DARK`/`LIGHT` at composition time via `AppTheme.resolve(...)`.)
-- Don't import `androidx.compose.material3.adaptive.*` outside `:ui_common`. Consume `SunsetListDetailScaffold`, `rememberSunsetListDetailScaffoldState`, and `isCompactWidth()` instead. Enforced by the `PreferSunsetListDetailPaneScaffold` lint detector.
+- Don't import `androidx.compose.material3.adaptive.*` outside `:ui_common`. Consume `SunsetListDetailScaffold`, `rememberSunsetListDetailScaffoldState`, and `isCompactWidth()` instead. Enforced by `ModuleDependencyArchitectureSpec`.
 - Don't pass `scaffoldDirective` to `rememberListDetailPaneScaffoldNavigator` to flip `maxHorizontalPartitions` based on selection — the navigator's `navigateTo` is `suspend` and the resulting async-vs-sync split produces a single-pane Detail flash on tap. Use the `(directive, value, ...)` overload via `SunsetListDetailScaffold` instead.
 
 ## Authentication (Last.fm web auth)

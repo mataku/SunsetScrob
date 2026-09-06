@@ -78,7 +78,7 @@ Layer / package / Compose / navigation rules already live in always-loaded `arch
 - Image loading: Coil 3
 - Build: Gradle Kotlin DSL, version catalog (`gradle/libs.versions.toml`), custom convention plugins in `build-logic/convention/`. Every library module is KMP and applies `sunsetscrob.library` and `sunsetscrob.lint`, plus `compose` / `metro` / `test.screenshot` as needed (`:core` takes `library` + `compose`, `:data:*` take `library` + `metro`, feature modules take all four). `sunsetscrob.android.application` / `android.compose` / `android.metro` / `android.lint` are for `:app` only.
 - Tests: Kotest (JUnit5 platform), MockK, Turbine, Roborazzi.
-- Code quality: detekt (compose-rules + ktlint formatting, all modules), Android Lint with project-specific custom detectors in `:lint-checks` (`:app` only), Compose lint (Slack `compose-lint-checks`, `:app` only), Konsist architecture tests, Licensee. Lint fails the build only when `CI=true` (see `build-logic/convention/.../AndroidLintConfiguration.kt`); CI runs it as a standalone job (`.github/workflows/lint.yml`). KMP modules have no lint task, so Android Lint and Compose lint cover `:app` alone; detekt and Konsist are what cover the KMP modules. New conventions for KMP modules must be written as Konsist specs (declaration-level) or detekt rules (expression-level).
+- Code quality: detekt (compose-rules + ktlint formatting, all modules), Android Lint (`:app` only, built-in checks; no custom detectors), Konsist architecture tests, Licensee. Lint fails the build only when `CI=true` (see `build-logic/convention/.../AndroidLintConfiguration.kt`); CI runs it as a standalone job (`.github/workflows/lint.yml`). KMP modules have no lint task, so Android Lint covers `:app` alone; detekt and Konsist are what cover every module. New conventions must be written as Konsist specs (declaration-level) or detekt rules (expression-level).
 
 ---
 
@@ -94,9 +94,9 @@ When you add a new convention to a `.claude/rules/` file, add a matching Spec.
 When you change a Spec, update the corresponding rule.
 Guide and sensor must stay paired.
 
-### When a convention deserves a Konsist spec or Lint detector
+### When a convention deserves a Konsist spec or detekt rule
 
 Add a mechanical rule only for conventions whose violation would otherwise go unnoticed: the build passes, the tests pass and the app appears to work, but the code has drifted (a class in the wrong package, a ViewModel that silently drops out of the Metro graph, a VRT class missing its tag, a repository that swallows errors).
 Those are the problems a reviewer would only catch by knowing the convention, so the sensor has to know it instead.
 Do not add a rule for anything the compiler, the DI graph, a failing test or an existing check already reports; a second sensor for the same failure adds maintenance without adding signal.
-Pick the mechanism by what it can see: Konsist reads declarations (packages, imports, annotations, supertypes, property types) and is the right home for structural conventions; detekt reads expressions inside function bodies and is the only option for rules Konsist cannot express. Android Lint detectors in `:lint-checks` still work but reach `:app` only, so do not add new ones for conventions that must hold in KMP modules.
+Pick the mechanism by what it can see: Konsist reads declarations (packages, imports, annotations, supertypes, property types) and is the right home for structural conventions; detekt reads expressions inside function bodies and is the only option for rules Konsist cannot express. The project has no custom Lint detectors any more, so new conventions have exactly two homes: Konsist and detekt.
