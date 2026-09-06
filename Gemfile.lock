@@ -260,7 +260,6 @@ PLATFORMS
 DEPENDENCIES
   fastlane (= 2.239.0)
   fastlane-plugin-firebase_app_distribution (= 1.0.0)
-  ostruct
 
 BUNDLED WITH
    2.5.22
