@@ -2,11 +2,6 @@ name: Screenshot test
 
 on:
   workflow_dispatch:
-    inputs:
-      branch:
-        description: "Branch"
-        required: true
-        default: "develop"
   pull_request:
     branches:
       - '**'
@@ -15,7 +10,7 @@ on:
       - develop
 
 concurrency:
-  group: ${{ github.head_ref || 'develop' }}-integration
+  group: ${{ github.head_ref || github.ref_name }}-integration
   cancel-in-progress: true
 
 env:
@@ -31,8 +26,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          ref: ${{ github.event.inputs.branch }}
       - uses: ./.github/actions/setup-gradle
         with:
           use-build-cache: 'true'
@@ -43,7 +36,7 @@ jobs:
           last-fm-shared-secret: ${{ secrets.LAST_FM_SHARED_SECRET }}
           google-services-json: ${{ secrets.GOOGLE_SERVICES_JSON_DEV }}
       - name: Run screenshot tests
-        run: ./gradlew verifyRoborazziJvm --no-configuration-cache -PonlyScreenshotTest=true
+        run: ./gradlew verifyRoborazziJvm -PonlyScreenshotTest=true
       - uses: ./.github/actions/save-gradle-cache
         with:
           use-build-cache: 'true'

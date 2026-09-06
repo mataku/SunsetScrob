@@ -27,6 +27,18 @@ Lives in `app/src/androidTest/`. Runs weekly on CI via
 (Pixel 6 / Pixel Tablet, API 35, AOSP-ATD x86_64). First local run
 downloads the system image and creates the AVD; subsequent runs reuse it.
 
+GMD stores its AVDs under `~/.android/avd/gradle-managed/`, and the setup
+phase boots each one once to write a `default_boot` snapshot so later runs
+resume instead of cold booting. CI restores that directory per device via
+`.github/actions/restore-avd-cache` and refreshes it via
+`.github/actions/save-avd-cache`. Like the Gradle caches, the AVD cache is
+written only on pushes to `develop` and is read-only everywhere else, so the
+repository stays inside the 10 GB Actions cache budget. The cache key is fixed
+(`gmd-avd-<os>-<device>-develop`); when a device definition in
+`ApplicationConventionPlugin.kt` changes, the stale AVD is restored but
+`cleanManagedDevices --unused-only` (run at the top of each `scripts/run_e2e_*.sh`)
+deletes it and GMD recreates it, so the cache is self-healing.
+
 ## `@LargeScreenE2E` — tablet-only tests
 
 Tests annotated `@com.mataku.scrobscrob.app.testing.LargeScreenE2E`

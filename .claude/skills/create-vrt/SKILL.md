@@ -98,7 +98,7 @@ Then confirm the result XML was produced for your new test by using `Glob` on `<
 
 If the XML is missing, `@Tag("VRT")` is probably missing or wrong — re-check the annotation before anything else. (`sunsetscrob.test.screenshot` sets `failOnNoDiscoveredTests` under `-PonlyScreenshotTest=true`, so a module whose only VRT lost its tag fails the build outright.)
 
-Goldens: don't record them from this skill. Recording is a human decision (the user reviews whether the golden actually looks right). Tell the user to run `./gradlew <module>:recordRoborazziJvm --no-configuration-cache -PonlyScreenshotTest=true` themselves when they're ready, then `verifyRoborazziJvm` with the same flags to confirm.
+Goldens: don't record them from this skill. Recording is a human decision (the user reviews whether the golden actually looks right). Tell the user to run `./gradlew <module>:recordRoborazziJvm -PonlyScreenshotTest=true` themselves when they're ready, then `verifyRoborazziJvm` with the same flags to confirm.
 
 ## Pre-flight checklist
 

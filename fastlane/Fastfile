@@ -42,12 +42,12 @@ platform :android do
 
   desc "Run screenshot test"
   lane :screenshot_test do
-    gradle(task: 'verifyRoborazziJvm --no-configuration-cache -PonlyScreenshotTest=true')
+    gradle(task: 'verifyRoborazziJvm -PonlyScreenshotTest=true')
   end
 
   desc 'Generate golden images'
   lane :generate_golden_images do
-    gradle(task: 'recordRoborazziJvm --no-configuration-cache -PonlyScreenshotTest=true')
+    gradle(task: 'recordRoborazziJvm -PonlyScreenshotTest=true')
   end
 
   desc "Build an aab"
