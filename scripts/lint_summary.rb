@@ -2,7 +2,7 @@
 # frozen_string_literal: true
 
 # Aggregates Android Lint XML reports across all modules into a Markdown
-# summary used by `.github/workflows/lint.yml` (Step Summary + PR comment).
+# summary used by `.github/workflows/android_lint.yml` (Step Summary + PR comment).
 #
 # Outputs:
 #   - Writes the Markdown summary to ./lint-summary.md.

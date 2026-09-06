@@ -2,7 +2,7 @@
 # frozen_string_literal: true
 
 # Aggregates detekt checkstyle XML reports across all modules into a Markdown
-# summary used by `.github/workflows/detekt.yml` (Step Summary + PR comment).
+# summary used by `.github/workflows/lint.yml` (Step Summary + PR comment).
 #
 # Outputs:
 #   - Writes the Markdown summary to ./detekt-summary.md.
