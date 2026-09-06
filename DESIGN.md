@@ -328,7 +328,7 @@ slips into a feature or `:app`:
 VRT goldens stay unchanged as long as the wrapper's defaults match the bare
 material3 default. Default-shifting wrappers (e.g. `SunsetText` defaulting to
 `SunsetTextStyle.body` instead of `LocalTextStyle.current`) will rebase
-goldens — verify with `./gradlew verifyRoborazziJvm --no-configuration-cache -PonlyScreenshotTest=true`
+goldens — verify with `./gradlew verifyRoborazziJvm -PonlyScreenshotTest=true`
 and update goldens as needed.
 
 ---

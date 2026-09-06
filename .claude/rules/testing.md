@@ -11,7 +11,7 @@ paths:
 | Type                 | Command                                                                              |
 |----------------------|--------------------------------------------------------------------------------------|
 | Unit Test            | `./gradlew jvmTest -PexcludeScreenshotTest=true`                                     |
-| Screenshot Test      | `./gradlew verifyRoborazziJvm --no-configuration-cache -PonlyScreenshotTest=true`    |
+| Screenshot Test      | `./gradlew verifyRoborazziJvm -PonlyScreenshotTest=true`    |
 | Instrumentation Test | `./gradlew :app:connectedDebugAndroidTest` (see [`e2e-testing.md`](e2e-testing.md))  |
 
 One test file per class under test.
@@ -31,7 +31,7 @@ the local run only with explicit user permission and only when the test
 itself is not the change under verification.
 
 Pair this with the verification commands in the path-scoped guides:
-- VRT: `./gradlew verifyRoborazziJvm --no-configuration-cache -PonlyScreenshotTest=true`
+- VRT: `./gradlew verifyRoborazziJvm -PonlyScreenshotTest=true`
 - E2E (phone): `./gradlew :app:pixel6Api35DebugAndroidTest`
 - E2E (tablet, `@LargeScreenE2E`): `./gradlew :app:pixelTabletApi35DebugAndroidTest -PincludeLargeScreenE2E=true`
 

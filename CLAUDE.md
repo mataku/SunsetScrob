@@ -44,8 +44,8 @@ SHARED_SECRET=YOUR_LAST_FM_SHARED_SECRET
 - `./gradlew bundleRelease` — build release AAB
 - `./gradlew :architecture-spec:test` — run architecture (Konsist) tests
 - `./gradlew jvmTest -PexcludeScreenshotTest=true` — run unit tests
-- `./gradlew verifyRoborazziJvm --no-configuration-cache -PonlyScreenshotTest=true` — run Roborazzi screenshot tests (rendered on the JVM through Compose Desktop)
-- `./gradlew recordRoborazziJvm --no-configuration-cache -PonlyScreenshotTest=true` — generate golden images
+- `./gradlew verifyRoborazziJvm -PonlyScreenshotTest=true` — run Roborazzi screenshot tests (rendered on the JVM through Compose Desktop)
+- `./gradlew recordRoborazziJvm -PonlyScreenshotTest=true` — generate golden images
 - `make generate_compose_reports` — generate Compose compiler reports
 
 ---
