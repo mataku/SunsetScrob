@@ -88,12 +88,13 @@ Compose:
     active: true
   ViewModelForwarding:
     active: true
-    # These are @Composable lambda factories (e.g. "@Composable (FooKey) -> FooViewModel")
-    # used to hoist ViewModel creation up to :feature:home, the navigation hub. The rule's
-    # naive type-name match treats them as ViewModel instances being forwarded, but they are
-    # providers, not the ViewModel itself, which is the deliberate architecture documented in
-    # architecture.md for feature-to-feature navigation.
-    allowedForwardingOfTypes: "@Composable \\(.*\\) -> .*ViewModel"
+    # These are the exact @Composable ViewModel-factory lambda types that :feature:home (the
+    # sole navigation hub per architecture.md) forwards into ScrobbleScreen/TopArtistsScreen/
+    # TopAlbumsScreen to hoist ViewModel creation. They are providers, not ViewModel instances,
+    # which is the deliberate architecture for feature-to-feature navigation. Listed literally
+    # (not as a wildcard) so a forwarding lambda of a different type, in any other module,
+    # still gets caught.
+    allowedForwardingOfTypes: "@Composable \\(TrackDetailKey\\) -> TrackViewModel,@Composable \\(AlbumKey\\) -> AlbumViewModel,@Composable \\(ArtistKey\\) -> ArtistViewModel"
   ViewModelInjection:
     active: true
     viewModelFactories: metroViewModel,viewModelFor
