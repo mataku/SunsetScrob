@@ -4,13 +4,13 @@ import com.mataku.scrobscrob.core.entity.AppTheme
 import com.mataku.scrobscrob.data.db.ThemeDataStore
 import com.mataku.scrobscrob.data.repository.mapper.toAppTheme
 import com.mataku.scrobscrob.data.repository.mapper.toAppThemeEntity
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import dev.zacsweers.metro.Inject
-import dev.zacsweers.metro.AppScope
-import dev.zacsweers.metro.SingleIn
 
 interface ThemeRepository {
   suspend fun currentTheme(): Flow<AppTheme>

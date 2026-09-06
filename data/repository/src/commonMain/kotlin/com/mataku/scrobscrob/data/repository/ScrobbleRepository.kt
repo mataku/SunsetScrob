@@ -6,24 +6,24 @@ import com.mataku.scrobscrob.core.entity.RecentTracks
 import com.mataku.scrobscrob.core.entity.ScrobbleResult
 import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.data.api.LastFmService
-import com.mataku.scrobscrob.data.api.request
 import com.mataku.scrobscrob.data.api.endpoint.ApiSignature
 import com.mataku.scrobscrob.data.api.endpoint.ScrobbleEndpoint
 import com.mataku.scrobscrob.data.api.endpoint.UserRecentTracksEndpoint
+import com.mataku.scrobscrob.data.api.request
 import com.mataku.scrobscrob.data.db.ArtworkDataStore
 import com.mataku.scrobscrob.data.db.SessionKeyDataStore
 import com.mataku.scrobscrob.data.db.UsernameDataStore
 import com.mataku.scrobscrob.data.db.entity.ArtworkInsertion
 import com.mataku.scrobscrob.data.repository.mapper.toRecentTracks
 import com.mataku.scrobscrob.data.repository.mapper.toScrobbleResult
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import dev.zacsweers.metro.Inject
-import dev.zacsweers.metro.AppScope
-import dev.zacsweers.metro.SingleIn
 
 interface ScrobbleRepository {
   suspend fun recentTracks(page: Int): Flow<RecentTracks>

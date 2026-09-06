@@ -43,7 +43,7 @@ class NavigationArchitectureSpec : DescribeSpec({
         .filter { c -> c.parents().any { it.name == "SunsetNavKey" } }
         .filter { c ->
           !c.hasAnnotation { it.name == "Immutable" } ||
-          !c.hasAnnotation { it.name == "Serializable" }
+            !c.hasAnnotation { it.name == "Serializable" }
         }
       withClue(
         "SunsetNavKey implementations must be @Immutable + @Serializable. Offending classes:\n" +

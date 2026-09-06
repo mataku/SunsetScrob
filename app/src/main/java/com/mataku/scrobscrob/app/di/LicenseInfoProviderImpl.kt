@@ -2,11 +2,11 @@ package com.mataku.scrobscrob.app.di
 
 import android.content.Context
 import com.mataku.scrobscrob.data.repository.di.LicenseInfoProvider
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import dev.zacsweers.metro.Inject
-import dev.zacsweers.metro.AppScope
-import dev.zacsweers.metro.SingleIn
 
 @Inject
 @SingleIn(AppScope::class)

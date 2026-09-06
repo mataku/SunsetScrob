@@ -1,7 +1,7 @@
 package com.mataku.scrobscrob.lint
 
-import com.android.tools.lint.checks.infrastructure.TestLintTask.lint
 import com.android.tools.lint.checks.infrastructure.TestFiles.kotlin
+import com.android.tools.lint.checks.infrastructure.TestLintTask.lint
 import io.kotest.core.spec.style.DescribeSpec
 
 class PreviewComposableVisibilityDetectorSpec : DescribeSpec({

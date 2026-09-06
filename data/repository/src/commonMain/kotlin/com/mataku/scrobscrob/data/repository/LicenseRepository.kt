@@ -5,14 +5,14 @@ import com.mataku.scrobscrob.core.entity.SpdxLicense
 import com.mataku.scrobscrob.data.db.LicenseDataStore
 import com.mataku.scrobscrob.data.repository.di.LicenseInfoProvider
 import com.mataku.scrobscrob.data.repository.mapper.toLicenseArtifactList
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import dev.zacsweers.metro.Inject
-import dev.zacsweers.metro.AppScope
-import dev.zacsweers.metro.SingleIn
 
 interface LicenseRepository {
   fun licenseList(): Flow<List<LicenseArtifact>>

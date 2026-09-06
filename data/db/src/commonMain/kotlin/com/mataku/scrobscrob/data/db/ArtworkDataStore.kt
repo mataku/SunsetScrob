@@ -5,15 +5,15 @@ import app.cash.sqldelight.db.SqlDriver
 import com.mataku.scrobscrob.Database
 import com.mataku.scrobscrob.data.db.entity.ArtistArtworkEntity
 import com.mataku.scrobscrob.data.db.entity.ArtworkInsertion
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
-import dev.zacsweers.metro.Inject
-import dev.zacsweers.metro.AppScope
-import dev.zacsweers.metro.SingleIn
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
 
