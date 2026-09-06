@@ -33,6 +33,10 @@ Compose:
     active: true
   Material2:
     active: true
+    # RippleAlpha has no Material3-only equivalent: M3's RippleConfiguration API takes a
+    # rippleAlpha parameter typed from this shared M2 ripple module, so SunsetTheme.kt must
+    # import it. Scoped to that one symbol; any other M2 import still gets flagged.
+    allowedFromM2: ripple.RippleAlpha
   MissingNonRestartableComposable:
     active: true
   MissingReadOnlyComposable:

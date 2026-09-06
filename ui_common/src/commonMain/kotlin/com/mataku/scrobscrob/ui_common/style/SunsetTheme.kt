@@ -1,5 +1,3 @@
-@file:Suppress("Material2")
-
 package com.mataku.scrobscrob.ui_common.style
 
 import androidx.compose.foundation.isSystemInDarkTheme
