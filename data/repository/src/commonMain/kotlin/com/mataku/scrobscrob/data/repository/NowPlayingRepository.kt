@@ -3,18 +3,18 @@ package com.mataku.scrobscrob.data.repository
 import com.mataku.scrobscrob.core.entity.NowPlayingTrackEntity
 import com.mataku.scrobscrob.core.entity.TrackInfo
 import com.mataku.scrobscrob.data.api.LastFmService
-import com.mataku.scrobscrob.data.api.request
 import com.mataku.scrobscrob.data.api.endpoint.ApiSignature
 import com.mataku.scrobscrob.data.api.endpoint.UpdateNowPlayingEndpoint
+import com.mataku.scrobscrob.data.api.request
 import com.mataku.scrobscrob.data.db.SessionKeyDataStore
 import com.mataku.scrobscrob.data.repository.mapper.toNowPlayingTrackEntity
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import dev.zacsweers.metro.Inject
-import dev.zacsweers.metro.AppScope
-import dev.zacsweers.metro.SingleIn
 
 interface NowPlayingRepository {
   suspend fun update(trackInfo: TrackInfo): Flow<Unit>

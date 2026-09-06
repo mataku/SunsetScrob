@@ -1,6 +1,5 @@
 import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.api.dsl.ManagedVirtualDevice
-import ext.androidLintConfiguration
 import ext.androidSdkConfiguration
 import ext.kotlinConfiguration
 import ext.testConfiguration
@@ -15,6 +14,7 @@ class ApplicationConventionPlugin : Plugin<Project> {
     with(target) {
       with(pluginManager) {
         apply("com.android.application")
+        apply("sunsetscrob.lint")
       }
 
       extensions.configure<ApplicationExtension> {
@@ -48,7 +48,6 @@ class ApplicationConventionPlugin : Plugin<Project> {
           }
         }
         kotlinConfiguration()
-        androidLintConfiguration()
         packaging {
           val excludePatterns = listOf(
             "META-INF/atomicfu.kotlin_module",

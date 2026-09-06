@@ -80,5 +80,34 @@ class ViewModelArchitectureSpec : DescribeSpec({
             "ContributesIntoMap" in annotationNames
         }
     }
+
+    it("UiState classes are annotated with @Immutable") {
+      scope.classes(includeNested = true)
+        .filter { it.resideInPackage("com.mataku.scrobscrob..") }
+        .filter { it.name == "UiState" || it.name.endsWith("UiState") }
+        .assertTrue(
+          additionalMessage = "UiState classes must be annotated with @Immutable so Compose can skip recomposition. Replaces the UiStateMustBeImmutable lint detector, which no longer runs on KMP modules.",
+        ) { uiState ->
+          uiState.annotations.any { it.name == "Immutable" }
+        }
+    }
+
+    it("ViewModels do not expose mutable state") {
+      scope.classes()
+        .withNameEndingWith("ViewModel")
+        .filter { it.resideInPackage("com.mataku.scrobscrob..") }
+        .flatMap { it.properties() }
+        .filterNot { it.hasPrivateModifier }
+        .assertTrue(
+          additionalMessage = "A ViewModel's exposed state must be declared StateFlow<T>, never MutableStateFlow<T>. Keep the mutable instance private, using the explicit backing field (`field = MutableStateFlow(...)`). Replaces the UiStateMustBeStateFlow lint detector, which no longer runs on KMP modules.",
+        ) { property ->
+          val declaredType = property.type?.name
+          if (declaredType == null) {
+            property.value?.trimStart()?.startsWith("MutableStateFlow") != true
+          } else {
+            !declaredType.startsWith("MutableStateFlow")
+          }
+        }
+    }
   }
 })

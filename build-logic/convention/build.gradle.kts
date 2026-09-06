@@ -17,6 +17,7 @@ dependencies {
   implementation(libs.compose.compiler.plugin)
   implementation(libs.metro.gradle.plugin)
   implementation(libs.jetbrains.compose.gradle.plugin)
+  implementation(libs.detekt.gradle.plugin)
 }
 
 gradlePlugin {
@@ -48,6 +49,14 @@ gradlePlugin {
     register("kmpScreenshotTest") {
       id = "sunsetscrob.test.screenshot"
       implementationClass = "KmpScreenshotTestConventionPlugin"
+    }
+    register("androidLint") {
+      id = "sunsetscrob.android.lint"
+      implementationClass = "AndroidLintConventionPlugin"
+    }
+    register("lint") {
+      id = "sunsetscrob.lint"
+      implementationClass = "LintConventionPlugin"
     }
   }
 }

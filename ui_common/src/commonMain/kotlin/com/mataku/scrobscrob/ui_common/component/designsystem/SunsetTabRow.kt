@@ -73,7 +73,7 @@ private fun SunsetTabRowPreview() {
           text = "Tab B",
           modifier = Modifier.padding(16.dp),
           color = LocalAppTheme.current.onSurfaceColor(),
-          )
+        )
       }
     }
   }

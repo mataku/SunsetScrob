@@ -79,13 +79,20 @@ Violations break `:architecture-spec:test`.
 
 ## Convention Plugins
 
-If you create a new module, **apply an existing convention plugin** rather than hand-rolling configuration:
+Whenever you write Gradle configuration — creating a module, or adding a build-wide tool to existing ones — put it in a convention plugin under `build-logic/` rather than hand-rolling it in a build script. The root `build.gradle.kts` is declaration-only: it lists plugins with `apply false` and holds no configuration. Cross-cutting tools that apply regardless of module type go in `build-logic/convention/src/main/java/ext/<Tool>Configuration.kt` with a convention plugin that applies them — `AndroidLintConfiguration.kt` and `DetektConfiguration.kt` are the worked examples. Never reach for `subprojects { }` or `allprojects { }` in the root build script.
+
+Only the `subprojects { }` and `allprojects { }` forms are enforced, and only by a plain-text check: `BuildScriptArchitectureSpec` is a Kotest `DescribeSpec` that reads the root `build.gradle.kts` with `File.readText()` and matches two regexes against it, with no Konsist or PSI parsing involved. Any other configuration in the root script — a bare `dependencies { }`, `tasks.withType { }`, `extensions.configure { }` — is caught by review only, so treat this rule as broader than its sensor.
+
+`DetektConfiguration.kt` sets `buildUponDefaultConfig = true` alongside `disableDefaultRuleSets = true`, which is not the contradiction it looks like and must not be "cleaned up": `disableDefaultRuleSets` is what stops detekt's own rule sets from running, while `buildUponDefaultConfig` is what keeps a rule that `config/detekt/detekt.yml` omits running with the plugin's shipped default instead of silently going inactive — config validation itself (`config > validation`) is on by default regardless of either flag, so removing a plugin from `detektPlugins` fails loudly either way, e.g. dropping `io.nlopez.compose.rules` fails every module's detekt task with `Property 'Compose' is misspelled or does not exist ... may also indicate a detekt plugin is necessary`. Validation also fails loudly on a bogus key under a *bundled* rule set and on a bogus top-level rule set name, but it does not check rule keys under a rule set that a `detektPlugins` entry contributes — a typo'd or renamed key under `Compose:` or `ktlint:`, the only rule sets `detekt.yml` configures, is accepted silently with no build failure, so a rule renamed or removed by an upgrade of either plugin will pass unnoticed and must be caught by reading that plugin's release notes; the `active: false` keys pinned nearby only make a future default flip visible in a diff, they do not catch a rename.
+
+The plugins below are the per-module-type conventions:
 
 - `KmpLibraryConventionPlugin` — every library module (android + jvm targets, SDK levels, jvmTest deps).
 - `KmpComposeConventionPlugin` — library modules that use Compose.
 - `KmpMetroConventionPlugin` — library modules that participate in the Metro DI graph.
 - `KmpScreenshotTestConventionPlugin` — library modules that contribute Roborazzi screenshots.
-- `ApplicationConventionPlugin`, `ComposeConventionPlugin`, `MetroConventionPlugin` — the `:app` module only.
+- `LintConventionPlugin` — detekt on every module.
+- `ApplicationConventionPlugin`, `ComposeConventionPlugin`, `MetroConventionPlugin`, `AndroidLintConventionPlugin` — the `:app` module only.
 
 Plugin IDs (used in `build.gradle.kts`):
 
@@ -95,9 +102,11 @@ Plugin IDs (used in `build.gradle.kts`):
 | `sunsetscrob.compose`                 | Compose Multiplatform, compiler plugin, Compose Resources (`Res` is public); enables Android resources so `composeResources` are packaged into the APK assets |
 | `sunsetscrob.metro`                   | Metro DI (`dev.zacsweers.metro`, adds `metrox-viewmodel-compose`)                |
 | `sunsetscrob.test.screenshot`         | Roborazzi on the JVM (`recordRoborazziJvm` / `verifyRoborazziJvm`); pins the test JVM locale to `en_US` so Compose Resources translations render deterministically |
+| `sunsetscrob.lint`                    | detekt (compose-rules + ktlint formatting) on every module                        |
 | `sunsetscrob.android.application`     | `:app` only                                                                      |
 | `sunsetscrob.android.compose`         | Compose for `:app` only                                                          |
 | `sunsetscrob.android.metro`           | Metro for `:app` only                                                            |
+| `sunsetscrob.android.lint`            | Android Lint, `:app` only                                                        |
 
 ### New Feature Module Example
 

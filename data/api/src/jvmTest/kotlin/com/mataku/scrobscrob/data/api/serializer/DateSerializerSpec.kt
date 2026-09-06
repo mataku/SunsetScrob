@@ -32,7 +32,7 @@ class DateSerializerSpec : DescribeSpec({
         {
           "published": "18 Jul 2008 11:00"
         }
-      """.trimIndent()
+        """.trimIndent()
         val wiki = json.decodeFromString<Wiki>(rawJson)
         dateFormat.format(wiki.published) shouldBe "1970/01/01"
       }

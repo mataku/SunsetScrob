@@ -209,7 +209,7 @@ private fun TopAlbumsContent(
     content = {
       itemsIndexed(
         items = albums,
-        key = { _, album -> "${album.hashCode()}" },
+        key = { _, album -> album.url },
         contentType = { _, _ -> "top_albums" },
       ) { index, album ->
         val id = if (album.imageList.imageUrl().isInvalidArtwork()) {

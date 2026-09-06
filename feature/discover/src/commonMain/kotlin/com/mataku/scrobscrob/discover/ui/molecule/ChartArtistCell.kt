@@ -18,16 +18,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mataku.scrobscrob.core.entity.ChartArtist
 import com.mataku.scrobscrob.core.entity.imageUrl
-import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetText
 import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetImage
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetText
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 
 @Composable
 fun ChartArtistCell(
   chartArtist: ChartArtist,
   rank: Int,
-  modifier: Modifier = Modifier,
-  onChartArtistTap: (ChartArtist) -> Unit
+  onChartArtistTap: (ChartArtist) -> Unit,
+  modifier: Modifier = Modifier
 ) {
   Row(
     modifier = modifier

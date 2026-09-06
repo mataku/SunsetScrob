@@ -23,16 +23,16 @@ import androidx.compose.ui.unit.dp
 import com.mataku.scrobscrob.core.entity.ChartTrack
 import com.mataku.scrobscrob.core.entity.ChartTrackArtist
 import com.mataku.scrobscrob.core.entity.imageUrl
-import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetText
 import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetImage
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetText
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 
 @Composable
 internal fun ChartTrackCell(
   chartTrack: ChartTrack,
   rank: Int,
-  modifier: Modifier = Modifier,
-  onChartTrackTap: (ChartTrack) -> Unit
+  onChartTrackTap: (ChartTrack) -> Unit,
+  modifier: Modifier = Modifier
 ) {
   Row(
     modifier = modifier

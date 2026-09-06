@@ -110,11 +110,11 @@ class TopAlbumsViewModel(
             }
           } else {
             val list = if (timeRangeFilteringChanged) {
-              albums
+              albums.distinctBy { it.url }.toImmutableList()
             } else {
-              val currentAlbums = uiState.value.topAlbums.toMutableList()
-              currentAlbums.addAll(albums)
-              currentAlbums.toImmutableList()
+              val currentAlbums = uiState.value.topAlbums
+              val knownUrls = currentAlbums.mapTo(mutableSetOf()) { it.url }
+              (currentAlbums + albums.filter { knownUrls.add(it.url) }).toImmutableList()
             }
 
             uiState.update {

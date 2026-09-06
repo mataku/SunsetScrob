@@ -30,7 +30,7 @@ class TopAlbumsScreenTest {
       title = "SooooooooooooooooooooooLongAlbumname $it",
       imageList = persistentListOf(),
       playCount = "100$it",
-      url = ""
+      url = "https://example.com/$it"
     )
   }
 

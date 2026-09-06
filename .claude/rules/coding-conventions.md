@@ -84,10 +84,10 @@ private fun AlbumContentPreview() {
 }
 ```
 
-`@Preview` composables must be declared `private`.
-KMP modules have no lint task, so the rule is enforced by Konsist (`ComposableScreenArchitectureSpec`, "@Preview composables are private") for them and by the `PreviewNotPrivate` detector in `:lint-checks` for `:app`, the only Android module left; `@Suppress("PreviewNotPrivate")` opts out of both.
-Suppress only for genuinely shared previews.
-Because KMP modules have no lint task, Slack `compose-lint-checks` and the project's `:lint-checks` detectors run on `:app` only. `PreviewNotPrivate` is replaced by the Konsist check above and `RepositoryReturnsFlow` by the Konsist `RepositoryArchitectureSpec` (see `.claude/rules/repository.md`). `PreferLocalAppThemeColor` and the `PreferSunsetX` family (e.g. `PreferSunsetButtonDetector`, `PreferSunsetTextDetector`) have no KMP equivalent per wrapper; what holds there instead is the module-level rule that only `:ui_common` and `:test_helper:integration` may depend on Material 3, asserted by `ModuleDependencyArchitectureSpec`. New conventions that must hold in KMP modules have to be written as Konsist specs, not Lint detectors.
+`@Preview` composables must be declared `private`, enforced across every module by Konsist (`ComposableScreenArchitectureSpec`, "@Preview composables are private").
+The rule honours `@Suppress("PreviewNotPrivate")` on the declaration — the id is inherited from the Lint detector it replaced — for genuinely shared previews only.
+There is no per-wrapper equivalent of the old `PreferSunsetX` family (e.g. preferring `SunsetButton` over `Button`); what holds instead is the module-level rule that only `:ui_common` and `:test_helper:integration` may depend on Material 3, asserted by Konsist `ModuleDependencyArchitectureSpec`. New conventions that must hold across modules have to be written as Konsist specs or detekt rules.
+Expression-level Compose conventions (Modifier ordering and defaults, `remember` usage, content emitters, composable parameter order) are enforced on every module by detekt's `Compose` rule set (`io.nlopez.compose.rules:detekt`), configured in `config/detekt/detekt.yml`. That rule set is the maintained successor to Slack's `compose-lint-checks`, which stopped covering KMP modules when they lost their lint task.
 
 ### internal fun
 
@@ -100,6 +100,10 @@ internal fun ChartCell(
   modifier: Modifier = Modifier
 )
 ```
+
+### Lint Coverage Gaps
+
+Two checks from Slack's `compose-lint-checks` have no counterpart in detekt's `Compose` rule set and were lost when that dependency was removed: `ComposeCompositionLocalGetter` (a `CompositionLocal` declared through a getter rather than as a value — the repo has no such declaration today, every one goes through `compositionLocalOf` / `staticCompositionLocalOf`) and `ComposeItemKeyHashCode` (`hashCode()` used as a lazy-list item key, which collides for equal items and is unstable across reordering). Neither is enforced mechanically; both are review items.
 
 ## Data Class
 

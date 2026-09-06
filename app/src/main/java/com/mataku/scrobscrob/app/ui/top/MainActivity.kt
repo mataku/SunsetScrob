@@ -51,7 +51,7 @@ class MainActivity(
 
   override fun onCreate(savedInstanceState: Bundle?) {
     val splashScreen = installSplashScreen()
-    splashScreen.setKeepOnScreenCondition { viewModel.state.value == null }
+    splashScreen.setKeepOnScreenCondition { viewModel.uiState.value == null }
 
     enableEdgeToEdge()
     super.onCreate(savedInstanceState)
@@ -60,7 +60,7 @@ class MainActivity(
     }
 
     setContent {
-      val uiState by viewModel.state.collectAsStateWithLifecycle()
+      val uiState by viewModel.uiState.collectAsStateWithLifecycle()
       val state = uiState ?: return@setContent
 
       val isSystemDark =

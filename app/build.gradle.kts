@@ -4,6 +4,7 @@ plugins {
   id("sunsetscrob.android.application")
   id("sunsetscrob.android.compose")
   id("sunsetscrob.android.metro")
+  id("sunsetscrob.android.lint")
   id("com.google.firebase.crashlytics")
   id("com.google.gms.google-services")
   id("app.cash.licensee")

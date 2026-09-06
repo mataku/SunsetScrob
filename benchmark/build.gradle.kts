@@ -4,6 +4,7 @@ import com.android.build.api.dsl.TestExtension
 plugins {
   id("com.android.test")
   id("androidx.baselineprofile")
+  id("sunsetscrob.lint")
 }
 
 configure<TestExtension>() {

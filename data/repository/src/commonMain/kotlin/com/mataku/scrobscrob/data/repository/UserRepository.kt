@@ -1,27 +1,27 @@
 package com.mataku.scrobscrob.data.repository
 
+import com.mataku.scrobscrob.core.AppBuildInfo
 import com.mataku.scrobscrob.core.entity.Image
 import com.mataku.scrobscrob.core.entity.LovedTrack
 import com.mataku.scrobscrob.core.entity.UserInfo
 import com.mataku.scrobscrob.core.entity.imageUrl
 import com.mataku.scrobscrob.core.entity.isInvalidArtwork
-import com.mataku.scrobscrob.core.AppBuildInfo
 import com.mataku.scrobscrob.data.api.LastFmService
-import com.mataku.scrobscrob.data.api.request
 import com.mataku.scrobscrob.data.api.endpoint.UserInfoEndpoint
 import com.mataku.scrobscrob.data.api.endpoint.UserLovedTracksEndpoint
+import com.mataku.scrobscrob.data.api.request
 import com.mataku.scrobscrob.data.db.ArtworkDataStore
 import com.mataku.scrobscrob.data.db.UsernameDataStore
 import com.mataku.scrobscrob.data.repository.mapper.toRecentTrackList
 import com.mataku.scrobscrob.data.repository.mapper.toUserInfo
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import dev.zacsweers.metro.Inject
-import dev.zacsweers.metro.AppScope
-import dev.zacsweers.metro.SingleIn
 
 interface UserRepository {
   suspend fun getInfo(userName: String): Flow<UserInfo>

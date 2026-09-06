@@ -14,7 +14,6 @@ fun CommonExtension.androidLintConfiguration() {
   // a test composable is intentional, not a bug), skip them entirely.
   lint.ignoreTestSources = true
   lint.disable.add("GradleDependency")
-  lint.disable.add("ObsoleteLintCustomCheck")
   // MainActivity is provided via Metro's AppComponentFactory binding; the
   // default "no-arg constructor" expectation does not apply.
   lint.disable.add("Instantiatable")

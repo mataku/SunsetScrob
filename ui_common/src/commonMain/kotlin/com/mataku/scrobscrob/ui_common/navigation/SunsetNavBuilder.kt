@@ -5,7 +5,7 @@ import kotlin.reflect.KClass
 
 class SunsetNavBuilder internal constructor(
   internal val handlers:
-    MutableMap<KClass<out SunsetNavKey>, @Composable SunsetDestinationScope.(SunsetNavKey) -> Unit>,
+  MutableMap<KClass<out SunsetNavKey>, @Composable SunsetDestinationScope.(SunsetNavKey) -> Unit>,
   internal val transitionSpecs: MutableMap<KClass<out SunsetNavKey>, SunsetTransitionSpec>,
   private val onNavigate: (SunsetNavKey) -> Unit,
   private val onPopBackStack: () -> Unit,

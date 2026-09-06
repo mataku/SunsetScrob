@@ -7,6 +7,6 @@ import androidx.compose.ui.Modifier
 expect fun SunsetWebView(
   url: String,
   modifier: Modifier = Modifier,
-  openLinksExternally: Boolean = false,
   onPageFinished: (title: String) -> Unit = {},
+  openLinksExternally: Boolean = false,
 )

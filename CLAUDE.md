@@ -45,6 +45,8 @@ SHARED_SECRET=YOUR_LAST_FM_SHARED_SECRET
 - `./gradlew verifyRoborazziJvm -PonlyScreenshotTest=true` — run Roborazzi screenshot tests (rendered on the JVM through Compose Desktop)
 - `./gradlew recordRoborazziJvm -PonlyScreenshotTest=true` — generate golden images
 - `make generate_compose_reports` — generate Compose compiler reports
+- `./gradlew detekt` — run detekt (compose-rules + ktlint formatting) across all modules
+- `./gradlew detekt --auto-correct` — apply detekt's auto-fixable formatting corrections
 
 ---
 
@@ -74,9 +76,9 @@ Layer / package / Compose / navigation rules already live in always-loaded `arch
 - Async: Kotlin Coroutines + Flow
 - DI: Metro (Kotlin compiler plugin; Dagger annotation interop enabled)
 - Image loading: Coil 3
-- Build: Gradle Kotlin DSL, version catalog (`gradle/libs.versions.toml`), custom convention plugins in `build-logic/convention/`. Every library module is KMP and applies `sunsetscrob.library`, plus `compose` / `metro` / `test.screenshot` as needed (`:core` takes `library` + `compose`, `:data:*` take `library` + `metro`, feature modules take all four). `sunsetscrob.android.application` / `android.compose` / `android.metro` are for `:app` only.
+- Build: Gradle Kotlin DSL, version catalog (`gradle/libs.versions.toml`), custom convention plugins in `build-logic/convention/`. Every library module is KMP and applies `sunsetscrob.library` and `sunsetscrob.lint`, plus `compose` / `metro` / `test.screenshot` as needed (`:core` takes `library` + `compose`, `:data:*` take `library` + `metro`, feature modules take all four). `sunsetscrob.android.application` / `android.compose` / `android.metro` / `android.lint` are for `:app` only.
 - Tests: Kotest (JUnit5 platform), MockK, Turbine, Roborazzi.
-- Code quality: Android Lint (project-specific custom detectors in `:lint-checks`), Compose lint (Slack `compose-lint-checks`), Konsist architecture tests, Licensee. Lint fails the build only when `CI=true` (see `build-logic/convention/.../AndroidLintConfiguration.kt`); CI runs it as a standalone job (`.github/workflows/lint.yml`). KMP modules have no lint task, so neither Android Lint nor Compose lint run on them at all; since `:app` is the only non-KMP module, Lint effectively covers `:app` alone. Konsist is the enforcement mechanism everywhere else, and new conventions for KMP modules must be written as Konsist specs.
+- Code quality: detekt (compose-rules + ktlint formatting, all modules, `.github/workflows/lint.yml`), Android Lint (`:app` only, built-in checks; no custom detectors, `.github/workflows/android_lint.yml`), Konsist architecture tests (`.github/workflows/arch_test.yml`), Licensee. Android Lint fails the build only when `CI=true` (see `build-logic/convention/.../AndroidLintConfiguration.kt`) and runs as a standalone CI job; detekt fails on any finding. KMP modules have no lint task, so Android Lint covers `:app` alone; detekt and Konsist are what cover every module. New conventions must be written as Konsist specs (declaration-level) or detekt rules (expression-level).
 
 ---
 
@@ -92,8 +94,9 @@ When you add a new convention to a `.claude/rules/` file, add a matching Spec.
 When you change a Spec, update the corresponding rule.
 Guide and sensor must stay paired.
 
-### When a convention deserves a Konsist spec or Lint detector
+### When a convention deserves a Konsist spec or detekt rule
 
 Add a mechanical rule only for conventions whose violation would otherwise go unnoticed: the build passes, the tests pass and the app appears to work, but the code has drifted (a class in the wrong package, a ViewModel that silently drops out of the Metro graph, a VRT class missing its tag, a repository that swallows errors).
 Those are the problems a reviewer would only catch by knowing the convention, so the sensor has to know it instead.
 Do not add a rule for anything the compiler, the DI graph, a failing test or an existing check already reports; a second sensor for the same failure adds maintenance without adding signal.
+Pick the mechanism by what it can see: Konsist reads declarations (packages, imports, annotations, supertypes, property types) and is the right home for structural conventions; detekt reads expressions inside function bodies and is the only option for rules Konsist cannot express. The project has no custom Lint detectors any more, so new conventions have exactly two homes: Konsist and detekt.

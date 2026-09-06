@@ -29,7 +29,7 @@ class TrackViewModel(
   @Assisted private val key: TrackDetailKey,
 ) : ViewModel() {
 
-  val state: StateFlow<TrackUiState>
+  val uiState: StateFlow<TrackUiState>
     field = MutableStateFlow(TrackUiState.initialize())
 
   private val trackName: String = key.trackName
@@ -69,7 +69,7 @@ class TrackViewModel(
           isLoveRequestProcessing = false
         }
         .collect { _ ->
-          state.update {
+          uiState.update {
             if (trackInfo.userLoved) {
               it.copy(
                 trackInfo = trackInfo.copy(userLoved = false)
@@ -93,21 +93,21 @@ class TrackViewModel(
         trackName = trackName,
         artistName = artistName
       ).onStart {
-        state.update {
+        uiState.update {
           it.copy(isLoading = true)
         }
       }.onCompletion {
-        state.update {
+        uiState.update {
           it.copy(isLoading = false)
         }
       }.catch {
-        state.update {
+        uiState.update {
           it.copy(
             event = UiEvent.TrackInfoFetchFailure
           )
         }
       }.collect { result ->
-        state.update {
+        uiState.update {
           it.copy(
             trackInfo = result
           )

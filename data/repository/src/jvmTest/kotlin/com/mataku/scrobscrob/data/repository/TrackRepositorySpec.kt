@@ -4,8 +4,8 @@ import app.cash.turbine.test
 import com.mataku.scrobscrob.data.api.LastFmService
 import com.mataku.scrobscrob.data.api.endpoint.Endpoint
 import com.mataku.scrobscrob.data.api.endpoint.LoveTrackEndpoint
-import com.mataku.scrobscrob.data.api.endpoint.TrackInfoEndpoint
 import com.mataku.scrobscrob.data.api.endpoint.TrackInfoApiResponse
+import com.mataku.scrobscrob.data.api.endpoint.TrackInfoEndpoint
 import com.mataku.scrobscrob.data.api.endpoint.UnLoveTrackEndpoint
 import com.mataku.scrobscrob.data.api.model.ImageBody
 import com.mataku.scrobscrob.data.api.model.TrackAlbumInfoBody

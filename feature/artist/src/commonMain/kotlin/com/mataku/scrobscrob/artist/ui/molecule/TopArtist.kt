@@ -17,11 +17,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.mataku.scrobscrob.core.entity.TopArtistInfo
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetImage
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetText
 import com.mataku.scrobscrob.ui_common.generated.resources.Res
 import com.mataku.scrobscrob.ui_common.generated.resources.playcount
 import com.mataku.scrobscrob.ui_common.generated.resources.playcounts
-import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetText
-import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetImage
 import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.onSecondaryColor
 import org.jetbrains.compose.resources.stringResource

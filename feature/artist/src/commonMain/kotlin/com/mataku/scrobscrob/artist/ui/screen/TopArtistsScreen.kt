@@ -209,7 +209,7 @@ private fun TopArtistsContent(
     content = {
       itemsIndexed(
         items = artists,
-        key = { index, artist -> "${index}${artist.hashCode()}" },
+        key = { _, artist -> artist.url },
       ) { index, artist ->
         val cachedImageUrl = artist.imageUrl
         val imageUrl = when {

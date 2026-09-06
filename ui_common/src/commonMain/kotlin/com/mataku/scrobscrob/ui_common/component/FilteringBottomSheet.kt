@@ -71,13 +71,13 @@ private fun TimeRangeCell(
 ) {
   Row(
     modifier = Modifier
-    .fillMaxWidth()
-    .height(48.dp)
-    .clickable {
-      onClick.invoke()
-    }
-    .padding(vertical = 12.dp)
-    .then(modifier)
+      .fillMaxWidth()
+      .height(48.dp)
+      .clickable {
+        onClick.invoke()
+      }
+      .padding(vertical = 12.dp)
+      .then(modifier)
   ) {
     SunsetText.Body(
       text = timeRangeValue,

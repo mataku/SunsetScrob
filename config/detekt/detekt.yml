@@ -1,0 +1,341 @@
+Compose:
+  ComposableAnnotationNaming:
+    active: true
+  ComposableNaming:
+    active: true
+  ComposableNestingDepth:
+    active: false
+  ComposableParamOrder:
+    active: true
+  CompositionLocalAllowlist:
+    active: true
+    # These are deliberate, documented CompositionLocals (DESIGN.md): LocalAppTheme /
+    # LocalSnackbarHostState are the project's Material3-bridging theme API, and
+    # LocalSunsetSharedTransitionScope / LocalSunsetNavigator are internal plumbing for the
+    # ui_common navigation wrapper. Only :ui_common defines new CompositionLocals; the rule
+    # still catches any new one introduced elsewhere or added here without review.
+    allowedCompositionLocals: LocalAppTheme,LocalSnackbarHostState,LocalSunsetSharedTransitionScope,LocalSunsetNavigator
+  CompositionLocalNaming:
+    active: true
+  ConditionHoist:
+    active: true
+  ContentEmitterReturningValues:
+    active: true
+  ContentSlotReused:
+    active: true
+  ContentTrailingLambda:
+    active: true
+  DefaultsVisibility:
+    active: true
+  InvalidReadOnlyComposable:
+    active: true
+  LambdaParameterEventTrailing:
+    active: true
+  LambdaParameterInRestartableEffect:
+    active: true
+  Material2:
+    active: true
+    # RippleAlpha has no Material3-only equivalent: M3's RippleConfiguration API takes a
+    # rippleAlpha parameter typed from this shared M2 ripple module, so SunsetTheme.kt must
+    # import it. Scoped to that one symbol; any other M2 import still gets flagged.
+    allowedFromM2: ripple.RippleAlpha
+  MissingNonRestartableComposable:
+    active: true
+  MissingReadOnlyComposable:
+    active: true
+  ModifierClickableOrder:
+    active: true
+  ModifierComposed:
+    active: true
+  ModifierMissing:
+    active: true
+  ModifierNaming:
+    active: true
+  ModifierNotUsedAtRoot:
+    active: true
+  ModifierReused:
+    active: true
+  ModifierWithoutDefault:
+    active: true
+  MultipleEmitters:
+    active: true
+  MutableParams:
+    active: true
+  MutableStateAutoboxing:
+    active: true
+  MutableStateParam:
+    active: true
+  ParameterNaming:
+    active: true
+    # onBackPressed is the documented convention in coding-conventions.md (used repo-wide,
+    # ~80 occurrences across ~26 files, mirroring Activity.onBackPressed). onPageFinished
+    # mirrors the platform WebViewClient.onPageFinished callback it wraps, and onTabSelected
+    # mirrors the common Android OnTabSelectedListener naming. All three predate this rule;
+    # renaming them is out of scope here and would fight established naming instead of a
+    # real violation.
+    allowedLambdaParameterNames: onBackPressed,onPageFinished,onTabSelected
+  PreviewAnnotationNaming:
+    active: true
+  PreviewNaming:
+    active: false
+  PreviewPublic:
+    active: true
+  RememberContentMissing:
+    active: true
+  RememberMissing:
+    active: true
+  StaleRememberUpdatedStateInRemember:
+    active: true
+  StateParam:
+    active: true
+  UnstableCollections:
+    active: true
+  UnnecessaryComposable:
+    active: true
+  UnnecessaryLaunchedEffect:
+    active: true
+  VarsWithoutStateBacking:
+    active: true
+  ViewModelForwarding:
+    active: true
+    # These are the exact @Composable ViewModel-factory lambda types that :feature:home (the
+    # sole navigation hub per architecture.md) forwards into ScrobbleScreen/TopArtistsScreen/
+    # TopAlbumsScreen to hoist ViewModel creation. They are providers, not ViewModel instances,
+    # which is the deliberate architecture for feature-to-feature navigation. Listed literally
+    # (not as a wildcard) so a forwarding lambda of a different type, in any other module,
+    # still gets caught.
+    allowedForwardingOfTypes: "@Composable \\(TrackDetailKey\\) -> TrackViewModel,@Composable \\(AlbumKey\\) -> AlbumViewModel,@Composable \\(ArtistKey\\) -> ArtistViewModel"
+  ViewModelInjection:
+    active: true
+    viewModelFactories: metroViewModel,viewModelFor
+
+ktlint:
+  active: true
+  # detekt should enforce exactly what this repo has already declared it wants via
+  # .editorconfig, plus import ordering. The ktlint wrapper does not read .editorconfig at
+  # runtime (each rule instead exposes its own, separately-defaulted config properties), so
+  # this block hand-mirrors .editorconfig rather than adopting ktlint's own opinions about
+  # code layout. Enabled: Indentation (mirrors indent_size = 2), NoTrailingSpaces (mirrors
+  # trim_trailing_whitespace = true), FinalNewline (mirrors insert_final_newline = true),
+  # ImportOrdering (not expressible in .editorconfig, wanted regardless), and
+  # NoWildcardImports (not .editorconfig-derived, but a convention this codebase already
+  # satisfies). Every other rule in this set is disabled, explicitly and by name, so that no
+  # rule is left silently active at its default. In particular, every rule that moves code
+  # between lines (the whole wrapping/signature family: FunctionSignature, ClassSignature,
+  # ArgumentListWrapping, ChainWrapping, BinaryExpressionWrapping, ConditionWrapping,
+  # MultiLineIfElse, EnumWrapping, ParameterListWrapping, Wrapping, and their relatives) is
+  # out, along with rules that only adjust whitespace within a line or blank lines between
+  # statements.
+  AnnotationOnSeparateLine:
+    active: false
+  AnnotationSpacing:
+    active: false
+  ArgumentListWrapping:
+    active: false
+  BackingPropertyNaming:
+    active: false
+  BinaryExpressionWrapping:
+    active: false
+  BlankLineBeforeDeclaration:
+    active: false
+  BlankLineBetweenWhenConditions:
+    active: false
+  BlockCommentInitialStarAlignment:
+    active: false
+  ChainMethodContinuation:
+    active: false
+  ChainWrapping:
+    active: false
+  ClassName:
+    active: false
+  ClassSignature:
+    active: false
+  CommentSpacing:
+    active: false
+  CommentWrapping:
+    active: false
+  ConditionWrapping:
+    active: false
+  ContextReceiverListWrapping:
+    active: false
+  ContextReceiverMapping:
+    active: false
+  EnumEntryNameCase:
+    active: false
+  EnumWrapping:
+    active: false
+  ExpressionOperandWrapping:
+    active: false
+  Filename:
+    active: false
+    # Not part of the minimal ktlint core adopted here (not .editorconfig-derived). The three
+    # pre-existing violations (Artwork.kt/ArtistArtwork, LastFmAuthInterceptor.kt/
+    # LastfmApiAuthInterceptor, PagingAttrResponse.kt/PagingAttrBody) were fixed by renaming the
+    # files regardless, as a one-time cleanup independent of this rule set decision.
+  FinalNewline:
+    active: true
+  FunctionExpressionBody:
+    active: false
+  FunctionLiteral:
+    active: false
+  FunctionName:
+    active: false
+  FunctionReturnTypeSpacing:
+    active: false
+  FunctionSignature:
+    active: false
+  FunctionStartOfBodySpacing:
+    active: false
+  FunctionTypeModifierSpacing:
+    active: false
+  FunctionTypeReferenceSpacing:
+    active: false
+  FunKeywordSpacing:
+    active: false
+  IfElseBracing:
+    active: false
+  IfElseWrapping:
+    active: false
+  ImportOrdering:
+    active: true
+  Indentation:
+    active: true
+    indentSize: 2
+  Kdoc:
+    active: false
+  KdocWrapping:
+    active: false
+  MaximumLineLength:
+    active: false
+  MixedConditionOperators:
+    active: false
+  ModifierListSpacing:
+    active: false
+  ModifierOrdering:
+    active: false
+  MultilineExpressionWrapping:
+    active: false
+  MultiLineIfElse:
+    active: false
+  MultilineLoop:
+    active: false
+  NoBlankLineBeforeRbrace:
+    active: false
+  NoBlankLineInList:
+    active: false
+  NoBlankLinesInChainedMethodCalls:
+    active: false
+  NoConsecutiveBlankLines:
+    active: false
+  NoConsecutiveComments:
+    active: false
+  NoEmptyClassBody:
+    active: false
+  NoEmptyFile:
+    active: false
+    # Not part of the minimal ktlint core adopted here (not .editorconfig-derived). The one
+    # pre-existing violation (core/api/endpoint/HttpMethodMapper.kt, a genuinely empty,
+    # unreferenced leftover from the :core KMP conversion) was fixed by deleting the file
+    # regardless, as a one-time cleanup independent of this rule set decision.
+  NoEmptyFirstLineInClassBody:
+    active: false
+  NoEmptyFirstLineInMethodBlock:
+    active: false
+  NoLineBreakAfterElse:
+    active: false
+  NoLineBreakBeforeAssignment:
+    active: false
+  NoMultipleSpaces:
+    active: false
+  NoSemicolons:
+    active: false
+  NoSingleLineBlockComment:
+    active: false
+  NoTrailingSpaces:
+    active: true
+  NoUnitReturn:
+    active: false
+  NoUnusedImports:
+    active: false
+  NoWildcardImports:
+    active: true
+  NullableTypeSpacing:
+    active: false
+  PackageName:
+    active: false
+    # This repo's documented package convention (architecture.md) uses the literal module name
+    # as the trailing package segment, e.g. com.mataku.scrobscrob.ui_common and
+    # com.mataku.scrobscrob.test_helper.*. Not part of the minimal ktlint core adopted here either
+    # way, since it is not derivable from .editorconfig.
+  ParameterListSpacing:
+    active: false
+  ParameterListWrapping:
+    active: false
+  ParameterWrapping:
+    active: false
+  PropertyName:
+    active: false
+  PropertyWrapping:
+    active: false
+  SpacingAroundAngleBrackets:
+    active: false
+  SpacingAroundColon:
+    active: false
+  SpacingAroundComma:
+    active: false
+  SpacingAroundCurly:
+    active: false
+  SpacingAroundDot:
+    active: false
+  SpacingAroundDoubleColon:
+    active: false
+  SpacingAroundKeyword:
+    active: false
+  SpacingAroundOperators:
+    active: false
+  SpacingAroundParens:
+    active: false
+  SpacingAroundRangeOperator:
+    active: false
+  SpacingAroundSquareBrackets:
+    active: false
+  SpacingAroundUnaryOperator:
+    active: false
+  SpacingBetweenDeclarationsWithAnnotations:
+    active: false
+  SpacingBetweenDeclarationsWithComments:
+    active: false
+  SpacingBetweenFunctionNameAndOpeningParenthesis:
+    active: false
+  StatementWrapping:
+    active: false
+  StringTemplate:
+    active: false
+  StringTemplateIndent:
+    active: false
+  ThenSpacing:
+    active: false
+  TrailingCommaOnCallSite:
+    active: false
+  TrailingCommaOnDeclarationSite:
+    active: false
+  TryCatchFinallySpacing:
+    active: false
+  TypeArgumentComment:
+    active: false
+  TypeArgumentListSpacing:
+    active: false
+  TypeParameterComment:
+    active: false
+  TypeParameterListSpacing:
+    active: false
+  UnnecessaryParenthesesBeforeTrailingLambda:
+    active: false
+  ValueArgumentComment:
+    active: false
+  ValueParameterComment:
+    active: false
+  WhenEntryBracing:
+    active: false
+  Wrapping:
+    active: false
