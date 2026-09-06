@@ -87,6 +87,44 @@ class TopArtistsViewModelSpec : DescribeSpec({
     }
   }
 
+  describe("#fetchTopArtists") {
+    it("does not append an artist that is already in the list") {
+      val repository = mockk<TopArtistsRepository>()
+      val usernameRepository = mockk<UsernameRepository>()
+      every { usernameRepository.asyncUsername() } returns flowOf("matakucom")
+      coEvery {
+        repository.fetchTopArtists(
+          page = 1,
+          username = "matakucom",
+          timeRangeFiltering = TimeRangeFiltering.OVERALL,
+        )
+      } returns flowOf(
+        TopArtists(
+          artists = listOf(topArtist("aespa"), topArtist("PassCode")).toImmutableList(),
+          pagingAttr = PagingAttr(totalPages = "10"),
+        ),
+      )
+      coEvery {
+        repository.fetchTopArtists(
+          page = 2,
+          username = "matakucom",
+          timeRangeFiltering = TimeRangeFiltering.OVERALL,
+        )
+      } returns flowOf(
+        TopArtists(
+          artists = listOf(topArtist("PassCode"), topArtist("BAND-MAID")).toImmutableList(),
+          pagingAttr = PagingAttr(totalPages = "10"),
+        ),
+      )
+
+      val viewModel = TopArtistsViewModel(repository, usernameRepository)
+      viewModel.fetchTopArtists()
+
+      viewModel.uiState.value.topArtists.map { it.name } shouldBe
+        listOf("aespa", "PassCode", "BAND-MAID")
+    }
+  }
+
   describe("#updateTimeRange") {
     it("changes the filter and re-fetches with the new range") {
       val repository = mockk<TopArtistsRepository>()

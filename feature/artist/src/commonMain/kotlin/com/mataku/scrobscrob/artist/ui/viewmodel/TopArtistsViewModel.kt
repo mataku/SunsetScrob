@@ -110,11 +110,11 @@ class TopArtistsViewModel(
             }
           } else {
             val artists = if (timeRangeChanged) {
-              fetched
+              fetched.distinctBy { it.url }.toImmutableList()
             } else {
-              val current = uiState.value.topArtists.toMutableList()
-              current.addAll(fetched)
-              current.toImmutableList()
+              val current = uiState.value.topArtists
+              val knownUrls = current.mapTo(mutableSetOf()) { it.url }
+              (current + fetched.filter { knownUrls.add(it.url) }).toImmutableList()
             }
             uiState.update { state ->
               state.copy(

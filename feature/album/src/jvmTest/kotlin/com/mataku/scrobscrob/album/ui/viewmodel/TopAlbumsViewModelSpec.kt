@@ -87,6 +87,44 @@ class TopAlbumsViewModelSpec : DescribeSpec({
     }
   }
 
+  describe("#fetchAlbums") {
+    it("does not append an album that is already in the list") {
+      val albumRepository = mockk<AlbumRepository>()
+      val usernameRepository = mockk<UsernameRepository>()
+      every { usernameRepository.asyncUsername() } returns flowOf("matakucom")
+      coEvery {
+        albumRepository.fetchTopAlbums(
+          page = 1,
+          username = "matakucom",
+          timeRangeFiltering = TimeRangeFiltering.OVERALL,
+        )
+      } returns flowOf(
+        TopAlbums(
+          albums = listOf(topAlbum("ZENITH"), topAlbum("Drama")).toImmutableList(),
+          pagingAttr = PagingAttr(totalPages = "10"),
+        ),
+      )
+      coEvery {
+        albumRepository.fetchTopAlbums(
+          page = 2,
+          username = "matakucom",
+          timeRangeFiltering = TimeRangeFiltering.OVERALL,
+        )
+      } returns flowOf(
+        TopAlbums(
+          albums = listOf(topAlbum("Drama"), topAlbum("CLARITY")).toImmutableList(),
+          pagingAttr = PagingAttr(totalPages = "10"),
+        ),
+      )
+
+      val viewModel = TopAlbumsViewModel(albumRepository, usernameRepository)
+      viewModel.fetchAlbums()
+
+      viewModel.uiState.value.topAlbums.map { it.title } shouldBe
+        listOf("ZENITH", "Drama", "CLARITY")
+    }
+  }
+
   describe("#updateTimeRange") {
     it("changes the filter and re-fetches with timeRangeFilteringChanged=true (resets pagination)") {
       val albumRepository = mockk<AlbumRepository>()
