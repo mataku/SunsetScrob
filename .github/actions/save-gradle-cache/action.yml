@@ -73,5 +73,6 @@ runs:
       with:
         path: |
           .gradle
+          !.gradle/configuration-cache
           ~/.gradle/caches/build-cache-*
         key: gradle-build-cache-${{ runner.os }}-${{ inputs.cache-key }}-develop

@@ -38,7 +38,7 @@ jobs:
 
       - name: Run detekt
         id: detekt
-        run: ./gradlew detekt --continue
+        run: ./gradlew detekt --continue --no-configuration-cache
 
       - uses: ./.github/actions/save-gradle-cache
         with:

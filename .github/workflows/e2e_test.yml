@@ -69,11 +69,12 @@ jobs:
           done
 
       - name: Build debug APK & androidTest APK
-        run: ./gradlew :app:assembleDebug :app:assembleDebugAndroidTest
+        run: ./gradlew :app:assembleDebug :app:assembleDebugAndroidTest --no-configuration-cache
 
       - name: Run E2E tests on ${{ matrix.device }}
         run: |
           bash ${{ matrix.script }} \
+            --no-configuration-cache \
             -Pandroid.testoptions.manageddevices.emulator.gpu=swiftshader_indirect
 
       - uses: ./.github/actions/save-avd-cache
