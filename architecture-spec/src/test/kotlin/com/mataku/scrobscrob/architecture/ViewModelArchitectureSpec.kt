@@ -101,7 +101,12 @@ class ViewModelArchitectureSpec : DescribeSpec({
         .assertTrue(
           additionalMessage = "A ViewModel's exposed state must be declared StateFlow<T>, never MutableStateFlow<T>. Keep the mutable instance private, using the explicit backing field (`field = MutableStateFlow(...)`). Replaces the UiStateMustBeStateFlow lint detector, which no longer runs on KMP modules.",
         ) { property ->
-          property.type?.name?.startsWith("MutableStateFlow") != true
+          val declaredType = property.type?.name
+          if (declaredType == null) {
+            property.value?.trimStart()?.startsWith("MutableStateFlow") != true
+          } else {
+            !declaredType.startsWith("MutableStateFlow")
+          }
         }
     }
   }
