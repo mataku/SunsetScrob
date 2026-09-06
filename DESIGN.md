@@ -205,7 +205,6 @@ Example: `SunsetText` (`Body`/`Label`/`Title`/`Headline`/`Subtitle`/`Caption`/`B
 
 ```kotlin
 object SunsetText {
-  @SuppressLint("ComposeNamingUppercase")
   @Composable
   operator fun invoke(text: String, style: TextStyle, ...) { /* base */ }
 
@@ -217,7 +216,7 @@ object SunsetText {
 }
 ```
 
-`@SuppressLint("ComposeNamingUppercase")` is required on `operator fun invoke` because Slack `compose-lint` rejects lowercase composables and `invoke` can't be renamed with a leading uppercase letter.
+No suppression is needed on `operator fun invoke`: detekt's `ComposableNaming` rule (the successor to Slack's deleted `ComposeNamingUppercase`/`ComposeNamingLowercase` pair) explicitly exempts operator functions, since their name is fixed by the language and the naming convention doesn't apply — see `Naming.kt` in `io.nlopez.compose.rules:detekt`, `if (function.isOperator) return`.
 
 Keep the public API minimal.
 Add parameters only when multiple call sites need them; if `SunsetTextStyle.X.copy(...)` already absorbs the difference, don't expose it.

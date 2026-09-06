@@ -85,6 +85,7 @@ private fun AlbumContentPreview() {
 ```
 
 `@Preview` composables must be declared `private`, enforced across every module by Konsist (`ComposableScreenArchitectureSpec`, "@Preview composables are private").
+The rule honours `@Suppress("PreviewNotPrivate")` on the declaration — the id is inherited from the Lint detector it replaced — for genuinely shared previews only.
 There is no per-wrapper equivalent of the old `PreferSunsetX` family (e.g. preferring `SunsetButton` over `Button`); what holds instead is the module-level rule that only `:ui_common` and `:test_helper:integration` may depend on Material 3, asserted by Konsist `ModuleDependencyArchitectureSpec`. New conventions that must hold across modules have to be written as Konsist specs or detekt rules.
 Expression-level Compose conventions (Modifier ordering and defaults, `remember` usage, content emitters, composable parameter order) are enforced on every module by detekt's `Compose` rule set (`io.nlopez.compose.rules:detekt`), configured in `config/detekt/detekt.yml`. That rule set is the maintained successor to Slack's `compose-lint-checks`, which stopped covering KMP modules when they lost their lint task.
 
