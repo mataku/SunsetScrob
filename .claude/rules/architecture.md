@@ -79,13 +79,16 @@ Violations break `:architecture-spec:test`.
 
 ## Convention Plugins
 
-If you create a new module, **apply an existing convention plugin** rather than hand-rolling configuration:
+Whenever you write Gradle configuration — creating a module, or adding a build-wide tool to existing ones — put it in a convention plugin under `build-logic/` rather than hand-rolling it in a build script. The root `build.gradle.kts` is declaration-only: it lists plugins with `apply false` and holds no configuration. Cross-cutting tools that apply regardless of module type go in `build-logic/convention/src/main/java/ext/<Tool>Configuration.kt` with a convention plugin that applies them — `AndroidLintConfiguration.kt` and `DetektConfiguration.kt` are the worked examples. Never reach for `subprojects { }` or `allprojects { }` in the root build script.
+
+The plugins below are the per-module-type conventions:
 
 - `KmpLibraryConventionPlugin` — every library module (android + jvm targets, SDK levels, jvmTest deps).
 - `KmpComposeConventionPlugin` — library modules that use Compose.
 - `KmpMetroConventionPlugin` — library modules that participate in the Metro DI graph.
 - `KmpScreenshotTestConventionPlugin` — library modules that contribute Roborazzi screenshots.
-- `ApplicationConventionPlugin`, `ComposeConventionPlugin`, `MetroConventionPlugin` — the `:app` module only.
+- `LintConventionPlugin` — detekt on every module.
+- `ApplicationConventionPlugin`, `ComposeConventionPlugin`, `MetroConventionPlugin`, `AndroidLintConventionPlugin` — the `:app` module only.
 
 Plugin IDs (used in `build.gradle.kts`):
 
@@ -95,9 +98,11 @@ Plugin IDs (used in `build.gradle.kts`):
 | `sunsetscrob.compose`                 | Compose Multiplatform, compiler plugin, Compose Resources (`Res` is public); enables Android resources so `composeResources` are packaged into the APK assets |
 | `sunsetscrob.metro`                   | Metro DI (`dev.zacsweers.metro`, adds `metrox-viewmodel-compose`)                |
 | `sunsetscrob.test.screenshot`         | Roborazzi on the JVM (`recordRoborazziJvm` / `verifyRoborazziJvm`); pins the test JVM locale to `en_US` so Compose Resources translations render deterministically |
+| `sunsetscrob.lint`                    | detekt (compose-rules + ktlint formatting) on every module                        |
 | `sunsetscrob.android.application`     | `:app` only                                                                      |
 | `sunsetscrob.android.compose`         | Compose for `:app` only                                                          |
 | `sunsetscrob.android.metro`           | Metro for `:app` only                                                            |
+| `sunsetscrob.android.lint`            | Android Lint, `:app` only                                                        |
 
 ### New Feature Module Example
 
