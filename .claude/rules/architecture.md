@@ -81,6 +81,8 @@ Violations break `:architecture-spec:test`.
 
 Whenever you write Gradle configuration — creating a module, or adding a build-wide tool to existing ones — put it in a convention plugin under `build-logic/` rather than hand-rolling it in a build script. The root `build.gradle.kts` is declaration-only: it lists plugins with `apply false` and holds no configuration. Cross-cutting tools that apply regardless of module type go in `build-logic/convention/src/main/java/ext/<Tool>Configuration.kt` with a convention plugin that applies them — `AndroidLintConfiguration.kt` and `DetektConfiguration.kt` are the worked examples. Never reach for `subprojects { }` or `allprojects { }` in the root build script.
 
+Only the `subprojects { }` and `allprojects { }` forms are enforced by Konsist-adjacent `BuildScriptArchitectureSpec`; any other configuration in the root script — a bare `dependencies { }`, `tasks.withType { }`, `extensions.configure { }` — is caught by review only, so treat this rule as broader than its sensor.
+
 The plugins below are the per-module-type conventions:
 
 - `KmpLibraryConventionPlugin` — every library module (android + jvm targets, SDK levels, jvmTest deps).
