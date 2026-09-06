@@ -36,7 +36,7 @@ jobs:
           last-fm-shared-secret: ${{ secrets.LAST_FM_SHARED_SECRET }}
           google-services-json: ${{ secrets.GOOGLE_SERVICES_JSON_DEV }}
       - name: Run screenshot tests
-        run: ./gradlew verifyRoborazziJvm -PonlyScreenshotTest=true
+        run: ./gradlew verifyRoborazziJvm --no-configuration-cache -PonlyScreenshotTest=true
       - uses: ./.github/actions/save-gradle-cache
         with:
           use-build-cache: 'true'

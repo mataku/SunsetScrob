@@ -38,7 +38,7 @@ jobs:
 
       - name: Run Android Lint
         id: lint
-        run: ./gradlew lintDebug --continue
+        run: ./gradlew lintDebug --continue --no-configuration-cache
 
       - uses: ./.github/actions/save-gradle-cache
         with:
