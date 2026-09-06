@@ -61,6 +61,13 @@ Compose:
     active: true
   ParameterNaming:
     active: true
+    # onBackPressed is the documented convention in coding-conventions.md (used repo-wide,
+    # ~80 occurrences across ~26 files, mirroring Activity.onBackPressed). onPageFinished
+    # mirrors the platform WebViewClient.onPageFinished callback it wraps, and onTabSelected
+    # mirrors the common Android OnTabSelectedListener naming. All three predate this rule;
+    # renaming them is out of scope here and would fight established naming instead of a
+    # real violation.
+    allowedLambdaParameterNames: onBackPressed,onPageFinished,onTabSelected
   PreviewAnnotationNaming:
     active: true
   PreviewPublic:
