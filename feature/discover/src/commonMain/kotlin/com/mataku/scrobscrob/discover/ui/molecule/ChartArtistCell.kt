@@ -26,8 +26,8 @@ import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 fun ChartArtistCell(
   chartArtist: ChartArtist,
   rank: Int,
-  modifier: Modifier = Modifier,
-  onChartArtistTap: (ChartArtist) -> Unit
+  onChartArtistTap: (ChartArtist) -> Unit,
+  modifier: Modifier = Modifier
 ) {
   Row(
     modifier = modifier

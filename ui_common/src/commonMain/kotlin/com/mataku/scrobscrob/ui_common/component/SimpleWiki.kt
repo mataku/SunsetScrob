@@ -24,8 +24,8 @@ import com.mataku.scrobscrob.ui_common.style.accentColor
 fun SimpleWiki(
   name: String,
   url: String,
-  modifier: Modifier = Modifier,
-  onUrlTap: (String) -> Unit
+  onUrlTap: (String) -> Unit,
+  modifier: Modifier = Modifier
 ) {
   Column(
     modifier = modifier

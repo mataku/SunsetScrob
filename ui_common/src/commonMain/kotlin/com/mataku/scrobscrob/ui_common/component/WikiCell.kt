@@ -21,8 +21,8 @@ import com.mataku.scrobscrob.ui_common.style.onSecondaryColor
 fun WikiCell(
   wiki: Wiki,
   name: String,
-  modifier: Modifier = Modifier,
-  onUrlTap: (String) -> Unit
+  onUrlTap: (String) -> Unit,
+  modifier: Modifier = Modifier
 ) {
   Column(
     modifier = modifier

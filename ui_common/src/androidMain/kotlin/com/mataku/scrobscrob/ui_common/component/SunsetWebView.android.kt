@@ -15,8 +15,8 @@ import androidx.compose.ui.viewinterop.AndroidView
 actual fun SunsetWebView(
   url: String,
   modifier: Modifier,
-  openLinksExternally: Boolean,
   onPageFinished: (title: String) -> Unit,
+  openLinksExternally: Boolean,
 ) {
   val uriHandler = LocalUriHandler.current
   val currentOnPageFinished by rememberUpdatedState(onPageFinished)

@@ -31,8 +31,8 @@ import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 internal fun ChartTrackCell(
   chartTrack: ChartTrack,
   rank: Int,
-  modifier: Modifier = Modifier,
-  onChartTrackTap: (ChartTrack) -> Unit
+  onChartTrackTap: (ChartTrack) -> Unit,
+  modifier: Modifier = Modifier
 ) {
   Row(
     modifier = modifier

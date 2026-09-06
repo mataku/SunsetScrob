@@ -8,8 +8,8 @@ import androidx.compose.ui.Modifier
 actual fun SunsetWebView(
   url: String,
   modifier: Modifier,
-  openLinksExternally: Boolean,
   onPageFinished: (title: String) -> Unit,
+  openLinksExternally: Boolean,
 ) {
   Box(modifier = modifier)
 }
