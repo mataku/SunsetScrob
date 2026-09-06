@@ -3,6 +3,8 @@ Compose:
     active: true
   ComposableNaming:
     active: true
+  ComposableNestingDepth:
+    active: false
   ComposableParamOrder:
     active: true
   CompositionLocalAllowlist:
@@ -74,6 +76,8 @@ Compose:
     allowedLambdaParameterNames: onBackPressed,onPageFinished,onTabSelected
   PreviewAnnotationNaming:
     active: true
+  PreviewNaming:
+    active: false
   PreviewPublic:
     active: true
   RememberContentMissing:
