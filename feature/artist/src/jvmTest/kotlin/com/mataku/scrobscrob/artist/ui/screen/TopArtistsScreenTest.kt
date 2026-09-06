@@ -30,7 +30,7 @@ class TopArtistsScreenTest {
       imageList = persistentListOf(),
       topTags = persistentListOf(),
       playCount = "100${it}",
-      url = ""
+      url = "https://example.com/$it"
     )
   }
 
