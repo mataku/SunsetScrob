@@ -21,7 +21,7 @@ permissions:
   actions: write
 
 jobs:
-  lint:
+  android_lint:
     runs-on: ubuntu-latest
 
     steps:
