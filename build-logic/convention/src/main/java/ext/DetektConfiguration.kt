@@ -22,6 +22,7 @@ fun Project.detektConfiguration() {
   }
 
   dependencies.add("detektPlugins", libs.findLibrary("detekt-compose-rules").get())
+  dependencies.add("detektPlugins", libs.findLibrary("detekt-ktlint-wrapper").get())
 
   tasks.withType<Detekt>().configureEach {
     reports {
