@@ -23,7 +23,7 @@ env:
 
 jobs:
   screenshot_test:
-    runs-on: macos-26
+    runs-on: ubuntu-latest
     timeout-minutes: 20
 
     steps:
