@@ -18,12 +18,16 @@ env:
 jobs:
   arch_test:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: write
 
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: ./.github/actions/setup-gradle
         with:
           use-build-cache: 'true'
+          cache-key: arch
       - uses: ./.github/actions/sunsetscrob-setup
         with:
           last-fm-api-key: ${{ secrets.LAST_FM_API_KEY }}
@@ -31,3 +35,8 @@ jobs:
           google-services-json: ${{ secrets.GOOGLE_SERVICES_JSON_DEV }}
       - name: Run architecture tests
         run: ./gradlew :architecture-spec:test
+      - uses: ./.github/actions/save-gradle-cache
+        with:
+          use-build-cache: 'true'
+          cache-key: arch
+          github-token: ${{ secrets.GITHUB_TOKEN }}

@@ -21,6 +21,9 @@ jobs:
     name: E2E (${{ matrix.artifact-suffix }})
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    permissions:
+      contents: read
+      actions: write
     strategy:
       fail-fast: false
       matrix:
@@ -42,6 +45,7 @@ jobs:
       - uses: ./.github/actions/setup-gradle
         with:
           use-build-cache: 'true'
+          cache-key: e2e
       - uses: ./.github/actions/sunsetscrob-setup
         with:
           last-fm-api-key: ${{ secrets.LAST_FM_API_KEY }}
@@ -63,6 +67,12 @@ jobs:
         run: |
           bash ${{ matrix.script }} \
             -Pandroid.testoptions.manageddevices.emulator.gpu=swiftshader_indirect
+
+      - uses: ./.github/actions/save-gradle-cache
+        with:
+          use-build-cache: 'true'
+          cache-key: e2e
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload test reports
         if: failure()

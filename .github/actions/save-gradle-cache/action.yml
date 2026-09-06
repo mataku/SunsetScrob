@@ -1,0 +1,78 @@
+name: "Save Gradle cache"
+description: "Refresh the Gradle caches with fixed keys. Only runs on pushes to develop; every other ref keeps the caches read-only."
+inputs:
+  use-build-cache:
+    description: 'Boolean value whether to save the Gradle build cache'
+    required: true
+  cache-key:
+    description: 'Identifier of the per-job build cache slot. Must match the value passed to setup-gradle'
+    required: false
+    default: ''
+  save-shared-cache:
+    description: 'Boolean value whether this job refreshes the wrapper and dependency caches shared by every job'
+    required: false
+    default: 'false'
+  github-token:
+    description: 'Token with actions:write. Cache entries are immutable, so the previous entry is deleted before the fixed key is written again'
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Delete previous cache entries
+      if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/develop' }}
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.github-token }}
+        REPO: ${{ github.repository }}
+        SAVE_SHARED_CACHE: ${{ inputs.save-shared-cache }}
+        USE_BUILD_CACHE: ${{ inputs.use-build-cache }}
+        BUILD_CACHE_KEY: gradle-build-cache-${{ runner.os }}-${{ inputs.cache-key }}-develop
+      run: |
+        delete_entry() {
+          key="$1"
+          existing=$(gh cache list -R "$REPO" --key "$key" --ref refs/heads/develop --json key \
+            --jq "map(select(.key == \"$key\")) | length")
+          if [ "$existing" = "0" ]; then
+            echo "No cache entry for $key yet"
+            return
+          fi
+          gh cache delete "$key" --ref refs/heads/develop -R "$REPO" \
+            || echo "::warning::Failed to delete cache entry $key. The save step below will keep the stale entry."
+        }
+
+        if [ "$SAVE_SHARED_CACHE" = 'true' ]; then
+          delete_entry gradle-wrapper-develop
+          delete_entry gradle-dependencies-develop
+        fi
+        if [ "$USE_BUILD_CACHE" = 'true' ]; then
+          delete_entry "$BUILD_CACHE_KEY"
+        fi
+
+    - name: Save gradle wrapper
+      uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+      if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/develop' && inputs.save-shared-cache == 'true' }}
+      with:
+        path: |
+          ~/.gradle/wrapper
+        key: gradle-wrapper-develop
+
+    - name: Save gradle dependencies dir
+      uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+      if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/develop' && inputs.save-shared-cache == 'true' }}
+      with:
+        path: |
+          ~/.gradle/caches/jars-*
+          ~/.gradle/caches/transforms-*
+          ~/.gradle/caches/modules-*
+        key: gradle-dependencies-develop
+
+    - name: Save gradle build results
+      uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+      if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/develop' && inputs.use-build-cache == 'true' }}
+      with:
+        path: |
+          .gradle
+          ~/.gradle/caches/build-cache-*
+          ~/.gradle/caches/[0-9]*.* # TODO: specify latest only
+        key: gradle-build-cache-${{ runner.os }}-${{ inputs.cache-key }}-develop

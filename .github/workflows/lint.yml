@@ -18,6 +18,7 @@ env:
 permissions:
   contents: read
   pull-requests: write
+  actions: write
 
 jobs:
   lint:
@@ -28,6 +29,7 @@ jobs:
       - uses: ./.github/actions/setup-gradle
         with:
           use-build-cache: 'true'
+          cache-key: lint
       - uses: ./.github/actions/sunsetscrob-setup
         with:
           last-fm-api-key: ${{ secrets.LAST_FM_API_KEY }}
@@ -37,6 +39,12 @@ jobs:
       - name: Run Android Lint
         id: lint
         run: ./gradlew lintDebug --continue
+
+      - uses: ./.github/actions/save-gradle-cache
+        with:
+          use-build-cache: 'true'
+          cache-key: lint
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Aggregate lint failures
         if: failure() && steps.lint.conclusion == 'failure'
