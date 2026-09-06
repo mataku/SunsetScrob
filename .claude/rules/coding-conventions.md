@@ -101,6 +101,10 @@ internal fun ChartCell(
 )
 ```
 
+### Lint Coverage Gaps
+
+Two checks from Slack's `compose-lint-checks` have no counterpart in detekt's `Compose` rule set and were lost when that dependency was removed: `ComposeCompositionLocalGetter` (a `CompositionLocal` declared through a getter rather than as a value — the repo has no such declaration today, every one goes through `compositionLocalOf` / `staticCompositionLocalOf`) and `ComposeItemKeyHashCode` (`hashCode()` used as a lazy-list item key, which collides for equal items and is unstable across reordering). Neither is enforced mechanically; both are review items.
+
 ## Data Class
 
 - Add `@Immutable` annotation

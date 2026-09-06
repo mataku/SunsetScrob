@@ -84,6 +84,8 @@ Compose:
     active: true
   StateParam:
     active: true
+  UnstableCollections:
+    active: true
   UnnecessaryComposable:
     active: true
   UnnecessaryLaunchedEffect:
