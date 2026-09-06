@@ -36,6 +36,7 @@ An agent that performs code review on GitHub Pull Request.
 - `.claude/rules/viewmodel.md` - ViewModel conventions (path-scoped to ViewModel files)
 - `.claude/rules/repository.md` - Repository + Metro DI conventions (path-scoped to data layer)
 - `.claude/rules/testing.md` - Unit Test, Screenshot Test guidelines (path-scoped to test files)
+- `.claude/rules/e2e-testing.md` - E2E (instrumentation) test architecture (path-scoped to `app/src/androidTest/**`)
 
 2. Get PR information using `gh pr view <PR_NUMBER> --json title,body,files`
 3. Get PR diff using `gh pr diff <PR_NUMBER>`

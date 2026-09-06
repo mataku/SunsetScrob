@@ -1,17 +1,15 @@
 # CLAUDE.md
 
 Guidance for AI coding agents (Claude Code and similar) working in this repository.
-This document is the **inferential feedforward** part of the project's harness; most
-rules below have a matching Konsist sensor under `:architecture-spec` that will fail
-CI if violated. When in doubt, follow the existing code in the module you are editing.
+This document is the **inferential feedforward** part of the project's harness; most rules below have a matching Konsist sensor under `:architecture-spec` that will fail CI if violated.
+When in doubt, follow the existing code in the module you are editing.
 
 ---
 
 ## Documentation
 
-Detailed conventions are split into `.claude/rules/`. Some are loaded every
-session (no `paths:` frontmatter); others load only when Claude reads matching
-files (`paths:`-scoped).
+Detailed conventions are split into `.claude/rules/`.
+Some are loaded every session (no `paths:` frontmatter); others load only when Claude reads matching files (`paths:`-scoped).
 
 | File                                  | Scope                                                              | Loaded                                                           |
 |---------------------------------------|--------------------------------------------------------------------|------------------------------------------------------------------|
@@ -25,8 +23,8 @@ files (`paths:`-scoped).
 
 ## Project Overview
 
-SunsetScrob is a Last.fm client Android application. Modular Kotlin app using
-Jetpack Compose, MVVM + Repository pattern, Metro DI, and feature-based modules.
+SunsetScrob is a Last.fm client Android application.
+Modular Kotlin app using Compose Multiplatform, MVVM + Repository pattern, Metro DI, and feature-based modules.
 
 ## Setup
 
@@ -52,24 +50,19 @@ SHARED_SECRET=YOUR_LAST_FM_SHARED_SECRET
 
 ## DO / DON'T Summary
 
-These reminders are kept here because their detail rule is path-scoped
-(`viewmodel.md`, `repository.md`, `testing.md`) and won't load until Claude
-reads a matching file. Layer / package / Compose / navigation rules already
-live in always-loaded `architecture.md` and `coding-conventions.md`.
+These reminders are kept here because their detail rule is path-scoped (`viewmodel.md`, `repository.md`, `testing.md`) and won't load until Claude reads a matching file.
+Layer / package / Compose / navigation rules already live in always-loaded `architecture.md` and `coding-conventions.md`.
 
 **DO**
 
-- Wire new dependencies through Metro with `@Binds` / `@Provides` on a
-  `@ContributesTo(AppScope::class)` interface in `di/FooModule.kt`.
+- Wire new dependencies through Metro with `@Binds` / `@Provides` on a `@ContributesTo(AppScope::class)` interface in `di/FooModule.kt`.
 - Write a `*Spec.kt` Kotest test next to the class under test.
 
 **DON'T**
 
 - Use `GlobalScope` or a custom `CoroutineScope` inside a ViewModel.
-- Emit one-shot events via a separate `SharedFlow`. Use the in-state
-  `events: List<UiEvent>` + `popEvent` pattern the rest of the codebase uses.
-- Catch errors inside a repository to return a fallback value. Let the Flow
-  fail; the VM handles it.
+- Emit one-shot events via a separate `SharedFlow`. Use the in-state `events: List<UiEvent>` + `popEvent` pattern the rest of the codebase uses.
+- Catch errors inside a repository to return a fallback value. Let the Flow fail; the VM handles it.
 
 ---
 
@@ -81,27 +74,26 @@ live in always-loaded `architecture.md` and `coding-conventions.md`.
 - Async: Kotlin Coroutines + Flow
 - DI: Metro (Kotlin compiler plugin; Dagger annotation interop enabled)
 - Image loading: Coil 3
-- Build: Gradle Kotlin DSL, version catalog (`gradle/libs.versions.toml`), custom convention plugins in `build-logic/convention/` (`sunsetscrob.library` / `compose` / `metro` / `test.screenshot` for every library module, all of which are KMP; `sunsetscrob.android.application` / `android.compose` / `android.metro` for `:app` only).
+- Build: Gradle Kotlin DSL, version catalog (`gradle/libs.versions.toml`), custom convention plugins in `build-logic/convention/`. Every library module is KMP and applies `sunsetscrob.library`, plus `compose` / `metro` / `test.screenshot` as needed (`:core` takes `library` + `compose`, `:data:*` take `library` + `metro`, feature modules take all four). `sunsetscrob.android.application` / `android.compose` / `android.metro` are for `:app` only.
 - Tests: Kotest (JUnit5 platform), MockK, Turbine, Roborazzi.
-- Code quality: Android Lint (project-specific custom detectors in `:lint-checks`), Compose lint (Slack `compose-lint-checks`), Konsist architecture tests, Licensee. Lint fails the build only when `CI=true` (see `build-logic/convention/.../AndroidLintConfiguration.kt`); CI runs it as a standalone job (`.github/workflows/lint.yml`). KMP modules have no lint task, so neither Android Lint nor Compose lint run on them at all — Konsist is the enforcement mechanism for KMP modules, and new conventions for those modules must be written as Konsist specs.
+- Code quality: Android Lint (project-specific custom detectors in `:lint-checks`), Compose lint (Slack `compose-lint-checks`), Konsist architecture tests, Licensee. Lint fails the build only when `CI=true` (see `build-logic/convention/.../AndroidLintConfiguration.kt`); CI runs it as a standalone job (`.github/workflows/lint.yml`). KMP modules have no lint task, so neither Android Lint nor Compose lint run on them at all; since `:app` is the only non-KMP module, Lint effectively covers `:app` alone. Konsist is the enforcement mechanism everywhere else, and new conventions for KMP modules must be written as Konsist specs.
 
 ---
 
 ## Architecture Tests (`:architecture-spec`)
 
-Architecture rules are mechanically enforced by [Konsist](https://docs.konsist.lemonappdev.com/)
-in the `:architecture-spec` module. Each rule under `.claude/rules/` maps to a
-`*ArchitectureSpec.kt` under
-`architecture-spec/src/test/kotlin/com/mataku/scrobscrob/architecture/`.
+Architecture rules are mechanically enforced by [Konsist](https://docs.konsist.lemonappdev.com/) in the `:architecture-spec` module.
+Each rule under `.claude/rules/` maps to a `*ArchitectureSpec.kt` under `architecture-spec/src/test/kotlin/com/mataku/scrobscrob/architecture/`.
 
 - Run locally: `./gradlew :architecture-spec:test`
-- Run in CI: `./gradlew :architecture-spec:test` via the GitHub Actions
-  workflow `arch_test.yml`, independent of the main test job.
+- Run in CI: `./gradlew :architecture-spec:test` via the GitHub Actions workflow `arch_test.yml`, independent of the main test job.
 
 When you add a new convention to a `.claude/rules/` file, add a matching Spec.
-When you change a Spec, update the corresponding rule. Guide and sensor must
-stay paired.
+When you change a Spec, update the corresponding rule.
+Guide and sensor must stay paired.
 
 ### When a convention deserves a Konsist spec or Lint detector
 
-Add a mechanical rule only for conventions whose violation would otherwise go unnoticed: the build passes, the tests pass and the app appears to work, but the code has drifted (a class in the wrong package, a ViewModel that silently drops out of the Metro graph, a VRT class missing its tag, a repository that swallows errors). Those are the problems a reviewer would only catch by knowing the convention, so the sensor has to know it instead. Do not add a rule for anything the compiler, the DI graph, a failing test or an existing check already reports; a second sensor for the same failure adds maintenance without adding signal.
+Add a mechanical rule only for conventions whose violation would otherwise go unnoticed: the build passes, the tests pass and the app appears to work, but the code has drifted (a class in the wrong package, a ViewModel that silently drops out of the Metro graph, a VRT class missing its tag, a repository that swallows errors).
+Those are the problems a reviewer would only catch by knowing the convention, so the sensor has to know it instead.
+Do not add a rule for anything the compiler, the DI graph, a failing test or an existing check already reports; a second sensor for the same failure adds maintenance without adding signal.

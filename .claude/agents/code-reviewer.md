@@ -20,6 +20,7 @@ An agent that performs code review on git diff.
   - `.claude/rules/viewmodel.md` - ViewModel conventions (path-scoped to ViewModel files)
   - `.claude/rules/repository.md` - Repository + Metro DI conventions (path-scoped to data layer)
   - `.claude/rules/testing.md` - Unit Test, Screenshot Test guidelines (path-scoped to test files)
+  - `.claude/rules/e2e-testing.md` - E2E (instrumentation) test architecture (path-scoped to `app/src/androidTest/**`)
 2. Run `git diff` to get the changes
 3. Review changed files based on the criteria defined in `.claude/skills/code-review/SKILL.md`
 4. Output CRITICAL issue results in each file described in `CRITICAL output comments Requirements`

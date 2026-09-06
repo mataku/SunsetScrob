@@ -18,17 +18,11 @@ One test file per class under test.
 
 ## Run new or modified tests before committing
 
-When you add or modify a test, run it locally before committing — for
-**every** test type, including slow Gradle-Managed-Device instrumentation
-tests. Compile-only verification (`assembleDebugAndroidTest`) is not a
-substitute: it only proves the test class builds, not that it passes on a
-real device.
+When you add or modify a test, run it locally before committing — for **every** test type, including slow Gradle-Managed-Device instrumentation tests.
+Compile-only verification (`assembleDebugAndroidTest`) is not a substitute: it only proves the test class builds, not that it passes on a real device.
 
-A single GMD run takes ~5–15 minutes once the system image is cached;
-debugging a broken commit after the fact (failure surfaces in CI or via
-the user, root-cause hunt, follow-up commit) costs more than that. Skip
-the local run only with explicit user permission and only when the test
-itself is not the change under verification.
+A single GMD run takes ~5–15 minutes once the system image is cached; debugging a broken commit after the fact (failure surfaces in CI or via the user, root-cause hunt, follow-up commit) costs more than that.
+Skip the local run only with explicit user permission and only when the test itself is not the change under verification.
 
 Pair this with the verification commands in the path-scoped guides:
 - VRT: `./gradlew verifyRoborazziJvm -PonlyScreenshotTest=true`
@@ -44,11 +38,14 @@ Uses Kotest + MockK.
 ### File Location
 
 ```
-feature/{name}/src/test/java/com/mataku/scrobscrob/{name}/
+feature/{name}/src/jvmTest/kotlin/com/mataku/scrobscrob/{name}/
 ├── ui/viewmodel/
 │   └── {Feature}ViewModelSpec.kt
 └── ...
 ```
+
+Every library module is KMP, so tests live under `src/jvmTest/kotlin` — there is no `src/test`.
+`:app` is the only module that still uses `src/test/java`.
 
 ### Test Class Structure
 
@@ -70,10 +67,8 @@ class LoginViewModelSpec : DescribeSpec({
 })
 ```
 
-Register `extension(CoroutinesListener())` when testing ViewModels (where
-`viewModelScope` needs a deterministic dispatcher). Repository specs that
-collect a `Flow` via Turbine's `.test { ... }` do **not** need it, because
-Turbine pumps the flow on its own dispatcher.
+Register `extension(CoroutinesListener())` when testing ViewModels (where `viewModelScope` needs a deterministic dispatcher).
+Repository specs that collect a `Flow` via Turbine's `.test { ... }` do **not** need it, because Turbine pumps the flow on its own dispatcher.
 
 ### Repository spec
 
@@ -100,9 +95,7 @@ class AlbumRepositorySpec : DescribeSpec({
 })
 ```
 
-URL/method/JSON deserialization is verified separately in
-`:data:api/src/test/.../endpoint/{Endpoint}Spec.kt` — that is where
-`MockEngine` wiring belongs.
+URL/method/JSON deserialization is verified separately in `:data:api/src/jvmTest/kotlin/.../endpoint/{Endpoint}Spec.kt` — that is where `MockEngine` wiring belongs.
 
 ### Assertions
 
@@ -114,9 +107,8 @@ boolean.shouldBeFalse()
 
 ### MockK
 
-Prefer explicit `mockk<T>()` + `coEvery { } returns ...`. Avoid
-`mockk(relaxed = true)` unless the intent is genuinely "ignore all
-unused members".
+Prefer explicit `mockk<T>()` + `coEvery { } returns ...`.
+Avoid `mockk(relaxed = true)` unless the intent is genuinely "ignore all unused members".
 
 #### Creating Mocks
 
@@ -175,11 +167,13 @@ class ExampleViewModelSpec : DescribeSpec({
 
 ## Screenshot Test (VRT)
 
-Uses Roborazzi. Create tests per screen.
+Uses Roborazzi.
+Create tests per screen.
 
 ### JVM rendering
 
-Screenshot tests live under `src/jvmTest/kotlin`, are JUnit 5 classes and render through Compose Desktop (JVM Skia, not Robolectric). Two things are required:
+Screenshot tests live under `src/jvmTest/kotlin`, are JUnit 5 classes and render through Compose Desktop (JVM Skia, not Robolectric).
+Two things are required:
 
 - `@Tag("VRT")` on the class (`org.junit.jupiter.api.Tag`). This is what `-PonlyScreenshotTest=true` / `-PexcludeScreenshotTest=true` filter on; without it the class runs in the unit-test bucket. Enforced by `ScreenshotTestArchitectureSpec`.
 - `captureScreenshot` from `:test_helper:integration` (`jvmMain`), a top-level function, no rule needed.
@@ -212,7 +206,9 @@ class AlbumScreenTest {
 }
 ```
 
-`device` is a `ScreenshotDevice` (`Pixel7`, `Pixel7Landscape`, `PixelTablet`). `actionsBeforeCapturing` runs with a `ComposeUiTest` receiver, so node finders and `waitForIdle()` are called directly. Goldens are written to `<module>/screenshot/`.
+`device` is a `ScreenshotDevice` (`Pixel7`, `Pixel7Landscape`, `PixelTablet`).
+`actionsBeforeCapturing` runs with a `ComposeUiTest` receiver, so node finders and `waitForIdle()` are called directly.
+Goldens are written to `<module>/screenshot/`.
 
 ### Test Target
 
@@ -231,7 +227,8 @@ content = {
 
 ### test_helper:unit
 
-Helper for Unit Tests. Provides `CoroutinesListener`.
+Helper for Unit Tests.
+Provides `CoroutinesListener`.
 
 ### test_helper:integration
 

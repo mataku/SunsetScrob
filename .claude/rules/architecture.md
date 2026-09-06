@@ -1,12 +1,12 @@
 # Architecture
 
-This file is loaded on every session. Path-scoped detail rules:
+This file is loaded on every session.
+Path-scoped detail rules:
 
 - `viewmodel.md` — auto-loads when reading any `*ViewModel.kt` or files under `**/viewmodel/`
 - `repository.md` — auto-loads when reading any `*Repository*.kt`, files under `**/repository/`, or files under `**/data/`
 
-Read those files explicitly when planning ViewModel or Repository work,
-since path-scoped rules don't fire until matching files are opened.
+Read those files explicitly when planning ViewModel or Repository work, since path-scoped rules don't fire until matching files are opened.
 
 ## Module Overview
 
@@ -43,25 +43,21 @@ feature/* ──→ data/repository ──→ data/api ──→ core
 
 ## Module Dependency Rules
 
-The module graph is strictly directional. Violations break `:architecture-spec:test`.
+The module graph is strictly directional.
+Violations break `:architecture-spec:test`.
 
 - `:core` — pure, depends on **nothing** in this project.
 - `:ui_common` — may depend only on `:core`.
 - `:data:api` and `:data:db` — must not depend on each other.
 - `:data:repository` — depends on `:data:api` and `:data:db`.
-- `:feature:*` — may depend on `:ui_common`, `:core`, `:data:repository` only.
-  **Never depend on `:data:api` or `:data:db` directly from a feature module.**
-- Feature-to-feature dependencies are forbidden with one exception:
-  `:feature:home` is the navigation hub and may depend on other feature modules.
-  No other `:feature:*` may depend on another `:feature:*`.
+- `:feature:*` — may depend on `:ui_common`, `:core`, `:data:repository` only. **Never depend on `:data:api` or `:data:db` directly from a feature module.**
+- Feature-to-feature dependencies are forbidden with one exception: `:feature:home` is the navigation hub and may depend on other feature modules. No other `:feature:*` may depend on another `:feature:*`.
 - `:app` — top of the graph; may depend on anything.
 - `:architecture-spec` and `:test_helper:*` — orthogonal, not part of the production graph.
 
 ## Package Structure
 
-- Root package is `com.mataku.scrobscrob.<subpackage>`. The subpackage does not
-  always equal the module name — e.g. `:feature:discover` uses
-  `com.mataku.scrobscrob.chart`. Follow the existing package in the module.
+- Root package is `com.mataku.scrobscrob.<subpackage>`. The subpackage does not always equal the module name — `:feature:discover` is mostly `com.mataku.scrobscrob.discover`, but `DiscoverKey` still sits in the older `com.mataku.scrobscrob.chart.ui.navigation`. Follow the existing package in the module.
 - Within a feature module:
   - Screens: `...ui.screen`
   - ViewModels: `...ui.viewmodel`
@@ -83,8 +79,7 @@ The module graph is strictly directional. Violations break `:architecture-spec:t
 
 ## Convention Plugins
 
-If you create a new module, **apply an existing convention plugin** rather
-than hand-rolling configuration:
+If you create a new module, **apply an existing convention plugin** rather than hand-rolling configuration:
 
 - `KmpLibraryConventionPlugin` — every library module (android + jvm targets, SDK levels, jvmTest deps).
 - `KmpComposeConventionPlugin` — library modules that use Compose.
@@ -137,18 +132,11 @@ Rules:
 
 - Use convention plugins for common configuration.
 - Write only module-specific configuration in `build.gradle.kts`.
-- Direct dependency on Navigation 3 (`androidx.navigation3.*`) is allowed only
-  inside `:ui_common`. Feature modules consume the DSL exposed by
-  `:ui_common/.../navigation/SunsetNavBuilder` and friends. Enforced by Konsist
-  (`NavigationArchitectureSpec`).
-- Direct dependency on `androidx.browser` (Auth Tab / Custom Tabs) is allowed
-  only inside `:feature:auth`, behind `LastFmWebAuthLauncher`. Enforced by
-  Konsist (`ModuleDependencyArchitectureSpec`).
+- Direct dependency on Navigation 3 (`androidx.navigation3.*`) is allowed only inside `:ui_common`. Feature modules consume the DSL exposed by `:ui_common/.../navigation/SunsetNavBuilder` and friends. Enforced by Konsist (`NavigationArchitectureSpec`).
+- Direct dependency on `androidx.browser` (Auth Tab / Custom Tabs) is allowed only inside `:feature:auth`, behind `LastFmWebAuthLauncher`. Enforced by Konsist (`ModuleDependencyArchitectureSpec`).
+- Material 3 is declared per module rather than by `sunsetscrob.compose`, and only `:ui_common` (plus `:test_helper:integration`, which needs `LocalRippleConfiguration` for deterministic screenshots) may depend on it. Feature modules consume the `SunsetX` wrappers from `:ui_common`. Enforced by Konsist (`ModuleDependencyArchitectureSpec`); see `DESIGN.md`.
 
 ## Error Handling
 
-- `core/entity/presentation/SunsetResult.kt` exists as a result type but is
-  **not** the default in UIs today. The repository returns raw `Flow<T>`, and
-  the VM converts errors to `UiEvent.Error` via `.catch { e -> ... }`.
-- Do not scatter `try/catch` blocks across VMs or composables. Centralize on
-  the Flow boundary.
+- `core/entity/presentation/SunsetResult.kt` exists as a result type but is **not** the default in UIs today. The repository returns raw `Flow<T>`, and the VM converts errors to `UiEvent.Error` via `.catch { e -> ... }`.
+- Do not scatter `try/catch` blocks across VMs or composables. Centralize on the Flow boundary.

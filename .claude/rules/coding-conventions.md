@@ -44,18 +44,10 @@
 
 Reference: `feature/scrobble/.../ui/screen/ScrobbleScreen.kt`, `feature/home/.../ui/screen/HomeScreen.kt`.
 
-- Top-level composable is `fun FooScreen(viewModel: FooViewModel = metroViewModel(), navigateToX: (...) -> Unit, modifier: Modifier = Modifier)`.
-  It is stateful: collects state with `.collectAsStateWithLifecycle()` and owns
-  navigation callbacks.
+- Top-level composable is `fun FooScreen(viewModel: FooViewModel = metroViewModel(), navigateToX: (...) -> Unit, modifier: Modifier = Modifier)`. It is stateful: collects state with `.collectAsStateWithLifecycle()` and owns navigation callbacks.
 - A `private fun FooContent(...)` takes **data only** (no ViewModel), is previewable, and contains the Compose layout.
-- Prefer declaring the top-level Screen composable as `internal` when
-  feasible (Screens aren't consumed across modules beyond the hub pattern).
-  Not currently enforced by Konsist — the hub pattern in `:feature:home`
-  forces `TopAlbumsScreen`, `TopArtistsScreen`, `ScrobbleScreen` to stay
-  public, and shared screens under `:ui_common` (e.g. `WebViewScreen`) are
-  deliberately public as they are reused across modules.
-- Handle one-shot events in the Screen with
-  `LaunchedEffect(uiState.events) { uiState.events.firstOrNull()?.let { event -> ...; viewModel.popEvent(event) } }`.
+- Prefer declaring the top-level Screen composable as `internal` when feasible (Screens aren't consumed across modules beyond the hub pattern). Not currently enforced by Konsist — the hub pattern in `:feature:home` forces `TopAlbumsScreen`, `TopArtistsScreen`, `ScrobbleScreen` to stay public, and shared screens under `:ui_common` (e.g. `WebViewScreen`) are deliberately public as they are reused across modules.
+- Handle one-shot events in the Screen with `LaunchedEffect(uiState.events) { uiState.events.firstOrNull()?.let { event -> ...; viewModel.popEvent(event) } }`.
 
 ### Modifier
 
@@ -77,8 +69,7 @@ modifier = Modifier
 ### Preview
 
 - Define as `private fun`
-- Wrap with `SunsetThemePreview` — it provides a `SunsetSurface` background
-  internally, so don't add another `Surface { }` wrapper
+- Wrap with `SunsetThemePreview` — it provides a `SunsetSurface` background internally, so don't add another `Surface { }` wrapper
 
 ```kotlin
 @Composable
@@ -93,7 +84,10 @@ private fun AlbumContentPreview() {
 }
 ```
 
-`@Preview` composables must be declared `private`. KMP modules have no lint task, so the rule is enforced by Konsist (`ComposableScreenArchitectureSpec`, "@Preview composables are private") for them and by the `PreviewNotPrivate` detector in `:lint-checks` for the remaining Android modules; `@Suppress("PreviewNotPrivate")` opts out of both. Suppress only for genuinely shared previews. Because KMP modules have no lint task, Slack `compose-lint-checks` and the project's `:lint-checks` detectors do not run on them at all: `PreviewNotPrivate` is replaced by the Konsist check above, `RepositoryReturnsFlow` is replaced by the Konsist `RepositoryArchitectureSpec` (see `.claude/rules/repository.md`), and `PreferLocalAppThemeColor` plus the `PreferSunsetX` family (e.g. `PreferSunsetButtonDetector`, `PreferSunsetTextDetector`) still apply only to Android feature modules, as before — new conventions that must hold in KMP modules have to be written as Konsist specs, not Lint detectors.
+`@Preview` composables must be declared `private`.
+KMP modules have no lint task, so the rule is enforced by Konsist (`ComposableScreenArchitectureSpec`, "@Preview composables are private") for them and by the `PreviewNotPrivate` detector in `:lint-checks` for `:app`, the only Android module left; `@Suppress("PreviewNotPrivate")` opts out of both.
+Suppress only for genuinely shared previews.
+Because KMP modules have no lint task, Slack `compose-lint-checks` and the project's `:lint-checks` detectors run on `:app` only. `PreviewNotPrivate` is replaced by the Konsist check above and `RepositoryReturnsFlow` by the Konsist `RepositoryArchitectureSpec` (see `.claude/rules/repository.md`). `PreferLocalAppThemeColor` and the `PreferSunsetX` family (e.g. `PreferSunsetButtonDetector`, `PreferSunsetTextDetector`) have no KMP equivalent per wrapper; what holds there instead is the module-level rule that only `:ui_common` and `:test_helper:integration` may depend on Material 3, asserted by `ModuleDependencyArchitectureSpec`. New conventions that must hold in KMP modules have to be written as Konsist specs, not Lint detectors.
 
 ### internal fun
 
@@ -126,27 +120,16 @@ data class RecentTrack(
 
 ## Navigation
 
-Design intent (why navigation is wrapped in `:ui_common`, the wrapper
-inventory, allowed imports, how to add a new wrapper) lives in
-[`DESIGN.md`](../../DESIGN.md) under "Navigation wrappers (SunsetNav*)".
+Design intent (why navigation is wrapped in `:ui_common`, the wrapper inventory, allowed imports, how to add a new wrapper) lives in [`DESIGN.md`](../../DESIGN.md) under "Navigation wrappers (SunsetNav*)".
 This section covers only the call-site shape feature modules write.
 
-Reference: `feature/home/.../HomeNavigation.kt`, `app/.../SunsetMainScreen.kt`,
-`ui_common/.../navigation/SunsetNavHost.kt`.
+Reference: `feature/home/.../HomeNavigation.kt`, `app/.../SunsetMainScreen.kt`, `ui_common/.../navigation/SunsetNavHost.kt`.
 
-- Each destination is defined as `data class FooKey(...) : SunsetNavKey` under
-  `:feature:*/.../ui/navigation/FooKey.kt`. Keys for common screens live in
-  `:ui_common/.../navigation/CommonKeys.kt`.
-- `SunsetNavKey` implementations must be annotated `@Immutable` and
-  `@Serializable`. Enforced by Konsist (`NavigationArchitectureSpec`).
-- Each feature exposes `fun SunsetNavBuilder.fooGraph()`.
-  `:app/SunsetMainScreen.kt` composes them with `SunsetTabHost { fooGraph() }`.
-- Navigate with `navigate(FooKey(...))` and go back with `popBackStack()` —
-  both are members of `SunsetDestinationScope`, callable from inside the
-  destination block.
-- Use `viewModelFor<FooViewModel>(key)` to obtain a ViewModel that needs the
-  NavKey. Direct calls to `metroViewModel(...)` from `*Navigation.kt` files
-  are forbidden (see `viewmodel.md` for the assisted-injection pattern).
+- Each destination is defined as `data class FooKey(...) : SunsetNavKey` under `:feature:*/.../ui/navigation/FooKey.kt`. Keys for common screens live in `:ui_common/.../navigation/CommonKeys.kt`.
+- `SunsetNavKey` implementations must be annotated `@Immutable` and `@Serializable`. Enforced by Konsist (`NavigationArchitectureSpec`).
+- Each feature exposes `fun SunsetNavBuilder.fooGraph()`. `:app/SunsetMainScreen.kt` composes them with `SunsetTabHost { fooGraph() }`.
+- Navigate with `navigate(FooKey(...))` and go back with `popBackStack()` — both are members of `SunsetDestinationScope`, callable from inside the destination block.
+- Use `viewModelFor<FooViewModel>(key)` to obtain a ViewModel that needs the NavKey. Direct calls to `metroViewModel(...)` from `*Navigation.kt` files are forbidden (see `viewmodel.md` for the assisted-injection pattern).
 
 Example (Album destination):
 

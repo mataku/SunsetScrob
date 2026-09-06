@@ -8,6 +8,26 @@ with my account
  :---: | :---: | :---: | :---:
 | <img src="./scrobble_dark.png" height=300 /> |  <img src="./top_albums_dark.png" height=300 /> | <img src="./top_artists_dark.png" height=300 />  | <img src="./account_dark.png" height=300 />  |
 
+### Discover
+
+| Dark | Light |
+| :--: | :--: |
+| <img src="./discover_dark.png" height=400 /> | <img src="./discover_light.png" height=400 /> |
+
+### Detail
+
+| Album | Artist | Track |
+| :--: | :--: | :--: |
+| <img src="./album_detail.png" height=300 /> | <img src="./artist_detail.png" height=300 /> | <img src="./track_detail.png" height=300 /> |
+
+### Tablet
+
+Two-pane list-detail layout on medium / expanded width.
+
+| Scrobble | Album | Artist |
+| :--: | :--: | :--: |
+| <img src="./tablet/scrobble-tablet.png" height=250 /> | <img src="./tablet/album-tablet.png" height=250 /> | <img src="./tablet/artist-tablet.png" height=250 /> |
+
 ### Theme
 
 | Dark | Light | Midnight |
