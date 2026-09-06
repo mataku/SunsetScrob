@@ -80,5 +80,29 @@ class ViewModelArchitectureSpec : DescribeSpec({
             "ContributesIntoMap" in annotationNames
         }
     }
+
+    it("UiState classes are annotated with @Immutable") {
+      scope.classes(includeNested = true)
+        .filter { it.resideInPackage("com.mataku.scrobscrob..") }
+        .filter { it.name == "UiState" || it.name.endsWith("UiState") }
+        .assertTrue(
+          additionalMessage = "UiState classes must be annotated with @Immutable so Compose can skip recomposition. Replaces the UiStateMustBeImmutable lint detector, which no longer runs on KMP modules.",
+        ) { uiState ->
+          uiState.annotations.any { it.name == "Immutable" }
+        }
+    }
+
+    it("ViewModels expose uiState as a StateFlow") {
+      scope.classes()
+        .withNameEndingWith("ViewModel")
+        .filter { it.resideInPackage("com.mataku.scrobscrob..") }
+        .flatMap { it.properties() }
+        .filter { it.name == "uiState" }
+        .assertTrue(
+          additionalMessage = "`uiState` must be declared as StateFlow<T>, not MutableStateFlow<T> or a plain value. Replaces the UiStateMustBeStateFlow lint detector, which no longer runs on KMP modules.",
+        ) { property ->
+          property.type?.name?.startsWith("StateFlow") == true
+        }
+    }
   }
 })
