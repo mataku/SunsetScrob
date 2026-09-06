@@ -18,12 +18,16 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: write
 
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: ./.github/actions/setup-gradle
         with:
           use-build-cache: 'true'
+          cache-key: build
       - uses: ./.github/actions/sunsetscrob-setup
         with:
           last-fm-api-key: ${{ secrets.LAST_FM_API_KEY }}
@@ -39,14 +43,24 @@ jobs:
           SUNSET_KEY_PASSWORD: ${{ secrets.SUNSET_KEY_PASSWORD }}
           SUNSET_STORE_PASSWORD: ${{ secrets.SUNSET_STORE_PASSWORD }}
         run: ./gradlew bundleRelease
+      - uses: ./.github/actions/save-gradle-cache
+        with:
+          use-build-cache: 'true'
+          cache-key: build
+          save-shared-cache: 'true'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
   test:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: write
 
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: ./.github/actions/setup-gradle
         with:
           use-build-cache: 'true'
+          cache-key: test
       - uses: ./.github/actions/sunsetscrob-setup
         with:
           last-fm-api-key: ${{ secrets.LAST_FM_API_KEY }}
@@ -54,3 +68,8 @@ jobs:
           google-services-json: ${{ secrets.GOOGLE_SERVICES_JSON_DEV }}
       - name: Run tests
         run: ./gradlew jvmTest -PexcludeScreenshotTest=true
+      - uses: ./.github/actions/save-gradle-cache
+        with:
+          use-build-cache: 'true'
+          cache-key: test
+          github-token: ${{ secrets.GITHUB_TOKEN }}
