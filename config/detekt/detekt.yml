@@ -7,6 +7,12 @@ Compose:
     active: true
   CompositionLocalAllowlist:
     active: true
+    # These are deliberate, documented CompositionLocals (DESIGN.md): LocalAppTheme /
+    # LocalSnackbarHostState are the project's Material3-bridging theme API, and
+    # LocalSunsetSharedTransitionScope / LocalSunsetNavigator are internal plumbing for the
+    # ui_common navigation wrapper. Only :ui_common defines new CompositionLocals; the rule
+    # still catches any new one introduced elsewhere or added here without review.
+    allowedCompositionLocals: LocalAppTheme,LocalSnackbarHostState,LocalSunsetSharedTransitionScope,LocalSunsetNavigator
   CompositionLocalNaming:
     active: true
   ConditionHoist:
