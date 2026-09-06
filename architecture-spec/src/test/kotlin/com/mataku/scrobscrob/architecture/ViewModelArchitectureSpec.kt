@@ -92,16 +92,16 @@ class ViewModelArchitectureSpec : DescribeSpec({
         }
     }
 
-    it("ViewModels expose uiState as a StateFlow") {
+    it("ViewModels do not expose mutable state") {
       scope.classes()
         .withNameEndingWith("ViewModel")
         .filter { it.resideInPackage("com.mataku.scrobscrob..") }
         .flatMap { it.properties() }
-        .filter { it.name == "uiState" }
+        .filterNot { it.hasPrivateModifier }
         .assertTrue(
-          additionalMessage = "`uiState` must be declared as StateFlow<T>, not MutableStateFlow<T> or a plain value. Replaces the UiStateMustBeStateFlow lint detector, which no longer runs on KMP modules.",
+          additionalMessage = "A ViewModel's exposed state must be declared StateFlow<T>, never MutableStateFlow<T>. Keep the mutable instance private, using the explicit backing field (`field = MutableStateFlow(...)`). Replaces the UiStateMustBeStateFlow lint detector, which no longer runs on KMP modules.",
         ) { property ->
-          property.type?.name?.startsWith("StateFlow") == true
+          property.type?.name?.startsWith("MutableStateFlow") != true
         }
     }
   }
