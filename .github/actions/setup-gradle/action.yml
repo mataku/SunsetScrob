@@ -38,13 +38,7 @@ runs:
       with:
         path: |
           .gradle
+          !.gradle/configuration-cache
           ~/.gradle/caches/build-cache-*
         key: gradle-build-cache-${{ runner.os }}-${{ inputs.cache-key }}-develop
 
-    - name: Report restored configuration cache
-      shell: bash
-      run: |
-        echo "--- .gradle ---"
-        ls -la .gradle 2>/dev/null || echo "(no .gradle)"
-        echo "--- .gradle/configuration-cache ---"
-        ls -la .gradle/configuration-cache 2>/dev/null || echo "(no configuration-cache dir)"
