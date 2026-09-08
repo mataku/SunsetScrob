@@ -9,6 +9,17 @@
   ],
   prConcurrentLimit: 3,
   rebaseWhen: 'conflicted',
+  hostRules: [
+    {
+      // Maven Central rate-limits by source IP and the Mend runners share theirs.
+      // Renovate defaults to 16 concurrent requests with no throttle for this host,
+      // and gives up when Retry-After exceeds 60s, which aborts the whole run.
+      matchHost: 'repo.maven.apache.org',
+      concurrentRequestLimit: 4,
+      maxRequestsPerSecond: 4,
+      maxRetryAfter: 180,
+    },
+  ],
   packageRules: [
     {
       matchUpdateTypes: [
