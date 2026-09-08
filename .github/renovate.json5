@@ -49,7 +49,7 @@
     {
       groupName: 'compose_compiler_kotlin',
       matchPackageNames: [
-        'org.jetbrains.kotlin.{/,}**',
+        'org.jetbrains.kotlin{.,:}**',
       ],
     },
     {
