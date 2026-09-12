@@ -96,5 +96,11 @@
         '* 13-19 * * 5',
       ],
     },
+    {
+      matchManagers: [
+        'gradle',
+      ],
+      minimumReleaseAge: null,
+    },
   ],
 }
