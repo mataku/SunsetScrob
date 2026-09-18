@@ -48,6 +48,7 @@
     },
     {
       groupName: 'gradle-libraries',
+      commitMessageExtra: '',
       matchManagers: [
         'gradle',
         'gradle-wrapper',
