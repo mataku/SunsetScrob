@@ -1,7 +1,6 @@
 package com.mataku.scrobscrob.app.testing
 
 import androidx.compose.ui.test.ExperimentalTestApi
-import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasText
@@ -20,13 +19,14 @@ import org.junit.Test
 @OptIn(ExperimentalTestApi::class)
 class LargeScreenSmokeTest {
 
-  // composeRule must be the OUTER rule (higher order) so its activity
-  // teardown runs AFTER screenshotRule.failed — otherwise the screenshot
-  // is captured against an already-destroyed Activity and comes back blank.
-  @get:Rule(order = 1)
+  // composeRule must be the OUTER rule so its activity teardown runs AFTER
+  // screenshotRule.failed — otherwise the screenshot is captured against an
+  // already-destroyed Activity and comes back blank. JUnit applies lower
+  // `order` values further out, so composeRule takes the lower value.
+  @get:Rule(order = 0)
   val composeRule = createAndroidComposeRule<MainActivity>()
 
-  @get:Rule(order = 0)
+  @get:Rule(order = 1)
   val screenshotRule = TestScreenshotRule()
 
   @Before
@@ -49,7 +49,6 @@ class LargeScreenSmokeTest {
 
     // Home renders with the Scrobble tab as default.
     composeRule.waitUntilExactlyOneExists(hasText("Home"), TIMEOUT_MS)
-    Thread.sleep(STEP_DELAY_MS)
 
     // Scrobble tab: tap the first recent track to trigger selectDetail
     // on the SunsetListDetailScaffold.
@@ -67,7 +66,7 @@ class LargeScreenSmokeTest {
     // Tablet expectation: list (track row) and detail (artwork) are
     // both attached to the composition at the same time. "TRACE" appears
     // twice — once in the list row, once in the detail-pane track header.
-    composeRule.onAllNodes(hasText("TRACE")).assertCountEquals(2)
+    composeRule.waitUntilNodeCount(hasText("TRACE"), 2, TIMEOUT_MS)
     composeRule.onNodeWithContentDescription("artwork image").assertIsDisplayed()
     composeRule.onNodeWithText("Listeners").assertIsDisplayed()
     composeRule.onNodeWithText("Ummet Ozcan").assertIsDisplayed()
@@ -76,11 +75,18 @@ class LargeScreenSmokeTest {
 
     // Tablet expectation: list (album row) and detail (artwork) are
     // both attached to the composition at the same time.
+    // Wait for the pager to settle on the Album page instead of sleeping:
+    // on a software-rendered tablet emulator the page scroll can outlast a
+    // fixed delay, leaving "ZENITH" composed but not yet clickable.
+    composeRule.waitUntilExactlyOneExists(hasText("Album"), TIMEOUT_MS)
     composeRule.onNodeWithText("Album").performClick()
-    Thread.sleep(STEP_DELAY_MS)
+    composeRule.waitUntilExactlyOneExists(hasText("ZENITH"), TIMEOUT_MS)
     composeRule.onNodeWithText("ZENITH").performClick()
+
+    // Album detail is fetched asynchronously; wait for it before asserting.
+    composeRule.waitUntilExactlyOneExists(hasText("Track list"), TIMEOUT_MS)
+    composeRule.waitUntilNodeCount(hasText("ZENITH"), 2, TIMEOUT_MS) // list + detail
     composeRule.onNodeWithText("欅坂46").assertIsDisplayed()
-    composeRule.onAllNodes(hasText("ZENITH")).assertCountEquals(2) // list + detail
     composeRule.onNodeWithText("Track list").assertIsDisplayed()
   }
 
@@ -91,7 +97,6 @@ class LargeScreenSmokeTest {
   }
 
   private companion object {
-    const val TIMEOUT_MS = 2_000L
-    const val STEP_DELAY_MS = 1_000L
+    const val TIMEOUT_MS = 5_000L
   }
 }

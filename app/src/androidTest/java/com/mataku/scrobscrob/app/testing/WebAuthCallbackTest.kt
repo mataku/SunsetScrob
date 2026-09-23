@@ -19,10 +19,10 @@ import org.junit.Test
 @OptIn(ExperimentalTestApi::class)
 class WebAuthCallbackTest {
 
-  @get:Rule(order = 1)
+  @get:Rule(order = 0)
   val composeRule = createAndroidComposeRule<MainActivity>()
 
-  @get:Rule(order = 0)
+  @get:Rule(order = 1)
   val screenshotRule = TestScreenshotRule()
 
   @Before
