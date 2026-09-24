@@ -9,6 +9,9 @@
   ],
   prConcurrentLimit: 3,
   rebaseWhen: 'conflicted',
+  // Unit, screenshot, lint and architecture tests gate every PR, so all updates (major included) automerge once CI is green.
+  automerge: true,
+  platformAutomerge: true,
   hostRules: [
     {
       // Maven Central rate-limits by source IP and the Mend runners share theirs.
@@ -31,20 +34,10 @@
       matchManagers: [
         'github-actions',
       ],
-      automerge: true,
-      platformAutomerge: true,
       timezone: 'Asia/Tokyo',
       schedule: [
         '* 13-19 * * 5',
       ],
-    },
-    {
-      matchUpdateTypes: [
-        'minor',
-        'patch',
-      ],
-      automerge: true,
-      platformAutomerge: true,
     },
     {
       groupName: 'gradle-libraries',
