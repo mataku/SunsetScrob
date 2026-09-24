@@ -41,7 +41,9 @@
     },
     {
       groupName: 'gradle-libraries',
-      commitMessageExtra: '',
+      // A constant title makes Renovate match a previously merged PR and disable automerge,
+      // so append the newest release date. Renovate drops this when the group spans several versions.
+      commitMessageExtra: '{{#if releaseTimestamp}}({{lookup (split releaseTimestamp "T") 0}}){{/if}}',
       matchManagers: [
         'gradle',
         'gradle-wrapper',
