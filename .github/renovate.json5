@@ -1,14 +1,12 @@
 {
   extends: [
-    'config:recommended',
+    'github>mataku/renovate-config:default.json5',
   ],
-  minimumReleaseAge: '7 days',
   ignoreDeps: [
     'com.jakewharton.timber:timber',
     'org.junit.vintage:junit-vintage-engine',
   ],
   prConcurrentLimit: 3,
-  rebaseWhen: 'conflicted',
   // Unit, screenshot, lint and architecture tests gate every PR, so all updates (major included) automerge once CI is green.
   automerge: true,
   platformAutomerge: true,
@@ -34,7 +32,6 @@
       matchManagers: [
         'github-actions',
       ],
-      timezone: 'Asia/Tokyo',
       schedule: [
         '* 13-19 * * 5',
       ],
@@ -48,7 +45,6 @@
         'gradle',
         'gradle-wrapper',
       ],
-      timezone: 'Asia/Tokyo',
       schedule: [
         '* 12-17 * * 6',
       ],
@@ -74,7 +70,6 @@
         'ruby-version',
         'github-actions',
       ],
-      timezone: 'Asia/Tokyo',
       schedule: [
         '* 13-19 * * 5',
       ],
@@ -87,7 +82,6 @@
       matchManagers: [
         'bundler',
       ],
-      timezone: 'Asia/Tokyo',
       schedule: [
         '* 13-19 * * 5',
       ],
