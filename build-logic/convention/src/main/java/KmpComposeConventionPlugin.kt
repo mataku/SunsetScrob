@@ -19,7 +19,6 @@ class KmpComposeConventionPlugin : Plugin<Project> {
         apply("org.jetbrains.kotlin.plugin.compose")
       }
       val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
-      val compose = extensions.getByType<ComposeExtension>().dependencies
 
       kotlinMultiplatform().apply {
         androidLibraryTarget {
@@ -30,11 +29,11 @@ class KmpComposeConventionPlugin : Plugin<Project> {
         }
         sourceSets.named("commonMain") {
           dependencies {
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.animation)
-            implementation(compose.ui)
-            implementation(compose.components.resources)
+            implementation(libs.findLibrary("jetbrains-compose-runtime").get())
+            implementation(libs.findLibrary("jetbrains-compose-foundation").get())
+            implementation(libs.findLibrary("jetbrains-compose-animation").get())
+            implementation(libs.findLibrary("jetbrains-compose-ui").get())
+            implementation(libs.findLibrary("jetbrains-compose-components-resources").get())
             implementation(libs.findLibrary("jetbrains-compose-ui-tooling-preview").get())
           }
         }
