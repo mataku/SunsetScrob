@@ -5,10 +5,12 @@ import coil3.ColorImage
 import coil3.ImageLoader
 import coil3.test.FakeImageLoaderEngine
 import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.BindingContainer
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.Provides
 import dev.zacsweers.metro.SingleIn
 
+@BindingContainer
 @ContributesTo(AppScope::class)
 interface FakeImageLoaderModule {
   companion object {

@@ -8,19 +8,15 @@ import com.mataku.scrobscrob.account.permission.NotificationListenerPermission
 import com.mataku.scrobscrob.account.update.InAppUpdateManager
 import com.mataku.scrobscrob.account.update.PlayInAppUpdateManager
 import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.BindingContainer
 import dev.zacsweers.metro.Binds
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.Provides
 import dev.zacsweers.metro.SingleIn
 
+@BindingContainer
 @ContributesTo(AppScope::class)
 interface AccountModule {
-  @SingleIn(AppScope::class)
-  @Provides
-  fun provideAppUpdateManager(context: Context): AppUpdateManager {
-    return AppUpdateManagerFactory.create(context)
-  }
-
   @Binds
   fun provideInAppUpdateManager(manager: PlayInAppUpdateManager): InAppUpdateManager
 
@@ -28,4 +24,12 @@ interface AccountModule {
   fun provideNotificationListenerPermission(
     permission: AndroidNotificationListenerPermission
   ): NotificationListenerPermission
+
+  companion object {
+    @SingleIn(AppScope::class)
+    @Provides
+    fun provideAppUpdateManager(context: Context): AppUpdateManager {
+      return AppUpdateManagerFactory.create(context)
+    }
+  }
 }

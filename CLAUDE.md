@@ -57,7 +57,7 @@ Layer / package / Compose / navigation rules already live in always-loaded `arch
 
 **DO**
 
-- Wire new dependencies through Metro with `@Binds` / `@Provides` on a `@ContributesTo(AppScope::class)` interface in `di/FooModule.kt`.
+- Wire new dependencies through Metro with `@Binds` / companion-object `@Provides` on a `@BindingContainer` + `@ContributesTo(AppScope::class)` interface in `di/FooModule.kt`.
 - Write a `*Spec.kt` Kotest test next to the class under test.
 
 **DON'T**
