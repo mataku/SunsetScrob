@@ -15,7 +15,6 @@ kotlin {
       implementation(project(":ui_common"))
       implementation(project(":core"))
       implementation(project(":data:repository"))
-      implementation(libs.jetbrains.compose.ui.backhandler)
       implementation(libs.jetbrains.lifecycle.runtime.compose)
       implementation(libs.kotlinx.collections.immutable)
     }

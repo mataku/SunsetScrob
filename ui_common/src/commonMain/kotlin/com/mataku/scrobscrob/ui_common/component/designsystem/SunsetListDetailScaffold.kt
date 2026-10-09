@@ -2,7 +2,7 @@ package com.mataku.scrobscrob.ui_common.component.designsystem
 
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
-import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfoV2
 import androidx.compose.material3.adaptive.layout.AnimatedPane
 import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffold
 import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldDefaults
@@ -15,9 +15,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.backhandler.BackHandler
 
 @Stable
 class SunsetListDetailScaffoldState<T : Any> internal constructor(
@@ -45,7 +43,7 @@ fun <T : Any> rememberSunsetListDetailScaffoldState(): SunsetListDetailScaffoldS
   }
 }
 
-@OptIn(ExperimentalMaterial3AdaptiveApi::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalMaterial3AdaptiveApi::class)
 @Composable
 fun <T : Any> SunsetListDetailScaffold(
   state: SunsetListDetailScaffoldState<T>,
@@ -54,7 +52,7 @@ fun <T : Any> SunsetListDetailScaffold(
   modifier: Modifier = Modifier,
   listPaneProportion: Float = 0.4f,
 ) {
-  BackHandler(enabled = state.selection != null) {
+  SunsetBackHandler(enabled = state.selection != null) {
     state.back()
   }
 
@@ -62,7 +60,11 @@ fun <T : Any> SunsetListDetailScaffold(
   // so the layout (sizing) and pane visibility flip together. The navigator-based
   // approach raced because navigator.navigateTo runs in a coroutine relative to the
   // synchronous directive update, briefly producing single-pane Detail mid-tap.
-  val baseDirective = calculatePaneScaffoldDirective(currentWindowAdaptiveInfo())
+  // V2 reports Large/XL widths as 3 partitions, which would open an empty extra pane;
+  // this scaffold only has list and detail panes.
+  val baseDirective = calculatePaneScaffoldDirective(currentWindowAdaptiveInfoV2()).let {
+    it.copy(maxHorizontalPartitions = minOf(it.maxHorizontalPartitions, 2))
+  }
   val effectiveDirective = if (state.selection == null) {
     baseDirective.copy(maxHorizontalPartitions = 1)
   } else {

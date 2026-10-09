@@ -11,6 +11,7 @@ import com.mataku.scrobscrob.data.api.LastFmService
 import com.mataku.scrobscrob.data.api.LastFmServiceImpl
 import com.mataku.scrobscrob.data.api.okhttp.LastfmApiAuthInterceptor
 import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.BindingContainer
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.Provides
 import dev.zacsweers.metro.SingleIn
@@ -23,6 +24,7 @@ import okio.Path.Companion.toOkioPath
 import java.io.File
 import java.util.concurrent.TimeUnit
 
+@BindingContainer
 @ContributesTo(AppScope::class)
 interface HttpEngineModule {
   companion object {
@@ -37,6 +39,7 @@ interface HttpEngineModule {
   }
 }
 
+@BindingContainer
 @ContributesTo(AppScope::class)
 interface ImageLoaderModule {
   companion object {
@@ -70,6 +73,7 @@ interface ImageLoaderModule {
   }
 }
 
+@BindingContainer
 @ContributesTo(AppScope::class)
 interface ApiModule {
 

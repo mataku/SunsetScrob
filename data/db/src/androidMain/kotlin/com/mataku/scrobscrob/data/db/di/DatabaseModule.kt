@@ -16,6 +16,7 @@ import com.mataku.scrobscrob.data.db.ThemeDataStore
 import com.mataku.scrobscrob.data.db.UsernameDataStore
 import com.mataku.scrobscrob.data.db.encryptedSessionKeyDataStore
 import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.BindingContainer
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.Provides
 import dev.zacsweers.metro.SingleIn
@@ -24,42 +25,44 @@ private val Context.usernameDataStore: DataStore<Preferences> by preferencesData
 private val Context.themeDataStore: DataStore<Preferences> by preferencesDataStore("THEME")
 private val Context.scrobbleAppDataStore: DataStore<Preferences> by preferencesDataStore("ScrobbleApp")
 
+@BindingContainer
 @ContributesTo(AppScope::class)
 interface DatabaseModule {
+  companion object {
+    @SingleIn(AppScope::class)
+    @Provides
+    fun provideSessionKeyStore(context: Context): SessionKeyDataStore {
+      return SessionKeyDataStore(encryptedSessionKeyDataStore(context))
+    }
 
-  @SingleIn(AppScope::class)
-  @Provides
-  fun provideSessionKeyStore(context: Context): SessionKeyDataStore {
-    return SessionKeyDataStore(encryptedSessionKeyDataStore(context))
-  }
+    @SingleIn(AppScope::class)
+    @Provides
+    fun provideUsernameStore(context: Context): UsernameDataStore {
+      return UsernameDataStore(context.usernameDataStore)
+    }
 
-  @SingleIn(AppScope::class)
-  @Provides
-  fun provideUsernameStore(context: Context): UsernameDataStore {
-    return UsernameDataStore(context.usernameDataStore)
-  }
+    @SingleIn(AppScope::class)
+    @Provides
+    fun provideThemeDataStore(context: Context): ThemeDataStore {
+      return ThemeDataStore(context.themeDataStore)
+    }
 
-  @SingleIn(AppScope::class)
-  @Provides
-  fun provideThemeDataStore(context: Context): ThemeDataStore {
-    return ThemeDataStore(context.themeDataStore)
-  }
+    @SingleIn(AppScope::class)
+    @Provides
+    fun provideScrobbleAppDataStore(context: Context): ScrobbleAppDataStore {
+      return ScrobbleAppDataStore(context.scrobbleAppDataStore)
+    }
 
-  @SingleIn(AppScope::class)
-  @Provides
-  fun provideScrobbleAppDataStore(context: Context): ScrobbleAppDataStore {
-    return ScrobbleAppDataStore(context.scrobbleAppDataStore)
-  }
+    @SingleIn(AppScope::class)
+    @Provides
+    fun provideArtworkDataStore(context: Context): ArtworkDataStore {
+      return ArtworkDataStoreImpl(AndroidSqliteDriver(Database.Schema, context, "scrobscrob.db"))
+    }
 
-  @SingleIn(AppScope::class)
-  @Provides
-  fun provideArtworkDataStore(context: Context): ArtworkDataStore {
-    return ArtworkDataStoreImpl(AndroidSqliteDriver(Database.Schema, context, "scrobscrob.db"))
-  }
-
-  @SingleIn(AppScope::class)
-  @Provides
-  fun provideSessionBackupStore(context: Context): SessionBackupStore {
-    return BlockStoreSessionBackupStore(context)
+    @SingleIn(AppScope::class)
+    @Provides
+    fun provideSessionBackupStore(context: Context): SessionBackupStore {
+      return BlockStoreSessionBackupStore(context)
+    }
   }
 }

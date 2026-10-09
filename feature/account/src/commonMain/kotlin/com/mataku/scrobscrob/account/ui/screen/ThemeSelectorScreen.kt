@@ -15,9 +15,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Check
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.backhandler.BackHandler
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -25,6 +23,7 @@ import com.mataku.scrobscrob.account.generated.resources.Res
 import com.mataku.scrobscrob.account.generated.resources.title_theme_selector
 import com.mataku.scrobscrob.account.ui.viewmodel.ThemeSelectorViewModel
 import com.mataku.scrobscrob.core.entity.AppTheme
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetBackHandler
 import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetIcon
 import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetIconButton
 import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetScaffold
@@ -34,7 +33,7 @@ import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.onSurfaceColor
 import org.jetbrains.compose.resources.stringResource
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun ThemeSelectorScreen(
   viewModel: ThemeSelectorViewModel,
@@ -92,7 +91,7 @@ internal fun ThemeSelectorScreen(
       )
     }
   }
-  BackHandler {
+  SunsetBackHandler {
     onBackPressed.invoke()
   }
 }

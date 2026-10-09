@@ -119,7 +119,8 @@ ui_common/.../
                     SunsetCircularProgressIndicator, SunsetHorizontalDivider,
                     SunsetAlertDialog, SunsetBottomSheet,
                     SunsetModalBottomSheet, SunsetFloatingActionButton,
-                    SunsetPullToRefreshBox, SunsetListDetailScaffold).
+                    SunsetPullToRefreshBox, SunsetListDetailScaffold,
+                    SunsetBackHandler).
     (root)        — app-specific shared composables (NavigationHeader,
                     ContentHeader, FilteringBottomSheet, LoadingIndicator,
                     CircleBackButton, …) that compose the `designsystem/`
@@ -328,7 +329,9 @@ Visual modes:
 | `state.selection` | `maxHorizontalPartitions` | Panes shown                |
 |-------------------|---------------------------|----------------------------|
 | `null`            | 1                         | List only, full width      |
-| non-null          | default for width class   | List + Detail (two-pane)   |
+| non-null          | default for width class, capped at 2 | List + Detail (two-pane)   |
+
+The width class comes from `currentWindowAdaptiveInfoV2()`, which reports Large/XL widths (1200dp+) as 3 partitions; the cap keeps them two-pane because the scaffold has no extra pane.
 
 We intentionally **do not** use `rememberListDetailPaneScaffoldNavigator(scaffoldDirective = ...)` to flip the directive based on selection.
 The navigator's `navigateTo` is `suspend`, forcing the navigation through `coroutineScope.launch` while the directive flip is synchronous — the resulting tear shows up on real tablets as a single-pane Detail flash on tap, even though steady states look correct in unit-level VRTs.

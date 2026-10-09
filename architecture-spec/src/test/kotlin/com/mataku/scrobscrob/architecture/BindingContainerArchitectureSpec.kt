@@ -28,5 +28,14 @@ class BindingContainerArchitectureSpec : DescribeSpec({
           additionalMessage = "Metro binding containers must declare `@ContributesTo(AppScope::class)`. CLAUDE.md Rule 7.",
         ) { cls -> cls.annotations.any { it.name == "ContributesTo" } }
     }
+
+    it("interfaces named `*Module` are annotated `@BindingContainer`") {
+      scope.interfaces()
+        .filter { it.name.endsWith("Module") }
+        .filter { it.resideInPackage("com.mataku.scrobscrob..") }
+        .assertTrue(
+          additionalMessage = "Metro binding containers must be annotated `@BindingContainer`. CLAUDE.md Rule 7.",
+        ) { cls -> cls.annotations.any { it.name == "BindingContainer" } }
+    }
   }
 })

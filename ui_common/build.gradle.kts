@@ -17,7 +17,7 @@ kotlin {
       implementation(libs.jetbrains.compose.material3.adaptive.layout)
       implementation(libs.jetbrains.compose.material3.adaptive.navigation)
       implementation(libs.jetbrains.compose.material.icons.extended)
-      implementation(libs.jetbrains.compose.ui.backhandler)
+      implementation(libs.jetbrains.navigationevent.compose)
       implementation(libs.jetbrains.navigation3.ui)
       implementation(libs.navigation3.runtime)
       implementation(libs.jetbrains.lifecycle.viewmodel.compose)

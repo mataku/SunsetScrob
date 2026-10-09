@@ -19,9 +19,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.backhandler.BackHandler
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.unit.dp
@@ -39,6 +37,7 @@ import com.mataku.scrobscrob.ui_common.component.FilteringBottomSheet
 import com.mataku.scrobscrob.ui_common.component.FilteringFloatingButton
 import com.mataku.scrobscrob.ui_common.component.InfiniteLoadingIndicator
 import com.mataku.scrobscrob.ui_common.component.LoadingIndicator
+import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetBackHandler
 import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetListDetailScaffold
 import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetModalBottomSheet
 import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetScaffold
@@ -119,7 +118,6 @@ fun TopArtistsScreen(
   }
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun TopArtistsCompact(
   sharedTransitionScope: SharedTransitionScope,
@@ -138,7 +136,7 @@ private fun TopArtistsCompact(
   val containerSize = LocalWindowInfo.current.containerSize
   val isLandscape = containerSize.width > containerSize.height
 
-  BackHandler(bottomSheetState.isVisible) {
+  SunsetBackHandler(enabled = bottomSheetState.isVisible) {
     coroutineScope.launch { bottomSheetState.hide() }
   }
   SunsetScaffold(
