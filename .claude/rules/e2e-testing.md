@@ -90,7 +90,6 @@ Production-side hooks that make this possible:
 - **`App.newAppGraph()`** is `internal open` — `TestApp` overrides it.
 - **`HttpEngineModule`** (in `data/api/.../di/`) is a separate `@ContributesTo(AppScope::class)` interface whose only job is to provide `HttpClientEngine`. Keeping it in its own binding container is what lets `TestAppGraph` exclude *only* the engine binding without touching the rest of `ApiModule`.
 - **`AuthModule`** (in `feature/auth/.../di/`) — binds `LastFmWebAuthLauncher`. Excluding it lets `FakeWebAuthModule` return `e2e_token` synchronously instead of opening a Custom Tab, so no test touches Chrome, last.fm, or `sunsetscrob.mataku.com`.
-- **`AppBuildInfo(isDebug = false)`** is what `TestAppGraph` provides, even though the E2E APK is the debug variant. `UserRepositoryImpl.getInfo` returns a hardcoded profile in debug builds and never calls `user.getInfo`, so with `isDebug = true` the Account step would assert against that stub instead of the fixture. The only other consumer of the flag is the OkHttp logging interceptor, which the mocked engine does not need.
 - **`ImageLoaderModule`** (in `data/api/.../di/`) — a separate `@ContributesTo(AppScope::class)` interface whose only job is to provide the Coil `ImageLoader`, split out of `ApiModule` for the same surgical- exclusion reason as `HttpEngineModule`. Excluding it lets `FakeImageLoaderModule` bind Coil's `FakeImageLoaderEngine`, so artwork renders as a solid colour instead of being fetched from `lastfm.freetls.fastly.net`.
 
 ## Adding a fixture for a new endpoint

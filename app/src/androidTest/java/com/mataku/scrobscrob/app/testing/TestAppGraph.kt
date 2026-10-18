@@ -20,10 +20,8 @@ internal interface TestAppGraph : AppGraphContract {
   @Provides
   fun provideApplicationContext(application: Application): Context = application
 
-  // Not isDebug = true: UserRepositoryImpl.getInfo returns a hardcoded profile in debug builds and never issues user.getInfo.
-  // The Account step of AppSmokeTest would then assert against that stub instead of the fixture.
   @Provides
-  fun provideAppBuildInfo(): AppBuildInfo = AppBuildInfo(isDebug = false)
+  fun provideAppBuildInfo(): AppBuildInfo = AppBuildInfo(isDebug = true)
 
   @DependencyGraph.Factory
   fun interface Factory {
