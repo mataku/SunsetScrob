@@ -9,11 +9,11 @@ on:
       - develop
 
 concurrency:
-  group: ${{ github.head_ref || 'develop' }}-detekt
+  group: ${{ github.head_ref || 'develop' }}-lint
   cancel-in-progress: true
 
 env:
-  GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx4g -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -XX:+UseParallelGC -XX:MaxMetaspaceSize=1g"
+  GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx6g -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -XX:+UseParallelGC -XX:MaxMetaspaceSize=1g"
 
 permissions:
   contents: read
@@ -29,7 +29,7 @@ jobs:
       - uses: ./.github/actions/setup-gradle
         with:
           use-build-cache: 'true'
-          cache-key: detekt
+          cache-key: lint
       - uses: ./.github/actions/sunsetscrob-setup
         with:
           last-fm-api-key: ${{ secrets.LAST_FM_API_KEY }}
@@ -40,10 +40,17 @@ jobs:
         id: detekt
         run: ./gradlew detekt --continue --no-configuration-cache
 
+      # Android Lint is not a required check, so its failure is reported via the PR comment
+      # without failing the job.
+      - name: Run Android Lint
+        id: android_lint
+        continue-on-error: true
+        run: ./gradlew lintDebug --continue --no-configuration-cache
+
       - uses: ./.github/actions/save-gradle-cache
         with:
           use-build-cache: 'true'
-          cache-key: detekt
+          cache-key: lint
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Aggregate detekt failures
@@ -75,6 +82,41 @@ jobs:
           REPO: ${{ github.repository }}
         run: |
           MARKER='<!-- detekt-result -->'
+          EXISTING_ID=$(gh api --paginate "repos/$REPO/issues/$PR_NUMBER/comments" \
+            --jq ".[] | select(.body | contains(\"$MARKER\")) | .id" | head -n1)
+          if [ -n "$EXISTING_ID" ]; then
+            gh api -X DELETE "repos/$REPO/issues/comments/$EXISTING_ID"
+          fi
+
+      - name: Aggregate Android Lint failures
+        if: steps.android_lint.outcome == 'failure'
+        run: ruby scripts/lint_summary.rb
+
+      - name: Upsert Android Lint comment on PR
+        if: steps.android_lint.outcome == 'failure' && github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          REPO: ${{ github.repository }}
+        run: |
+          MARKER='<!-- android-lint-result -->'
+          BODY="$MARKER"$'\n'"$(cat lint-summary.md)"
+          EXISTING_ID=$(gh api --paginate "repos/$REPO/issues/$PR_NUMBER/comments" \
+            --jq ".[] | select(.body | contains(\"$MARKER\")) | .id" | head -n1)
+          if [ -n "$EXISTING_ID" ]; then
+            gh api -X PATCH "repos/$REPO/issues/comments/$EXISTING_ID" -f body="$BODY"
+          else
+            gh api -X POST "repos/$REPO/issues/$PR_NUMBER/comments" -f body="$BODY"
+          fi
+
+      - name: Remove stale Android Lint comment on PR
+        if: steps.android_lint.outcome == 'success' && github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          REPO: ${{ github.repository }}
+        run: |
+          MARKER='<!-- android-lint-result -->'
           EXISTING_ID=$(gh api --paginate "repos/$REPO/issues/$PR_NUMBER/comments" \
             --jq ".[] | select(.body | contains(\"$MARKER\")) | .id" | head -n1)
           if [ -n "$EXISTING_ID" ]; then
