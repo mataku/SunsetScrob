@@ -81,8 +81,8 @@ jobs:
             echo "$(basename "$avd") snapshots: $(ls -1 "$avd/snapshots" 2>/dev/null | tr '\n' ' ')"
           done
 
-      - name: Build debug APK & androidTest APK
-        run: ./gradlew :app:assembleDebug :app:assembleDebugAndroidTest --no-configuration-cache
+      - name: Build smoke APK & androidTest APK
+        run: ./gradlew :app:assembleSmoke :app:assembleSmokeAndroidTest --no-configuration-cache
 
       - name: Run smoke tests on ${{ matrix.device }}
         run: |

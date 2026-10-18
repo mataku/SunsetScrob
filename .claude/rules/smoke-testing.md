@@ -1,24 +1,25 @@
 ---
 paths:
   - "app/src/androidTest/**"
+  - "app/src/smoke/**"
 ---
 
 # Smoke Testing
 
-Smoke-level instrumentation tests that drive the real APK against a mocked Last.fm API.
+Smoke-level instrumentation tests that drive the R8-minified `smoke` build of the app against a mocked Last.fm API.
 The goal is "does the app still launch, log in, and render core screens" — anything finer-grained belongs in unit tests or Roborazzi screenshot tests (see [`testing.md`](testing.md)).
 
-Lives in `app/src/androidTest/`.
+The tests live in `app/src/androidTest/`; the mocked graph and fixtures they run against live in the `smoke` build type's source set, `app/src/smoke/`.
 Runs on CI via `.github/workflows/smoke_test.yml`: on pull requests that touch build configuration, dependencies, `:app`, any `androidMain` source set or the smoke harness itself (see the `paths` filter in the workflow), on every push to `develop`, and on demand via `workflow_dispatch`.
 
 ## Commands
 
 | Action | Command |
 |--------|---------|
-| Run locally on a connected emulator | `./gradlew :app:connectedDebugAndroidTest` |
-| Run locally on the phone GMD used by CI | `./gradlew :app:pixel6Api35DebugAndroidTest` |
-| Run only the tablet (`@LargeScreenSmoke`) tests on the tablet GMD | `./gradlew :app:pixelTabletApi35DebugAndroidTest -PincludeLargeScreenSmoke=true` |
-| Build the test APK only | `./gradlew :app:assembleDebugAndroidTest` |
+| Run locally on a connected emulator | `./gradlew :app:connectedSmokeAndroidTest` |
+| Run locally on the phone GMD used by CI | `./gradlew :app:pixel6Api35SmokeAndroidTest` |
+| Run only the tablet (`@LargeScreenSmoke`) tests on the tablet GMD | `./gradlew :app:pixelTabletApi35SmokeAndroidTest -PincludeLargeScreenSmoke=true` |
+| Build the smoke APK and the test APK | `./gradlew :app:assembleSmoke :app:assembleSmokeAndroidTest` |
 
 `pixel6Api35` and `pixelTabletApi35` are declared in `ApplicationConventionPlugin.kt` via `testOptions.managedDevices.allDevices` (Pixel 6 / Pixel Tablet, API 35, AOSP-ATD x86_64).
 First local run downloads the system image and creates the AVD; subsequent runs reuse it.
@@ -50,54 +51,52 @@ fun setUp() {
 
 Reference: `app/src/androidTest/java/.../LargeScreenSmokeTest.kt`.
 
-### Avoid overwriting your locally-installed dev app
+### The `smoke` build type
 
-Without any flag, `connectedDebugAndroidTest` builds the debug APK with `applicationId = com.mataku.scrobscrob.dev` — the same as `installDebug`, so the test run reinstalls and overwrites your hand-installed dev build.
+`ApplicationConventionPlugin.kt` declares `smoke` with `initWith(release)` and sets `testBuildType = "smoke"`, so every instrumentation task (`*SmokeAndroidTest`) runs against a build that R8 shrinks and optimizes exactly as it does release.
+A keep rule missing from `proguard-rules.pro` therefore fails the smoke suite instead of the shipped app.
 
-Pass `-PforAndroidTest=true` to switch the suffix to `.dev.test` for that invocation only:
-
-```
-./gradlew :app:connectedDebugAndroidTest -PforAndroidTest=true
-```
-
-This installs as `com.mataku.scrobscrob.dev.test`, leaving your `com.mataku.scrobscrob.dev` app untouched.
-CI does not pass the flag, so the smoke workflow keeps using the `.dev` suffix.
-
-Side effect: with the suffix changed, no entry in `google-services.json` matches, so the Google Services plugin would normally fail.
-`app/build.gradle.kts` sets `missingGoogleServicesStrategy = WARN` **only when `forAndroidTest=true` is passed** — normal builds keep the default ERROR strategy so a real applicationId mismatch still fails the build.
-Under the test variant, Firebase features (Crashlytics, etc.) won't initialize — fine for the mocked-API smoke suite, but don't rely on Firebase runtime behavior here.
+- Signed with the debug keystore and suffixed `.dev`, so it matches the dev entry in `google-services.json`. It installs over a hand-installed debug build of the same id.
+- Crashlytics mapping upload is disabled for it in `app/build.gradle.kts`.
+- AGP leaves every library the app already ships out of the instrumentation APK and shrinks the instrumentation APK against the smoke build's mapping (`minifySmokeAndroidTestWithR8`, `-applymapping`). Whatever the tests call that the app itself never calls would be removed or merged away by R8, so `app/smoke-rules.pro`, applied only to the `smoke` build type, keeps it:
+  - the `App.appGraph` → `SessionRepository.logout()` path used by `resetDataStores()`;
+  - the libraries that compose-ui-test, androidx.test and the tests link against (`androidx.compose.runtime` / `ui`, `androidx.activity` / `collection` / `concurrent.futures` / `core` / `lifecycle` / `tracing`, Guava's `util.concurrent`, `kotlin`, `kotlinx.coroutines`), with `allowobfuscation` so they are still renamed. Without them R8 full mode removes or merges more than a hundred classes the tests call, such as `kotlinx.coroutines.BuildersKt` and `androidx.compose.runtime.Composer`.
+  - Everything else, including our code, Material 3, foundation, Ktor, kotlinx.serialization, Metro, Navigation 3 and Coil, is shrunk and optimized as in release, which is where missing keep rules actually bite.
+- `src/smoke/` also carries an `AppInfoProviderImpl`, because that class is provided per build type (`debug`, `release`, `benchmark`, `smoke`).
 
 ## Architecture
 
-The instrumentation test process loads a `TestApp` instead of the production `App`.
-`TestApp` builds a `TestAppGraph` that excludes the production `HttpClientEngine` provider and contributes a `MockEngine` that serves canned JSON from `assets/`.
+The smoke build replaces the production `App` with `SmokeApp` through `app/src/smoke/AndroidManifest.xml` (`tools:replace="android:name"`).
+`SmokeApp` builds a `SmokeAppGraph` that excludes the production `HttpClientEngine`, auth launcher and image loader bindings and aggregates the fakes contributed to `SmokeScope`.
 
 ```
-MetroTestRunner (testInstrumentationRunner)
-  └─ newApplication() ─► TestApp
-                          └─ newAppGraph() ─► TestAppGraph
-                                                ├─ excludes HttpEngineModule, AuthModule, ImageLoaderModule
-                                                ├─ includes MockApiModule (MockEngine)
-                                                │                   └─ FixtureDispatcher
-                                                │                         └─ assets/*.json
-                                                ├─ includes FakeWebAuthModule (LastFmWebAuthLauncher → fixed token)
-                                                └─ includes FakeImageLoaderModule (Coil FakeImageLoaderEngine, solid colour)
+app/src/smoke/AndroidManifest.xml (android:name = SmokeApp)
+  └─ SmokeApp.newAppGraph() ─► SmokeAppGraph (scope AppScope, additionalScopes SmokeScope)
+                                 ├─ excludes HttpEngineModule, AuthModule, ImageLoaderModule
+                                 ├─ MockApiModule (MockEngine)
+                                 │     └─ FixtureDispatcher
+                                 │           └─ the app's own assets/*.json
+                                 ├─ FakeWebAuthModule (LastFmWebAuthLauncher → fixed token)
+                                 └─ FakeImageLoaderModule (Coil FakeImageLoaderEngine, solid colour)
 ```
+
+The fakes contribute to `SmokeScope` rather than `AppScope` because the production `AppGraph` is compiled into the smoke variant as well; contributing to `AppScope` would give it a duplicate `HttpClientEngine` binding.
+`SmokeScope` is the one exception to the `@ContributesTo(AppScope::class)` rule in `repository.md`.
 
 Production-side hooks that make this possible:
 
-- **`AppGraphContract`** (in `app/.../di/AppGraph.kt`) — neutral supertype shared by `AppGraph` and `TestAppGraph`. `App.appGraph` is typed against this contract so test/prod graphs are interchangeable.
-- **`App.newAppGraph()`** is `internal open` — `TestApp` overrides it.
-- **`HttpEngineModule`** (in `data/api/.../di/`) is a separate `@ContributesTo(AppScope::class)` interface whose only job is to provide `HttpClientEngine`. Keeping it in its own binding container is what lets `TestAppGraph` exclude *only* the engine binding without touching the rest of `ApiModule`.
+- **`AppGraphContract`** (in `app/.../di/AppGraph.kt`) — neutral supertype shared by `AppGraph` and `SmokeAppGraph`. `App.appGraph` is typed against this contract so the two graphs are interchangeable.
+- **`App.newAppGraph()`** is `internal open` — `SmokeApp` overrides it.
+- **`HttpEngineModule`** (in `data/api/.../di/`) is a separate `@ContributesTo(AppScope::class)` interface whose only job is to provide `HttpClientEngine`. Keeping it in its own binding container is what lets `SmokeAppGraph` exclude *only* the engine binding without touching the rest of `ApiModule`.
 - **`AuthModule`** (in `feature/auth/.../di/`) — binds `LastFmWebAuthLauncher`. Excluding it lets `FakeWebAuthModule` return `smoke_token` synchronously instead of opening a Custom Tab, so no test touches Chrome, last.fm, or `sunsetscrob.mataku.com`.
 - **`ImageLoaderModule`** (in `data/api/.../di/`) — a separate `@ContributesTo(AppScope::class)` interface whose only job is to provide the Coil `ImageLoader`, split out of `ApiModule` for the same surgical- exclusion reason as `HttpEngineModule`. Excluding it lets `FakeImageLoaderModule` bind Coil's `FakeImageLoaderEngine`, so artwork renders as a solid colour instead of being fetched from `lastfm.freetls.fastly.net`.
 
 ## Adding a fixture for a new endpoint
 
 1. Find the Last.fm API method string the endpoint sends. e.g. `chart.getTopTracks` → `chart.gettoptracks` (lowercased URL parameter).
-2. Drop a JSON file under one of these locations (precedence matches asset merge order in `app/build.gradle.kts`):
-   - `app/src/test/assets/` — preferred when the same fixture is also useful for unit tests (this dir is shared into androidTest's classpath).
-   - `app/src/androidTest/assets/` — smoke-only fixtures.
+2. Drop a JSON file under one of these locations; both are asset directories of the `smoke` source set (`ApplicationConventionPlugin.kt`), so the fixture ships inside the smoke APK:
+   - `app/src/test/assets/` — preferred when the same fixture is also useful for unit tests.
+   - `app/src/smoke/assets/` — smoke-only fixtures.
 
    For realistic data, prefer copying from an existing `*RepositorySpec.kt` or `data/api/src/jvmTest/resources/`.
    Real captured payloads catch parsing drift that a hand-written stub won't.
@@ -135,15 +134,16 @@ Conventions used by the existing flow:
 - Triggers: `pull_request` filtered by `paths` (dependency / build-logic / `:app` / `androidMain` / harness changes), push to `develop`, and `workflow_dispatch` — for the manual run, pick the target branch via "Use workflow from" in the GitHub Actions UI. The `paths` filter means a PR outside those paths produces no smoke run at all, so the job must not be a required status check until the filter is replaced by an in-workflow change-detection step (a skipped job counts as success, a never-started one blocks the merge forever).
 - Discord notification fires only for non-PR runs; a PR failure is already visible on the PR.
 - Single `smoke` job fanned out via `strategy.matrix` into two parallel variants, whose check names are just `Phone` and `Tablet` because the workflow name already says `Smoke test` (`fail-fast: false`, so a tablet failure doesn't cancel the phone run and vice versa):
-  - `pixel6Api35` (artifact-suffix `phone`) — runs the default `:app:pixel6Api35DebugAndroidTest` task. The `notAnnotation` runner arg auto-skips `@LargeScreenSmoke` tests.
-  - `pixelTabletApi35` (artifact-suffix `tablet`) — runs `:app:pixelTabletApi35DebugAndroidTest -PincludeLargeScreenSmoke=true`, so only `@LargeScreenSmoke` tests run.
+  - `pixel6Api35` (artifact-suffix `phone`) — runs the default `:app:pixel6Api35SmokeAndroidTest` task. The `notAnnotation` runner arg auto-skips `@LargeScreenSmoke` tests.
+  - `pixelTabletApi35` (artifact-suffix `tablet`) — runs `:app:pixelTabletApi35SmokeAndroidTest -PincludeLargeScreenSmoke=true`, so only `@LargeScreenSmoke` tests run.
 - Gradle/UTP owns the emulator lifecycle (boot, install, run, tear down) instead of `reactivecircus/android-emulator-runner`. The previous runner was prone to "device offline" failures mid-test under combined `adb screenrecord` + UTP load.
 - The AVD cache is handled by the `restore-avd-cache` / `save-avd-cache` composite actions described above, keyed per matrix variant (`phone` / `tablet`). Gradle caches go through `restore-gradle-cache` / `save-gradle-cache` with `cache-key: smoke`.
 - Failures upload `**/build/reports/androidTests/**`, `**/build/outputs/androidTest-results/**`, and `**/build/intermediates/managed_device_android_test_additional_output/**` as artifacts named `smoke-test-reports-{phone|tablet}` (7-day retention).
 
 ## Gotchas worth remembering
 
-- **Don't override `android:name` via `tools:replace` in the androidTest manifest.** It looks like the right knob, but it makes the test APK try to instantiate `TestApp` from its *own* package's classloader — which can't see `App` from the main APK. Symptom: `ClassNotFoundException: ...App` (the parent class, not TestApp itself). Use `MetroTestRunner.newApplication` instead — that path goes through `MetroAppComponentFactory` in the target process and resolves both APKs correctly.
+- **Swap the application class in `src/smoke/AndroidManifest.xml`, never in an androidTest manifest.** An androidTest `tools:replace` makes the test APK instantiate the application from its own classloader, which can't see `App` in the app APK (`ClassNotFoundException: ...App`). The smoke manifest is merged into the app APK itself, so `SmokeApp` loads from the same classloader as `App`.
+- **A test that calls into the app or a new library may need a keep rule.** If an instrumentation run fails with `NoClassDefFoundError` / `NoSuchMethodError` / `NoSuchFieldError`, R8 removed something only the tests use; keep it in `app/smoke-rules.pro`, not in `proguard-rules.pro`, so release is unaffected.
 - **Don't share `HttpClientEngine` provider with `ApiModule`'s other bindings.** If `provideHttpClientEngine` lived inside `ApiModule`, excluding it would also kill `provideOkhttpClient` / `provideLastFmService` / `provideImageLoader`. The split into `HttpEngineModule` is what keeps the exclusion surgical.
 - **Compose's `createAndroidComposeRule` (v1)** is deprecated in favour of v2 but still works. The v2 API uses `StandardTestDispatcher` which changes coroutine ordering — migrate intentionally, not casually.
 

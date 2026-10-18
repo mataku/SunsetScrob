@@ -18,7 +18,7 @@ Some are loaded every session (no `paths:` frontmatter); others load only when C
 | `.claude/rules/viewmodel.md`          | ViewModel conventions                                              | when reading `*ViewModel.kt` or `**/viewmodel/**`                |
 | `.claude/rules/repository.md`         | Repository conventions, Metro DI                                   | when reading `*Repository*.kt`, `**/repository/**`, `**/data/**` |
 | `.claude/rules/testing.md`            | Unit + Screenshot test conventions                                 | when reading `*Spec.kt` / `*Test.kt`                             |
-| `.claude/rules/smoke-testing.md`      | Smoke (instrumentation) test architecture                          | when reading `app/src/androidTest/**`                            |
+| `.claude/rules/smoke-testing.md`      | Smoke (instrumentation) test architecture                          | when reading `app/src/androidTest/**` or `app/src/smoke/**`      |
 | `DESIGN.md`                           | UI/Theme intent + `:ui_common` wrapping (Material 3, Navigation 3, adaptive) | explicit Read only                                     |
 
 ## Project Overview

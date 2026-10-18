@@ -1,6 +1,7 @@
-package com.mataku.scrobscrob.app.testing.di
+package com.mataku.scrobscrob.app.smoke.di
 
 import androidx.compose.runtime.Composable
+import com.mataku.scrobscrob.app.smoke.SmokeScope
 import com.mataku.scrobscrob.auth.webauth.LastFmWebAuthLauncher
 import com.mataku.scrobscrob.auth.webauth.LastFmWebAuthResult
 import dev.zacsweers.metro.AppScope
@@ -18,7 +19,7 @@ class FakeWebAuthLauncher : LastFmWebAuthLauncher {
 }
 
 @BindingContainer
-@ContributesTo(AppScope::class)
+@ContributesTo(SmokeScope::class)
 interface FakeWebAuthModule {
   companion object {
     @SingleIn(AppScope::class)
