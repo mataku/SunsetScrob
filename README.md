@@ -59,7 +59,7 @@ Conventions are encoded as executable specs and enforced at the CI boundary, so 
 | Unit         | Kotest + MockK                     | push / PR       |
 | Architecture | Konsist (`:architecture-spec`)     | push / PR       |
 | Lint         | Android Lint                       | push / PR       |
-| Static analysis | detekt (compose-rules + ktlint formatting, all modules) | push / PR |
+| Static analysis | detekt (bundled rules + compose-rules + ktlint formatting, all modules); Kotlin warnings are errors | push / PR |
 | VRT          | Roborazzi screenshot tests         | push / PR       |
 | Smoke        | Compose instrumentation tests      | PR (build / deps / androidMain paths) / develop |
 | Compose perf | Compose compiler metrics           | weekly          |
