@@ -6,7 +6,8 @@
 # resetDataStores() logs out through the running graph between tests.
 -keep class com.mataku.scrobscrob.app.App { *** getAppGraph*(...); }
 -keep interface com.mataku.scrobscrob.app.di.AppGraphContract { *** getSessionRepository(); }
--keep interface com.mataku.scrobscrob.data.repository.SessionRepository { *** logout(); }
+# logout() is a suspend fun, so its JVM signature takes a Continuation; match any parameters.
+-keep interface com.mataku.scrobscrob.data.repository.SessionRepository { *** logout(...); }
 
 # Libraries that compose-ui-test, androidx.test and the tests link against: neither removed,
 # merged nor renamed. -applymapping remaps the instrumentation APK's class references but not every
