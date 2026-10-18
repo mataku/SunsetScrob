@@ -58,7 +58,7 @@ Layer / package / Compose / navigation rules already live in always-loaded `arch
 **DO**
 
 - Wire new dependencies through Metro with `@Binds` / companion-object `@Provides` on a `@BindingContainer` + `@ContributesTo(AppScope::class)` interface in `di/FooModule.kt`.
-- Write a `*Spec.kt` Kotest test next to the class under test.
+- Write a `*Spec.kt` Kotest test next to the class under test. Konsist fails a `*ViewModel` or `*Endpoint` without its spec and a feature `*Screen` without its `*ScreenTest` (`TestPresenceArchitectureSpec`).
 
 **DON'T**
 
@@ -89,6 +89,7 @@ Each rule under `.claude/rules/` maps to a `*ArchitectureSpec.kt` under `archite
 
 - Run locally: `./gradlew :architecture-spec:test`
 - Run in CI: `./gradlew :architecture-spec:test` via the GitHub Actions workflow `arch_test.yml`, independent of the main test job.
+- Konsist reads every module's sources at runtime, so `architecture-spec/build.gradle.kts` declares them as inputs of the `test` task. Without that, Gradle reports the task `UP-TO-DATE` / `FROM-CACHE` whenever only those sources change and the specs never run; keep the declaration when touching that build script.
 
 When you add a new convention to a `.claude/rules/` file, add a matching Spec.
 When you change a Spec, update the corresponding rule.

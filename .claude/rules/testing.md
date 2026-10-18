@@ -16,6 +16,12 @@ paths:
 
 One test file per class under test.
 
+Three kinds of class must have their test, enforced by Konsist (`TestPresenceArchitectureSpec`):
+
+- every `*ViewModel` has a `<ViewModel>Spec.kt`;
+- every `*Endpoint` in `:data:api` has a `<Endpoint>Spec.kt`;
+- every `*Screen.kt` under a `screen` package in a feature module or `:ui_common` has a Roborazzi `<Screen>Test.kt`. `HomeScreen` is the one exception: it creates its tabs' ViewModels through `metroViewModel()`, which needs the app graph, so it cannot render in a JVM screenshot test; `HomeTabsTest` and the tab screens' own tests cover it.
+
 ## Run new or modified tests before committing
 
 When you add or modify a test, run it locally before committing — for **every** test type, including slow Gradle-Managed-Device instrumentation tests.
