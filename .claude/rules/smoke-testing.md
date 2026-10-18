@@ -10,7 +10,9 @@ Smoke-level instrumentation tests that drive the R8-minified `smoke` build of th
 The goal is "does the app still launch, log in, and render core screens" — anything finer-grained belongs in unit tests or Roborazzi screenshot tests (see [`testing.md`](testing.md)).
 
 The tests live in `app/src/androidTest/`; the mocked graph and fixtures they run against live in the `smoke` build type's source set, `app/src/smoke/`.
-Runs on CI via `.github/workflows/smoke_test.yml`: on pull requests that touch build configuration, dependencies, `:app`, any `androidMain` source set or the smoke harness itself (see the `paths` filter in the workflow), on every push to `develop`, and on demand via `workflow_dispatch`.
+Runs on CI via `.github/workflows/smoke_test.yml`: on pull requests that touch build configuration, dependencies, `:app`, any `androidMain` source set or the smoke harness itself (see the `paths` filter in the workflow), on a daily schedule against `develop`, and on demand via `workflow_dispatch`.
+There is no run on push to `develop`: the PR run already covers each change, and breakage that only appears once several branches are merged is left to the daily run.
+The daily run executes even when `develop` has not moved, on purpose: the runner image, emulator and other parts of the environment change independently of the repository.
 
 ## Commands
 
@@ -26,7 +28,7 @@ First local run downloads the system image and creates the AVD; subsequent runs 
 
 GMD stores its AVDs under `~/.android/avd/gradle-managed/`, and the setup phase boots each one once to write a `default_boot` snapshot so later runs resume instead of cold booting.
 CI restores that directory per device via `.github/actions/restore-avd-cache` and refreshes it via `.github/actions/save-avd-cache`.
-Like the Gradle caches, the AVD cache is written only on pushes to `develop` and is read-only everywhere else, so the repository stays inside the 10 GB Actions cache budget.
+The AVD cache and the smoke Gradle build cache are written only by the daily scheduled run on `develop` and are read-only everywhere else, so the repository stays inside the 10 GB Actions cache budget.
 The cache key is fixed (`gmd-avd-<os>-<device>-develop`); when a device definition in `ApplicationConventionPlugin.kt` changes, the stale AVD is restored but `cleanManagedDevices --unused-only` (run at the top of each `scripts/run_smoke_*.sh`) deletes it and GMD recreates it, so the cache is self-healing.
 
 ## `@LargeScreenSmoke` — tablet-only tests
@@ -131,7 +133,7 @@ Conventions used by the existing flow:
 ## Running on CI
 
 `.github/workflows/smoke_test.yml`:
-- Triggers: `pull_request` filtered by `paths` (dependency / build-logic / `:app` / `androidMain` / harness changes), push to `develop`, and `workflow_dispatch` — for the manual run, pick the target branch via "Use workflow from" in the GitHub Actions UI. The `paths` filter means a PR outside those paths produces no smoke run at all, so the job must not be a required status check until the filter is replaced by an in-workflow change-detection step (a skipped job counts as success, a never-started one blocks the merge forever).
+- Triggers: `pull_request` filtered by `paths` (dependency / build-logic / `:app` / `androidMain` / harness changes), a daily schedule (06:00 UTC) on `develop`, and `workflow_dispatch` — for the manual run, pick the target branch via "Use workflow from" in the GitHub Actions UI. The `paths` filter means a PR outside those paths produces no smoke run at all, so the job must not be a required status check until the filter is replaced by an in-workflow change-detection step (a skipped job counts as success, a never-started one blocks the merge forever).
 - Discord notification fires only for non-PR runs; a PR failure is already visible on the PR.
 - Single `smoke` job fanned out via `strategy.matrix` into two parallel variants, whose check names are just `Phone` and `Tablet` because the workflow name already says `Smoke test` (`fail-fast: false`, so a tablet failure doesn't cancel the phone run and vice versa):
   - `pixel6Api35` (artifact-suffix `phone`) — runs the default `:app:pixel6Api35SmokeAndroidTest` task. The `notAnnotation` runner arg auto-skips `@LargeScreenSmoke` tests.
