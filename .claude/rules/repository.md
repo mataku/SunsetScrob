@@ -15,7 +15,7 @@ Reference: `data/repository/.../ScrobbleRepository.kt`, `data/repository/di/Repo
 - Methods return `Flow<T>`; wrap async work with `flow { ... }.flowOn(Dispatchers.IO)`. Enforced by Konsist (`RepositoryArchitectureSpec` in `:architecture-spec`, "`*Repository` interfaces declare methods returning `Flow<T>`").
 - All `*Repository` interfaces live in `:data:repository`, a KMP module with no Lint task, so this rule is enforced by Konsist alone.
 - Bind all repositories in `data/repository/di/RepositoryModule.kt` with `@Binds` and `@SingleIn(AppScope::class)`. The interface is annotated `@BindingContainer` and `@ContributesTo(AppScope::class)` so Metro auto-aggregates it into the app graph — no explicit `includes` wiring is needed; `:data:api`'s `ApiModule` and `:data:db`'s `DatabaseModule` join automatically because they are also contributed binding containers.
-- Do not catch errors inside the repository. Let them propagate — the ViewModel's `.catch { ... }` maps them to a `UiEvent.Error`.
+- Do not catch errors inside the repository. Let them propagate — the ViewModel's `.catch { ... }` maps them to a `UiEvent.Error`. detekt's `SwallowedException` and `TooGenericExceptionCaught` (bundled `exceptions` rule set, `config/detekt/detekt.yml`) flag the try/catch shape of this in every module.
 - Call the API through the typed `LastFmService.request(endpoint)` extension. `rawRequest(endpoint, typeInfo)` is the type-erased member that exists so the inline extension can be reified and so specs can stub it with MockK; production code never calls it directly. Enforced by Konsist (`LastFmServiceArchitectureSpec`).
 
 ## Metro Binding Container Conventions

@@ -2,7 +2,7 @@
 #
 # Run :app:connectedDebugAndroidTest against a manually-started Pixel
 # Tablet emulator (or any connected device wide enough for the
-# `@LargeScreenE2E` flow). TestScreenshotRule publishes a `*-failed.png`
+# `@LargeScreenSmoke` flow). TestScreenshotRule publishes a `*-failed.png`
 # via PlatformTestStorage on test failure, which Gradle pulls back to:
 #
 #   app/build/outputs/connected_android_test_additional_output/<flavor>/
@@ -10,10 +10,10 @@
 #
 # Use this when you want a tablet emulator you can watch live (eg. via
 # Android Studio's emulator window). For headless GMD use
-# scripts/run_e2e_tablet.sh instead.
+# scripts/run_smoke_tablet.sh instead.
 #
 # Usage:
-#   bash scripts/run_e2e_tablet_connected.sh [extra ./gradlew args]
+#   bash scripts/run_smoke_tablet_connected.sh [extra ./gradlew args]
 
 set -euo pipefail
 
@@ -24,7 +24,7 @@ OUT_DIR="app/build/outputs/connected_android_test_additional_output"
 
 set +e
 ./gradlew :app:connectedDebugAndroidTest \
-  -PincludeLargeScreenE2E=true \
+  -PincludeLargeScreenSmoke=true \
   "$@"
 RESULT=$?
 set -e

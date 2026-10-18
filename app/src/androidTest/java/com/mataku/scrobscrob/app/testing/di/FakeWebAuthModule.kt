@@ -9,12 +9,12 @@ import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.Provides
 import dev.zacsweers.metro.SingleIn
 
-const val E2E_TOKEN = "e2e_token"
+const val SMOKE_TOKEN = "smoke_token"
 
 class FakeWebAuthLauncher : LastFmWebAuthLauncher {
   @Composable
   override fun rememberLaunch(onResult: (LastFmWebAuthResult) -> Unit): (String) -> Unit =
-    { onResult(LastFmWebAuthResult.Success(E2E_TOKEN)) }
+    { onResult(LastFmWebAuthResult.Success(SMOKE_TOKEN)) }
 }
 
 @BindingContainer

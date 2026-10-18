@@ -25,10 +25,10 @@ internal fun encryptedSessionKeyDataStore(context: Context): DataStore<String> {
 
   val keysetHandle = try {
     buildKeysetHandle(context)
-  } catch (e: GeneralSecurityException) {
+  } catch (_: GeneralSecurityException) {
     resetEncryptedState(context)
     buildKeysetHandle(context)
-  } catch (e: IOException) {
+  } catch (_: IOException) {
     resetEncryptedState(context)
     buildKeysetHandle(context)
   }

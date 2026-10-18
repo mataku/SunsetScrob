@@ -5,7 +5,7 @@ package com.mataku.scrobscrob.app.testing
  * device to render correctly. Tests with this annotation are excluded
  * from the default `pixel6Api35DebugAndroidTest` run via
  * `testInstrumentationRunnerArguments["notAnnotation"]`. To run them,
- * pass `-PincludeLargeScreenE2E=true` (typically against
+ * pass `-PincludeLargeScreenSmoke=true` (typically against
  * `pixelTabletApi35DebugAndroidTest`).
  *
  * Lives in `app/src/androidTest/` rather than `:test_helper:integration`
@@ -14,4 +14,4 @@ package com.mataku.scrobscrob.app.testing
  */
 @Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.FUNCTION, AnnotationTarget.CLASS)
-annotation class LargeScreenE2E
+annotation class LargeScreenSmoke
