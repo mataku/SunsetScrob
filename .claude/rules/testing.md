@@ -12,22 +12,22 @@ paths:
 |----------------------|--------------------------------------------------------------------------------------|
 | Unit Test            | `./gradlew jvmTest -PexcludeScreenshotTest=true`                                     |
 | Screenshot Test      | `./gradlew verifyRoborazziJvm -PonlyScreenshotTest=true`    |
-| Instrumentation Test | `./gradlew :app:connectedDebugAndroidTest` (see [`smoke-testing.md`](smoke-testing.md))  |
+| Instrumentation Test | `./gradlew :app:connectedSmokeAndroidTest` (see [`smoke-testing.md`](smoke-testing.md))  |
 
 One test file per class under test.
 
 ## Run new or modified tests before committing
 
 When you add or modify a test, run it locally before committing — for **every** test type, including slow Gradle-Managed-Device instrumentation tests.
-Compile-only verification (`assembleDebugAndroidTest`) is not a substitute: it only proves the test class builds, not that it passes on a real device.
+Compile-only verification (`assembleSmokeAndroidTest`) is not a substitute: it only proves the test class builds, not that it passes on a real device.
 
 A single GMD run takes ~5–15 minutes once the system image is cached; debugging a broken commit after the fact (failure surfaces in CI or via the user, root-cause hunt, follow-up commit) costs more than that.
 Skip the local run only with explicit user permission and only when the test itself is not the change under verification.
 
 Pair this with the verification commands in the path-scoped guides:
 - VRT: `./gradlew verifyRoborazziJvm -PonlyScreenshotTest=true`
-- Smoke (phone): `./gradlew :app:pixel6Api35DebugAndroidTest`
-- Smoke (tablet, `@LargeScreenSmoke`): `./gradlew :app:pixelTabletApi35DebugAndroidTest -PincludeLargeScreenSmoke=true`
+- Smoke (phone): `./gradlew :app:pixel6Api35SmokeAndroidTest`
+- Smoke (tablet, `@LargeScreenSmoke`): `./gradlew :app:pixelTabletApi35SmokeAndroidTest -PincludeLargeScreenSmoke=true`
 
 Running `jvmTest` alone (e.g. `-PexcludeScreenshotTest=true`) does not compare goldens — only the `verifyRoborazzi*` tasks do — so a change that can affect a VRT must be checked with the verify task, not just the plain unit-test command.
 

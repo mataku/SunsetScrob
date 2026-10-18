@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Run :app:connectedDebugAndroidTest against a manually-started Pixel
+# Run :app:connectedSmokeAndroidTest against a manually-started Pixel
 # Tablet emulator (or any connected device wide enough for the
 # `@LargeScreenSmoke` flow). TestScreenshotRule publishes a `*-failed.png`
 # via PlatformTestStorage on test failure, which Gradle pulls back to:
@@ -23,7 +23,7 @@ cd "$REPO_ROOT"
 OUT_DIR="app/build/outputs/connected_android_test_additional_output"
 
 set +e
-./gradlew :app:connectedDebugAndroidTest \
+./gradlew :app:connectedSmokeAndroidTest \
   -PincludeLargeScreenSmoke=true \
   "$@"
 RESULT=$?

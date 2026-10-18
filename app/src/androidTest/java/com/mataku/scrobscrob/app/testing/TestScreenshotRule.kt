@@ -13,7 +13,7 @@ import org.junit.runner.Description
  * them back to:
  *
  *   `<module>/build/intermediates/managed_device_android_test_additional_output/`
- *   `debugAndroidTest/<deviceTask>/<TestClass>-<method>-<label>.png`
+ *   `smokeAndroidTest/<deviceTask>/<TestClass>-<method>-<label>.png`
  *
  * Why screenshots instead of `screenrecord`:
  *  - `screenrecord` invoked via [androidx.test.uiautomator.UiDevice.executeShellCommand]

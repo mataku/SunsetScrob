@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 #
-# Run :app:pixel6Api35DebugAndroidTest on the phone GMD. TestScreenshotRule
+# Run :app:pixel6Api35SmokeAndroidTest on the phone GMD. TestScreenshotRule
 # publishes a `*-failed.png` via PlatformTestStorage on test failure, which
 # AGP 9.x pulls back to:
 #
 #   app/build/intermediates/managed_device_android_test_additional_output/
-#     debugAndroidTest/pixel6Api35DebugAndroidTest/<TestClass>-<method>-failed.png
+#     smokeAndroidTest/pixel6Api35SmokeAndroidTest/<TestClass>-<method>-failed.png
 #
 # Usage:
 #   bash scripts/run_smoke_phone.sh [extra ./gradlew args]
@@ -18,12 +18,12 @@ set -euo pipefail
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$REPO_ROOT"
 
-OUT_DIR="app/build/intermediates/managed_device_android_test_additional_output/debugAndroidTest/pixel6Api35DebugAndroidTest"
+OUT_DIR="app/build/intermediates/managed_device_android_test_additional_output/smokeAndroidTest/pixel6Api35SmokeAndroidTest"
 
 ./gradlew :app:cleanManagedDevices --unused-only
 
 set +e
-./gradlew :app:pixel6Api35DebugAndroidTest "$@"
+./gradlew :app:pixel6Api35SmokeAndroidTest "$@"
 RESULT=$?
 set -e
 
