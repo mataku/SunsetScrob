@@ -59,7 +59,7 @@ Notes:
 - `FOLLOW_SYSTEM` does not have its own `ColorScheme`; `AppTheme.resolve(...)` returns `DARK` or `LIGHT` and `SunsetTheme` keys off the resolved value. Always pass the resolved theme to `LocalAppTheme`.
 - `DARK` and `LASTFM_DARK` use named token objects (`DarkColor`, `LastFmDarkColor`); `MIDNIGHT` and `OCEAN` are inlined as `private val` schemes inside `SunsetTheme.kt` instead of having their own `*Color` object. If you add a seventh theme that needs its own scheme, prefer the named-object pattern.
 - `accentColor()` is **not** part of `ColorScheme`. Use it for theme-specific highlight colors (e.g. selected indicators) where Material 3's `primary`/`tertiary` mapping doesn't fit. `FOLLOW_SYSTEM` returns `LightLime` directly (it isn't routed through `resolve()` for accent).
-- Ripple is overridden per `isLight` via `LocalRippleConfiguration`. Don't override ripple again locally — call sites get it from `SunsetTheme`.
+- Ripple is overridden per `isLight` via `LocalRippleConfiguration`. Don't override ripple again locally — call sites get it from `SunsetTheme`. Material 3 1.12 deprecates the `RippleConfiguration(color, rippleAlpha)` constructor without a replacement for custom state-layer alphas, so `SunsetTheme.kt` suppresses that one deprecation (`rippleConfiguration()`) instead of dropping `LightRippleAlpha` / `DarkRippleAlpha`; revisit when Material 3 exposes the alphas again.
 
 ### Color usage rules
 
