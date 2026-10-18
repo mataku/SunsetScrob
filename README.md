@@ -61,7 +61,7 @@ Conventions are encoded as executable specs and enforced at the CI boundary, so 
 | Lint         | Android Lint                       | push / PR       |
 | Static analysis | detekt (compose-rules + ktlint formatting, all modules) | push / PR |
 | VRT          | Roborazzi screenshot tests         | push / PR       |
-| E2E          | Compose integration tests          | develop / daily |
+| E2E          | Compose integration tests          | PR (build / deps / androidMain paths) / develop / daily |
 | Compose perf | Compose compiler metrics           | weekly          |
 | Startup perf | Macrobenchmark                     | weekly          |
 
