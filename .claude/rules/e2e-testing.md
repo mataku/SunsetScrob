@@ -125,7 +125,9 @@ Conventions used by the existing flow:
 
 - `@Before resetState()` calls `resetDataStores()` so previous runs don't leak a logged-in session into the next test. It calls the running graph's `SessionRepository.logout()` rather than deleting files, because DataStore caches in-process across test classes.
 - Anchor on **hardcoded English** strings (`"Sign in with Last.fm"`, `"Home"`) rather than on translated `stringResource`s. The CI emulator is en-US by default, but local devices may not be — anchoring on translated text wedges the test on a non-English locale. If a flow has no hardcoded anchor, look up the string via `composeRule.activity.getString(R.string.foo)`.
-- `TIMEOUT_MS = 5_000L` covers a CI cold emulator's first render + initial mocked API roundtrip. Tighten only if you have a specific reason.
+- Assert on text that comes from the fixture (`"PassCode"`, `"My Love Mine All Mine"`, `"e2e_user"`, `"About PassCode"`), not on a screen title such as `"Discover"`. A title renders even when every API call returned 501, so it proves nothing about parsing or the data flow; a fixture value only appears once the response was decoded and mapped.
+- `AppSmokeTest` calls `composeRule.activityRule.scenario.recreate()` on a detail screen and re-asserts the same anchor. This covers Activity recreation (configuration change), where `SunsetNavBackStack` must restore the `@Serializable` key and the ViewModel survives via the retained store. It does not cover process death; that would need separate tooling and is out of scope.
+- `TIMEOUT_MS` is `2_000L` in `AppSmokeTest` and `5_000L` in the tablet / web-auth tests. The phone value is deliberately tight (see PR #1112); raise it only with a measured reason.
 
 ## Running on CI
 

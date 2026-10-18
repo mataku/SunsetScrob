@@ -1,7 +1,5 @@
 package com.mataku.scrobscrob.data.repository
 
-import com.mataku.scrobscrob.core.AppBuildInfo
-import com.mataku.scrobscrob.core.entity.Image
 import com.mataku.scrobscrob.core.entity.LovedTrack
 import com.mataku.scrobscrob.core.entity.UserInfo
 import com.mataku.scrobscrob.core.entity.imageUrl
@@ -17,7 +15,6 @@ import com.mataku.scrobscrob.data.repository.mapper.toUserInfo
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -34,7 +31,6 @@ class UserRepositoryImpl(
   private val lastFmService: LastFmService,
   private val usernameDataStore: UsernameDataStore,
   private val artworkDataStore: ArtworkDataStore,
-  private val appBuildInfo: AppBuildInfo,
 ) : UserRepository {
   override suspend fun getInfo(userName: String): Flow<UserInfo> = flow {
     val endpoint = UserInfoEndpoint(
@@ -42,25 +38,7 @@ class UserRepositoryImpl(
         "user" to userName
       )
     )
-    val userInfo = if (appBuildInfo.isDebug) {
-      UserInfo(
-        name = "matakucom",
-        playCount = "102654",
-        artistCount = "728",
-        trackCount = "2296",
-        albumCount = "1753",
-        imageList = persistentListOf(
-          Image(
-            size = "extralarge",
-            url = "https://lastfm.freetls.fastly.net/i/u/300x300/3605caa7a395e19202c55d55be23cbff.png"
-          )
-        ),
-        url = "https://www.last.fm/user/matakucom"
-      )
-    } else {
-      lastFmService.request(endpoint).toUserInfo()
-    }
-    emit(userInfo)
+    emit(lastFmService.request(endpoint).toUserInfo())
   }.flowOn(Dispatchers.IO)
 
   override suspend fun getLovedTracks(page: Int): Flow<List<LovedTrack>> = flow {

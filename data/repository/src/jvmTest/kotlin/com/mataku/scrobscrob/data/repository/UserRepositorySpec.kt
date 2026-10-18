@@ -1,9 +1,9 @@
 package com.mataku.scrobscrob.data.repository
 
 import app.cash.turbine.test
-import com.mataku.scrobscrob.core.AppBuildInfo
 import com.mataku.scrobscrob.data.api.LastFmService
 import com.mataku.scrobscrob.data.api.endpoint.Endpoint
+import com.mataku.scrobscrob.data.api.endpoint.UserInfoEndpoint
 import com.mataku.scrobscrob.data.api.endpoint.UserLovedTracksEndpoint
 import com.mataku.scrobscrob.data.api.model.ImageBody
 import com.mataku.scrobscrob.data.api.model.LovedTrackBody
@@ -12,6 +12,8 @@ import com.mataku.scrobscrob.data.api.model.LovedTracksResponse
 import com.mataku.scrobscrob.data.api.model.PagingAttrBody
 import com.mataku.scrobscrob.data.api.model.RecentTrackDateBody
 import com.mataku.scrobscrob.data.api.model.TrackArtistBody
+import com.mataku.scrobscrob.data.api.model.UserInfoApiResponse
+import com.mataku.scrobscrob.data.api.model.UserInfoBody
 import com.mataku.scrobscrob.data.db.ArtworkDataStore
 import com.mataku.scrobscrob.data.db.UsernameDataStore
 import com.mataku.scrobscrob.data.db.entity.ArtistArtworkEntity
@@ -26,33 +28,50 @@ import io.mockk.slot
 
 class UserRepositorySpec : DescribeSpec({
   describe("getInfo") {
-    context("debug build") {
-      it("emits the hard-coded debug user without calling the API") {
-        // The production code short-circuits to a hard-coded UserInfo when
-        // appBuildInfo.isDebug is true.
-        val service = mockk<LastFmService>()
-        val usernameDataStore = mockk<UsernameDataStore>()
-        val artworkDataStore = mockk<ArtworkDataStore>()
-        val repository = UserRepositoryImpl(
-          service,
-          usernameDataStore,
-          artworkDataStore,
-          appBuildInfo = AppBuildInfo(isDebug = true),
-        )
+    it("builds UserInfoEndpoint and maps to UserInfo") {
+      val service = mockk<LastFmService>()
+      val usernameDataStore = mockk<UsernameDataStore>()
+      val artworkDataStore = mockk<ArtworkDataStore>()
+      val slot = slot<Endpoint<*>>()
+      val fakeResponse = UserInfoApiResponse(
+        userInfo = UserInfoBody(
+          name = "e2e_user",
+          playCount = "102654",
+          artistCount = "728",
+          trackCount = "2296",
+          albumCount = "1753",
+          imageList = listOf(
+            ImageBody(
+              size = "extralarge",
+              url = "https://lastfm.freetls.fastly.net/i/u/300x300/profile.png",
+            ),
+          ),
+          url = "https://www.last.fm/user/e2e_user",
+        ),
+      )
+      coEvery { service.rawRequest(capture(slot), any()) } returns fakeResponse
 
-        repository.getInfo("ignored").test {
-          awaitItem().let { user ->
-            user.name shouldBe "matakucom"
-            user.playCount shouldBe "102654"
-            user.artistCount shouldBe "728"
-            user.trackCount shouldBe "2296"
-            user.albumCount shouldBe "1753"
-          }
-          awaitComplete()
+      val repository = UserRepositoryImpl(
+        service,
+        usernameDataStore,
+        artworkDataStore,
+      )
+      repository.getInfo("e2e_user").test {
+        awaitItem().let { user ->
+          user.name shouldBe "e2e_user"
+          user.playCount shouldBe "102654"
+          user.artistCount shouldBe "728"
+          user.trackCount shouldBe "2296"
+          user.albumCount shouldBe "1753"
+          user.url shouldBe "https://www.last.fm/user/e2e_user"
+          user.imageList.size shouldBe 1
         }
-
-        coVerify(exactly = 0) { service.rawRequest(any(), any()) }
+        awaitComplete()
       }
+
+      slot.captured.shouldBeInstanceOf<UserInfoEndpoint>()
+      slot.captured.params shouldBe mapOf("user" to "e2e_user")
+      coVerify(exactly = 1) { service.rawRequest(any(), any()) }
     }
   }
 
@@ -68,7 +87,6 @@ class UserRepositorySpec : DescribeSpec({
           service,
           usernameDataStore,
           artworkDataStore,
-          appBuildInfo = AppBuildInfo(isDebug = false),
         )
         repository.getLovedTracks(page = 1).test {
           awaitItem().shouldBeEmpty()
@@ -89,7 +107,6 @@ class UserRepositorySpec : DescribeSpec({
           service,
           usernameDataStore,
           artworkDataStore,
-          appBuildInfo = AppBuildInfo(isDebug = false),
         )
         repository.getLovedTracks(page = 1).test {
           awaitItem().shouldBeEmpty()
@@ -142,7 +159,6 @@ class UserRepositorySpec : DescribeSpec({
           service,
           usernameDataStore,
           artworkDataStore,
-          appBuildInfo = AppBuildInfo(isDebug = false),
         )
         repository.getLovedTracks(page = page).test {
           awaitItem().let { tracks ->
@@ -207,7 +223,6 @@ class UserRepositorySpec : DescribeSpec({
           service,
           usernameDataStore,
           artworkDataStore,
-          appBuildInfo = AppBuildInfo(isDebug = false),
         )
         repository.getLovedTracks(page = 1).test {
           awaitItem()[0].imageUrl shouldBe "https://cached.example/aespa.png"

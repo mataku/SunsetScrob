@@ -1,0 +1,69 @@
+{
+  "artist": {
+    "name": "PassCode",
+    "url": "https://www.last.fm/music/PassCode",
+    "image": [
+      {
+        "#text": "https://lastfm.freetls.fastly.net/i/u/34s/2a96cbd8b46e442fc41c2b86b821562f.png",
+        "size": "small"
+      },
+      {
+        "#text": "https://lastfm.freetls.fastly.net/i/u/64s/2a96cbd8b46e442fc41c2b86b821562f.png",
+        "size": "medium"
+      },
+      {
+        "#text": "https://lastfm.freetls.fastly.net/i/u/174s/2a96cbd8b46e442fc41c2b86b821562f.png",
+        "size": "large"
+      },
+      {
+        "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png",
+        "size": "extralarge"
+      },
+      {
+        "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png",
+        "size": "mega"
+      },
+      {
+        "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png",
+        "size": ""
+      }
+    ],
+    "streamable": "0",
+    "ontour": "0",
+    "stats": {
+      "listeners": "38424",
+      "playcount": "1504502"
+    },
+    "similar": {
+      "artist": []
+    },
+    "tags": {
+      "tag": [
+        {
+          "name": "j-pop",
+          "url": "https://www.last.fm/tag/j-pop"
+        },
+        {
+          "name": "idol",
+          "url": "https://www.last.fm/tag/idol"
+        },
+        {
+          "name": "japanese",
+          "url": "https://www.last.fm/tag/japanese"
+        }
+      ]
+    },
+    "bio": {
+      "links": {
+        "link": {
+          "#text": "",
+          "rel": "original",
+          "href": "https://last.fm/music/PassCode/+wiki"
+        }
+      },
+      "published": "12 Mar 2015, 10:00",
+      "summary": "PassCode is a Japanese idol group formed in Osaka in 2013. <a href=\"https://www.last.fm/music/PassCode\">Read more on Last.fm</a>",
+      "content": "PassCode is a Japanese idol group formed in Osaka in 2013. <a href=\"https://www.last.fm/music/PassCode\">Read more on Last.fm</a>. User-contributed text is available under the Creative Commons By-SA License; additional terms may apply."
+    }
+  }
+}
