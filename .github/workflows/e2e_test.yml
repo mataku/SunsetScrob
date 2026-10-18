@@ -1,6 +1,20 @@
 name: E2E test
 
 on:
+  pull_request:
+    branches:
+      - '**'
+    paths:
+      - 'gradle/**'
+      - 'gradle.properties'
+      - 'settings.gradle.kts'
+      - '**/build.gradle.kts'
+      - 'build-logic/**'
+      - 'app/**'
+      - '**/src/androidMain/**'
+      - 'scripts/run_e2e_*.sh'
+      - '.github/workflows/e2e_test.yml'
+      - '.github/actions/**'
   push:
     branches:
       - develop
@@ -102,7 +116,7 @@ jobs:
   notify-failure:
     name: Notify Discord on failure
     needs: e2e
-    if: failure()
+    if: failure() && github.event_name != 'pull_request'
     runs-on: ubuntu-slim
     env:
       LANG: C.UTF-8
