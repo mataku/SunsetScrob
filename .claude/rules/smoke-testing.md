@@ -9,7 +9,7 @@ Smoke-level instrumentation tests that drive the real APK against a mocked Last.
 The goal is "does the app still launch, log in, and render core screens" — anything finer-grained belongs in unit tests or Roborazzi screenshot tests (see [`testing.md`](testing.md)).
 
 Lives in `app/src/androidTest/`.
-Runs on CI via `.github/workflows/smoke_test.yml`: on pull requests that touch build configuration, dependencies, `:app`, any `androidMain` source set or the smoke harness itself (see the `paths` filter in the workflow), on every push to `develop`, on a daily schedule, and on demand via `workflow_dispatch`.
+Runs on CI via `.github/workflows/smoke_test.yml`: on pull requests that touch build configuration, dependencies, `:app`, any `androidMain` source set or the smoke harness itself (see the `paths` filter in the workflow), on every push to `develop`, and on demand via `workflow_dispatch`.
 
 ## Commands
 
@@ -132,7 +132,7 @@ Conventions used by the existing flow:
 ## Running on CI
 
 `.github/workflows/smoke_test.yml`:
-- Triggers: `pull_request` filtered by `paths` (dependency / build-logic / `:app` / `androidMain` / harness changes), push to `develop`, a daily schedule, and `workflow_dispatch` — for the manual run, pick the target branch via "Use workflow from" in the GitHub Actions UI. The `paths` filter means a PR outside those paths produces no smoke run at all, so the job must not be a required status check until the filter is replaced by an in-workflow change-detection step (a skipped job counts as success, a never-started one blocks the merge forever).
+- Triggers: `pull_request` filtered by `paths` (dependency / build-logic / `:app` / `androidMain` / harness changes), push to `develop`, and `workflow_dispatch` — for the manual run, pick the target branch via "Use workflow from" in the GitHub Actions UI. The `paths` filter means a PR outside those paths produces no smoke run at all, so the job must not be a required status check until the filter is replaced by an in-workflow change-detection step (a skipped job counts as success, a never-started one blocks the merge forever).
 - Discord notification fires only for non-PR runs; a PR failure is already visible on the PR.
 - Single `smoke` job fanned out via `strategy.matrix` into two parallel variants (`fail-fast: false`, so a tablet failure doesn't cancel the phone run and vice versa):
   - `pixel6Api35` (artifact-suffix `phone`) — runs the default `:app:pixel6Api35DebugAndroidTest` task. The `notAnnotation` runner arg auto-skips `@LargeScreenSmoke` tests.
