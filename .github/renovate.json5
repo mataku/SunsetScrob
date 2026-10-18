@@ -7,7 +7,7 @@
     'org.junit.vintage:junit-vintage-engine',
   ],
   prConcurrentLimit: 3,
-  // Unit, screenshot, lint, architecture and (for build/dependency/androidMain changes) E2E tests gate every PR,
+  // Unit, screenshot, lint, architecture and (for build/dependency/androidMain changes) smoke tests gate every PR,
   // so all updates (major included) automerge once CI is green.
   automerge: true,
   platformAutomerge: true,

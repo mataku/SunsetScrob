@@ -12,7 +12,7 @@ paths:
 |----------------------|--------------------------------------------------------------------------------------|
 | Unit Test            | `./gradlew jvmTest -PexcludeScreenshotTest=true`                                     |
 | Screenshot Test      | `./gradlew verifyRoborazziJvm -PonlyScreenshotTest=true`    |
-| Instrumentation Test | `./gradlew :app:connectedDebugAndroidTest` (see [`e2e-testing.md`](e2e-testing.md))  |
+| Instrumentation Test | `./gradlew :app:connectedDebugAndroidTest` (see [`smoke-testing.md`](smoke-testing.md))  |
 
 One test file per class under test.
 
@@ -26,8 +26,8 @@ Skip the local run only with explicit user permission and only when the test its
 
 Pair this with the verification commands in the path-scoped guides:
 - VRT: `./gradlew verifyRoborazziJvm -PonlyScreenshotTest=true`
-- E2E (phone): `./gradlew :app:pixel6Api35DebugAndroidTest`
-- E2E (tablet, `@LargeScreenE2E`): `./gradlew :app:pixelTabletApi35DebugAndroidTest -PincludeLargeScreenE2E=true`
+- Smoke (phone): `./gradlew :app:pixel6Api35DebugAndroidTest`
+- Smoke (tablet, `@LargeScreenSmoke`): `./gradlew :app:pixelTabletApi35DebugAndroidTest -PincludeLargeScreenSmoke=true`
 
 Running `jvmTest` alone (e.g. `-PexcludeScreenshotTest=true`) does not compare goldens — only the `verifyRoborazzi*` tasks do — so a change that can affect a VRT must be checked with the verify task, not just the plain unit-test command.
 

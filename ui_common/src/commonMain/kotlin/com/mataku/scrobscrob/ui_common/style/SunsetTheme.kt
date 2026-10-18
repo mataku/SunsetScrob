@@ -26,14 +26,7 @@ fun SunsetTheme(
     colorScheme = resolvedTheme.colorScheme(),
   ) {
     CompositionLocalProvider(
-      LocalRippleConfiguration provides RippleConfiguration(
-        color = resolvedTheme.onSurfaceColor(),
-        rippleAlpha = if (resolvedTheme.isLight) {
-          LightRippleAlpha
-        } else {
-          DarkRippleAlpha
-        }
-      ),
+      LocalRippleConfiguration provides resolvedTheme.rippleConfiguration(),
       LocalAppTheme provides resolvedTheme,
       content = content
     )
@@ -179,6 +172,18 @@ private val midnightColorScheme = darkColorScheme(
   onSurface = Color.White,
   background = Color.Black,
   onBackground = Color.White
+)
+
+// Material 3 1.12 deprecates the (color, rippleAlpha) constructor without offering another way to
+// set per-theme state-layer alphas, so the deprecation is suppressed rather than the alphas dropped.
+@Suppress("DEPRECATION")
+private fun AppTheme.rippleConfiguration(): RippleConfiguration = RippleConfiguration(
+  color = onSurfaceColor(),
+  rippleAlpha = if (isLight) {
+    LightRippleAlpha
+  } else {
+    DarkRippleAlpha
+  }
 )
 
 // referenced from old RippleTheme implementation

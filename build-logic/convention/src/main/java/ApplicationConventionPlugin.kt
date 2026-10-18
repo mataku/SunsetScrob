@@ -75,12 +75,12 @@ class ApplicationConventionPlugin : Plugin<Project> {
           versionName = appVersionName
           versionCode = generateVersionCode(appVersionName)
           testInstrumentationRunner = "com.mataku.scrobscrob.app.testing.MetroTestRunner"
-          if (project.hasProperty("includeLargeScreenE2E")) {
+          if (project.hasProperty("includeLargeScreenSmoke")) {
             testInstrumentationRunnerArguments["annotation"] =
-              "com.mataku.scrobscrob.app.testing.LargeScreenE2E"
+              "com.mataku.scrobscrob.app.testing.LargeScreenSmoke"
           } else {
             testInstrumentationRunnerArguments["notAnnotation"] =
-              "com.mataku.scrobscrob.app.testing.LargeScreenE2E"
+              "com.mataku.scrobscrob.app.testing.LargeScreenSmoke"
           }
           // Required so AGP/UTP pulls files written via PlatformTestStorage
           // (e.g. ScreenRecordRule output) back to
