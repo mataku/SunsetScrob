@@ -29,7 +29,7 @@ env:
 
 jobs:
   smoke:
-    name: Smoke (${{ matrix.artifact-suffix }})
+    name: ${{ matrix.name }}
     runs-on: ubuntu-latest
     timeout-minutes: 20
     permissions:
@@ -39,10 +39,12 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - device: pixel6Api35
+          - name: Phone
+            device: pixel6Api35
             script: scripts/run_smoke_phone.sh
             artifact-suffix: phone
-          - device: pixelTabletApi35
+          - name: Tablet
+            device: pixelTabletApi35
             script: scripts/run_smoke_tablet.sh
             artifact-suffix: tablet
 

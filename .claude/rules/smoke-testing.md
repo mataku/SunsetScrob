@@ -134,7 +134,7 @@ Conventions used by the existing flow:
 `.github/workflows/smoke_test.yml`:
 - Triggers: `pull_request` filtered by `paths` (dependency / build-logic / `:app` / `androidMain` / harness changes), push to `develop`, and `workflow_dispatch` — for the manual run, pick the target branch via "Use workflow from" in the GitHub Actions UI. The `paths` filter means a PR outside those paths produces no smoke run at all, so the job must not be a required status check until the filter is replaced by an in-workflow change-detection step (a skipped job counts as success, a never-started one blocks the merge forever).
 - Discord notification fires only for non-PR runs; a PR failure is already visible on the PR.
-- Single `smoke` job fanned out via `strategy.matrix` into two parallel variants (`fail-fast: false`, so a tablet failure doesn't cancel the phone run and vice versa):
+- Single `smoke` job fanned out via `strategy.matrix` into two parallel variants, whose check names are just `Phone` and `Tablet` because the workflow name already says `Smoke test` (`fail-fast: false`, so a tablet failure doesn't cancel the phone run and vice versa):
   - `pixel6Api35` (artifact-suffix `phone`) — runs the default `:app:pixel6Api35DebugAndroidTest` task. The `notAnnotation` runner arg auto-skips `@LargeScreenSmoke` tests.
   - `pixelTabletApi35` (artifact-suffix `tablet`) — runs `:app:pixelTabletApi35DebugAndroidTest -PincludeLargeScreenSmoke=true`, so only `@LargeScreenSmoke` tests run.
 - Gradle/UTP owns the emulator lifecycle (boot, install, run, tear down) instead of `reactivecircus/android-emulator-runner`. The previous runner was prone to "device offline" failures mid-test under combined `adb screenrecord` + UTP load.
