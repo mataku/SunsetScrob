@@ -61,7 +61,7 @@ Conventions are encoded as executable specs and enforced at the CI boundary, so 
 | Lint         | Android Lint                       | push / PR       |
 | Static analysis | detekt (compose-rules + ktlint formatting, all modules) | push / PR |
 | VRT          | Roborazzi screenshot tests         | push / PR       |
-| E2E          | Compose integration tests          | PR (build / deps / androidMain paths) / develop / daily |
+| Smoke        | Compose instrumentation tests      | PR (build / deps / androidMain paths) / develop / daily |
 | Compose perf | Compose compiler metrics           | weekly          |
 | Startup perf | Macrobenchmark                     | weekly          |
 
@@ -103,12 +103,12 @@ The verify task runs on push / PR, so unintended layout shifts fail before revie
 Phone and tablet variants both have goldens.
 Regenerate intentional changes with the `record` task.
 
-#### End-to-end against a mocked API
+#### Smoke tests against a mocked API
 
 Smoke instrumentation tests in `app/src/androidTest/` drive the real APK against a Ktor `MockEngine` that serves canned JSON fixtures.
 A daily CI job runs them on Gradle Managed Devices for both phone and tablet form factors, so adaptive layout breakage surfaces outside Roborazzi's static renders.
 Schema drift against the real Last.fm API is intentionally out of scope.
-Setup and fixture conventions live in [`.claude/rules/e2e-testing.md`](.claude/rules/e2e-testing.md).
+Setup and fixture conventions live in [`.claude/rules/smoke-testing.md`](.claude/rules/smoke-testing.md).
 
 #### Shared UI primitives in `:ui_common`
 

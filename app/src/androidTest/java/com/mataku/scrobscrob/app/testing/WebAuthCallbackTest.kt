@@ -9,7 +9,7 @@ import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.core.net.toUri
 import androidx.test.platform.app.InstrumentationRegistry
-import com.mataku.scrobscrob.app.testing.di.E2E_TOKEN
+import com.mataku.scrobscrob.app.testing.di.SMOKE_TOKEN
 import com.mataku.scrobscrob.app.ui.top.MainActivity
 import org.junit.After
 import org.junit.Before
@@ -37,7 +37,7 @@ class WebAuthCallbackTest {
 
     val callback = Intent(
       Intent.ACTION_VIEW,
-      "https://sunsetscrob.mataku.com/auth/lastfm?token=$E2E_TOKEN".toUri(),
+      "https://sunsetscrob.mataku.com/auth/lastfm?token=$SMOKE_TOKEN".toUri(),
     ).setClass(composeRule.activity, MainActivity::class.java)
     composeRule.activityRule.scenario.onActivity { activity ->
       InstrumentationRegistry.getInstrumentation().callActivityOnNewIntent(activity, callback)

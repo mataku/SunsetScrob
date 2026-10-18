@@ -104,8 +104,8 @@ class AppSmokeTest {
 
     // Bottom nav: Account renders the user.getInfo fixture in the profile header.
     composeRule.onNodeWithContentDescription("tab Account").performClick()
-    composeRule.waitUntilExactlyOneExists(hasText("e2e_user"), TIMEOUT_MS)
-    composeRule.onNodeWithText("e2e_user").assertIsDisplayed()
+    composeRule.waitUntilExactlyOneExists(hasText("smoke_user"), TIMEOUT_MS)
+    composeRule.onNodeWithText("smoke_user").assertIsDisplayed()
   }
 
   private fun pressBack() {

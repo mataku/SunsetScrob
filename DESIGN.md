@@ -366,7 +366,7 @@ The `*Navigation.kt` files keep their `destination<*Key>` registrations for the 
 ### Verifying tablet behavior
 
 - Per-pane Roborazzi VRTs at `ScreenshotDevice.PixelTablet`: `*_screen_tablet.png` for the standalone variant and `*_pane_screen_tablet.png` for the pane variant.
-- Mechanical end-to-end: `LargeScreenSmokeTest` annotated `@LargeScreenE2E`, runs on the `pixelTabletApi35` Gradle Managed Device. See [`.claude/rules/e2e-testing.md`](.claude/rules/e2e-testing.md) for invocation.
+- Mechanical end-to-end: `LargeScreenSmokeTest` annotated `@LargeScreenSmoke`, runs on the `pixelTabletApi35` Gradle Managed Device. See [`.claude/rules/smoke-testing.md`](.claude/rules/smoke-testing.md) for invocation.
 
 ---
 
@@ -408,7 +408,7 @@ Two delivery paths converge on the same ViewModel entry point:
 | Path | When | Mechanism |
 |------|------|-----------|
 | App Link callback | Last.fm redirects to `sunsetscrob.mataku.com/auth/lastfm` | `MainActivity` (`singleTask`, `onNewIntent`) parses the intent with `LastFmWebAuth.tokenFromCallback` and pushes the token into `WebAuthCallbackChannel`, which `LoginViewModel` collects; `singleTask` also clears the Custom Tab off the task |
-| Launcher result | The Custom Tab could not be started at all (no browser), or the E2E fake | `CustomTabsWebAuthLauncher.rememberLaunch` → `LoginViewModel.onWebAuthResult` (`Failed` shows the login error; `Success` is only produced by `FakeWebAuthLauncher`) |
+| Launcher result | The Custom Tab could not be started at all (no browser), or the smoke-test fake | `CustomTabsWebAuthLauncher.rememberLaunch` → `LoginViewModel.onWebAuthResult` (`Failed` shows the login error; `Success` is only produced by `FakeWebAuthLauncher`) |
 
 While the sheet is up, `LoginScreen` dims itself with a 32% black scrim (`LoginUiState.isWebAuthOpen`, set by `onWebAuthOpened` before launching), because Chrome does not dim the app behind a fixed-height Partial Custom Tab and the undimmed strip above the sheet otherwise reads as a rendering glitch.
 The scrim is cleared by any launcher result: `Closed` (the tab finished, delivered through the `ActivityResultLauncher` whether the user dismissed it or the App Link re-entered `MainActivity`), `Failed`, or `Success`.
@@ -421,7 +421,7 @@ Auth Tab (`AuthTabIntent`) was dropped because it has no partial-height API.
 The callback host/path (`sunsetscrob.mataku.com/auth/lastfm`) is a contract with the Cloudflare Worker in the `sunsetscrob.mataku.com` repository, which serves `/.well-known/assetlinks.json` for both `com.mataku.scrobscrob` and `com.mataku.scrobscrob.dev`.
 The `cb` URL and the `data` element of the manifest intent-filter must change together with that repository.
 
-`LastFmWebAuthLauncher` is the test seam: the E2E graph excludes `AuthModule` and binds a fake that returns a fixed token synchronously, so instrumentation tests never open a browser or reach the network: the Last.fm API is served by `MockApiModule`, the browser round-trip by `FakeWebAuthModule`, and artwork by `FakeImageLoaderModule` (Coil `FakeImageLoaderEngine`).
-See `.claude/rules/e2e-testing.md`.
+`LastFmWebAuthLauncher` is the test seam: the smoke-test graph excludes `AuthModule` and binds a fake that returns a fixed token synchronously, so instrumentation tests never open a browser or reach the network: the Last.fm API is served by `MockApiModule`, the browser round-trip by `FakeWebAuthModule`, and artwork by `FakeImageLoaderModule` (Coil `FakeImageLoaderEngine`).
+See `.claude/rules/smoke-testing.md`.
 
 `SessionRepository.webAuthUrl()` is a `Flow<String>` rather than a plain accessor because the API key lives in `:data:api`'s `BuildConfig`, which feature modules may not import, and `RepositoryArchitectureSpec` keeps repository interfaces Flow-shaped.

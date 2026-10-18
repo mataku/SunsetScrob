@@ -10,7 +10,7 @@
 #  — the path moved in 9.x.)
 #
 # Usage:
-#   bash scripts/run_e2e_tablet.sh [extra ./gradlew args]
+#   bash scripts/run_smoke_tablet.sh [extra ./gradlew args]
 
 set -euo pipefail
 
@@ -23,7 +23,7 @@ OUT_DIR="app/build/intermediates/managed_device_android_test_additional_output/d
 
 set +e
 ./gradlew :app:pixelTabletApi35DebugAndroidTest \
-  -PincludeLargeScreenE2E=true \
+  -PincludeLargeScreenSmoke=true \
   "$@"
 RESULT=$?
 set -e

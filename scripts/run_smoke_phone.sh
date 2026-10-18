@@ -8,7 +8,7 @@
 #     debugAndroidTest/pixel6Api35DebugAndroidTest/<TestClass>-<method>-failed.png
 #
 # Usage:
-#   bash scripts/run_e2e_phone.sh [extra ./gradlew args]
+#   bash scripts/run_smoke_phone.sh [extra ./gradlew args]
 #
 # CI passes `-Pandroid.testoptions.manageddevices.emulator.gpu=swiftshader_indirect`
 # for headless software rendering.
