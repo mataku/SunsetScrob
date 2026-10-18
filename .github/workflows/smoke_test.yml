@@ -39,10 +39,8 @@ jobs:
     outputs:
       skip: ${{ steps.check.outputs.skip }}
     steps:
-      # Fail open: if the lookup fails, skip stays unset and the smoke job runs.
       - name: Look for a successful run on this commit
         id: check
-        continue-on-error: true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO: ${{ github.repository }}
@@ -52,7 +50,7 @@ jobs:
             -H "Authorization: Bearer $GH_TOKEN" \
             -H "Accept: application/vnd.github+json" \
             "https://api.github.com/repos/$REPO/actions/workflows/smoke_test.yml/runs?head_sha=$SHA&status=success&per_page=1" \
-            | jq '.total_count // 0')
+            | jq '.total_count')
           if [ "$count" -gt 0 ]; then
             echo "::notice::Smoke test already passed on $SHA, skipping"
             echo "skip=true" >> "$GITHUB_OUTPUT"
