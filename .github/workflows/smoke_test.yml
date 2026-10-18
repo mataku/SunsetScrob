@@ -15,9 +15,9 @@ on:
       - 'scripts/run_smoke_*.sh'
       - '.github/workflows/smoke_test.yml'
       - '.github/actions/**'
-  push:
-    branches:
-      - develop
+  schedule:
+    # 06:00 UTC (15:00 JST)
+    - cron: '0 6 * * *'
   workflow_dispatch:
 
 concurrency:

@@ -1,5 +1,5 @@
 name: "Save GMD AVD cache"
-description: "Refresh the Gradle Managed Device AVD cache with a fixed key. Only runs on pushes to develop; every other ref keeps the cache read-only."
+description: "Refresh the Gradle Managed Device AVD cache with a fixed key. Only runs on pushes and scheduled runs on develop; every other ref keeps the cache read-only."
 inputs:
   device:
     description: 'Identifier of the managed device slot (e.g. phone, tablet). Must match the value passed to restore-avd-cache'
@@ -12,7 +12,7 @@ runs:
   using: "composite"
   steps:
     - name: Delete previous cache entry
-      if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/develop' }}
+      if: ${{ (github.event_name == 'push' || github.event_name == 'schedule') && github.ref == 'refs/heads/develop' }}
       shell: bash
       env:
         GH_TOKEN: ${{ inputs.github-token }}
@@ -30,7 +30,7 @@ runs:
 
     - name: Save gradle-managed AVD
       uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
-      if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/develop' }}
+      if: ${{ (github.event_name == 'push' || github.event_name == 'schedule') && github.ref == 'refs/heads/develop' }}
       with:
         path: |
           ~/.android/avd/gradle-managed

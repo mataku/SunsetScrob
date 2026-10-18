@@ -61,7 +61,7 @@ Conventions are encoded as executable specs and enforced at the CI boundary, so 
 | Lint         | Android Lint                       | push / PR       |
 | Static analysis | detekt (bundled rules + compose-rules + ktlint formatting, all modules); Kotlin warnings are errors | push / PR |
 | VRT          | Roborazzi screenshot tests         | push / PR       |
-| Smoke        | Compose instrumentation tests      | PR (build / deps / androidMain paths) / develop |
+| Smoke        | Compose instrumentation tests      | PR (build / deps / androidMain paths) / daily |
 | Compose perf | Compose compiler metrics           | weekly          |
 | Startup perf | Macrobenchmark                     | weekly          |
 
@@ -106,7 +106,7 @@ Regenerate intentional changes with the `record` task.
 #### Smoke tests against a mocked API
 
 Smoke instrumentation tests in `app/src/androidTest/` drive the real APK against a Ktor `MockEngine` that serves canned JSON fixtures.
-CI runs them on Gradle Managed Devices for both phone and tablet form factors on every push to `develop` and on pull requests that touch build configuration, dependencies, `:app` or an `androidMain` source set, so adaptive layout breakage surfaces outside Roborazzi's static renders.
+CI runs them on Gradle Managed Devices for both phone and tablet form factors daily on `develop` and on pull requests that touch build configuration, dependencies, `:app` or an `androidMain` source set, so adaptive layout breakage surfaces outside Roborazzi's static renders.
 Schema drift against the real Last.fm API is intentionally out of scope.
 Setup and fixture conventions live in [`.claude/rules/smoke-testing.md`](.claude/rules/smoke-testing.md).
 
