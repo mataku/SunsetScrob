@@ -11,6 +11,7 @@ The goal is "does the app still launch, log in, and render core screens" — any
 Lives in `app/src/androidTest/`.
 Runs on CI via `.github/workflows/smoke_test.yml`: on pull requests that touch build configuration, dependencies, `:app`, any `androidMain` source set or the smoke harness itself (see the `paths` filter in the workflow), on a daily schedule against `develop`, and on demand via `workflow_dispatch`.
 There is no run on push to `develop`: the PR run already covers each change, and breakage that only appears once several branches are merged is left to the daily run.
+The daily run executes even when `develop` has not moved, on purpose: the runner image, emulator and other parts of the environment change independently of the repository.
 
 ## Commands
 
