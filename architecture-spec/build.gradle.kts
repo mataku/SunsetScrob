@@ -11,6 +11,14 @@ dependencies {
 
 tasks.test {
   useJUnitPlatform()
+  // Konsist reads every module's sources at runtime. Without declaring them, Gradle treats this
+  // task as UP-TO-DATE / FROM-CACHE whenever only those sources change, and the specs never run.
+  inputs.files(
+    fileTree(rootDir) {
+      include("**/src/**/*.kt", "**/*.gradle.kts")
+      exclude("**/build/**", ".gradle/**", "build-logic/convention/build/**")
+    },
+  ).withPathSensitivity(PathSensitivity.RELATIVE).withPropertyName("konsistSources")
 }
 
 kotlin {

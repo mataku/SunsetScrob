@@ -89,7 +89,7 @@ There are no project-specific custom detectors any more; project-specific conven
 - Use the project's `Sunset*` wrappers instead of Material3 primitives directly — Konsist blocks importing Material 3 outside `:ui_common`
 
 Since every library module is KMP, Android Lint runs over `:app` only; the equivalent guarantees for library modules come from Konsist and detekt.
-Lint failures break CI on PR, and a summary is auto-posted as a PR comment.
+It runs in the Lint workflow after detekt (skipped when detekt fails); failures do not fail the job, and a summary is auto-posted as a PR comment.
 
 ### UI quality
 

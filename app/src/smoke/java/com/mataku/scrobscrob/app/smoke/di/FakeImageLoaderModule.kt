@@ -1,9 +1,10 @@
-package com.mataku.scrobscrob.app.testing.di
+package com.mataku.scrobscrob.app.smoke.di
 
 import android.content.Context
 import coil3.ColorImage
 import coil3.ImageLoader
 import coil3.test.FakeImageLoaderEngine
+import com.mataku.scrobscrob.app.smoke.SmokeScope
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.BindingContainer
 import dev.zacsweers.metro.ContributesTo
@@ -11,7 +12,7 @@ import dev.zacsweers.metro.Provides
 import dev.zacsweers.metro.SingleIn
 
 @BindingContainer
-@ContributesTo(AppScope::class)
+@ContributesTo(SmokeScope::class)
 interface FakeImageLoaderModule {
   companion object {
     @SingleIn(AppScope::class)

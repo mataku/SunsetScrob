@@ -1,4 +1,4 @@
-package com.mataku.scrobscrob.app.testing.fixtures
+package com.mataku.scrobscrob.app.smoke.fixtures
 
 import android.content.res.AssetManager
 import io.ktor.client.engine.mock.MockRequestHandleScope

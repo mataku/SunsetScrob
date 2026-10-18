@@ -1,5 +1,7 @@
 import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.api.dsl.ManagedVirtualDevice
+import com.android.build.api.variant.ApplicationAndroidComponentsExtension
+import com.android.build.api.variant.HostTestBuilder
 import ext.androidSdkConfiguration
 import ext.kotlinConfiguration
 import ext.testConfiguration
@@ -46,7 +48,17 @@ class ApplicationConventionPlugin : Plugin<Project> {
               debugSymbolLevel = "FULL"
             }
           }
+          // Release with the mocked API from src/smoke, so the smoke suite runs against the R8
+          // output that ships instead of an unminified debug build.
+          create("smoke") {
+            initWith(getByName("release"))
+            applicationIdSuffix = ".dev"
+            signingConfig = signingConfigs.getByName("debug")
+            matchingFallbacks += "release"
+            proguardFile("smoke-rules.pro")
+          }
         }
+        testBuildType = "smoke"
         kotlinConfiguration()
         packaging {
           val excludePatterns = listOf(
@@ -74,7 +86,7 @@ class ApplicationConventionPlugin : Plugin<Project> {
           applicationId = "com.mataku.scrobscrob"
           versionName = appVersionName
           versionCode = generateVersionCode(appVersionName)
-          testInstrumentationRunner = "com.mataku.scrobscrob.app.testing.MetroTestRunner"
+          testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
           if (project.hasProperty("includeLargeScreenSmoke")) {
             testInstrumentationRunnerArguments["annotation"] =
               "com.mataku.scrobscrob.app.testing.LargeScreenSmoke"
@@ -92,9 +104,8 @@ class ApplicationConventionPlugin : Plugin<Project> {
           )
         }
         sourceSets {
-          getByName("androidTest") {
+          getByName("smoke") {
             assets.directories.add("src/test/assets")
-            assets.directories.add("src/androidTest/assets")
           }
         }
         testOptions.managedDevices.allDevices.create(
@@ -112,6 +123,13 @@ class ApplicationConventionPlugin : Plugin<Project> {
           device = "Pixel Tablet"
           apiLevel = 35
           systemImageSource = "aosp-atd"
+        }
+      }
+      // AGP creates unit tests only for testBuildType; keep them on debug, where they ran before
+      // testBuildType moved to smoke for the instrumentation suite.
+      extensions.configure<ApplicationAndroidComponentsExtension> {
+        beforeVariants { variant ->
+          variant.hostTests[HostTestBuilder.UNIT_TEST_TYPE]?.enable = variant.buildType == "debug"
         }
       }
       testConfiguration()

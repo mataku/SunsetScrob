@@ -1,7 +1,8 @@
-package com.mataku.scrobscrob.app.testing.di
+package com.mataku.scrobscrob.app.smoke.di
 
-import androidx.test.platform.app.InstrumentationRegistry
-import com.mataku.scrobscrob.app.testing.fixtures.FixtureDispatcher
+import android.content.Context
+import com.mataku.scrobscrob.app.smoke.SmokeScope
+import com.mataku.scrobscrob.app.smoke.fixtures.FixtureDispatcher
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.BindingContainer
 import dev.zacsweers.metro.ContributesTo
@@ -11,15 +12,13 @@ import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.engine.mock.MockEngine
 
 @BindingContainer
-@ContributesTo(AppScope::class)
+@ContributesTo(SmokeScope::class)
 interface MockApiModule {
   companion object {
     @SingleIn(AppScope::class)
     @Provides
-    fun provideHttpClientEngine(): HttpClientEngine {
-      val dispatcher = FixtureDispatcher(
-        InstrumentationRegistry.getInstrumentation().context.assets
-      )
+    fun provideHttpClientEngine(context: Context): HttpClientEngine {
+      val dispatcher = FixtureDispatcher(context.assets)
       return MockEngine { request ->
         with(dispatcher) { dispatch(request) }
       }
