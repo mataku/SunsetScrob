@@ -1,0 +1,53 @@
+name: Record screenshots
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.ref_name }}-record-screenshots
+  cancel-in-progress: true
+
+env:
+  GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx4g -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -XX:+UseParallelGC -XX:MaxMetaspaceSize=1g"
+
+jobs:
+  record:
+    if: ${{ github.ref_type == 'branch' && github.ref_name != github.event.repository.default_branch && github.ref_name != 'master' }}
+    runs-on: macos-26
+    permissions:
+      contents: write
+    timeout-minutes: 20
+
+    steps:
+      # The token is handed to git only in the push step, so the Gradle build never sees it.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/setup-gradle
+        with:
+          use-build-cache: 'true'
+          cache-key: screenshot
+      - name: Record screenshots
+        run: ./gradlew recordRoborazziJvm --no-daemon --no-configuration-cache -PonlyScreenshotTest=true
+      - name: Commit and push
+        env:
+          BRANCH: ${{ github.ref_name }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          git add -- ':(glob)**/screenshot/*.png'
+          if git diff --cached --quiet; then
+            echo "No golden image changes."
+            exit 0
+          fi
+          git diff --cached --name-only
+          git -c core.hooksPath=/dev/null \
+            -c user.name="github-actions[bot]" \
+            -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+            commit -m "Update golden images" -m "Recorded by $RUN_URL"
+          auth=$(printf 'x-access-token:%s' "$GITHUB_TOKEN" | base64 | tr -d '\n')
+          # No force push: if the branch moved after this run started, the push is rejected.
+          git -c core.hooksPath=/dev/null \
+            -c http.https://github.com/.extraheader="AUTHORIZATION: basic $auth" \
+            push origin "HEAD:refs/heads/$BRANCH"
