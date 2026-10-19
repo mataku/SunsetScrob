@@ -18,7 +18,7 @@ env:
 
 jobs:
   screenshot_test:
-    runs-on: macos-27
+    runs-on: xcode-27
     permissions:
       contents: read
       actions: write
