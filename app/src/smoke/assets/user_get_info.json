@@ -1,9 +1,9 @@
 {
   "user": {
-    "name": "e2e_user",
+    "name": "smoke_user",
     "age": "0",
     "subscriber": "1",
-    "realname": "e2e",
+    "realname": "smoke",
     "bootstrap": "0",
     "playcount": "102654",
     "artist_count": "728",
@@ -34,7 +34,7 @@
     },
     "country": "None",
     "gender": "n",
-    "url": "https://www.last.fm/user/e2e_user",
+    "url": "https://www.last.fm/user/smoke_user",
     "type": "subscriber"
   }
 }

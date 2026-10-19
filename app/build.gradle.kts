@@ -1,4 +1,5 @@
 import com.android.build.api.dsl.ApplicationExtension
+import com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension
 
 plugins {
   id("sunsetscrob.android.application")
@@ -17,6 +18,12 @@ configure<ApplicationExtension>() {
   }
 
   namespace = "com.mataku.scrobscrob"
+
+  buildTypes.named("smoke") {
+    (this as ExtensionAware).extensions.configure<CrashlyticsExtension> {
+      mappingFileUploadEnabled = false
+    }
+  }
 }
 
 dependencies {
@@ -64,9 +71,9 @@ dependencies {
   androidTestImplementation(libs.compose.ui.test.junit4)
   androidTestImplementation(libs.compose.ui.test.android)
   androidTestImplementation(libs.androidx.espresso.core)
-  androidTestImplementation(libs.ktor.client.mock)
   androidTestImplementation(libs.coroutines.test)
-  androidTestImplementation(libs.coil.test)
+  "smokeImplementation"(libs.ktor.client.mock)
+  "smokeImplementation"(libs.coil.test)
   debugImplementation(libs.compose.ui.test.manifest)
 }
 

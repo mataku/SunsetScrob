@@ -1,4 +1,4 @@
-package com.mataku.scrobscrob.app.testing.fixtures
+package com.mataku.scrobscrob.app.smoke.fixtures
 
 import android.content.res.AssetManager
 import io.ktor.client.engine.mock.MockRequestHandleScope
@@ -46,6 +46,7 @@ class FixtureDispatcher(private val assets: AssetManager) {
     "chart.gettopartists" -> "chart_top_artists.json"
     "track.getinfo" -> "track_get_info.json"
     "album.getinfo" -> "album_get_info.json"
+    "artist.getinfo" -> "artist_get_info.json"
     else -> null
   }
 }

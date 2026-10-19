@@ -16,7 +16,7 @@ fun Project.detektConfiguration() {
     config.setFrom(rootProject.files("config/detekt/detekt.yml"))
     basePath.set(rootProject.layout.projectDirectory)
     buildUponDefaultConfig.set(true)
-    disableDefaultRuleSets.set(true)
+    disableDefaultRuleSets.set(false)
     parallel.set(true)
     ignoreFailures.set(false)
   }

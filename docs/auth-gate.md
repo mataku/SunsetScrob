@@ -4,7 +4,7 @@ How the app switches between the login flow and the authenticated flow, and why 
 
 ## Summary
 
-`LoginViewModel.authorize(token)` — called from the App Link callback (or the launcher result in E2E) — persists the session key and username via `SessionRepository.authorize(token)` (a side effect on the underlying DataStore). The browser round-trip itself is described in `DESIGN.md` under Authentication. The screen transition happens because `SunsetMainScreen` observes `MainViewModel.state.username` as a Flow and flips its `if (isAuthenticated)` branch in response.
+`LoginViewModel.authorize(token)` — called from the App Link callback (or the launcher result in the smoke tests) — persists the session key and username via `SessionRepository.authorize(token)` (a side effect on the underlying DataStore). The browser round-trip itself is described in `DESIGN.md` under Authentication. The screen transition happens because `SunsetMainScreen` observes `MainViewModel.state.username` as a Flow and flips its `if (isAuthenticated)` branch in response.
 
 ```kotlin
 // app/.../SunsetMainScreen.kt

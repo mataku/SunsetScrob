@@ -33,7 +33,7 @@ platform :android do
   desc "Run androidTest on connected device"
   lane :android_test do
     android_test_gradle_tasks = android_test_dirs.map do |dir|
-      "#{dir}:connectedDebugAndroidTest"
+      "#{dir}:connectedAndroidTest"
     end
     unless android_test_gradle_tasks.empty?
       gradle(task: android_test_gradle_tasks.join(' '))

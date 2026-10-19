@@ -7,7 +7,8 @@
     'org.junit.vintage:junit-vintage-engine',
   ],
   prConcurrentLimit: 3,
-  // Unit, screenshot, lint and architecture tests gate every PR, so all updates (major included) automerge once CI is green.
+  // Unit, screenshot, lint, architecture and (for build/dependency/androidMain changes) smoke tests gate every PR,
+  // so all updates (major included) automerge once CI is green.
   automerge: true,
   platformAutomerge: true,
   hostRules: [
@@ -87,10 +88,12 @@
       ],
     },
     {
+      // Not `minimumReleaseAge: null`: that disabled aging for every gradle dependency.
+      // Not the default `timestamp-required`: that holds back forever any release whose registry returns no timestamp.
       matchManagers: [
         'gradle',
       ],
-      minimumReleaseAge: null,
+      minimumReleaseAgeBehaviour: 'timestamp-optional',
     },
   ],
 }

@@ -1,6 +1,7 @@
-package com.mataku.scrobscrob.app.testing.di
+package com.mataku.scrobscrob.app.smoke.di
 
 import androidx.compose.runtime.Composable
+import com.mataku.scrobscrob.app.smoke.SmokeScope
 import com.mataku.scrobscrob.auth.webauth.LastFmWebAuthLauncher
 import com.mataku.scrobscrob.auth.webauth.LastFmWebAuthResult
 import dev.zacsweers.metro.AppScope
@@ -9,16 +10,16 @@ import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.Provides
 import dev.zacsweers.metro.SingleIn
 
-const val E2E_TOKEN = "e2e_token"
+const val SMOKE_TOKEN = "smoke_token"
 
 class FakeWebAuthLauncher : LastFmWebAuthLauncher {
   @Composable
   override fun rememberLaunch(onResult: (LastFmWebAuthResult) -> Unit): (String) -> Unit =
-    { onResult(LastFmWebAuthResult.Success(E2E_TOKEN)) }
+    { onResult(LastFmWebAuthResult.Success(SMOKE_TOKEN)) }
 }
 
 @BindingContainer
-@ContributesTo(AppScope::class)
+@ContributesTo(SmokeScope::class)
 interface FakeWebAuthModule {
   companion object {
     @SingleIn(AppScope::class)

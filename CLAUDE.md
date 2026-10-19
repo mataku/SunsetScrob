@@ -18,7 +18,7 @@ Some are loaded every session (no `paths:` frontmatter); others load only when C
 | `.claude/rules/viewmodel.md`          | ViewModel conventions                                              | when reading `*ViewModel.kt` or `**/viewmodel/**`                |
 | `.claude/rules/repository.md`         | Repository conventions, Metro DI                                   | when reading `*Repository*.kt`, `**/repository/**`, `**/data/**` |
 | `.claude/rules/testing.md`            | Unit + Screenshot test conventions                                 | when reading `*Spec.kt` / `*Test.kt`                             |
-| `.claude/rules/e2e-testing.md`        | E2E (instrumentation) test architecture                            | when reading `app/src/androidTest/**`                            |
+| `.claude/rules/smoke-testing.md`      | Smoke (instrumentation) test architecture                          | when reading `app/src/androidTest/**` or `app/src/smoke/**`      |
 | `DESIGN.md`                           | UI/Theme intent + `:ui_common` wrapping (Material 3, Navigation 3, adaptive) | explicit Read only                                     |
 
 ## Project Overview
@@ -45,7 +45,7 @@ SHARED_SECRET=YOUR_LAST_FM_SHARED_SECRET
 - `./gradlew verifyRoborazziJvm -PonlyScreenshotTest=true` — run Roborazzi screenshot tests (rendered on the JVM through Compose Desktop)
 - `./gradlew recordRoborazziJvm -PonlyScreenshotTest=true` — generate golden images
 - `make generate_compose_reports` — generate Compose compiler reports
-- `./gradlew detekt` — run detekt (compose-rules + ktlint formatting) across all modules
+- `./gradlew detekt` — run detekt (bundled rules + compose-rules + ktlint formatting) across all modules
 - `./gradlew detekt --auto-correct` — apply detekt's auto-fixable formatting corrections
 
 ---
@@ -58,13 +58,13 @@ Layer / package / Compose / navigation rules already live in always-loaded `arch
 **DO**
 
 - Wire new dependencies through Metro with `@Binds` / companion-object `@Provides` on a `@BindingContainer` + `@ContributesTo(AppScope::class)` interface in `di/FooModule.kt`.
-- Write a `*Spec.kt` Kotest test next to the class under test.
+- Write a `*Spec.kt` Kotest test next to the class under test. Konsist fails a `*ViewModel` or `*Endpoint` without its spec and a feature `*Screen` without its `*ScreenTest` (`TestPresenceArchitectureSpec`).
 
 **DON'T**
 
-- Use `GlobalScope` or a custom `CoroutineScope` inside a ViewModel.
+- Use `GlobalScope` or a custom `CoroutineScope` inside a ViewModel. `GlobalScope` is caught by detekt (`GlobalCoroutineUsage`).
 - Emit one-shot events via a separate `SharedFlow`. Use the in-state `events: List<UiEvent>` + `popEvent` pattern the rest of the codebase uses.
-- Catch errors inside a repository to return a fallback value. Let the Flow fail; the VM handles it.
+- Catch errors inside a repository to return a fallback value. Let the Flow fail; the VM handles it. detekt flags the try/catch shape of this (`SwallowedException`, `TooGenericExceptionCaught`).
 
 ---
 
@@ -78,7 +78,7 @@ Layer / package / Compose / navigation rules already live in always-loaded `arch
 - Image loading: Coil 3
 - Build: Gradle Kotlin DSL, version catalog (`gradle/libs.versions.toml`), custom convention plugins in `build-logic/convention/`. Every library module is KMP and applies `sunsetscrob.library` and `sunsetscrob.lint`, plus `compose` / `metro` / `test.screenshot` as needed (`:core` takes `library` + `compose`, `:data:*` take `library` + `metro`, feature modules take all four). `sunsetscrob.android.application` / `android.compose` / `android.metro` / `android.lint` are for `:app` only.
 - Tests: Kotest (JUnit5 platform), MockK, Turbine, Roborazzi.
-- Code quality: detekt (compose-rules + ktlint formatting, all modules, `.github/workflows/lint.yml`), Android Lint (`:app` only, built-in checks; no custom detectors, `.github/workflows/android_lint.yml`), Konsist architecture tests (`.github/workflows/arch_test.yml`), Licensee. Android Lint fails the build only when `CI=true` (see `build-logic/convention/.../AndroidLintConfiguration.kt`) and runs as a standalone CI job; detekt fails on any finding. KMP modules have no lint task, so Android Lint covers `:app` alone; detekt and Konsist are what cover every module. New conventions must be written as Konsist specs (declaration-level) or detekt rules (expression-level).
+- Code quality: detekt (bundled rules + compose-rules + ktlint formatting, all modules, `.github/workflows/lint.yml`), Kotlin compiler warnings are errors in every module (`sunsetscrob.lint`, so a deprecation surfaced by a dependency bump fails the build instead of accumulating), Android Lint (`:app` only, built-in checks; no custom detectors, `.github/workflows/lint.yml`), Konsist architecture tests (`.github/workflows/arch_test.yml`), Licensee. Android Lint fails the build only when `CI=true` (see `build-logic/convention/.../AndroidLintConfiguration.kt`) and runs as a non-blocking step after detekt in the same job (skipped when detekt fails); detekt fails on any finding. KMP modules have no lint task, so Android Lint covers `:app` alone; detekt and Konsist are what cover every module. New conventions must be written as Konsist specs (declaration-level) or detekt rules (expression-level).
 
 ---
 
@@ -89,6 +89,7 @@ Each rule under `.claude/rules/` maps to a `*ArchitectureSpec.kt` under `archite
 
 - Run locally: `./gradlew :architecture-spec:test`
 - Run in CI: `./gradlew :architecture-spec:test` via the GitHub Actions workflow `arch_test.yml`, independent of the main test job.
+- Konsist reads every module's sources at runtime, so `architecture-spec/build.gradle.kts` declares them as inputs of the `test` task. Without that, Gradle reports the task `UP-TO-DATE` / `FROM-CACHE` whenever only those sources change and the specs never run; keep the declaration when touching that build script.
 
 When you add a new convention to a `.claude/rules/` file, add a matching Spec.
 When you change a Spec, update the corresponding rule.

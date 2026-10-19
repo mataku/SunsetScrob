@@ -8,6 +8,7 @@ private val productionSourceDirs = listOf(
   "/src/debug/",
   "/src/release/",
   "/src/benchmark/",
+  "/src/smoke/",
 )
 private val testSourceDirs = listOf("/src/test/", "/src/jvmTest/")
 

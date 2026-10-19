@@ -15,7 +15,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-@LargeScreenE2E
+@LargeScreenSmoke
 @OptIn(ExperimentalTestApi::class)
 class LargeScreenSmokeTest {
 

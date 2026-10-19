@@ -77,16 +77,35 @@ class AppSmokeTest {
     composeRule.waitUntilExactlyOneExists(hasText("Home"), TIMEOUT_MS)
     Thread.sleep(STEP_DELAY_MS)
 
-    // Bottom nav: Discover tab renders.
-    composeRule.onNodeWithContentDescription("tab Discover").performClick()
-    composeRule.waitUntilExactlyOneExists(hasText("Discover"), TIMEOUT_MS)
-    composeRule.onNodeWithText("Discover").assertIsDisplayed()
+    // Switch to Artist tab on Home, tap an artist, verify ArtistScreen opens.
+    // "About PassCode" is the wiki cell, which only renders once artist.getInfo is parsed.
+    composeRule.onNodeWithText("Artist").performClick()
+    composeRule.waitUntilExactlyOneExists(hasText("PassCode"), TIMEOUT_MS)
+    Thread.sleep(STEP_DELAY_MS)
+    composeRule.onNodeWithText("PassCode").performClick()
+    composeRule.waitUntilExactlyOneExists(hasText("About PassCode"), TIMEOUT_MS)
     Thread.sleep(STEP_DELAY_MS)
 
-    // Bottom nav: Account tab renders.
+    // Recreate the Activity on the detail screen.
+    // The Navigation 3 back stack must restore the same destination from its @Serializable key.
+    composeRule.activityRule.scenario.recreate()
+    composeRule.waitUntilExactlyOneExists(hasText("About PassCode"), TIMEOUT_MS)
+    Thread.sleep(STEP_DELAY_MS)
+
+    pressBack()
+    composeRule.waitUntilExactlyOneExists(hasText("Home"), TIMEOUT_MS)
+    Thread.sleep(STEP_DELAY_MS)
+
+    // Bottom nav: Discover renders the chart.getTopTracks / chart.getTopArtists fixtures.
+    composeRule.onNodeWithContentDescription("tab Discover").performClick()
+    composeRule.waitUntilExactlyOneExists(hasText("My Love Mine All Mine"), TIMEOUT_MS)
+    composeRule.waitUntilExactlyOneExists(hasText("The Weeknd"), TIMEOUT_MS)
+    Thread.sleep(STEP_DELAY_MS)
+
+    // Bottom nav: Account renders the user.getInfo fixture in the profile header.
     composeRule.onNodeWithContentDescription("tab Account").performClick()
-    composeRule.waitUntilExactlyOneExists(hasText("Account"), TIMEOUT_MS)
-    composeRule.onNodeWithText("Account").assertIsDisplayed()
+    composeRule.waitUntilExactlyOneExists(hasText("smoke_user"), TIMEOUT_MS)
+    composeRule.onNodeWithText("smoke_user").assertIsDisplayed()
   }
 
   private fun pressBack() {

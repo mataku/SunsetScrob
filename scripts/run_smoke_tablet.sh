@@ -1,29 +1,29 @@
 #!/usr/bin/env bash
 #
-# Run :app:pixelTabletApi35DebugAndroidTest. TestScreenshotRule publishes
+# Run :app:pixelTabletApi35SmokeAndroidTest. TestScreenshotRule publishes
 # PNG screenshots via PlatformTestStorage, which AGP 9.x pulls back to:
 #
 #   app/build/intermediates/managed_device_android_test_additional_output/
-#     debugAndroidTest/pixelTabletApi35DebugAndroidTest/<TestClass>-<method>-<label>.png
+#     smokeAndroidTest/pixelTabletApi35SmokeAndroidTest/<TestClass>-<method>-<label>.png
 #
 # (AGP < 9 used app/build/outputs/managed_device_android_test_additional_output/
 #  — the path moved in 9.x.)
 #
 # Usage:
-#   bash scripts/run_e2e_tablet.sh [extra ./gradlew args]
+#   bash scripts/run_smoke_tablet.sh [extra ./gradlew args]
 
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$REPO_ROOT"
 
-OUT_DIR="app/build/intermediates/managed_device_android_test_additional_output/debugAndroidTest/pixelTabletApi35DebugAndroidTest"
+OUT_DIR="app/build/intermediates/managed_device_android_test_additional_output/smokeAndroidTest/pixelTabletApi35SmokeAndroidTest"
 
 ./gradlew :app:cleanManagedDevices --unused-only
 
 set +e
-./gradlew :app:pixelTabletApi35DebugAndroidTest \
-  -PincludeLargeScreenE2E=true \
+./gradlew :app:pixelTabletApi35SmokeAndroidTest \
+  -PincludeLargeScreenSmoke=true \
   "$@"
 RESULT=$?
 set -e

@@ -59,9 +59,9 @@ Conventions are encoded as executable specs and enforced at the CI boundary, so 
 | Unit         | Kotest + MockK                     | push / PR       |
 | Architecture | Konsist (`:architecture-spec`)     | push / PR       |
 | Lint         | Android Lint                       | push / PR       |
-| Static analysis | detekt (compose-rules + ktlint formatting, all modules) | push / PR |
+| Static analysis | detekt (bundled rules + compose-rules + ktlint formatting, all modules); Kotlin warnings are errors | push / PR |
 | VRT          | Roborazzi screenshot tests         | push / PR       |
-| E2E          | Compose integration tests          | develop / daily |
+| Smoke        | Compose instrumentation tests      | PR (build / deps / androidMain paths) / daily |
 | Compose perf | Compose compiler metrics           | weekly          |
 | Startup perf | Macrobenchmark                     | weekly          |
 
@@ -89,7 +89,7 @@ There are no project-specific custom detectors any more; project-specific conven
 - Use the project's `Sunset*` wrappers instead of Material3 primitives directly — Konsist blocks importing Material 3 outside `:ui_common`
 
 Since every library module is KMP, Android Lint runs over `:app` only; the equivalent guarantees for library modules come from Konsist and detekt.
-Lint failures break CI on PR, and a summary is auto-posted as a PR comment.
+It runs in the Lint workflow after detekt (skipped when detekt fails); failures do not fail the job, and a summary is auto-posted as a PR comment.
 
 ### UI quality
 
@@ -103,12 +103,12 @@ The verify task runs on push / PR, so unintended layout shifts fail before revie
 Phone and tablet variants both have goldens.
 Regenerate intentional changes with the `record` task.
 
-#### End-to-end against a mocked API
+#### Smoke tests against a mocked API
 
 Smoke instrumentation tests in `app/src/androidTest/` drive the real APK against a Ktor `MockEngine` that serves canned JSON fixtures.
-A daily CI job runs them on Gradle Managed Devices for both phone and tablet form factors, so adaptive layout breakage surfaces outside Roborazzi's static renders.
+CI runs them on Gradle Managed Devices for both phone and tablet form factors daily on `develop` and on pull requests that touch build configuration, dependencies, `:app` or an `androidMain` source set, so adaptive layout breakage surfaces outside Roborazzi's static renders.
 Schema drift against the real Last.fm API is intentionally out of scope.
-Setup and fixture conventions live in [`.claude/rules/e2e-testing.md`](.claude/rules/e2e-testing.md).
+Setup and fixture conventions live in [`.claude/rules/smoke-testing.md`](.claude/rules/smoke-testing.md).
 
 #### Shared UI primitives in `:ui_common`
 

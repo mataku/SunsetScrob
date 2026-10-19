@@ -1,10 +1,10 @@
-package com.mataku.scrobscrob.app.testing
+package com.mataku.scrobscrob.app.smoke
 
 import com.mataku.scrobscrob.app.App
 import com.mataku.scrobscrob.app.di.AppGraphContract
 import dev.zacsweers.metro.createGraphFactory
 
-class TestApp : App() {
+class SmokeApp : App() {
   override fun newAppGraph(): AppGraphContract =
-    createGraphFactory<TestAppGraph.Factory>().create(this)
+    createGraphFactory<SmokeAppGraph.Factory>().create(this)
 }
