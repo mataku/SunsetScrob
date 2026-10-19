@@ -18,7 +18,7 @@ env:
 
 jobs:
   screenshot_test:
-    runs-on: macos-26
+    runs-on: macos-27
     permissions:
       contents: read
       actions: write
