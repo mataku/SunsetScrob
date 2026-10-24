@@ -17,6 +17,7 @@ Some are loaded every session (no `paths:` frontmatter); others load only when C
 | `.claude/rules/coding-conventions.md` | Naming, Compose conventions, navigation, security                  | every session                                                    |
 | `.claude/rules/viewmodel.md`          | ViewModel conventions                                              | when reading `*ViewModel.kt` or `**/viewmodel/**`                |
 | `.claude/rules/repository.md`         | Repository conventions, Metro DI                                   | when reading `*Repository*.kt`, `**/repository/**`, `**/data/**` |
+| `.claude/rules/build-logic.md`        | Root build script sensor, detekt config, Android Lint / CI         | when reading `build-logic/**`, `config/detekt/**`, `**/build.gradle.kts`, `gradle.properties` |
 | `.claude/rules/testing.md`            | Unit + Screenshot test conventions                                 | when reading `*Spec.kt` / `*Test.kt`                             |
 | `.claude/rules/smoke-testing.md`      | Smoke (instrumentation) test architecture                          | when reading `app/src/androidTest/**` or `app/src/smoke/**`      |
 | `DESIGN.md`                           | UI/Theme intent + `:ui_common` wrapping (Material 3, Navigation 3, adaptive) | explicit Read only                                     |
@@ -78,7 +79,7 @@ Layer / package / Compose / navigation rules already live in always-loaded `arch
 - Image loading: Coil 3
 - Build: Gradle Kotlin DSL, version catalog (`gradle/libs.versions.toml`), custom convention plugins in `build-logic/convention/`. Every library module is KMP and applies `sunsetscrob.library` and `sunsetscrob.lint`, plus `compose` / `metro` / `test.screenshot` as needed (`:core` takes `library` + `compose`, `:data:*` take `library` + `metro`, feature modules take all four). `sunsetscrob.android.application` / `android.compose` / `android.metro` / `android.lint` are for `:app` only.
 - Tests: Kotest (JUnit5 platform), MockK, Turbine, Roborazzi.
-- Code quality: detekt (bundled rules + compose-rules + ktlint formatting, all modules, `.github/workflows/lint.yml`), Kotlin compiler warnings are errors in every module (`sunsetscrob.lint`, so a deprecation surfaced by a dependency bump fails the build instead of accumulating), Android Lint (`:app` only, built-in checks; no custom detectors, `.github/workflows/lint.yml`), Konsist architecture tests (`.github/workflows/arch_test.yml`), Licensee. Android Lint fails the build only when `CI=true` (see `build-logic/convention/.../AndroidLintConfiguration.kt`) and runs as a non-blocking step after detekt in the same job (skipped when detekt fails); detekt fails on any finding. KMP modules have no lint task, so Android Lint covers `:app` alone; detekt and Konsist are what cover every module. New conventions must be written as Konsist specs (declaration-level) or detekt rules (expression-level).
+- Code quality: detekt (bundled rules + compose-rules + ktlint formatting, all modules), Kotlin compiler warnings as errors (every module), Android Lint (`:app` only), Konsist architecture tests (`.github/workflows/arch_test.yml`), Licensee. CI behaviour and detekt config details are in `.claude/rules/build-logic.md`. New conventions must be written as Konsist specs (declaration-level) or detekt rules (expression-level).
 
 ---
 

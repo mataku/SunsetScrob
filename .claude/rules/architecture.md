@@ -5,8 +5,9 @@ Path-scoped detail rules:
 
 - `viewmodel.md` — auto-loads when reading any `*ViewModel.kt` or files under `**/viewmodel/`
 - `repository.md` — auto-loads when reading any `*Repository*.kt`, files under `**/repository/`, or files under `**/data/`
+- `build-logic.md` — auto-loads when reading files under `build-logic/` or `config/detekt/`, any `build.gradle.kts`, or `gradle.properties`
 
-Read those files explicitly when planning ViewModel or Repository work, since path-scoped rules don't fire until matching files are opened.
+Read those files explicitly when planning ViewModel, Repository or build-logic work, since path-scoped rules don't fire until matching files are opened.
 
 ## Module Overview
 
@@ -70,6 +71,12 @@ Violations break `:architecture-spec:test`.
 
 ## Source Sets (KMP modules)
 
+File map (check here before guessing a path):
+
+- Convention plugins: `build-logic/convention/src/main/java/*.kt` and `build-logic/convention/src/main/java/ext/*Configuration.kt`. There is no `src/main/kotlin` in `build-logic`.
+- Library modules (`:core`, `:ui_common`, `:data:*`, `:feature:*`, `:test_helper:*`) have no `src/main` or `src/test`; use `src/{commonMain,androidMain,jvmMain,jvmTest}/kotlin`. Only `:app` and `:benchmark` keep `src/main/java`.
+- `lint-checks/` was removed; only a stale `build/` directory remains. Do not look for detectors there.
+
 - `src/commonMain/kotlin` — everything that has no Android dependency. Screens, ViewModels, repositories, entities.
 - `src/androidMain/kotlin` — Android-only code and every Metro binding container (`di/*Module.kt`), because `:app` is Android and provides `Context`. Also `AndroidManifest.xml`. There is no `res/`: drawables, strings and fonts live in `commonMain/composeResources`.
 - `src/jvmMain/kotlin` — JVM-only actuals (fonts loaded from the classpath, text style shims).
@@ -79,11 +86,7 @@ Violations break `:architecture-spec:test`.
 
 ## Convention Plugins
 
-Whenever you write Gradle configuration — creating a module, or adding a build-wide tool to existing ones — put it in a convention plugin under `build-logic/` rather than hand-rolling it in a build script. The root `build.gradle.kts` is declaration-only: it lists plugins with `apply false` and holds no configuration. Cross-cutting tools that apply regardless of module type go in `build-logic/convention/src/main/java/ext/<Tool>Configuration.kt` with a convention plugin that applies them — `AndroidLintConfiguration.kt` and `DetektConfiguration.kt` are the worked examples. Never reach for `subprojects { }` or `allprojects { }` in the root build script.
-
-Only the `subprojects { }` and `allprojects { }` forms are enforced, and only by a plain-text check: `BuildScriptArchitectureSpec` is a Kotest `DescribeSpec` that reads the root `build.gradle.kts` with `File.readText()` and matches two regexes against it, with no Konsist or PSI parsing involved. Any other configuration in the root script — a bare `dependencies { }`, `tasks.withType { }`, `extensions.configure { }` — is caught by review only, so treat this rule as broader than its sensor.
-
-`DetektConfiguration.kt` sets `buildUponDefaultConfig = true` and leaves `disableDefaultRuleSets = false`, so detekt's bundled rule sets run alongside the `Compose` and `ktlint` plugin rule sets, and `config/detekt/detekt.yml` is where each one is switched on or off. `buildUponDefaultConfig` means a rule the YAML omits runs with detekt's shipped default instead of silently going inactive, which is why every bundled rule set is listed with an explicit `active` flag and, inside the two that are on (`coroutines`, `exceptions`), every rule is listed too: only `GlobalCoroutineUsage`, `SwallowedException` and `TooGenericExceptionCaught` are active, each paired with the CLAUDE.md DON'T it enforces. detekt runs without type resolution (`detekt.android.disabled` / `detekt.multiplatform.disabled` in `gradle.properties`), so a bundled rule that needs it cannot be turned on. Config validation (`config > validation`) is on by default, so removing a plugin from `detektPlugins` fails loudly, e.g. dropping `io.nlopez.compose.rules` fails every module's detekt task with `Property 'Compose' is misspelled or does not exist ... may also indicate a detekt plugin is necessary`, and a bogus key under a bundled rule set or a bogus top-level rule set name fails the same way. Validation does not check rule keys under a rule set that a `detektPlugins` entry contributes — a typo'd or renamed key under `Compose:` or `ktlint:` is accepted silently with no build failure, so a rule renamed or removed by an upgrade of either plugin will pass unnoticed and must be caught by reading that plugin's release notes; the `active: false` keys pinned nearby only make a future default flip visible in a diff, they do not catch a rename.
+Whenever you write Gradle configuration — creating a module, or adding a build-wide tool to existing ones — put it in a convention plugin under `build-logic/` rather than hand-rolling it in a build script. The root `build.gradle.kts` is declaration-only: it lists plugins with `apply false` and holds no configuration. Cross-cutting tools that apply regardless of module type go in `build-logic/convention/src/main/java/ext/<Tool>Configuration.kt` with a convention plugin that applies them — `AndroidLintConfiguration.kt` and `DetektConfiguration.kt` are the worked examples. Never reach for `subprojects { }` or `allprojects { }` in the root build script. The sensor's coverage limits and the detekt configuration details live in the path-scoped `build-logic.md`.
 
 The plugins below are the per-module-type conventions:
 
