@@ -25,7 +25,18 @@ dependencyResolutionManagement {
         includeGroupAndSubgroups("com.google")
       }
     }
-    mavenCentral()
+    // Not exclusiveContent on google, and not a blanket com.google exclude: Maven Central is the only host for guava, gson, protobuf and tink.
+    mavenCentral {
+      content {
+        excludeGroupAndSubgroups("androidx")
+        excludeGroupAndSubgroups("com.android")
+        excludeGroupAndSubgroups("com.google.android.gms")
+        excludeGroupAndSubgroups("com.google.android.material")
+        excludeGroupAndSubgroups("com.google.android.play")
+        excludeGroupAndSubgroups("com.google.firebase")
+        excludeGroupAndSubgroups("com.google.gms")
+      }
+    }
   }
 }
 
