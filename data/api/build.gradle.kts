@@ -66,7 +66,7 @@ kotlin {
 
   sourceSets {
     commonMain {
-      kotlin.srcDir(generatedCredentialsDir)
+      kotlin.srcDir(generateLastFmApiCredentials.flatMap { it.outputDir })
       dependencies {
         implementation(libs.coroutines.core)
         implementation(libs.serialization.json)
@@ -91,8 +91,4 @@ kotlin {
       implementation(libs.ktor.client.mock)
     }
   }
-}
-
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask<*>>().configureEach {
-  dependsOn(generateLastFmApiCredentials)
 }

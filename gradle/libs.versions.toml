@@ -151,7 +151,6 @@ sqldelight-runtime = { module = "app.cash.sqldelight:runtime", version.ref = "sq
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
-android-library = { id = "com.android.library", version.ref = "agp" }
 android-test = { id = "com.android.test", version.ref = "agp" }
 roborazzi = { id = "io.github.takahirom.roborazzi", version.ref = "roborazzi" }
 licensee = { id = "app.cash.licensee", version.ref = "licensee" }

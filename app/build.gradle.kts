@@ -85,6 +85,6 @@ licensee {
   allowUrl("https://developer.android.com/studio/terms.html")
 }
 
-tasks.withType(Test::class.java) {
+tasks.withType(Test::class.java).configureEach {
   failOnNoDiscoveredTests = false
 }
