@@ -10,7 +10,7 @@ Smoke-level instrumentation tests that drive the R8-minified `smoke` build of th
 The goal is "does the app still launch, log in, and render core screens" — anything finer-grained belongs in unit tests or Roborazzi screenshot tests (see [`testing.md`](testing.md)).
 
 The tests live in `app/src/androidTest/`; the mocked graph and fixtures they run against live in the `smoke` build type's source set, `app/src/smoke/`.
-Runs on CI via `.github/workflows/smoke_test.yml`: on pull requests that touch build configuration, dependencies, `:app`, any `androidMain` source set or the smoke harness itself (see the `paths` filter in the workflow), on a daily schedule against `develop`, and on demand via `workflow_dispatch`.
+Runs on CI via `.github/workflows/smoke_test.yml`: on pull requests that touch build configuration, dependencies, `:app`, any `androidMain` source set or the smoke harness itself (see the path filters of the `changes` job in the workflow), on a daily schedule against `develop`, and on demand via `workflow_dispatch`.
 There is no run on push to `develop`: the PR run already covers each change, and breakage that only appears once several branches are merged is left to the daily run.
 The daily run executes even when `develop` has not moved, on purpose: the runner image, emulator and other parts of the environment change independently of the repository.
 
@@ -133,7 +133,9 @@ Conventions used by the existing flow:
 ## Running on CI
 
 `.github/workflows/smoke_test.yml`:
-- Triggers: `pull_request` filtered by `paths` (dependency / build-logic / `:app` / `androidMain` / harness changes), a daily schedule (06:00 UTC) on `develop`, and `workflow_dispatch` — for the manual run, pick the target branch via "Use workflow from" in the GitHub Actions UI. The `paths` filter means a PR outside those paths produces no smoke run at all, so the job must not be a required status check until the filter is replaced by an in-workflow change-detection step (a skipped job counts as success, a never-started one blocks the merge forever).
+- Triggers: every `pull_request`, a daily schedule (06:00 UTC) on `develop`, and `workflow_dispatch` — for the manual run, pick the target branch via "Use workflow from" in the GitHub Actions UI.
+- The workflow has no trigger-level `paths` filter. The `changes` job (`dorny/paths-filter`) decides whether a pull request touches dependency / build-logic / `:app` / `androidMain` / harness paths; if not, the `smoke` job is skipped. Scheduled and manual runs always run the suite.
+- `Smoke test result` is the job to mark as a required status check, not `Phone` / `Tablet`. It runs on every pull request with `if: always()`, passes when the suite succeeded or was correctly skipped, and fails otherwise. A trigger-level `paths` filter must not come back: a required check that never starts blocks the merge forever, while this job always reports.
 - Discord notification fires only for non-PR runs; a PR failure is already visible on the PR.
 - Single `smoke` job fanned out via `strategy.matrix` into two parallel variants, whose check names are just `Phone` and `Tablet` because the workflow name already says `Smoke test` (`fail-fast: false`, so a tablet failure doesn't cancel the phone run and vice versa):
   - `pixel6Api35` (artifact-suffix `phone`) — runs the default `:app:pixel6Api35SmokeAndroidTest` task. The `notAnnotation` runner arg auto-skips `@LargeScreenSmoke` tests.
