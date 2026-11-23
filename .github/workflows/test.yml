@@ -1,4 +1,4 @@
-name: Build and unit test
+name: Build and test
 
 on:
   pull_request:
@@ -73,3 +73,56 @@ jobs:
           use-build-cache: 'true'
           cache-key: test
           github-token: ${{ secrets.GITHUB_TOKEN }}
+  screenshot_test:
+    runs-on: xcode-27
+    permissions:
+      contents: read
+      actions: write
+    timeout-minutes: 20
+    env:
+      GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx4g -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -XX:+UseParallelGC -XX:MaxMetaspaceSize=1g"
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: ./.github/actions/setup-gradle
+        with:
+          use-build-cache: 'true'
+          cache-key: screenshot
+      - uses: ./.github/actions/sunsetscrob-setup
+        with:
+          last-fm-api-key: ${{ secrets.LAST_FM_API_KEY }}
+          last-fm-shared-secret: ${{ secrets.LAST_FM_SHARED_SECRET }}
+          google-services-json: ${{ secrets.GOOGLE_SERVICES_JSON_DEV }}
+      - name: Run screenshot tests
+        run: ./gradlew verifyRoborazziJvm --no-configuration-cache -PonlyScreenshotTest=true
+      - uses: ./.github/actions/save-gradle-cache
+        with:
+          use-build-cache: 'true'
+          cache-key: screenshot
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload test reports
+        if: failure()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: android-test-reports
+          path: |
+            **/build/reports/roborazzi/**
+            **/build/outputs/roborazzi/**
+          retention-days: 7
+
+  # The one check to mark as required for this workflow: it follows the jobs above, so adding or
+  # renaming one does not touch the branch protection settings.
+  result:
+    name: Test result
+    needs: [build, test, screenshot_test]
+    if: always()
+    runs-on: ubuntu-slim
+    steps:
+      - name: Check job results
+        env:
+          BUILD_RESULT: ${{ needs.build.result }}
+          TEST_RESULT: ${{ needs.test.result }}
+          SCREENSHOT_TEST_RESULT: ${{ needs.screenshot_test.result }}
+        run: |
+          echo "build=$BUILD_RESULT test=$TEST_RESULT screenshot_test=$SCREENSHOT_TEST_RESULT"
+          [ "$BUILD_RESULT" = "success" ] && [ "$TEST_RESULT" = "success" ] && [ "$SCREENSHOT_TEST_RESULT" = "success" ]
