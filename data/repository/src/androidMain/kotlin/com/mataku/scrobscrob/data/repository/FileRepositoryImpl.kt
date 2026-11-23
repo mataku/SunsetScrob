@@ -2,6 +2,7 @@ package com.mataku.scrobscrob.data.repository
 
 import android.content.Context
 import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.Dispatchers
@@ -10,6 +11,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import java.nio.file.Files
 
+@ContributesBinding(AppScope::class)
 @SingleIn(AppScope::class)
 @Inject
 class FileRepositoryImpl(

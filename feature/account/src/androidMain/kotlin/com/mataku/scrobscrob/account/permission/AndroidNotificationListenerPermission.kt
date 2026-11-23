@@ -13,9 +13,12 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.core.app.NotificationManagerCompat
 import com.mataku.scrobscrob.account.generated.resources.Res
 import com.mataku.scrobscrob.account.generated.resources.label_notification_permission_help
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.Inject
 import org.jetbrains.compose.resources.stringResource
 
+@ContributesBinding(AppScope::class)
 @Inject
 class AndroidNotificationListenerPermission(
   private val context: Context,

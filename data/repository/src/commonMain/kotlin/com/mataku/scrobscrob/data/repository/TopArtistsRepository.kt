@@ -8,6 +8,7 @@ import com.mataku.scrobscrob.data.api.request
 import com.mataku.scrobscrob.data.db.ArtworkDataStore
 import com.mataku.scrobscrob.data.repository.mapper.toTopArtists
 import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn
 import kotlinx.collections.immutable.toImmutableList
@@ -24,6 +25,7 @@ interface TopArtistsRepository {
   ): Flow<TopArtists>
 }
 
+@ContributesBinding(AppScope::class)
 @SingleIn(AppScope::class)
 @Inject
 class TopArtistsRepositoryImpl(

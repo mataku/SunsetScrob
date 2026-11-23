@@ -2,6 +2,7 @@ package com.mataku.scrobscrob.data.repository
 
 import com.mataku.scrobscrob.data.db.ScrobbleAppDataStore
 import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.Dispatchers
@@ -19,6 +20,7 @@ interface ScrobbleSettingRepository {
   suspend fun disallowApp(appName: String): Flow<Unit>
 }
 
+@ContributesBinding(AppScope::class)
 @SingleIn(AppScope::class)
 @Inject
 class ScrobbleSettingRepositoryImpl(

@@ -13,6 +13,7 @@ import com.mataku.scrobscrob.data.db.UsernameDataStore
 import com.mataku.scrobscrob.data.repository.mapper.toRecentTrackList
 import com.mataku.scrobscrob.data.repository.mapper.toUserInfo
 import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.Dispatchers
@@ -25,6 +26,7 @@ interface UserRepository {
   suspend fun getLovedTracks(page: Int): Flow<List<LovedTrack>>
 }
 
+@ContributesBinding(AppScope::class)
 @SingleIn(AppScope::class)
 @Inject
 class UserRepositoryImpl(

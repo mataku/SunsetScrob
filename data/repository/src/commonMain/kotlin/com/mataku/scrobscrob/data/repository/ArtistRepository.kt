@@ -9,6 +9,7 @@ import com.mataku.scrobscrob.data.api.request
 import com.mataku.scrobscrob.data.repository.mapper.toArtistInfo
 import com.mataku.scrobscrob.data.repository.mapper.toTopAlbums
 import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.Dispatchers
@@ -28,6 +29,7 @@ interface ArtistRepository {
   ): Flow<List<TopAlbumInfo>>
 }
 
+@ContributesBinding(AppScope::class)
 @SingleIn(AppScope::class)
 @Inject
 class ArtistRepositoryImpl(

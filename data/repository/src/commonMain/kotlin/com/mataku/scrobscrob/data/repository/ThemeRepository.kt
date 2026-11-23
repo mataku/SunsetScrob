@@ -5,6 +5,7 @@ import com.mataku.scrobscrob.data.db.ThemeDataStore
 import com.mataku.scrobscrob.data.repository.mapper.toAppTheme
 import com.mataku.scrobscrob.data.repository.mapper.toAppThemeEntity
 import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.Dispatchers
@@ -17,6 +18,7 @@ interface ThemeRepository {
   suspend fun storeTheme(theme: AppTheme): Flow<Unit>
 }
 
+@ContributesBinding(AppScope::class)
 @SingleIn(AppScope::class)
 @Inject
 class ThemeRepositoryImpl(

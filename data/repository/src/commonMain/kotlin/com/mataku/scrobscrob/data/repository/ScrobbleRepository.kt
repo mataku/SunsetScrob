@@ -17,6 +17,7 @@ import com.mataku.scrobscrob.data.db.entity.ArtworkInsertion
 import com.mataku.scrobscrob.data.repository.mapper.toRecentTracks
 import com.mataku.scrobscrob.data.repository.mapper.toScrobbleResult
 import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn
 import kotlinx.collections.immutable.persistentListOf
@@ -31,6 +32,7 @@ interface ScrobbleRepository {
   suspend fun scrobble(currentTrack: NowPlayingTrackEntity): Flow<ScrobbleResult>
 }
 
+@ContributesBinding(AppScope::class)
 @SingleIn(AppScope::class)
 @Inject
 class ScrobbleRepositoryImpl(

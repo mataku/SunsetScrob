@@ -58,7 +58,7 @@ Layer / package / Compose / navigation rules already live in always-loaded `arch
 
 **DO**
 
-- Wire new dependencies through Metro with `@Binds` / companion-object `@Provides` on a `@BindingContainer` + `@ContributesTo(AppScope::class)` interface in `di/FooModule.kt`.
+- Wire new dependencies through Metro: bind an interface to its implementation with `@ContributesBinding(AppScope::class)` on the `Impl` class, and put construction that needs logic or third-party types in a companion-object `@Provides` on a `@BindingContainer` + `@ContributesTo(AppScope::class)` interface in `di/FooModule.kt`.
 - Write a `*Spec.kt` Kotest test next to the class under test. Konsist fails a `*ViewModel` or `*Endpoint` without its spec and a feature `*Screen` without its `*ScreenTest` (`TestPresenceArchitectureSpec`).
 
 **DON'T**
@@ -75,7 +75,7 @@ Layer / package / Compose / navigation rules already live in always-loaded `arch
 - Networking: Ktor client
 - DB: SQLDelight + DataStore Preferences
 - Async: Kotlin Coroutines + Flow
-- DI: Metro (Kotlin compiler plugin; Dagger annotation interop enabled)
+- DI: Metro (Kotlin compiler plugin)
 - Image loading: Coil 3
 - Build: Gradle Kotlin DSL, version catalog (`gradle/libs.versions.toml`), custom convention plugins in `build-logic/convention/`. Every library module is KMP and applies `sunsetscrob.library` and `sunsetscrob.lint`, plus `compose` / `metro` / `test.screenshot` as needed (`:core` takes `library` + `compose`, `:data:*` take `library` + `metro`, feature modules take all four). `sunsetscrob.android.application` / `android.compose` / `android.metro` / `android.lint` are for `:app` only.
 - Tests: Kotest (JUnit5 platform), MockK, Turbine, Roborazzi.
