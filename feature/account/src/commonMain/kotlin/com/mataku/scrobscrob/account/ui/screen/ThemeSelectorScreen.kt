@@ -14,6 +14,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Check
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
@@ -42,15 +43,10 @@ internal fun ThemeSelectorScreen(
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-  // Because there were cases where values flowed in unintentionally, control
-  // TODO
-  uiState.event?.let {
-    when (it) {
-      is ThemeSelectorViewModel.UiEvent.ThemeChanged -> {
-
-      }
+  LaunchedEffect(uiState.event) {
+    if (uiState.event != null) {
+      viewModel.popEvent()
     }
-    viewModel.popEvent()
   }
 
   SunsetScaffold(

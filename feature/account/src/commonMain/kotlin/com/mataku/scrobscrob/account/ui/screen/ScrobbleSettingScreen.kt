@@ -41,15 +41,10 @@ internal fun ScrobbleSettingScreen(
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
   val snackbarHostState = LocalSnackbarHostState.current
   val allowAppErrorMessage = stringResource(Res.string.error_allow_scrobble_app)
-  uiState.event?.let {
-    when (it) {
-      is ScrobbleSettingViewModel.UiEvent.AllowAppError -> {
-        LaunchedEffect(Unit) {
-          snackbarHostState.showSnackbar(allowAppErrorMessage)
-        }
-      }
-
-      else -> Unit
+  LaunchedEffect(uiState.event) {
+    val event = uiState.event ?: return@LaunchedEffect
+    if (event is ScrobbleSettingViewModel.UiEvent.AllowAppError) {
+      snackbarHostState.showSnackbar(allowAppErrorMessage)
     }
     viewModel.popEvent()
   }
