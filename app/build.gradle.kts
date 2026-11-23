@@ -39,10 +39,9 @@ dependencies {
   implementation(project(":feature:discover"))
   implementation(project(":feature:home"))
 
-  implementation(libs.activity.ktx)
   implementation(libs.material)
   implementation(libs.coroutines)
-  implementation(libs.kotlinx.collection)
+  implementation(libs.kotlinx.collections.immutable)
 
   implementation(platform(libs.firebase.bom))
   implementation(libs.firebase.crashlytics)
