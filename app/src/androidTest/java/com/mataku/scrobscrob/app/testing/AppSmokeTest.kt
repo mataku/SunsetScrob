@@ -37,7 +37,7 @@ class AppSmokeTest {
   }
 
   @Test
-  fun login_then_navigate_through_tabs_and_details() {
+  fun login_then_navigate_through_tabs_and_details_then_logout() {
     // Login screen: the fake launcher returns a token immediately on tap.
     composeRule.waitUntilExactlyOneExists(hasText(signInLabel()), TIMEOUT_MS)
     composeRule.onNodeWithText(signInLabel()).performClick()
@@ -110,6 +110,21 @@ class AppSmokeTest {
 
     pressBack()
     composeRule.waitUntilDoesNotExist(hasContentDescription("Back"), TIMEOUT_MS)
+
+    // Account → Logout: resetDataStores() logs out behind the UI before every test, so this is the
+    // only place the dialog, AccountViewModel.logout and the authentication gate run end to end.
+    // The list may come back scrolled to either end, so match it by whichever anchor is composed.
+    val logout = logoutLabel()
+    composeRule
+      .onNode(
+        hasScrollAction() and
+          (hasAnyDescendant(hasText("smoke_user")) or hasAnyDescendant(hasText(privacyPolicy))),
+      )
+      .performScrollToNode(hasText(logout))
+    composeRule.onNodeWithText(logout).performClick()
+    composeRule.waitUntilExactlyOneExists(hasText("Let me out!"), TIMEOUT_MS)
+    composeRule.onNodeWithText("Let me out!").performClick()
+    composeRule.waitUntilExactlyOneExists(hasText(signInLabel()), TIMEOUT_MS)
   }
 
   private fun pressBack() {
