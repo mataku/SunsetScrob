@@ -26,3 +26,9 @@
 -keep class com.google.common.util.concurrent.** { *; }
 -keep class kotlin.** { *; }
 -keep class kotlinx.coroutines.** { *; }
+
+# LocalizedLabels.kt resolves translated anchors through Compose Resources: the generated accessors
+# of the modules it reads from, and the library's getString.
+-keep class com.mataku.scrobscrob.auth.generated.resources.** { *; }
+-keep class com.mataku.scrobscrob.account.generated.resources.** { *; }
+-keep class org.jetbrains.compose.resources.** { *; }
