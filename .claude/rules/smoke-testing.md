@@ -138,14 +138,14 @@ Conventions used by the existing flow:
 
 `.github/workflows/smoke_test.yml`:
 - Triggers: every `pull_request`, an unfiltered `push` to `develop`, and `workflow_dispatch` — for the manual run, pick the target branch via "Use workflow from" in the GitHub Actions UI.
-- The workflow has no trigger-level `paths` filter. The `changes` job (`dorny/paths-filter`) decides whether a pull request touches dependency / build-logic / `:app` / `androidMain` / harness paths; if not, the `smoke` job is skipped. Pushes to `develop` and manual runs always run the suite.
+- The workflow has no trigger-level `paths` filter. The `changes` job (`dorny/paths-filter`) decides whether a pull request touches dependency / build-logic / `:app` / `androidMain` / harness paths; if not, the `phone` and `tablet` jobs are skipped. Pushes to `develop` and manual runs always run the suite.
 - `Smoke test result` is the job to mark as a required status check, not `Phone` / `Tablet`. It runs on every pull request with `if: always()`, passes when the suite succeeded or was correctly skipped, and fails otherwise. A trigger-level `paths` filter must not come back: a required check that never starts blocks the merge forever, while this job always reports.
 - Discord notification fires only for non-PR runs; a PR failure is already visible on the PR.
-- Single `smoke` job fanned out via `strategy.matrix` into two parallel variants, whose check names are just `Phone` and `Tablet` because the workflow name already says `Smoke test` (`fail-fast: false`, so a tablet failure doesn't cancel the phone run and vice versa):
-  - `pixel6Api35` (artifact-suffix `phone`) — runs the default `:app:pixel6Api35SmokeAndroidTest` task. The `notAnnotation` runner arg auto-skips `@LargeScreenSmoke` tests.
-  - `pixelTabletApi35` (artifact-suffix `tablet`) — runs `:app:pixelTabletApi35SmokeAndroidTest -PincludeLargeScreenSmoke=true`, so only `@LargeScreenSmoke` tests run.
+- Two parallel jobs, `phone` and `tablet`, whose check names are just `Phone` and `Tablet` because the workflow name already says `Smoke test`. They share their steps through a YAML anchor and differ only in their job-level `env`; being separate jobs, a tablet failure doesn't cancel the phone run and vice versa. They are not one `strategy.matrix` job on purpose: a matrix job skipped by `if` is never expanded, so its check would show up under the literal name `matrix.name`:
+  - `pixel6Api35` (variant `phone`) — runs the default `:app:pixel6Api35SmokeAndroidTest` task. The `notAnnotation` runner arg auto-skips `@LargeScreenSmoke` tests.
+  - `pixelTabletApi35` (variant `tablet`) — runs `:app:pixelTabletApi35SmokeAndroidTest -PincludeLargeScreenSmoke=true`, so only `@LargeScreenSmoke` tests run.
 - Gradle/UTP owns the emulator lifecycle (boot, install, run, tear down) instead of `reactivecircus/android-emulator-runner`. The previous runner was prone to "device offline" failures mid-test under combined `adb screenrecord` + UTP load.
-- The AVD cache is handled by the `restore-avd-cache` / `save-avd-cache` composite actions described above, keyed per matrix variant (`phone` / `tablet`). Gradle caches go through `restore-gradle-cache` / `save-gradle-cache` with `cache-key: smoke`.
+- The AVD cache is handled by the `restore-avd-cache` / `save-avd-cache` composite actions described above, keyed per variant (`phone` / `tablet`). Gradle caches go through `restore-gradle-cache` / `save-gradle-cache` with `cache-key: smoke`.
 - Failures upload `**/build/reports/androidTests/**`, `**/build/outputs/androidTest-results/**`, and `**/build/intermediates/managed_device_android_test_additional_output/**` as artifacts named `smoke-test-reports-{phone|tablet}` (7-day retention).
 
 ## Gotchas worth remembering
