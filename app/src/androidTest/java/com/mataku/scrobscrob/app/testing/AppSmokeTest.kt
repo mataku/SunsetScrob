@@ -39,8 +39,8 @@ class AppSmokeTest {
   @Test
   fun login_then_navigate_through_tabs_and_details() {
     // Login screen: the fake launcher returns a token immediately on tap.
-    composeRule.waitUntilExactlyOneExists(hasText("Sign in with Last.fm"), TIMEOUT_MS)
-    composeRule.onNodeWithText("Sign in with Last.fm").performClick()
+    composeRule.waitUntilExactlyOneExists(hasText(signInLabel()), TIMEOUT_MS)
+    composeRule.onNodeWithText(signInLabel()).performClick()
 
     // Home renders with the Scrobble tab as default.
     composeRule.waitUntilExactlyOneExists(hasText("Home"), TIMEOUT_MS)
@@ -98,14 +98,15 @@ class AppSmokeTest {
     // Account → Privacy policy: the only step that builds a real android.webkit.WebView, which the
     // JVM screenshot tests replace with an empty Box. The page itself is remote, so nothing waits
     // for it to load; reaching the screen without a crash is the assertion.
+    val privacyPolicy = privacyPolicyLabel()
     composeRule
       .onNode(hasScrollAction() and hasAnyDescendant(hasText("smoke_user")))
-      .performScrollToNode(hasText("Privacy policy"))
-    composeRule.onNodeWithText("Privacy policy").performClick()
+      .performScrollToNode(hasText(privacyPolicy))
+    composeRule.onNodeWithText(privacyPolicy).performClick()
     // The menu row and the screen title share their text, so the back icon is what tells the
     // destination apart from the Account list.
     composeRule.waitUntilExactlyOneExists(hasContentDescription("Back"), TIMEOUT_MS)
-    composeRule.waitUntilExactlyOneExists(hasText("Privacy policy"), TIMEOUT_MS)
+    composeRule.waitUntilExactlyOneExists(hasText(privacyPolicy), TIMEOUT_MS)
 
     pressBack()
     composeRule.waitUntilDoesNotExist(hasContentDescription("Back"), TIMEOUT_MS)
