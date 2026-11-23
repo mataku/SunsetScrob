@@ -47,8 +47,10 @@ jobs:
               - '.github/workflows/smoke_test.yml'
               - '.github/actions/**'
 
-  smoke:
-    name: ${{ matrix.name }}
+  # Two jobs sharing their steps through a YAML anchor rather than one matrix job: a matrix job
+  # skipped by `if` is never expanded, so its check shows up under the literal name `matrix.name`.
+  phone:
+    name: Phone
     needs: changes
     if: needs.changes.outputs.smoke == 'true'
     runs-on: ubuntu-latest
@@ -56,20 +58,12 @@ jobs:
     permissions:
       contents: read
       actions: write
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - name: Phone
-            device: pixel6Api35
-            script: scripts/run_smoke_phone.sh
-            artifact-suffix: phone
-          - name: Tablet
-            device: pixelTabletApi35
-            script: scripts/run_smoke_tablet.sh
-            artifact-suffix: tablet
+    env:
+      SMOKE_DEVICE: pixel6Api35
+      SMOKE_SCRIPT: scripts/run_smoke_phone.sh
+      SMOKE_VARIANT: phone
 
-    steps:
+    steps: &smoke-steps
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Enable KVM group perms
         run: |
@@ -82,7 +76,7 @@ jobs:
           cache-key: smoke
       - uses: ./.github/actions/restore-avd-cache
         with:
-          device: ${{ matrix.artifact-suffix }}
+          device: ${{ env.SMOKE_VARIANT }}
       - uses: ./.github/actions/sunsetscrob-setup
         with:
           last-fm-api-key: ${{ secrets.LAST_FM_API_KEY }}
@@ -104,15 +98,15 @@ jobs:
 
       # No separate assemble step: the managed device task builds both APKs itself, and a second
       # Gradle invocation would only pay the configuration phase again.
-      - name: Build and run smoke tests on ${{ matrix.device }}
+      - name: Build and run smoke tests on ${{ env.SMOKE_DEVICE }}
         run: |
-          bash ${{ matrix.script }} \
+          bash "$SMOKE_SCRIPT" \
             --no-configuration-cache \
             -Pandroid.testoptions.manageddevices.emulator.gpu=swiftshader_indirect
 
       - uses: ./.github/actions/save-avd-cache
         with:
-          device: ${{ matrix.artifact-suffix }}
+          device: ${{ env.SMOKE_VARIANT }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: ./.github/actions/save-gradle-cache
@@ -125,18 +119,34 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
-          name: smoke-test-reports-${{ matrix.artifact-suffix }}
+          name: smoke-test-reports-${{ env.SMOKE_VARIANT }}
           path: |
             **/build/reports/androidTests/**
             **/build/outputs/androidTest-results/**
             **/build/intermediates/managed_device_android_test_additional_output/**
           retention-days: 7
 
+  tablet:
+    name: Tablet
+    needs: changes
+    if: needs.changes.outputs.smoke == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      actions: write
+    env:
+      SMOKE_DEVICE: pixelTabletApi35
+      SMOKE_SCRIPT: scripts/run_smoke_tablet.sh
+      SMOKE_VARIANT: tablet
+
+    steps: *smoke-steps
+
   # The only smoke check to mark as required: it reports on every pull request, whether the
-  # suite ran or was skipped, and does not change when a device is added to the matrix.
+  # suite ran or was skipped, and does not change when a device job is added.
   result:
     name: Smoke test result
-    needs: [changes, smoke]
+    needs: [changes, phone, tablet]
     if: always()
     runs-on: ubuntu-slim
     steps:
@@ -144,21 +154,22 @@ jobs:
         env:
           CHANGES_RESULT: ${{ needs.changes.result }}
           SHOULD_RUN: ${{ needs.changes.outputs.smoke }}
-          SMOKE_RESULT: ${{ needs.smoke.result }}
+          PHONE_RESULT: ${{ needs.phone.result }}
+          TABLET_RESULT: ${{ needs.tablet.result }}
         run: |
-          echo "changes=$CHANGES_RESULT should_run=$SHOULD_RUN smoke=$SMOKE_RESULT"
+          echo "changes=$CHANGES_RESULT should_run=$SHOULD_RUN phone=$PHONE_RESULT tablet=$TABLET_RESULT"
           if [ "$CHANGES_RESULT" != "success" ]; then
             exit 1
           fi
           if [ "$SHOULD_RUN" = "true" ]; then
-            [ "$SMOKE_RESULT" = "success" ]
+            [ "$PHONE_RESULT" = "success" ] && [ "$TABLET_RESULT" = "success" ]
           else
-            [ "$SMOKE_RESULT" = "skipped" ]
+            [ "$PHONE_RESULT" = "skipped" ] && [ "$TABLET_RESULT" = "skipped" ]
           fi
 
   notify-failure:
     name: Notify Discord on failure
-    needs: smoke
+    needs: [phone, tablet]
     if: failure() && github.event_name != 'pull_request'
     runs-on: ubuntu-slim
     env:
