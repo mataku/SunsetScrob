@@ -94,6 +94,21 @@ class AppSmokeTest {
     composeRule.onNodeWithContentDescription("tab Account").performClick()
     composeRule.waitUntilExactlyOneExists(hasText("smoke_user"), TIMEOUT_MS)
     composeRule.onNodeWithText("smoke_user").assertIsDisplayed()
+
+    // Account → Privacy policy: the only step that builds a real android.webkit.WebView, which the
+    // JVM screenshot tests replace with an empty Box. The page itself is remote, so nothing waits
+    // for it to load; reaching the screen without a crash is the assertion.
+    composeRule
+      .onNode(hasScrollAction() and hasAnyDescendant(hasText("smoke_user")))
+      .performScrollToNode(hasText("Privacy policy"))
+    composeRule.onNodeWithText("Privacy policy").performClick()
+    // The menu row and the screen title share their text, so the back icon is what tells the
+    // destination apart from the Account list.
+    composeRule.waitUntilExactlyOneExists(hasContentDescription("Back"), TIMEOUT_MS)
+    composeRule.waitUntilExactlyOneExists(hasText("Privacy policy"), TIMEOUT_MS)
+
+    pressBack()
+    composeRule.waitUntilDoesNotExist(hasContentDescription("Back"), TIMEOUT_MS)
   }
 
   private fun pressBack() {
