@@ -15,9 +15,11 @@ on:
       - 'scripts/run_smoke_*.sh'
       - '.github/workflows/smoke_test.yml'
       - '.github/actions/**'
-  schedule:
-    # 06:00 UTC (15:00 JST)
-    - cron: '0 6 * * *'
+  # Unfiltered on purpose: every merge refreshes the AVD and Gradle build caches that pull request
+  # runs restore, and covers the commonMain changes the pull request path filter lets through.
+  push:
+    branches:
+      - develop
   workflow_dispatch:
 
 concurrency:
