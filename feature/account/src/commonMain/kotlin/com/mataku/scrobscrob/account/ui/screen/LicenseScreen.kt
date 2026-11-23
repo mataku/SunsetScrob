@@ -3,7 +3,6 @@ package com.mataku.scrobscrob.account.ui.screen
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
@@ -86,7 +85,6 @@ internal fun LicenseScreen(
   }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun LicenseCell(
   licenseArtifact: LicenseArtifact,
