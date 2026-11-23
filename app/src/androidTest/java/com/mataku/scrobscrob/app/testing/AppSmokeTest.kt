@@ -45,62 +45,50 @@ class AppSmokeTest {
     // Home renders with the Scrobble tab as default.
     composeRule.waitUntilExactlyOneExists(hasText("Home"), TIMEOUT_MS)
     composeRule.onNodeWithText("Home").assertIsDisplayed()
-    Thread.sleep(STEP_DELAY_MS)
 
     // Scrobble tab: tap the first recent track and verify TrackScreen opens, then back.
     composeRule.waitUntilExactlyOneExists(hasText("Supernova"), TIMEOUT_MS)
     composeRule.waitUntilExactlyOneExists(hasText("TRACE"), TIMEOUT_MS)
     composeRule.onNodeWithText("TRACE").performClick()
     composeRule.waitUntilExactlyOneExists(hasContentDescription("artwork image"), TIMEOUT_MS)
-    Thread.sleep(STEP_DELAY_MS)
     pressBack()
     composeRule.waitUntilExactlyOneExists(hasText("Home"), TIMEOUT_MS)
-    Thread.sleep(STEP_DELAY_MS)
 
     // Switch to Album tab on Home, tap an album, verify AlbumScreen opens, then back.
     composeRule.onNodeWithText("Album").performClick()
     composeRule.waitUntilExactlyOneExists(hasText("ZENITH"), TIMEOUT_MS)
-    Thread.sleep(STEP_DELAY_MS)
     // Go to album detail
     composeRule.onNodeWithText("ZENITH").performClick()
     composeRule.waitUntilExactlyOneExists(hasContentDescription("artwork image"), TIMEOUT_MS)
-    Thread.sleep(STEP_DELAY_MS)
 
     // Scroll the album detail content to the bottom.
     composeRule.waitUntilExactlyOneExists(hasText("About ZENITH"), TIMEOUT_MS)
     composeRule
       .onNode(hasScrollAction() and hasAnyDescendant(hasText("About ZENITH")))
       .performScrollToNode(hasText("About ZENITH"))
-    Thread.sleep(STEP_DELAY_MS)
 
     pressBack()
     composeRule.waitUntilExactlyOneExists(hasText("Home"), TIMEOUT_MS)
-    Thread.sleep(STEP_DELAY_MS)
 
     // Switch to Artist tab on Home, tap an artist, verify ArtistScreen opens.
     // "About PassCode" is the wiki cell, which only renders once artist.getInfo is parsed.
     composeRule.onNodeWithText("Artist").performClick()
     composeRule.waitUntilExactlyOneExists(hasText("PassCode"), TIMEOUT_MS)
-    Thread.sleep(STEP_DELAY_MS)
     composeRule.onNodeWithText("PassCode").performClick()
     composeRule.waitUntilExactlyOneExists(hasText("About PassCode"), TIMEOUT_MS)
-    Thread.sleep(STEP_DELAY_MS)
 
     // Recreate the Activity on the detail screen.
     // The Navigation 3 back stack must restore the same destination from its @Serializable key.
     composeRule.activityRule.scenario.recreate()
     composeRule.waitUntilExactlyOneExists(hasText("About PassCode"), TIMEOUT_MS)
-    Thread.sleep(STEP_DELAY_MS)
 
     pressBack()
     composeRule.waitUntilExactlyOneExists(hasText("Home"), TIMEOUT_MS)
-    Thread.sleep(STEP_DELAY_MS)
 
     // Bottom nav: Discover renders the chart.getTopTracks / chart.getTopArtists fixtures.
     composeRule.onNodeWithContentDescription("tab Discover").performClick()
     composeRule.waitUntilExactlyOneExists(hasText("My Love Mine All Mine"), TIMEOUT_MS)
     composeRule.waitUntilExactlyOneExists(hasText("The Weeknd"), TIMEOUT_MS)
-    Thread.sleep(STEP_DELAY_MS)
 
     // Bottom nav: Account renders the user.getInfo fixture in the profile header.
     composeRule.onNodeWithContentDescription("tab Account").performClick()
@@ -116,6 +104,5 @@ class AppSmokeTest {
 
   private companion object {
     const val TIMEOUT_MS = 2_000L
-    const val STEP_DELAY_MS = 1_000L
   }
 }

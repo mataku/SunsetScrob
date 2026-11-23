@@ -81,10 +81,9 @@ jobs:
             echo "$(basename "$avd") snapshots: $(ls -1 "$avd/snapshots" 2>/dev/null | tr '\n' ' ')"
           done
 
-      - name: Build smoke APK & androidTest APK
-        run: ./gradlew :app:assembleSmoke :app:assembleSmokeAndroidTest --no-configuration-cache
-
-      - name: Run smoke tests on ${{ matrix.device }}
+      # No separate assemble step: the managed device task builds both APKs itself, and a second
+      # Gradle invocation would only pay the configuration phase again.
+      - name: Build and run smoke tests on ${{ matrix.device }}
         run: |
           bash ${{ matrix.script }} \
             --no-configuration-cache \
