@@ -40,6 +40,12 @@ jobs:
         id: detekt
         run: ./gradlew detekt --continue --no-configuration-cache
 
+      # :app is the only module whose unit tests need the Android debug variant. Lint compiles that
+      # variant anyway, so running them here keeps the unit test job on the JVM targets alone.
+      - name: Run app unit tests
+        if: ${{ !cancelled() }}
+        run: ./gradlew :app:testDebugUnitTest --no-configuration-cache
+
       # Android Lint is not a required check, so its failure is reported via the PR comment
       # without failing the job.
       - name: Run Android Lint

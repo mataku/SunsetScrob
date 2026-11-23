@@ -33,7 +33,7 @@ class WebAuthCallbackTest {
 
   @Test
   fun app_link_callback_logs_in_without_the_browser() {
-    composeRule.waitUntilExactlyOneExists(hasText("Sign in with Last.fm"), TIMEOUT_MS)
+    composeRule.waitUntilExactlyOneExists(hasText(signInLabel()), TIMEOUT_MS)
 
     val callback = Intent(
       Intent.ACTION_VIEW,

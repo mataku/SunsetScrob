@@ -53,12 +53,12 @@ class TrackViewModel(
     isLoveRequestProcessing = true
     viewModelScope.launch {
       val requestFlow = if (trackInfo.userLoved) {
-        trackRepository.loveTrack(
+        trackRepository.unloveTrack(
           trackName = trackInfo.name,
           artistName = trackInfo.artist.name
         )
       } else {
-        trackRepository.unloveTrack(
+        trackRepository.loveTrack(
           trackName = trackInfo.name,
           artistName = trackInfo.artist.name
         )

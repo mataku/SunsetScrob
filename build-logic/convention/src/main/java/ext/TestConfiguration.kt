@@ -8,7 +8,6 @@ import org.gradle.kotlin.dsl.getByType
 
 fun Project.testConfiguration() {
   extensions.findByType(ApplicationExtension::class.java)?.apply {
-    testOptions.unitTests.isIncludeAndroidResources = true
     testOptions.unitTests.all {
       it.maxParallelForks = Runtime.getRuntime().availableProcessors()
       it.useJUnitPlatform()

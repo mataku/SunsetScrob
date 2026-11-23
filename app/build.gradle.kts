@@ -71,6 +71,7 @@ dependencies {
   androidTestImplementation(libs.compose.ui.test.android)
   androidTestImplementation(libs.androidx.espresso.core)
   androidTestImplementation(libs.coroutines.test)
+  androidTestImplementation(libs.jetbrains.compose.components.resources)
   "smokeImplementation"(libs.ktor.client.mock)
   "smokeImplementation"(libs.coil.test)
   debugImplementation(libs.compose.ui.test.manifest)

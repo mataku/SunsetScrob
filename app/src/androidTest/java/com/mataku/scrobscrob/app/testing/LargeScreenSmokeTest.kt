@@ -44,8 +44,8 @@ class LargeScreenSmokeTest {
   @Test
   fun login_then_navigate_through_tabs_and_details() {
     // Login screen: the fake launcher returns a token immediately on tap.
-    composeRule.waitUntilExactlyOneExists(hasText("Sign in with Last.fm"), TIMEOUT_MS)
-    composeRule.onNodeWithText("Sign in with Last.fm").performClick()
+    composeRule.waitUntilExactlyOneExists(hasText(signInLabel()), TIMEOUT_MS)
+    composeRule.onNodeWithText(signInLabel()).performClick()
 
     // Home renders with the Scrobble tab as default.
     composeRule.waitUntilExactlyOneExists(hasText("Home"), TIMEOUT_MS)

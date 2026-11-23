@@ -6,9 +6,11 @@ on:
   pull_request:
     branches:
       - '**'
-  schedule:
-    # 06:00 UTC (15:00 JST)
-    - cron: '0 6 * * *'
+  # Unfiltered on purpose: every merge refreshes the AVD and Gradle build caches that pull request
+  # runs restore, and covers the commonMain changes the pull request path filter lets through.
+  push:
+    branches:
+      - develop
   workflow_dispatch:
 
 concurrency:
@@ -25,7 +27,7 @@ jobs:
     permissions:
       pull-requests: read
     outputs:
-      # Scheduled and manual runs always run the suite.
+      # Pushes to develop and manual runs always run the suite.
       smoke: ${{ github.event_name != 'pull_request' || steps.filter.outputs.smoke == 'true' }}
     steps:
       - uses: dorny/paths-filter@ceb8a2b8f2d89434be7ff52d3de7ec3738c5cc9d # v4.0.3
@@ -100,10 +102,9 @@ jobs:
             echo "$(basename "$avd") snapshots: $(ls -1 "$avd/snapshots" 2>/dev/null | tr '\n' ' ')"
           done
 
-      - name: Build smoke APK & androidTest APK
-        run: ./gradlew :app:assembleSmoke :app:assembleSmokeAndroidTest --no-configuration-cache
-
-      - name: Run smoke tests on ${{ matrix.device }}
+      # No separate assemble step: the managed device task builds both APKs itself, and a second
+      # Gradle invocation would only pay the configuration phase again.
+      - name: Build and run smoke tests on ${{ matrix.device }}
         run: |
           bash ${{ matrix.script }} \
             --no-configuration-cache \
