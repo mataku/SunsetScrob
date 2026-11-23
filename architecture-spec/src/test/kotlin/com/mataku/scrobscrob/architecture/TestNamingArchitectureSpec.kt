@@ -10,7 +10,7 @@ class TestNamingArchitectureSpec : DescribeSpec({
   val files = Konsist.scopeFromTest().files
     .filterNot { it.path.contains("/architecture-spec/") }
 
-  describe("Test naming conventions (CLAUDE.md Rule 8)") {
+  describe("Test naming conventions (AGENTS.md Rule 8)") {
 
     it("Kotest spec files are named `*Spec.kt`") {
       val violations = files
@@ -22,7 +22,7 @@ class TestNamingArchitectureSpec : DescribeSpec({
         .filterNot { it.name.endsWith("Spec") }
 
       withClue(
-        "Files defining a Kotest `*Spec` must be named `*Spec.kt`. CLAUDE.md Rule 8. Offending files:\n" +
+        "Files defining a Kotest `*Spec` must be named `*Spec.kt`. AGENTS.md Rule 8. Offending files:\n" +
           violations.joinToString("\n") { it.path },
       ) { violations.shouldBeEmpty() }
     }
@@ -38,7 +38,7 @@ class TestNamingArchitectureSpec : DescribeSpec({
 
       withClue(
         "Roborazzi screenshot test files (annotated `@GraphicsMode`) must end with `Test.kt` " +
-          "(typically `*ScreenTest.kt` for screens, `*Test.kt` for components). CLAUDE.md Rule 8. " +
+          "(typically `*ScreenTest.kt` for screens, `*Test.kt` for components). AGENTS.md Rule 8. " +
           "Offending files:\n" + violations.joinToString("\n") { it.path },
       ) { violations.shouldBeEmpty() }
     }
@@ -56,7 +56,7 @@ class TestNamingArchitectureSpec : DescribeSpec({
       withClue(
         "Classes annotated `@GraphicsMode` must also carry `@Category(VRT::class)` so that " +
           "`./gradlew ... -PonlyScreenshotTest=true` / `-PexcludeScreenshotTest=true` " +
-          "can filter them via JUnit Platform tags. CLAUDE.md Rule 8. Offending classes:\n" +
+          "can filter them via JUnit Platform tags. AGENTS.md Rule 8. Offending classes:\n" +
           violations.joinToString("\n") { it.fullyQualifiedName ?: it.name },
       ) { violations.shouldBeEmpty() }
     }

@@ -11,6 +11,7 @@ import com.mataku.scrobscrob.data.db.SessionKeyDataStore
 import com.mataku.scrobscrob.data.db.UsernameDataStore
 import com.mataku.scrobscrob.data.repository.mapper.toTrackInfo
 import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.Dispatchers
@@ -25,6 +26,7 @@ interface TrackRepository {
   suspend fun unloveTrack(trackName: String, artistName: String): Flow<Unit>
 }
 
+@ContributesBinding(AppScope::class)
 @SingleIn(AppScope::class)
 @Inject
 class TrackRepositoryImpl(

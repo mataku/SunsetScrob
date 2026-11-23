@@ -3,6 +3,7 @@ package com.mataku.scrobscrob.data.repository
 import com.mataku.scrobscrob.data.api.LastFmService
 import com.mataku.scrobscrob.data.db.ArtworkDataStore
 import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn
 import kotlin.contracts.ExperimentalContracts
@@ -28,6 +29,7 @@ interface ArtworkRepository {
 //  )
 }
 
+@ContributesBinding(AppScope::class)
 @SingleIn(AppScope::class)
 @Inject
 class ArtworkRepositoryImpl(

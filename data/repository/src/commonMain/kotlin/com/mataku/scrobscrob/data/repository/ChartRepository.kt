@@ -12,6 +12,7 @@ import com.mataku.scrobscrob.data.db.ArtworkDataStore
 import com.mataku.scrobscrob.data.repository.mapper.toChartTopArtists
 import com.mataku.scrobscrob.data.repository.mapper.toChartTopTracks
 import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn
 import kotlinx.collections.immutable.toImmutableList
@@ -26,6 +27,7 @@ interface ChartRepository {
   fun topTracks(page: Int): Flow<ChartTopTracks>
 }
 
+@ContributesBinding(AppScope::class)
 @SingleIn(AppScope::class)
 @Inject
 class ChartRepositoryImpl(

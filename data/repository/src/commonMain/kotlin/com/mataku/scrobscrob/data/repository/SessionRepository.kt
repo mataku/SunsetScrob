@@ -11,6 +11,7 @@ import com.mataku.scrobscrob.data.db.SessionBackupStore
 import com.mataku.scrobscrob.data.db.SessionKeyDataStore
 import com.mataku.scrobscrob.data.db.UsernameDataStore
 import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.Dispatchers
@@ -31,6 +32,7 @@ interface SessionRepository {
   suspend fun backfillSessionBackup(): Flow<Unit>
 }
 
+@ContributesBinding(AppScope::class)
 @SingleIn(AppScope::class)
 @Inject
 class SessionRepositoryImpl(

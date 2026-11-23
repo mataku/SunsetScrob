@@ -9,14 +9,14 @@ class ViewModelArchitectureSpec : DescribeSpec({
 
   val scope = Konsist.scopeFromProduction()
 
-  describe("ViewModel conventions (CLAUDE.md Rule 3)") {
+  describe("ViewModel conventions (AGENTS.md Rule 3)") {
 
     it("classes ending with ViewModel are annotated with Metro ViewModel or AssistedInject conventions") {
       scope.classes()
         .withNameEndingWith("ViewModel")
         .filter { it.resideInPackage("com.mataku.scrobscrob..") }
         .assertTrue(
-          additionalMessage = "All ViewModels must either be annotated with @Inject + @ViewModelKey + @ContributesIntoMap(AppScope::class) (constructor-injected) or with @AssistedInject and expose an inner Factory : ViewModelAssistedFactory annotated with @AssistedFactory + @ViewModelAssistedFactoryKey + @ContributesIntoMap(AppScope::class). CLAUDE.md Rule 3.",
+          additionalMessage = "All ViewModels must either be annotated with @Inject + @ViewModelKey + @ContributesIntoMap(AppScope::class) (constructor-injected) or with @AssistedInject and expose an inner Factory : ViewModelAssistedFactory annotated with @AssistedFactory + @ViewModelAssistedFactoryKey + @ContributesIntoMap(AppScope::class). AGENTS.md Rule 3.",
         ) { vm ->
           val names = vm.annotations.map { it.name }
           val plain = "Inject" in names && "ViewModelKey" in names && "ContributesIntoMap" in names
@@ -30,7 +30,7 @@ class ViewModelArchitectureSpec : DescribeSpec({
         .withNameEndingWith("ViewModel")
         .filter { it.resideInPackage("com.mataku.scrobscrob..") }
         .assertTrue(
-          additionalMessage = "ViewModels must extend ViewModel or AndroidViewModel. CLAUDE.md Rule 3.",
+          additionalMessage = "ViewModels must extend ViewModel or AndroidViewModel. AGENTS.md Rule 3.",
         ) { vm ->
           vm.hasParent { parent ->
             parent.name == "ViewModel" || parent.name == "AndroidViewModel"
@@ -48,7 +48,7 @@ class ViewModelArchitectureSpec : DescribeSpec({
             "`@ContributesIntoMap(AppScope::class, binding = binding<ViewModel>())`. Without " +
             "the `binding` argument Metro contributes them into a `Map<_, AndroidViewModel>` " +
             "multibinding that `MetroViewModelFactory` never reads, so the VM silently drops " +
-            "out of the graph and `metroViewModel<T>()` fails at runtime. CLAUDE.md Rule 3.",
+            "out of the graph and `metroViewModel<T>()` fails at runtime. AGENTS.md Rule 3.",
         ) { vm ->
           val annotation = vm.annotations.firstOrNull { it.name == "ContributesIntoMap" }
             ?: return@assertTrue false
@@ -67,7 +67,7 @@ class ViewModelArchitectureSpec : DescribeSpec({
             "`@ViewModelAssistedFactoryKey(<this>::class)`, and " +
             "`@ContributesIntoMap(AppScope::class)`. Missing any of the three causes the " +
             "Factory to drop out of the assisted-factory multibinding and " +
-            "`metroViewModel<T>()` fails at runtime. CLAUDE.md Rule 3.",
+            "`metroViewModel<T>()` fails at runtime. AGENTS.md Rule 3.",
         ) { vm ->
           val factory = vm.interfaces(includeNested = true)
             .firstOrNull { intf ->

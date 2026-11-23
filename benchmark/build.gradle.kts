@@ -9,7 +9,7 @@ plugins {
 
 configure<TestExtension>() {
   namespace = "com.mataku.scrobscrob.baselineprofile"
-  compileSdk = 36
+  compileSdk = 37
 
   compileOptions {
     sourceCompatibility = JavaVersion.VERSION_17

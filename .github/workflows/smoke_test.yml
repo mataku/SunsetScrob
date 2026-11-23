@@ -1,20 +1,11 @@
 name: Smoke test
 
 on:
+  # No `paths` filter here: `Smoke test result` is a required check, and a required check that
+  # never starts blocks the pull request. The `changes` job decides whether the suite runs.
   pull_request:
     branches:
       - '**'
-    paths:
-      - 'gradle/**'
-      - 'gradle.properties'
-      - 'settings.gradle.kts'
-      - '**/build.gradle.kts'
-      - 'build-logic/**'
-      - 'app/**'
-      - '**/src/androidMain/**'
-      - 'scripts/run_smoke_*.sh'
-      - '.github/workflows/smoke_test.yml'
-      - '.github/actions/**'
   # Unfiltered on purpose: every merge refreshes the AVD and Gradle build caches that pull request
   # runs restore, and covers the commonMain changes the pull request path filter lets through.
   push:
@@ -30,8 +21,36 @@ env:
   GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx6g -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -XX:+UseParallelGC -XX:MaxMetaspaceSize=1g"
 
 jobs:
+  changes:
+    name: Detect changes
+    runs-on: ubuntu-slim
+    permissions:
+      pull-requests: read
+    outputs:
+      # Pushes to develop and manual runs always run the suite.
+      smoke: ${{ github.event_name != 'pull_request' || steps.filter.outputs.smoke == 'true' }}
+    steps:
+      - uses: dorny/paths-filter@ceb8a2b8f2d89434be7ff52d3de7ec3738c5cc9d # v4.0.3
+        id: filter
+        if: github.event_name == 'pull_request'
+        with:
+          filters: |
+            smoke:
+              - 'gradle/**'
+              - 'gradle.properties'
+              - 'settings.gradle.kts'
+              - '**/build.gradle.kts'
+              - 'build-logic/**'
+              - 'app/**'
+              - '**/src/androidMain/**'
+              - 'scripts/run_smoke_*.sh'
+              - '.github/workflows/smoke_test.yml'
+              - '.github/actions/**'
+
   smoke:
     name: ${{ matrix.name }}
+    needs: changes
+    if: needs.changes.outputs.smoke == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     permissions:
@@ -112,6 +131,30 @@ jobs:
             **/build/outputs/androidTest-results/**
             **/build/intermediates/managed_device_android_test_additional_output/**
           retention-days: 7
+
+  # The only smoke check to mark as required: it reports on every pull request, whether the
+  # suite ran or was skipped, and does not change when a device is added to the matrix.
+  result:
+    name: Smoke test result
+    needs: [changes, smoke]
+    if: always()
+    runs-on: ubuntu-slim
+    steps:
+      - name: Check smoke results
+        env:
+          CHANGES_RESULT: ${{ needs.changes.result }}
+          SHOULD_RUN: ${{ needs.changes.outputs.smoke }}
+          SMOKE_RESULT: ${{ needs.smoke.result }}
+        run: |
+          echo "changes=$CHANGES_RESULT should_run=$SHOULD_RUN smoke=$SMOKE_RESULT"
+          if [ "$CHANGES_RESULT" != "success" ]; then
+            exit 1
+          fi
+          if [ "$SHOULD_RUN" = "true" ]; then
+            [ "$SMOKE_RESULT" = "success" ]
+          else
+            [ "$SMOKE_RESULT" = "skipped" ]
+          fi
 
   notify-failure:
     name: Notify Discord on failure

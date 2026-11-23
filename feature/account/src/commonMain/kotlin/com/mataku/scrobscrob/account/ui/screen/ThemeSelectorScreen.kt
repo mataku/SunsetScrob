@@ -1,6 +1,5 @@
 package com.mataku.scrobscrob.account.ui.screen
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
@@ -14,7 +13,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Check
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.unit.dp
@@ -33,7 +34,6 @@ import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.onSurfaceColor
 import org.jetbrains.compose.resources.stringResource
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun ThemeSelectorScreen(
   viewModel: ThemeSelectorViewModel,
@@ -42,16 +42,13 @@ internal fun ThemeSelectorScreen(
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-  // Because there were cases where values flowed in unintentionally, control
-  // TODO
-  uiState.event?.let {
-    when (it) {
-      is ThemeSelectorViewModel.UiEvent.ThemeChanged -> {
-
-      }
+  LaunchedEffect(uiState.event) {
+    if (uiState.event != null) {
+      viewModel.popEvent()
     }
-    viewModel.popEvent()
   }
+
+  val themes = remember { AppTheme.entries.sortedBy { it.priority } }
 
   SunsetScaffold(
     modifier = modifier,
@@ -74,9 +71,7 @@ internal fun ThemeSelectorScreen(
     uiState.theme?.let { selectedTheme ->
       LazyColumn(
         content = {
-          items(AppTheme.entries.sortedBy {
-            it.priority
-          }) {
+          items(themes, key = { it.name }) {
             ThemeCell(
               theme = it,
               selected = it == selectedTheme,

@@ -2,7 +2,6 @@ package com.mataku.scrobscrob.ui_common.component.designsystem
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
@@ -14,7 +13,6 @@ import com.mataku.scrobscrob.ui_common.style.LocalAppTheme
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import com.mataku.scrobscrob.ui_common.style.backgroundColor
 
-@OptIn(ExperimentalMaterial3Api::class)
 @JvmInline
 value class SunsetTopAppBarScrollBehavior internal constructor(
   internal val delegate: TopAppBarScrollBehavior,
@@ -23,7 +21,6 @@ value class SunsetTopAppBarScrollBehavior internal constructor(
     get() = delegate.nestedScrollConnection
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun rememberSunsetTopAppBarScrollBehavior(): SunsetTopAppBarScrollBehavior {
   return SunsetTopAppBarScrollBehavior(
@@ -31,7 +28,6 @@ fun rememberSunsetTopAppBarScrollBehavior(): SunsetTopAppBarScrollBehavior {
   )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SunsetTopAppBar(
   title: @Composable () -> Unit,
@@ -52,7 +48,6 @@ fun SunsetTopAppBar(
   )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
 private fun SunsetTopAppBarPreview() {

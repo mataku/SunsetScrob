@@ -18,7 +18,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -48,7 +49,8 @@ fun WebViewScreen(
   val visibilityValue = remember {
     Animatable(0F)
   }
-  val screenHeight = LocalWindowInfo.current.containerSize.height
+  val containerHeightPx = LocalWindowInfo.current.containerSize.height
+  val screenHeight = with(LocalDensity.current) { containerHeightPx.toDp() }
 
   val coroutineScope = rememberCoroutineScope()
 
@@ -94,8 +96,8 @@ fun WebViewScreen(
         },
         modifier = Modifier
           .fillMaxWidth()
-          .height(screenHeight.dp - 64.dp)
-          .alpha(visibilityValue.value)
+          .height(screenHeight - 64.dp)
+          .graphicsLayer { alpha = visibilityValue.value }
       )
       if (!visibility) {
         LoadingIndicator(

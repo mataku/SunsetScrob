@@ -75,6 +75,7 @@ File map (check here before guessing a path):
 
 - Convention plugins: `build-logic/convention/src/main/java/*.kt` and `build-logic/convention/src/main/java/ext/*Configuration.kt`. There is no `src/main/kotlin` in `build-logic`.
 - Library modules (`:core`, `:ui_common`, `:data:*`, `:feature:*`, `:test_helper:*`) have no `src/main` or `src/test`; use `src/{commonMain,androidMain,jvmMain,jvmTest}/kotlin`. Only `:app` and `:benchmark` keep `src/main/java`.
+- `:app` also has build-type source sets next to `src/main`: `src/debug`, `src/release`, `src/benchmark` and `src/smoke`. A class that differs per build type is declared once in each of them and not in `main` (today `AppInfoProviderImpl`), so a search limited to `src/main` misses it and a change to it has to be made in all four.
 - `lint-checks/` was removed; only a stale `build/` directory remains. Do not look for detectors there.
 
 - `src/commonMain/kotlin` — everything that has no Android dependency. Screens, ViewModels, repositories, entities.

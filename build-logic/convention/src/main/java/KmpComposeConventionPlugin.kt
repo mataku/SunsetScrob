@@ -22,7 +22,7 @@ class KmpComposeConventionPlugin : Plugin<Project> {
 
       kotlinMultiplatform().apply {
         androidLibraryTarget {
-          experimentalProperties["android.experimental.kmp.enableAndroidResources"] = true
+          androidResources.enable = true
         }
         compilerOptions {
           freeCompilerArgs.add("-opt-in=androidx.compose.animation.ExperimentalSharedTransitionApi")

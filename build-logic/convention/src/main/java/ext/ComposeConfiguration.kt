@@ -17,9 +17,7 @@ fun Project.composeConfiguration() {
   }
   extensions.getByType<KotlinAndroidProjectExtension>().compilerOptions {
     jvmTarget.set(JvmTarget.JVM_17)
-    if (name != "core") {
-      freeCompilerArgs.add("-opt-in=androidx.compose.animation.ExperimentalSharedTransitionApi")
-    }
+    freeCompilerArgs.add("-opt-in=androidx.compose.animation.ExperimentalSharedTransitionApi")
   }
   extensions.getByType<ComposeCompilerGradlePluginExtension>().apply {
     val composeReportEnabled =

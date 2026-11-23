@@ -1,6 +1,5 @@
 package com.mataku.scrobscrob.account.ui.screen
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -31,7 +30,6 @@ import com.mataku.scrobscrob.ui_common.style.LocalSnackbarHostState
 import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import org.jetbrains.compose.resources.stringResource
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun ScrobbleSettingScreen(
   viewModel: ScrobbleSettingViewModel,
@@ -41,15 +39,10 @@ internal fun ScrobbleSettingScreen(
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
   val snackbarHostState = LocalSnackbarHostState.current
   val allowAppErrorMessage = stringResource(Res.string.error_allow_scrobble_app)
-  uiState.event?.let {
-    when (it) {
-      is ScrobbleSettingViewModel.UiEvent.AllowAppError -> {
-        LaunchedEffect(Unit) {
-          snackbarHostState.showSnackbar(allowAppErrorMessage)
-        }
-      }
-
-      else -> Unit
+  LaunchedEffect(uiState.event) {
+    val event = uiState.event ?: return@LaunchedEffect
+    if (event is ScrobbleSettingViewModel.UiEvent.AllowAppError) {
+      snackbarHostState.showSnackbar(allowAppErrorMessage)
     }
     viewModel.popEvent()
   }

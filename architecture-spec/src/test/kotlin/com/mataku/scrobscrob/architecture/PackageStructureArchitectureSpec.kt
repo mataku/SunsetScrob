@@ -9,14 +9,14 @@ class PackageStructureArchitectureSpec : DescribeSpec({
 
   val scope = Konsist.scopeFromProduction()
 
-  describe("Package structure rules (CLAUDE.md Rule 2)") {
+  describe("Package structure rules (AGENTS.md Rule 2)") {
 
     it("ViewModels reside in a `...ui.viewmodel` package") {
       scope.classes()
         .withNameEndingWith("ViewModel")
         .filter { it.resideInPackage("com.mataku.scrobscrob..") }
         .assertTrue(
-          additionalMessage = "ViewModels must live in `...ui.viewmodel`. CLAUDE.md Rule 2 & 3.",
+          additionalMessage = "ViewModels must live in `...ui.viewmodel`. AGENTS.md Rule 2 & 3.",
         ) { it.resideInPackage("..ui.viewmodel..") }
     }
 
@@ -26,7 +26,7 @@ class PackageStructureArchitectureSpec : DescribeSpec({
         .filter { it.resideInPackage("com.mataku.scrobscrob..") }
         .filterNot { it.name.endsWith("Graph") }
         .assertTrue(
-          additionalMessage = "Metro binding containers must live in `...di`. CLAUDE.md Rule 2 & 7.",
+          additionalMessage = "Metro binding containers must live in `...di`. AGENTS.md Rule 2 & 7.",
         ) { it.resideInPackage("..di..") }
     }
   }

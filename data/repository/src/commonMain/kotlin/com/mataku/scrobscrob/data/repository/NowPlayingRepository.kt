@@ -9,6 +9,7 @@ import com.mataku.scrobscrob.data.api.request
 import com.mataku.scrobscrob.data.db.SessionKeyDataStore
 import com.mataku.scrobscrob.data.repository.mapper.toNowPlayingTrackEntity
 import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.Dispatchers
@@ -22,6 +23,7 @@ interface NowPlayingRepository {
   fun current(): Flow<NowPlayingTrackEntity?>
 }
 
+@ContributesBinding(AppScope::class)
 @SingleIn(AppScope::class)
 @Inject
 class NowPlayingRepositoryImpl(

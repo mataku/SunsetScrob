@@ -9,12 +9,12 @@ paths:
 
 ## Repository Conventions
 
-Reference: `data/repository/.../ScrobbleRepository.kt`, `data/repository/di/RepositoryModule.kt`.
+Reference: `data/repository/.../ScrobbleRepository.kt`.
 
 - Interface and its `Impl` class live in the **same file**, same package.
 - Methods return `Flow<T>`; wrap async work with `flow { ... }.flowOn(Dispatchers.IO)`. Enforced by Konsist (`RepositoryArchitectureSpec` in `:architecture-spec`, "`*Repository` interfaces declare methods returning `Flow<T>`").
 - All `*Repository` interfaces live in `:data:repository`, a KMP module with no Lint task, so this rule is enforced by Konsist alone.
-- Bind all repositories in `data/repository/di/RepositoryModule.kt` with `@Binds` and `@SingleIn(AppScope::class)`. The interface is annotated `@BindingContainer` and `@ContributesTo(AppScope::class)` so Metro auto-aggregates it into the app graph — no explicit `includes` wiring is needed; `:data:api`'s `ApiModule` and `:data:db`'s `DatabaseModule` join automatically because they are also contributed binding containers.
+- Bind each repository on its `Impl` class with `@ContributesBinding(AppScope::class)` and `@SingleIn(AppScope::class)`. Metro aggregates the binding into the app graph, so there is no `RepositoryModule` to keep in sync; `:data:api`'s `ApiModule` and `:data:db`'s `DatabaseModule` join the same way as contributed binding containers.
 - Do not catch errors inside the repository. Let them propagate — the ViewModel's `.catch { ... }` maps them to a `UiEvent.Error`. detekt's `SwallowedException` and `TooGenericExceptionCaught` (bundled `exceptions` rule set, `config/detekt/detekt.yml`) flag the try/catch shape of this in every module.
 - Call the API through the typed `LastFmService.request(endpoint)` extension. `rawRequest(endpoint, typeInfo)` is the type-erased member that exists so the inline extension can be reified and so specs can stub it with MockK; production code never calls it directly. Enforced by Konsist (`LastFmServiceArchitectureSpec`).
 
@@ -22,8 +22,8 @@ Reference: `data/repository/.../ScrobbleRepository.kt`, `data/repository/di/Repo
 
 - Binding containers are Kotlin `interface`s, live in a `di` subpackage, and are named `FooModule.kt` / `FooModule` (the `*Module` suffix remains to match existing structure).
 - Annotate every binding container with both `@BindingContainer` and `@ContributesTo(AppScope::class)` (from `dev.zacsweers.metro.*`). `@ContributesTo` is what makes Metro aggregate it into the graph; `@BindingContainer` makes Metro read only its bindings instead of merging the interface into the graph as a supertype, which generates less code. Without it Metro emits a `Consider making this a binding container` warning. Enforced by Konsist (`BindingContainerArchitectureSpec`). The one exception to `AppScope` is `:app`'s `src/smoke/`, whose fakes contribute to `SmokeScope` so the production `AppGraph` compiled into the smoke variant never sees them (see `smoke-testing.md`).
-- Use `@Binds` on interface methods for interface-to-impl bindings. Pair with `@SingleIn(AppScope::class)` for app-scoped singletons.
-- **Exception for `internal` impls.** A public `@ContributesTo(AppScope::class)` interface cannot expose an `internal` type via a `@Binds` method (Kotlin visibility). When the `Impl` class needs to stay `internal` (to keep it unreachable from sibling modules), write the binding as an `internal` `@Provides` function on the `companion object` instead. Reference: `:data:api/.../LastFmService.kt` (`internal class LastFmServiceImpl`) and the binding in `:data:api/.../di/ApiModule.kt`.
+- Bind an interface to its implementation with `@ContributesBinding(AppScope::class)` on the `Impl` class rather than a `@Binds` method in a binding container; add `@SingleIn(AppScope::class)` for app-scoped singletons. The exception is a binding that a graph must swap out as a unit: `AuthModule` keeps its `@Binds` because `SmokeAppGraph` excludes that module to substitute `FakeWebAuthModule` (see `smoke-testing.md`).
+- **Exception for `internal` impls.** When the `Impl` class needs to stay `internal` (to keep it unreachable from sibling modules), write the binding as an `internal` `@Provides` function on the `companion object` of a binding container instead. Reference: `:data:api/.../LastFmService.kt` (`internal class LastFmServiceImpl`) and the binding in `:data:api/.../di/ApiModule.kt`.
 - Use `@Provides` on a `companion object` function when construction needs logic or third-party types. Scope with `@SingleIn(AppScope::class)` as needed. Never declare `@Provides` with a body directly on the interface: Metro rejects it on an interface binding container.
 - The root graph is `app/.../di/AppGraph.kt`: `@DependencyGraph(AppScope::class) interface AppGraph : MetroAppComponentProviders, ViewModelGraph, ScrobbleServiceDependencies`. `App` creates it via `createGraphFactory<AppGraph.Factory>().create(this)`.
 - In KMP modules, binding containers live in `src/androidMain/kotlin/.../di/` because they receive `Context` from `:app`. Interfaces that a common class needs (for example `LicenseInfoProvider`) stay in `commonMain`.

@@ -2,7 +2,6 @@ package com.mataku.scrobscrob.ui_common.component.designsystem
 
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.runtime.Composable
@@ -15,7 +14,6 @@ import com.mataku.scrobscrob.ui_common.style.SunsetThemePreview
 import com.mataku.scrobscrob.ui_common.style.backgroundColor
 import com.mataku.scrobscrob.ui_common.style.onSurfaceColor
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SunsetTabRow(
   selectedTabIndex: Int,

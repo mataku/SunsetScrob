@@ -8,7 +8,7 @@ class BindingContainerArchitectureSpec : DescribeSpec({
 
   val scope = Konsist.scopeFromProduction()
 
-  describe("Metro binding container conventions (CLAUDE.md Rule 7)") {
+  describe("Metro binding container conventions (AGENTS.md Rule 7)") {
 
     it("interfaces annotated with `@ContributesTo` are named `*Module`") {
       scope.interfaces()
@@ -16,7 +16,7 @@ class BindingContainerArchitectureSpec : DescribeSpec({
         .filter { it.resideInPackage("com.mataku.scrobscrob..") }
         .filterNot { it.name.endsWith("Graph") }
         .assertTrue(
-          additionalMessage = "Metro binding containers must be named `*Module`. CLAUDE.md Rule 7.",
+          additionalMessage = "Metro binding containers must be named `*Module`. AGENTS.md Rule 7.",
         ) { it.name.endsWith("Module") }
     }
 
@@ -25,7 +25,7 @@ class BindingContainerArchitectureSpec : DescribeSpec({
         .filter { it.name.endsWith("Module") }
         .filter { it.resideInPackage("com.mataku.scrobscrob..") }
         .assertTrue(
-          additionalMessage = "Metro binding containers must declare `@ContributesTo(AppScope::class)`. CLAUDE.md Rule 7.",
+          additionalMessage = "Metro binding containers must declare `@ContributesTo(AppScope::class)`. AGENTS.md Rule 7.",
         ) { cls -> cls.annotations.any { it.name == "ContributesTo" } }
     }
 
@@ -34,7 +34,7 @@ class BindingContainerArchitectureSpec : DescribeSpec({
         .filter { it.name.endsWith("Module") }
         .filter { it.resideInPackage("com.mataku.scrobscrob..") }
         .assertTrue(
-          additionalMessage = "Metro binding containers must be annotated `@BindingContainer`. CLAUDE.md Rule 7.",
+          additionalMessage = "Metro binding containers must be annotated `@BindingContainer`. AGENTS.md Rule 7.",
         ) { cls -> cls.annotations.any { it.name == "BindingContainer" } }
     }
   }

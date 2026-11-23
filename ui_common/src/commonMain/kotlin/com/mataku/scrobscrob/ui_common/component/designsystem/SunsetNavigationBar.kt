@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -29,7 +30,7 @@ import androidx.compose.ui.draw.BlurredEdgeTreatment
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.scale
+import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.RoundRect
@@ -39,6 +40,7 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.PathMeasure
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.tooling.preview.Preview
@@ -165,39 +167,43 @@ fun SunsetBottomNavigation(
       )
     }
 
-    Canvas(
+    Spacer(
       modifier = Modifier
         .fillMaxSize()
         .clip(CircleShape)
         .alpha(.85F)
         .background(LocalAppTheme.current.primaryColor())
-    ) {
-      val path = Path().apply {
-        addRoundRect(RoundRect(size.toRect(), CornerRadius(size.height)))
-      }
-      val length = PathMeasure().apply { setPath(path, false) }.length
-
-      val tabWidth = size.width / SunsetTab.entries.size
-      drawPath(
-        path,
-        brush = Brush.horizontalGradient(
-          colors = listOf(
-            animatedColor.copy(alpha = 0f),
-            animatedColor.copy(alpha = 1f),
-            animatedColor.copy(alpha = 1f),
-            animatedColor.copy(alpha = 0f),
-          ),
-          startX = tabWidth * animatedSelectedTabIndex,
-          endX = tabWidth * (animatedSelectedTabIndex + 1),
-        ),
-        style = Stroke(
-          width = 6f,
-          pathEffect = PathEffect.dashPathEffect(
-            intervals = floatArrayOf(length / 2, length)
+        .drawWithCache {
+          val path = Path().apply {
+            addRoundRect(RoundRect(size.toRect(), CornerRadius(size.height)))
+          }
+          val length = PathMeasure().apply { setPath(path, false) }.length
+          val stroke = Stroke(
+            width = 6f,
+            pathEffect = PathEffect.dashPathEffect(
+              intervals = floatArrayOf(length / 2, length)
+            )
           )
-        )
-      )
-    }
+          val tabWidth = size.width / SunsetTab.entries.size
+
+          onDrawBehind {
+            drawPath(
+              path,
+              brush = Brush.horizontalGradient(
+                colors = listOf(
+                  animatedColor.copy(alpha = 0f),
+                  animatedColor.copy(alpha = 1f),
+                  animatedColor.copy(alpha = 1f),
+                  animatedColor.copy(alpha = 0f),
+                ),
+                startX = tabWidth * animatedSelectedTabIndex,
+                endX = tabWidth * (animatedSelectedTabIndex + 1),
+              ),
+              style = stroke
+            )
+          }
+        }
+    )
     BottomBarTabs(
       tabs = tabs,
       selectedTab = selectedItem,
@@ -235,8 +241,11 @@ private fun BottomBarTabs(
       )
       Column(
         modifier = Modifier
-          .scale(scale)
-          .alpha(alpha)
+          .graphicsLayer {
+            scaleX = scale
+            scaleY = scale
+            this.alpha = alpha
+          }
           .fillMaxHeight()
           .weight(1f)
           .clickable(

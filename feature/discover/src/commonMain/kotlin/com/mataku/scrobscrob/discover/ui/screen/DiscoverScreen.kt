@@ -1,6 +1,5 @@
 package com.mataku.scrobscrob.discover.ui.screen
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -20,7 +19,6 @@ import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetText
 import com.mataku.scrobscrob.ui_common.component.designsystem.SunsetTopAppBar
 import com.mataku.scrobscrob.ui_common.style.isCompactWidth
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun DiscoverScreen(
   viewModel: DiscoverViewModel,

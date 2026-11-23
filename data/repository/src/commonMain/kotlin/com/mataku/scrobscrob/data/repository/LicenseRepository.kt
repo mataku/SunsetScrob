@@ -6,6 +6,7 @@ import com.mataku.scrobscrob.data.db.LicenseDataStore
 import com.mataku.scrobscrob.data.repository.di.LicenseInfoProvider
 import com.mataku.scrobscrob.data.repository.mapper.toLicenseArtifactList
 import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn
 import kotlinx.collections.immutable.persistentListOf
@@ -18,6 +19,7 @@ interface LicenseRepository {
   fun licenseList(): Flow<List<LicenseArtifact>>
 }
 
+@ContributesBinding(AppScope::class)
 @SingleIn(AppScope::class)
 @Inject
 class LicenseRepositoryImpl(
