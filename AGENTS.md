@@ -1,4 +1,4 @@
-# CLAUDE.md
+# AGENTS.md
 
 Guidance for AI coding agents (Claude Code and similar) working in this repository.
 This document is the **inferential feedforward** part of the project's harness; most rules below have a matching Konsist sensor under `:architecture-spec` that will fail CI if violated.

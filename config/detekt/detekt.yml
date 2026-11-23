@@ -1,7 +1,7 @@
 # detekt's bundled rule sets. DetektConfiguration.kt leaves disableDefaultRuleSets at false, so
 # every bundled rule set is listed here with an explicit active flag, and inside the two that are
 # on every rule is listed too: buildUponDefaultConfig would otherwise run anything left unlisted
-# at detekt's shipped default. A rule is on only when it encodes a CLAUDE.md DON'T that a reviewer
+# at detekt's shipped default. A rule is on only when it encodes a AGENTS.md DON'T that a reviewer
 # could otherwise catch only by knowing the convention; detekt runs without type resolution, so a
 # rule that needs it cannot be turned on here.
 comments:
@@ -12,7 +12,7 @@ coroutines:
   active: true
   CoroutineLaunchedInTestWithoutRunTest:
     active: false
-  # CLAUDE.md DON'T: never use GlobalScope (ViewModels launch through viewModelScope).
+  # AGENTS.md DON'T: never use GlobalScope (ViewModels launch through viewModelScope).
   GlobalCoroutineUsage:
     active: true
   # Repositories hard-code Dispatchers.IO in flowOn by convention (repository.md).
@@ -50,7 +50,7 @@ exceptions:
     active: false
   ReturnFromFinally:
     active: false
-  # CLAUDE.md DON'T: a repository must not catch an error to return a fallback value; the Flow
+  # AGENTS.md DON'T: a repository must not catch an error to return a fallback value; the Flow
   # fails and the ViewModel's .catch { } maps it to UiEvent.Error. These two rules catch the
   # try/catch shape of that mistake in any module: a catch that ignores the exception, and a
   # catch of Exception / Throwable that hides which failure was expected.

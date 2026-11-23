@@ -9,7 +9,7 @@ class ComposableScreenArchitectureSpec : DescribeSpec({
 
   val scope = Konsist.scopeFromProduction()
 
-  describe("Composable screen conventions (CLAUDE.md Rule 4)") {
+  describe("Composable screen conventions (AGENTS.md Rule 4)") {
 
     it("`*Screen` @Composable functions in feature modules live in `...ui.screen`") {
       scope.functions()
@@ -19,7 +19,7 @@ class ComposableScreenArchitectureSpec : DescribeSpec({
         // ui_common hosts reusable templates (atomic design), not feature screens.
         .filterNot { it.resideInPackage("..ui_common..") }
         .assertTrue(
-          additionalMessage = "`*Screen` composables in feature modules must live in `...ui.screen`. CLAUDE.md Rule 4.",
+          additionalMessage = "`*Screen` composables in feature modules must live in `...ui.screen`. AGENTS.md Rule 4.",
         ) { it.resideInPackage("..ui.screen..") }
     }
 

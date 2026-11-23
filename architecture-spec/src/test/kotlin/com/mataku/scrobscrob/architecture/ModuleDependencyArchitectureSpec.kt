@@ -18,7 +18,7 @@ class ModuleDependencyArchitectureSpec : DescribeSpec({
     .filterNot { it.path.contains("/architecture-spec/") }
     .filter { it.path.isProductionSourcePath() }
 
-  describe("Module dependency rules (CLAUDE.md Rule 1)") {
+  describe("Module dependency rules (AGENTS.md Rule 1)") {
 
     it(":core must not depend on any other project module") {
       val violations = files
@@ -29,7 +29,7 @@ class ModuleDependencyArchitectureSpec : DescribeSpec({
           }
         }
       withClue(
-        ":core is the pure layer. Violates CLAUDE.md Rule 1. Offending files:\n" +
+        ":core is the pure layer. Violates AGENTS.md Rule 1. Offending files:\n" +
           violations.joinToString("\n") { it.path },
       ) { violations.shouldBeEmpty() }
     }
@@ -45,7 +45,7 @@ class ModuleDependencyArchitectureSpec : DescribeSpec({
           }
         }
       withClue(
-        ":ui_common may depend on :core only. Violates CLAUDE.md Rule 1. Offending files:\n" +
+        ":ui_common may depend on :core only. Violates AGENTS.md Rule 1. Offending files:\n" +
           violations.joinToString("\n") { it.path },
       ) { violations.shouldBeEmpty() }
     }
@@ -58,7 +58,7 @@ class ModuleDependencyArchitectureSpec : DescribeSpec({
         .filter { it.path.contains("/data/db/src/") }
         .filter { file -> file.imports.any { it.name.startsWith("${ROOT}data.api.") } }
       withClue(
-        ":data:api and :data:db are peers and must not cross-import. Violates CLAUDE.md Rule 1. Offending files:\n" +
+        ":data:api and :data:db are peers and must not cross-import. Violates AGENTS.md Rule 1. Offending files:\n" +
           (apiViolations + dbViolations).joinToString("\n") { it.path },
       ) { (apiViolations + dbViolations).shouldBeEmpty() }
     }
@@ -72,7 +72,7 @@ class ModuleDependencyArchitectureSpec : DescribeSpec({
           file.imports.any { imp -> forbidden.any { imp.name.startsWith(it) } }
         }
       withClue(
-        ":data:repository sits below the UI layer. Violates CLAUDE.md Rule 1. Offending files:\n" +
+        ":data:repository sits below the UI layer. Violates AGENTS.md Rule 1. Offending files:\n" +
           violations.joinToString("\n") { it.path },
       ) { violations.shouldBeEmpty() }
     }
@@ -82,7 +82,7 @@ class ModuleDependencyArchitectureSpec : DescribeSpec({
         .filter { it.path.contains("/feature/") && it.path.contains("/src/") }
         .filter { file -> file.imports.any { it.name.startsWith("${ROOT}data.api.") } }
       withClue(
-        "Features must go through :data:repository, not :data:api. Violates CLAUDE.md Rule 1. Offending files:\n" +
+        "Features must go through :data:repository, not :data:api. Violates AGENTS.md Rule 1. Offending files:\n" +
           violations.joinToString("\n") { it.path },
       ) { violations.shouldBeEmpty() }
     }
@@ -92,7 +92,7 @@ class ModuleDependencyArchitectureSpec : DescribeSpec({
         .filter { it.path.contains("/feature/") && it.path.contains("/src/") }
         .filter { file -> file.imports.any { it.name.startsWith("${ROOT}data.db.") } }
       withClue(
-        "Features must go through :data:repository, not :data:db. Violates CLAUDE.md Rule 1. Offending files:\n" +
+        "Features must go through :data:repository, not :data:db. Violates AGENTS.md Rule 1. Offending files:\n" +
           violations.joinToString("\n") { it.path },
       ) { violations.shouldBeEmpty() }
     }
@@ -115,7 +115,7 @@ class ModuleDependencyArchitectureSpec : DescribeSpec({
         }
       withClue(
         ":feature:home is the only feature that may depend on other features. " +
-          "Violates CLAUDE.md Rule 1. Offending files:\n" +
+          "Violates AGENTS.md Rule 1. Offending files:\n" +
           violations.joinToString("\n") { (file, imps) ->
             "${file.path} -> ${imps.joinToString { it.name }}"
           },
